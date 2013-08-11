@@ -12,6 +12,7 @@
     "and up and down? Does the initial starting angle affect the patterns when all the",
     "other variables are unchanged?"
   ],
+  "aspectRatio": 1.4,
   "fontScale": 0.8,
   "models": [
     {
@@ -19,7 +20,8 @@
       "id": "pendulum1$0",
       "url": "imports/legacy-mw-content/converted/inquiry-space/pendulum/pendulum1$0.json",
       "viewOptions": {
-        "controlButtons": "play_reset_step",
+        "controlButtons": "play_reset",
+        "controlButtonStyle": "text",
         "gridLines": true,
         "showClock": true,
         "velocityVectors": {

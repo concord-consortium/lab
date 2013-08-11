@@ -14,8 +14,14 @@
         "defaultValue": ""
       },
       "importedFrom": {},
+      "aspectRatio": {
+        "defaultValue": 1.3
+      },
       "fontScale": {
         "defaultValue": 1
+      },
+      "helpOnLoad": {
+        "defaultValue": false
       },
       "models": {
         "required": true
@@ -40,6 +46,9 @@
       },
       "template": {
         "defaultValue": "simple"
+      },
+      "helpTips": {
+        "defaultValue": []
       }
     },
     "model": {
@@ -149,6 +158,9 @@
       },
       "height": {
         "defaultValue": "auto"
+      },
+      "tooltip": {
+        "defaultValue": ""
       }
     },
     "image": {
@@ -167,7 +179,10 @@
       "height": {
         "defaultValue": "auto"
       },
-      "onClick": {}
+      "onClick": {},
+      "tooltip": {
+        "defaultValue": ""
+      }
     },
     "div": {
       "id": {
@@ -175,6 +190,9 @@
       },
       "type": {
         "required": true
+      },
+      "content": {
+        "defaultValue": ""
       },
       "width": {
         "defaultValue": "auto"
@@ -186,7 +204,9 @@
       "classes": {
         "defaultValue": []
       },
-      "tooltip": {}
+      "tooltip": {
+        "defaultValue": ""
+      }
     },
     "button": {
       "id": {
@@ -205,6 +225,12 @@
         "defaultValue": ""
       },
       "height": {
+        "defaultValue": ""
+      },
+      "disabled": {
+        "defaultValue": false
+      },
+      "tooltip": {
         "defaultValue": ""
       }
     },
@@ -237,6 +263,12 @@
         "conflictsWith": [
           "property"
         ]
+      },
+      "disabled": {
+        "defaultValue": false
+      },
+      "tooltip": {
+        "defaultValue": ""
       }
     },
     "slider": {
@@ -283,6 +315,12 @@
         "conflictsWith": [
           "property"
         ]
+      },
+      "disabled": {
+        "defaultValue": false
+      },
+      "tooltip": {
+        "defaultValue": ""
       }
     },
     "pulldown": {
@@ -301,7 +339,13 @@
       "options": {
         "defaultValue": []
       },
-      "property": {}
+      "property": {},
+      "disabled": {
+        "defaultValue": false
+      },
+      "tooltip": {
+        "defaultValue": ""
+      }
     },
     "pulldownOption": {
       "text": {
@@ -344,7 +388,13 @@
       "options": {
         "defaultValue": []
       },
-      "property": {}
+      "property": {},
+      "disabled": {
+        "defaultValue": false
+      },
+      "tooltip": {
+        "defaultValue": ""
+      }
     },
     "radioOption": {
       "text": {
@@ -391,7 +441,10 @@
         "defaultValue": "auto"
       },
       "property": {},
-      "displayValue": {}
+      "displayValue": {},
+      "tooltip": {
+        "defaultValue": ""
+      }
     },
     "thermometer": {
       "id": {
@@ -443,8 +496,14 @@
       "properties": {
         "defaultValue": []
       },
+      "xProperty": {
+        "defaultValue": "displayTime"
+      },
       "title": {
         "defaultValue": "Graph"
+      },
+      "lineWidth": {
+        "defaultValue": 2
       },
       "width": {
         "defaultValue": "100%"
@@ -493,6 +552,9 @@
       },
       "bars": {
         "defaultValue": false
+      },
+      "tooltip": {
+        "defaultValue": ""
       }
     },
     "barGraph": {
@@ -550,6 +612,17 @@
       },
       "fillColor": {
         "defaultValue": "#fff"
+      },
+      "tooltip": {
+        "defaultValue": ""
+      }
+    },
+    "helpTip": {
+      "component": {
+        "defaultValue": ""
+      },
+      "text": {
+        "defaultValue": ""
       }
     }
   },
@@ -726,9 +799,16 @@
           "defaultValue": false,
           "storeInTickHistory": true
         },
-        "electricFieldDensity": {
-          "defaultValue": 0,
+        "showElectricField": {
+          "defaultValue": false,
           "storeInTickHistory": true
+        },
+        "electricFieldDensity": {
+          "defaultValue": 18,
+          "storeInTickHistory": true
+        },
+        "electricFieldColor": {
+          "defaultValue": "auto"
         },
         "showAtomTrace": {
           "defaultValue": false
@@ -760,6 +840,10 @@
         "controlButtons": {
           "defaultValue": "play"
         },
+        "controlButtonStyle": {
+          "defaultValue": "video",
+          "serialize": false
+        },
         "gridLines": {
           "defaultValue": false
         },
@@ -788,6 +872,9 @@
             "width": 0.01,
             "length": 2
           }
+        },
+        "forceVectorsDirectionOnly": {
+          "defaultValue": false
         }
       },
       "atom": {
@@ -976,20 +1063,18 @@
           "readOnly": true,
           "serialize": false
         },
-        "colorR": {
-          "defaultValue": 128
-        },
-        "colorG": {
-          "defaultValue": 128
-        },
-        "colorB": {
-          "defaultValue": 128
+        "color": {
+          "defaultValue": "rgb(128,128,128)"
         },
         "visible": {
           "defaultValue": true
         }
       },
-      "rectangle": {
+      "shape": {
+        "type": {
+          "defaultValue": "rectangle",
+          "required": true
+        },
         "width": {
           "unitType": "length",
           "required": true
@@ -1007,7 +1092,7 @@
           "unitType": "length"
         },
         "fence": {
-          "defaultValue": false
+          "defaultValue": 0
         },
         "color": {
           "defaultValue": "transparent"
@@ -1024,8 +1109,60 @@
         "layer": {
           "defaultValue": 1
         },
+        "layerPosition": {
+          "defaultValue": 1
+        },
         "visible": {
-          "defaultValue": true
+          "defaultValue": 1
+        }
+      },
+      "line": {
+        "x1": {
+          "defaultValue": 0,
+          "required": true,
+          "unitType": "length"
+        },
+        "y1": {
+          "defaultValue": 0,
+          "required": true,
+          "unitType": "length"
+        },
+        "x2": {
+          "defaultValue": 0,
+          "required": true,
+          "unitType": "length"
+        },
+        "y2": {
+          "defaultValue": 0,
+          "required": true,
+          "unitType": "length"
+        },
+        "beginStyle": {
+          "defaultValue": "none"
+        },
+        "endStyle": {
+          "defaultValue": "none"
+        },
+        "fence": {
+          "defaultValue": 0
+        },
+        "lineColor": {
+          "defaultValue": "black"
+        },
+        "lineDashes": {
+          "defaultValue": "none"
+        },
+        "lineWeight": {
+          "defaultValue": 1
+        },
+        "layer": {
+          "defaultValue": 1
+        },
+        "layerPosition": {
+          "defaultValue": 1
+        },
+        "visible": {
+          "defaultValue": 1
         }
       },
       "radialBond": {
@@ -1081,6 +1218,17 @@
         "y0": {
           "defaultValue": 0,
           "unitType": "length"
+        }
+      },
+      "electricField": {
+        "intensity": {
+          "defaultValue": 0.004
+        },
+        "orientation": {
+          "defaultValue": "E"
+        },
+        "shapeIdx": {
+          "defaultValue": null
         }
       },
       "textBox": {
@@ -1392,6 +1540,11 @@
         "controlButtons": {
           "defaultValue": "play_reset",
           "propertyChangeInvalidates": false
+        },
+        "controlButtonStyle": {
+          "defaultValue": "video",
+          "propertyChangeInvalidates": false,
+          "serialize": false
         }
       }
     },

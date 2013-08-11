@@ -40,7 +40,9 @@
     "VDWLinesCutoff": "medium",
     "showVelocityVectors": false,
     "showForceVectors": false,
-    "electricFieldDensity": 0,
+    "showElectricField": false,
+    "electricFieldDensity": 18,
+    "electricFieldColor": "auto",
     "showAtomTrace": false,
     "images": [],
     "imageMapping": {},
@@ -64,7 +66,8 @@
       "color": "#169C30",
       "width": 0.01,
       "length": 2
-    }
+    },
+    "forceVectorsDirectionOnly": false
   },
   "pairwiseLJProperties": [
     {
@@ -2276,91 +2279,23 @@
       false
     ],
     "color": [
-      [
-        255,
-        192,
-        0
-      ],
-      [
-        255,
-        192,
-        0
-      ],
-      [
-        255,
-        192,
-        0
-      ],
-      [
-        255,
-        192,
-        0
-      ],
-      [
-        255,
-        192,
-        0
-      ],
-      [
-        255,
-        192,
-        0
-      ],
-      [
-        255,
-        192,
-        0
-      ],
-      [
-        255,
-        192,
-        0
-      ],
-      [
-        255,
-        192,
-        0
-      ],
-      [
-        255,
-        192,
-        0
-      ],
-      [
-        255,
-        192,
-        0
-      ],
-      [
-        255,
-        192,
-        0
-      ],
-      [
-        255,
-        192,
-        0
-      ],
-      [
-        255,
-        192,
-        0
-      ],
-      [
-        255,
-        192,
-        0
-      ],
-      [
-        255,
-        192,
-        0
-      ],
-      [
-        255,
-        192,
-        0
-      ]
+      "rgb(255,192,0)",
+      "rgb(128,128,128)",
+      "rgb(255,192,0)",
+      "rgb(128,128,128)",
+      "rgb(128,128,128)",
+      "rgb(128,128,128)",
+      "rgb(128,128,128)",
+      "rgb(128,128,128)",
+      "rgb(128,128,128)",
+      "rgb(128,128,128)",
+      "rgb(128,128,128)",
+      "rgb(128,128,128)",
+      "rgb(128,128,128)",
+      "rgb(128,128,128)",
+      "rgb(128,128,128)",
+      "rgb(128,128,128)",
+      "rgb(128,128,128)"
     ],
     "visible": [
       true,
@@ -2382,7 +2317,14 @@
       true
     ]
   },
-  "rectangles": {
+  "shapes": {
+    "type": [
+      "rectangle",
+      "rectangle",
+      "rectangle",
+      "rectangle",
+      "rectangle"
+    ],
     "x": [
       0.025,
       1.99,
@@ -2412,18 +2354,18 @@
       1.11
     ],
     "fence": [
-      false,
-      false,
-      false,
-      false,
-      false
+      0,
+      0,
+      0,
+      0,
+      0
     ],
     "color": [
-      "rgb(128,128,128)",
-      "rgb(128,128,128)",
-      "rgb(128,128,128)",
-      "rgb(128,128,128)",
-      "rgb(128,128,128)"
+      "linear 0deg rgb(128,128,128) 0% NaN 50% rgb(128,128,128) 100%",
+      "linear 90deg rgb(128,128,128) 0% NaN 50% rgb(128,128,128) 100%",
+      "transparent",
+      "transparent",
+      "transparent"
     ],
     "lineColor": [
       "black",
@@ -2453,12 +2395,19 @@
       2,
       2
     ],
+    "layerPosition": [
+      1,
+      1,
+      2,
+      3,
+      4
+    ],
     "visible": [
-      true,
-      true,
-      true,
-      true,
-      true
+      1,
+      1,
+      1,
+      1,
+      1
     ]
   }
 }

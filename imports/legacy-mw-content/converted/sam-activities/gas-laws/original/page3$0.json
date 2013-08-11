@@ -41,7 +41,9 @@
     "VDWLinesCutoff": "medium",
     "showVelocityVectors": false,
     "showForceVectors": false,
-    "electricFieldDensity": 0,
+    "showElectricField": false,
+    "electricFieldDensity": 18,
+    "electricFieldColor": "auto",
     "showAtomTrace": false,
     "images": [],
     "imageMapping": {},
@@ -126,7 +128,8 @@
       "color": "#169C30",
       "width": 0.01,
       "length": 2
-    }
+    },
+    "forceVectorsDirectionOnly": false
   },
   "pairwiseLJProperties": [],
   "elements": {
@@ -461,17 +464,16 @@
       false
     ],
     "color": [
-      [
-        255,
-        255,
-        255
-      ]
+      "linear 0deg rgb(128,128,128) 0% rgb(255,255,255) 50% rgb(128,128,128) 100%"
     ],
     "visible": [
       true
     ]
   },
-  "rectangles": {
+  "shapes": {
+    "type": [
+      "rectangle"
+    ],
     "x": [
       0
     ],
@@ -485,7 +487,7 @@
       1.5
     ],
     "fence": [
-      false
+      0
     ],
     "color": [
       "rgb(0,255,192)"
@@ -502,8 +504,234 @@
     "layer": [
       2
     ],
+    "layerPosition": [
+      1
+    ],
     "visible": [
-      true
+      1
+    ]
+  },
+  "lines": {
+    "x1": [
+      0,
+      0.5,
+      1,
+      1.5,
+      2,
+      2.5,
+      3,
+      3.5,
+      3.25,
+      2.75,
+      2.25,
+      1.75,
+      1.25,
+      0.75,
+      0.25
+    ],
+    "y1": [
+      2.4,
+      2.4,
+      2.4,
+      2.4,
+      2.4,
+      2.4,
+      2.4,
+      2.4,
+      2.4,
+      2.4,
+      2.4,
+      2.4,
+      2.4,
+      2.4,
+      2.4
+    ],
+    "x2": [
+      3.6,
+      0.5,
+      1,
+      1.5,
+      2,
+      2.5,
+      3,
+      3.5,
+      3.25,
+      2.75,
+      2.25,
+      1.75,
+      1.25,
+      0.75,
+      0.25
+    ],
+    "y2": [
+      2.4,
+      2.3,
+      2.3,
+      2.3,
+      2.3,
+      2.3,
+      2.3,
+      2.3,
+      2.35,
+      2.35,
+      2.35,
+      2.35,
+      2.35,
+      2.35,
+      2.35
+    ],
+    "beginStyle": [
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none"
+    ],
+    "endStyle": [
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none"
+    ],
+    "fence": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "lineColor": [
+      "rgb(128,128,128)",
+      "rgb(128,128,128)",
+      "rgb(128,128,128)",
+      "rgb(128,128,128)",
+      "rgb(128,128,128)",
+      "rgb(128,128,128)",
+      "rgb(128,128,128)",
+      "rgb(128,128,128)",
+      "rgb(128,128,128)",
+      "rgb(128,128,128)",
+      "rgb(128,128,128)",
+      "rgb(128,128,128)",
+      "rgb(128,128,128)",
+      "rgb(128,128,128)",
+      "rgb(128,128,128)"
+    ],
+    "lineWeight": [
+      4,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2
+    ],
+    "lineDashes": [
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none"
+    ],
+    "layer": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "layerPosition": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23
+    ],
+    "visible": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
     ]
   }
 }

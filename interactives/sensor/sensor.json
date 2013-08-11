@@ -13,6 +13,7 @@
       },
       "viewOptions": {
         "controlButtons": "play_reset",
+        "controlButtonStyle": "text",
         "showClock": true
       }
     }
@@ -39,6 +40,10 @@
     "below-model": [
       "propertiesGraph"
     ]
+  },
+  "exports": {
+    "perRun": ["sensorType"],
+    "perTick": ["sensorReading"]
   },
   "template": [
     {

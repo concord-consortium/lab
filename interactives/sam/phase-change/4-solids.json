@@ -2,6 +2,7 @@
   "title": "Molecular View of a Solid",
   "publicationStatus": "public",
   "subtitle": "What does a solid look like at the molecular level?",
+  "aspectRatio": 1.2,
   "about": [
     "Molecules are in constant motion—even those in a solid! \"Mark two atoms,\" then",
     "run the model to see how the molecules in a solid move relative to each other. How",

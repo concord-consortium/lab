@@ -1,5 +1,5 @@
 {
-  "title": "Energy Detective 7C: Discover a vertical temperature gradient",
+  "title": "Energy Detective 7C: Vertical temperature gradients",
   "publicationStatus": "draft",
   "subtitle": "How does a ceiling effect the range of temperatures in a house?",
   "about": [
@@ -34,6 +34,7 @@
       "xTickCount": 5,
       "xFormatter": "2s",
       "yFormatter": "2s",
+      "xProperty": "time",
       "properties": [
         "sensor-2", "sensor-1", "sensor-0"
       ]

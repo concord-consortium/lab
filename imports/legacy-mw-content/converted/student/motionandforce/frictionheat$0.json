@@ -40,7 +40,9 @@
     "VDWLinesCutoff": "medium",
     "showVelocityVectors": false,
     "showForceVectors": false,
-    "electricFieldDensity": 0,
+    "showElectricField": false,
+    "electricFieldDensity": 18,
+    "electricFieldColor": "auto",
     "showAtomTrace": false,
     "images": [
       {
@@ -87,7 +89,8 @@
       "color": "#169C30",
       "width": 0.03,
       "length": 2
-    }
+    },
+    "forceVectorsDirectionOnly": false
   },
   "pairwiseLJProperties": [],
   "elements": {
@@ -2618,6 +2621,17 @@
       101,
       101,
       101
+    ]
+  },
+  "electricFields": {
+    "intensity": [
+      0.004
+    ],
+    "orientation": [
+      "E"
+    ],
+    "shapeIdx": [
+      null
     ]
   }
 }

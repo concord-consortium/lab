@@ -40,7 +40,9 @@
     "VDWLinesCutoff": "medium",
     "showVelocityVectors": false,
     "showForceVectors": false,
+    "showElectricField": true,
     "electricFieldDensity": 1,
+    "electricFieldColor": "auto",
     "showAtomTrace": false,
     "images": [],
     "imageMapping": {},
@@ -73,7 +75,8 @@
       "color": "#169C30",
       "width": 0.01,
       "length": 2
-    }
+    },
+    "forceVectorsDirectionOnly": false
   },
   "pairwiseLJProperties": [],
   "elements": {
@@ -244,41 +247,13 @@
       false
     ],
     "color": [
-      [
-        128,
-        128,
-        128
-      ],
-      [
-        128,
-        128,
-        128
-      ],
-      [
-        128,
-        128,
-        128
-      ],
-      [
-        128,
-        128,
-        128
-      ],
-      [
-        128,
-        128,
-        128
-      ],
-      [
-        128,
-        128,
-        128
-      ],
-      [
-        128,
-        128,
-        128
-      ]
+      "rgb(128,128,128)",
+      "rgb(128,128,128)",
+      "rgb(128,128,128)",
+      "rgb(128,128,128)",
+      "rgb(128,128,128)",
+      "rgb(128,128,128)",
+      "rgb(128,128,128)"
     ],
     "visible": [
       true,
@@ -290,38 +265,59 @@
       true
     ]
   },
-  "rectangles": {
+  "shapes": {
+    "type": [
+      "rectangle",
+      "rectangle",
+      "rectangle",
+      "ellipse",
+      "ellipse"
+    ],
     "x": [
       0.4,
       0.22,
-      7.32
+      7.32,
+      7.11,
+      7.23
     ],
     "y": [
       1.945,
       1.835,
-      1.8299999999999998
+      1.8299999999999998,
+      1.79,
+      1.91
     ],
     "height": [
       0.11,
       0.33,
-      0.34
+      0.34,
+      0.4,
+      0.16
     ],
     "width": [
       0.22,
       0.18,
-      0.15
+      0.15,
+      0.4,
+      0.16
     ],
     "fence": [
-      false,
-      false,
-      false
+      0,
+      0,
+      0,
+      0,
+      0
     ],
     "color": [
       "rgb(0,128,0)",
-      "rgb(0,128,0)",
-      "rgb(0,128,0)"
+      "transparent",
+      "transparent",
+      "rgb(255,255,255)",
+      "rgb(255,0,0)"
     ],
     "lineColor": [
+      "black",
+      "black",
       "black",
       "black",
       "black"
@@ -329,9 +325,13 @@
     "lineWeight": [
       1,
       1,
-      0
+      0,
+      8,
+      1
     ],
     "lineDashes": [
+      "none",
+      "none",
       "none",
       "none",
       "none"
@@ -339,12 +339,23 @@
     "layer": [
       1,
       1,
+      1,
+      1,
       1
     ],
+    "layerPosition": [
+      1,
+      1,
+      2,
+      3,
+      4
+    ],
     "visible": [
-      true,
-      true,
-      false
+      1,
+      1,
+      0,
+      1,
+      1
     ]
   }
 }

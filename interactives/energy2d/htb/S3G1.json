@@ -1,5 +1,5 @@
 {
-  "title": "Conduction 3G: Combine thermal conductivity and heat capacity",
+  "title": "Conduction 3G: Combine conductivity and heat capacity",
   "publicationStatus": "public",
   "subtitle": "Which material provides the best insulation?",
   "about": [
@@ -12,6 +12,7 @@
     "    thermal energy distribution. In the thermal energy view, you will see where the energy goes."
   ],
   "importedFrom": "imports/energy2d/content-htb/S3G.html",
+  "aspectRatio": 1.4,
   "models": [
     {
       "type": "energy2d",
@@ -59,6 +60,7 @@
       "xTickCount": 5,
       "xFormatter": "2s",
       "yFormatter": "2s",
+      "xProperty": "time",
       "properties": [
         "sensor-1", "sensor-0", "sensor-2"
       ]

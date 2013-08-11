@@ -6,11 +6,14 @@
 AUTHORING = false;
 
 (function() {
+      // Default interactive aspect ratio.
+  var DEF_ASPECT_RATIO = 1.3,
 
-  var origin,
+      origin,
       embeddablePath,
       embeddableUrl,
       interactiveDescriptions,
+      descriptionByPath,
       interactives,
       groups,
       iframePhone,
@@ -50,7 +53,10 @@ AUTHORING = false;
 
       $jsonInteractiveLink = $("#json-interactive-link"),
 
-      interactivesPromise;
+      interactivesPromise,
+
+      widthBeforeEditMode,
+      editMode = false;
 
   function sendGAPageview(){
     // send the pageview to GA
@@ -80,6 +86,13 @@ AUTHORING = false;
       results = JSON.parse(results);
     }
     interactiveDescriptions = results;
+
+    descriptionByPath = {};
+    interactiveDescriptions.interactives.forEach(function (i) {
+      descriptionByPath[i.path] = i;
+    });
+    // Aspect ratios are now available, so it can affect container dimensions.
+    selectInteractiveSizeHandler();
   });
 
   // TODO: some of the Deferred, ajax call have no error handlers?
@@ -169,10 +182,30 @@ AUTHORING = false;
     selectInteractiveSizeHandler();
     $selectInteractiveSize.removeAttr('disabled');
     $iframeWrapper.append($iframe);
-    $iframeWrapper.resizable({ helper: "ui-resizable-helper" });
+    $iframeWrapper.resizable({
+      helper: "ui-resizable-helper",
+      stop: function (event, ui) {
+        if (editMode) {
+          var aspectRatio = ui.size.width / ui.size.height,
+              fontScale = widthBeforeEditMode / ui.size.width;
+          interactive.fontScale = fontScale;
+          interactive.aspectRatio = aspectRatio;
+          descriptionByPath[interactiveUrl].aspectRatio = aspectRatio;
+          iframePhone.post({ type:'loadInteractive', data: interactive });
+          // Update editor.
+          editor.setValue(JSON.stringify(interactive, null, indent));
+          console.log("new aspect ratio: " + aspectRatio);
+        }
+      }
+    });
     $content.css("border", "none");
     // initiate communication with Interactive in iframe and setup callback
-    iframePhone = setupIframeListenerFor($iframe[0], function() {
+    iframePhone = new Lab.IFramePhone($iframe[0], function() {
+      // On a Interactive Browser page with an iframe send the
+      // focus to the Interactive.
+      if (isFullIFramePage()) {
+        iframePhone.post({ type:'setFocus' });
+      }
       iframePhone.post({ type:'getInteractiveState' });
       iframePhone.addListener('interactiveState', function(message) {
         interactive = message;
@@ -210,6 +243,8 @@ AUTHORING = false;
     var javaMWhref,
         $embeddableLink = $("#embeddable-link"),
         $dataGamesLink = $("#datagames-link"),
+        $dataGamesStagingLink = $("#datagames-staging-link"),
+        dgGameSpecification,
         origin;
 
     origin = document.location.href.match(/(.*?\/\/.*?)\//)[1];
@@ -230,19 +265,20 @@ AUTHORING = false;
     $jsonModelLink.attr("title", "View model JSON in another window");
 
     // construct link to DataGames embeddable version of Interactive
-    $dataGamesLink.attr("href", function() {
-      var dgPayload = [{
-            "name": $selectInteractive.find("option:selected").text(),
-            "dimensions": {
-              "width": 600,
-              "height":400
-            },
-            "url": Lab.config.dataGamesProxyPrefix + "embeddable.html#" +  interactiveUrl
-          }],
-          dgUrl = "http://is.kcptech.com/dg?moreGames=" + JSON.stringify(dgPayload);
-      return encodeURI(dgUrl);
-    });
+    dgGameSpecification = JSON.stringify([{
+      "name": $selectInteractive.find("option:selected").text(),
+      "dimensions": {
+        "width": 600,
+        "height":400
+      },
+      "url": Lab.config.dataGamesProxyPrefix + "embeddable.html#" +  interactiveUrl
+    }]);
+
+    $dataGamesLink.attr("href", encodeURI("http://is.kcptech.com/dg?moreGames=" + dgGameSpecification));
     $dataGamesLink.attr("title", "Run this Interactive inside DataGames");
+
+    $dataGamesStagingLink.attr("href", encodeURI("http://is-test.kcptech.com/dg?moreGames=" + dgGameSpecification));
+    $dataGamesStagingLink.attr("title", "Run this Interactive inside DataGames' staging server");
 
     setupOriginalImportLinks();
     setupExtras();
@@ -311,30 +347,27 @@ AUTHORING = false;
 
   function selectInteractiveSizeHandler() {
     var selection = $selectInteractiveSize.val(),
-        dim,
-        aspectRatio = 1.3,
-        dimensions = {
-          "tiny":   { height: "245px" },
-          "small":  { height: "280px" },
-          "medium": { height: "450px" },
-          "large":  { height: "700px" }
-        };
+        intAspectRatio = descriptionByPath && interactiveUrl &&
+                         descriptionByPath[interactiveUrl].aspectRatio || DEF_ASPECT_RATIO,
+        widths = {
+          "tiny":   "318px",
+          "small":  "364px",
+          "medium": "565px",
+          "large":  "960px"
+        },
+        width  = widths[selection],
+        height = parseInt(width, 10) / intAspectRatio + "px";
 
-    dimensions.tiny.width   = parseInt(dimensions.tiny.height, 10)   * aspectRatio + "px";
-    dimensions.small.width  = parseInt(dimensions.small.height, 10)  * aspectRatio + "px";
-    dimensions.medium.width = parseInt(dimensions.medium.height, 10) * aspectRatio + "px";
-    dimensions.large.width  = parseInt(dimensions.large.height, 10)  * aspectRatio + "px";
-    dim = dimensions[selection];
     saveOptionsToCookie();
     if (isFullPage()) {
-      $content.width(dim.width).height(dim.height);
+      $content.width(width).height(height);
       // Window size is not change, so we have to call "resize()"
       // method manually.
       if (controller) {
         controller.resize();
       }
     } else {
-      $("#iframe-wrapper").width(dim.width).height(dim.height);
+      $("#iframe-wrapper").width(width).height(height);
       // No need to call controller.resize(), as interactive controller
       // automatically binds to the window resize event.
     }
@@ -547,108 +580,6 @@ AUTHORING = false;
     }
   }
 
-  //
-  // iFrame Phone
-  //
-  function setupIframeListenerFor(iframe, callback) {
-    var iframeOrigin = iframe.src.match(/(.*?\/\/.*?)\//)[1],
-        selfOrigin   = window.location.href.match(/(.*?\/\/.*?)\//)[1],
-        iframePhone  = {},
-        postMessageQueue = [],
-        post = function(message) {
-          if (iframePhone.connected) {
-            // if we are laready connected ... send the message
-            message.origin = selfOrigin;
-            // See http://dev.opera.com/articles/view/window-postmessage-messagechannel/#crossdoc
-            //     https://github.com/Modernizr/Modernizr/issues/388
-            //     http://jsfiddle.net/ryanseddon/uZTgD/2/
-            if (Lab.structuredClone.supported()) {
-              iframe.contentWindow.postMessage(message, iframeOrigin);
-            } else {
-              iframe.contentWindow.postMessage(JSON.stringify(message), iframeOrigin);
-            }
-          } else {
-            // else queue up the messages to send after connection complete.
-            postMessageQueue.push(message);
-          }
-        };
-
-    iframePhone.connected = false;
-    iframePhone.handlers = {};
-
-    iframePhone.addListener = function(messageName,func) {
-      iframePhone.handlers[messageName] = func;
-    };
-
-    iframePhone.removeListener = function(messageName) {
-      iframePhone.handlers[messageName] = null;
-    };
-
-    iframePhone.addDispatchListener = function(eventName,func,properties) {
-      iframePhone.addListener(eventName,func);
-      iframePhone.post({
-        'type': 'listenForDispatchEvent',
-        'eventName': eventName,
-        'properties': properties
-      });
-    };
-
-    iframePhone.removeDispatchListener = function(messageName) {
-      iframePhone.post({
-        'type': 'removeListenerForDispatchEvent',
-        'eventName': messageName
-      });
-      iframePhone.removeListener(messageName);
-    };
-
-    // when we receive 'hello':
-    iframePhone.addListener('hello', function() {
-      // push the first couple of mnessages into the beginning
-      // of the postMessageQueue stack.
-      // On a Interactive Browser page with an iframe send the
-      // focus to the Interactive.
-      if (isFullIFramePage()) {
-        postMessageQueue.unshift({
-            type: 'setFocus'
-        });
-      }
-      // this will be the first message sent in response to the 'hello'
-      // from the embedded application.
-      postMessageQueue.unshift({
-        type: 'hello'
-      });
-      iframePhone.connected = true;
-      // Now send any messages that have been queued up ...
-      while (message = postMessageQueue.shift()) {
-        iframePhone.post(message);
-      }
-      if (callback && typeof callback === "function") {
-        callback();
-      }
-    });
-
-    var receiveMessage = function (message) {
-      var messageData;
-
-      if (message.source === iframe.contentWindow && message.origin === iframeOrigin) {
-        messageData = message.data;
-        if (typeof messageData === 'string') {
-          messageData = JSON.parse(messageData);
-        }
-        if (iframePhone.handlers[messageData.type]){
-          iframePhone.handlers[messageData.type](messageData.values);
-        }
-        else {
-          console.log("cant handle type: " + messageData.type);
-        }
-      }
-    };
-
-    window.addEventListener('message', receiveMessage, false);
-    iframePhone.post = post;
-    return iframePhone;
-  }
-
   function setupSelectGroups(){
 
     $selectInteractiveGroups.empty();
@@ -726,6 +657,7 @@ AUTHORING = false;
     var $updateInteractiveButton = $("#update-interactive-button"),
         $updateJsonFromInteractiveButton = $("#update-json-from-interactive-button"),
         $autoFormatInteractiveJsonButton = $("#autoformat-interactive-json-button"),
+        $editModeCheckbox = $("#edit-mode"),
         $interactiveTextArea = $("#interactive-text-area"),
         $editor = $("#editor"),
         $editorContent = $("#editor-content"),
@@ -750,8 +682,14 @@ AUTHORING = false;
     if (!buttonHandlersAdded) {
       buttonHandlersAdded = true;
       $updateInteractiveButton.on('click', function() {
+        var aspectRatioChanged = false;
         try {
           interactive = JSON.parse(editor.getValue());
+          if (typeof interactive.aspectRatio !== "undefined") {
+            // Update aspect ratio.
+            descriptionByPath[interactiveUrl].aspectRatio = interactive.aspectRatio;
+            aspectRatioChanged = true;
+          }
         } catch (e) {
           alert("Interactive JSON syntax error: " + e.message);
           throw new Error("Interactive JSON syntax error: " + e.message);
@@ -763,6 +701,7 @@ AUTHORING = false;
           $interactiveTitle.text(interactive.title);
           $('#interactive-subtitle').text(interactive.subtitle);
         }
+        if (aspectRatioChanged) selectInteractiveSizeHandler();
       });
 
       $autoFormatInteractiveJsonButton.on('click', function() {
@@ -780,6 +719,11 @@ AUTHORING = false;
             editor.setValue(JSON.stringify(message, null, indent));
           });
         }
+      });
+
+      $editModeCheckbox.on('change', function () {
+        widthBeforeEditMode = $("#iframe-wrapper").width();
+        editMode = $editModeCheckbox.prop("checked");
       });
 
       $showEditor.change(function() {
@@ -922,7 +866,8 @@ AUTHORING = false;
 
       if(isFullPage()) {
         modelController = controller.getModelController();
-        Lab.benchmark.run(modelController.benchmarks,
+        // Run interactive benchmarks + model benchmarks.
+        Lab.benchmark.run(controller.benchmarks.concat(modelController.benchmarks),
           benchmarksTable,
           function(results) { console.log(results); },
           function() { $runBenchmarksButton.attr('disabled', true); },

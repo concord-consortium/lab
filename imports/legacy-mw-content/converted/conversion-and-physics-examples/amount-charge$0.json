@@ -1,8 +1,8 @@
 {
   "type": "md2d",
   "imagePath": "",
-  "width": 4,
-  "height": 2,
+  "width": 3,
+  "height": 2.2,
   "unitsScheme": "md2d",
   "lennardJonesForces": true,
   "coulombForces": true,
@@ -22,8 +22,8 @@
   "DNA": "",
   "DNAMutations": true,
   "viewOptions": {
-    "viewPortWidth": 4,
-    "viewPortHeight": 2,
+    "viewPortWidth": 3,
+    "viewPortHeight": 2.2,
     "viewPortZoom": 1,
     "viewPortX": 0,
     "viewPortY": 0,
@@ -40,7 +40,9 @@
     "VDWLinesCutoff": "medium",
     "showVelocityVectors": false,
     "showForceVectors": true,
-    "electricFieldDensity": 0,
+    "showElectricField": false,
+    "electricFieldDensity": 18,
+    "electricFieldColor": "auto",
     "showAtomTrace": false,
     "images": [],
     "imageMapping": {},
@@ -64,7 +66,8 @@
       "color": "rgb(255,255,0)",
       "width": 0.03,
       "length": 2
-    }
+    },
+    "forceVectorsDirectionOnly": false
   },
   "pairwiseLJProperties": [],
   "elements": {
@@ -99,12 +102,12 @@
   },
   "atoms": {
     "x": [
-      2.57,
-      1.36
+      2.2,
+      0.8
     ],
     "y": [
-      1.04,
-      1.06
+      1.1,
+      1.1
     ],
     "vx": [
       0,

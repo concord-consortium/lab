@@ -1,5 +1,5 @@
 {
-  "title": "Radiation 5A: Radiation energy depends on temperature",
+  "title": "Radiation 5A: Radiation energy and temperature",
   "publicationStatus": "draft",
   "subtitle": "Does a hotter object radiate more energy?",
   "about": [
@@ -70,6 +70,7 @@
       "xTickCount": 5,
       "xFormatter": "2s",
       "yFormatter": "2s",
+      "xProperty": "time",
       "properties": [
         "sensor-1", "sensor-0"
       ]

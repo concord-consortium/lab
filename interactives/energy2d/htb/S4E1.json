@@ -11,6 +11,7 @@
     "2.  Change the wind condition and open or close the windows to examine how heat flow will change."
   ],
   "importedFrom": "imports/energy2d/content-htb/S4E.html",
+  "aspectRatio": 1.0,
   "models": [
     {
       "type": "energy2d",

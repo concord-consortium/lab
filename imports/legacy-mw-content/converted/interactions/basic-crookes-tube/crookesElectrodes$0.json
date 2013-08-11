@@ -1,0 +1,423 @@
+{
+  "type": "md2d",
+  "imagePath": "",
+  "width": 6.5,
+  "height": 3,
+  "unitsScheme": "md2d",
+  "lennardJonesForces": true,
+  "coulombForces": true,
+  "temperatureControl": false,
+  "gravitationalField": false,
+  "timeStep": 1,
+  "dielectricConstant": 1,
+  "realisticDielectricEffect": true,
+  "solventForceFactor": 1.25,
+  "solventForceType": 0,
+  "additionalSolventForceMult": 4,
+  "additionalSolventForceThreshold": 10,
+  "polarAAEpsilon": -2,
+  "viscosity": 1,
+  "timeStepsPerTick": 50,
+  "DNAState": "dna",
+  "DNA": "",
+  "DNAMutations": true,
+  "viewOptions": {
+    "viewPortWidth": 6.5,
+    "viewPortHeight": 3,
+    "viewPortZoom": 1,
+    "viewPortX": 0,
+    "viewPortY": 0,
+    "viewPortDrag": false,
+    "backgroundColor": "#eeeeee",
+    "showClock": false,
+    "markColor": "#f8b500",
+    "keShading": false,
+    "chargeShading": false,
+    "useThreeLetterCode": true,
+    "aminoAcidColorScheme": "hydrophobicity",
+    "showChargeSymbols": false,
+    "showVDWLines": false,
+    "VDWLinesCutoff": "medium",
+    "showVelocityVectors": false,
+    "showForceVectors": false,
+    "showElectricField": false,
+    "electricFieldDensity": 18,
+    "electricFieldColor": "auto",
+    "showAtomTrace": false,
+    "images": [
+      {
+        "imageUri": "siverOn1.png",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 1,
+        "imageX": 0.1800000014901161,
+        "imageY": 2.9
+      },
+      {
+        "imageUri": "goldLeft.png",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageLayerPosition": 1,
+        "imageX": 0.1,
+        "imageY": 2.9
+      },
+      {
+        "imageUri": "goldOff.png",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 1,
+        "imageLayerPosition": 2,
+        "imageX": 0.25000000149011614,
+        "imageY": 2.9
+      },
+      {
+        "imageUri": "goldOn1.png",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 1,
+        "imageLayerPosition": 3,
+        "imageX": 0.18,
+        "imageY": 2.9
+      },
+      {
+        "imageUri": "goldOn2.png",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageLayerPosition": 4,
+        "imageX": 2.0300000014901163,
+        "imageY": 2.1599999985098837
+      },
+      {
+        "imageUri": "ironLeft.png",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageLayerPosition": 5,
+        "imageX": 0.1,
+        "imageY": 2.9
+      },
+      {
+        "imageUri": "ironOff.png",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 1,
+        "imageLayerPosition": 6,
+        "imageX": 0.25000000149011614,
+        "imageY": 2.9
+      },
+      {
+        "imageUri": "ironOn1.png",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 1,
+        "imageLayerPosition": 7,
+        "imageX": 0.1800000014901161,
+        "imageY": 2.9
+      },
+      {
+        "imageUri": "ironOn2.png",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageLayerPosition": 8,
+        "imageX": 2.0300000014901163,
+        "imageY": 2.169999998509884
+      },
+      {
+        "imageUri": "silverLeft.png",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageLayerPosition": 9,
+        "imageX": 0.1,
+        "imageY": 2.9
+      },
+      {
+        "imageUri": "silverOff.png",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 1,
+        "imageLayerPosition": 10,
+        "imageX": 0.25000000149011614,
+        "imageY": 2.9
+      },
+      {
+        "imageUri": "silverOn2.png",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageLayerPosition": 11,
+        "imageX": 2.0300000014901163,
+        "imageY": 2.1599999985098837
+      },
+      {
+        "imageUri": "beamDown1.png",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 1,
+        "imageLayerPosition": 14,
+        "imageX": 1.97,
+        "imageY": 2.2
+      },
+      {
+        "imageUri": "beamDown2.png",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 1,
+        "imageLayerPosition": 15,
+        "imageX": 1.96,
+        "imageY": 2.2
+      },
+      {
+        "imageUri": "beamDown3.png",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 1,
+        "imageLayerPosition": 16,
+        "imageX": 1.98,
+        "imageY": 2.2
+      },
+      {
+        "imageUri": "beamDonw4.png",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 1,
+        "imageLayerPosition": 17,
+        "imageX": 1.99,
+        "imageY": 2.21
+      },
+      {
+        "imageUri": "beamDown5.png",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 1,
+        "imageLayerPosition": 18,
+        "imageX": 1.98,
+        "imageY": 2.2
+      },
+      {
+        "imageUri": "beamUp1.png",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 1,
+        "imageLayerPosition": 19,
+        "imageX": 1.96,
+        "imageY": 2.48
+      },
+      {
+        "imageUri": "beamUp2.png",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 1,
+        "imageLayerPosition": 20,
+        "imageX": 1.98,
+        "imageY": 2.73
+      },
+      {
+        "imageUri": "beamUp3.png",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 1,
+        "imageLayerPosition": 21,
+        "imageX": 1.96,
+        "imageY": 3.04
+      },
+      {
+        "imageUri": "beamUp4.png",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 1,
+        "imageLayerPosition": 22,
+        "imageX": 1.98,
+        "imageY": 3.05
+      },
+      {
+        "imageUri": "beamUp5.png",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 1,
+        "imageLayerPosition": 23,
+        "imageX": 1.97,
+        "imageY": 3.07
+      },
+      {
+        "imageUri": "beamStraight.png",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 1,
+        "imageLayerPosition": 24,
+        "imageX": 1.96,
+        "imageY": 2.17
+      }
+    ],
+    "imageMapping": {},
+    "textBoxes": [
+      {
+        "text": "",
+        "x": 3.24,
+        "y": 1.49,
+        "layer": 1,
+        "frame": "rectangle",
+        "backgroundColor": "rgb(255,255,255)",
+        "anchor": "upper-left"
+      },
+      {
+        "text": "",
+        "x": 3.24,
+        "y": 2.89,
+        "layer": 1,
+        "frame": "rectangle",
+        "backgroundColor": "rgb(255,255,255)",
+        "anchor": "upper-left"
+      }
+    ],
+    "xlabel": false,
+    "ylabel": false,
+    "xunits": false,
+    "yunits": false,
+    "controlButtons": "play",
+    "gridLines": false,
+    "atomNumbers": false,
+    "enableAtomTooltips": false,
+    "enableKeyboardHandlers": true,
+    "atomTraceColor": "#6913c5",
+    "velocityVectors": {
+      "color": "#000",
+      "width": 0.01,
+      "length": 2
+    },
+    "forceVectors": {
+      "color": "#169C30",
+      "width": 0.01,
+      "length": 2
+    },
+    "forceVectorsDirectionOnly": false
+  },
+  "pairwiseLJProperties": [],
+  "elements": {
+    "mass": [
+      20,
+      40,
+      60,
+      80,
+      600
+    ],
+    "sigma": [
+      0.07,
+      0.14,
+      0.21,
+      0.28,
+      0.3
+    ],
+    "epsilon": [
+      -0.0010000000474974513,
+      -0.1,
+      -0.1,
+      -0.1,
+      -5
+    ],
+    "color": [
+      -855310,
+      -9066941,
+      -9092186,
+      -2539040,
+      -855310
+    ]
+  },
+  "atoms": {
+    "x": [
+      2.89
+    ],
+    "y": [
+      0.48
+    ],
+    "vx": [
+      0
+    ],
+    "vy": [
+      0
+    ],
+    "charge": [
+      0
+    ],
+    "friction": [
+      0
+    ],
+    "element": [
+      1
+    ],
+    "pinned": [
+      1
+    ],
+    "visible": [
+      0
+    ]
+  },
+  "shapes": {
+    "type": [
+      "rectangle",
+      "rectangle"
+    ],
+    "x": [
+      0.02,
+      3.24
+    ],
+    "y": [
+      1.245,
+      1.2800000000000002
+    ],
+    "height": [
+      1.69,
+      1.63
+    ],
+    "width": [
+      6.46,
+      1.3
+    ],
+    "fence": [
+      0,
+      0
+    ],
+    "color": [
+      "linear 90deg rgba(210,210,210,0.1568627450980392) 0% rgba(204,255,255,0.1568627450980392) 50% rgba(210,210,210,0.1568627450980392) 100%",
+      "transparent"
+    ],
+    "lineColor": [
+      "rgb(214,215,215)",
+      "black"
+    ],
+    "lineWeight": [
+      3,
+      1
+    ],
+    "lineDashes": [
+      "none",
+      "none"
+    ],
+    "layer": [
+      1,
+      1
+    ],
+    "layerPosition": [
+      12,
+      13
+    ],
+    "visible": [
+      1,
+      0
+    ]
+  },
+  "electricFields": {
+    "intensity": [
+      0
+    ],
+    "orientation": [
+      "S"
+    ],
+    "shapeIdx": [
+      1
+    ]
+  }
+}

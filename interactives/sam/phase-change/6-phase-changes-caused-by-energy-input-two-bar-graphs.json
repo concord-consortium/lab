@@ -2,6 +2,7 @@
   "title": "Phase Changes with two bar graphs",
   "publicationStatus": "draft",
   "subtitle": "Explore how energy input causes matter to change states.",
+  "aspectRatio": 1.65,
   "about": [
     "Matter exists as solids, liquids and gases, and can change state between these.",
     "",

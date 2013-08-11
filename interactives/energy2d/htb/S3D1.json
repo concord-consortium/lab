@@ -14,6 +14,7 @@
     "5.  Repeat 1-3 for two more different heater temperatures."
   ],
   "importedFrom": "imports/energy2d/content-htb/S3D.html",
+  "aspectRatio": 1.4,
   "models": [
     {
       "type": "energy2d",
@@ -96,6 +97,7 @@
       "xTickCount": 5,
       "xFormatter": "2s",
       "yFormatter": "2s",
+      "xProperty": "time",
       "properties": [
         "sensor-0"
       ]

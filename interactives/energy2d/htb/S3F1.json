@@ -14,6 +14,7 @@
     "3.  Repeat the above steps until you reach the conclusion."
   ],
   "importedFrom": "imports/energy2d/content-htb/S3F.html",
+  "aspectRatio": 1.4,
   "models": [
     {
       "type": "energy2d",
@@ -102,6 +103,7 @@
       "xTickCount": 5,
       "xFormatter": "2s",
       "yFormatter": "2s",
+      "xProperty": "time",
       "properties": [
         "sensor-2", "sensor-1", "sensor-0", "sensor-3"
       ]

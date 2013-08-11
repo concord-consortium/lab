@@ -7,6 +7,7 @@
     "molecules from the drop-down menu and \"pull\" on the star to separate the molecules.",
     "Why do size and shape affect the strength of attraction between two non-polar molecules?"
   ],
+  "aspectRatio": 1.4,
   "models": [
     {
       "type": "md2d",
@@ -42,6 +43,9 @@
       "viewOptions": {
         "controlButtons": "",
         "enableKeyboardHandlers": false,
+        "imageMapping": {
+          "star.png": "star.svg"
+        },
         "textBoxes": [
           {
             "text": "Small straight molecules",
@@ -61,6 +65,9 @@
       "viewOptions": {
         "controlButtons": "",
         "enableKeyboardHandlers": false,
+        "imageMapping": {
+          "star.png": "star.svg"
+        },
         "textBoxes": [
           {
             "text": "Large straight molecules",
@@ -80,6 +87,9 @@
       "viewOptions": {
         "controlButtons": "",
         "enableKeyboardHandlers": false,
+        "imageMapping": {
+          "star.png": "star.svg"
+        },
         "textBoxes": [
           {
             "text": "Large straight and bent molecules",
@@ -99,6 +109,9 @@
       "viewOptions": {
         "controlButtons": "",
         "enableKeyboardHandlers": false,
+        "imageMapping": {
+          "star.png": "star.svg"
+        },
         "textBoxes": [
           {
             "text": "Large straight and round molecules",
@@ -118,6 +131,9 @@
       "viewOptions": {
         "controlButtons": "",
         "enableKeyboardHandlers": false,
+        "imageMapping": {
+          "star.png": "star.svg"
+        },
         "textBoxes": [
           {
             "text": "Large curved and round molecules",

@@ -40,7 +40,9 @@
     "VDWLinesCutoff": "medium",
     "showVelocityVectors": false,
     "showForceVectors": false,
-    "electricFieldDensity": 0,
+    "showElectricField": false,
+    "electricFieldDensity": 18,
+    "electricFieldColor": "auto",
     "showAtomTrace": false,
     "images": [],
     "imageMapping": {},
@@ -92,7 +94,8 @@
       "color": "#169C30",
       "width": 0.01,
       "length": 2
-    }
+    },
+    "forceVectorsDirectionOnly": false
   },
   "pairwiseLJProperties": [],
   "elements": {
@@ -901,21 +904,9 @@
       false
     ],
     "color": [
-      [
-        255,
-        255,
-        128
-      ],
-      [
-        204,
-        204,
-        204
-      ],
-      [
-        204,
-        204,
-        204
-      ]
+      "rgb(255,255,128)",
+      "rgb(204,204,204)",
+      "rgb(128,128,128)"
     ],
     "visible": [
       true,

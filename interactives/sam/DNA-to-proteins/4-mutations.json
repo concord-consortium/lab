@@ -2,6 +2,7 @@
   "title": "Mutations",
   "publicationStatus": "public",
   "subtitle": "Explore how changing the DNA sequence can change the amino acid sequence of a protein.",
+  "aspectRatio": 1.2,
   "about": [
     "Mutations are mistakes in the DNA sequence. Use the **Edit DNA** button to change the entire sequence or click on an individual nucleotide to make an insertion, deletion or substitution mutation. How does changing the DNA sequence change the resulting protein?",
     "",

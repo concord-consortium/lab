@@ -13,6 +13,7 @@
     "Set the wind speed to be **Low** and **High** and repeat steps 1-2, respectively."
   ],
   "importedFrom": "imports/energy2d/content-htb/S4C.html",
+  "aspectRatio": 1.5,
   "models": [
     {
       "type": "energy2d",
@@ -68,6 +69,7 @@
       "xTickCount": 5,
       "xFormatter": "2s",
       "yFormatter": "2s",
+      "xProperty": "time",
       "properties": [
         "sensor-0", "sensor-1"
       ]

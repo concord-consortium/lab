@@ -413,14 +413,14 @@ define('lab.version',['require'],function (require) {
     "repo": {
       "branch": "master",
       "commit": {
-        "sha":           "8a4732fb055118ff161d4b392c6fb7913058b031",
-        "short_sha":      "8a4732fb",
-        "url":            "https://github.com/concord-consortium/lab/commit/8a4732fb",
+        "sha":           "663bd5c14ef5479c8b8899404d75ff052fef1430",
+        "short_sha":      "663bd5c1",
+        "url":            "https://github.com/concord-consortium/lab/commit/663bd5c1",
         "author":        "Stephen Bannasch",
         "email":         "stephen.bannasch@gmail.com",
-        "date":          "2013-07-18 22:51:35 -0400",
-        "short_message": "don&#39;t include Shutterbug in gh-pages branch",
-        "message":       "don&#39;t include Shutterbug in gh-pages branch\n\nFIXME:\nThis should also be done when generating the versioned\ntar.gz archives  but since they are created from running\ncode on a server using Rack, Shutterbug can&#39;t be easily\nremoved ..."
+        "date":          "2013-08-10 16:57:28 -0400",
+        "short_message": "add scytacki@concord.org to travis-ci notifications",
+        "message":       "add scytacki@concord.org to travis-ci notifications"
       },
       "dirty": false
     }
@@ -453,6 +453,8 @@ define('lab.config',['require','common/actual-root'],function (require) {
       publicAPI;
   publicAPI = {
   "sharing": true,
+  "logging": true,
+  "tracing": false,
   "home": "http://lab.concord.org",
   "homeForSharing": "http://lab.concord.org",
   "homeInteractivePath": "/interactive.html",
@@ -461,8 +463,6 @@ define('lab.config',['require','common/actual-root'],function (require) {
   "fontface": "Lato",
   "hostName": "lab.dev.concord.org",
   "dataGamesProxyPrefix": "DataGames/Games/concord/lab/",
-  "logging": true,
-  "tracing": false,
   "authoring": false,
   "actualRoot": "",
   "environment": "development"
@@ -914,8 +914,17 @@ define('common/controllers/interactive-metadata',[],function() {
       // optional: holds path of html or cml page this Interactive was imported from
       importedFrom: {},
 
+      aspectRatio: {
+        defaultValue: 1.3
+      },
+
       fontScale: {
         defaultValue: 1
+      },
+
+      helpOnLoad: {
+        // If true, the help mode will be automatically shown on interactive load.
+        defaultValue: false
       },
 
       models: {
@@ -955,6 +964,11 @@ define('common/controllers/interactive-metadata',[],function() {
       template: {
         // Layout template definition.
         defaultValue: "simple"
+      },
+
+      helpTips: {
+        // List of help tips. See 'helpTip' metadata.
+        defaultValue: []
       }
     },
 
@@ -1085,6 +1099,9 @@ define('common/controllers/interactive-metadata',[],function() {
       },
       height: {
         defaultValue: "auto"
+      },
+      tooltip: {
+        defaultValue: ""
       }
     },
 
@@ -1108,6 +1125,9 @@ define('common/controllers/interactive-metadata',[],function() {
       },
       onClick: {
         // Script executed on user click, optional.
+      },
+      tooltip: {
+        defaultValue: ""
       }
     },
 
@@ -1117,6 +1137,9 @@ define('common/controllers/interactive-metadata',[],function() {
       },
       type: {
         required: true
+      },
+      content: {
+        defaultValue: ""
       },
       width: {
         defaultValue: "auto"
@@ -1131,7 +1154,7 @@ define('common/controllers/interactive-metadata',[],function() {
         defaultValue: []
       },
       tooltip: {
-        // Optional tooltip text
+        defaultValue: ""
       }
     },
 
@@ -1152,6 +1175,12 @@ define('common/controllers/interactive-metadata',[],function() {
         defaultValue: ""
       },
       height: {
+        defaultValue: ""
+      },
+      disabled: {
+        defaultValue: false
+      },
+      tooltip: {
         defaultValue: ""
       }
     },
@@ -1185,6 +1214,12 @@ define('common/controllers/interactive-metadata',[],function() {
         // Note that 'initialValue' makes sense only for checkboxes without property binding.
         // Do not use checkbox as setter.
         conflictsWith: ["property"]
+      },
+      disabled: {
+        defaultValue: false
+      },
+      tooltip: {
+        defaultValue: ""
       }
     },
 
@@ -1235,6 +1270,12 @@ define('common/controllers/interactive-metadata',[],function() {
         // There are better ways to do it, e.g.:
         // "onLoad" scripts (and set({ }) call inside), "modelOptions", etc.
         conflictsWith: ["property"]
+      },
+      disabled: {
+        defaultValue: false
+      },
+      tooltip: {
+        defaultValue: ""
       }
     },
 
@@ -1258,6 +1299,12 @@ define('common/controllers/interactive-metadata',[],function() {
       property: {
         // Pulldown can be also connected to a model property.
         // In such case, options should define "value", not "action".
+      },
+      disabled: {
+        defaultValue: false
+      },
+      tooltip: {
+        defaultValue: ""
       }
     },
 
@@ -1306,6 +1353,12 @@ define('common/controllers/interactive-metadata',[],function() {
       property: {
         // Radio can be also connected to a model property.
         // In such case, options should define "value", not "action".
+      },
+      disabled: {
+        defaultValue: false
+      },
+      tooltip: {
+        defaultValue: ""
       }
     },
 
@@ -1354,7 +1407,10 @@ define('common/controllers/interactive-metadata',[],function() {
         defaultValue: "auto"
       },
       property: {},
-      displayValue: {}
+      displayValue: {},
+      tooltip: {
+        defaultValue: ""
+      }
     },
 
     thermometer: {
@@ -1417,8 +1473,14 @@ define('common/controllers/interactive-metadata',[],function() {
       properties: {
         defaultValue: []
       },
+      xProperty: {
+        defaultValue: "displayTime"
+      },
       title: {
         defaultValue: "Graph"
+      },
+      lineWidth: {
+        defaultValue: 2.0
       },
       width: {
         defaultValue: "100%"
@@ -1467,6 +1529,9 @@ define('common/controllers/interactive-metadata',[],function() {
       },
       bars: {
         defaultValue: false
+      },
+      tooltip: {
+        defaultValue: ""
       }
     },
 
@@ -1566,6 +1631,18 @@ define('common/controllers/interactive-metadata',[],function() {
       fillColor: {
         // Color of the area behind the bar.
         defaultValue: "#fff"
+      },
+      tooltip: {
+        defaultValue: ""
+      }
+    },
+
+    helpTip: {
+      component: {
+        defaultValue: ""
+      },
+      text: {
+        defaultValue: ""
       }
     }
   };
@@ -1587,6 +1664,11 @@ define('common/validator',['require','arrays'],function(require) {
   }
   ValidationError.prototype = new Error();
   ValidationError.prototype.constructor = ValidationError;
+
+  function isObject(prop) {
+    // Note that typeof null is also equal to "object", so we have to check it.
+    return prop !== null && typeof prop === "object";
+  }
 
   function checkConflicts(input, propName, conflictingProps) {
     var i, len;
@@ -1630,7 +1712,7 @@ define('common/validator',['require','arrays'],function(require) {
           // Try to get meta-data for this property.
           propMetadata = metadata[prop];
           // Continue only if the property is listed in meta-data.
-          if (propMetadata !== undefined) {
+          if (typeof propMetadata !== "undefined") {
             input[prop] = validateSingleProperty(propMetadata, prop, input[prop], ignoreImmutable);
             if (propMetadata.conflictsWith) {
               checkConflicts(input, prop, propMetadata.conflictsWith);
@@ -1651,7 +1733,7 @@ define('common/validator',['require','arrays'],function(require) {
 
     propertyChangeInvalidates: function(propertyMetadata) {
       // Default to true for safety.
-      if (propertyMetadata.propertyChangeInvalidates === undefined) {
+      if (typeof propertyMetadata.propertyChangeInvalidates === "undefined") {
         return true;
       }
       return !!propertyMetadata.propertyChangeInvalidates;
@@ -1664,7 +1746,7 @@ define('common/validator',['require','arrays'],function(require) {
     // Later perform basic validation.
     validateCompleteness: function (metadata, input) {
       var result = {},
-          prop, propMetadata;
+          prop, propMetadata, defVal;
 
       if (arguments.length < 2) {
         throw new Error("Incorrect usage. Provide metadata and hash which should be validated.");
@@ -1673,26 +1755,26 @@ define('common/validator',['require','arrays'],function(require) {
       for (prop in metadata) {
         if (metadata.hasOwnProperty(prop)) {
           propMetadata = metadata[prop];
+          defVal = propMetadata.defaultValue;
 
-          if (input[prop] === undefined || input[prop] === null) {
+          if (typeof input[prop] === "undefined") {
             // Value is not declared in the input data.
             if (propMetadata.required === true) {
               throw new ValidationError(prop, "Properties set is missing required property " + prop);
-            } else if (arrays.isArray(propMetadata.defaultValue)) {
+            } else if (arrays.isArray(defVal)) {
               // Copy an array defined as a default value.
               // Do not use instance defined in metadata.
-              result[prop] = arrays.copy(propMetadata.defaultValue, []);
-            } else if (typeof propMetadata.defaultValue === "object") {
-              // Copy an object defined as a default value.
-              // Do not use instance defined in metadata.
-              result[prop] = $.extend(true, {}, propMetadata.defaultValue);
-            } else if (propMetadata.defaultValue !== undefined) {
+              result[prop] = arrays.copy(defVal, []);
+            } else if (isObject(defVal)) {
+              // Copy an object defined as a default value. Do not use instance defined in metadata.
+              result[prop] = $.extend(true, {}, defVal);
+            } else if (typeof defVal !== "undefined") {
               // If it's basic type, just set value.
-              result[prop] = propMetadata.defaultValue;
+              result[prop] = defVal;
             }
-          } else if (!arrays.isArray(input[prop]) && typeof input[prop] === "object" && typeof propMetadata.defaultValue === "object") {
+          } else if (!arrays.isArray(input[prop]) && isObject(input[prop]) && isObject(defVal)) {
             // Note that typeof [] is also "object" - that is the reason of the isArray() check.
-            result[prop] = $.extend(true, {}, propMetadata.defaultValue, input[prop]);
+            result[prop] = $.extend(true, {}, defVal, input[prop]);
           } else if (arrays.isArray(input[prop])) {
             // Deep copy of an array.
             result[prop] = $.extend(true, [], input[prop]);
@@ -1728,20 +1810,6 @@ define('common/interactive-not-found',['require'],function (require) {
       "publicationStatus": "broken",
       "fontScale": 1.3,
       "models": [
-        {
-          "type": "md2d",
-          "id": "empty-model",
-          "model": {
-            "type": "md2d",
-            "width": 5,
-            "height": 3
-          },
-          "viewOptions": {
-            "controlButtons": "",
-            "backgroundColor": "rgba(245,200,200,255)",
-            "showClock": false
-          }
-        }
       ],
       "components": [
         {
@@ -1763,32 +1831,9 @@ define('common/interactive-not-found',['require'],function (require) {
       },
       "template": [
         {
-          "id": "top",
-          "bottom": "model.top",
-          "height": "1em"
-        },
-        {
-          "id": "bottom",
-          "top": "model.bottom",
-          "height": "1em"
-        },
-        {
-          "id": "right",
-          "left": "model.right",
-          "width": "1em"
-        },
-        {
-          "id": "left",
-          "right": "model.left",
-          "width": "1em"
-        },
-        {
           "id": "error",
-          "top": "model.top",
-          "left": "model.left",
-          "height": "model.height",
-          "width": "model.width",
-          "padding-top": "0.5em",
+          "width": "interactive.width",
+          "padding-top": "1em",
           "padding-bottom": "0.5em",
           "padding-right": "1em",
           "padding-left": "1em"
@@ -5244,7 +5289,7 @@ define('common/controllers/bar-graph-controller',['require','grapher/bar-graph/b
         return options;
       };
 
-  return function BarGraphController(component) {
+  return function BarGraphController(component, scriptingAPI, interactivesController) {
     var // Object with Public API.
         controller,
         // Model with options and current value.
@@ -5274,6 +5319,10 @@ define('common/controllers/bar-graph-controller',['require','grapher/bar-graph/b
     barGraphView.$el.addClass("component");
     property = component.property;
     secondProperty = component.secondProperty;
+
+    if (component.tooltip) {
+      barGraphView.$el.attr("title", component.tooltip);
+    }
 
     controller = {
       // This callback should be trigger when model is loaded.
@@ -5418,6 +5467,8 @@ define('grapher/core/axis',['require'],function (require) {
           }
         }
       }
+      newdomain[0] = +newdomain[0].toPrecision(5)
+      newdomain[1] = +newdomain[1].toPrecision(5)
       return newdomain;
     }
   };
@@ -5482,9 +5533,13 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         // Instantiated D3 line function: d3.svg.line()
         line,
 
-        // Instantiated D3 numeric format functions: d3.format()
+        // numeric format functions wrapping the d3.format() functions
         fx,
         fy,
+
+        // Instantiated D3 numeric format functions: d3.format()
+        fx_d3,
+        fy_d3,
 
         // Function for stroke styling of major and minor grid lines
         gridStroke = function(d) { return d ? "#ccc" : "#666"; },
@@ -5585,7 +5640,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         markerStrokeWidth,
 
         // Stroke width used for lines in graph
-        strokeWidth,
+        lineWidth,
 
         // Used to categorize size of graphs in responsive layout mode where
         // certain graph chrome is removed when graph is rendered smaller.
@@ -5694,10 +5749,10 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
           xTickCount:      10,
           yTickCount:      10,
 
-          // The formatter used to convert numbers into strings.
+          // The formatter strings used to convert numbers into strings.
           // see: https://github.com/mbostock/d3/wiki/Formatting#wiki-d3_format
           xFormatter:      ".3s",
-          yFormatter:      ".3r",
+          yFormatter:      ".3s",
 
           // Scale type: options are:
           //   linear: https://github.com/mbostock/d3/wiki/Quantitative-Scales#wiki-linear
@@ -5730,7 +5785,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
           showRulersOnSelection: false,
 
           // width of the line used for plotting
-          strokeWidth:      2.0,
+          lineWidth:      2.0,
 
           // Enable values of data points to be changed by selecting and dragging.
           dataChange:      false,
@@ -5786,13 +5841,43 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
       }
       titles.reverse();
 
-      fx = d3.format(options.xFormatter);
-      fy = d3.format(options.yFormatter);
-
       // use local variables for both access speed and for responsive over-riding
       sampleInterval = options.sampleInterval;
       dataSampleStart = options.dataSampleStart;
-      strokeWidth = options.strokeWidth;
+      lineWidth = options.lineWidth;
+
+      size = {
+        "width":  120,
+        "height": 120
+      };
+
+      setupScales();
+
+      fx_d3 = d3.format(options.xFormatter);
+      fy_d3 = d3.format(options.yFormatter);
+
+      // Wrappers around certain d3 formatters to prevent problems like this:
+      //   scale = d3.scale.linear().domain([-.7164, .7164])
+      //   scale.ticks(10).map(d3.format('.3r'))
+      //   => ["-0.600", "-0.400", "-0.200", "-0.0000000000000000888", "0.200", "0.400", "0.600"]
+
+      fx = function(num) {
+        var domain = xScale.domain(),
+            onePercent = Math.abs((domain[1] - domain[0])*0.01);
+        if (Math.abs(0+num) < onePercent) {
+          num = 0;
+        }
+        return fx_d3(num);
+      };
+
+      fy = function(num) {
+        var domain = yScale.domain(),
+            onePercent = Math.abs((domain[1] - domain[0])*0.01);
+        if (Math.abs(0+num) < onePercent) {
+          num = 0;
+        }
+        return fy_d3(num);
+      };
 
       xTickCount = options.xTickCount;
       yTickCount = options.yTickCount;
@@ -5885,7 +5970,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
       calculateSizeType();
     }
 
-    function calculateLayout() {
+    function calculateLayout(forceUpdate) {
       scale();
 
       fontSizeInPixels = parseFloat($node.css("font-size"));
@@ -5910,7 +5995,30 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         xlabelFontSizeInPixels = parseFloat($("svg.graph text.xlabel").css("font-size"));
         ylabelFontSizeInPixels = parseFloat($("svg.graph text.ylabel").css("font-size"));
       }
+      updateAxesAndSize();
 
+      updateScales();
+
+      line = d3.svg.line()
+          .x(function(d, i) { return xScale(points[i][0]); })
+          .y(function(d, i) { return yScale(points[i][1]); });
+    }
+
+    function setupOptions(options) {
+      if (options) {
+        for(var p in default_options) {
+          if (options[p] === undefined) {
+            options[p] = default_options[p];
+          }
+        }
+      } else {
+        options = default_options;
+      }
+      if (options.axisShift < 1) options.axisShift = 1;
+      return options;
+    }
+
+    function updateAxesAndSize() {
       if (xScale === undefined) {
         xlabelMetrics = [fontSizeInPixels, fontSizeInPixels];
         ylabelMetrics = [fontSizeInPixels*2, fontSizeInPixels];
@@ -5924,13 +6032,14 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
 
       xAxisNumberWidth  = xlabelMetrics[0];
       xAxisNumberHeight = xlabelMetrics[1];
-      yAxisNumberWidth  = ylabelMetrics[0];
-      yAxisNumberHeight = ylabelMetrics[0];
 
       xAxisLabelHorizontalPadding = xAxisNumberWidth * 0.6;
       xAxisDraggableHeight = xAxisNumberHeight * 1.1;
       xAxisVerticalPadding = xAxisDraggableHeight + xAxisNumberHeight*1.3;
       xAxisLabelBaseline = xAxisVerticalPadding-xAxisNumberHeight/3;
+
+      yAxisNumberWidth  = ylabelMetrics[0];
+      yAxisNumberHeight = ylabelMetrics[1];
 
       yAxisDraggableWidth    = yAxisNumberWidth + xAxisNumberHeight/4;
       yAxisHorizontalPadding = yAxisDraggableWidth + yAxisNumberHeight;
@@ -5991,48 +6100,8 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         titles = [titles[0]];
       }
 
-      size = {
-        "width":  Math.max(cx - padding.left - padding.right, 60),
-        "height": Math.max(cy - padding.top  - padding.bottom, 60)
-      };
-
-      xScale = d3.scale[options.xscale]()
-        .domain([options.xmin, options.xmax])
-        .range([0, size.width]);
-
-      if (options.xscale === "pow") {
-        xScale.exponent(options.xscaleExponent);
-      }
-
-      yScale = d3.scale[options.yscale]()
-        .domain([options.ymin, options.ymax]).nice()
-        .range([size.height, 0]).nice();
-
-      if (options.yscale === "pow") {
-        yScale.exponent(options.yscaleExponent);
-      }
-
-      updateXScale();
-      updateYScale();
-
-      line = d3.svg.line()
-          .x(function(d, i) { return xScale(points[i][0]); })
-          .y(function(d, i) { return yScale(points[i][1]); });
-
-    }
-
-    function setupOptions(options) {
-      if (options) {
-        for(var p in default_options) {
-          if (options[p] === undefined) {
-            options[p] = default_options[p];
-          }
-        }
-      } else {
-        options = default_options;
-      }
-      if (options.axisShift < 1) options.axisShift = 1;
-      return options;
+      size.width  = Math.max(cx - padding.left - padding.right, 60);
+      size.height = Math.max(cy - padding.top  - padding.bottom, 60);
     }
 
     function calculateSizeType() {
@@ -6076,6 +6145,18 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         }
       }
       return formatter(array[index]);
+    }
+
+
+    function setupScales() {
+      xScale = d3.scale[options.xscale]();
+      yScale = d3.scale[options.yscale]();
+      updateScales();
+    }
+
+    function updateScales() {
+      updateXScale();
+      updateYScale();
     }
 
     // Update the x-scale.
@@ -6471,6 +6552,8 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
     // Redraw the plot and axes when plot is translated or axes are re-scaled
     //
     function redraw() {
+      updateAxesAndSize();
+      repaintExistingGraph();
       // Regenerate x-ticks
       var gx = vis.selectAll("g.x")
           .data(xScale.ticks(xTickCount), String)
@@ -7196,6 +7279,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
     function clearCanvas() {
       if (gcanvas.getContext) {
         gcanvas.width = gcanvas.width;
+        gctx.lineWidth = lineWidth;
         gctx.fillStyle = canvasFillStyle;
         gctx.fillRect(0, 0, gcanvas.width, gcanvas.height);
         gctx.strokeStyle = "rgba(255,65,0, 1.0)";
@@ -7206,7 +7290,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
       if (gcanvas.getContext) {
         gctx = gcanvas.getContext( '2d' );
         gctx.globalCompositeOperation = "source-over";
-        gctx.lineWidth = 1;
+        gctx.lineWidth = lineWidth;
         gctx.fillStyle = canvasFillStyle;
         gctx.fillRect(0, 0, gcanvas.width, gcanvas.height);
         gctx.strokeStyle = "rgba(255,65,0, 1.0)";
@@ -7316,25 +7400,38 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
       } else {
         for (i = 0; i < numberOfLines; i++) {
           points = pointArray[i];
-          lengthX = 0;
-          setFillColor(i);
-          setStrokeColor(i, true);
-          pointStop = samplePoint - 1;
-          for (index=0; index < pointStop; index++) {
-            px = xScale(points[index][0]);
-            py = yScale(points[index][1]);
-            gctx.arc(px, py, 1, 0, twopi, false);
-            gctx.fill();
+          index = 0;
+          // find first point >= xAxisStart
+          for (j = 0; j < pointsLength; j++) {
+            if (points[j][0] >= xAxisStart) { break; }
+            index++;
           }
-          pointStop = points.length-1;
-          if (index < pointStop) {
+          if (index > 0) { --index; }
+          if (index >= pointsLength) { break; }
+          px = xScale(points[index][0]);
+          py = yScale(points[index][1]);
+          setFillColor(i);
+          dx = points[index][0];
+          index++;
+          // plot all ... or until one point past xAxisEnd
+          // or until we reach currentSample
+          for (; index < samplePoint; index++) {
+            dx = points[index][0];
+            px = xScale(dx);
+            py = yScale(points[index][1]);
+            gctx.fillRect(px, py, lineWidth, lineWidth);
+            if (dx >= xAxisEnd) { break; }
+          }
+          // now plot in a desaturated style all the rest of the points
+          // ... or until one point past xAxisEnd
+          if (index < pointsLength && dx < xAxisEnd) {
             setFillColor(i, true);
-            setStrokeColor(i, true);
-            for (;index < pointStop; index++) {
-              px = xScale(points[index][0]);
+            for (;index < pointsLength; index++) {
+              dx = points[index][0];
+              px = xScale(dx);
               py = yScale(points[index][1]);
-              gctx.arc(px, py, 1, 0, twopi, false);
-              gctx.fill();
+              gctx.fillRect(px, py, lineWidth, lineWidth);
+              if (dx >= xAxisEnd) { break; }
             }
           }
         }
@@ -7594,6 +7691,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
       renderGraph();
       // and then render again using actual size of SVG text elements are
       renderGraph();
+      redraw();
       registerKeyboardHandler();
       return api;
     }
@@ -7602,6 +7700,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
       scale(w, h);
       initializeLayout();
       renderGraph();
+      redraw();
       return api;
     }
 
@@ -7790,8 +7889,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
   };
 });
 
-/*global define $ model*/
-/*jslint boss: true eqnull: true*/
+/*global define, $, model*/
 
 define('common/controllers/graph-controller',['require','grapher/core/graph','common/controllers/interactive-metadata','common/validator'],function (require) {
   var Graph = require('grapher/core/graph'),
@@ -7811,6 +7909,7 @@ define('common/controllers/graph-controller',['require','grapher/core/graph','co
         ylabel: 'ylabel',
         ymin: 'ymin',
         ymax: 'ymax',
+        lineWidth: 'lineWidth',
         xTickCount: 'xTickCount',
         yTickCount: 'yTickCount',
         xscaleExponent: 'xscaleExponent',
@@ -7838,11 +7937,11 @@ define('common/controllers/graph-controller',['require','grapher/core/graph','co
       time and the current value of each model property specified in component.properties.
     */
     function getDataPoint() {
-      var ret = [], i, len,
-          time = model.get('time');
+      var ret = [], i, len, xval;
 
+      xval = model.get(component.xProperty);
       for (i = 0, len = properties.length; i < len; i++) {
-        ret.push([time, model.get(properties[i])]);
+        ret.push([xval, model.get(properties[i])]);
       }
       return ret;
     }
@@ -7957,10 +8056,11 @@ define('common/controllers/graph-controller',['require','grapher/core/graph','co
       width: component.width,
       height: component.height
     });
-
+    if (component.tooltip) {
+      $container.attr("title", component.tooltip);
+    }
 
     return controller = {
-
       /**
         Called by the interactives controller when the model finishes loading.
       */
@@ -8149,7 +8249,7 @@ define('import-export/dg-exporter',['require','common/console'],function(require
       // multiple exports during a single DG session.)
       this.doCommand('createCollection', {
         name: this.parentCollectionName,
-        attrs: [{name: 'Number of Time Points'}].concat(perRunColumnLabels),
+        attrs: perRunColumnLabels,
         childAttrName: 'contents'
       });
 
@@ -8163,10 +8263,9 @@ define('import-export/dg-exporter',['require','common/console'],function(require
 
       // Step 4. Open a row in the parent table. This will contain the individual time series
       // readings as children.
-      parentCollectionValues = [timeSeriesData.length].concat(perRunColumnValues);
       parentCase = this.doCommand('openCase', {
         collection: this.parentCollectionName,
-        values: parentCollectionValues
+        values: perRunColumnValues
       });
 
       // Step 5. Create rows in the child table for each data point. Using 'createCases' we can
@@ -8207,7 +8306,7 @@ define('import-export/dg-exporter',['require','common/console'],function(require
   };
 });
 
-/*global define model*/
+/*global define, model*/
 /*jslint boss: true*/
 
 define('common/controllers/export-controller',['require','import-export/dg-exporter'],function (require) {
@@ -8217,6 +8316,7 @@ define('common/controllers/export-controller',['require','import-export/dg-expor
   var ExportController = function exportController(spec) {
     var perRun  = (spec.perRun || []).slice(),
         perTick = ['displayTime'].concat(spec.perTick.slice()),
+        runNumber = 1,
         perTickValues,
         controller;
 
@@ -8262,7 +8362,7 @@ define('common/controllers/export-controller',['require','import-export/dg-expor
         values: perRunPropertyValues
       });
 
-      dgExporter.logAction(logString);
+      ExportController.logAction(logString);
     }
 
     function registerModelListeners() {
@@ -8305,12 +8405,6 @@ define('common/controllers/export-controller',['require','import-export/dg-expor
     return controller = {
 
       modelLoadedCallback: function() {
-        // put per-run parameters before per-run outputs
-        function is(type) {
-          return function(p) { return model.getPropertyType(p) === type; };
-        }
-        perRun = perRun.filter(is('parameter')).concat(perRun.filter(is('output')));
-
         resetData();
         registerModelListeners();
       },
@@ -8322,10 +8416,12 @@ define('common/controllers/export-controller',['require','import-export/dg-expor
             i;
 
         logAction('exported');
+        perRunPropertyLabels[0] = "Run";
+        perRunPropertyValues[0] = runNumber++;
 
         for (i = 0; i < perRun.length; i++) {
-          perRunPropertyLabels[i] = getLabelForProperty(perRun[i]);
-          perRunPropertyValues[i] = model.get(perRun[i]);
+          perRunPropertyLabels[i+1] = getLabelForProperty(perRun[i]);
+          perRunPropertyValues[i+1] = model.get(perRun[i]);
         }
 
         for (i = 0; i < perTick.length; i++) {
@@ -8342,6 +8438,10 @@ define('common/controllers/export-controller',['require','import-export/dg-expor
   // Do we have a sink
   ExportController.isExportAvailable = function() {
     return dgExporter.isExportAvailable();
+  };
+
+  ExportController.logAction = function() {
+    dgExporter.logAction.apply(dgExporter, arguments);
   };
 
   return ExportController;
@@ -8576,6 +8676,30 @@ define('common/controllers/scripting-api',['require','common/alert'],function (r
           },
 
           /**
+           * Sets a custom drag handler for objects of a given type.
+           * Drag handler will be executed after position of an object is updated due to user
+           * dragging action, so custom handler can affect it (e.g. limit to only one axis), e.g:
+           *
+           *   onDrag("atom", function (x, y, i, d) {
+           *     setAtomProperties(i, {y: 2});
+           *   });
+           *
+           * MD2D specific notes:
+           * only "atom" type is supported.
+           *
+           * @param {string}   type    Name of the type of draggable objects.
+           * @param {Function} handler Custom drag handler. It will be called
+           *                           when object is dragged with (x, y, d, i) arguments:
+           *                             x - x coordinate in model units,
+           *                             y - y coordinate in model units,
+           *                             d - data associated with a given object (can be undefined!),
+           *                             i - ID of an object (usually its value makes sense if d is defined).
+           */
+          onDrag: function onDrag(type, handler) {
+            interactivesController.getModelController().modelContainer.setDragHandler(type, handler);
+          },
+
+          /**
            * Sets custom select handler. It enables select action and lets author provide custom handler
            * which is executed when select action is finished. The area of selection is passed to handler
            * as arguments. It is defined by rectangle - its lower left corner coordinates, width and height.
@@ -8589,6 +8713,10 @@ define('common/controllers/scripting-api',['require','common/alert'],function (r
            */
           onSelect: function onSelect(handler) {
             interactivesController.getModelController().modelContainer.setSelectHandler(handler);
+          },
+
+          setComponentDisabled: function setComponentDisabled(compID, v) {
+            interactivesController.getComponent(compID).setDisabled(v);
           },
 
           start: function start() {
@@ -8805,64 +8933,191 @@ define('common/controllers/scripting-api',['require','common/alert'],function (r
   };
 });
 
-/*global define $ */
+/*global define: false */
+/**
+ * Inherit the prototype methods from one constructor into another.
+ *
+ * Usage:
+ * function ParentClass(a, b) { }
+ * ParentClass.prototype.foo = function(a) { }
+ *
+ * function ChildClass(a, b, c) {
+ *   goog.base(this, a, b);
+ * }
+ *
+ * inherit(ChildClass, ParentClass);
+ *
+ * var child = new ChildClass('a', 'b', 'see');
+ * child.foo(); // works
+ *
+ * In addition, a superclass' implementation of a method can be invoked
+ * as follows:
+ *
+ * ChildClass.prototype.foo = function(a) {
+ *   ChildClass.superClass.foo.call(this, a);
+ *   // other code
+ * };
+ *
+ * @param {Function} Child Child class.
+ * @param {Function} Parent Parent class.
+ */
+define('common/inherit',[],function() {
+  return function inherit(Child, Parent) {
+    function F() {}
+    F.prototype = Parent.prototype;
+    Child.prototype = new F();
+    Child.superClass = Parent.prototype;
+    Child.prototype.constructor = Child;
+  };
+});
 
-define('common/controllers/button-controller',['common/controllers/interactive-metadata','common/validator'],function () {
+/*global define */
 
-  var metadata  = require('common/controllers/interactive-metadata'),
-      validator = require('common/validator');
+/**
+ * Tiny "mixin" that can be used by an interactive component. It's temporal workaround before we
+ * refactor all interactive components to inherit from one common base class that should provide
+ * such basic functionality. Mixins are inconvenient in this case, as they force us to modify
+ * implementation of every single component (require and use mixin).
+ */
+define('common/controllers/disablable',[],function () {
 
-  return function ButtonController(component, scriptingAPI, interactivesController) {
-    var $button,
-        controller;
-
-    // Validate component definition, use validated copy of the properties.
-    component = validator.validateCompleteness(metadata.button, component);
-
-    $button = $('<button>')
-        .attr('tabindex', interactivesController.getNextTabIndex())
-        .attr('id', component.id).html(component.text);
-    // Each interactive component has to have class "component".
-    $button.addClass("component");
-
-    // Custom dimensions.
-    $button.css({
-      width: component.width,
-      height: component.height
-    });
-
-    $button.click(scriptingAPI.makeFunctionInScriptContext(component.action));
-
-    // Public API.
-    controller = {
-      // No modelLoadeCallback is defined. In case of need:
-      // modelLoadedCallback: function () {
-      //   (...)
-      // },
-
-      // Returns view container.
-      getViewContainer: function () {
-        return $button;
-      },
-
-      // Returns serialized component definition.
-      serialize: function () {
-        // Return the initial component definition.
-        // Button doesn't have any state, which can be changed.
-        return $.extend(true, {}, component);
+  return function disablable(component, componentDef) {
+    // Extend Public API of a component.
+    component.setDisabled = function(v) {
+      var $element = this.getViewContainer();
+      if (v) {
+        $element.addClass("lab-disabled");
+        $element.append('<div class="lab-disabled-overlay"/>');
+      } else {
+        $element.removeClass("lab-disabled");
+        $element.find(".lab-disabled-overlay").remove();
       }
     };
-    // Return Public API object.
-    return controller;
+    // Set initial value if componentDef is provided.
+    if (arguments.length > 1) {
+      component.setDisabled(componentDef.disabled);
+    }
   };
+});
+
+/*global define, $ */
+
+define('common/controllers/interactive-component',['require','common/controllers/interactive-metadata','common/validator','common/controllers/disablable'],function (require) {
+
+  var metadata   = require('common/controllers/interactive-metadata'),
+      validator  = require('common/validator'),
+      disablable = require('common/controllers/disablable');
+
+  /**
+   * Basic class for all interactive components.
+   *
+   * @constructor
+   * @param {string} type Component type, should match definition in interactive metadata.
+   * @param {Object} component Component JSON definition.
+   * @param {ScriptingAPI} scriptingAPI
+   * @param {InteractivesController} interactivesController
+   */
+  function InteractiveComponent(type, component, scriptingAPI, interactivesController) {
+    var onClickFunction;
+
+    /**
+     * Validated component definition.
+     * @type {Object}
+     */
+    this.component = validator.validateCompleteness(metadata[type], component);
+    /**
+     * The most outer element. Subclasses should append content to this element.
+     * @type {jQuery}
+     */
+    this.$element = $('<div>').attr("id", component.id).addClass("component");
+
+    // Optionally setup dimensions of the most outer component.
+    // Only when metadata and component JSON specifies width and height
+    // properties.
+    if (this.component.width) {
+      this.$element.css("width", this.component.width);
+    }
+    if (this.component.height) {
+      this.$element.css("height", this.component.height);
+    }
+
+    if (this.component.disabled) {
+      this.setDisabled(this.component.disabled);
+    }
+
+    // optionally add onClick handler. If components such as buttons and sliders
+    // start inheriting from InteractiveComponent, we should think further on this.
+    if (this.component.onClick) {
+      if (typeof this.component.onClick !== "function") {
+        // Create function from the string or array of strings.
+        onClickFunction = scriptingAPI.makeFunctionInScriptContext(this.component.onClick);
+      } else {
+        // Just assign ready function.
+        onClickFunction = this.component.onClick;
+      }
+      this.$element.on("click", onClickFunction);
+      // Also add a special class indicating that this text node is a clickable.
+      this.$element.addClass("clickable");
+    }
+
+    // optionally add new css classes
+    if (this.component.classes && this.component.classes.length) {
+      this.$element.addClass(this.component.classes.join(" "));
+    }
+
+    // optionally add tooltip
+    if (this.component.tooltip) {
+      this.$element.attr("title", this.component.tooltip);
+    }
+  }
+
+  /**
+   * @return {jQuery} The most outer element.
+   */
+  InteractiveComponent.prototype.getViewContainer = function() {
+    return this.$element;
+  };
+
+  /**
+   * @return {Object} Serialized component definition.
+   */
+  InteractiveComponent.prototype.serialize = function() {
+    return this.component;
+  };
+
+  // It will add .setDisabled() method to the prototype.
+  disablable(InteractiveComponent.prototype);
+
+  return InteractiveComponent;
+});
+
+/*global define, $ */
+
+define('common/controllers/button-controller',['common/inherit','common/controllers/interactive-component'],function () {
+  var inherit              = require('common/inherit'),
+      InteractiveComponent = require('common/controllers/interactive-component');
+
+  function ButtonController(component, scriptingAPI, interactivesController) {
+    // Call super constructor.
+    InteractiveComponent.call(this, "button", component, scriptingAPI, interactivesController);
+    this.$element.addClass("interactive-button");
+    $('<button>')
+        .html(component.text)
+        .on("click", scriptingAPI.makeFunctionInScriptContext(component.action))
+        .appendTo(this.$element);
+  }
+  inherit(ButtonController, InteractiveComponent);
+
+  return ButtonController;
 });
 
 /*global define, $, model */
 
-define('common/controllers/checkbox-controller',['common/controllers/interactive-metadata','common/validator'],function () {
+define('common/controllers/checkbox-controller',['common/controllers/interactive-metadata','common/controllers/disablable','common/validator'],function () {
 
-  var metadata  = require('common/controllers/interactive-metadata'),
-      validator = require('common/validator');
+  var metadata   = require('common/controllers/interactive-metadata'),
+      disablable = require('common/controllers/disablable'),
+      validator  = require('common/validator');
 
   return function CheckboxController(component, scriptingAPI, interactivesController) {
     var propertyName,
@@ -8974,6 +9229,10 @@ define('common/controllers/checkbox-controller',['common/controllers/interactive
       }
     });
 
+    if (component.tooltip) {
+      $element.attr("title", component.tooltip);
+    }
+
     // Public API.
     controller = {
       // This callback should be trigger when model is loaded.
@@ -8987,7 +9246,7 @@ define('common/controllers/checkbox-controller',['common/controllers/interactive
         }
         else if (initialValue !== undefined) {
           setCheckbox(initialValue);
-          onClickScript(initialValue);
+          if (onClickScript) onClickScript(initialValue);
         }
       },
 
@@ -9010,6 +9269,9 @@ define('common/controllers/checkbox-controller',['common/controllers/interactive
         return result;
       }
     };
+
+    disablable(controller, component);
+
     // Return Public API object.
     return controller;
   };
@@ -9019,6 +9281,8 @@ define('common/controllers/checkbox-controller',['common/controllers/interactive
 // Copyright (c) 2009-2010 Dominic Baggott
 // Copyright (c) 2009-2010 Ash Berlin
 // Copyright (c) 2011 Christoph Dorn <christoph@christophdorn.com> (http://www.christophdorn.com)
+
+/*jshint browser:true, devel:true */
 
 (function( expose ) {
 
@@ -9049,7 +9313,7 @@ define('common/controllers/checkbox-controller',['common/controllers/interactive
  *
  *  [JsonML]: http://jsonml.org/ "JSON Markup Language"
  **/
-var Markdown = expose.Markdown = function Markdown(dialect) {
+var Markdown = expose.Markdown = function(dialect) {
   switch (typeof dialect) {
     case "undefined":
       this.dialect = Markdown.dialects.Gruber;
@@ -9058,7 +9322,7 @@ var Markdown = expose.Markdown = function Markdown(dialect) {
       this.dialect = dialect;
       break;
     default:
-      if (dialect in Markdown.dialects) {
+      if ( dialect in Markdown.dialects ) {
         this.dialect = Markdown.dialects[dialect];
       }
       else {
@@ -9142,7 +9406,7 @@ function mk_block_toSource() {
 
 // node
 function mk_block_inspect() {
-  var util = require('util');
+  var util = require("util");
   return "Markdown.mk_block( " +
           util.inspect(this.toString()) +
           ", " +
@@ -9163,7 +9427,7 @@ var mk_block = Markdown.mk_block = function(block, trail, line) {
   s.inspect = mk_block_inspect;
   s.toSource = mk_block_toSource;
 
-  if (line != undefined)
+  if ( line != undefined )
     s.lineNumber = line;
 
   return s;
@@ -9171,14 +9435,16 @@ var mk_block = Markdown.mk_block = function(block, trail, line) {
 
 function count_lines( str ) {
   var n = 0, i = -1;
-  while ( ( i = str.indexOf('\n', i+1) ) !== -1) n++;
+  while ( ( i = str.indexOf("\n", i + 1) ) !== -1 ) n++;
   return n;
 }
 
 // Internal - split source into rough blocks
 Markdown.prototype.split_blocks = function splitBlocks( input, startLine ) {
+  input = input.replace(/(\r\n|\n|\r)/g, "\n");
   // [\s\S] matches _anything_ (newline or space)
-  var re = /([\s\S]+?)($|\n(?:\s*\n|$)+)/g,
+  // [^] is equivalent but doesn't work in IEs.
+  var re = /([\s\S]+?)($|\n#|\n(?:\s*\n|$)+)/g,
       blocks = [],
       m;
 
@@ -9191,6 +9457,10 @@ Markdown.prototype.split_blocks = function splitBlocks( input, startLine ) {
   }
 
   while ( ( m = re.exec(input) ) !== null ) {
+    if (m[2] == "\n#") {
+      m[2] = "\n";
+      re.lastIndex--;
+    }
     blocks.push( mk_block( m[1], m[2], line_no ) );
     line_no += count_lines( m[0] );
   }
@@ -9284,9 +9554,9 @@ Markdown.prototype.toTree = function toTree( source, custom_root ) {
 Markdown.prototype.debug = function () {
   var args = Array.prototype.slice.call( arguments);
   args.unshift(this.debug_indent);
-  if (typeof print !== "undefined")
+  if ( typeof print !== "undefined" )
       print.apply( print, args );
-  if (typeof console !== "undefined" && typeof console.log !== "undefined")
+  if ( typeof console !== "undefined" && typeof console.log !== "undefined" )
       console.log.apply( null, args );
 }
 
@@ -9295,7 +9565,7 @@ Markdown.prototype.loop_re_over_block = function( re, block, cb ) {
   var m,
       b = block.valueOf();
 
-  while ( b.length && (m = re.exec(b) ) != null) {
+  while ( b.length && (m = re.exec(b) ) != null ) {
     b = b.substr( m[0].length );
     cb.call(this, m);
   }
@@ -9367,24 +9637,24 @@ Markdown.dialects.Gruber = {
         var b = this.loop_re_over_block(
                   re, block.valueOf(), function( m ) { ret.push( m[1] ); } );
 
-        if (b.length) {
+        if ( b.length ) {
           // Case alluded to in first comment. push it back on as a new block
           next.unshift( mk_block(b, block.trailing) );
           break block_search;
         }
-        else if (next.length) {
+        else if ( next.length ) {
           // Check the next block - it might be code too
           if ( !next[0].match( re ) ) break block_search;
 
           // Pull how how many blanks lines follow - minus two to account for .join
-          ret.push ( block.trailing.replace(/[^\n]/g, '').substring(2) );
+          ret.push ( block.trailing.replace(/[^\n]/g, "").substring(2) );
 
           block = next.shift();
         }
         else {
           break block_search;
         }
-      } while (true);
+      } while ( true );
 
       return [ [ "code_block", ret.join("\n") ] ];
     },
@@ -9456,7 +9726,7 @@ Markdown.dialects.Gruber = {
       // Add inline content `inline` to `li`. inline comes from processInline
       // so is an array of content
       function add(li, loose, inline, nl) {
-        if (loose) {
+        if ( loose ) {
           li.push( [ "para" ].concat(inline) );
           return;
         }
@@ -9466,12 +9736,12 @@ Markdown.dialects.Gruber = {
                    : li;
 
         // If there is already some content in this list, add the new line in
-        if (nl && li.length > 1) inline.unshift(nl);
+        if ( nl && li.length > 1 ) inline.unshift(nl);
 
-        for (var i=0; i < inline.length; i++) {
+        for ( var i = 0; i < inline.length; i++ ) {
           var what = inline[i],
               is_str = typeof what == "string";
-          if (is_str && add_to.length > 1 && typeof add_to[add_to.length-1] == "string" ) {
+          if ( is_str && add_to.length > 1 && typeof add_to[add_to.length-1] == "string" ) {
             add_to[ add_to.length-1 ] += what;
           }
           else {
@@ -9496,7 +9766,9 @@ Markdown.dialects.Gruber = {
 
             ret.push( mk_block( x, b.trailing, b.lineNumber ) );
           }
-          break;
+          else {
+            break;
+          }
         }
         return ret;
       }
@@ -9506,17 +9778,17 @@ Markdown.dialects.Gruber = {
         var list = s.list;
         var last_li = list[list.length-1];
 
-        if (last_li[1] instanceof Array && last_li[1][0] == "para") {
+        if ( last_li[1] instanceof Array && last_li[1][0] == "para" ) {
           return;
         }
-        if (i+1 == stack.length) {
+        if ( i + 1 == stack.length ) {
           // Last stack frame
           // Keep the same array, but replace the contents
-          last_li.push( ["para"].concat( last_li.splice(1) ) );
+          last_li.push( ["para"].concat( last_li.splice(1, last_li.length - 1) ) );
         }
         else {
           var sublist = last_li.pop();
-          last_li.push( ["para"].concat( last_li.splice(1) ), sublist );
+          last_li.push( ["para"].concat( last_li.splice(1, last_li.length - 1) ), sublist );
         }
       }
 
@@ -9544,7 +9816,7 @@ Markdown.dialects.Gruber = {
 
         // Loop to search over block looking for inner block elements and loose lists
         loose_search:
-        while( true ) {
+        while ( true ) {
           // Split into lines preserving new lines at end of line
           var lines = block.split( /(?=\n)/ );
 
@@ -9554,7 +9826,7 @@ Markdown.dialects.Gruber = {
 
           // Loop over the lines in this block looking for tight lists.
           tight_search:
-          for (var line_no=0; line_no < lines.length; line_no++) {
+          for ( var line_no = 0; line_no < lines.length; line_no++ ) {
             var nl = "",
                 l = lines[line_no].replace(/^\n/, function(n) { nl = n; return ""; });
 
@@ -9590,10 +9862,10 @@ Markdown.dialects.Gruber = {
                 // stack, put it there, else put it one deeper then the
                 // wanted_depth deserves.
                 var found = false;
-                for (i = 0; i < stack.length; i++) {
+                for ( i = 0; i < stack.length; i++ ) {
                   if ( stack[ i ].indent != m[1] ) continue;
                   list = stack[ i ].list;
-                  stack.splice( i+1 );
+                  stack.splice( i+1, stack.length - (i+1) );
                   found = true;
                   break;
                 }
@@ -9601,8 +9873,8 @@ Markdown.dialects.Gruber = {
                 if (!found) {
                   //print("not found. l:", uneval(l));
                   wanted_depth++;
-                  if (wanted_depth <= stack.length) {
-                    stack.splice(wanted_depth);
+                  if ( wanted_depth <= stack.length ) {
+                    stack.splice(wanted_depth, stack.length - wanted_depth);
                     //print("Desired depth now", wanted_depth, "stack:", stack.length);
                     list = stack[wanted_depth-1].list;
                     //print("list:", uneval(list) );
@@ -9622,7 +9894,7 @@ Markdown.dialects.Gruber = {
             }
 
             // Add content
-            if (l.length > m[0].length) {
+            if ( l.length > m[0].length ) {
               li_accumulate += nl + l.substr( m[0].length );
             }
           } // tight_search
@@ -9639,7 +9911,7 @@ Markdown.dialects.Gruber = {
           var contained = get_contained_blocks( stack.length, next );
 
           // Deal with code blocks or properly nested lists
-          if (contained.length > 0) {
+          if ( contained.length > 0 ) {
             // Make sure all listitems up the stack are paragraphs
             forEach( stack, paragraphify, this);
 
@@ -9654,7 +9926,7 @@ Markdown.dialects.Gruber = {
             // Check for an HR following a list: features/lists/hr_abutting
             var hr = this.dialect.block.horizRule( block, next );
 
-            if (hr) {
+            if ( hr ) {
               ret.push.apply(ret, hr);
               break;
             }
@@ -9678,33 +9950,51 @@ Markdown.dialects.Gruber = {
 
       var jsonml = [];
 
-      // separate out the leading abutting block, if any
+      // separate out the leading abutting block, if any. I.e. in this case:
+      //
+      //  a
+      //  > b
+      //
       if ( block[ 0 ] != ">" ) {
         var lines = block.split( /\n/ ),
-            prev = [];
+            prev = [],
+            line_no = block.lineNumber;
 
         // keep shifting lines until you find a crotchet
         while ( lines.length && lines[ 0 ][ 0 ] != ">" ) {
             prev.push( lines.shift() );
+            line_no++;
         }
 
-        // reassemble!
-        block = lines.join( "\n" );
-        jsonml.push.apply( jsonml, this.processBlock( prev.join( "\n" ), [] ) );
+        var abutting = mk_block( prev.join( "\n" ), "\n", block.lineNumber );
+        jsonml.push.apply( jsonml, this.processBlock( abutting, [] ) );
+        // reassemble new block of just block quotes!
+        block = mk_block( lines.join( "\n" ), block.trailing, line_no );
       }
+
 
       // if the next block is also a blockquote merge it in
       while ( next.length && next[ 0 ][ 0 ] == ">" ) {
         var b = next.shift();
-        block = new String(block + block.trailing + b);
-        block.trailing = b.trailing;
+        block = mk_block( block + block.trailing + b, b.trailing, block.lineNumber );
       }
 
       // Strip off the leading "> " and re-process as a block.
-      var input = block.replace( /^> ?/gm, '' ),
-          old_tree = this.tree;
-      jsonml.push( this.toTree( input, [ "blockquote" ] ) );
+      var input = block.replace( /^> ?/gm, "" ),
+          old_tree = this.tree,
+          processedBlock = this.toTree( input, [ "blockquote" ] ),
+          attr = extract_attr( processedBlock );
 
+      // If any link references were found get rid of them
+      if ( attr && attr.references ) {
+        delete attr.references;
+        // And then remove the attribute object if it's empty
+        if ( isEmpty( attr ) ) {
+          processedBlock.splice( 1, 1 );
+        }
+      }
+
+      jsonml.push( processedBlock );
       return jsonml;
     },
 
@@ -9729,21 +10019,21 @@ Markdown.dialects.Gruber = {
 
       var b = this.loop_re_over_block(re, block, function( m ) {
 
-        if ( m[2] && m[2][0] == '<' && m[2][m[2].length-1] == '>' )
+        if ( m[2] && m[2][0] == "<" && m[2][m[2].length-1] == ">" )
           m[2] = m[2].substring( 1, m[2].length - 1 );
 
         var ref = attrs.references[ m[1].toLowerCase() ] = {
           href: m[2]
         };
 
-        if (m[4] !== undefined)
+        if ( m[4] !== undefined )
           ref.title = m[4];
-        else if (m[5] !== undefined)
+        else if ( m[5] !== undefined )
           ref.title = m[5];
 
       } );
 
-      if (b.length)
+      if ( b.length )
         next.unshift( mk_block( b, block.trailing ) );
 
       return [];
@@ -9794,7 +10084,7 @@ Markdown.dialects.Gruber.inline = {
 
       function add(x) {
         //D:self.debug("  adding output", uneval(x));
-        if (typeof x == "string" && typeof out[out.length-1] == "string")
+        if ( typeof x == "string" && typeof out[out.length-1] == "string" )
           out[ out.length-1 ] += x;
         else
           out.push(x);
@@ -9814,11 +10104,13 @@ Markdown.dialects.Gruber.inline = {
     "]": function () {},
     "}": function () {},
 
+    __escape__ : /^\\[\\`\*_{}\[\]()#\+.!\-]/,
+
     "\\": function escaped( text ) {
       // [ length of input processed, node/children to add... ]
       // Only esacape: \ ` * _ { } [ ] ( ) # * + - . !
-      if ( text.match( /^\\[\\`\*_{}\[\]()#\+.!\-]/ ) )
-        return [ 2, text[1] ];
+      if ( this.dialect.inline.__escape__.exec( text ) )
+        return [ 2, text.charAt( 1 ) ];
       else
         // Not an esacpe
         return [ 1, "\\" ];
@@ -9831,10 +10123,10 @@ Markdown.dialects.Gruber.inline = {
 
       // ![Alt text](/path/to/img.jpg "Optional title")
       //      1          2            3       4         <--- captures
-      var m = text.match( /^!\[(.*?)\][ \t]*\([ \t]*(\S*)(?:[ \t]+(["'])(.*?)\3)?[ \t]*\)/ );
+      var m = text.match( /^!\[(.*?)\][ \t]*\([ \t]*([^")]*?)(?:[ \t]+(["'])(.*?)\3)?[ \t]*\)/ );
 
       if ( m ) {
-        if ( m[2] && m[2][0] == '<' && m[2][m[2].length-1] == '>' )
+        if ( m[2] && m[2][0] == "<" && m[2][m[2].length-1] == ">" )
           m[2] = m[2].substring( 1, m[2].length - 1 );
 
         m[2] = this.dialect.inline.__call__.call( this, m[2], /\\/ )[0];
@@ -9863,10 +10155,10 @@ Markdown.dialects.Gruber.inline = {
 
       var orig = String(text);
       // Inline content is possible inside `link text`
-      var res = Markdown.DialectHelpers.inline_until_char.call( this, text.substr(1), ']' );
+      var res = Markdown.DialectHelpers.inline_until_char.call( this, text.substr(1), "]" );
 
       // No closing ']' found. Just consume the [
-      if ( !res ) return [ 1, '[' ];
+      if ( !res ) return [ 1, "[" ];
 
       var consumed = 1 + res[ 0 ],
           children = res[ 1 ],
@@ -9883,23 +10175,23 @@ Markdown.dialects.Gruber.inline = {
       // back based on if there a matching ones in the url
       //    ([here](/url/(test))
       // The parens have to be balanced
-      var m = text.match( /^\s*\([ \t]*(\S+)(?:[ \t]+(["'])(.*?)\2)?[ \t]*\)/ );
+      var m = text.match( /^\s*\([ \t]*([^"']*)(?:[ \t]+(["'])(.*?)\2)?[ \t]*\)/ );
       if ( m ) {
         var url = m[1];
         consumed += m[0].length;
 
-        if ( url && url[0] == '<' && url[url.length-1] == '>' )
+        if ( url && url[0] == "<" && url[url.length-1] == ">" )
           url = url.substring( 1, url.length - 1 );
 
         // If there is a title we don't have to worry about parens in the url
         if ( !m[3] ) {
           var open_parens = 1; // One open that isn't in the capture
-          for (var len = 0; len < url.length; len++) {
+          for ( var len = 0; len < url.length; len++ ) {
             switch ( url[len] ) {
-            case '(':
+            case "(":
               open_parens++;
               break;
-            case ')':
+            case ")":
               if ( --open_parens == 0) {
                 consumed -= url.length - len;
                 url = url.substring(0, len);
@@ -9948,7 +10240,7 @@ Markdown.dialects.Gruber.inline = {
         return [ consumed, link ];
       }
 
-      // Just consume the '['
+      // Just consume the "["
       return [ 1, "[" ];
     },
 
@@ -10003,7 +10295,7 @@ function strong_em( tag, md ) {
 
   return function ( text, orig_match ) {
 
-    if (this[state_slot][0] == md) {
+    if ( this[state_slot][0] == md ) {
       // Most recent em is of this type
       //D:this.debug("closing", md);
       this[state_slot].shift();
@@ -10029,7 +10321,7 @@ function strong_em( tag, md ) {
       //D:this.debug("processInline from", tag + ": ", uneval( res ) );
 
       var check = this[state_slot].shift();
-      if (last instanceof CloseTag) {
+      if ( last instanceof CloseTag ) {
         res.pop();
         // We matched! Huzzah.
         var consumed = text.length - last.len_after;
@@ -10081,7 +10373,7 @@ Markdown.buildInlinePatterns = function(d) {
 
   var fn = d.__call__;
   d.__call__ = function(text, pattern) {
-    if (pattern != undefined) {
+    if ( pattern != undefined ) {
       return fn.call(this, text, pattern);
     }
     else
@@ -10097,7 +10389,7 @@ Markdown.DialectHelpers.inline_until_char = function( text, want ) {
       nodes = [];
 
   while ( true ) {
-    if ( text[ consumed ] == want ) {
+    if ( text.charAt( consumed ) == want ) {
       // Found the character we were looking for
       consumed++;
       return [ consumed, nodes ];
@@ -10108,7 +10400,7 @@ Markdown.DialectHelpers.inline_until_char = function( text, want ) {
       return null;
     }
 
-    res = this.dialect.inline.__oneElement__.call(this, text.substr( consumed ) );
+    var res = this.dialect.inline.__oneElement__.call(this, text.substr( consumed ) );
     consumed += res[ 0 ];
     // Add any returned nodes.
     nodes.push.apply( nodes, res.slice( 1 ) );
@@ -10142,11 +10434,11 @@ Markdown.dialects.Maruku.processMetaHash = function processMetaHash( meta_string
     // class: .foo
     else if ( /^\./.test( meta[ i ] ) ) {
       // if class already exists, append the new one
-      if ( attr['class'] ) {
-        attr['class'] = attr['class'] + meta[ i ].replace( /./, " " );
+      if ( attr["class"] ) {
+        attr["class"] = attr["class"] + meta[ i ].replace( /./, " " );
       }
       else {
-        attr['class'] = meta[ i ].substring( 1 );
+        attr["class"] = meta[ i ].substring( 1 );
       }
     }
     // attribute: foo=bar
@@ -10276,7 +10568,7 @@ Markdown.dialects.Maruku.block.definition_list = function definition_list( block
   // one or more terms followed by one or more definitions, in a single block
   var tight = /^((?:[^\s:].*\n)+):\s+([\s\S]+)$/,
       list = [ "dl" ],
-      i;
+      i, m;
 
   // see if we're dealing with a tight or loose block
   if ( ( m = block.match( tight ) ) ) {
@@ -10309,6 +10601,72 @@ Markdown.dialects.Maruku.block.definition_list = function definition_list( block
 
   return [ list ];
 };
+
+// splits on unescaped instances of @ch. If @ch is not a character the result
+// can be unpredictable
+
+Markdown.dialects.Maruku.block.table = function table (block, next) {
+
+    var _split_on_unescaped = function(s, ch) {
+        ch = ch || '\\s';
+        if (ch.match(/^[\\|\[\]{}?*.+^$]$/)) { ch = '\\' + ch; }
+        var res = [ ],
+            r = new RegExp('^((?:\\\\.|[^\\\\' + ch + '])*)' + ch + '(.*)'),
+            m;
+        while(m = s.match(r)) {
+            res.push(m[1]);
+            s = m[2];
+        }
+        res.push(s);
+        return res;
+    }
+
+    var leading_pipe = /^ {0,3}\|(.+)\n {0,3}\|\s*([\-:]+[\-| :]*)\n((?:\s*\|.*(?:\n|$))*)(?=\n|$)/,
+        // find at least an unescaped pipe in each line
+        no_leading_pipe = /^ {0,3}(\S(?:\\.|[^\\|])*\|.*)\n {0,3}([\-:]+\s*\|[\-| :]*)\n((?:(?:\\.|[^\\|])*\|.*(?:\n|$))*)(?=\n|$)/,
+        i, m;
+    if (m = block.match(leading_pipe)) {
+        // remove leading pipes in contents
+        // (header and horizontal rule already have the leading pipe left out)
+        m[3] = m[3].replace(/^\s*\|/gm, '');
+    } else if (! ( m = block.match(no_leading_pipe))) {
+        return undefined;
+    }
+
+    var table = [ "table", [ "thead", [ "tr" ] ], [ "tbody" ] ];
+
+    // remove trailing pipes, then split on pipes
+    // (no escaped pipes are allowed in horizontal rule)
+    m[2] = m[2].replace(/\|\s*$/, '').split('|');
+
+    // process alignment
+    var html_attrs = [ ];
+    forEach (m[2], function (s) {
+        if (s.match(/^\s*-+:\s*$/))       html_attrs.push({align: "right"});
+        else if (s.match(/^\s*:-+\s*$/))  html_attrs.push({align: "left"});
+        else if (s.match(/^\s*:-+:\s*$/)) html_attrs.push({align: "center"});
+        else                              html_attrs.push({});
+    });
+
+    // now for the header, avoid escaped pipes
+    m[1] = _split_on_unescaped(m[1].replace(/\|\s*$/, ''), '|');
+    for (i = 0; i < m[1].length; i++) {
+        table[1][1].push(['th', html_attrs[i] || {}].concat(
+            this.processInline(m[1][i].trim())));
+    }
+
+    // now for body contents
+    forEach (m[3].replace(/\|\s*$/mg, '').split('\n'), function (row) {
+        var html_row = ['tr'];
+        row = _split_on_unescaped(row, '|');
+        for (i = 0; i < row.length; i++) {
+            html_row.push(['td', html_attrs[i] || {}].concat(this.processInline(row[i].trim())));
+        }
+        table[2].push(html_row);
+    }, this);
+
+    return [table];
+}
 
 Markdown.dialects.Maruku.inline[ "{:" ] = function inline_meta( text, matches, out ) {
   if ( !out.length ) {
@@ -10347,11 +10705,13 @@ Markdown.dialects.Maruku.inline[ "{:" ] = function inline_meta( text, matches, o
   return [ m[ 0 ].length, "" ];
 };
 
+Markdown.dialects.Maruku.inline.__escape__ = /^\\[\\`\*_{}\[\]()#\+.!\-|:]/;
+
 Markdown.buildBlockOrder ( Markdown.dialects.Maruku.block );
 Markdown.buildInlinePatterns( Markdown.dialects.Maruku.inline );
 
 var isArray = Array.isArray || function(obj) {
-  return Object.prototype.toString.call(obj) == '[object Array]';
+  return Object.prototype.toString.call(obj) == "[object Array]";
 };
 
 var forEach;
@@ -10367,6 +10727,16 @@ else {
       cb.call(thisp || arr, arr[i], i, arr);
     }
   }
+}
+
+var isEmpty = function( obj ) {
+  for ( var key in obj ) {
+    if ( hasOwnProperty.call( obj, key ) ) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 function extract_attr( jsonml ) {
@@ -10440,7 +10810,7 @@ function render_tree( jsonml ) {
   }
 
   while ( jsonml.length ) {
-    content.push( arguments.callee( jsonml.shift() ) );
+    content.push( render_tree( jsonml.shift() ) );
   }
 
   var tag_attrs = "";
@@ -10464,7 +10834,7 @@ function convert_tree_to_html( tree, references, options ) {
   // shallow clone
   var jsonml = tree.slice( 0 );
 
-  if (typeof options.preprocessTreeNode === "function") {
+  if ( typeof options.preprocessTreeNode === "function" ) {
       jsonml = options.preprocessTreeNode(jsonml, references);
   }
 
@@ -10509,7 +10879,7 @@ function convert_tree_to_html( tree, references, options ) {
       jsonml[ 0 ] = "pre";
       i = attrs ? 2 : 1;
       var code = [ "code" ];
-      code.push.apply( code, jsonml.splice( i ) );
+      code.push.apply( code, jsonml.splice( i, jsonml.length - i ) );
       jsonml[ i ] = code;
       break;
     case "inlinecode":
@@ -10582,7 +10952,8 @@ function convert_tree_to_html( tree, references, options ) {
   if ( attrs ) {
     // if there are keys, skip over it
     for ( var key in jsonml[ 1 ] ) {
-      i = 2;
+        i = 2;
+        break;
     }
     // if there aren't, remove it
     if ( i === 1 ) {
@@ -10591,7 +10962,7 @@ function convert_tree_to_html( tree, references, options ) {
   }
 
   for ( ; i < jsonml.length; ++i ) {
-    jsonml[ i ] = arguments.callee( jsonml[ i ], references, options );
+    jsonml[ i ] = convert_tree_to_html( jsonml[ i ], references, options );
   }
 
   return jsonml;
@@ -10616,7 +10987,7 @@ function merge_text_nodes( jsonml ) {
     }
     // if it's not a string recurse
     else {
-      arguments.callee( jsonml[ i ] );
+      merge_text_nodes( jsonml[ i ] );
       ++i;
     }
   }
@@ -10639,131 +11010,31 @@ define("markdown", (function (global) {
     };
 }(this)));
 
-/*global define: false */
+/*global define: true, $ */
+
 /**
- * Inherit the prototype methods from one constructor into another.
- *
- * Usage:
- * function ParentClass(a, b) { }
- * ParentClass.prototype.foo = function(a) { }
- *
- * function ChildClass(a, b, c) {
- *   goog.base(this, a, b);
- * }
- *
- * inherit(ChildClass, ParentClass);
- *
- * var child = new ChildClass('a', 'b', 'see');
- * child.foo(); // works
- *
- * In addition, a superclass' implementation of a method can be invoked
- * as follows:
- *
- * ChildClass.prototype.foo = function(a) {
- *   ChildClass.superClass.foo.call(this, a);
- *   // other code
- * };
- *
- * @param {Function} Child Child class.
- * @param {Function} Parent Parent class.
+ * Converts markdown to HTML. Passed argument can be a string or array of strings.
  */
-define('common/inherit',[],function() {
-  return function inherit(Child, Parent) {
-    function F() {}
-    F.prototype = Parent.prototype;
-    Child.prototype = new F();
-    Child.superClass = Parent.prototype;
-    Child.prototype.constructor = Child;
+define('common/markdown-to-html',['require','markdown'],function (require) {
+  var markdown = require('markdown'),
+      NEW_WINDOW = 'class="opens-in-new-window" target="blank"';
+
+  return function markdownToHTML(text) {
+    var content = "", html;
+    if (!$.isArray(text)) text = [text];
+    text.forEach(function (line) {
+      content += line + "\n";
+    });
+    html = '<div class="markdown-typography">' + markdown.toHTML(content) + '</div>';
+    return html.replace(/<a(.*?)>/g, "<a$1 " + NEW_WINDOW + ">");
   };
 });
 
-/*global define, $ */
+/*global define */
 
-define('common/controllers/interactive-component',['require','common/controllers/interactive-metadata','common/validator'],function (require) {
+define('common/controllers/text-controller',['require','common/markdown-to-html','common/inherit','common/controllers/interactive-component'],function (require) {
 
-  var metadata  = require('common/controllers/interactive-metadata'),
-      validator = require('common/validator');
-
-  /**
-   * Basic class for all interactive components.
-   *
-   * @constructor
-   * @param {string} type Component type, should match definition in interactive metadata.
-   * @param {Object} component Component JSON definition.
-   * @param {ScriptingAPI} scriptingAPI
-   */
-  function InteractiveComponent(type, component, scriptingAPI) {
-    var onClickFunction;
-
-    /**
-     * Validated component definition.
-     * @type {Object}
-     */
-    this.component = validator.validateCompleteness(metadata[type], component);
-    /**
-     * The most outer element. Subclasses should append content to this element.
-     * @type {jQuery}
-     */
-    this.$element = $('<div>').attr("id", component.id).addClass("component");
-
-    // Optionally setup dimensions of the most outer component.
-    // Only when metadata and component JSON specifies width and height
-    // properties.
-    if (this.component.width) {
-      this.$element.css("width", this.component.width);
-    }
-    if (this.component.height) {
-      this.$element.css("height", this.component.height);
-    }
-
-    // optionally add onClick handler. If components such as buttons and sliders
-    // start inheriting from InteractiveComponent, we should think further on this.
-    if (this.component.onClick) {
-      if (typeof this.component.onClick !== "function") {
-        // Create function from the string or array of strings.
-        onClickFunction = scriptingAPI.makeFunctionInScriptContext(this.component.onClick);
-      } else {
-        // Just assign ready function.
-        onClickFunction = this.component.onClick;
-      }
-      this.$element.on("click", onClickFunction);
-      // Also add a special class indicating that this text node is a clickable.
-      this.$element.addClass("clickable");
-    }
-
-    // optionally add new css classes
-    if (this.component.classes && this.component.classes.length) {
-      this.$element.addClass(this.component.classes.join(" "))
-    }
-
-    // optionally add tooltip as title text
-    if (this.component.tooltip) {
-      this.$element.attr("title", this.component.tooltip)
-    }
-  }
-
-  /**
-   * @return {jQuery} The most outer element.
-   */
-  InteractiveComponent.prototype.getViewContainer = function() {
-    return this.$element;
-  };
-
-  /**
-   * @return {Object} Serialized component definition.
-   */
-  InteractiveComponent.prototype.serialize = function() {
-    return this.component;
-  };
-
-  return InteractiveComponent;
-});
-
-/*global define, $ */
-
-define('common/controllers/text-controller',['require','markdown','common/inherit','common/controllers/interactive-component'],function (require) {
-
-  var markdown             = require('markdown'),
+  var markdownToHTML       = require('common/markdown-to-html'),
       inherit              = require('common/inherit'),
       InteractiveComponent = require('common/controllers/interactive-component');
 
@@ -10775,26 +11046,15 @@ define('common/controllers/text-controller',['require','markdown','common/inheri
    * @extends InteractiveComponent
    * @param {Object} component Component JSON definition.
    * @param {ScriptingAPI} scriptingAPI
+   * @param {InteracitveController} interacitveController
    */
-  function TextController(component, scriptingAPI) {
-    var text, $element, content, html,
-        openInNewWindow = 'class="opens-in-new-window" target="blank"';
+  function TextController(component, scriptingAPI, interacitveController) {
     // Call super constructor.
-    InteractiveComponent.call(this, "text", component, scriptingAPI);
+    InteractiveComponent.call(this, "text", component, scriptingAPI, interacitveController);
     // Setup custom class.
     this.$element.addClass("interactive-text");
-    // Ensure that common typography for markdown-generated content is used.
-    this.$element.addClass("markdown-typography");
     // Use markdown to parse the 'text' content.
-    text = $.isArray(this.component.text) ? this.component.text : [this.component.text];
-    $element = this.$element;
-    content = "";
-    $.each(text, function (idx, val) {
-      content += val + "\n";
-    });
-    html = markdown.toHTML(content);
-    html = html.replace(/<a(.*?)>/g, "<a$1 " + openInNewWindow + ">");
-    $element.append(html);
+    this.$element.append(markdownToHTML(this.component.text));
   }
   inherit(TextController, InteractiveComponent);
 
@@ -10826,7 +11086,7 @@ define('common/controllers/image-controller',['require','lab.config','common/inh
     var root = typeof Lab !== "undefined" ? Lab.config.actualRoot : "";
 
     // Call super constructor.
-    InteractiveComponent.call(this, "image", component, scriptingAPI);
+    InteractiveComponent.call(this, "image", component, scriptingAPI, controller);
 
     /** @private */
     this._controller = controller;
@@ -10881,10 +11141,11 @@ define('common/controllers/image-controller',['require','lab.config','common/inh
 
 /*global define, $, model */
 
-define('common/controllers/radio-controller',['common/controllers/interactive-metadata','common/validator'],function () {
+define('common/controllers/radio-controller',['common/controllers/interactive-metadata','common/validator','common/controllers/disablable'],function () {
 
-  var metadata  = require('common/controllers/interactive-metadata'),
-      validator = require('common/validator');
+  var metadata   = require('common/controllers/interactive-metadata'),
+      validator  = require('common/validator'),
+      disablable = require('common/controllers/disablable');
 
   return function RadioController(component, scriptingAPI, interactivesController) {
         // Public API.
@@ -11025,6 +11286,12 @@ define('common/controllers/radio-controller',['common/controllers/interactive-me
           };
         })(option));
       }
+
+      if (component.tooltip) {
+        $div.attr("title", component.tooltip);
+      }
+
+      disablable(controller, component);
     }
 
     // Public API.
@@ -11073,10 +11340,11 @@ define('common/controllers/radio-controller',['common/controllers/interactive-me
 
 /*global define, $, model*/
 
-define('common/controllers/slider-controller',['common/controllers/interactive-metadata','common/validator'],function () {
+define('common/controllers/slider-controller',['common/controllers/interactive-metadata','common/validator','common/controllers/disablable'],function () {
 
-  var metadata  = require('common/controllers/interactive-metadata'),
-      validator = require('common/validator');
+  var metadata   = require('common/controllers/interactive-metadata'),
+      validator  = require('common/validator'),
+      disablable = require('common/controllers/disablable');
 
   return function SliderController(component, scriptingAPI, interactivesController) {
     var min, max, steps, propertyName,
@@ -11246,6 +11514,12 @@ define('common/controllers/slider-controller',['common/controllers/interactive-m
       displayValue = scriptingAPI.makeFunctionInScriptContext('value', displayValue);
     }
 
+    if (component.tooltip) {
+      $elem.attr("title", component.tooltip);
+    }
+
+    disablable(controller, component);
+
     // Apply custom width and height settings.
     // Also not that we set dimensions of the most outer container, not slider.
     // Slider itself will always follow dimensions of container DIV.
@@ -11268,49 +11542,148 @@ define('common/controllers/slider-controller',['common/controllers/interactive-m
   };
 });
 
+define('common/views/select-box-view',[],function() {
+
+  return function SelectBoxView(opts) {
+    var id       = opts.id,
+        options  = opts.options,
+        label    = opts.label,
+        labelOn  = opts.labelOn,
+        onChange = opts.onChange,
+        ignoreChangeEvent,
+        $select,
+        $wrapper;
+
+    function changeHandler() {
+      var index;
+
+      if (ignoreChangeEvent) {
+        // Ignore change event caused by the pulldown menu update. It prevents from infinite loop of
+        // pulldown - property updates.
+        ignoreChangeEvent = false;
+        return;
+      }
+      index = $(this).prop('selectedIndex');
+      onChange(options[index], index);
+    }
+
+    return {
+
+      update: function(selection) {
+        // Set flag indicating that change event should be ignored by our own change listener. It
+        // prevents from infinite loop like: pulldown update => property update => pulldown update =>
+        // ... It's necessary as selectOption() call below will trigger change event of original
+        // select. It's used by selectBoxIt to update its view.
+        ignoreChangeEvent = true;
+        // Retrieve all of the SelectBoxIt methods and call selectOption(). Note that we have to call
+        // .toString() as numeric values are interpreted as option index by selectBoxIt. See:
+        // http://gregfranko.com/jquery.selectBoxIt.js/#Methods
+        $select.data("selectBox-selectBoxIt").selectOption(selection.toString());
+      },
+
+      render: function(parent) {
+        var $options = [],
+            $option, $label, ulWidth, arrowWidth, boxWidth;
+
+        $select = $('<select>');
+
+        options.forEach(function(option) {
+          $option = $('<option>').html(option.text);
+          $options.push($option);
+          if (option.disabled) {
+            $option.prop("disabled", option.disabled);
+          }
+          if (option.selected) {
+            $option.prop("selected", option.selected);
+          }
+          // allow pulldowns to have falsy values, such as 0.
+          if (option.value !== undefined) {
+            $option.prop("value", option.value);
+          }
+          $select.append($option);
+        });
+
+        $select.change(changeHandler);
+
+        // First append label to wrapper, then <select>
+        $wrapper = $('<div>').attr('id', id);
+        if (label) {
+          $label = $("<span>").text(label);
+          $label.addClass("label");
+          $label.addClass(labelOn === "top" ? "on-top" : "on-left");
+          $wrapper.append($label);
+        }
+        $wrapper.append($select);
+
+        // Must call selectBoxIt after appending to wrapper
+        $select.selectBoxIt();
+
+        $wrapper.find(".selectboxit").css("width", "auto");
+
+        // SelectBoxIt assumes that all select boxes are always going to have a width
+        // set in CSS (default 220px). This doesn't work for us, as we don't know how
+        // wide the content is going to be. Instead we have to measure the needed width
+        // of the internal ul list, and use that to define the width of the select box.
+        //
+        // This issue has been raised in SelectBoxIt:
+        // https://github.com/gfranko/jquery.selectBoxIt.js/issues/129
+        //
+        // However, this is still problematic because we haven't added the element to
+        // the page yet. This $().measure function allows us to embed the element hidden
+        // on the page first to allow us to check the required width.
+
+        // ems for a given pixel size
+        function pxToEm(input) {
+          var emSize = parseFloat(parent.css("font-size"));
+          return input / emSize;
+        }
+
+        function width() {
+          return this.width();
+        }
+
+        ulWidth    = pxToEm($wrapper.measure(width, "ul", parent));
+        arrowWidth = pxToEm($wrapper.measure(width, ".selectboxit-arrow-container", parent));
+        boxWidth   = ulWidth + arrowWidth + 0.3;
+
+        $wrapper.find(".selectboxit").css("width", boxWidth + "em");
+        $wrapper.find(".selectboxit-text").css("max-width", ulWidth + "em");
+
+        // set hidden select box dimensions too, for mobile devices
+        $wrapper.find(".selectboxit-container select").css({ width: boxWidth, height: "100%" });
+
+        return $wrapper;
+      }
+    };
+  };
+});
+
 /*global require, define, $, model */
 
-define('common/controllers/pulldown-controller',['common/controllers/interactive-metadata','common/validator','common/jquery-plugins'],function () {
+define('common/controllers/pulldown-controller',['common/controllers/interactive-metadata','common/validator','common/controllers/disablable','common/views/select-box-view','common/jquery-plugins'],function () {
 
-  var metadata  = require('common/controllers/interactive-metadata'),
-      validator = require('common/validator');
+  var metadata      = require('common/controllers/interactive-metadata'),
+      validator     = require('common/validator'),
+      disablable    = require('common/controllers/disablable'),
+      SelectBoxView = require('common/views/select-box-view');
+
       require('common/jquery-plugins');
 
   return function PulldownController(component, scriptingAPI, interactivesController) {
         // Public API.
     var controller,
-        // DOM elements.
-        $wrapper, $pulldown, $option,
         // Options definitions from component JSON definition.
         options,
-        // List of jQuery objects wrapping <select> elements.
-        $options = [],
-        // Indicates which change event are caused by the user and which are
-        // caused by select box update after property change.
-        ignoreChangeEvent = false;
+        view,
+        $element;
 
-    // Updates pulldown using model property. Used in modelLoadedCallback.
-    // Make sure that this function is only called when:
-    // a) model is loaded,
-    // b) pulldown is bound to some property.
     function updatePulldown() {
-      // Set flag indicating that change event should be ignored by our own
-      // change listener. It prevents from infinite loop like: pulldown update
-      // => property update => pulldown update => ...
-      // It's necessary as selectOption() call below will trigger change event
-      // of original select. It's used by selectBoxIt to update its view.
-      ignoreChangeEvent = true;
-      // Retrieve all of the SelectBoxIt methods and call selectOption(). Note
-      // that we have to call .toString() as numeric values are interpreted as
-      // option index by selectBoxIt. See:
-      // http://gregfranko.com/jquery.selectBoxIt.js/#Methods
-      $pulldown.data("selectBox-selectBoxIt").selectOption(model.get(component.property).toString());
+      view.update(model.properties[component.property]);
     }
 
     function initialize() {
       var parent = interactivesController.interactiveContainer,
-          $label, ulWidth, arrowWidth, boxWidth,
-          i, len, option;
+          i, len;
 
       // Validate component definition, use validated copy of the properties.
       component = validator.validateCompleteness(metadata.pulldown, component);
@@ -11320,95 +11693,34 @@ define('common/controllers/pulldown-controller',['common/controllers/interactive
         options[i] = validator.validateCompleteness(metadata.pulldownOption, options[i]);
       }
 
-      $pulldown = $('<select>');
-
-      for (i = 0, len = options.length; i < len; i++) {
-        option = options[i];
-        $option = $('<option>').html(option.text);
-        $options.push($option);
-        if (option.disabled) {
-          $option.prop("disabled", option.disabled);
-        }
-        if (option.selected) {
-          $option.prop("selected", option.selected);
-        }
-        // allow pulldowns to have "falsy" values (e.g. "0")
-        if (typeof option.value !== 'undefined') {
-          $option.prop("value", option.value);
-        }
-        $pulldown.append($option);
-      }
-
-      $pulldown.change(function() {
-        if (ignoreChangeEvent) {
-          // Ignore change event caused by the pulldown menu update. It
-          // prevents from infinite loop of pulldown - property updates.
-          ignoreChangeEvent = false;
-          return;
-        }
-
-        var index = $(this).prop('selectedIndex'),
-            action = component.options[index].action,
-            value = component.options[index].value;
-
-        if (action){
-          scriptingAPI.makeFunctionInScriptContext(action)();
-        } else if (component.options[index].loadModel){
-          model.stop();
-          interactivesController.loadModel(component.options[index].loadModel);
-        } else if (value !== undefined) {
-          model.set(component.property, value);
+      view = new SelectBoxView({
+        id: component.id,
+        options: options,
+        label: component.label,
+        labelOn: component.labelOn,
+        onChange: function(option) {
+          if (option.action) {
+            scriptingAPI.makeFunctionInScriptContext(option.action)();
+          } else if (option.loadModel) {
+            model.stop();
+            interactivesController.loadModel(option.loadModel);
+          } else if (option.value !== undefined) {
+            model.properties[component.property] = option.value;
+          }
         }
       });
 
-      $wrapper = $('<div>')
-        .attr('id', component.id)
+      $element = view.render(parent);
+
+      $element
         .addClass("interactive-pulldown")
         .addClass("component");
 
-      if (component.label) {
-        $label = $("<span>").text(component.label);
-        $label.addClass("label");
-        $label.addClass(component.labelOn === "top" ? "on-top" : "on-left");
-        $wrapper.append($label);
+      if (component.tooltip) {
+        $element.attr("title", component.tooltip);
       }
 
-      // Add $pulldown to a wrapping div. This way $pulldown.selectBoxIt() will create
-      // a selectBox element which will also be in the span, and then we can return
-      // this element to be embedded in the interactive
-      $wrapper.append($pulldown);
-
-      $pulldown.selectBoxIt();
-
-      $wrapper.find(".selectboxit").css("width", "auto");
-
-      // SelectBoxIt assumes that all select boxes are always going to have a width
-      // set in CSS (default 220px). This doesn't work for us, as we don't know how
-      // wide the content is going to be. Instead we have to measure the needed width
-      // of the internal ul list, and use that to define the width of the select box.
-      //
-      // This issue has been raised in SelectBoxIt:
-      // https://github.com/gfranko/jquery.selectBoxIt.js/issues/129
-      //
-      // However, this is still problematic because we haven't added the element to
-      // the page yet. This $().measure function allows us to embed the element hidden
-      // on the page first to allow us to check the required width.
-      ulWidth    = $wrapper.measure(function(){ return this.width(); }, "ul", parent );
-      arrowWidth = $wrapper.measure(function(){ return this.width(); }, ".selectboxit-arrow-container", parent );
-
-      // ems for a given pixel size
-      function pxToEm(input) {
-        var emSize = parseFloat(parent.css("font-size"));
-        return (input / emSize);
-      }
-
-      boxWidth = (pxToEm(ulWidth+arrowWidth)+0.3)+"em";
-
-      $wrapper.find(".selectboxit").css("width", boxWidth);
-      $wrapper.find(".selectboxit-text").css("max-width", pxToEm(ulWidth)+"em");
-
-      // set hidden select box dimensions too, for mobile devices
-      $wrapper.find(".selectboxit-container select").css({width: boxWidth, height: "100%"});
+      disablable(controller, component);
     }
 
     // Public API.
@@ -11417,7 +11729,7 @@ define('common/controllers/pulldown-controller',['common/controllers/interactive
         // Connect pulldown with model's property if its name is defined.
         if (component.property !== undefined) {
           // Register listener for property.
-          model.addPropertiesListener([component.property], updatePulldown);
+          model.addObserver(component.property, updatePulldown);
           // Perform initial pulldown setup.
           updatePulldown();
         }
@@ -11425,17 +11737,18 @@ define('common/controllers/pulldown-controller',['common/controllers/interactive
 
       // Returns view container.
       getViewContainer: function () {
-        return $wrapper;
+        return $element;
       },
 
       // Returns serialized component definition.
       serialize: function () {
-        var i, len;
+        var i, len, $options;
         if (component.property === undefined) {
           // When property binding is not defined, we need to keep track
           // which option is currently selected.
+          $options = $element.find('option');
           for (i = 0, len = options.length; i < len; i++) {
-            if ($options[i].prop("selected")) {
+            if ($($options[i]).prop("selected")) {
               options[i].selected = true;
             } else {
               delete options[i].selected;
@@ -11455,72 +11768,119 @@ define('common/controllers/pulldown-controller',['common/controllers/interactive
   };
 });
 
-/*global define $ model */
+define('common/views/numeric-output-view',[],function () {
 
-define('common/controllers/numeric-output-controller',['common/controllers/interactive-metadata','common/validator'],function () {
+  return function NumericOutputView(opts) {
+
+    var id    = opts.id,
+        label = opts.label,
+        units = opts.unit,
+        $numericOutput,
+        $label,
+        $output,
+        $number,
+        $units;
+
+    return {
+      update: function(value) {
+        $number.text(value);
+      },
+
+      updateLabel: function(value) {
+        $label.html(value);
+      },
+
+      updateUnits: function(value) {
+        $units.html(value);
+      },
+
+      render: function() {
+        $numericOutput = $('<div class="numeric-output">');
+        $label  = $('<span class="label"></span>');
+        $output = $('<span class="output"></span>');
+        $number = $('<span class="value"></span>');
+        $units  = $('<span class="units"></span>');
+
+        if (label) { $label.html(label); }
+        if (units) { $units.html(units); }
+
+        $numericOutput.attr('id', id)
+          .append($label)
+          .append($output
+            .append($number)
+            .append($units)
+          );
+
+        return $numericOutput;
+      }
+    };
+  };
+});
+
+/*global define, $, model */
+
+define('common/controllers/numeric-output-controller',['common/controllers/interactive-metadata','common/validator','common/views/numeric-output-view'],function () {
 
   var metadata  = require('common/controllers/interactive-metadata'),
-      validator = require('common/validator');
+      validator = require('common/validator'),
+      NumericOutputView = require('common/views/numeric-output-view');
 
-  return function NumericOutputController(component, scriptingAPI) {
+  return function NumericOutputController(component, scriptingAPI, interactivesController) {
     var propertyName,
         label,
         units,
         displayValue,
-        $numericOutput,
-        $label,
-        $number,
-        $units,
+        view,
+        $element,
         propertyDescription,
-        controller,
+        controller;
 
-        renderValue = function () {
-          var value = model.get(propertyName);
-          if (displayValue) {
-            $number.text(displayValue(value));
-          } else {
-            $number.text(value);
-          }
-        };
+    function renderValue() {
+      var value = model.properties[propertyName];
+
+      if (displayValue) {
+        value = displayValue(value);
+      }
+      view.update(value);
+    }
 
     //
     // Initialization.
     //
     // Validate component definition, use validated copy of the properties.
     component = validator.validateCompleteness(metadata.numericOutput, component);
+
     propertyName = component.property;
-    label = component.label;
     units = component.units;
+    label = component.label;
     displayValue = component.displayValue;
 
-    // Setup view.
-    $label  = $('<span class="label"></span>');
-    $output = $('<span class="output"></span>');
-    $number = $('<span class="value"></span>');
-    $units  = $('<span class="units"></span>');
-    if (label) { $label.html(label); }
-    if (units) { $units.html(units); }
-    $numericOutput = $('<div class="numeric-output">').attr('id', component.id)
-        .append($label)
-        .append($output
-          .append($number)
-          .append($units)
-        );
+    view = new NumericOutputView({
+      id: component.id,
+      units: units,
+      label: label
+    });
+
+    $element = view.render();
 
     // Each interactive component has to have class "component".
-    $numericOutput.addClass("component");
+    $element.addClass("component");
 
     // Add class defining component orientation - "horizontal" or "vertical".
-    $numericOutput.addClass(component.orientation);
+    $element.addClass(component.orientation);
 
     // Custom dimensions.
-    $numericOutput.css({
+    $element.css({
       width: component.width,
       height: component.height
     });
 
     if (displayValue) {
       displayValue = scriptingAPI.makeFunctionInScriptContext('value', displayValue);
+    }
+
+    if (component.tooltip) {
+      $element.attr("title", component.tooltip);
     }
 
     // Public API.
@@ -11530,17 +11890,17 @@ define('common/controllers/numeric-output-controller',['common/controllers/inter
         if (propertyName) {
           propertyDescription = model.getPropertyDescription(propertyName);
           if (propertyDescription) {
-            if (!label) { $label.html(propertyDescription.getLabel()); }
-            if (!units) { $units.html(propertyDescription.getUnitAbbreviation()); }
+            if (!label) { view.updateLabel(propertyDescription.getLabel()); }
+            if (!units) { view.updateUnits(propertyDescription.getUnitAbbreviation()); }
           }
           renderValue();
-          model.addPropertiesListener([propertyName], renderValue);
+          model.addObserver(propertyName, renderValue);
         }
       },
 
       // Returns view container. Label tag, as it contains checkbox anyway.
       getViewContainer: function () {
-        return $numericOutput;
+        return $element;
       },
 
       // Returns serialized component definition.
@@ -11556,20 +11916,70 @@ define('common/controllers/numeric-output-controller',['common/controllers/inter
   };
 });
 
+/*global define: false console: true */
+
+define('iframe-phone/structured-clone',['require'],function (require) {
+  var featureSupported = false,
+      publicAPI = {};
+
+  function isStructuredCloneSupported() {
+    var result = 0;
+
+    if (!!window.postMessage) {
+      try {
+        // Safari 5.1 will sometimes throw an exception and sometimes won't, lolwut?
+        // When it doesn't we capture the message event and check the
+        // internal [[Class]] property of the message being passed through.
+        // Safari will pass through DOM nodes as Null iOS safari on the other hand
+        // passes it through as DOMWindow, gotcha.
+        window.onmessage = function(e){
+          var type = Object.prototype.toString.call(e.data);
+          result = (type.indexOf("Null") != -1 || type.indexOf("DOMWindow") != -1) ? 1 : 0;
+          featureSupported = {
+            'structuredClones': result
+          };
+        };
+        // Spec states you can't transmit DOM nodes and it will throw an error
+        // postMessage implimentations that support cloned data will throw.
+        window.postMessage(document.createElement("a"),"*");
+      } catch(e) {
+        // BBOS6 throws but doesn't pass through the correct exception
+        // so check error message
+        result = (e.DATA_CLONE_ERR || e.message == "Cannot post cyclic structures.") ? 1 : 0;
+        featureSupported = {
+          'structuredClones': result
+        };
+      }
+    }
+  }
+
+  isStructuredCloneSupported();
+
+  function supported() {
+    return featureSupported && featureSupported.structuredClones > 0;
+  }
+
+  publicAPI.supported = supported;
+
+  return publicAPI;
+
+});
+
 /*global define: false */
 /*jshint boss: true */
 
-define('common/parent-message-controller',[],function() {
+define('common/parent-message-controller',['require','iframe-phone/structured-clone'],function(require) {
 
   var parentOrigin,
       listeners = {},
+      structuredClone = require('iframe-phone/structured-clone'),
       controller;
 
   function postToTarget(message, target) {
     // See http://dev.opera.com/articles/view/window-postmessage-messagechannel/#crossdoc
     //     https://github.com/Modernizr/Modernizr/issues/388
     //     http://jsfiddle.net/ryanseddon/uZTgD/2/
-    if (Lab.structuredClone.supported()) {
+    if (structuredClone.supported()) {
       window.parent.postMessage(message, target);
     } else {
       window.parent.postMessage(JSON.stringify(message), target);
@@ -11787,7 +12197,11 @@ define('common/benchmark/benchmark',[],function () {
         "Win64; IA64": "64",
         "Win64; x64":  "64"
       },
-      average_row;
+      average_row,
+      // Based on: http://detectmobilebrowsers.com/ + ipad|android|playbook|silk as we treat
+      // tablets as mobile devices.
+      isMobile = (function(a) { return /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|ipad|android|playbook|silk|iris|kindle|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(a)||/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0,4)); })(navigator.userAgent||navigator.vendor||window.opera);
+
 
   function what_browser() {
     var chromematch  = / (Chrome)\/(.*?) /,
@@ -12092,6 +12506,9 @@ define('common/benchmark/benchmark',[],function () {
     what_browser: function() {
       return what_browser();
     },
+    get isMobile() {
+      return isMobile;
+    },
     // run benchmarks, add row to table, update averages row
     run: function(benchmarks_to_run, benchmarks_table, resultsCallback, start_callback, end_callback) {
       run(benchmarks_to_run, benchmarks_table, resultsCallback, start_callback, end_callback);
@@ -12168,14 +12585,15 @@ define('common/controllers/parent-message-api',['require','common/parent-message
 
     // on message 'runBenchmarks' call controller.runBenchmarks
     parentMessageController.addListener('runBenchmarks', function() {
-      var modelController;
+      var modelController, benchmarks;
       if (controller && controller.getModelController) {
         modelController = controller.getModelController();
-        benchmark.bench(modelController.benchmarks, function(results) {
+        benchmarks = controller.benchmarks.concat(modelController.benchmarks);
+        benchmark.bench(benchmarks, function(results) {
           console.log(results);
           parentMessageController.post({
             'type':   'returnBenchmarks',
-            'values': { 'results': results, 'benchmarks': modelController.benchmarks }
+            'values': { 'results': results, 'benchmarks': benchmarks }
           }, function() {}, function() {});
         });
       }
@@ -13380,43 +13798,104 @@ define('common/controllers/playback-controller',['require','common/inherit','com
     this._showClock = true;
     /** @private */
     this._timeDesc = null;
-    /** @private */
-    this._$reset = $('<a class="reset"><i class="icon-step-backward"></i></a>').appendTo(this.$element);
-    /** @private */
-    this._$playPause = $('<a class="play-pause"><i class="icon-play"></i><i class="icon-pause"></i></a>').appendTo(this.$element);
-    /** @private */
-    this._$timeDisplay = $('<span class="time-display">').appendTo(this._$playPause);
 
-    /** @private */
-    this._$stepBackward = $('<a class="step"><i class="icon-backward"></i></a>').insertBefore(this._$playPause);
-    /** @private */
-    this._$stepForward = $('<a class="step"><i class="icon-forward"></i></a>').insertAfter(this._$playPause);
-
-    this._$reset.after('<div class="spacer reset">');
-    this._$stepBackward.after('<div class="spacer step">');
-    this._$stepForward.before('<div class="spacer step">');
-
-    // Bind click handlers.
-    this._$reset.on("click", function () {
-      scriptingAPI.api.reset();
-    });
-    this._$playPause.on("click", $.proxy(function () {
-      if (this._modelStopped) {
-        if (this._modelPlayable) {
-          scriptingAPI.api.start();
-        }
-      } else {
-        scriptingAPI.api.stop();
-      }
-    }, this));
-    this._$stepBackward.on("click", function () {
-      scriptingAPI.api.stepBack();
-    });
-    this._$stepForward.on("click", function () {
-      scriptingAPI.api.stepForward();
-    });
+    this._scriptingAPI = scriptingAPI.api;
   }
   inherit(PlaybackController, InteractiveComponent);
+
+  // TODO: make 2 delegate classes instead of using this pattern!
+  PlaybackController.prototype._createControlsFor = {
+    video: function () {
+      var scriptingAPI = this._scriptingAPI;
+
+      this.$element.removeClass('text').addClass('video');
+
+      /** @private */
+      this._$reset = $('<a class="reset"><i class="icon-step-backward"></i></a>').appendTo(this.$element);
+      /** @private */
+      this._$playPause = $('<a class="play-pause"><i class="icon-play"></i><i class="icon-pause"></i></a>').appendTo(this.$element);
+      /** @private */
+      this._$timeDisplay = $('<span class="time-display">').appendTo(this._$playPause);
+
+      /** @private */
+      this._$stepBackward = $('<a class="step"><i class="icon-backward"></i></a>').insertBefore(this._$playPause);
+      /** @private */
+      this._$stepForward = $('<a class="step"><i class="icon-forward"></i></a>').insertAfter(this._$playPause);
+
+      this._$reset.after('<div class="spacer reset">');
+      this._$stepBackward.after('<div class="spacer step">');
+      this._$stepForward.before('<div class="spacer step">');
+
+      // Bind click handlers.
+      this._$reset.on("click", scriptingAPI.reset);
+
+      this._$playPause.on("click", $.proxy(function () {
+        if (this._modelStopped) {
+          if (this._modelPlayable) {
+            scriptingAPI.start();
+          }
+        } else {
+          scriptingAPI.stop();
+        }
+      }, this));
+
+      this._$stepBackward.on("click", scriptingAPI.stepBack);
+      this._$stepForward.on("click", scriptingAPI.stepForward);
+
+      this._$playPause.attr("title", "Start / pause the simulation");
+      this._$reset.attr("title", "Reset the simulation");
+      this._$stepBackward.attr("title", "Step back");
+      this._$stepForward.attr("title", "Step forward");
+    },
+
+    text: function () {
+      var scriptingAPI = this._scriptingAPI;
+
+      this.$element.removeClass('video').addClass('text');
+
+      this._$start = $('<button class-="start">Start</button>').appendTo(this.$element);
+      this._$stop = $('<button class="stop">Stop</button>').appendTo(this.$element);
+      this._$reset = $('<button class="reset">Reset</button>').appendTo(this.$element);
+
+      // Bind click handlers
+      this._$reset.on('click', scriptingAPI.reset);
+      this._$start.on('click', scriptingAPI.start);
+      this._$stop.on('click', scriptingAPI.stop);
+
+      this._$start.attr("title", "Start the simulation or data collection");
+      this._$stop.attr("title",  "Stop the simulation or data collection");
+      this._$reset.attr("title", "Reset the simulation or data collection");
+    }
+  };
+
+  PlaybackController.prototype._updateButtonStatesFor = {
+    video: function () {
+      if (this._modelStopped) {
+        this._$playPause.removeClass("playing");
+      } else {
+        this._$playPause.addClass("playing");
+      }
+
+      if (this._modelPlayable) {
+        this._$playPause.removeClass("disabled");
+      } else {
+        this._$playPause.addClass("disabled");
+      }
+    },
+
+    text: function () {
+      if ( ! this._modelPlayable) {
+        this._$start.addClass("disabled");
+        this._$stop.addClass("disabled");
+      } else if (this._modelStopped) {
+        this._$start.removeClass("disabled");
+        this._$stop.addClass("disabled");
+      } else {
+        this._$start.addClass("disabled");
+        this._$stop.removeClass("disabled");
+      }
+    }
+  };
 
   /**
    * Updates play / pause button.
@@ -13424,19 +13903,10 @@ define('common/controllers/playback-controller',['require','common/inherit','com
    */
   PlaybackController.prototype._simulationStateChanged = function () {
     this._modelStopped = model.isStopped();
-    if (this._modelStopped) {
-      this._$playPause.removeClass("playing");
-    } else {
-      this._$playPause.addClass("playing");
-    }
-
     // Coerce undefined to *true* for models that don't have isPlayable property
     this._modelPlayable = model.properties.isPlayable === false ? false : true;
-    if (this._modelPlayable) {
-      this._$playPause.removeClass("disabled");
-    } else {
-      this._$playPause.addClass("disabled");
-    }
+
+    this._updateButtonStatesFor[this.controlButtonStyle].call(this);
   };
 
   /**
@@ -13444,6 +13914,10 @@ define('common/controllers/playback-controller',['require','common/inherit','com
    * @private
    */
   PlaybackController.prototype._showClockChanged = function () {
+    if (this.controlButtonStyle !== 'video') {
+      return;
+    }
+
     this._showClock = model.get("showClock");
     if (this._showClock) {
       this._$playPause.addClass("with-clock");
@@ -13461,39 +13935,84 @@ define('common/controllers/playback-controller',['require','common/inherit','com
    * @private
    */
   PlaybackController.prototype._timeChanged = function () {
-    if (!this._showClock) {
+    if (!this._showClock || this.controlButtonStyle !== 'video') {
       return;
     }
     this._$timeDisplay.html(this._timeDesc.format(model.get("displayTime")));
   };
 
+
+  PlaybackController.prototype._updateControlButtonChoicesFor = {
+    video: function (mode) {
+      var $buttons;
+
+      if (!mode) { // mode === "" || mode === null || mode === false
+        this.$element.find(".step, .reset, .play-pause").addClass("hidden");
+      } else if (mode === "play") {
+        this.$element.find(".play-pause").removeClass("hidden");
+        this.$element.find(".spacer, .step, .reset").addClass("hidden");
+      } else if (mode === "reset") {
+        this.$element.find(".reset").removeClass("hidden");
+        this.$element.find(".spacer, .play-pause, .step").addClass("hidden");
+      } else if (mode === "play_reset") {
+        this.$element.find(".spacer, .play-pause, .reset").removeClass("hidden");
+        this.$element.find(".step").addClass("hidden");
+      } else if (mode === "play_reset_step") {
+        this.$element.find(".spacer, .step, .reset, .play-pause").removeClass("hidden");
+      }
+      $buttons = this.$element.find("a");
+      $buttons.removeClass("first");
+      $buttons.removeClass("last");
+      $buttons = $buttons.not(".hidden");
+      $buttons.first().addClass("first");
+      $buttons.last().addClass("last");
+    },
+
+    text: function (mode) {
+      if (!mode) { // mode === "" || mode === null || mode === false
+        this.$element.find(".reset, .start, .stop").addClass("hidden");
+      } else if (mode === "play") {
+        this.$element.find(".start, .stop").removeClass("hidden");
+        this.$element.find(".reset").addClass("hidden");
+      } else if (mode === "reset") {
+        this.$element.find(".reset").removeClass("hidden");
+        this.$element.find(".start, .stop").addClass("hidden");
+      } else if (mode === "play_reset") {
+        this.$element.find(".start, .stop, .reset").removeClass("hidden");
+      } else {
+        // no play_reset_step support for text style buttons, yet.
+        throw new Error("controlButtons option \"" + mode +
+          "\" is not understood or is not compatible with controlButtonStyle \"text\"");
+      }
+    }
+  },
+
   /**
-   * Updates playback controller mode ("play", "play_reset" or "play_reset_step").
+   * Updates playback controller mode (none, "play", "play_reset" or "play_reset_step").
    * @private
    */
-  PlaybackController.prototype._displayModeChanged = function () {
-    var mode = model.get("controlButtons"),
-        $buttons;
-    if (!mode) { // mode === "" || mode === null || mode === false
-      this.$element.find(".step, .reset, .play-pause").addClass("hidden");
-    } else if (mode === "play") {
-      this.$element.find(".play-pause").removeClass("hidden");
-      this.$element.find(".spacer, .step, .reset").addClass("hidden");
-    } else if (mode === "reset") {
-      this.$element.find(".reset").removeClass("hidden");
-      this.$element.find(".spacer, .play-pause, .step").addClass("hidden");
-    } else if (mode === "play_reset") {
-      this.$element.find(".spacer, .play-pause, .reset").removeClass("hidden");
-      this.$element.find(".step").addClass("hidden");
-    } else if (mode === "play_reset_step") {
-      this.$element.find(".spacer, .step, .reset, .play-pause").removeClass("hidden");
+  PlaybackController.prototype._controlButtonChoicesChanged = function () {
+    var mode = model.properties.controlButtons;
+    this._updateControlButtonChoicesFor[this.controlButtonStyle].call(this, mode);
+  };
+
+  /**
+   * Updates playback controller style (currently, "video" or "text")
+   * @private
+   */
+  PlaybackController.prototype._controlButtonStyleChanged = function () {
+    // To handle model types whose metadata don't define controlButtonStyle, default to 'video' here
+    var style = model.properties.controlButtonStyle || 'video';
+    if (this.controlButtonStyle === style) {
+      return;
     }
-    $buttons = this.$element.find("a");
-    $buttons.removeClass("first");
-    $buttons.removeClass("last");
-    $buttons = $buttons.not(".hidden");
-    $buttons.first().addClass("first");
-    $buttons.last().addClass("last");
+    this.controlButtonStyle = style;
+    this.$element.empty();
+
+    if (!this._createControlsFor[style]) {
+      throw new Error("Unknown controlButtonStyle \"" + style + "\"");
+    }
+    this._createControlsFor[style].call(this);
   };
 
   /**
@@ -13504,14 +14023,19 @@ define('common/controllers/playback-controller',['require','common/inherit','com
     // Use event namespace to let multiple playbacks work fine with one model.
     model.on('play.' + this.component.id, $.proxy(this._simulationStateChanged, this));
     model.on('stop.' + this.component.id, $.proxy(this._simulationStateChanged, this));
-    model.addPropertiesListener(["isPlayable"], $.proxy(this._simulationStateChanged, this));
-    this._simulationStateChanged();
-    model.addPropertiesListener(["showClock"], $.proxy(this._showClockChanged, this));
-    model.addPropertiesListener(["displayTime"], $.proxy(this._timeChanged, this));
-    this._showClockChanged();
+    model.addObserver('isPlayable', $.proxy(this._simulationStateChanged, this));
+
+    model.addObserver('showClock', $.proxy(this._showClockChanged, this));
+    model.addObserver('displayTime', $.proxy(this._timeChanged, this));
+
     // Update display mode (=> buttons are hidden or visible).
-    model.addPropertiesListener(["controlButtons"], $.proxy(this._displayModeChanged, this));
-    this._displayModeChanged();
+    model.addObserver('controlButtons', $.proxy(this._controlButtonChoicesChanged, this));
+    model.addObserver('controlButtonStyle', $.proxy(this._controlButtonStyleChanged, this));
+
+    this._controlButtonStyleChanged();
+    this._controlButtonChoicesChanged();
+    this._simulationStateChanged();
+    this._showClockChanged();
   };
 
   return PlaybackController;
@@ -13530,16 +14054,487 @@ define('common/controllers/div-controller',['require','common/inherit','common/c
    * function.
    * @param {Object} component Component JSON definition.
    * @param {ScriptingAPI} scriptingAPI
+   * @param {InteractiveController} controller
    */
-  function DivController(component, scriptingAPI) {
-
+  function DivController(component, scriptingAPI, controller) {
     // Call super constructor.
-    InteractiveComponent.call(this, "div", component);
-
+    InteractiveComponent.call(this, "div", component, scriptingAPI, controller);
+    this.$element.append(component.content);
   }
   inherit(DivController, InteractiveComponent);
 
   return DivController;
+});
+
+/*global define: false, d3: false */
+/**
+ * This module provides event dispatch based on d3.dispatch:
+ * https://github.com/mbostock/d3/wiki/Internals#wiki-d3_dispatch
+ *
+ * The main improvement over raw d3.dispatch is that this wrapper provides
+ * event batching. You can start batch mode (.startBatch()) and while it is
+ * active events won't be dispatched immediately. They will be dispatched
+ * at the end of batch mode (.endBatch()) or when you call .flush() method.
+ *
+ * Note that there is one *significant limitation*: arguments passed during
+ * event dispatching will be lost! All events will be merged into single
+ * event without any argument. Please keep this in mind while using this module.
+ *
+ * e.g.
+ *   dispatch.on("someEvent", function(arg) { console.log(arg); });
+ *   dispatch.someEvent(123);     // console output: 123
+ *   dispatch.someEvent("test");  // console output: "test"
+ * However...
+ *   dispatch.startBatch();
+ *   dispatch.someEvent(123);
+ *   dispatch.someEvent("test");
+ *   dispatch.endBatch();         // console output: undefined (!)
+ *
+ * Rest of the interface is exactly the same like in d3.dispatch (.on()).
+ * Under the hood delegation to d3.dispatch instance is used.
+ */
+define('common/dispatch-support',[],function() {
+
+  // Converts arguments object to regular array.
+  function argsToArray(args) {
+    return [].slice.call(args);
+  }
+
+  return function DispatchSupport() {
+    var api,
+        d3dispatch,
+        types,
+
+        batchMode = false,
+        suppressedEvents = d3.set();
+
+    function init(newTypes) {
+      var i, len;
+
+      types = newTypes;
+
+      d3dispatch = d3.dispatch.apply(null, types);
+
+      // Provide wrapper around typical calls like dispatch.someEvent().
+      for (i = 0, len = types.length; i < len; i++) {
+        api[types[i]] = dispatchEvent(types[i]);
+      }
+    }
+
+    function dispatchEvent(name) {
+      return function () {
+        if (!batchMode) {
+          d3dispatch[name].apply(d3dispatch, arguments);
+        } else {
+          suppressedEvents.add(name);
+        }
+      };
+    }
+
+    function delegate(funcName) {
+      return function () {
+        d3dispatch[funcName].apply(d3dispatch, arguments);
+      };
+    }
+
+    // Public API.
+    api = {
+      // Copy d3.dispatch API:
+
+      /**
+       * Adds or removes an event listener for the specified type. Please see:
+       * https://github.com/mbostock/d3/wiki/Internals#wiki-dispatch_on
+       */
+      on: delegate("on"),
+
+      // New API specific for Lab DispatchSupport:
+
+      mixInto: function(target) {
+        target.on = api.on;
+        target.suppressEvents = api.suppressEvents;
+      },
+
+      /**
+       * Adds new event types. Old event types are still supported, but
+       * all previously registered listeners will be removed!
+       *
+       * e.g. dispatch.addEventTypes("newEvent", "anotherEvent")
+       */
+      addEventTypes: function () {
+        if (arguments.length) {
+          init(types.concat(argsToArray(arguments)));
+        }
+      },
+
+      /**
+       * Starts batch mode. Events won't be dispatched immediately after call.
+       * They will be merged into single event and dispatched when .flush()
+       * or .endBatch() is called.
+       */
+      startBatch: function () {
+        batchMode = true;
+      },
+
+      /**
+       * Ends batch mode and dispatches suppressed events.
+       */
+      endBatch: function () {
+        batchMode = false;
+        api.flush();
+      },
+
+      /**
+       * Dispatches suppressed events.
+       * @return {[type]} [description]
+       */
+      flush: function () {
+        suppressedEvents.forEach(function (eventName) {
+          d3dispatch[eventName]();
+        });
+        // Reset suppressed events.
+        suppressedEvents = d3.set();
+      },
+
+      /**
+       * Allows to execute some action without dispatching any events.
+       * @param {function} action
+       */
+      suppressEvents: function(action) {
+        batchMode = true;
+        action();
+        batchMode = false;
+        // Reset suppressed events without dispatching them.
+        suppressedEvents = d3.set();
+      }
+    };
+
+    init(argsToArray(arguments));
+
+    return api;
+  };
+});
+
+/*global define, $ */
+define('common/controllers/help-system',['require','common/markdown-to-html','common/dispatch-support'],function (require) {
+
+  var markdownToHTML  = require("common/markdown-to-html"),
+      DispatchSupport = require("common/dispatch-support"),
+
+      OVERLAY_MY = [
+        "center bottom",
+        "left center",
+        "center top",
+        "right center"
+      ],
+
+      OVERLAY_AT = [
+        "center top-5",
+        "right+5 center",
+        "center bottom+5",
+        "left-5 center"
+      ];
+
+  return function HelpSystem(helpTips, $container) {
+    var api,
+        dispatch = new DispatchSupport("start", "stop"),
+        isActive = false,
+        tipIdx = -1,
+        $tip,
+        $instructions,
+        overlays = [];
+
+    function showTip() {
+      var def = helpTips[tipIdx],
+          $component,
+          overlayHeight,
+          offset;
+      // Make sure that focus is active so keyboard handlers work fine.
+      $tip.focus();
+      // Update content.
+      $tip.html(markdownToHTML(def.text));
+      // Position.
+      if (def.component) {
+        $component = def.component === "model" ?
+                     $("#model-container") : $("#" + def.component).closest(".component");
+        overlayHeight = $component.outerHeight() + 10; // + 5+ 5 => take a loot at OVERLAY_AT values.
+        offset = parseFloat($tip.css("font-size"));
+        $tip.position({
+          of: $component,
+          collision: "flipfit flipfit",
+          within: $container,
+          // Arrow's height depends on font-size (as it's defined in ems).
+          my: "left-" + (offset * 4) + " top+" + offset,
+          at: "right bottom",
+          using: function(position, feedback) {
+            var eLeft  = feedback.element.left,
+                eWidth = feedback.element.width,
+                tLeft  = feedback.target.left,
+                tWidth = feedback.target.width,
+                $arrow, leftOffset;
+            $(this).css(position);
+            $arrow = $("<div>")
+              .addClass("lab-help-arrow")
+              .addClass(feedback.vertical)
+              .appendTo(this);
+            if (tLeft > eLeft) {
+              leftOffset = tLeft - eLeft + tWidth / 2;
+              leftOffset = Math.max(eWidth * 0.1, Math.min(eWidth * 0.9, leftOffset));
+              $arrow.css("left", leftOffset);
+            }
+          }
+        });
+        overlays.forEach(function ($overlay, idx) {
+          // Set custom height of left and right overlays.
+          if (idx === 1 || idx === 3) $overlay.css("height", overlayHeight);
+          $overlay.position({
+            of: $component,
+            collision: "none none",
+            my: OVERLAY_MY[idx],
+            at: OVERLAY_AT[idx]
+          });
+        });
+      } else {
+        $tip.position({
+          of: $container,
+          collision: "flipfit flipfit",
+          within: $container,
+          my: "center center",
+          at: "center center"
+        });
+        overlays.forEach(function ($overlay, idx) {
+          $overlay.position({
+            of: $container,
+            collision: "none none",
+            // Position all overlays outside the container except from one (avoid alpha channel
+            // summing).
+            my: idx ? "left top" : "center center",
+            at: idx ? "right bottom" : "center center"
+          });
+        });
+      }
+    }
+
+    api = {
+      start: function () {
+        for (var i = 0; i < 4; i++) {
+          overlays.push($('<div class="lab-help-overlay lab-help-next"></div>').appendTo($container));
+        }
+        $instructions = $('<div class="lab-help-instructions">' +
+                          '<span class="lab-help-prev btn"><</span>' +
+                          '<span class="lab-help-next">Click overlay to see next help tip</span>' +
+                          '<span class="lab-help-next btn">></span>' +
+                          '</div>').appendTo($container);
+        $container.on("click.lab-help-next", ".lab-help-next", api.next);
+        $container.on("click.lab-help-prev", ".lab-help-prev", api.prev);
+        $tip = $('<div class="lab-help-tip lab-help-next" tabindex="-1"></div>').appendTo($container);
+        $tip.on('keydown.lab-help', function(event) {
+          switch(event.keycode || event.which) {
+          case 37: // left-arrow
+            api.prev();
+            break;
+          case 39: // right-arrow
+            api.next();
+            break;
+          }
+          event.preventDefault();
+          event.stopPropagation();
+        });
+        tipIdx = -1;
+        isActive = true;
+        api.next();
+        dispatch.start();
+      },
+
+      stop: function () {
+        $tip.remove();
+        $instructions.remove();
+        overlays.forEach(function ($overlay) {
+          $overlay.remove();
+        });
+        overlays.length = 0;
+        $container.off("click.lab-help-next", ".lab-help-next");
+        $container.off("click.lab-help-prev", ".lab-help-prev");
+        isActive = false;
+        dispatch.stop();
+      },
+
+      next: function () {
+        tipIdx++;
+        if (tipIdx >= helpTips.length) {
+          api.stop();
+          return;
+        }
+        showTip();
+      },
+
+      prev: function () {
+        tipIdx--;
+        if (tipIdx < 0) {
+          api.stop();
+          return;
+        }
+        showTip();
+      },
+
+      isActive: function () {
+        return isActive;
+      }
+    };
+
+    dispatch.mixInto(api);
+
+    return api;
+  };
+});
+
+/*global define: false, $: false */
+
+/**
+ * Lab-compatible tooltips based on jQuery-UI tooltips. The custom styling is used and tooltips
+ * scale themselves according to the font-size of #responsive-content div.
+ *
+ * There is also a special algorithm for delaying tooltips. When you hover over element with
+ * tooltip, it will be shown after 2 seconds. Then if you move mouse pointer fast to another
+ * tooltip-able element, tooltip will be shown much faster. This helps user read all tooltips
+ * quickly in case of need.
+ *
+ * Implementation details:
+ *
+ * There are a few icky solutions. First of all we have to manually set font-size of tooltip
+ * container, based on #responsive content font-size, as we can't append tooltip to this div.
+ * What's more, there is no way to set font-size before positioning, so we have to position
+ * tooltip again after updating font-size (so its size too).
+ *
+ * Also algorithm for dynamical tooltips delay requires a lot of customization. jQuery-UI
+ * implementation doesn't support behavior we expect. We hide tooltip manually in 'open' callback
+ * and set interval which shows it again after calculated amount of milliseconds. Weird, but works
+ * quite fine.
+ */
+define('common/views/tooltip',['require','common/benchmark/benchmark'],function (require) {
+
+  var benchmark = require("common/benchmark/benchmark"),
+      lastClose = 0;
+
+  function tooltip($target) {
+    // Disable custom tooltips on mobile devices, as e.g. on iPad they cause that
+    // user have to tap each component twice as first tap only opens a tooltip.
+    if (benchmark.isMobile) return;
+
+    var $rc = $("#responsive-content"),
+        $tooltip = null,
+        fadeInID = null,
+        fadeOutID = null,
+        wasShown = false;
+
+    function position(target) {
+      // Update font-size using #responsive-content div font-size.
+      // Lab Interactives scaling is based on the font-size of this div.
+      var fontSize = $rc.css("font-size"),
+          vertOffset = + parseFloat(fontSize) * 0.35,
+          $posTarget = $(target).closest("[title]");
+      $tooltip.css("font-size", fontSize);
+      // Font-size of the top container changes also dimensions of various elements
+      // that are defined in ems, so calculate correct position for tooltip.
+      if (!$tooltip.is(":visible")) {
+        // Show invisible tooltip, as positioning can't work with hidden elements.
+        $tooltip.show();
+      }
+      $tooltip.position({
+        of: $posTarget,
+        collision: "flipfit flipfit",
+        within: $rc,
+        // Arrow's height depends on font-size (as it's defined in ems).
+        my: "center top+" + vertOffset,
+        at: "center bottom",
+        using: function(position, feedback) {
+          $(this).css(position);
+          // Add arrow for nicer look & feel.
+          $("<div>")
+            .addClass("ui-tooltip-arrow")
+            .addClass(feedback.vertical)
+            .addClass(feedback.horizontal)
+            .appendTo(this);
+        }
+      });
+    }
+
+    $target.tooltip({
+      show: false,
+      hide: false,
+      open: function (event, ui) {
+        var delayVal = 3 * Math.min(500, Date.now() - lastClose);
+        $tooltip = ui.tooltip;
+        position(event.originalEvent.target);
+        // Custom delayed animation. Delay value is based on the last user actions.
+        $tooltip.hide();
+        fadeInID = setTimeout(function () {
+          $tooltip.fadeIn();
+          wasShown = true;
+        }, delayVal);
+        fadeOutID = setTimeout(function () {
+          $tooltip.fadeOut();
+        }, delayVal + 5000);
+      },
+      close: function () {
+        $tooltip = null;
+        clearInterval(fadeInID);
+        clearInterval(fadeOutID);
+        if (wasShown) {
+          lastClose = Date.now();
+          wasShown = false;
+        }
+      }
+    });
+  }
+
+  return tooltip;
+});
+
+/*global define, unescape, escape */
+
+/**
+ * Cookies helper adapted from MDN pages. Original docs:
+ * https://developer.mozilla.org/en-US/docs/DOM/document.cookie
+ */
+define('common/cookies',[],function () {
+
+  return {
+    getItem: function (sKey) {
+      return unescape(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null;
+    },
+    setItem: function (sKey, sValue, vEnd, sPath, sDomain, bSecure) {
+      if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey)) { return false; }
+      var sExpires = "";
+      if (vEnd) {
+        switch (vEnd.constructor) {
+          case Number:
+            sExpires = vEnd === Infinity ? "; expires=Fri, 31 Dec 9999 23:59:59 GMT" : "; max-age=" + vEnd;
+            break;
+          case String:
+            sExpires = "; expires=" + vEnd;
+            break;
+          case Date:
+            sExpires = "; expires=" + vEnd.toGMTString();
+            break;
+        }
+      }
+      document.cookie = escape(sKey) + "=" + escape(sValue) + sExpires + (sDomain ? "; domain=" + sDomain : "") + (sPath ? "; path=" + sPath : "") + (bSecure ? "; secure" : "");
+      return true;
+    },
+    removeItem: function (sKey, sPath) {
+      if (!sKey || !this.hasItem(sKey)) { return false; }
+      document.cookie = escape(sKey) + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT" + (sPath ? "; path=" + sPath : "");
+      return true;
+    },
+    hasItem: function (sKey) {
+      return (new RegExp("(?:^|;\\s*)" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=")).test(document.cookie);
+    },
+    keys: /* optional method: you can safely remove it! */ function () {
+      var aKeys = document.cookie.replace(/((?:^|\s*;)[^\=]+)(?=;|$)|^\s*|\s*(?:\=[^;]*)?(?:\1|$)/g, "").split(/\s*(?:\=[^;]*)?;\s*/);
+      for (var nIdx = 0; nIdx < aKeys.length; nIdx++) { aKeys[nIdx] = unescape(aKeys[nIdx]); }
+      return aKeys;
+    }
+  };
 });
 
 /*global define, $ */
@@ -13563,13 +14558,13 @@ define('common/controllers/setup-banner',['lab.config','common/controllers/text-
    *  - layout definition (components location).
    * All these things are used to build the interactive banner.
    *
-   * @param {ScriptingAPI} scriptingAPI Initialized ScriptingAPI object.
+   * @param {InteractivesController} controller
    * @param {Object} interactive Interactive JSON definition.
    * @param {CreditsDialog} creditsDialog
    * @param {AboutDialog} aboutDialog
    * @param {ShareDialog} shareDialog
    */
-  return function setupBanner(scriptingAPI, interactive, creditsDialog, aboutDialog, shareDialog) {
+  return function setupBanner(controller, interactive, creditsDialog, aboutDialog, shareDialog) {
     var components = {},
         template = [],
         layout = {},
@@ -13610,7 +14605,7 @@ define('common/controllers/setup-banner',['lab.config','common/controllers/text-
         Controller = PlaybackController;
       }
 
-      components[element.id] = new Controller(element, scriptingAPI);
+      components[element.id] = new Controller(element, controller.scriptingAPI, controller);
       template.push(container);
       layout[container.id] = [element.id];
     }
@@ -13627,7 +14622,8 @@ define('common/controllers/setup-banner',['lab.config','common/controllers/text-
         } else {
           creditsDialog.open();
         }
-      }
+      },
+      "tooltip": "Instructions"
     },
     {
       "id": "banner-right",
@@ -13654,7 +14650,8 @@ define('common/controllers/setup-banner',['lab.config','common/controllers/text-
         "type": "text",
         "id": "share-link",
         "text": "Share",
-        "onClick": function () { shareDialog.open(); }
+        "onClick": function () { shareDialog.open(); },
+        "tooltip": "Share using e-mail, IM or embed in website"
       },
       {
         "id": "banner-middle",
@@ -13671,6 +14668,47 @@ define('common/controllers/setup-banner',['lab.config','common/controllers/text-
       });
     }
 
+    if (controller.helpSystem) {
+      createElementInContainer(
+      {
+        "type": "div",
+        "id": "help-icon",
+        "content": '<i class="icon-question-sign"></i>',
+        "onClick": function () {
+          if (!controller.helpSystem.isActive()) {
+            controller.helpSystem.start();
+          } else {
+            controller.helpSystem.stop();
+          }
+        },
+        "tooltip": "Show help tips"
+      },
+      {
+        "id": "banner-help",
+        "fontScale": topBarFontScale,
+        "top": "0",
+        "height": topBarHeight + "em",
+        "padding-top": topBarVerticalPadding + "em",
+        "padding-bottom": topBarVerticalPadding + "em",
+        // "banner-right" can be undefined, so check it.
+        "left": "0.7em",
+        "padding-right": "1em",
+        "align": "left",
+        "aboveOthers": true
+      });
+
+      controller.helpSystem.on("start.icon", function () {
+        var $icon = $("#help-icon > i");
+        $icon.addClass("icon-remove-sign active");
+        $icon.removeClass("icon-question-sign");
+      });
+      controller.helpSystem.on("stop.icon", function () {
+        var $icon = $("#help-icon > i");
+        $icon.addClass("icon-question-sign");
+        $icon.removeClass("icon-remove-sign active");
+      });
+    }
+
     // bottom bar
     creditsDialog.update(interactive);
     createElementInContainer(
@@ -13680,7 +14718,7 @@ define('common/controllers/setup-banner',['lab.config','common/controllers/text-
       "height": "2.5em",
       "width": "8.1em",
       "classes": ["credits"],
-      "tooltip": "Credits",
+      "tooltip": "Learn more about The Concord Consortium",
       "onClick": function () { creditsDialog.open(); }
     },
     {
@@ -13730,7 +14768,7 @@ define('common/controllers/setup-banner',['lab.config','common/controllers/text-
         "height": "2.5em",
         "width": "2.5em",
         "classes": ["fullscreen"],
-        "tooltip": "Open interactive in full-screen mode",
+        "tooltip": "Toggle full-screen",
         "onClick": function () {
           if (!isFullscreen()) {
             requestFullscreenMethod.call(body);
@@ -13749,7 +14787,7 @@ define('common/controllers/setup-banner',['lab.config','common/controllers/text-
       });
     }
 
-      createElementInContainer(
+    createElementInContainer(
       {
         "type": "playback",
         "id": "playback"
@@ -13834,12 +14872,11 @@ define('common/controllers/basic-dialog',[],function () {
 });
 
 /*global define, $ */
-define('common/controllers/about-dialog',['require','arrays','markdown','common/inherit','common/controllers/basic-dialog'],function (require) {
+define('common/controllers/about-dialog',['require','common/markdown-to-html','common/inherit','common/controllers/basic-dialog'],function (require) {
 
-  var arrays      = require('arrays'),
-      markdown    = require('markdown'),
-      inherit     = require('common/inherit'),
-      BasicDialog = require('common/controllers/basic-dialog');
+  var markdownToHTML = require('common/markdown-to-html'),
+      inherit        = require('common/inherit'),
+      BasicDialog    = require('common/controllers/basic-dialog');
 
   /**
    * About Dialog. Inherits from Basic Dialog.
@@ -13857,29 +14894,14 @@ define('common/controllers/about-dialog',['require','arrays','markdown','common/
    * @param {Object} interactive Interactive JSON definition.
    */
   AboutDialog.prototype.update = function(interactive) {
-    var $aboutContent = $("<div>"),
-        about,
-        content,
-        html,
-        openInNewWindow = 'class="opens-in-new-window" target="blank"';
+    var $aboutContent = $("<div>");
 
     this.set("title", "About: " + interactive.title);
 
-    // Ensure that common typography for markdown-generated content is used.
-    $aboutContent.addClass("markdown-typography");
     if (interactive.subtitle) {
-      html = markdown.toHTML(interactive.subtitle);
-      html = html.replace(/<a(.*?)>/, "<a$1 " + openInNewWindow + ">");
-      $aboutContent.append(html);
+      $aboutContent.append(markdownToHTML(interactive.subtitle));
     }
-    about = arrays.isArray(interactive.about) ? interactive.about : [interactive.about];
-    content = "";
-    $.each(about, function(idx, val) {
-      content += val + "\n";
-    });
-    html = markdown.toHTML(content);
-    html = html.replace(/<a(.*?)>/g, "<a$1 " + openInNewWindow + ">");
-    $aboutContent.append(html);
+    $aboutContent.append(markdownToHTML(interactive.about));
 
     this.setContent($aboutContent);
   };
@@ -14070,11 +15092,11 @@ define('common/layout/semantic-layout-config',[],function () {
     */
     canonicalFontSize: 0.9,
     /**
-      Canonical dimensions of the interactive, they decide about font size.
-      (canoncicalFontSize * fontScale) em is used for the interactive which fits this container:
+      Canonical width of the interactive, it decides about font size.
+      (canoncicalFontSize * fontScale) em is used for the interactive which has such width:
     */
-    canonicalInteractiveWidth: 600,
-    canonicalInteractiveHeight: 420,
+    canonicalWidth: 565,
+
     /**
       Colors used to mark layout containers in the authoring mode.
     */
@@ -14110,6 +15132,7 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
         // Hash of component controllers.
         componentByID,
         modelController,
+        aspectRatio,
         fontScale,
 
         // Container specifications by ID.
@@ -14119,25 +15142,16 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
         // Model container jQuery object.
         $modelContainer,
 
-        // Interactive dimensions which fits canonical dimensions.
-        // So, basic dimensions are <= canonical dimensions.
-        // They are required to correctly determine font size
-        // (as we can't simply use canonical dimensions).
-        basicInteractiveWidth,
-        basicInteractiveHeight,
-
-        // Interactive aspect ratio. It's used to determine font size.
-        // Note that it may change a little bit during resizing (as there are
-        // some dimensions defined in px, like borders, user agent styles etc.),
-        // however this slight differences don't have any significant impact on result.
-        interactiveAspectRatio,
-
         // Dimensions of the container.
         availableWidth,
         availableHeight,
 
         // Amount to inset the model and components from the top left
         padding = 10,
+
+        // To optimize getHeightForWidth for model containers that care about the font size, kee
+        // track of changes
+        fontSizeChanged = false,
 
         // Most important variables.
         // In fact they define state of the layout.
@@ -14177,14 +15191,12 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
     }
 
     function setFontSize() {
-      var containerAspectRatio = $interactiveContainer.width() / $interactiveContainer.height(),
+      var canonicalWidth = layoutConfig.canonicalWidth,
+          canonicalHeight = canonicalWidth / aspectRatio,
           containerScale, font;
 
-      if (interactiveAspectRatio <= containerAspectRatio) {
-        containerScale = $interactiveContainer.height() / basicInteractiveHeight;
-      } else {
-        containerScale = $interactiveContainer.width() / basicInteractiveWidth;
-      }
+      containerScale = Math.min($interactiveContainer.width() / canonicalWidth,
+                                $interactiveContainer.height() / canonicalHeight);
 
       padding = containerScale * 10;
 
@@ -14200,6 +15212,7 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
       // be included in #responsive-content DIV.
       // TODO: #responsive-content ID is hardcoded, change it?
       $("#responsive-content").css("font-size", font + "em");
+      fontSizeChanged = true;
     }
 
     function setupBackground() {
@@ -14345,10 +15358,12 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
 
       $modelContainer.css({
         width:  modelWidth,
-        height: modelController.getHeightForWidth(modelWidth),
+        height: modelController.getHeightForWidth(modelWidth, fontSizeChanged),
         left:   modelLeft,
         top:    modelTop
       });
+
+      fontSizeChanged = false;
 
       for (i = 0, ii = containerSpecList.length; i<ii; i++) {
         container = containerSpecList[i];
@@ -14460,14 +15475,10 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
         }
       }
 
-      // TODO: this is quite naive approach.
-      // It should be changed to some fitness function defining quality of the layout.
-      // Using current algorithm, very often we follow some local minima.
-      if ((maxX <= availableWidth && maxY <= (availableHeight-bottomBarWidth)) &&
-          (Math.abs(availableWidth - maxX) < 1 || Math.abs((availableHeight-bottomBarWidth) - maxY) < 1) &&
-          (Math.abs(minX - leftBoundary) < 1 && Math.abs(minY - topBoundary) < 1)) {
-        // Perfect solution found!
-        // (TODO: not so perfect, see above)
+      // Stop condition. We assume that layout is good enough when it fits the container +/- 2px.
+      if ((maxX <= availableWidth + 2 && maxY <= (availableHeight-bottomBarWidth + 2)) &&
+          (Math.abs(availableWidth - maxX) < 2 || Math.abs((availableHeight-bottomBarWidth) - maxY) < 2) &&
+          (Math.abs(minX - leftBoundary) < 2 && Math.abs(minY - topBoundary) < 2)) {
         return true;
       }
 
@@ -14526,57 +15537,6 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
       }
     }
 
-    function calcInteractiveAspectRatio() {
-      var redraws = layoutConfig.iterationsLimit,
-          canonicalInteractiveWidth = layoutConfig.canonicalInteractiveWidth,
-          canonicalInteractiveHeight = layoutConfig.canonicalInteractiveHeight,
-          canonicalAspectRatio = canonicalInteractiveWidth / canonicalInteractiveHeight,
-          maxX = -Infinity,
-          maxY = -Infinity,
-          id, $container, val;
-
-      reset();
-      availableWidth = canonicalInteractiveWidth;
-      availableHeight = canonicalInteractiveHeight;
-      modelWidth = availableWidth;
-
-      // Set basic interactive dimensions to default values to ensure that default font will be used.
-      basicInteractiveWidth = canonicalInteractiveWidth;
-      basicInteractiveHeight = canonicalInteractiveHeight;
-
-      // Set font size to ensure that "fontScale" and "canonicalFontSize" are taken into account.
-      setFontSize();
-
-      positionContainers();
-      while (--redraws > 0 && !resizeModelContainer()) {
-        positionContainers();
-      }
-
-      console.log('[layout] aspect ratio calc: ' + (layoutConfig.iterationsLimit - redraws) + ' iterations');
-
-      for (id in $containerByID) {
-        if (!$containerByID.hasOwnProperty(id)) continue;
-        $container = $containerByID[id];
-        val = getDimensionOfContainer($container, "right");
-        if (val > maxX) {
-          maxX = val;
-        }
-        val = getDimensionOfContainer($container, "bottom");
-        if (val > maxY) {
-          maxY = val;
-        }
-      }
-
-      interactiveAspectRatio = maxX / maxY;
-      if (interactiveAspectRatio < canonicalAspectRatio) {
-        basicInteractiveWidth = canonicalInteractiveHeight * interactiveAspectRatio;
-        basicInteractiveHeight = canonicalInteractiveHeight;
-      } else {
-        basicInteractiveWidth = canonicalInteractiveWidth;
-        basicInteractiveHeight = canonicalInteractiveWidth / interactiveAspectRatio;
-      }
-    }
-
     // Public API.
     layout = {
       /**
@@ -14593,21 +15553,21 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
        * @param {array} newContainers List of layout containers.
        * @param {Object} newContainersContent Hash of components locations, e.g. {"bottom": ["button", "textLabel"]}.
        * @param {Object} newComponents Hash of components controllers. Keys are IDs of the components.
-       *
+       * @param {number} newFontScale Aspect ratio, floating point number, typically around 1.3.
        * @param {number} newFontScale Font scale, floating point number, typically between 0.5 and 1.5.
        */
-      initialize: function(newContainers, newContainersContent, newComponents, newFontScale) {
+      initialize: function(newContainers, newContainersContent, newComponents, newAspectRatio, newFontScale) {
         containerSpecList = newContainers;
         containersContent = newContainersContent;
         componentByID = newComponents;
+        aspectRatio = newAspectRatio;
         fontScale = newFontScale;
 
         createContainers();
         placeComponentsInContainers();
 
-        // Clear previous aspect ratio, as new components
-        // can completely change it.
-        interactiveAspectRatio = null;
+        // After .initialize() call client code has to call .setupModel().
+        modelController = null;
       },
 
       /**
@@ -14619,9 +15579,6 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
        */
       setupModel: function (newModelController) {
         modelController = newModelController;
-        // Clear previous aspect ratio, as new model
-        // can completely change it.
-        interactiveAspectRatio = null;
 
         if ($containerByID.model) {
           if ($containerByID.model === modelController.getViewContainer()) {
@@ -14643,6 +15600,15 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
       },
 
       /**
+       * Returns true if semantic layout is ready to perform calculations.
+       * @return {boolean}
+       */
+      isReady: function () {
+        if (!modelController) return false;
+        else return true;
+      },
+
+      /**
        * Layouts interactive. Adjusts size of the model container to ensure that all components are inside the
        * interactive container and all available space is used in the best way.
        */
@@ -14651,13 +15617,6 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
             id;
 
         console.time('[layout] update');
-
-        if (!interactiveAspectRatio) {
-          // Calculate aspect ratio when it's needed.
-          // Adding a new component or model change can invalidate current
-          // aspect ratio.
-          calcInteractiveAspectRatio();
-        }
 
         reset();
         availableWidth  = $interactiveContainer.width();
@@ -14686,6 +15645,9 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
         setupBackground();
 
         console.timeEnd('[layout] update');
+
+        // Return number of iterations (e.g. for benchmarks).
+        return layoutConfig.iterationsLimit - redraws;
       }
     };
 
@@ -14850,12 +15812,18 @@ define('common/controllers/model-controller',['require','lab.config'],function (
       arguments will simply reload the current model.
     */
     function reload(newModelUrl, newModelOptions, suppressEvents) {
+      if (model.willReset) {
+        model.willReset();
+      }
+
       controller.modelUrl = newModelUrl || controller.modelUrl;
       modelOptions = newModelOptions || modelOptions;
       setupModel();
       controller.modelContainer.bindModel(model, controller.modelUrl);
 
-      if (!suppressEvents) dispatch.modelLoaded();
+      if (!suppressEvents) {
+        dispatch.modelLoaded();
+      }
     }
 
     function repaint() {
@@ -14884,8 +15852,8 @@ define('common/controllers/model-controller',['require','lab.config'],function (
       return controller.modelContainer.$el;
     };
 
-    controller.getHeightForWidth = function (width) {
-      return controller.modelContainer.getHeightForWidth(width);
+    controller.getHeightForWidth = function (width, fontSizeChanged) {
+      return controller.modelContainer.getHeightForWidth(width, fontSizeChanged);
     };
 
     controller.enableKeyboardHandlers = function () {
@@ -16591,9 +17559,18 @@ define('md2d/models/metadata',[],function() {
         defaultValue: false,
         storeInTickHistory: true
       },
-      electricFieldDensity: {
-        defaultValue: 0,
+      showElectricField: {
+        defaultValue: false,
         storeInTickHistory: true
+      },
+      electricFieldDensity: {
+        defaultValue: 18, // it means 18 arrows per row
+        storeInTickHistory: true
+      },
+      electricFieldColor: {
+        // "auto" means color contrasting to background, black or white.
+        // However any custom color can be specified.
+        defaultValue: "auto"
       },
       showAtomTrace: {
         defaultValue: false
@@ -16625,6 +17602,11 @@ define('md2d/models/metadata',[],function() {
       controlButtons: {
         defaultValue: "play"
       },
+      controlButtonStyle: {
+        defaultValue: "video",
+        // expectation is that this will be set by the interactive
+        serialize: false
+      },
       gridLines: {
         defaultValue: false
       },
@@ -16653,6 +17635,9 @@ define('md2d/models/metadata',[],function() {
           width: 0.01,
           length: 2
         }
+      },
+      forceVectorsDirectionOnly: {
+        defaultValue: false
       }
     },
 
@@ -16865,22 +17850,20 @@ define('md2d/models/metadata',[],function() {
         serialize: false
       },
       // View options.
-      colorR: {
-        defaultValue: 128
-      },
-      colorG: {
-        defaultValue: 128
-      },
-      colorB: {
-        defaultValue: 128
+      color:{
+        defaultValue: "rgb(128,128,128)"
       },
       visible: {
         defaultValue: true
       }
     },
 
-    rectangle: {
+    shape: {
       // Required properties:
+      type: {
+        defaultValue: "rectangle",
+        required: true
+      },
       width: {
         unitType: "length",
         required: true
@@ -16899,7 +17882,7 @@ define('md2d/models/metadata',[],function() {
         unitType: "length"
       },
       fence: {
-        defaultValue: false,
+        defaultValue: 0,
       },
       // View options.
       color: {
@@ -16917,8 +17900,64 @@ define('md2d/models/metadata',[],function() {
       layer: {
         defaultValue: 1
       },
+      layerPosition: {
+        defaultValue: 1
+      },
       visible: {
-        defaultValue: true
+        defaultValue: 1
+      }
+    },
+
+    line: {
+      // Required properties:
+      x1: {
+        defaultValue: 0,
+        required: true,
+        unitType: "length"
+      },
+      y1: {
+        defaultValue: 0,
+        required: true,
+        unitType: "length"
+      },
+      x2: {
+        defaultValue: 0,
+        required: true,
+        unitType: "length"
+      },
+      y2: {
+        defaultValue: 0,
+        required: true,
+        unitType: "length"
+      },
+      // Optional properties:
+      beginStyle: {
+        defaultValue: "none",
+      },
+      endStyle: {
+        defaultValue: "none",
+      },
+      fence: {
+        defaultValue: 0,
+      },
+      // View options.
+      lineColor: {
+        defaultValue: "black"
+      },
+      lineDashes: {
+        defaultValue: "none"
+      },
+      lineWeight: {
+        defaultValue: 1
+      },
+      layer: {
+        defaultValue: 1
+      },
+      layerPosition: {
+        defaultValue: 1
+      },
+      visible: {
+        defaultValue: 1
       }
     },
 
@@ -16977,6 +18016,20 @@ define('md2d/models/metadata',[],function() {
       y0: {
         defaultValue: 0,
         unitType: "length"
+      }
+    },
+
+    electricField: {
+      intensity: {
+        defaultValue: 0.004
+      },
+      orientation: {
+        defaultValue: "E"
+      },
+      shapeIdx: {
+        // Optional, electric field boundaries can be limited to a shape. When 'null' is used,
+        // the electric field will be applied to the whole model area.
+        defaultValue: null
       }
     },
 
@@ -17199,9 +18252,11 @@ define('common/models/engines/clone-restore-wrapper',['require','arrays'],functi
   // Dependencies.
   var arrays = require('arrays');
 
-  return function CloneRestoreWrapper(hashOfArrays) {
+  return function CloneRestoreWrapper(hashOfArrays, options) {
+    options = options || {};
+
     // Public API.
-    return {
+    var ret = {
       // Clone hash of arrays
       clone: function() {
         var copy = {},
@@ -17214,10 +18269,26 @@ define('common/models/engines/clone-restore-wrapper',['require','arrays'],functi
         }
 
         return copy;
-      },
+      }
+    };
 
-      // Restore internal arrays using saved state.
-      restore: function (state) {
+    // Restore internal arrays using saved state. 2 paths, depending on options.padArraysWithZeroes
+    if (options.padArraysWithZeroes) {
+      ret.restore = function(state) {
+        var prop, target, i, j;
+
+        for (prop in hashOfArrays) {
+          if (hashOfArrays.hasOwnProperty(prop)) {
+            target = hashOfArrays[prop];
+            arrays.copy(state[prop], target);
+            for (i = state[prop].length, j = target.length; i < j; i++) {
+              target[i] = 0;
+            }
+          }
+        }
+      };
+    } else {
+      ret.restore = function(state) {
         var prop;
 
         for (prop in hashOfArrays) {
@@ -17225,8 +18296,10 @@ define('common/models/engines/clone-restore-wrapper',['require','arrays'],functi
             arrays.copy(state[prop], hashOfArrays[prop]);
           }
         }
-      }
-    };
+      };
+    }
+
+    return ret;
   };
 
 });
@@ -17799,9 +18872,7 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
         obstacleNorthProbe,
         obstacleEastProbe,
         obstacleSouthProbe,
-        obstacleColorR,
-        obstacleColorG,
-        obstacleColorB,
+        obstacleColor,
         obstacleVisible,
 
         // Properties used only during internal calculations (e.g. shouldn't
@@ -17827,27 +18898,70 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
         N_obstacles = 0,
 
         // ####################################################################
-        //                      Rectangle Properties
+        //                      Shape Properties
 
-        // Individual properties for the rectangles
-        rectangleX,
-        rectangleY,
-        rectangleWidth,
-        rectangleHeight,
-        rectangleFence,
-        rectangleColor,
-        rectangleLineColor,
-        rectangleLineDashes,
-        rectangleLineWeight,
-        rectangleLayer,
-        rectangleVisible,
+        // Individual properties for the shapes
+        shapeType,
+        shapeX,
+        shapeY,
+        shapeWidth,
+        shapeHeight,
+        shapeFence,
+        shapeColor,
+        shapeLineColor,
+        shapeLineDashes,
+        shapeLineWeight,
+        shapeLayer,
+        shapeLayerPosition,
+        shapeVisible,
 
-        // An object that contains references to the above rectangle-property arrays.
-        // Left undefined if there are no rectangles.
-        rectangles,
+        // An object that contains references to the above shape-property arrays.
+        // Left undefined if there are no shapes.
+        shapes,
 
-        // Number of actual rectangles
-        N_rectangles = 0,
+        // Number of actual shapes
+        N_shapes = 0,
+
+
+        // ####################################################################
+        //                      Line Properties
+
+        // Individual properties for the lines
+        lineX1,
+        lineY1,
+        lineX2,
+        lineY2,
+        lineBeginStyle,
+        lineEndStyle,
+        lineFence,
+        lineLineColor,
+        lineLineDashes,
+        lineLineWeight,
+        lineLayer,
+        lineLayerPosition,
+        lineVisible,
+
+        // An object that contains references to the above line-property arrays.
+        // Left undefined if there are no lines.
+        lines,
+
+        // Number of actual lines
+        N_lines = 0,
+
+        // ####################################################################
+        //                      Electric Field Properties
+
+        // Individual properties for the electric fields.
+        electricFieldIntensity,
+        electricFieldOrientation,
+        electricFieldShapeIdx,
+
+        // An object that contains references to the above shape-property arrays.
+        // Left undefined if there are no electric fields.
+        electricFields,
+
+        // Number of actual electric fields.
+        N_electricFields = 0,
 
         // ####################################################################
         //                      Misc Properties
@@ -17939,7 +19053,9 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
           createVdwPairsArray(0);
           createSpringForcesArray(0);
           createObstaclesArray(0);
-          createRectanglesArray(0);
+          createShapesArray(0);
+          createLinesArray(0);
+          createElectricFieldsArray(0);
 
           // Custom pairwise properties.
           pairwiseLJProperties = new PairwiseLJProperties(engine);
@@ -18170,24 +19286,46 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
             obstacleSProbeValue = obstacles.southProbeValue;
             obstacleXPrev       = obstacles.xPrev;
             obstacleYPrev       = obstacles.yPrev;
-            obstacleColorR      = obstacles.colorR;
-            obstacleColorG      = obstacles.colorG;
-            obstacleColorB      = obstacles.colorB;
+            obstacleColor       = obstacles.color;
             obstacleVisible     = obstacles.visible;
           },
 
-          rectangles: function() {
-            rectangleX             = rectangles.x;
-            rectangleY             = rectangles.y;
-            rectangleWidth         = rectangles.width;
-            rectangleHeight        = rectangles.height;
-            rectangleFence         = rectangles.fence;
-            rectangleColor         = rectangles.color;
-            rectangleLineColor     = rectangles.lineColor;
-            rectangleLineDashes    = rectangles.lineDashes;
-            rectangleLineWeight    = rectangles.lineWeight;
-            rectangleLayer         = rectangles.layer;
-            rectangleVisible       = rectangles.visible;
+          shapes: function() {
+            shapeType          = shapes.type;
+            shapeX             = shapes.x;
+            shapeY             = shapes.y;
+            shapeWidth         = shapes.width;
+            shapeHeight        = shapes.height;
+            shapeFence         = shapes.fence;
+            shapeColor         = shapes.color;
+            shapeLineColor     = shapes.lineColor;
+            shapeLineDashes    = shapes.lineDashes;
+            shapeLineWeight    = shapes.lineWeight;
+            shapeLayer         = shapes.layer;
+            shapeLayerPosition = shapes.layerPosition;
+            shapeVisible       = shapes.visible;
+          },
+
+          lines: function() {
+            lineX1            = lines.x1;
+            lineY1            = lines.y1;
+            lineX2            = lines.x2;
+            lineY2            = lines.y2;
+            lineBeginStyle    = lines.beginStyle;
+            lineEndStyle      = lines.endStyle;
+            lineFence         = lines.fence;
+            lineLineColor     = lines.lineColor;
+            lineLineDashes    = lines.lineDashes;
+            lineLineWeight    = lines.lineWeight;
+            lineLayer         = lines.layer;
+            lineLayerPosition = lines.layerPosition;
+            lineVisible       = lines.visible;
+          },
+
+          electricFields: function() {
+            electricFieldIntensity    = electricFields.intensity;
+            electricFieldOrientation  = electricFields.orientation;
+            electricFieldShapeIdx = electricFields.shapeIdx;
           },
 
           springForces: function() {
@@ -18305,51 +19443,82 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
         createObstaclesArray = function(num) {
           obstacles = engine.obstacles = {};
 
-          obstacles.x           = arrays.create(num, 0, arrayTypes.floatType);
-          obstacles.y           = arrays.create(num, 0, arrayTypes.floatType);
-          obstacles.width       = arrays.create(num, 0, arrayTypes.floatType);
-          obstacles.height      = arrays.create(num, 0, arrayTypes.floatType);
-          obstacles.mass        = arrays.create(num, 0, arrayTypes.floatType);
-          obstacles.vx          = arrays.create(num, 0, arrayTypes.floatType);
-          obstacles.vy          = arrays.create(num, 0, arrayTypes.floatType);
-          obstacles.externalAx  = arrays.create(num, 0, arrayTypes.floatType);
-          obstacles.externalAy  = arrays.create(num, 0, arrayTypes.floatType);
-          obstacles.friction    = arrays.create(num, 0, arrayTypes.floatType);
-          obstacles.westProbe   = arrays.create(num, 0, arrayTypes.uint8Type);
-          obstacles.northProbe  = arrays.create(num, 0, arrayTypes.uint8Type);
-          obstacles.eastProbe   = arrays.create(num, 0, arrayTypes.uint8Type);
-          obstacles.southProbe  = arrays.create(num, 0, arrayTypes.uint8Type);
-          obstacles.westProbeValue = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.x               = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.y               = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.width           = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.height          = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.mass            = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.vx              = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.vy              = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.externalAx      = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.externalAy      = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.friction        = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.westProbe       = arrays.create(num, 0, arrayTypes.uint8Type);
+          obstacles.northProbe      = arrays.create(num, 0, arrayTypes.uint8Type);
+          obstacles.eastProbe       = arrays.create(num, 0, arrayTypes.uint8Type);
+          obstacles.southProbe      = arrays.create(num, 0, arrayTypes.uint8Type);
+          obstacles.westProbeValue  = arrays.create(num, 0, arrayTypes.floatType);
           obstacles.northProbeValue = arrays.create(num, 0, arrayTypes.floatType);
-          obstacles.eastProbeValue = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.eastProbeValue  = arrays.create(num, 0, arrayTypes.floatType);
           obstacles.southProbeValue = arrays.create(num, 0, arrayTypes.floatType);
-          obstacles.xPrev       = arrays.create(num, 0, arrayTypes.floatType);
-          obstacles.yPrev       = arrays.create(num, 0, arrayTypes.floatType);
-          obstacles.colorR      = arrays.create(num, 0, arrayTypes.floatType);
-          obstacles.colorG      = arrays.create(num, 0, arrayTypes.floatType);
-          obstacles.colorB      = arrays.create(num, 0, arrayTypes.floatType);
-          obstacles.visible     = arrays.create(num, 0, arrayTypes.uint8Type);
+          obstacles.xPrev           = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.yPrev           = arrays.create(num, 0, arrayTypes.floatType);
+          obstacles.color           = [];
+          obstacles.visible         = arrays.create(num, 0, arrayTypes.uint8Type);
 
           assignShortcutReferences.obstacles();
         },
 
-		createRectanglesArray = function(num) {
-          rectangles = engine.rectangles = {};
+        createShapesArray = function(num) {
+          shapes = engine.shapes = {};
 
-          rectangles.x             = arrays.create(num, 0, arrayTypes.floatType);
-          rectangles.y             = arrays.create(num, 0, arrayTypes.floatType);
-          rectangles.width         = arrays.create(num, 0, arrayTypes.floatType);
-          rectangles.height        = arrays.create(num, 0, arrayTypes.floatType);
-          rectangles.fence         = [];
-          rectangles.color         = [];
-          rectangles.lineColor     = [];
-          rectangles.lineDashes    = [];
-          rectangles.lineWeight    = arrays.create(num, 0, arrayTypes.floatType);
-          rectangles.layer         = arrays.create(num, 0, arrayTypes.floatType);
-          rectangles.visible       = arrays.create(num, 0, arrayTypes.uint8Type);
+          shapes.type          = [];
+          shapes.x             = arrays.create(num, 0, arrayTypes.floatType);
+          shapes.y             = arrays.create(num, 0, arrayTypes.floatType);
+          shapes.width         = arrays.create(num, 0, arrayTypes.floatType);
+          shapes.height        = arrays.create(num, 0, arrayTypes.floatType);
+          shapes.color         = [];
+          shapes.lineColor     = [];
+          shapes.lineDashes    = [];
+          shapes.lineWeight    = arrays.create(num, 0, arrayTypes.floatType);
+          shapes.layer         = arrays.create(num, 0, arrayTypes.uint8Type);
+          shapes.layerPosition = arrays.create(num, 0, arrayTypes.uint8Type);
+          shapes.visible       = arrays.create(num, 0, arrayTypes.uint8Type);
+          shapes.fence         = arrays.create(num, 0, arrayTypes.uint8Type);
 
-          assignShortcutReferences.rectangles();
+          assignShortcutReferences.shapes();
         },
+
+        createLinesArray = function(num) {
+          lines = engine.lines = {};
+
+          lines.x1            = arrays.create(num, 0, arrayTypes.floatType);
+          lines.y1            = arrays.create(num, 0, arrayTypes.floatType);
+          lines.x2            = arrays.create(num, 0, arrayTypes.floatType);
+          lines.y2            = arrays.create(num, 0, arrayTypes.floatType);
+          lines.beginStyle    = [];
+          lines.endStyle      = [];
+          lines.lineColor     = [];
+          lines.lineDashes    = [];
+          lines.lineWeight    = arrays.create(num, 0, arrayTypes.floatType);
+          lines.layer         = arrays.create(num, 0, arrayTypes.uint8Type);
+          lines.layerPosition = arrays.create(num, 0, arrayTypes.uint8Type);
+          lines.visible       = arrays.create(num, 0, arrayTypes.uint8Type);
+          lines.fence         = arrays.create(num, 0, arrayTypes.uint8Type);
+
+          assignShortcutReferences.lines();
+        },
+
+        createElectricFieldsArray = function(num) {
+          electricFields = engine.electricFields = {};
+
+          electricFields.intensity   = arrays.create(num, 0, arrayTypes.floatType);
+          electricFields.orientation = [];
+          electricFields.shapeIdx    = [];
+
+          assignShortcutReferences.electricFields();
+        },
+
 
         // Function that accepts a value T and returns an average of the last n values of T (for some n).
         getTWindowed,
@@ -18692,9 +19861,9 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
           }
         },
 
-        bounceParticleOffRectangles = function(i, x_prev, y_prev) {
-          // fast path if no rectangles
-          if (N_rectangles < 1) return;
+        bounceParticleOffShapes = function(i, x_prev, y_prev) {
+          // fast path if no shapes
+          if (N_shapes < 1) return;
 
           var r,
               xi,
@@ -18709,56 +19878,208 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
               x_outside_left,
               x_outside_right,
               y_outside_top,
-              y_outside_bottom;
+              y_outside_bottom,
+
+              shapeX_offset,shapeY_offset,
+
+              tx,ty,
+              tx_prev,ty_prev,
+              ar,br,
+
+              a,b,c,
+              f1x,f1y,f1d,
+              f2x,f2y,f2d,
+              tvx,tvy,
+              mx,my,
+              nx,ny,nd;
 
           r = radius[i];
           xi = x[i];
           yi = y[i];
 
-          for (j = 0; j < N_rectangles; j++) {
 
-            if(!rectangleFence[j]) continue;
+          for ( j = 0; j < N_shapes; j++) {
 
-            x_outside_left = rectangleX[j] - r;
-            x_outside_right = rectangleX[j] + rectangleWidth[j] + r;
-            y_outside_top = rectangleY[j] + rectangleHeight[j] + r;
-            y_outside_bottom = rectangleY[j] - r;
+            if (!shapeFence[j])
+              continue;
 
-            x_inside_left = rectangleX[j] + r;
-            x_inside_right = rectangleX[j] + rectangleWidth[j] - r;
-            y_inside_top = rectangleY[j] + rectangleHeight[j] - r;
-            y_inside_bottom = rectangleY[j] + r;
+            if (shapeType[j] == 'rectangle') {
 
-            // Check all outside collisions
-            if (xi > x_outside_left && xi < x_outside_right && yi > y_outside_bottom && yi < y_outside_top) {
-              if (x_prev <= x_outside_left) {
-                x[i] = x_outside_left - (xi - x_outside_left);
-                vx[i] *= -1;
-              } else if (x_prev >= x_outside_right) {
-                x[i] = x_outside_right + (x_outside_right - xi);
-                vx[i] *= -1;
-              } else if (y_prev <= y_outside_bottom) {
-                y[i] = y_outside_bottom - (yi - y_outside_bottom);
-                vy[i] *= -1;
-              } else if (y_prev >= y_outside_top) {
-                y[i] = y_outside_top  + (y_outside_top - yi);
-                vy[i] *= -1;
+              x_outside_left = shapeX[j] - r;
+              x_outside_right = shapeX[j] + shapeWidth[j] + r;
+              y_outside_top = shapeY[j] + shapeHeight[j] + r;
+              y_outside_bottom = shapeY[j] - r;
+
+              x_inside_left = shapeX[j] + r;
+              x_inside_right = shapeX[j] + shapeWidth[j] - r;
+              y_inside_top = shapeY[j] + shapeHeight[j] - r;
+              y_inside_bottom = shapeY[j] + r;
+
+              // Check all outside collisions
+              if (xi > x_outside_left && xi < x_outside_right && yi > y_outside_bottom && yi < y_outside_top) {
+                if (x_prev <= x_outside_left) {
+                  x[i] = x_outside_left - (xi - x_outside_left);
+                  vx[i] *= -1;
+                }
+                else if (x_prev >= x_outside_right) {
+                  x[i] = x_outside_right + (x_outside_right - xi);
+                  vx[i] *= -1;
+                }
+                else if (y_prev <= y_outside_bottom) {
+                  y[i] = y_outside_bottom - (yi - y_outside_bottom);
+                  vy[i] *= -1;
+                }
+                else if (y_prev >= y_outside_top) {
+                  y[i] = y_outside_top + (y_outside_top - yi);
+                  vy[i] *= -1;
+                }
+              }
+              //Check all inside collisions
+              if (x_prev > x_inside_left && x_prev < x_inside_right && y_prev > y_inside_bottom && y_prev < y_inside_top) {
+                if (xi <= x_inside_left) {
+                  x[i] = x_inside_left + (x_inside_left - xi);
+                  vx[i] *= -1;
+                }
+                else if (xi >= x_inside_right) {
+                  x[i] = x_inside_right - (xi - x_inside_right);
+                  vx[i] *= -1;
+                }
+                else if (yi <= y_inside_bottom) {
+                  y[i] = y_inside_bottom + (y_inside_bottom - yi);
+                  vy[i] *= -1;
+                }
+                else if (yi >= y_inside_top) {
+                  y[i] = y_inside_top - (yi - y_inside_top);
+                  vy[i] *= -1;
+                }
               }
             }
-            //Check all inside collisions
-            if (x_prev > x_inside_left && x_prev < x_inside_right && y_prev > y_inside_bottom && y_prev < y_inside_top) {
-              if (xi <= x_inside_left) {
-                x[i] = x_inside_left + (x_inside_left - xi);
-                vx[i] *= -1;
-              } else if (xi >= x_inside_right) {
-                x[i] = x_inside_right - (xi - x_inside_right);
-                vx[i] *= -1;
-              } else if (yi <= y_inside_bottom) {
-                y[i] = y_inside_bottom + (y_inside_bottom - yi);
-                vy[i] *= -1;
-              } else if (yi >= y_inside_top) {
-                y[i] = y_inside_top - (yi - y_inside_top);
-                vy[i] *= -1;
+            else if (shapeType[j] == 'ellipse') {
+              a = shapeWidth[j] / 2;
+              b = shapeHeight[j] / 2;
+              // Transform points from model space to ellipse space
+              // to facilitate collision checking
+              shapeX_offset = shapeX[j] + a;
+              shapeY_offset = shapeY[j] + b;
+              tx = (xi - shapeX_offset) / (a + r);
+              ty = (yi - shapeY_offset) / (b + r);
+              tx *= tx;
+              ty *= ty;
+              tx_prev = (x_prev - shapeX_offset) / (a + r);
+              ty_prev = (y_prev - shapeY_offset) / (b + r);
+              tx_prev *= tx_prev;
+              ty_prev *= ty_prev;
+              ar = (a + r) / (a - r);
+              br = (b + r) / (b - r);
+              ar *= ar;
+              br *= br;
+              if (tx + ty <= 1 && tx_prev + ty_prev > 1 || tx * ar + ty * br >= 1 && tx_prev * ar + ty_prev * br < 1) {
+
+                // Calculate the two foci
+                if (shapeWidth[j] > shapeHeight[j]) {
+                  c = Math.sqrt(a * a - b * b);
+                  f1x = shapeX[j] + a + c;
+                  f2x = shapeX[j] + a - c;
+                  f1y = f2y = shapeY[j] + b;
+                } else {
+                  c = Math.sqrt(b * b - a * a);
+                  f1x = f2x = shapeX[j] + a;
+                  f1y = shapeY[j] + b + c;
+                  f2y = shapeY[j] + b - c;
+                }
+
+
+                // Determine the midpoint of the atom's motion path
+                // so it can be used as an approximate point of collision
+                mx = (xi + x_prev) / 2;
+                my = (yi + y_prev) / 2;
+
+                // Determine the distance from the point of collision
+                // to both foci
+                f1d = Math.sqrt(sumSquare(f1x - mx, f1y - my));
+                f2d = Math.sqrt(sumSquare(f2x - mx, f2x - mx));
+
+                // Calculate the angle bisector which is the normal vector
+                nx = mx - (f1x * f2d + f2x * f1d) / (f1d + f2d);
+                ny = my - (f1y * f2d + f2y * f1d) / (f1d + f2d);
+
+                // Normalize the normal vector
+                nd = Math.sqrt(sumSquare(nx, ny));
+                nx /= nd;
+                ny /= nd;
+
+                // Reflect the atom's position off the normal vector
+                x[i] = (mx - x_prev) - 2 * ((mx - x_prev) * nx + (my - y_prev) * ny) * nx + mx;
+                y[i] = (my - y_prev) - 2 * ((mx - x_prev) * nx + (my - y_prev) * ny) * ny + my;
+
+                // Reflect the atom's velocity off the normal vector
+                tvx = vx[i]
+                tvy = vy[i]
+                vx[i] = (tvx - 2 * (tvx * nx + tvy * ny) * nx);
+                vy[i] = (tvy - 2 * (tvx * nx + tvy * ny) * ny);
+              }
+            }
+          }
+        },
+
+        bounceParticleOffLines = function(i, x_prev, y_prev) {
+          // fast path if no lines
+          if (N_lines < 1) return;
+
+          var r,
+              x1,
+              y1,
+              ld,
+              atom1_to_line,
+              atom2_to_line,
+              line1_to_atom,
+              line2_to_atom,
+              mx,my,
+              nx,ny,nd,
+              tvx,tvy;
+
+          r = radius[i];
+          xi = x[i];
+          yi = y[i];
+
+          for (j = 0; j < N_lines; j++) {
+            if (!lineFence[j])
+              continue;
+
+            // Find a bunch of cross products to check collision
+            line1_to_atom = cross(x_prev - lineX1[j], y_prev - lineY1[j], xi - lineX1[j], yi - lineY1[j]);
+            line2_to_atom = cross(x_prev - lineX2[j], y_prev - lineY2[j], xi - lineX2[j], yi - lineY2[j]);
+            if (line1_to_atom * line2_to_atom < 0) {
+              ld = Math.sqrt(sumSquare(lineX1[j] - lineX2[j], lineY1[j] - lineY2[j]));
+              atom1_to_line = cross(lineX2[j] - x_prev, lineY2[j] - y_prev, lineX1[j] - x_prev, lineY1[j] - y_prev);
+              atom2_to_line = cross(lineX2[j] - xi, lineY2[j] - yi, lineX1[j] - xi, lineY1[j] - yi);
+              if ((atom1_to_line < 0 && atom2_to_line > -r*ld || atom1_to_line > 0 && atom2_to_line < r*ld) &&
+                   atom1_to_line * line1_to_atom > 0) {
+                // Collision!
+
+                // Determine the midpoint of the atom's motion path
+                // so it can be used as an approximate point of collision
+                mx = (xi + x_prev) / 2;
+                my = (yi + y_prev) / 2;
+
+                // Caclulate the normal vector (just perpendicular to the line)
+                nx = lineY2[j] - lineY1[j];
+                ny = -(lineX2[j] - lineX1[j]);
+
+                // Normalize the normal vector
+                nd = Math.sqrt(sumSquare(nx, ny));
+                nx /= nd;
+                ny /= nd;
+
+                // Reflect the atom's position off the normal vector
+                x[i] = (mx - x_prev) - 2 * ((mx - x_prev) * nx + (my - y_prev) * ny) * nx + mx;
+                y[i] = (my - y_prev) - 2 * ((mx - x_prev) * nx + (my - y_prev) * ny) * ny + my;
+
+                // Reflect the atom's velocity off the normal vector
+                tvx = vx[i]
+                tvy = vy[i]
+                vx[i] = (tvx - 2 * (tvx * nx + tvy * ny) * nx);
+                vy[i] = (tvy - 2 * (tvx * nx + tvy * ny) * ny);
               }
             }
           }
@@ -18777,7 +20098,7 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
               elJ = element[j],
               dx  = x[j] - x[i],
               dy  = y[j] - y[i],
-              rSq = dx * dx + dy * dy,
+              rSq = sumSquare(dx, dy),
               fOverR, fx, fy;
 
           if (updateNeighborList && rSq < cutoffNeighborListSquared[elI][elJ]) {
@@ -19171,6 +20492,41 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
           }
         },
 
+        rectContains = function (i, x, y) {
+          var rx = shapeX[i],
+              ry = shapeY[i];
+          return rx <= x && x <= rx + shapeWidth[i] &&
+                 ry <= y && y <= ry + shapeHeight[i];
+        },
+
+        getElFieldForce = function (i) {
+          var o = electricFieldOrientation[i];
+          return (o === "N" || o === "E" ? 1 : -1) * electricFieldIntensity[i];
+        },
+
+        updateElectricFieldsAccelerations = function() {
+          // fast path if there are no electric fields
+          if (!electricFields) return;
+
+          var i, e, o, vertical, rect, temp;
+
+          for (e = 0; e < N_electricFields; e++) {
+            o = electricFieldOrientation[e];
+            vertical = o === "N" || o === "S";
+            temp = getElFieldForce(e) / dielectricConst;
+            rect = electricFieldShapeIdx[e];
+
+            for (i = 0; i < N; i++) {
+              if (rect != null && !rectContains(rect, x[i], y[i])) continue;
+              if (vertical) {
+                ay[i] += temp * charge[i] / mass[i];
+              } else {
+                ax[i] += temp * charge[i] / mass[i];
+              }
+            }
+          }
+        },
+
         // Push all amino acids above some Y coordinate during DNA translation.
         // TODO: this should be part of the MD2D plug-in for proteins engine!
         updateDNATranslationAccelerations = function() {
@@ -19294,6 +20650,9 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
           // Accumulate optional gravitational accelerations into a(t + dt).
           updateGravitationalAccelerations();
 
+          // Accumulate optional accelerations coming from electric fields into a(t + dt).
+          updateElectricFieldsAccelerations();
+
           // Push all amino acids above some Y coordinate during DNA translation.
           // TODO: this should be part of the MD2D plug-in for proteins engine!
           updateDNATranslationAccelerations();
@@ -19338,8 +20697,10 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
             bounceParticleOffWalls(i);
             // Bounce off obstacles, update pressure probes.
             bounceParticleOffObstacles(i, xPrev, yPrev, true);
-            // Bounce off rectangles
-            bounceParticleOffRectangles(i, xPrev, yPrev);
+            // Bounce off shapes
+            bounceParticleOffShapes(i, xPrev, yPrev);
+            // Bounce off lines
+            bounceParticleOffLines(i, xPrev, yPrev);
           }
         },
 
@@ -19938,12 +21299,32 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
         }
       },
 
-      setRectangleProperties: function (i, props) {
+      setShapeProperties: function (i, props) {
         var key;
         // Set properties from props hash.
         for (key in props) {
           if (props.hasOwnProperty(key)) {
-            rectangles[key][i] = props[key];
+            shapes[key][i] = props[key];
+          }
+        }
+      },
+
+      setLineProperties: function (i, props) {
+        var key;
+        // Set properties from props hash.
+        for (key in props) {
+          if (props.hasOwnProperty(key)) {
+            lines[key][i] = props[key];
+          }
+        }
+      },
+
+      setElectricFieldProperties: function (i, props) {
+        var key;
+        // Set properties from props hash.
+        for (key in props) {
+          if (props.hasOwnProperty(key)) {
+            electricFields[key][i] = props[key];
           }
         }
       },
@@ -20317,45 +21698,141 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
         assignShortcutReferences.obstacles();
       },
 
-      addRectangle: function(props) {
-        if (N_rectangles + 1 > rectangles.x.length) {
+      addShape: function(props) {
+        if (N_shapes + 1 > shapes.x.length) {
           // Extend arrays each time (as there are only
-          // a few rectangles in typical model).
-          utils.extendArrays(rectangles, N_rectangles + 1);
-          assignShortcutReferences.rectangles();
+          // a few shapes in typical model).
+          utils.extendArrays(shapes, N_shapes + 1);
+          assignShortcutReferences.shapes();
         }
 
-        N_rectangles++;
+        N_shapes++;
 
-        // Set properties of new rectangle.
-        engine.setRectangleProperties(N_rectangles - 1, props);
+        // Set properties of new shape.
+        engine.setShapeProperties(N_shapes - 1, props);
       },
 
-      removeRectangle: function(idx) {
+      removeShape: function(idx) {
         var i, prop;
 
-        if (idx >= N_rectangles) {
-          throw new Error("Rectangle " + idx + " doesn't exist, so it can't be removed.");
+        if (idx >= N_shapes) {
+          throw new Error("Shape " + idx + " doesn't exist, so it can't be removed.");
         }
 
-        N_rectangles--;
+        // Remove all electric fields connected with this shape.
 
-        // Shift rectangles properties.
+        // Use such "strange" form of loop, as while removing one electric field,
+        // other change their indexing. So, after removal of field 5, we
+        // should check field 5 again, as it would be another field (previously
+        // indexed as 6).
+        i = 0;
+        while (i < N_electricFields) {
+          if (electricFieldShapeIdx[i] === idx)
+            engine.removeElectricField(i);
+          else
+            i++;
+        }
+
+        N_shapes--;
+
+        // Shift shapes properties.
         // It can be optimized by just replacing the last
-        // rectangle with rectangle 'i', however this approach
-        //  preserves more expectable rectangles indexing.
-        for (i = idx; i < N_rectangles; i++) {
-          for (prop in rectangles) {
-            if (rectangles.hasOwnProperty(prop)) {
-              rectangles[prop][i] = rectangles[prop][i + 1];
+        // shape with shape 'i', however this approach
+        //  preserves more expectable shapes indexing.
+        for (i = idx; i < N_shapes; i++) {
+          for (prop in shapes) {
+            if (shapes.hasOwnProperty(prop)) {
+              shapes[prop][i] = shapes[prop][i + 1];
+            }
+          }
+        }
+
+        // Shift indices of shapes referenced by electric fields.
+        for (i = 0; i < N_electricFields; i++) {
+          if (electricFieldShapeIdx[i] > idx)
+            electricFieldShapeIdx[i]--;
+        }
+
+        // FIXME: This shouldn't be necessary, however various modules
+        // (e.g. views) use shapes.x.length as the real number of shapes.
+        utils.extendArrays(shapes, N_shapes);
+        assignShortcutReferences.shapes();
+      },
+
+      addLine: function(props) {
+        if (N_lines + 1 > lines.x1.length) {
+          // Extend arrays each time (as there are only
+          // a few lines in typical model).
+          utils.extendArrays(lines, N_lines + 1);
+          assignShortcutReferences.lines();
+        }
+
+        N_lines++;
+
+        // Set properties of new line.
+        engine.setLineProperties(N_lines - 1, props);
+      },
+
+      removeLine: function(idx) {
+        var i, prop;
+
+        if (idx >= N_lines) {
+          throw new Error("Line " + idx + " doesn't exist, so it can't be removed.");
+        }
+
+        // Shift lines properties.
+        // It can be optimized by just replacing the last
+        // shape with shape 'i', however this approach
+        //  preserves more expectable lines indexing.
+        for (i = idx; i < N_shapes; i++) {
+          for (prop in lines) {
+            if (lines.hasOwnProperty(prop)) {
+              lines[prop][i] = lines[prop][i + 1];
             }
           }
         }
 
         // FIXME: This shouldn't be necessary, however various modules
-        // (e.g. views) use rectangles.x.length as the real number of rectangles.
-        utils.extendArrays(rectangles, N_rectangles);
-        assignShortcutReferences.rectangles();
+        // (e.g. views) use lines.x1.length as the real number of lines.
+        utils.extendArrays(lines, N_shapes);
+        assignShortcutReferences.lines();
+      },
+
+      addElectricField: function(props) {
+        if (N_electricFields + 1 > electricFields.intensity.length) {
+          // Extend arrays each time (as there are only
+          // a few electricFields in typical model).
+          utils.extendArrays(electricFields, N_electricFields + 1);
+          assignShortcutReferences.electricFields();
+        }
+
+        N_electricFields++;
+
+        // Set properties of new shape.
+        engine.setElectricFieldProperties(N_electricFields - 1, props);
+      },
+
+      removeElectricField: function(idx) {
+        var i, prop;
+
+        if (idx >= N_electricFields) {
+          throw new Error("Electric field " + idx + " doesn't exist, so it can't be removed.");
+        }
+
+        N_electricFields--;
+
+        // Shift electric fields properties.
+        for (i = idx; i < N_electricFields; i++) {
+          for (prop in electricFields) {
+            if (electricFields.hasOwnProperty(prop)) {
+              electricFields[prop][i] = electricFields[prop][i + 1];
+            }
+          }
+        }
+
+        // Follow convention of other engine objects whose array is reduced after removal.
+        utils.extendArrays(electricFields, N_electricFields);
+        assignShortcutReferences.electricFields();
       },
 
       atomInBounds: function(_x, _y, i) {
@@ -20678,7 +22155,7 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
             zeroTotalMomentumOfMolecules();
           }
 
-          pluginController.callPluginFunction('performActionWithinIntegrationLoop', [neighborList, dt]);
+          pluginController.callPluginFunction('performActionWithinIntegrationLoop', [neighborList, dt, time]);
 
         } // end of integration loop
 
@@ -20692,6 +22169,8 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
         // It's enough to do it outside the inner integration loop (performance).
         createDisulfideBonds();
       },
+
+      updateParticlesAccelerations: updateParticlesAccelerations,
 
       // Minimize energy using steepest descend method.
       minimizeEnergy: function () {
@@ -20730,8 +22209,10 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
             bounceParticleOffWalls(i);
             // Bounce off obstacles, but DO NOT update pressure probes.
             bounceParticleOffObstacles(i, xPrev, yPrev, false);
-            // Bounce off rectangles
-            bounceParticleOffRectangles(i, xPrev, yPrev);
+            // Bounce off shapes
+            bounceParticleOffShapes(i, xPrev, yPrev);
+            // Bounce off lines
+            bounceParticleOffLines(i, xPrev, yPrev);
           }
 
           // Calculate accelerations.
@@ -20807,8 +22288,12 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
         return N_obstacles;
       },
 
-			getNumberOfRectangles: function() {
-        return N_rectangles;
+      getNumberOfShapes: function() {
+        return N_shapes;
+      },
+
+      getNumberOfLines: function() {
+        return N_lines;
       },
 
       getNumberOfRadialBonds: function() {
@@ -20827,20 +22312,25 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
         return N_springForces;
       },
 
+      getNumberOfElectricFields: function() {
+        return N_electricFields;
+      },
+
       /**
         Compute the model state and store into the passed-in 'state' object.
         (Avoids GC hit of throwaway object creation.)
       */
       // TODO: [refactoring] divide this function into smaller chunks?
       computeOutputState: function(state) {
-        var i, j,
+        var i, j, e,
             i1, i2, i3,
             el1, el2,
             dx, dy,
             dxij, dyij, dxkj, dykj,
-            cosTheta, theta,
+            cosTheta, theta, rect,
             r_sq, rij, rkj,
             k, dr, angleDiff,
+            elInMWUnits,
             gravPEInMWUnits,
             // Total kinetic energy, in MW units.
             KEinMWUnits,
@@ -20858,6 +22348,22 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
           if (gravitationalField) {
             gravPEInMWUnits = mass[i] * gravitationalField * y[i];
             PE += constants.convert(gravPEInMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.EV });
+          }
+
+          // electric field PE
+          for (e = 0; e < N_electricFields; e++) {
+            rect = electricFieldShapeIdx[e];
+            if (rect != null && !rectContains(rect, x[i], y[i])) continue;
+            elInMWUnits = charge[i] * getElFieldForce(e);
+            switch (electricFieldOrientation[e]) {
+            case "N":
+            case "S":
+              elInMWUnits *= (rect != null ? shapeY[rect] : minY) - y[i]; break;
+            case "W":
+            case "E":
+              elInMWUnits *= (rect != null ? shapeX[rect] : minX) - x[i]; break;
+            }
+            PE += constants.convert(elInMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.EV });
           }
 
           KEinMWUnits += 0.5 * mass[i] * (vx[i] * vx[i] + vy[i] * vy[i]);
@@ -21169,7 +22675,7 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
         }
 
         var fx = 0, fy = 0,
-            i, len, dx, dy, rSq, fOverR, atomCharge, atomIdx;
+            i, len, dx, dy, rSq, fOverR, atomCharge, atomIdx, rect, o;
 
         for (i = 0, len = chargedAtomsList.length; i < len; i++) {
           atomIdx = chargedAtomsList[i];
@@ -21185,6 +22691,19 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
           fx += fOverR * dx;
           fy += fOverR * dy;
         }
+
+        for (i = 0; i < N_electricFields; i++) {
+          rect = electricFieldShapeIdx[i];
+          if (rect != null && !rectContains(rect, testX, testY)) continue;
+          o = electricFieldOrientation[i];
+          if (o === "N" || o === "S") {
+            fy += getElFieldForce(i); // * 1 Coulomb (test charge)
+          } else {
+            fx += getElFieldForce(i); // * 1 Coulomb (test charge)
+          }
+        }
+
+
         resultObj.fx = constants.convert(fx, { from: unit.MW_FORCE_UNIT, to: unit.EV_PER_NM });
         resultObj.fy = constants.convert(fy, { from: unit.MW_FORCE_UNIT, to: unit.EV_PER_NM });
         return resultObj;
@@ -21232,7 +22751,8 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
           new CloneRestoreWrapper(elements),
           new CloneRestoreWrapper(atoms),
           new CloneRestoreWrapper(obstacles),
-          new CloneRestoreWrapper(rectangles),
+          new CloneRestoreWrapper(shapes),
+          new CloneRestoreWrapper(lines),
           new CloneRestoreWrapper(radialBonds),
           new CloneRestoreWrapper(angularBonds),
           new CloneRestoreWrapper(restraints),
@@ -21248,7 +22768,8 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
                 N             : N,
                 N_elements    : N_elements,
                 N_obstacles   : N_obstacles,
-                N_rectangles  : N_rectangles,
+                N_shapes      : N_shapes,
+                N_lines       : N_lines,
                 N_radialBonds : N_radialBonds,
                 N_angularBonds: N_angularBonds,
                 N_restraints  : N_restraints,
@@ -21259,7 +22780,8 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
               time           = state.time;
               N              = state.N;
               N_elements     = state.N_elements;
-              N_rectangles   = state.N_rectangles;
+              N_shapes       = state.N_shapes;
+              N_lines        = state.N_lines;
               N_radialBonds  = state.N_radialBonds;
               N_angularBonds = state.N_angularBonds;
               N_restraints   = state.N_restraints;
@@ -22726,154 +24248,6 @@ define('common/output-support',['require','common/property-description','cs!comm
 });
 
 /*global define: false, d3: false */
-/**
- * This module provides event dispatch based on d3.dispatch:
- * https://github.com/mbostock/d3/wiki/Internals#wiki-d3_dispatch
- *
- * The main improvement over raw d3.dispatch is that this wrapper provides
- * event batching. You can start batch mode (.startBatch()) and while it is
- * active events won't be dispatched immediately. They will be dispatched
- * at the end of batch mode (.endBatch()) or when you call .flush() method.
- *
- * Note that there is one *significant limitation*: arguments passed during
- * event dispatching will be lost! All events will be merged into single
- * event without any argument. Please keep this in mind while using this module.
- *
- * e.g.
- *   dispatch.on("someEvent", function(arg) { console.log(arg); });
- *   dispatch.someEvent(123);     // console output: 123
- *   dispatch.someEvent("test");  // console output: "test"
- * However...
- *   dispatch.startBatch();
- *   dispatch.someEvent(123);
- *   dispatch.someEvent("test");
- *   dispatch.endBatch();         // console output: undefined (!)
- *
- * Rest of the interface is exactly the same like in d3.dispatch (.on()).
- * Under the hood delegation to d3.dispatch instance is used.
- */
-define('common/dispatch-support',[],function() {
-
-  // Converts arguments object to regular array.
-  function argsToArray(args) {
-    return [].slice.call(args);
-  }
-
-  return function DispatchSupport() {
-    var api,
-        d3dispatch,
-        types,
-
-        batchMode = false,
-        suppressedEvents = d3.set();
-
-    function init(newTypes) {
-      var i, len;
-
-      types = newTypes;
-
-      d3dispatch = d3.dispatch.apply(null, types);
-
-      // Provide wrapper around typical calls like dispatch.someEvent().
-      for (i = 0, len = types.length; i < len; i++) {
-        api[types[i]] = dispatchEvent(types[i]);
-      }
-    }
-
-    function dispatchEvent(name) {
-      return function () {
-        if (!batchMode) {
-          d3dispatch[name].apply(d3dispatch, arguments);
-        } else {
-          suppressedEvents.add(name);
-        }
-      };
-    }
-
-    function delegate(funcName) {
-      return function () {
-        d3dispatch[funcName].apply(d3dispatch, arguments);
-      };
-    }
-
-    // Public API.
-    api = {
-      // Copy d3.dispatch API:
-
-      /**
-       * Adds or removes an event listener for the specified type. Please see:
-       * https://github.com/mbostock/d3/wiki/Internals#wiki-dispatch_on
-       */
-      on: delegate("on"),
-
-      // New API specific for Lab DispatchSupport:
-
-      mixInto: function(target) {
-        target.on = api.on;
-        target.suppressEvents = api.suppressEvents;
-      },
-
-      /**
-       * Adds new event types. Old event types are still supported, but
-       * all previously registered listeners will be removed!
-       *
-       * e.g. dispatch.addEventTypes("newEvent", "anotherEvent")
-       */
-      addEventTypes: function () {
-        if (arguments.length) {
-          init(types.concat(argsToArray(arguments)));
-        }
-      },
-
-      /**
-       * Starts batch mode. Events won't be dispatched immediately after call.
-       * They will be merged into single event and dispatched when .flush()
-       * or .endBatch() is called.
-       */
-      startBatch: function () {
-        batchMode = true;
-      },
-
-      /**
-       * Ends batch mode and dispatches suppressed events.
-       */
-      endBatch: function () {
-        batchMode = false;
-        api.flush();
-      },
-
-      /**
-       * Dispatches suppressed events.
-       * @return {[type]} [description]
-       */
-      flush: function () {
-        suppressedEvents.forEach(function (eventName) {
-          d3dispatch[eventName]();
-        });
-        // Reset suppressed events.
-        suppressedEvents = d3.set();
-      },
-
-      /**
-       * Allows to execute some action without dispatching any events.
-       * @param {function} action
-       */
-      suppressEvents: function(action) {
-        batchMode = true;
-        action();
-        batchMode = false;
-        // Reset suppressed events without dispatching them.
-        suppressedEvents = d3.set();
-      }
-    };
-
-    init(argsToArray(arguments));
-
-    return api;
-  };
-});
-
-/*global define: false, d3: false */
 
 define('common/playback-support',['require','common/console'],function (require) {
   var console = require('common/console');
@@ -23131,7 +24505,7 @@ define('common/lab-modeler-mixin',['require','common/property-support','common/p
 
     // FIXME: These events have to be available as some other modules try to
     // add listeners. Probably they aren't necessary, trace it and fix.
-    dispatchSupport.addEventTypes("reset", "stepForward", "stepBack", "seek", "invalidation");
+    dispatchSupport.addEventTypes("reset", "stepForward", "stepBack", "seek", "invalidation", "willReset");
 
     api = {
       mixInto: function(target) {
@@ -23140,6 +24514,13 @@ define('common/lab-modeler-mixin',['require','common/property-support','common/p
         outputSupport.mixInto(target);
         dispatchSupport.mixInto(target);
         playbackSupport.mixInto(target);
+
+        // This allows external code (such as the model controller) to trigger the model's
+        // willReset event. This allows observers such as the export controller to observe model
+        // state before it gets blown away.
+        target.willReset = function() {
+          dispatchSupport.willReset();
+        };
 
         if (metadata) {
           defineBuiltinProperties({
@@ -24846,11 +26227,7 @@ define('md2d/models/engine/genetic-engine',['require','cs!md2d/models/aminoacids
             }
           }
         });
-        if (model.isStopped()) {
-          // FIXME: ugly workaround to update position, as setAtomProperties
-          // doesn't dispatch any events in contrast to minimize energy.
-          model.minimizeEnergy();
-        }
+        model.tickInPlace();
       },
 
       connectAminoAcid: function (codonIdx) {
@@ -25715,6 +27092,10 @@ define('md2d/models/engine/plugins/quantum-dynamics',['require','common/models/e
       // in reality, 6.626E-34 m^2kg/s. Classic MW uses 0.2 in its units (eV * fs)
       PLANCK_CONSTANT = constants.convert(0.2, { from: constants.unit.EV, to: constants.unit.MW_ENERGY_UNIT }),
 
+      // MW uses a "tolerance band" to decide if a photon's energy matches an energy level gap.
+      // Reference: https://github.com/concord-consortium/mw/blob/d3f621ba87825888737257a6cb9ac9e4e4f63f77/src/org/concord/mw2d/models/PhotonicExcitor.java#L28
+      ENERGY_GAP_TOLERANCE = constants.convert(0.05, { from: constants.unit.EV, to: constants.unit.MW_ENERGY_UNIT }),
+
       // Speed of light.
       // in reality, about 300 nm/fs! Classic uses 0.2 in its units (0.1Å/fs), which is 0.002 nm/fs:
       C = 0.002,
@@ -25722,7 +27103,11 @@ define('md2d/models/engine/plugins/quantum-dynamics',['require','common/models/e
 
       // expected value of lifetime of excited energy state, in fs
       LIFETIME = 1000,
-      EMISSION_PROBABILITY_PER_FS = 1/LIFETIME;
+      EMISSION_PROBABILITY_PER_FS = 1/LIFETIME,
+
+      // dispatch events from handlePhotonAtomCollision
+      PHOTON_ABSORBED = 1,
+      PHOTON_EMITTED = 2;
 
   return function QuantumDynamics(engine, _properties) {
 
@@ -25733,10 +27118,13 @@ define('md2d/models/engine/plugins/quantum-dynamics',['require','common/models/e
 
         properties           = validator.validateCompleteness(metadata.quantumDynamics, _properties),
 
+        isLightSourceOn      = false,
+
         api,
 
         elementEnergyLevels  = properties.elementEnergyLevels,
         pRadiationless       = properties.radiationlessEmissionProbability,
+        pStimulatedEmission  = 0,
 
         dimensions           = engine.getDimensions(),
 
@@ -25744,7 +27132,7 @@ define('md2d/models/engine/plugins/quantum-dynamics',['require','common/models/e
         elements,
         photons,
 
-        viewPhotons = [],
+        nextPhotonId = 0,
 
         updateAtomsTable = function() {
           var length = atoms.x.length;
@@ -25760,6 +27148,7 @@ define('md2d/models/engine/plugins/quantum-dynamics',['require','common/models/e
           }
 
           photons =  {
+            id    : arrays.create(length, 0, arrayTypes.uint16Type),
             x     : arrays.create(length, 0, arrayTypes.floatType),
             y     : arrays.create(length, 0, arrayTypes.floatType),
             vx    : arrays.create(length, 0, arrayTypes.floatType),
@@ -25774,7 +27163,7 @@ define('md2d/models/engine/plugins/quantum-dynamics',['require','common/models/e
 
         u1, u2,                       // temporary velocity-calculation variables
         w1, w2,
-        dx, dy,
+        dxFraction, dyFraction,
 
         numPhotons = 0,
 
@@ -25789,14 +27178,96 @@ define('md2d/models/engine/plugins/quantum-dynamics',['require','common/models/e
           for (var i = 0; i < photons.x.length; i++) {
             if (photons.vx[i] || photons.vy[i]) {
               numPhotons++;
+              photons.id[i] = nextPhotonId++;
             }
           }
+        },
+
+        // Iterate over all photon-atom pairs, and allow them to interact if "touching".
+        //
+        // If a photons and atom are close enough, one of the following may happen:
+        //   - the photon is absorbed, exciting the atom's electron to a higher energy level
+        //   - (NOT YET IMPLEMENTED) the photon is absorbed, ionizing the atoms' electron
+        //   - (NOT YET IMPLEMENTED) the photon triggers stimulated emission of a second photon
+        //   - (NOT YET IMPLEMENTED) the photon is scattered
+        //   - or no interaction occurs (the photon and atom are unmodified)
+        //
+        handlePhotonAtomCollisions = function() {
+          var numAtoms = engine.getNumberOfAtoms(),
+              i, len,
+              x, y,
+              atomIndex,
+              r, rsq,
+              dx, dy,
+              collisionResult;
+
+          for (i = 0, len = photons.x.length; i < len; i++) {
+            if (!photons.vx[i] && !photons.vy[i]) {
+              continue;
+            }
+
+            x = photons.x[i];
+            y = photons.y[i];
+
+            // TODO. Consider using the cell list to narrow down the list of atoms to those in the
+            // same cell as the photon.
+            for (atomIndex = 0; atomIndex < numAtoms; atomIndex++) {
+              dx = atoms.x[atomIndex] - x;
+              dy = atoms.y[atomIndex] - y;
+              r = atoms.radius[atomIndex];
+              // TODO. Cache rsq values?
+              rsq = r*r;
+
+              if (dx*dx + dy*dy < rsq) {
+                collisionResult = handlePhotonAtomCollision(i, atomIndex);
+                if (collisionResult === PHOTON_ABSORBED) {
+                  // Break from iteration over atoms, and move on to the next photon.
+                  break;
+                }
+                // TODO. Handle stimulated emission by remembering a list of photons to create
+                // after the loop over photons completes.
+              }
+            }
+          }
+        },
+
+        handlePhotonAtomCollision = function(photonIndex, atomIndex) {
+          if (Math.random() < pStimulatedEmission) {
+            // TODO. Stimulated emission.
+            return PHOTON_EMITTED;
+          } else if (tryToAbsorbPhoton(photonIndex, atomIndex)) {
+            return PHOTON_ABSORBED;
+          }
+
+          // TODO. Scatter photon (or not) depending on the model's "scatter probability".
+        },
+
+        // If the photon can be absorbed by exciting the atom's electron to a higher energy level,
+        // then remove the photon, excite the electron, and return true. Otherwise, return false.
+        tryToAbsorbPhoton = function(photonIndex, atomIndex) {
+          if (!elementEnergyLevels) return;
+
+          var energyLevels     = elementEnergyLevels[atoms.element[atomIndex]],
+              energyLevelIndex = atoms.excitation[atomIndex],
+              electronEnergy   = energyLevels[energyLevelIndex],
+              photonEnergy     = photons.angularFrequency[photonIndex] * PLANCK_CONSTANT,
+              i,
+              nLevels;
+
+          for (i = energyLevelIndex + 1, nLevels = energyLevels.length; i < nLevels; i++) {
+            if (Math.abs(energyLevels[i] - electronEnergy - photonEnergy) < ENERGY_GAP_TOLERANCE) {
+              atoms.excitation[atomIndex] = i;
+              removePhoton(photonIndex);
+              return true;
+            }
+          }
+          return false;
         },
 
         // If a pair of atoms are close enough, QD interactions may occur.
         //
         // This is called at the end of every integration loop.
-        performInteractionsBetweenCloseAtoms = function(neighborList) {
+        thermallyExciteAndDeexciteAtoms = function(neighborList) {
           var N     = engine.getNumberOfAtoms(),
               nlist = neighborList.getList(),
               currentlyClosePairs = [],
@@ -25825,9 +27296,9 @@ define('md2d/models/engine/plugins/quantum-dynamics',['require','common/models/e
               energyLevels2 = elementEnergyLevels[el2];
 
               // if neither atom is of an element with energy levels, skip
-             if (!energyLevels1.length && !energyLevels2.length) {
-               continue;
-             }
+              if (!energyLevels1.length && !energyLevels2.length) {
+                continue;
+              }
 
               // if we aren't close (within the avrSigma of two atoms), skip
               xij = xi - atoms.x[a2];
@@ -25854,7 +27325,7 @@ define('md2d/models/engine/plugins/quantum-dynamics',['require','common/models/e
 
               // if we didn't excite, see if this pair wants to de-excite
               if (!atomWasExcited) {
-                atomWasDeexcited = tryToDeexciteAtoms(a1, a2);
+                atomWasDeexcited = tryToThermallyDeexciteAtoms(a1, a2);
               }
 
               if (atomWasExcited || atomWasDeexcited) {
@@ -25892,10 +27363,10 @@ define('md2d/models/engine/plugins/quantum-dynamics',['require','common/models/e
 
           // excite a random atom, or pick the excitable one if only one can be excited
           selection = Math.random() < 0.5 ? atom1Idx : atom2Idx;
-          atomWasExcited = tryToExcite(selection);
+          atomWasExcited = tryToExciteAtom(selection);
           if (!atomWasExcited) {
             // if we couldn't excite the first, excite the other one
-            atomWasExcited = tryToExcite(atom1Idx+atom2Idx-selection);
+            atomWasExcited = tryToExciteAtom(atom1Idx+atom2Idx-selection);
           }
 
           return atomWasExcited;
@@ -25903,7 +27374,7 @@ define('md2d/models/engine/plugins/quantum-dynamics',['require','common/models/e
 
         // Excites an atom to a new energy level if the relative KE of the pair atom1Idx
         // and atom2Idx is high enough, and updates the velocities of atoms as necessary
-        tryToExcite = function(i) {
+        tryToExciteAtom = function(i) {
           var energyLevels   =   elementEnergyLevels[atoms.element[i]],
               currentEnergyLevel,
               currentElectronEnergy,
@@ -25914,7 +27385,7 @@ define('md2d/models/engine/plugins/quantum-dynamics',['require','common/models/e
 
           if (!energyLevels) return;
 
-          precalculateVelocities();
+          computeVelocityComponents();
 
           relativeKE = getRelativeKE();
 
@@ -25945,50 +27416,50 @@ define('md2d/models/engine/plugins/quantum-dynamics',['require','common/models/e
           return true;
         },
 
-        precalculateVelocities = function() {
-          dx = atoms.x[atom2Idx] - atoms.x[atom1Idx];
-          dy = atoms.y[atom2Idx] - atoms.y[atom1Idx];
+        computeVelocityComponents = function() {
+          var dx = atoms.x[atom2Idx] - atoms.x[atom1Idx],
+              dy = atoms.y[atom2Idx] - atoms.y[atom1Idx],
+              normalizationFactor = 1 / Math.sqrt(dx*dx + dy*dy);
 
-          var normalizationFactor = 1 / Math.sqrt(dx*dx + dy*dy);
-
-          dx *= normalizationFactor;
-          dy *= normalizationFactor;
+          dxFraction = dx * normalizationFactor;
+          dyFraction = dy * normalizationFactor;
 
           // Decompose v1 into components u1 (parallel to d) and w1 (orthogonal to d)
-          u1 = atoms.vx[atom1Idx] * dx + atoms.vy[atom1Idx] * dy;
-          w1 = atoms.vy[atom1Idx] * dx - atoms.vx[atom1Idx] * dy;
+          u1 = atoms.vx[atom1Idx] * dxFraction + atoms.vy[atom1Idx] * dyFraction;
+          w1 = atoms.vy[atom1Idx] * dxFraction - atoms.vx[atom1Idx] * dyFraction;
 
           // Decompose v2 similarly
-          u2 = atoms.vx[atom2Idx] * dx + atoms.vy[atom2Idx] * dy;
-          w2 = atoms.vy[atom2Idx] * dx - atoms.vx[atom2Idx] * dy;
+          u2 = atoms.vx[atom2Idx] * dxFraction + atoms.vy[atom2Idx] * dyFraction;
+          w2 = atoms.vy[atom2Idx] * dxFraction - atoms.vx[atom2Idx] * dyFraction;
         },
 
         getRelativeKE = function() {
-          var du   = u2 - u1;
+          var du = u2 - u1,
+              m1 = atoms.mass[atom1Idx],
+              m2 = atoms.mass[atom2Idx];
 
-          return 0.5 * du * du * atoms.mass[atom1Idx] * atoms.mass[atom2Idx] / (atoms.mass[atom1Idx] + atoms.mass[atom2Idx]);
+          return 0.5 * du * du * m1 * m2 / (m1 + m2);
         },
 
-        updateVelocities = function(delta) {
+        updateVelocities = function(energyDelta) {
           var m1 = atoms.mass[atom1Idx],
               m2 = atoms.mass[atom2Idx],
-              j  = m1 * u1 * u1 + m2 * u2 * u2 - delta,
+              j  = m1 * u1 * u1 + m2 * u2 * u2 - energyDelta,
               g  = m1 * u1 + m2 * u2,
               v1 = (g - Math.sqrt(m2 / m1 * (j * (m1 + m2) - g * g))) / (m1 + m2),
               v2 = (g + Math.sqrt(m1 / m2 * (j * (m1 + m2) - g * g))) / (m1 + m2);
 
-          atoms.vx[atom1Idx] = v1 * dx - w1 * dy;
-          atoms.vy[atom1Idx] = v1 * dy + w1 * dx;
-          atoms.vx[atom2Idx] = v2 * dx - w2 * dy;
-          atoms.vy[atom2Idx] = v2 * dy + w2 * dx;
+          atoms.vx[atom1Idx] = v1 * dxFraction - w1 * dyFraction;
+          atoms.vy[atom1Idx] = v1 * dyFraction + w1 * dxFraction;
+          atoms.vx[atom2Idx] = v2 * dxFraction - w2 * dyFraction;
+          atoms.vy[atom2Idx] = v2 * dyFraction + w2 * dxFraction;
         },
 
-        // If one atom has an electron in a higher energy state (and we didn't
-        // just excite this pair) the atom may deexcite during a collision. This
-        // will either release a photon (NOT YET IMPLEMENTED) or will increase
-        // the relative KE of the atoms (radiationless transition), with the
-        // probabilities of each depending on the model settings.
-        tryToDeexciteAtoms = function(a1, a2) {
+        // If one atom has an electron in a higher energy state (and we didn't just excite this
+        // pair) the atom may deexcite during a collision. This will either release a photon or will
+        // increase the relative KE of the atoms (radiationless transition), with the probabilities
+        // of each depending on the model settings.
+        tryToThermallyDeexciteAtoms = function(a1, a2) {
           var selection,
               excitation1 = atoms.excitation[a1],
               excitation2 = atoms.excitation[a2];
@@ -26008,11 +27479,11 @@ define('md2d/models/engine/plugins/quantum-dynamics',['require','common/models/e
           } else {
             selection = Math.random() < 0.5 ? atom1Idx : atom2Idx;
           }
-          deexcite(selection);
+          deexciteAtom(selection);
           return true;
         },
 
-        deexcite = function(i) {
+        deexciteAtom = function(i) {
           var energyLevels   = elementEnergyLevels[atoms.element[i]],
               currentLevel   = atoms.excitation[i],
               newLevel       = Math.floor(Math.random() * currentLevel),
@@ -26022,22 +27493,20 @@ define('md2d/models/engine/plugins/quantum-dynamics',['require','common/models/e
 
           if (Math.random() < pRadiationless) {
             // new energy goes into increasing atom velocities after collision
-            precalculateVelocities();
+            computeVelocityComponents();
             updateVelocities(energyReleased);
           } else {
-            emitPhoton(i, energyReleased);
+            emitPhotonFromAtom(i, energyReleased);
           }
         },
 
-        addPhoton = function() {
+        findEmptyPhotonIndex = function() {
           var length = photons.x.length,
               i;
 
-          numPhotons++;
-
-          if (numPhotons > length) {
+          if (numPhotons + 1 > length) {
             utils.extendArrays(photons, length+10);
-            return numPhotons - 1;
+            return length;
           }
 
           for (i = 0; i < length; i++) {
@@ -26052,26 +27521,34 @@ define('md2d/models/engine/plugins/quantum-dynamics',['require','common/models/e
           photons.x[i] = photons.y[i] = photons.vx[i] = photons.vy[i] = photons.angularFrequency[i] = 0;
         },
 
-        emitPhoton = function(atomIndex, energy) {
-          var angle = Math.random() * TWO_PI,
+        emitPhoton = function(x, y, angle, energy) {
+          var cosA  = Math.cos(angle),
+              sinA  = Math.sin(angle),
+              vx          = C * cosA,
+              vy          = C * sinA,
+              angularFreq = energy / PLANCK_CONSTANT,
+              photonIndex = findEmptyPhotonIndex();
+
+          numPhotons++;
+          photons.id[photonIndex] = nextPhotonId++;
+          photons.x[photonIndex]  = x;
+          photons.y[photonIndex]  = y;
+          photons.vx[photonIndex] = vx;
+          photons.vy[photonIndex] = vy;
+          photons.angularFrequency[photonIndex] = angularFreq;
+        },
+
+        emitPhotonFromAtom = function(atomIndex, energy) {
+          var angle = Math.random() * TWO_PI - Math.PI,
               cosA  = Math.cos(angle),
               sinA  = Math.sin(angle),
               sigma = elements.sigma[atoms.element[atomIndex]],
 
               // set photon location just outside atom's sigma
-              x           = atoms.x[atomIndex] + (sigma * 0.51 * cosA),
-              y           = atoms.y[atomIndex] + (sigma * 0.51 * sinA),
-              vx          = C * cosA,
-              vy          = C * sinA,
-              angularFreq = energy / PLANCK_CONSTANT,
+              x = atoms.x[atomIndex] + (sigma * 0.51 * cosA),
+              y = atoms.y[atomIndex] + (sigma * 0.51 * sinA);
 
-              photonIndex = addPhoton();
-
-          photons.x[photonIndex]     = x;
-          photons.y[photonIndex]     = y;
-          photons.vx[photonIndex]    = vx;
-          photons.vy[photonIndex]    = vy;
-          photons.angularFrequency[photonIndex] = angularFreq;
+          emitPhoton(x, y, angle, energy);
         },
 
         movePhotons = function(dt) {
@@ -26090,15 +27567,15 @@ define('md2d/models/engine/plugins/quantum-dynamics',['require','common/models/e
           }
         },
 
-        spontaneousEmission = function(dt) {
+        spontaneouslyEmitPhotons = function(dt) {
           if (!elementEnergyLevels) { return; }
 
           for (var i = 0, N = engine.getNumberOfAtoms(); i < N; i++) {
-            tryToSpontaneouslyEmit(i, dt);
+            tryToSpontaneouslyEmitPhoton(i, dt);
           }
         },
 
-        tryToSpontaneouslyEmit = function(atomIndex, dt) {
+        tryToSpontaneouslyEmitPhoton = function(atomIndex, dt) {
 
           if (atoms.excitation[atomIndex] === 0) { return; }
 
@@ -26111,8 +27588,8 @@ define('md2d/models/engine/plugins/quantum-dynamics',['require','common/models/e
           // Randomly select an energy level. Reference:
           // https://github.com/concord-consortium/mw/blob/6e2f2d4630323b8e993fcfb531a3e7cb06644fef/src/org/concord/mw2d/models/SpontaneousEmission.java#L48-L70
 
-          var u1 = Math.random(),
-              u2 = Math.random(),
+          var r1 = Math.random(),
+              r2 = Math.random(),
               energyLevels,
               excessEnergy,
               i,
@@ -26120,15 +27597,53 @@ define('md2d/models/engine/plugins/quantum-dynamics',['require','common/models/e
               mInverse = 1/m;
 
           for (i = 0; i < m; i++) {
-            if (i*mInverse <= u1 && u1 < (i+1)*mInverse && pRadiationless < u2) {
+            if (i*mInverse <= r1 && r1 < (i+1)*mInverse && pRadiationless < r2) {
               energyLevels = elementEnergyLevels[atoms.element[atomIndex]];
               excessEnergy = energyLevels[m] - energyLevels[i];
               atoms.excitation[atomIndex] = i;
-              emitPhoton(atomIndex, excessEnergy);
+              emitPhotonFromAtom(atomIndex, excessEnergy);
               return;
             }
           }
+        },
+
+        // Temporary implementation with hard-wired parameters.
+        emitLightSourcePhotons = function() {
+          var x = dimensions[0],
+              y = dimensions[1],
+              w = dimensions[2] - x,
+              h = dimensions[3] - y,
+
+              // hard-wired presets for now
+              // taken from http://lab.dev.concord.org/imports/legacy-mw-content/sam-activities/light-matter/greenhouse-gases/sunOnGround.mml
+              angle = -5 * Math.PI / 6,
+              energy = 13.92 * PLANCK_CONSTANT,
+              nBeams = 5,
+
+              // Lifted from AtomicModel.shootPhotons()
+              // https://github.com/concord-consortium/mw/blob/d3f621ba87825888737257a6cb9ac9e4e4f63f77/src/org/concord/mw2d/models/AtomicModel.java#L2534
+              s = Math.abs(Math.sin(angle)),
+              c = Math.abs(Math.cos(angle)),
+              length = s * h < c * w ? h / c : w / s,
+              spacing = length / nBeams,
+              dx = spacing / s,
+              dy = spacing / c,
+              m = Math.floor(w / dx),
+              n = Math.floor(h / dy),
+              i;
+
+          // Lifted from AtomicModel.shootAtAngle()
+          // https://github.com/concord-consortium/mw/blob/d3f621ba87825888737257a6cb9ac9e4e4f63f77/src/org/concord/mw2d/models/AtomicModel.java#L2471
+          // this is the 'angle > -Math.PI && angle < -0.5 * Math.PI' case:
+          for (i = 0; i <= m; i++) {
+            emitPhoton(x + w - dx * i, y + h, angle, energy);
+          }
+
+          for (i = 1; i <= n; i++) {
+            emitPhoton(x + w, y + h - dy * i, angle, energy);
+          }
         };
+
 
     // Public API.
     api = {
@@ -26140,10 +27655,24 @@ define('md2d/models/engine/plugins/quantum-dynamics',['require','common/models/e
         copyPhotonData(properties.photons);
       },
 
-      performActionWithinIntegrationLoop: function(neighborList, dt) {
-        performInteractionsBetweenCloseAtoms(neighborList);
-        spontaneousEmission(dt);
+      performActionWithinIntegrationLoop: function(neighborList, dt, time) {
         movePhotons(dt);
+        handlePhotonAtomCollisions();
+        thermallyExciteAndDeexciteAtoms(neighborList);
+        spontaneouslyEmitPhotons(dt);
+        // Temporary hard-wired light source, for demo purposes
+        if (isLightSourceOn && Math.floor(time % 1000) === 0) {
+          emitLightSourcePhotons();
+        }
+      },
+
+      // Presumably, we will need to be able to say *which* light source to turn on
+      turnOnLightSource: function(index) {
+        isLightSourceOn = true;
+      },
+
+      turnOffLightSource: function(index) {
+        isLightSourceOn = false;
       },
 
       getPhotons: function() {
@@ -26158,38 +27687,65 @@ define('md2d/models/engine/plugins/quantum-dynamics',['require','common/models/e
       // extended to allow plugins to define both engine-level and modeler-level parts.
       // Additionally, this can be split into updateViewPhotons which can happen in the
       // modeler's readModelState method, and a simple getViewPhotons accessor used by the view.
-      getViewPhotons: function() {
-        var n = 0,
-            // avoid using closure variable as this method will be relocated to modeler
-            photons = this.getPhotons(),
-            viewPhoton,
-            i,
-            len;
+      getViewPhotons: (function() {
+        var viewPhotons = [],
+            viewPhotonsByIndex = [];
 
-        for (i = 0, len = photons.x.length; i < len; i++) {
-          if (photons.vx[i] || photons.vy[i]) {
-            if (!viewPhotons[n]) {
-              viewPhotons[n] = {
-                idx: n
-              };
-            }
+        function makeViewPhoton(photons, i) {
+          var vx = photons.vx[i],
+              vy = photons.vy[i],
+              // For convenience, this is in the form required by SVG transform
+              angle = -180 * Math.atan2(vy, vx) / Math.PI;
 
-            viewPhoton = viewPhotons[n];
-
-            viewPhoton.x  = photons.x[i];
-            viewPhoton.y  = photons.y[i];
-            viewPhoton.vx = photons.vx[i];
-            viewPhoton.vy = photons.vy[i];
-            viewPhoton.angularFrequency = photons.angularFrequency[i];
-
-            n++;
-          }
+          return {
+            id: photons.id[i],
+            x:  photons.x[i],
+            y:  photons.y[i],
+            vx: vx,
+            vy: vy,
+            angle: angle,
+            angularFrequency: photons.angularFrequency[i]
+          };
         }
 
-        viewPhotons.length = this.getNumPhotons();
+        return function() {
+          // avoid using the closure variable 'photons' as this method will be relocated to
+          // modeler, and will then have to access photons table via some kind of accessor method
+          var photons = this.getPhotons(),
+              n = 0,
+              i,
+              len,
+              viewPhoton;
 
-        return viewPhotons;
-      },
+          viewPhotons.length = this.getNumPhotons();
+          viewPhotonsByIndex.length = photons.x.length;
+
+          for (i = 0, len = photons.x.length; i < len; i++) {
+            if (photons.vx[i] || photons.vy[i]) {
+              viewPhoton = viewPhotonsByIndex[i];
+
+              // If we have a viewPhoton for slot i in the photons array, update it instead of
+              // allocating a new viewPhoton object; that will tell the view code to update the
+              // position of the squiggle instead of generating a new one. Note that we also need to
+              // make sure that that slot in the photons array still represents the same photon it
+              // did last time we were called.
+              if (viewPhoton && viewPhoton.id === photons.id[i]) {
+                viewPhoton.x = photons.x[i];
+                viewPhoton.y = photons.y[i];
+              } else {
+                viewPhoton = makeViewPhoton(photons, i);
+                viewPhotonsByIndex[i] = viewPhoton;
+              }
+              viewPhotons[n++] = viewPhoton;
+            } else {
+              // Release references to the viewPhoton object after we're done with it.
+              viewPhotonsByIndex[i] = null;
+            }
+          }
+
+          return viewPhotons;
+        };
+      }()),
 
       getElementEnergyLevels: function() {
         return elementEnergyLevels;
@@ -26201,7 +27757,7 @@ define('md2d/models/engine/plugins/quantum-dynamics',['require','common/models/e
 
       getState: function() {
         return [
-          new CloneRestoreWrapper(photons),
+          new CloneRestoreWrapper(photons, { padArraysWithZeroes: true }),
           {
             clone: function() {
               return {
@@ -26386,8 +27942,9 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
 
         dispatch = (function() {
           var d = labModelerMixin.dispatchSupport;
-          d.addEventTypes("tick","willReset",
+          d.addEventTypes("tick",
                           "addAtom", "removeAtom", "addRadialBond", "removeRadialBond",
+                          "addElectricField", "removeElectricField", "changeElectricField",
                           "removeAngularBond", "invalidation", "textBoxesChanged");
           return d;
         }()),
@@ -26438,8 +27995,14 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
         // A hash of arrays consisting of arrays of obstacle property values
         obstacles,
 
-        // A hash of arrays consisting of arrays of rectangle property values
-        rectangles,
+        // A hash of arrays consisting of arrays of shape property values
+        shapes,
+
+        // A hash of arrays consisting of arrays of line property values
+        lines,
+
+        // A hash of arrays consisting of arrays of electric field property values
+        electricFields,
 
         // A hash of arrays consisting of arrays of radial bond property values
         radialBonds,
@@ -26576,6 +28139,7 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
       the detection of changed properties.
     */
     function readModelState() {
+      engine.updateParticlesAccelerations();
       engine.computeOutputState(modelState);
       // remember that getViewPhotons will eventually be a modeler-layer method that ingests a raw
       // representation provided by modelState.photons
@@ -26634,7 +28198,10 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
     }());
 
     function updateViewElectricField() {
-      if (!electricField.length) return;
+      // It may seem strange that model reads "viewOption"
+      // ("showElectricField"), but this is definitely reasonable
+      // optimization.
+      if (!electricField.length || !model.properties.showElectricField) return;
       var i, len, p;
       for (i = 0, len = electricField.length; i < len; i++) {
         p = electricField[i];
@@ -26816,13 +28383,15 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
 
       // Copy reference to basic properties.
       // FIXME. This should go away. https://www.pivotaltracker.com/story/show/50086079
-      elements = engine.elements;
-      radialBonds = engine.radialBonds;
+      elements          = engine.elements;
+      radialBonds       = engine.radialBonds;
       radialBondResults = engine.radialBondResults;
-      angularBonds = engine.angularBonds;
-      restraints = engine.restraints;
-      obstacles = engine.obstacles;
-      rectangles = engine.rectangles;
+      angularBonds      = engine.angularBonds;
+      restraints        = engine.restraints;
+      obstacles         = engine.obstacles;
+      shapes            = engine.shapes;
+      lines             = engine.lines;
+      electricFields = engine.electricFields;
     }
 
     model.createElements = function(_elements) {
@@ -26994,24 +28563,63 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
 
       return model;
     };
-    model.createRectangles = function(_rectangles) {
-      var numRectangles = _rectangles.x.length,
-          i, prop, rectangleProps;
+
+    model.createShapes = function(_shapes) {
+      var numShapes = _shapes.x.length,
+          i, prop, shapeProps;
 
       // See function above
-      for (i = 0; i < numRectangles; i++) {
-        rectangleProps = {};
-        for (prop in _rectangles) {
-          if (_rectangles.hasOwnProperty(prop)) {
-            rectangleProps[prop] = _rectangles[prop][i];
+      for (i = 0; i < numShapes; i++) {
+        shapeProps = {};
+        for (prop in _shapes) {
+          if (_shapes.hasOwnProperty(prop)) {
+            shapeProps[prop] = _shapes[prop][i];
           }
         }
-        model.addRectangle(rectangleProps);
+        model.addShape(shapeProps);
       }
 
       return model;
     };
 
+    model.createLines = function(_lines) {
+      var numLines = _lines.x1.length,
+          i, prop, lineProps;
+
+      // See function above
+      for (i = 0; i < numLines; i++) {
+        lineProps = {};
+        for (prop in _lines) {
+          if (_lines.hasOwnProperty(prop)) {
+            lineProps[prop] = _lines[prop][i];
+          }
+        }
+        model.addLine(lineProps);
+      }
+
+      return model;
+    };
+
+    model.createElectricFields = function(_eFields) {
+      model.batch(function () {
+        var count = _eFields.intensity.length,
+                i, prop, eFieldProps;
+
+        for (i = 0; i < count; i++) {
+          eFieldProps = {};
+          for (prop in _eFields) {
+            if (_eFields.hasOwnProperty(prop)) {
+              eFieldProps[prop] = _eFields[prop][i];
+            }
+          }
+          model.addElectricField(eFieldProps);
+        }
+      });
+      return model;
+    };
+
+    // Beware. The "reset" button in Lab interactives do not call this method. Instead they "reload"
+    // the model, discarding this model object and creating a new one from the model JSON.
     model.reset = function() {
       dispatch.willReset();
       propertySupport.invalidatingChangePreHook();
@@ -27159,34 +28767,11 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
 
     model.addObstacle = function(props) {
       var validatedProps;
-
-      if (props.color !== undefined && props.colorR === undefined) {
-        // Convert color definition.
-        // Both forms are supported:
-        //   color: [ 128, 128, 255 ]
-        // or
-        //   colorR: 128,
-        //   colorB: 128,
-        //   colorG: 255
-        props.colorR = props.color[0];
-        props.colorG = props.color[1];
-        props.colorB = props.color[2];
-      }
       // Validate properties, use default values if there is such need.
       validatedProps = validator.validateCompleteness(metadata.obstacle, props);
       // Finally, add obstacle.
       propertySupport.invalidatingChangePreHook();
       engine.addObstacle(validatedProps);
-      propertySupport.invalidatingChangePostHook();
-    };
-
-    model.addRectangle = function(props) {
-      var validatedProps;
-      // Validate properties, use default values if there is such need.
-      validatedProps = validator.validateCompleteness(metadata.rectangle, props);
-      // Finally, add rectangle.
-      propertySupport.invalidatingChangePreHook();
-      engine.addRectangle(validatedProps);
       propertySupport.invalidatingChangePostHook();
     };
 
@@ -27196,10 +28781,64 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
       propertySupport.invalidatingChangePostHook();
     };
 
-	model.removeRectangle = function (idx) {
+    model.addShape = function(props) {
+      var validatedProps;
+      // Validate properties, use default values if there is such need.
+      validatedProps = validator.validateCompleteness(metadata.shape, props);
+      // Finally, add shape.
       propertySupport.invalidatingChangePreHook();
-      engine.removeRectangle(idx);
+      engine.addShape(validatedProps);
       propertySupport.invalidatingChangePostHook();
+    };
+
+    model.removeShape = function (idx) {
+      var prevElFieldsCount = engine.getNumberOfElectricFields();
+
+      propertySupport.invalidatingChangePreHook();
+      engine.removeShape(idx);
+      propertySupport.invalidatingChangePostHook();
+
+      if (engine.getNumberOfElectricFields() !== prevElFieldsCount) {
+        dispatch.removeElectricField();
+      }
+      //TODO FIXME: also .removeShape() event should be dispatched.
+    };
+
+    model.addLine = function(props) {
+      var validatedProps;
+      // Validate properties, use default values if there is such need.
+      validatedProps = validator.validateCompleteness(metadata.line, props);
+      // Finally, add line.
+      propertySupport.invalidatingChangePreHook();
+      engine.addLine(validatedProps);
+      propertySupport.invalidatingChangePostHook();
+    };
+
+    model.removeLine = function (idx) {
+      var prevElFieldsCount = engine.getNumberOfElectricFields();
+
+      propertySupport.invalidatingChangePreHook();
+      engine.removeLine(idx);
+      propertySupport.invalidatingChangePostHook();
+      //TODO FIXME: also .removeLine() event should be dispatched.
+    };
+
+    model.addElectricField = function(props) {
+      var validatedProps;
+      // Validate properties, use default values if there is such need.
+      validatedProps = validator.validateCompleteness(metadata.electricField, props);
+      // Finally, add shape.
+      propertySupport.invalidatingChangePreHook();
+      engine.addElectricField(validatedProps);
+      propertySupport.invalidatingChangePostHook();
+      dispatch.addElectricField();
+    };
+
+    model.removeElectricField = function (idx) {
+      propertySupport.invalidatingChangePreHook();
+      engine.removeElectricField(idx);
+      propertySupport.invalidatingChangePostHook();
+      dispatch.removeElectricField();
     };
 
     model.addRadialBond = function(props, options) {
@@ -27435,24 +29074,65 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
       return translateFromMD2DUnits(props, obstacleMetaData);
     };
 
-    model.setRectangleProperties = function(i, props) {
+    model.setShapeProperties = function(i, props) {
       // Validate properties.
-      props = validator.validate(metadata.rectangle, props);
+      props = validator.validate(metadata.shape, props);
       propertySupport.invalidatingChangePreHook();
-      engine.setRectangleProperties(i, translateToMD2DUnits(props, metadata.rectangle));
+      engine.setShapeProperties(i, translateToMD2DUnits(props, metadata.shape));
       propertySupport.invalidatingChangePostHook();
     };
 
-    model.getRectangleProperties = function(i) {
-      var rectangleMetaData = metadata.rectangle,
+    model.getShapeProperties = function(i) {
+      var shapeMetaData = metadata.shape,
           props = {},
           propName;
-      for (propName in rectangleMetaData) {
-        if (rectangleMetaData.hasOwnProperty(propName)) {
-          props[propName] = rectangles[propName][i];
+      for (propName in shapeMetaData) {
+        if (shapeMetaData.hasOwnProperty(propName)) {
+          props[propName] = shapes[propName][i];
         }
       }
-      return translateFromMD2DUnits(props, rectangleMetaData);
+      return translateFromMD2DUnits(props, shapeMetaData);
+    };
+
+    model.setLineProperties = function(i, props) {
+      // Validate properties.
+      props = validator.validate(metadata.line, props);
+      propertySupport.invalidatingChangePreHook();
+      engine.setLineProperties(i, translateToMD2DUnits(props, metadata.line));
+      propertySupport.invalidatingChangePostHook();
+    };
+
+    model.getLineProperties = function(i) {
+      var lineMetaData = metadata.line,
+          props = {},
+          propName;
+      for (propName in lineMetaData) {
+        if (lineMetaData.hasOwnProperty(propName)) {
+          props[propName] = lines[propName][i];
+        }
+      }
+      return translateFromMD2DUnits(props, lineMetaData);
+    };
+
+    model.setElectricFieldProperties = function(i, props) {
+      // Validate properties.
+      props = validator.validate(metadata.electricField, props);
+      propertySupport.invalidatingChangePreHook();
+      engine.setElectricFieldProperties(i, translateToMD2DUnits(props, metadata.electricField));
+      propertySupport.invalidatingChangePostHook();
+      dispatch.changeElectricField();
+    };
+
+    model.getElectricFieldProperties = function(i) {
+      var elFieldMetaData = metadata.electricField,
+          props = {},
+          propName;
+      for (propName in elFieldMetaData) {
+        if (elFieldMetaData.hasOwnProperty(propName)) {
+          props[propName] = electricFields[propName][i];
+        }
+      }
+      return translateFromMD2DUnits(props, elFieldMetaData);
     };
 
     model.setRadialBondProperties = function(i, props) {
@@ -27674,7 +29354,18 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
 
     model.getPhotons = function() {
       return viewPhotons;
-    },
+    };
+
+    // *really* need a way for the QD plugin to add these methods to modeler-layer
+    model.turnOnLightSource = function() {
+      // Note the current, very temporary, implementation ignores index and isn't an
+      // accessor. But this is for prototyping.
+      engine.callPluginAccessor('turnOnLightSource');
+    };
+
+    model.turnOffLightSource = function() {
+      engine.callPluginAccessor('turnOffLightSource');
+    };
 
     model.get_radial_bond_results = function() {
       return radialBondResults;
@@ -27704,12 +29395,13 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
     model.get_obstacles = function() {
       return obstacles;
     };
-    model.get_rectangles = function() {
-      return rectangles;
+
+    model.get_shapes = function() {
+      return shapes;
     };
 
-    model.get_rectangles = function() {
-      return rectangles;
+    model.get_lines = function() {
+      return lines;
     };
 
     // FIXME. Should be an output property.
@@ -27722,8 +29414,12 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
       return engine.getNumberOfObstacles();
     };
 
-    model.getNumberOfRectangles = function () {
-      return engine.getNumberOfRectangles();
+    model.getNumberOfShapes = function () {
+      return engine.getNumberOfShapes();
+    };
+
+    model.getNumberOfLines = function () {
+      return engine.getNumberOfLines();
     };
 
     // FIXME. Should be an output property.
@@ -27739,6 +29435,11 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
     // FIXME. Should be an output property.
     model.getNumberOfSpringForces = function () {
       return engine.getNumberOfSpringForces();
+    };
+
+    // FIXME. Should be an output property.
+    model.getNumberOfElectricFields = function () {
+      return engine.getNumberOfElectricFields();
     };
 
     model.get_radial_bonds = function() {
@@ -27973,16 +29674,7 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
       }
       if (engine.getNumberOfObstacles()) {
         propCopy.obstacles = serialize(metadata.obstacle, obstacles, engine.getNumberOfObstacles());
-
-        propCopy.obstacles.color = [];
-        // Convert color from internal representation to one expected for serialization.
-        for (i = 0, len = propCopy.obstacles.colorR.length; i < len; i++) {
-          propCopy.obstacles.color.push([
-            propCopy.obstacles.colorR[i],
-            propCopy.obstacles.colorG[i],
-            propCopy.obstacles.colorB[i]
-          ]);
-
+        for (i = 0, len = propCopy.obstacles.x.length; i < len; i++) {
           // Silly, but allows to pass current serialization tests.
           // FIXME: try to create more flexible tests for serialization.
           propCopy.obstacles.westProbe[i] = Boolean(propCopy.obstacles.westProbe[i]);
@@ -27990,36 +29682,17 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
           propCopy.obstacles.eastProbe[i] = Boolean(propCopy.obstacles.eastProbe[i]);
           propCopy.obstacles.southProbe[i] = Boolean(propCopy.obstacles.southProbe[i]);
         }
-        delete propCopy.obstacles.colorR;
-        delete propCopy.obstacles.colorG;
-        delete propCopy.obstacles.colorB;
       }
-      if (engine.getNumberOfRectangles()) {
-        propCopy.rectangles = serialize(metadata.rectangle, rectangles, engine.getNumberOfRectangles());
-
-        propCopy.rectangles.color = [];
-        propCopy.rectangles.lineColor = [];
-        // Convert color from internal representation to one expected for serialization.
-        for (i = 0, len = propCopy.rectangles.colorR.length; i < len; i++) {
-          propCopy.rectangles.color.push([
-            propCopy.rectangles.colorR[i],
-            propCopy.rectangles.colorG[i],
-            propCopy.rectangles.colorB[i]
-          ]);
-          propCopy.rectangles.lineColor.push([
-            propCopy.rectangles.lineColorR[i],
-            propCopy.rectangles.lineColorG[i],
-            propCopy.rectangles.lineColorB[i]
-          ]);
-        }
-        delete propCopy.rectangles.colorR;
-        delete propCopy.rectangles.colorG;
-        delete propCopy.rectangles.colorB;
-        delete propCopy.rectangles.lineColorR;
-        delete propCopy.rectangles.lineColorR;
-        delete propCopy.rectangles.lineColorR;
+      if (engine.getNumberOfShapes()) {
+        propCopy.shapes = serialize(metadata.shape, shapes, engine.getNumberOfShapes());
       }
-      if (engine.getNumberOfRestraints() > 0) {
+      if (engine.getNumberOfLines()) {
+        propCopy.lines = serialize(metadata.line, lines, engine.getNumberOfLines());
+      }
+      if (engine.getNumberOfElectricFields()) {
+        propCopy.electricFields = serialize(metadata.electricField, electricFields, engine.getNumberOfElectricFields());
+      }
+      if (engine.getNumberOfRestraints()) {
         propCopy.restraints = serialize(metadata.restraint, restraints, engine.getNumberOfRestraints());
       }
 
@@ -28130,6 +29803,12 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
     // Initialize minX, minY, maxX, maxY from model width and height if they are undefined.
     initializeDimensions(model.properties);
 
+    model.on("stop.last-sample-time-reset", function() {
+      // This has to be done, as otherwise if user stops and then starts the
+      // model, there will be an incorrect sample time reported (equal to time
+      // period between starting and stopping the model).
+      lastSampleTime = null;
+    });
     propertySupport.on("afterInvalidatingChange.read-model-state", readModelState);
     propertySupport.on("afterInvalidatingChangeSequence.tick-history", function () {
       if (tickHistory) tickHistory.invalidateFollowingState();
@@ -28151,12 +29830,14 @@ define('md2d/models/modeler',['require','common/console','common/performance','m
     // will be injected to engine automatically.
     model.set({polarAAEpsilon: model.get('polarAAEpsilon')});
 
-    if (initialProperties.atoms)        model.createAtoms(initialProperties.atoms);
-    if (initialProperties.radialBonds)  model.createRadialBonds(initialProperties.radialBonds);
-    if (initialProperties.angularBonds) model.createAngularBonds(initialProperties.angularBonds);
-    if (initialProperties.restraints)   model.createRestraints(initialProperties.restraints);
-    if (initialProperties.obstacles)    model.createObstacles(initialProperties.obstacles);
-    if (initialProperties.rectangles)    model.createRectangles(initialProperties.rectangles);
+    if (initialProperties.atoms)          model.createAtoms(initialProperties.atoms);
+    if (initialProperties.radialBonds)    model.createRadialBonds(initialProperties.radialBonds);
+    if (initialProperties.angularBonds)   model.createAngularBonds(initialProperties.angularBonds);
+    if (initialProperties.restraints)     model.createRestraints(initialProperties.restraints);
+    if (initialProperties.obstacles)      model.createObstacles(initialProperties.obstacles);
+    if (initialProperties.shapes)         model.createShapes(initialProperties.shapes);
+    if (initialProperties.lines)          model.createLines(initialProperties.lines);
+    if (initialProperties.electricFields) model.createElectricFields(initialProperties.electricFields);
     // Basically, this #deserialize method is more or less similar to other #create... methods used
     // above. However, this is the first step to delegate some functionality from modeler to smaller classes.
     if (initialProperties.pairwiseLJProperties)
@@ -28374,6 +30055,7 @@ define('common/views/svg-container',['require','common/performance','common/view
         brushContainer,
 
         clickHandler,
+        dragHandler,
         // d3.svg.brush object used to implement select action. It should be
         // updated each time model2px and model2pxInv functions are changed!
         selectBrush,
@@ -28805,6 +30487,7 @@ define('common/views/svg-container',['require','common/performance','common/view
       viewportDragging();
 
       clickHandler = {};
+      dragHandler = {};
 
       // Register listeners.
       // Redraw container each time when some visual-related property is changed.
@@ -28846,6 +30529,9 @@ define('common/views/svg-container',['require','common/performance','common/view
       },
       get url() {
         return modelUrl;
+      },
+      get dragHandler() {
+        return dragHandler;
       },
 
       repaint: function() {
@@ -28944,6 +30630,7 @@ define('common/views/svg-container',['require','common/performance','common/view
 
         function getClickHandler (handler) {
           return function (d, i) {
+            if (d3.event.defaultPrevented) return;
             // Get current coordinates relative to the plot area!
             var coords = d3.mouse(plot.node()),
                 x = model2px.invert(coords[0]),
@@ -29012,6 +30699,27 @@ define('common/views/svg-container',['require','common/performance','common/view
         // Add a new "g" to easily remove it while
         // disabling / reseting select action.
         brushContainer.append("g").classed("select-area", true).call(selectBrush);
+      },
+      /**
+       * Sets custom drag handler. Note that dragging behavior is very specific for implementation
+       * and it's done in the particular renderers. That's why this functions only provides handler
+       * for renderers in .dragHandler property (plain object). Renderers that implement dragging
+       * behavior can tests whether drag handler for a given object type is available, e.g.:
+       * if (svgContainer.dragHandler.someObject) {
+       *   svgContainer.dragHandler.someObject(x, y, d, i);
+       * }
+       * This method is mostly about convention, it doesn't provide any special behavior.
+       *
+       * @param {string}   selector String defining draggable objects.
+       * @param {Function} handler  Custom drag handler. It will be called
+       *                            when object is dragged with (x, y, d, i) arguments:
+       *                              x - x coordinate in model units,
+       *                              y - y coordinate in model units,
+       *                              d - data associated with a given object (can be undefined!),
+       *                              i - ID of an object (usually its value makes sense if d is defined).
+       */
+      setDragHandler: function (type, handler) {
+        dragHandler[type] = handler;
       }
     };
 
@@ -30580,6 +32288,20 @@ define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/v
 
       OBJECT_NAMES = GeneticElementsRenderer.OBJECT_NAMES;
 
+  // Implement .interrupt() method that cancels all currently scheduled
+  // transitions. Based on Mike's idea:
+  // https://github.com/mbostock/d3/issues/1410#issuecomment-21251284
+  d3.selection.prototype.interrupt = function() {
+    return this.each(function() {
+      var lock = this.__transition__;
+      if (lock) {
+        var active = -1;
+        for (var id in lock) if ((id = +id) > active) active = id;
+        lock.active = active + 1;
+      }
+    });
+  };
+
   function GeneticRenderer(modelView, model) {
     var api,
         svg = modelView.svg,
@@ -30613,7 +32335,12 @@ define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/v
       // When viewPortX is changed render DNA and mRNA again. Also center
       // protein while in 'translation-end' state.
       model.addPropertiesListener(["viewPortX"], function() {
-        if (!g || !model.get("DNA")) return;
+        // state.name === "transcription" && transitionInProgress is an icky
+        // workaround for the problem with transitions when new nucleotide is
+        // entering. Rendering performed by this function breaks the
+        // animation. However, when state === "transcription", we actually doesn't
+        // have to render DNA and mRNA, as it will be rendered anyway.
+        if (!g || !model.get("DNA") || (state.name === "transcription" && transitionInProgress)) return;
 
         // state.name values are subset of all animation states. We define
         // more animation states than we publish for author / users
@@ -30775,21 +32502,15 @@ define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/v
       return newTrans;
     }
 
-    /**
-     * Trick to cancel all current transitions. It isn't possible explicitly
-     * so we have to start new, fake transitions, which will cancel previous
-     * ones. Note that some transitions can be applied to elements that live
-     * outside g.genetics element, e.g. viewport and background. So, it isn't
-     * enough to use d3.selectAll("g.genetics *").
-     *
-     * @private
-     */
     function cancelTransitions() {
       var g = svg.select("g.genetics");
       if (!g.empty() && g.node().__transition__) {
-        svg.selectAll("g.genetics, g.genetics *").transition().delay(0);
-        svg.select(".plot").transition().delay(0); // background changes
-        viewportG.transition().delay(0);           // viewport scrolling
+       // Note that some transitions can be applied to elements that live
+       // outside g.genetics element, e.g. viewport and background. So, it
+       // isn't enough to use d3.selectAll("g.genetics *").
+        svg.selectAll("g.genetics, g.genetics *").interrupt();
+        svg.select(".plot").interrupt(); // background changes
+        viewportG.interrupt();           // viewport scrolling
         currentTrans = null;
         animStateInProgress = null;
       }
@@ -31141,7 +32862,7 @@ define('md2d/views/genetic-renderer',['require','md2d/views/nucleotides','md2d/v
 
 /*global define: false */
 
-define('common/views/gradients',[],function () {
+define('common/views/gradients',[],function() {
   return {
     /**
      * Creates a new radial gradient or updates existing one.
@@ -31153,10 +32874,8 @@ define('common/views/gradients',[],function () {
      * @param  {[type]} container SVG container which will be used to store gradients definitions.
      * @return {string}           Gradient URL string, e.g. "url(#green-gradient)"
      */
-    createRadialGradient: function (id, lightColor, medColor, darkColor, container) {
-      var gradientUrl,
-          defs,
-          gradient;
+    createRadialGradient: function(id, lightColor, medColor, darkColor, container) {
+      var gradientUrl, defs, gradient;
       defs = container.select("defs");
       if (defs.empty()) {
         // Store gradients in 'defs' element.
@@ -31167,29 +32886,15 @@ define('common/views/gradients',[],function () {
 
       if (gradient.empty()) {
         // Create a new gradient.
-        gradient = defs.append("radialGradient")
-          .attr("id", id)
-          .attr("cx", "50%")
-          .attr("cy", "47%")
-          .attr("r", "53%")
-          .attr("fx", "35%")
-          .attr("fy", "30%");
+        gradient = defs.append("radialGradient").attr("id", id).attr("cx", "50%").attr("cy", "47%").attr("r", "53%").attr("fx", "35%").attr("fy", "30%");
       } else {
         gradient.selectAll("stop").remove()
       }
 
-      gradient.append("stop")
-        .attr("stop-color", lightColor)
-        .attr("offset", "0%");
-      gradient.append("stop")
-        .attr("stop-color", medColor)
-        .attr("offset", "40%");
-      gradient.append("stop")
-        .attr("stop-color", darkColor)
-        .attr("offset", "80%");
-      gradient.append("stop")
-        .attr("stop-color", medColor)
-        .attr("offset", "100%");
+      gradient.append("stop").attr("stop-color", lightColor).attr("offset", "0%");
+      gradient.append("stop").attr("stop-color", medColor).attr("offset", "40%");
+      gradient.append("stop").attr("stop-color", darkColor).attr("offset", "80%");
+      gradient.append("stop").attr("stop-color", medColor).attr("offset", "100%");
 
       gradientUrl = "url(#" + id + ")";
       // Store main color (for now - dark color) of the gradient.
@@ -31203,10 +32908,490 @@ define('common/views/gradients',[],function () {
      * Note that for convenience, keys are in forms of URLs (e.g. url(#some-gradient)).
      * e.g. useful for MD2D radial bonds, which can adjust their color to gradient.
      */
-    mainColorOfGradient: {}
+    mainColorOfGradient: {},
+    /**
+     * NOT INTENDED FOR INDEPENDENT USE
+     * Resolves mismatched parentheses in a string.
+     * Optionally, removes or "peels" the outermost pair of parenthesis
+     *
+     * @param  {string} string    String to resolve
+     * @param  {boolean} peel     Whether or not to "peel" the outermost parenthesis pair.
+     * @return {string}           Resolved string
+     */
+    settleParens: function(string, peel) {
+      var end, inparens, firstparen;
+      inparens = false;
+      string = string.split("")
+      for (end = 0; end < string.length; end++) {
+        if (inparens) {
+          if (string[end] == ")") {
+            inparens = false;
+          } else if (string[end] == "(") {
+            string[firstparen] = " ";
+            firstparen = end;
+          }
+        } else {
+          if (string[end] == "(") {
+            if (peel) {
+              string[end] = " "
+              peel = false
+            } else {
+              inparens = true;
+              firstparen = end;
+            }
+          } else if (string[end] == ")") {
+            string[end] = " ";
+          }
+        }
+      }
+      return string.join("").replace(/\s+/, " ").trim()
+    },
+    /**
+     * NOT INTENDED FOR INDEPENDENT USE
+     * Splits a string by space or comma, keeping parentheses intact
+     * Then, parses each "word" for possible meanings
+     * Optionally, removes or "peels" the outermost pair of parenthesis before splitting
+     *
+     * @param  {string} string    String to split
+     * @param  {boolean} peel     Whether or not to "peel" the outermost parenthesis pair.
+     * @return {Array.<Object>}   Array of "words"
+     */
+    smartSplit: function(string, peel) {
+      var start, end, result, inparens, temp;
+      string = this.settleParens(string, peel);
+      inparens = false;
+      result = [];
+      for (end = 1; end < string.length; end++) {
+        if (inparens) {
+          if (string[end] == ")") {
+            inparens = false;
+          }
+          continue;
+        }
+        if (string[end] == "," || string[end] == " ") {
+          temp = string.slice(start, end).trim()
+          if (temp.length > 0) {
+            result.push(this.parseWord(temp));
+          }
+          start = end + 1;
+        } else if (string[end] == "(") {
+          inparens = true;
+        }
+      }
+      if (end == string.length) {
+        result.push(this.parseWord(string.slice(start, end).trim()));
+      }
+      return result;
+    },
+    /**
+     * NOT INTENDED FOR INDEPENDENT USE
+     * Finds all possible meanings of a given word, storing those
+     * as properties into a String representation of the word
+     *
+     * @param  {string} word                      Word to find the meaning of
+     * @return {Object.<string,number|boolean>}   Word as a String object and properties set
+     */
+    parseWord: function(word) {
+      var result, temp;
+      result = new String(word);
+      if (word.search(/(^|[^a-zA-Z])li?n?e?a?r?($|[^a-zA-Z])/) != -1) {
+        result.linear = true;
+      }
+      if (word.search(/(^|[^a-zA-Z])ra?d?i?a?l?($|[^a-zA-Z])/) != -1) {
+        result.radial = true;
+      }
+      if (word.search(/(^|[^a-zA-Z])gr?a?d?i?e?n?t?($|[^a-zA-Z])/) != -1) {
+        result.gradient = true;
+      }
+      if (word.search(/(\(|\))/) != -1) {
+        result.parens = true;
+        return result;
+      }
+      temp = parseFloat(word);
+      if (!isNaN(temp)) {
+        result.number = temp;
+      }
+      if (word.search(/(^|[^a-zA-Z])de?g?r?e?e?s?($|[^a-zA-Z])/) != -1) {
+        result.degrees = true;
+      }
+      if (word.search(/(^|[^a-zA-Z])ri?g?h?t?($|[^a-zA-Z])/) != -1) {
+        result.right = true;
+      }
+      if (word.search(/(^|[^a-zA-Z])le?f?t?($|[^a-zA-Z])/) != -1) {
+        result.left = true;
+      }
+      if (word.search(/(^|[^a-zA-Z])(t|u)o?p?($|[^a-zA-Z])/) != -1) {
+        result.top = true;
+      }
+      if (word.search(/(^|[^a-zA-Z])bo?t?t?o?m?($|[^a-zA-Z])/) != -1) {
+        result.bottom = true;
+      }
+      if (word.search(/(^|[^a-zA-Z])re?pe?a?t?($|[^a-zA-Z])/) != -1) {
+        result.repeat = true;
+      }
+      if (word.search(/(^|[^a-zA-Z])re?fl?e?c?t?($|[^a-zA-Z])/) != -1) {
+        result.reflect = true;
+      }
+      return result;
+    },
+    /**
+     * NOT INTENDED FOR INDEPENDENT USE
+     * Given an array containing stop objects of color data and optionally offset data,
+     * interpolate values for stops without offsets.
+     * e.g.
+     * [{"color":"red","offset":0},{"color":"yellow"},{"color":"blue","offset":100}]
+     * would return
+     * [{"color":"red","offset":0},{"color":"yellow","offset":50},{"color":"blue","offset":100}]
+     *
+     * @param  {Array.<Object<string,Object|string|number>>} stops  Array of objects containing color data and optionally offset data
+     * @return {Array.<Object<string,Object|string|number>>}        Array of objects containing both color and offset data
+     */
+    interpolateStops: function(stops) {
+      var i, j, k, start, end, step;
+      if (stops.length == 0) {
+        return stops;
+      }
+      if (!("offset" in stops[0])) {
+        stops[0].offset = 0;
+      }
+      if (stops.length == 1) {
+        return stops;
+      }
+      if (!("offset" in stops[stops.length - 1])) {
+        stops[stops.length - 1].offset = 100;
+      }
+      for (i = 2; i < stops.length; i++) {
+        if ("offset" in stops[i] && !("offset" in stops[i - 1])) {
+          start = 0;
+          end = stops[i].offset;
+          for (j = i - 2; j >= 0; j--) {
+            if ("offset" in stops[j]) {
+              start = stops[j].offset;
+              break;
+            }
+          }
+          step = (end - start) / (i - j)
+          for (var k = j + 1; k < i; k++) {
+            stops[k].offset = start + step * (k - j);
+          }
+        }
+      }
+      return stops
+    },
+    /**
+     * NOT INTENDED FOR INDEPENDENT USE: use gradients.parse instead
+     * Parses and returns any color or gradient that a given string contains
+     * as a gradient/color object of the form
+     * {"color":"red"}
+     * or
+     * {"gradient":"linear","direction":0,"stops":[{"color":"red","offset":0}, ... ]}
+     *
+     * @param  {string} string  String
+     * @return {Object}         Gradient/color object
+     */
+    fullParse: function(string) {
+      //Preliminary gradient verification
+      string = string.trim().toLowerCase();
+      if (string.search(/[^#0-9a-zA-Z-]/) == -1) {
+        return {
+          "color": string
+        };
+      }
+      var stops, words, direction, linear, radial, i, gradient, remove, x_direction, y_direction, repeat;
+
+      //String preprocessing
+      string = string.replace(/[\n\r:;]/g, ' ').replace(/\/\*.*\*\/$/, '').replace(/\{\[/, "(").replace(/\}\]/, ")").replace(/[^a-zA-Z0-9%#\-\(\)\., ]*/g, "").replace(/\s*-\s+/g, "-").replace(/\s*\(/g, "(").replace(/\s+/g, " ");
+      words = this.smartSplit(string, false);
+      gradient = {};
+
+      //Remove any irrelevant parentheses
+      for (i = 0; i < words.length; i++) {
+        if ("parens" in words[i] && ("gradient" in words[i] || "linear" in words[i] || "radial" in words[i])) {
+          words.splice.apply(words, [i, 1].concat(this.smartSplit(words[i], true)))
+        }
+      }
+
+      //Parse gradient metadata
+      direction = false;
+      radial = false;
+      linear = false;
+      repeat = false;
+      x_direction = 0;
+      y_direction = 0;
+      for (i = 0; i < words.length; i++) {
+        remove = false
+        if ("left" in words[i]) {
+          x_direction -= 1;
+          remove = true;
+        } else if ("right" in words[i]) {
+          x_direction += 1;
+          remove = true;
+        }
+        if ("top" in words[i]) {
+          y_direction += 1;
+          remove = true;
+        } else if ("bottom" in words[i]) {
+          y_direction -= 1;
+          remove = true;
+        }
+        if ("radial" in words[i] && !("right" in words[i])) {
+          radial = true;
+          remove = true;
+        }
+        if ("linear" in words[i] && !("left" in words[i])) {
+          linear = true;
+          remove = true;
+        }
+        if ("number" in words[i]) {
+          if ("degrees" in words[i] || i + 1 < words.length && "degrees" in words[i + 1]) {
+            if (direction === false) {
+              direction = words[i].number;
+            }
+            remove = true;
+          }
+        }
+        if ("repeat" in words[i]) {
+          repeat = "repeat";
+          remove = true;
+        } else if ("reflect" in words[i]) {
+          repeat = "reflect";
+          remove = true;
+        }
+        if (remove || "degrees" in words[i] || "gradient" in words[i]) {
+          words.splice(i, 1);
+          i--;
+        }
+      }
+      if (direction === false && (x_direction != 0 || y_direction != 0)) {
+        direction = (180 * Math.atan2(y_direction, x_direction) / Math.PI % 360);
+      }
+
+      //Parse the stops
+      stops = [];
+      for (i = 0; i < words.length; i++) {
+        if (!("number" in words[i])) {
+          if (i + 1 < words.length && ("number" in words[i + 1])) {
+            stops.push({
+              color: words[i],
+              offset: words[i + 1].number
+            })
+            words.splice(i, 2)
+          } else {
+            stops.push({
+              color: words[i]
+            })
+            words.splice(i, 1)
+          }
+          i--
+        }
+      }
+      if (stops.length == 1) {
+        return {
+          "color": stops[0].color
+        };
+      }
+      if (stops.length == 0) {
+        return {
+          "color": "none"
+        };
+      }
+      this.interpolateStops(stops);
+
+      //Parse leftover words
+      for (i = 0; i < words.length; i++) {
+        if ("number" in words[i]) {
+          if (direction === false) {
+            direction = words[i].number;
+          }
+        }
+      }
+
+      //Build and return gradient object
+      if (radial && !linear) {
+        direction = false
+        gradient.gradient = "radial"
+      } else {
+        if (direction === false) {
+          direction = 0
+        }
+        direction %= 360;
+        if (direction < 0) {
+          direction += 360;
+        }
+        gradient.gradient = "linear"
+        gradient.direction = direction
+      }
+      if (repeat !== false) {
+        gradient.repeat = repeat
+      }
+      gradient.stops = stops;
+      gradient.standard = this.toStandardForm(gradient);
+      return gradient;
+    },
+    /**
+     * Parses and returns any color or gradient that a given string contains
+     * as a gradient/color object of the form
+     * {"color":"red"}
+     * or
+     * {"gradient":"linear","direction":0,"stops":[{"color":"red","offset":0}, ... ]}
+     *
+     * A string given in standard form is faster to parse. An arbitrary string will use gradient.fullParse.
+     *
+     * @param  {string} string  String
+     * @return {Object}         Gradient/color object
+     */
+    parse: function(string) {
+      string = string.trim().toLowerCase().replace(/\s+/g, " ")
+      if (string.search(/ /) == -1) {
+        return {
+          "color": string,
+          "standard": string
+        };
+      }
+      var stops, direction, gradient, type, s, offset, restandardize;
+      stops = string.split(' ');
+      gradient = {}
+      type = stops.shift()
+      if (type == "linear" || type == "radial") {
+        gradient.gradient = type;
+      } else {
+        return this.fullParse(string);
+      }
+      if (type == "linear") {
+        direction = parseFloat(stops.shift());
+        if (isNaN(direction)) {
+          return this.fullParse(string);
+        }
+        direction %= 360;
+        if (direction < 0) {
+          direction += 360;
+        }
+        gradient.direction = direction;
+        restandardize = true;
+      }
+      gradient.stops = []
+      if (stops.length % 2 == 0) {
+        for (s = 0; s < stops.length; s += 2) {
+          offset = parseFloat(stops[s + 1])
+          if (isNaN(offset)) {
+            return this.fullParse(string);
+          }
+          gradient.stops.push({
+            "color": stops[s],
+            "offset": offset
+          });
+        }
+      } else {
+        return this.fullParse(string);
+      }
+      if (restandardize) {
+        gradient.standard = this.toStandardForm(gradient);
+      } else {
+        gradient.standard = string;
+      }
+      return gradient;
+    },
+    /**
+     * Applies a given gradient/color to the background of a given element
+     *
+     * @param  {Object} color   A gradient/color object created by gradients.parse
+     * @param  {Object} element The specified DOM element to apply the background to
+     */
+    toCSS: function(color, element) {
+      var temp, i;
+      if ("color" in color) {
+        element.style.backgroundColor = color.color.length ? color.color : "inherit"
+        element.style.backgroundImage = "none"
+      } else {
+        temp = (color.gradient == "radial" ? "-webkit-radial-gradient(ellipse," : "-webkit-linear-gradient(" + color.direction + "deg, ");
+        for (i = 0; i < color.stops.length; i++) {
+          temp += color.stops[i].color + " " + color.stops[i].offset + "%";
+          if (i < color.stops.length - 1) {
+            temp += ",";
+          }
+        }
+        temp += ")";
+        element.style.backgroundColor = "none";
+        element.style.backgroundImage = temp;
+      }
+    },
+    /**
+     * Converts a given gradient/color to standard form
+     *
+     * @param  {Object} color A gradient/color object created by gradients.parse
+     * @return {string}       The converted standard form string
+     */
+    toStandardForm: function(color) {
+      var temp, i;
+      if ("color" in color) {
+        color.standard = color.color;
+        return color.color;
+      } else {
+        temp = color.gradient + " " + (color.gradient == "linear" ? color.direction + "deg " : "");
+        for (i = 0; i < color.stops.length; i++) {
+          temp += color.stops[i].color + " " + color.stops[i].offset + "%";
+          if (i < color.stops.length - 1) {
+            temp += " ";
+          }
+        }
+        color.standard = temp;
+        return temp;
+      }
+    },
+    /**
+     * Converts a given gradient/color to an SVG fill, creating a gradient definition if necessary
+     *
+     * @param  {Object} color    A gradient/color object created by gradients.parse
+     * @param  {Object} continer The container to append the gradient definitions to
+     * @return {string}          The converted string for use in SVG fill
+     */
+    toSVG: function(color, container) {
+      if (color.color) {
+        return color.color;
+      }
+      var gradientUrl, defs, gradient, id, c, x0, y0, xt, yt, args, stop;
+      defs = container.select("defs");
+      if (defs.empty()) {
+        // Store gradients in 'defs' element.
+        defs = container.append("defs");
+      }
+
+      id = color.standard.replace(/[^a-z0-9]/g, '');
+      gradient = defs.select("#" + id);
+
+      if (gradient.empty()) {
+        // Create a new gradient.
+        if (color.gradient == 'linear') {
+          xt = -Math.cos(Math.PI * color.direction / 180);
+          yt = -Math.sin(Math.PI * color.direction / 180);
+          if (Math.abs(yt) > Math.abs(xt)) {
+            x0 = xt * Math.abs(50 / yt);
+            y0 = (yt < 0 ? -1 : 1) * 50;
+          } else {
+            x0 = (xt < 0 ? -1 : 1) * 50;
+            y0 = yt * Math.abs(50 / xt);
+          }
+          gradient = defs.append("linearGradient").attr("id", id).attr("x1", (50 + x0) + "%").attr("y1", (50 + y0) + "%").attr("x2", (50 - x0) + "%").attr("y2", (50 - y0) + "%");
+        } else {
+          gradient = defs.append("radialGradient").attr("id", id).attr("cx", "50%").attr("cy", "50%").attr("r", "50%").attr("fx", "50%").attr("fy", "50%");
+        }
+      } else {
+        // Gradient exists. Using it.
+        return "url(#" + id + ")";
+      }
+
+      for (c = 0; c < color.stops.length; c++) {
+        stop = gradient.append("stop").attr("stop-color", color.stops[c].color).attr("offset", color.stops[c].offset + "%");
+        args = color.stops[c].color.split(",");
+        if (args.length == 4 && !isNaN(args = parseFloat(args[3]))) {
+          stop.attr("stop-opacity", args)
+        }
+      };
+
+      return "url(#" + id + ")";
+    }
   };
 });
-
 /*global define: false, d3: false */
 
 /**
@@ -31250,156 +33435,161 @@ define('common/views/color',[],function () {
 //   MD2D View Renderer
 //
 // ------------------------------------------------------------
-define('md2d/views/renderer',['require','lab.config','common/alert','common/console','common/benchmark/benchmark','cs!md2d/views/aminoacid-context-menu','md2d/views/genetic-renderer','cs!common/layout/wrap-svg-text','common/views/gradients','common/views/color'],function (require) {
+define('md2d/views/renderer',['require','lab.config','common/alert','common/console','common/benchmark/benchmark','cs!md2d/views/aminoacid-context-menu','md2d/views/genetic-renderer','cs!common/layout/wrap-svg-text','common/views/gradients','common/views/color'],function(require) {
   // Dependencies.
-  var labConfig           = require('lab.config'),
-      alert               = require('common/alert'),
-      console             = require('common/console'),
-      benchmark           = require('common/benchmark/benchmark'),
-      amniacidContextMenu = require('cs!md2d/views/aminoacid-context-menu'),
-      GeneticRenderer     = require('md2d/views/genetic-renderer'),
-      wrapSVGText         = require('cs!common/layout/wrap-svg-text'),
-      gradients           = require('common/views/gradients'),
-      color               = require('common/views/color'),
+  var labConfig = require('lab.config'),
+    alert = require('common/alert'),
+    console = require('common/console'),
+    benchmark = require('common/benchmark/benchmark'),
+    amniacidContextMenu = require('cs!md2d/views/aminoacid-context-menu'),
+    GeneticRenderer = require('md2d/views/genetic-renderer'),
+    wrapSVGText = require('cs!common/layout/wrap-svg-text'),
+    gradients = require('common/views/gradients'),
+    color = require('common/views/color'),
 
-      RADIAL_BOND_TYPES = {
-        STANDARD_STICK  : 101,
-        LONG_SPRING     : 102,
-        BOND_SOLID_LINE : 103,
-        GHOST           : 104,
-        UNICOLOR_STICK  : 105,
-        SHORT_SPRING    : 106,
-        DOUBLE_BOND     : 107,
-        TRIPLE_BOND     : 108,
-        DISULPHIDE_BOND : 109
-      };
+    RADIAL_BOND_TYPES = {
+      STANDARD_STICK: 101,
+      LONG_SPRING: 102,
+      BOND_SOLID_LINE: 103,
+      GHOST: 104,
+      UNICOLOR_STICK: 105,
+      SHORT_SPRING: 106,
+      DOUBLE_BOND: 107,
+      TRIPLE_BOND: 108,
+      DISULPHIDE_BOND: 109
+    };
 
   return function MD2DView(modelView, model) {
-        // Public API object to be returned.
+    // Public API object to be returned.
     var api = {},
 
-        // The model function getAtoms() returns a 2 dimensional array
-        // of particle indices and properties that is updated every model tick.
-        // This array is not garbage-collected so the view can be assured that
-        // the latest modelAtoms will be in this array when the view is executing
-        modelAtoms,
-        modelElements,
-        modelWidth,
-        modelHeight,
-        aspectRatio,
+      // The model function getAtoms() returns a 2 dimensional array
+      // of particle indices and properties that is updated every model tick.
+      // This array is not garbage-collected so the view can be assured that
+      // the latest modelAtoms will be in this array when the view is executing
+      modelAtoms,
+      modelElements,
+      modelWidth,
+      modelHeight,
+      aspectRatio,
 
-        // Basic scaling functions for position, it transforms model units to "pixels".
-        // Use it for positions of objects rendered inside the view.
-        model2px,
+      // Basic scaling functions for position, it transforms model units to "pixels".
+      // Use it for positions of objects rendered inside the view.
+      model2px,
 
-        // Inverted scaling function for position transforming model units to "pixels".
-        // Use it for Y coordinates, as Y axis in model coordinate system increases
-        // from bottom to top, while but SVG has increases from top to bottom
-        model2pxInv,
+      // Inverted scaling function for position transforming model units to "pixels".
+      // Use it for Y coordinates, as Y axis in model coordinate system increases
+      // from bottom to top, while but SVG has increases from top to bottom
+      model2pxInv,
 
-        // "Containers" - SVG g elements used to position layers of the final visualization.
-        fieldVisualization      = modelView.viewport.append("g").attr("class", "field-visualization"),
-        rectangleContainerBelow = modelView.viewport.append("g").attr("class", "rectangle-container-below"),
-        imageContainerBelow     = modelView.viewport.append("g").attr("class", "image-container-below"),
-        textContainerBelow      = modelView.viewport.append("g").attr("class", "text-container-below"),
-        radialBondsContainer    = modelView.viewport.append("g").attr("class", "radial-bonds-container"),
-        VDWLinesContainer       = modelView.viewport.append("g").attr("class", "vdw-lines-container"),
-        mainContainer           = modelView.viewport.append("g").attr("class", "main-container"),
-        rectangleContainerTop   = modelView.viewport.append("g").attr("class", "rectangle-container-top"),
-        imageContainerTop       = modelView.viewport.append("g").attr("class", "image-container-top"),
-        textContainerTop        = modelView.viewport.append("g").attr("class", "text-container-top"),
-        iconContainer           = modelView.vis.append("g").attr("class", "icon-container"),
+      // "Containers" - SVG g elements used to position layers of the final visualization.
+      fieldVisualization   = modelView.viewport.append("g").attr("class", "field-visualization"),
+      shapeContainerBelow  = modelView.viewport.append("g").attr("class", "shape-container-below"),
+      imageContainerBelow  = modelView.viewport.append("g").attr("class", "image-container-below"),
+      textContainerBelow   = modelView.viewport.append("g").attr("class", "text-container-below"),
+      radialBondsContainer = modelView.viewport.append("g").attr("class", "radial-bonds-container"),
+      VDWLinesContainer    = modelView.viewport.append("g").attr("class", "vdw-lines-container"),
+      mainContainer        = modelView.viewport.append("g").attr("class", "main-container"),
+      shapeContainerTop    = modelView.viewport.append("g").attr("class", "shape-container-top"),
+      lineContainerTop     = modelView.viewport.append("g").attr("class", "line-container-top"),
+      imageContainerTop    = modelView.viewport.append("g").attr("class", "image-container-top"),
+      textContainerTop     = modelView.viewport.append("g").attr("class", "text-container-top"),
+      iconContainer        = modelView.vis.append("g").attr("class", "icon-container"),
 
-        dragOrigin,
+      dragOrigin,
 
-        // Renderers specific for MD2D
-        // TODO: for now only DNA is rendered in a separate class, try to create
-        // new renderers in separate files for clarity and easier testing.
-        geneticRenderer,
+      // Renderers specific for MD2D
+      // TODO: for now only DNA is rendered in a separate class, try to create
+      // new renderers in separate files for clarity and easier testing.
+      geneticRenderer,
 
-        gradientNameForElement = [
-          "url(#elem0-grad)",
-          "url(#elem1-grad)",
-          "url(#elem2-grad)",
-          "url(#elem3-grad)"
-        ],
-        // Set of gradients used for Kinetic Energy Shading.
-        gradientNameForKELevel = [],
-        // Number of gradients used for Kinetic Energy Shading.
-        KE_SHADING_STEPS = 25,
-        // Set of gradients used for Charge Energy Shading.
-        gradientNameForPositiveChargeLevel = [],
-        gradientNameForNegativeChargeLevel = [],
-        // Number of gradients used for Charge Shading (for both positive and negative charges).
-        CHARGE_SHADING_STEPS = 25,
-        // Array which defines a gradient assigned to a given particle.
-        gradientNameForParticle = [],
+      gradientNameForElement = [
+        "url(#elem0-grad)",
+        "url(#elem1-grad)",
+        "url(#elem2-grad)",
+        "url(#elem3-grad)"
+      ],
+      // Set of gradients used for Kinetic Energy Shading.
+      gradientNameForKELevel = [],
+      // Number of gradients used for Kinetic Energy Shading.
+      KE_SHADING_STEPS = 25,
+      // Set of gradients used for Charge Energy Shading.
+      gradientNameForPositiveChargeLevel = [],
+      gradientNameForNegativeChargeLevel = [],
+      // Number of gradients used for Charge Shading (for both positive and negative charges).
+      CHARGE_SHADING_STEPS = 25,
+      // Array which defines a gradient assigned to a given particle.
+      gradientNameForParticle = [],
 
-        atomTooltipOn = false,
+      atomTooltipOn = false,
 
-        particle, label, labelEnter,
-        atomToolTip, atomToolTipPre,
+      particle, label, labelEnter,
+      atomToolTip, atomToolTipPre,
 
-        fontSizeInPixels,
-        textBoxFontSizeInPixels,
+      fontSizeInPixels,
+      textBoxFontSizeInPixels,
 
-        modelTimeFormatter = d3.format("5.1f"),
-        timePrefix = "",
-        timeSuffix = "",
+      modelTimeFormatter = d3.format("5.1f"),
+      timePrefix = "",
+      timeSuffix = "",
 
-        radialBonds,
-        radialBondResults,
-        obstacle,
-        obstacles,
-        mockObstaclesArray = [],
-        rectangles,
-        rectangleTop,
-        rectangleBelow,
-        mockRectanglesTop= [],
-        mockRectanglesBelow = [],
-        radialBond1, radialBond2,
-        vdwPairs = [],
-        vdwLines,
-        chargeShadingMode,
-        keShadingMode,
-        useQuantumDynamics,
-        drawVdwLines,
-        drawVelocityVectors,
-        drawElectricForceField,
-        velocityVectorColor,
-        velocityVectorWidth,
-        velocityVectorLength,
-        drawForceVectors,
-        forceVectorColor,
-        forceVectorWidth,
-        forceVectorLength,
-        velVector,
-        forceVector,
-        efVector,
-        imageProp,
-        imageMapping,
-        modelImagePath,
-        imageSizes = [],
-        textBoxes,
-        imagePath,
-        drawAtomTrace,
-        atomTraceId,
-        atomTraceColor,
-        atomTrace,
-        atomTracePath,
+      radialBonds,
+      radialBondResults,
+      obstacle,
+      obstacles,
+      mockObstaclesArray = [],
+      shapes,
+      shapeTop,
+      shapeBelow,
+      mockShapesTop = [],
+      mockShapesBelow = [],
+      lines,
+      lineTop,
+      mockLinesTop = [],
+      radialBond1, radialBond2,
+      vdwPairs = [],
+      vdwLines,
+      chargeShadingMode,
+      keShadingMode,
+      useQuantumDynamics,
+      drawVdwLines,
+      drawVelocityVectors,
+      drawElectricForceField,
+      velocityVectorColor,
+      velocityVectorWidth,
+      velocityVectorLength,
+      drawForceVectors,
+      forceVectorColor,
+      forceVectorWidth,
+      forceVectorLength,
+      forceVectorsDirectionOnly,
+      velVector,
+      forceVector,
+      efVector,
+      imageProp,
+      imageMapping,
+      modelImagePath,
+      imageSizes = [],
+      textBoxes,
+      imagePath,
+      drawAtomTrace,
+      atomTraceId,
+      atomTraceColor,
+      atomTrace,
+      atomTracePath,
 
-        VELOCITY_STR = "velocity",
-        FORCE_STR    = "force",
+      VELOCITY_STR = "velocity",
+      FORCE_STR = "force",
 
-        browser = benchmark.what_browser(),
+      browser = benchmark.what_browser(),
 
-        // pre-calculations
-        halfPi = Math.PI/2,
+      // pre-calculations
+      halfPi = Math.PI / 2,
 
-        // this is a hack put in place to temporarily deal with a IE 10 bug which
-        // does not update line markers when svg lines are moved
-        // see https://connect.microsoft.com/IE/feedback/details/781964/
-        hideLineMarkers = browser.browser === "MSIE" && browser.version >= "10.0";
+      // this is a hack put in place to temporarily deal with a IE 10 bug which
+      // does not update line markers when svg lines are moved
+      // see https://connect.microsoft.com/IE/feedback/details/781964/
+      hideLineMarkers = browser.browser === "MSIE" && browser.version >= "10.0";
 
 
     function modelTimeLabel() {
@@ -31407,33 +33597,30 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
     }
 
     function setAtomPosition(i, xpos, ypos, checkPosition, moveMolecule) {
-      return model.setAtomProperties(i, {x: xpos, y: ypos}, checkPosition, moveMolecule);
-    }
-
-    function getObstacleColor(i) {
-      return "rgb(" +
-        obstacles.colorR[i] + "," +
-        obstacles.colorG[i] + "," +
-        obstacles.colorB[i] + ")";
+      return model.setAtomProperties(i, {
+        x: xpos,
+        y: ypos
+      }, checkPosition, moveMolecule);
     }
 
     // Pass in the signed 24-bit Integer used for Java MW elementColors
     // See: https://github.com/mbostock/d3/wiki/Colors
+
     function createElementColorGradient(id, signedInt, mainContainer) {
       var colorstr = (signedInt + Math.pow(2, 24)).toString(16),
-          color,
-          medColor,
-          lightColor,
-          darkColor,
-          i;
+        color,
+        medColor,
+        lightColor,
+        darkColor,
+        i;
 
       for (i = colorstr.length; i < 6; i++) {
         colorstr = String(0) + colorstr;
       }
-      color      = d3.rgb("#" + colorstr);
-      medColor   = color.toString();
+      color = d3.rgb("#" + colorstr);
+      medColor = color.toString();
       lightColor = color.brighter(1).toString();
-      darkColor  = color.darker(1).toString();
+      darkColor = color.darker(1).toString();
       return gradients.createRadialGradient(id, lightColor, medColor, darkColor, mainContainer);
     }
 
@@ -31442,20 +33629,21 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
      * They should be recreated during each reset / repaint operation.
      * @private
      */
+
     function setupDynamicGradients() {
       var i, color, lightColor, medColor, darkColor;
 
-      for (i= 0; i < 4; i++) {
+      for (i = 0; i < 4; i++) {
         // Use names defined in gradientNameForElement array!
         createElementColorGradient("elem" + i + "-grad", modelElements.color[i], mainContainer);
       }
 
       // "Marked" particle gradient.
-      medColor   = model.get("markColor");
+      medColor = model.get("markColor");
       // Mark color defined in JSON defines medium color of a gradient.
-      color      = d3.rgb(medColor);
+      color = d3.rgb(medColor);
       lightColor = color.brighter(1).toString();
-      darkColor  = color.darker(1).toString();
+      darkColor = color.darker(1).toString();
       gradients.createRadialGradient("mark-grad", lightColor, medColor, darkColor, mainContainer);
     }
 
@@ -31464,19 +33652,20 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
      * for each possible model. So, it is enough to setup them just once.
      * @private
      */
+
     function createImmutableGradients() {
-          // Scale used for Kinetic Energy Shading gradients.
+      // Scale used for Kinetic Energy Shading gradients.
       var medColorScale = d3.scale.linear()
-            .interpolate(d3.interpolateRgb)
-            .range(["#F2F2F2", "#FF8080"]),
-          // Scale used for Kinetic Energy Shading gradients.
-          darkColorScale = d3.scale.linear()
-            .interpolate(d3.interpolateRgb)
-            .range(["#A4A4A4", "#FF2020"]),
-          gradientName,
-          gradientUrl,
-          KELevel,
-          i;
+        .interpolate(d3.interpolateRgb)
+        .range(["#F2F2F2", "#FF8080"]),
+        // Scale used for Kinetic Energy Shading gradients.
+        darkColorScale = d3.scale.linear()
+          .interpolate(d3.interpolateRgb)
+          .range(["#A4A4A4", "#FF2020"]),
+        gradientName,
+        gradientUrl,
+        KELevel,
+        i;
 
       // Kinetic Energy Shading gradients
       for (i = 0; i < KE_SHADING_STEPS; i++) {
@@ -31490,27 +33679,27 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       // Scales used for Charge Shading gradients.
       // Originally Positive:(ffefff,9abeff,767fbf) and Negative:(dfffff,fdadad,e95e5e)
 
-      gradients.createRadialGradient("neutral-grad","#FFFFFF","#f2f2f2","#A4A4A4",mainContainer);
+      gradients.createRadialGradient("neutral-grad", "#FFFFFF", "#f2f2f2", "#A4A4A4", mainContainer);
 
       var posLightColorScale = d3.scale.linear()
         .interpolate(d3.interpolateRgb)
         .range(["#FFFFFF", "#ffefff"]),
-      posMedColorScale = d3.scale.linear()
-        .interpolate(d3.interpolateRgb)
-        .range(["#f2f2f2", "#9090FF"]),
-      posDarkColorScale = d3.scale.linear()
-        .interpolate(d3.interpolateRgb)
-        .range(["#A4A4A4", "#3030FF"]),
-      negLightColorScale = d3.scale.linear()
-        .interpolate(d3.interpolateRgb)
-        .range(["#FFFFFF", "#dfffff"]),
-      negMedColorScale = d3.scale.linear()
-        .interpolate(d3.interpolateRgb)
-        .range(["#f2f2f2", "#FF8080"]),
-      negDarkColorScale = d3.scale.linear()
-        .interpolate(d3.interpolateRgb)
-        .range(["#A4A4A4", "#FF2020"]),
-      ChargeLevel;
+        posMedColorScale = d3.scale.linear()
+          .interpolate(d3.interpolateRgb)
+          .range(["#f2f2f2", "#9090FF"]),
+        posDarkColorScale = d3.scale.linear()
+          .interpolate(d3.interpolateRgb)
+          .range(["#A4A4A4", "#3030FF"]),
+        negLightColorScale = d3.scale.linear()
+          .interpolate(d3.interpolateRgb)
+          .range(["#FFFFFF", "#dfffff"]),
+        negMedColorScale = d3.scale.linear()
+          .interpolate(d3.interpolateRgb)
+          .range(["#f2f2f2", "#FF8080"]),
+        negDarkColorScale = d3.scale.linear()
+          .interpolate(d3.interpolateRgb)
+          .range(["#A4A4A4", "#FF2020"]),
+        ChargeLevel;
 
       // Charge Shading gradients
       for (i = 1; i < CHARGE_SHADING_STEPS; i++) {
@@ -31519,7 +33708,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
         gradientUrl = gradients.createRadialGradient(gradientName,
           posLightColorScale(ChargeLevel),
           posMedColorScale(ChargeLevel),
-            posDarkColorScale(ChargeLevel), mainContainer);
+          posDarkColorScale(ChargeLevel), mainContainer);
         gradientNameForPositiveChargeLevel[i] = gradientUrl;
 
         gradientName = "neg-charge-shading-" + i;
@@ -31527,7 +33716,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
         gradientUrl = gradients.createRadialGradient(gradientName,
           negLightColorScale(ChargeLevel),
           negMedColorScale(ChargeLevel),
-            negDarkColorScale(ChargeLevel), mainContainer);
+          negDarkColorScale(ChargeLevel), mainContainer);
         gradientNameForNegativeChargeLevel[i] = gradientUrl;
       }
 
@@ -31536,35 +33725,61 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       gradients.createRadialGradient("orange-grad", "#F0E6D1", "#E0A21B", "#AD7F1C", mainContainer);
     }
 
-    function createVectorArrowHeads(color, name) {
+    function createCustomArrowHead(path){
+      if(!path||path=="none"){
+        return "none"
+      }
       var defs,
-          id = "Triangle-"+name,
-          arrowHead;
+        id = "Arrowhead-" + path.toLowerCase().replace(/[^a-z0-9]/g,''),
+        arrowHead;
       defs = mainContainer.select("defs");
       if (defs.empty()) {
         defs = mainContainer.append("defs");
       }
       arrowHead = defs.select("#" + id);
-      if (arrowHead.empty()) {
+      if(arrowHead.empty()){
         arrowHead = defs.append("marker")
-          .attr("id", "Triangle-"+name)
+          .attr("id", id)
           .attr("viewBox", "0 0 10 10")
           .attr("refX", "0")
           .attr("refY", "5")
           .attr("markerUnits", "strokeWidth")
           .attr("markerWidth", "4")
-          .attr("markerHeight", "3")
-          .attr("orient", "auto")
-          .attr("stroke", color)
-          .attr("fill", color);
+          .attr("markerHeight", "4")
+          .attr("orient", "auto");
         arrowHead.append("path")
-            .attr("d", "M 0 0 L 10 5 L 0 10 z");
+          .attr("d", path);
       }
+      return "url(#" + id + ")";
+    }
+
+    function createVectorArrowHeads(color, name) {
+      var defs,
+        id = "Triangle-" + name,
+        arrowHead;
+      defs = mainContainer.select("defs");
+      if (defs.empty()) {
+        defs = mainContainer.append("defs");
+      }
+      arrowHead = defs.select("#" + id).remove();
+      arrowHead = defs.append("marker")
+        .attr("id", "Triangle-" + name)
+        .attr("viewBox", "0 0 10 10")
+        .attr("refX", "0")
+        .attr("refY", "5")
+        .attr("markerUnits", "strokeWidth")
+        .attr("markerWidth", "4")
+        .attr("markerHeight", "3")
+        .attr("orient", "auto")
+        .attr("stroke", color)
+        .attr("fill", color);
+      arrowHead.append("path")
+        .attr("d", "M 0 0 L 10 5 L 0 10 z");
     }
 
     function createExcitationGlow() {
       var defs,
-          glow;
+        glow;
 
       defs = mainContainer.select("defs");
       if (defs.empty()) {
@@ -31596,53 +33811,55 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
 
     // Returns gradient appropriate for a given atom.
     // d - atom data.
+
     function getParticleGradient(d) {
-        var ke, keIndex, charge, chargeIndex, chargeColor,
-          aminoAcidColorScheme = model.get("aminoAcidColorScheme");
+      var ke, keIndex, charge, chargeIndex, chargeColor,
+        aminoAcidColorScheme = model.get("aminoAcidColorScheme");
 
-        if (d.marked) {
-          return "url(#mark-grad)";
-        }
+      if (d.marked) {
+        return "url(#mark-grad)";
+      }
 
-        if (keShadingMode) {
-          ke  = model.getAtomKineticEnergy(d.idx),
-          // Convert Kinetic Energy to [0, 1] range
-          // using empirically tested transformations.
-          // K.E. shading should be similar to the classic MW K.E. shading.
-          keIndex = Math.min(5 * ke, 1);
+      if (keShadingMode) {
+        ke = model.getAtomKineticEnergy(d.idx),
+        // Convert Kinetic Energy to [0, 1] range
+        // using empirically tested transformations.
+        // K.E. shading should be similar to the classic MW K.E. shading.
+        keIndex = Math.min(5 * ke, 1);
 
-          return gradientNameForKELevel[Math.round(keIndex * (KE_SHADING_STEPS - 1))];
-        }
+        return gradientNameForKELevel[Math.round(keIndex * (KE_SHADING_STEPS - 1))];
+      }
 
-        if (chargeShadingMode || aminoAcidColorScheme==="charge" || aminoAcidColorScheme==="chargeAndHydro") {
-          charge = d.charge;
-          chargeIndex = Math.round(Math.min(Math.abs(charge) / 3, 1) * (CHARGE_SHADING_STEPS - 1));
-          chargeColor = chargeIndex === 0 ? "url(#neutral-grad)" : (charge >= 0 ? gradientNameForPositiveChargeLevel : gradientNameForNegativeChargeLevel)[chargeIndex];
-        }
+      if (chargeShadingMode || aminoAcidColorScheme === "charge" || aminoAcidColorScheme === "chargeAndHydro") {
+        charge = d.charge;
+        chargeIndex = Math.round(Math.min(Math.abs(charge) / 3, 1) * (CHARGE_SHADING_STEPS - 1));
+        chargeColor = chargeIndex === 0 ? "url(#neutral-grad)" : (charge >= 0 ? gradientNameForPositiveChargeLevel : gradientNameForNegativeChargeLevel)[chargeIndex];
+      }
 
-        if (chargeShadingMode || aminoAcidColorScheme==="charge" || aminoAcidColorScheme==="chargeAndHydro" && chargeIndex !== 0) {
-          return chargeColor;
-        }
+      if (chargeShadingMode || aminoAcidColorScheme === "charge" || aminoAcidColorScheme === "chargeAndHydro" && chargeIndex !== 0) {
+        return chargeColor;
+      }
 
-        if (!d.isAminoAcid()) {
-          return gradientNameForElement[d.element % 4];
-        }
-        // Particle represents amino acid.
-        // Note that if charge shading were on, the charge color would have been returned above
-        switch (aminoAcidColorScheme) {
-          case "none":
-          case "charge":
-            return "url(#neutral-grad)";
-          case "hydrophobicity":
-          case "chargeAndHydro":
-            return d.hydrophobicity > 0 ? "url(#orange-grad)" : "url(#green-grad)";
-          default:
-            throw new Error("ModelContainer: unknown amino acid color scheme.");
-        }
+      if (!d.isAminoAcid()) {
+        return gradientNameForElement[d.element % 4];
+      }
+      // Particle represents amino acid.
+      // Note that if charge shading were on, the charge color would have been returned above
+      switch (aminoAcidColorScheme) {
+        case "none":
+        case "charge":
+          return "url(#neutral-grad)";
+        case "hydrophobicity":
+        case "chargeAndHydro":
+          return d.hydrophobicity > 0 ? "url(#orange-grad)" : "url(#green-grad)";
+        default:
+          throw new Error("ModelContainer: unknown amino acid color scheme.");
+      }
     }
 
     // Returns first color appropriate for a given radial bond (color next to atom1).
     // d - radial bond data.
+
     function getBondAtom1Color(d) {
       if (isSpringBond(d)) {
         return "#888";
@@ -31653,6 +33870,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
 
     // Returns second color appropriate for a given radial bond (color next to atom2).
     // d - radial bond data.
+
     function getBondAtom2Color(d) {
       if (isSpringBond(d)) {
         return "#888";
@@ -31666,89 +33884,93 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
     // IMPORTANT: The height attribute must be set,
     // it will allow to properly calculate images
     // placement in drawSymbolImages() function.
+
     function createSymbolImages() {
       var xMargin = "1%",
-          fSize = Math.max(fontSizeInPixels, 12);
+        fSize = Math.max(fontSizeInPixels, 12);
 
       // only add these images if they don't already exist
       if (iconContainer.select("#heat-bath").empty()) {
         // Heat bath key image.
         iconContainer.append("image")
-            .attr({
-              "id": "heat-bath",
-              "x": xMargin,
-              "width": fSize*2,
-              "height": fSize*2,
-              "preserveAspectRatio": "xMinYMin",
-              "xlink:href": "resources/upstatement/heatbath.svg",
-              "class": "opaque-on-hover"
-            })
-            .append("title")
-            .text("Heatbath active");
+          .attr({
+            "id": "heat-bath",
+            "x": xMargin,
+            "width": fSize * 2,
+            "height": fSize * 2,
+            "preserveAspectRatio": "xMinYMin",
+            "xlink:href": "resources/upstatement/heatbath.svg",
+            "class": "opaque-on-hover"
+          })
+          .append("title")
+          .text("Heatbath active");
       }
       if (iconContainer.select("#ke-gradient").empty()) {
         // Kinetic Energy Shading gradient image.
         iconContainer.append("image")
-            .attr({
-              "id": "ke-gradient",
-              "x": "0",
-              "width": fSize*2.2,
-              "height": fSize*6,
-              "preserveAspectRatio": "xMinYMin",
-              "xlink:href": "resources/upstatement/ke-gradient.svg",
-              "class": "opaque-on-hover"
-            })
-            .append("title")
-            .text("Kinetic energy gradient");
+          .attr({
+            "id": "ke-gradient",
+            "x": "0",
+            "width": fSize * 2.2,
+            "height": fSize * 6,
+            "preserveAspectRatio": "xMinYMin",
+            "xlink:href": "resources/upstatement/ke-gradient.svg",
+            "class": "opaque-on-hover"
+          })
+          .append("title")
+          .text("Kinetic energy gradient");
       }
     }
 
     // Draw key images in the upper left corner.
     // Place them in one row, dynamically calculate
     // y position.
+
     function drawSymbolImages() {
-        var heatBath = model.get('temperatureControl'),
-            imageSelect, imageHeight,
-            // Variables used for calculating proper y positions.
-            yPos = 0,
-            yMargin = 1,
-            fSize = Math.max(fontSizeInPixels, 12);
+      var heatBath = model.get('temperatureControl'),
+        imageSelect, imageHeight,
+        // Variables used for calculating proper y positions.
+        yPos = 0,
+        yMargin = 1,
+        fSize = Math.max(fontSizeInPixels, 12);
 
-        // Heat bath symbol.
-        if (heatBath) {
-            yPos += yMargin;
-            imageSelect = iconContainer.select("#heat-bath")
-              .attr({
-                "y": yPos,
-                "width": fSize*2,
-                "height": fSize*2
-              })
-              .style("display", "");
+      // Heat bath symbol.
+      if (heatBath) {
+        yPos += yMargin;
+        imageSelect = iconContainer.select("#heat-bath")
+          .attr({
+            "y": yPos,
+            "width": fSize * 2,
+            "height": fSize * 2
+          })
+          .style("display", "");
 
-            imageHeight = parseInt(imageSelect.attr("height"), 10);
-            yPos += imageHeight;
-        } else {
-            iconContainer.select("#heat-bath").style("display","none");
-        }
+        imageHeight = parseInt(imageSelect.attr("height"), 10);
+        yPos += imageHeight;
+      } else {
+        iconContainer.select("#heat-bath").style("display", "none");
+      }
 
-        // Kinetic Energy shading gradient.
-        // Put it under heat bath symbol.
-        if (keShadingMode) {
-            yPos += yMargin;
-            iconContainer.select("#ke-gradient")
-              .attr({
-                "y": yPos,
-                "width": fSize*2.2,
-                "height": fSize*6
-              })
-              .style("display", "");
-        } else {
-            iconContainer.select("#ke-gradient").style("display", "none");
-        }
+      // Kinetic Energy shading gradient.
+      // Put it under heat bath symbol.
+      if (keShadingMode) {
+        yPos += yMargin;
+        iconContainer.select("#ke-gradient")
+          .attr({
+            "y": yPos,
+            "width": fSize * 2.2,
+            "height": fSize * 6
+          })
+          .style("display", "");
+      } else {
+        iconContainer.select("#ke-gradient").style("display", "none");
+      }
     }
 
     function updateParticleRadius() {
-      mainContainer.selectAll("circle").data(modelAtoms).attr("r",  function(d) { return model2px(d.radius); });
+      mainContainer.selectAll("circle").data(modelAtoms).attr("r", function(d) {
+        return model2px(d.radius);
+      });
     }
 
     /**
@@ -31757,23 +33979,40 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
 
     function particleEnterExit() {
       particle.enter().append("circle")
-          .attr({
-            "class": function (d) { return d.isAminoAcid() ? "draggable atom amino-acid" : "atom draggable"; },
-            "r":  function(d) { return model2px(d.radius); },
-            "cx": function(d) { return model2px(d.x); },
-            "cy": function(d) { return model2pxInv(d.y); },
-            "fill-opacity": function(d) { return d.visible ? 1 : 0; },
-            "fill": function (d, i) { return gradientNameForParticle[i]; },
-            "filter": function (d) { if (d.excitation) {return "url(#glow)";} return null; }
-          })
-          .on("mousedown", moleculeMouseDown)
-          .on("mouseover", moleculeMouseOver)
-          .on("mouseout", moleculeMouseOut)
-          .call(d3.behavior.drag()
-            .on("dragstart", nodeDragStart)
-            .on("drag", nodeDrag)
-            .on("dragend", nodeDragEnd)
-          );
+        .attr({
+          "class": function(d) {
+            return d.isAminoAcid() ? "draggable atom amino-acid" : "atom draggable";
+          },
+          "r": function(d) {
+            return model2px(d.radius);
+          },
+          "cx": function(d) {
+            return model2px(d.x);
+          },
+          "cy": function(d) {
+            return model2pxInv(d.y);
+          },
+          "fill-opacity": function(d) {
+            return d.visible ? 1 : 0;
+          },
+          "fill": function(d, i) {
+            return gradientNameForParticle[i];
+          },
+          "filter": function(d) {
+            if (d.excitation) {
+              return "url(#glow)";
+            }
+            return null;
+          }
+        })
+        .on("mousedown", moleculeMouseDown)
+        .on("mouseover", moleculeMouseOver)
+        .on("mouseout", moleculeMouseOut)
+        .call(d3.behavior.drag()
+          .on("dragstart", nodeDragStart)
+          .on("drag", nodeDrag)
+          .on("dragend", nodeDragEnd)
+      );
 
       particle.exit().remove();
     }
@@ -31781,8 +34020,8 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
     function vectorEnter(vector, pathFunc, widthFunc, color, name) {
       vector.enter().append("path")
         .attr({
-          "class": "vector-"+name,
-          "marker-end": hideLineMarkers ? "" : "url(#Triangle-"+name+")",
+          "class": "vector-" + name,
+          "marker-end": hideLineMarkers ? "" : "url(#Triangle-" + name + ")",
           "d": pathFunc,
           "stroke-width": widthFunc,
           "stroke": color,
@@ -31808,24 +34047,34 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       obstacleGroup
         .attr("class", "obstacle")
         .attr("transform",
-          function (d, i) {
+          function(d, i) {
             return "translate(" + model2px(obstacles.x[i]) + " " + model2pxInv(obstacles.y[i] + obstacles.height[i]) + ")";
           }
-        );
+      );
       obstacleGroup.append("rect")
         .attr({
           "class": "obstacle-shape",
           "x": 0,
           "y": 0,
-          "width": function(d, i) {return model2px(obstacles.width[i]); },
-          "height": function(d, i) {return model2px(obstacles.height[i]); },
-          "fill": function(d, i) { return obstacles.visible[i] ? getObstacleColor(i) : "rgba(128,128,128, 0)"; },
-          "stroke-width": function(d, i) { return obstacles.visible[i] ? 0.2 : 0.0; },
-          "stroke": function(d, i) { return obstacles.visible[i] ? getObstacleColor(i) : "rgba(128,128,128, 0)"; }
+          "width": function(d, i) {
+            return model2px(obstacles.width[i]);
+          },
+          "height": function(d, i) {
+            return model2px(obstacles.height[i]);
+          },
+          "fill": function(d, i) {
+            return obstacles.visible[i] ? gradients.toSVG(gradients.parse(obstacles.color[i]), mainContainer) : "transparent";
+          },
+          "stroke-width": function(d, i) {
+            return obstacles.visible[i] ? 0.2 : 0.0;
+          },
+          "stroke": function(d, i) {
+            return obstacles.visible[i] ? gradients.toSVG(gradients.parse(obstacles.color[i]), mainContainer) : "transparent";
+          }
         });
 
       // Append external force markers.
-      obstacleGroup.each(function (d, i) {
+      obstacleGroup.each(function(d, i) {
         // Fast path, if no forces are defined.
         if (!obstacles.externalAx[i] && !obstacles.externalAy[i])
           return;
@@ -31834,14 +34083,14 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
         // the same options for styling like arrows indicating atom force.
         // Only their length is fixed.
         var obstacleGroupEl = d3.select(this),
-            obsHeight = obstacles.height[i],
-            obsWidth = obstacles.width[i],
-            obsAx = obstacles.externalAx[i],
-            obsAy = obstacles.externalAy[i],
-            // Use fixed length of force vectors (in nm).
-            vecLen = 0.06,
-            space = 0.06,
-            step, coords;
+          obsHeight = obstacles.height[i],
+          obsWidth = obstacles.width[i],
+          obsAx = obstacles.externalAx[i],
+          obsAy = obstacles.externalAy[i],
+          // Use fixed length of force vectors (in nm).
+          vecLen = 0.06,
+          space = 0.06,
+          step, coords;
 
         // Set arrows indicating horizontal force.
         if (obsAx) {
@@ -31851,17 +34100,17 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
           obstacleGroupEl.selectAll("path.obstacle-force-hor").data(coords).enter().append("path")
             .attr({
               "class": "obstacle-force-hor",
-              "d": function (d) {
+              "d": function(d) {
                 if (obsAx < 0)
                   return "M " + model2px(obsWidth + vecLen + space) +
-                              "," + model2px(d) +
-                              " L " + model2px(obsWidth + space) +
-                              "," + model2px(d);
+                    "," + model2px(d) +
+                    " L " + model2px(obsWidth + space) +
+                    "," + model2px(d);
                 else
                   return "M " + model2px(-vecLen - space) +
-                              "," + model2px(d) +
-                              " L " + model2px(-space) +
-                              "," + model2px(d);
+                    "," + model2px(d) +
+                    " L " + model2px(-space) +
+                    "," + model2px(d);
               }
             });
         }
@@ -31873,24 +34122,24 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
           obstacleGroupEl.selectAll("path.obstacle-force-vert").data(coords).enter().append("path")
             .attr({
               "class": "obstacle-force-vert",
-              "d": function (d) {
+              "d": function(d) {
                 if (obsAy < 0)
                   return "M " + model2px(d) +
-                              "," + model2px(-vecLen - space) +
-                              " L " + model2px(d) +
-                              "," + model2px(-space);
+                    "," + model2px(-vecLen - space) +
+                    " L " + model2px(d) +
+                    "," + model2px(-space);
                 else
                   return "M " + model2px(d) +
-                              "," + model2px(obsHeight + vecLen + space) +
-                              " L " + model2px(d) +
-                              "," + model2px(obsHeight + space);
+                    "," + model2px(obsHeight + vecLen + space) +
+                    " L " + model2px(d) +
+                    "," + model2px(obsHeight + space);
               }
             });
         }
         // Finally, set common attributes and stying for both vertical and horizontal forces.
         obstacleGroupEl.selectAll("path.obstacle-force-hor, path.obstacle-force-vert")
           .attr({
-            "marker-end": hideLineMarkers ? "" : "url(#Triangle-"+ FORCE_STR +")",
+            "marker-end": hideLineMarkers ? "" : "url(#Triangle-" + FORCE_STR + ")",
             "stroke-width": model2px(forceVectorWidth),
             "stroke": forceVectorColor,
             "fill": "none"
@@ -31898,90 +34147,163 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       });
     }
 
-    function rectangleEnter() {
-      var layers = [rectangleTop, rectangleBelow], i;
-      for(i = 0; i < layers.length; i++){
-          var rectangleGroup = layers[i].enter().append("g");
-        rectangleGroup
-          .attr("class", "rectangle")
-          .attr("transform",
-            function (d) {
-              return "translate(" + model2px(rectangles.x[d]) + " " + model2pxInv(rectangles.y[d] + rectangles.height[d]) + ")";
-            }
-          );
-        rectangleGroup.append("rect")
-          .attr({
-            "class": "rectangle-shape",
-            "x": 0,
-            "y": 0,
-            "width": function(d) {return model2px(rectangles.width[d]); },
-            "height": function(d) {return model2px(rectangles.height[d]); },
-            "fill": function(d) { return rectangles.visible[d] ? rectangles.color[d] : "rgba(128,128,128, 0)"; },
-            "stroke-width": function(d) { return rectangles.lineWeight[d]; },
-            "stroke-dasharray": function(d) { return rectangles.lineDashes[d]; },
-            "stroke": function(d) { return rectangles.visible[d] ? rectangles.lineColor[d] : "rgba(128,128,128, 0)"; }
-          });
-       }
+
+    function shapeEnter() {
+      var layers = [shapeTop, shapeBelow],
+        i;
+      for (i = 0; i < layers.length; i++) {
+        var shapeGroup = layers[i].enter().append("g");
+        shapeGroup.attr("class", "shape").attr("transform", function(d) {
+          return "translate(" + model2px(shapes.x[d.index]) + " " + model2pxInv(shapes.y[d.index] + shapes.height[d.index]) + ")";
+        });
+        shapeGroup.append("rect").attr({
+          "class": "shape-rectangle",
+          "x": 0,
+          "y": 0,
+          "width": function(d) {
+            return model2px(shapes.width[d.index]);
+          },
+          "height": function(d) {
+            return model2px(shapes.height[d.index]);
+          },
+          "fill": function(d) {
+            return shapes.visible[d.index] && shapes.type[d.index] == 'rectangle' ? gradients.toSVG(gradients.parse(shapes.color[d.index]), mainContainer) : "transparent";
+          },
+          "stroke-width": function(d) {
+            return shapes.lineWeight[d.index];
+          },
+          "stroke-dasharray": function(d) {
+            return shapes.lineDashes[d.index];
+          },
+          "stroke": function(d) {
+            return shapes.visible[d.index] && shapes.type[d.index] == 'rectangle' ? shapes.lineColor[d.index] : "transparent";
+          }
+        });
+        shapeGroup.append("ellipse").attr({
+          "class": "shape-ellipse",
+          "cx": function(d) {
+            return model2px(shapes.width[d.index]) / 2;
+          },
+          "cy": function(d) {
+            return model2px(shapes.height[d.index]) / 2;
+          },
+          "rx": function(d) {
+            return model2px(shapes.width[d.index]) / 2;
+          },
+          "ry": function(d) {
+            return model2px(shapes.height[d.index]) / 2;
+          },
+          "fill": function(d) {
+            return shapes.visible[d.index] && shapes.type[d.index] == 'ellipse' ? gradients.toSVG(gradients.parse(shapes.color[d.index]), mainContainer) : "transparent";
+          },
+          "stroke-width": function(d) {
+            return shapes.lineWeight[d.index];
+          },
+          "stroke-dasharray": function(d) {
+            return shapes.lineDashes[d.index];
+          },
+          "stroke": function(d) {
+            return shapes.visible[d.index] && shapes.type[d.index] == 'ellipse' ? shapes.lineColor[d.index] : "transparent";
+          }
+        });
+      }
+    }
+
+    function lineEnter() {
+      lineTop.enter().append("line").attr({
+        "class": "line",
+        "x1": function(d, i) {
+          return model2px(lines.x1[i]);
+        },
+        "y1": function(d, i) {
+          return model2pxInv(lines.y1[i]);
+        },
+        "x2": function(d, i) {
+          return model2px(lines.x2[i]);
+        },
+        "y2": function(d, i) {
+          return model2pxInv(lines.y2[i]);
+        },
+        "stroke-width": function(d, i) {
+          return lines.lineWeight[i];
+        },
+        "stroke-dasharray": function(d, i) {
+          return lines.lineDashes[i];
+        },
+        "stroke": function(d, i) {
+          return lines.visible[i] ? lines.lineColor[i] : "transparent";
+        },
+        "marker-start": function(d,i){
+          return createCustomArrowHead(lines.beginStyle[i]);
+        },
+        "marker-end": function(d,i){
+          return createCustomArrowHead(lines.endStyle[i]);
+        }
+      });
     }
 
     function radialBondEnter() {
       radialBond1.enter().append("path")
-          .attr({
-            "d": function (d) { return findPoints(d,1); },
-            "stroke-width": function (d) {
-              if (isSpringBond(d)) {
-                return springStrokeWidth(d);
-              } else {
-                return model2px(Math.min(modelAtoms[d.atom1].radius, modelAtoms[d.atom2].radius)) * 0.75;
-              }
-            },
-            "stroke": getBondAtom1Color,
-            "fill": "none"
-          })
-          .classed("radialbond1", true)
-          .classed("disulphideBond", function (d) {
-            return d.type === RADIAL_BOND_TYPES.DISULPHIDE_BOND;
-          });
+        .attr({
+          "d": function(d) {
+            return findPoints(d, 1);
+          },
+          "stroke-width": function(d) {
+            if (isSpringBond(d)) {
+              return springStrokeWidth(d);
+            } else {
+              return model2px(Math.min(modelAtoms[d.atom1].radius, modelAtoms[d.atom2].radius)) * 0.75;
+            }
+          },
+          "stroke": getBondAtom1Color,
+          "fill": "none"
+        })
+        .classed("radialbond1", true)
+        .classed("disulphideBond", function(d) {
+          return d.type === RADIAL_BOND_TYPES.DISULPHIDE_BOND;
+        });
 
       radialBond2.enter().append("path")
-          .attr({
-            "d": function (d) { return findPoints(d,2); },
-            "stroke-width": function (d) {
-              if (isSpringBond(d)) {
-                return springStrokeWidth(d);
-              } else {
-                return model2px(Math.min(modelAtoms[d.atom1].radius, modelAtoms[d.atom2].radius)) * 0.75;
-              }
-            },
-            "stroke": getBondAtom2Color,
-            "fill": "none"
-          })
-          .classed("radialbond2", true)
-          .classed("disulphideBond", function (d) {
-            return d.type === RADIAL_BOND_TYPES.DISULPHIDE_BOND;
-          });
+        .attr({
+          "d": function(d) {
+            return findPoints(d, 2);
+          },
+          "stroke-width": function(d) {
+            if (isSpringBond(d)) {
+              return springStrokeWidth(d);
+            } else {
+              return model2px(Math.min(modelAtoms[d.atom1].radius, modelAtoms[d.atom2].radius)) * 0.75;
+            }
+          },
+          "stroke": getBondAtom2Color,
+          "fill": "none"
+        })
+        .classed("radialbond2", true)
+        .classed("disulphideBond", function(d) {
+          return d.type === RADIAL_BOND_TYPES.DISULPHIDE_BOND;
+        });
 
     }
 
     function findPoints(d, num) {
       var pointX, pointY,
-          j,
-          dx, dy,
-          x1, x2,
-          y1, y2,
-          radius_x1, radius_x2, radiusFactorX,
-          radius_y1, radius_y2, radiusFactorY,
-          path,
-          costheta,
-          sintheta,
-          length,
-          strength,
-          numTurns,
-          springDiameter,
-          cosThetaDiameter,
-          sinThetaDiameter,
-          cosThetaSpikes,
-          sinThetaSpikes;
+        j,
+        dx, dy,
+        x1, x2,
+        y1, y2,
+        radius_x1, radius_x2, radiusFactorX,
+        radius_y1, radius_y2, radiusFactorY,
+        path,
+        costheta,
+        sintheta,
+        length,
+        strength,
+        numTurns,
+        springDiameter,
+        cosThetaDiameter,
+        sinThetaDiameter,
+        cosThetaSpikes,
+        sinThetaSpikes;
 
       x1 = model2px(d.x1);
       y1 = model2pxInv(d.y1);
@@ -31991,7 +34313,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       dy = y2 - y1;
 
       strength = d.strength;
-      length = Math.sqrt(dx*dx + dy*dy) / model2px(0.01);
+      length = Math.sqrt(dx * dx + dy * dy) / model2px(0.01);
 
       numTurns = Math.floor(d.length * 24);
       springDiameter = length / numTurns;
@@ -32011,29 +34333,28 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       radiusFactorY = radius_y1 - radius_y2;
 
       if (isSpringBond(d)) {
-        path = "M "+x1+","+y1+" " ;
+        path = "M " + x1 + "," + y1 + " ";
         for (j = 0; j < numTurns; j++) {
           if (j % 2 === 0) {
             pointX = x1 + (j + 0.5) * cosThetaDiameter - 0.5 * sinThetaSpikes;
             pointY = y1 + (j + 0.5) * sinThetaDiameter + 0.5 * cosThetaSpikes;
-          }
-          else {
+          } else {
             pointX = x1 + (j + 0.5) * cosThetaDiameter + 0.5 * sinThetaSpikes;
             pointY = y1 + (j + 0.5) * sinThetaDiameter - 0.5 * cosThetaSpikes;
           }
-          path += " L "+pointX+","+pointY;
+          path += " L " + pointX + "," + pointY;
         }
-        return path += " L "+x2+","+y2;
+        return path += " L " + x2 + "," + y2;
       } else {
         if (num === 1) {
-          return "M "+x1+","+y1+" L "+((x2+x1+radiusFactorX)/2)+" , "+((y2+y1+radiusFactorY)/2);
+          return "M " + x1 + "," + y1 + " L " + ((x2 + x1 + radiusFactorX) / 2) + " , " + ((y2 + y1 + radiusFactorY) / 2);
         } else {
-          return "M "+((x2+x1+radiusFactorX)/2)+" , "+((y2+y1+radiusFactorY)/2)+" L "+x2+","+y2;
+          return "M " + ((x2 + x1 + radiusFactorX) / 2) + " , " + ((y2 + y1 + radiusFactorY) / 2) + " L " + x2 + "," + y2;
         }
       }
     }
 
-    function isSpringBond(d){
+    function isSpringBond(d) {
       return d.type === RADIAL_BOND_TYPES.SHORT_SPRING;
     }
 
@@ -32052,23 +34373,39 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
 
     function vdwLinesEnter() {
       var strokeWidth = model2px(0.02),
-          strokeDasharray = model2px(0.03) + " " + model2px(0.02);
+        strokeDasharray = model2px(0.03) + " " + model2px(0.02);
       // update existing lines
       vdwLines.attr({
-        "x1": function(d) { return model2px(modelAtoms[d[0]].x); },
-        "y1": function(d) { return model2pxInv(modelAtoms[d[0]].y); },
-        "x2": function(d) { return model2px(modelAtoms[d[1]].x); },
-        "y2": function(d) { return model2pxInv(modelAtoms[d[1]].y); }
+        "x1": function(d) {
+          return model2px(modelAtoms[d[0]].x);
+        },
+        "y1": function(d) {
+          return model2pxInv(modelAtoms[d[0]].y);
+        },
+        "x2": function(d) {
+          return model2px(modelAtoms[d[1]].x);
+        },
+        "y2": function(d) {
+          return model2pxInv(modelAtoms[d[1]].y);
+        }
       });
 
       // append new lines
       vdwLines.enter().append('line')
         .attr({
           "class": "attractionforce",
-          "x1": function(d) { return model2px(modelAtoms[d[0]].x); },
-          "y1": function(d) { return model2pxInv(modelAtoms[d[0]].y); },
-          "x2": function(d) { return model2px(modelAtoms[d[1]].x); },
-          "y2": function(d) { return model2pxInv(modelAtoms[d[1]].y); }
+          "x1": function(d) {
+            return model2px(modelAtoms[d[0]].x);
+          },
+          "y1": function(d) {
+            return model2pxInv(modelAtoms[d[0]].y);
+          },
+          "x2": function(d) {
+            return model2px(modelAtoms[d[1]].x);
+          },
+          "y2": function(d) {
+            return model2pxInv(modelAtoms[d[1]].y);
+          }
         })
         .style({
           "stroke-width": strokeWidth,
@@ -32085,12 +34422,12 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
 
     function drawImageAttachment() {
       var img = [],
-          imglayer,
-          container,
-          i,
-          positionOrder,
-          positionOrderTop = [],
-          positionOrderBelow = [];
+        imglayer,
+        container,
+        i,
+        positionOrder,
+        positionOrderTop = [],
+        positionOrderBelow = [];
 
       imageContainerTop.selectAll("image").remove();
       imageContainerBelow.selectAll("image").remove();
@@ -32106,9 +34443,11 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
             positionOrder = imglayer === 1 ? positionOrderTop : positionOrderBelow;
             positionOrder.push({
               i: i,
-              zOrder: (!!imageProp[i].imageLayerPosition) ? imageProp[i].imageLayerPosition : 0
+              zOrder: ( !! imageProp[i].imageLayerPosition) ? imageProp[i].imageLayerPosition : 0
             });
-            positionOrder.sort(function(a,b) { return d3.ascending(a["zOrder"],b["zOrder"]); });
+            positionOrder.sort(function(a, b) {
+              return d3.ascending(a["zOrder"], b["zOrder"]);
+            });
             // In Classic MW model size is defined in 0.1A.
             // Model unit (0.1A) - pixel ratio is always 1. The same applies
             // to images. We can assume that their pixel dimensions are
@@ -32117,15 +34456,29 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
             container = imglayer === 1 ? imageContainerTop : imageContainerBelow;
             container.selectAll("image").remove();
             container.selectAll("image")
-              .data(positionOrder, function(d){ return d["i"]; })
+              .data(positionOrder, function(d) {
+                return d["i"];
+              })
               .enter().append("image")
-                .attr("x", function(d){ return getImageCoords(d["i"])[0]; } )
-                .attr("y", function(d){ return getImageCoords(d["i"])[1]; } )
-                .attr("class", function(d){ return "image_attach" + d["i"] + " draggable"; })
-                .attr("xlink:href", function(d){ return img[d["i"]].src; })
-                .attr("width", function(d){return model2px( imageSizes[d["i"]][0]); })
-                .attr("height", function(d){return model2px( imageSizes[d["i"]][1]); })
-                .attr("pointer-events", "none");
+              .attr("x", function(d) {
+                return getImageCoords(d["i"])[0];
+              })
+              .attr("y", function(d) {
+                return getImageCoords(d["i"])[1];
+              })
+              .attr("class", function(d) {
+                return "image_attach" + d["i"] + " draggable";
+              })
+              .attr("xlink:href", function(d) {
+                return img[d["i"]].src;
+              })
+              .attr("width", function(d) {
+                return model2px(imageSizes[d["i"]][0]);
+              })
+              .attr("height", function(d) {
+                return model2px(imageSizes[d["i"]][1]);
+              })
+              .attr("pointer-events", "none");
           };
         })(i);
       }
@@ -32133,7 +34486,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
 
     function getTextBoxCoords(d) {
       var x, y, hostX, hostY, textX, textY, frameX, frameY, calloutX, calloutY,
-          pixelScale = textBoxFontSizeInPixels * d.fontScale;
+        pixelScale = textBoxFontSizeInPixels * d.fontScale;
 
       x = d.x;
       y = d.y;
@@ -32166,8 +34519,8 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       frameX = model2px(x);
       frameY = model2pxInv(y);
 
-      textX = frameX + pixelScale*0.75;
-      textY = frameY + pixelScale*1.2;
+      textX = frameX + pixelScale * 0.75;
+      textY = frameY + pixelScale * 1.2;
 
       calloutX = model2px(calloutX);
       calloutY = model2pxInv(calloutY);
@@ -32177,41 +34530,47 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
 
     function getCalloutPath(location, frame, fullWidth, fullHeight, fontSize) {
       var calloutLocation = [
-            parseFloat(location[0]),
-            parseFloat(location[1])
-          ],
-          center = [
-            parseFloat(frame.getAttribute("x")) + (fullWidth / 2),
-            parseFloat(frame.getAttribute("y")) + (fullHeight / 2)
-          ],
-          angle = halfPi - Math.atan((calloutLocation[0] - center[0]) / (calloutLocation[1] - center[1])),
-          baseSize = Math.min(fontSize, fullHeight/2),
+        parseFloat(location[0]),
+        parseFloat(location[1])
+      ],
+        center = [
+          parseFloat(frame.getAttribute("x")) + (fullWidth / 2),
+          parseFloat(frame.getAttribute("y")) + (fullHeight / 2)
+        ],
+        angle = halfPi - Math.atan((calloutLocation[0] - center[0]) / (calloutLocation[1] - center[1])),
+        baseSize = Math.min(fontSize, fullHeight / 2),
 
-          dcx = Math.sin(angle) * baseSize,
-          dcy = Math.cos(angle) * baseSize;
+        dcx = Math.sin(angle) * baseSize,
+        dcy = Math.cos(angle) * baseSize;
 
-      return (center[0]+dcx) + ", " + (center[1]-dcy) + " " + (center[0]-dcx) + ", " + (center[1]+dcy) + " " + calloutLocation;
+      return (center[0] + dcx) + ", " + (center[1] - dcy) + " " + (center[0] - dcx) + ", " + (center[1] + dcy) + " " + calloutLocation;
     }
 
     function updateTextBoxes() {
       var layers = [textContainerTop, textContainerBelow],
-          updateText;
+        updateText;
 
-      updateText = function (layerNum) {
+      updateText = function(layerNum) {
         var layer = layers[layerNum - 1],
-            layerTextBoxes = textBoxes.filter(function (t) {
-              return t.layer === layerNum;
-            });
+          layerTextBoxes = textBoxes.filter(function(t) {
+            return t.layer === layerNum;
+          });
 
         layer.selectAll("g.textBoxWrapper rect")
-          .data(layerTextBoxes.filter( function(d) { return d.frame; } ))
+          .data(layerTextBoxes.filter(function(d) {
+            return d.frame;
+          }))
           .attr({
-            "x": function(d) { return getTextBoxCoords(d)[2]; },
-            "y": function(d) { return getTextBoxCoords(d)[3]; },
+            "x": function(d) {
+              return getTextBoxCoords(d)[2];
+            },
+            "y": function(d) {
+              return getTextBoxCoords(d)[3];
+            },
             "transform": function(d) {
               var rotate = d.rotate,
-                  pos = getTextBoxCoords(d);
-              return "rotate("+rotate+" "+pos[0]+" "+pos[1]+")";
+                pos = getTextBoxCoords(d);
+              return "rotate(" + rotate + " " + pos[0] + " " + pos[1] + ")";
             }
           });
 
@@ -32225,7 +34584,9 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
           });
 
         layer.selectAll("g.textBoxWrapper polygon")
-          .data(layerTextBoxes.filter( function(d) { return d.calloutPoint; } ))
+          .data(layerTextBoxes.filter(function(d) {
+            return d.calloutPoint;
+          }))
           .attr({
             "callout-location-data": function(d) {
               var pos = getTextBoxCoords(d);
@@ -32238,20 +34599,20 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       updateText(2);
 
       // update callouts
-      $(".textBox").each( function() {
+      $(".textBox").each(function() {
         var $parentNode = $(this.parentNode),
-            callout     = $parentNode.find("polygon"),
-            frame       = $parentNode.find("rect")[0],
-            fontSize, width, height, calloutLocation;
+          callout = $parentNode.find("polygon"),
+          frame = $parentNode.find("rect")[0],
+          fontSize, width, height, calloutLocation;
 
         if (!frame || callout.length === 0) return;
 
-        fontSize  = parseFloat(this.getAttributeNS(null, "font-size"));
-        width  = frame.getAttribute("width");
+        fontSize = parseFloat(this.getAttributeNS(null, "font-size"));
+        width = frame.getAttribute("width");
         height = frame.getAttribute("height");
         calloutLocation = callout.attr("callout-location-data").split(", ");
 
-        callout.attr("points", getCalloutPath(calloutLocation, frame, width, height, fontSize) );
+        callout.attr("points", getCalloutPath(calloutLocation, frame, width, height, fontSize));
       });
     }
 
@@ -32260,33 +34621,37 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
 
       textBoxes = model.get('textBoxes');
 
-      size = [ model.get('width'), model.get('height') ];
+      size = [model.get('width'), model.get('height')];
 
       layers = [textContainerTop, textContainerBelow];
 
       // Append to either top or bottom layer depending on item's layer #.
-      appendTextBoxes = function (layerNum) {
+      appendTextBoxes = function(layerNum) {
         var layer = layers[layerNum - 1],
-            text, layerTextBoxes, selection;
+          text, layerTextBoxes, selection;
 
         layer.selectAll("g.textBoxWrapper").remove();
 
-        layerTextBoxes = textBoxes.filter(function(t) { return t.layer === layerNum; });
+        layerTextBoxes = textBoxes.filter(function(t) {
+          return t.layer === layerNum;
+        });
 
         selection = layer.selectAll("g.textBoxWrapper")
           .data(layerTextBoxes);
         text = selection.enter().append("svg:g")
           .attr("class", "textBoxWrapper");
 
-        text.filter(function (d) { return d.calloutPoint; })
+        text.filter(function(d) {
+          return d.calloutPoint;
+        })
           .append("polygon")
           .attr({
             "points": "0,0 0,0 0,0",
             "style": function(d) {
               var backgroundColor = d.backgroundColor,
-                  strokeWidth = d.strokeWidthEms * fontSizeInPixels,
-                  strokeOpacity = d.strokeOpacity;
-              return "fill:"+backgroundColor+";opacity:1.0;fill-opacity:1;stroke:#000000;stroke-width:"+(strokeWidth*2)+";stroke-opacity:"+strokeOpacity;
+                strokeWidth = d.strokeWidthEms * fontSizeInPixels,
+                strokeOpacity = d.strokeOpacity;
+              return "fill:" + backgroundColor + ";opacity:1.0;fill-opacity:1;stroke:#000000;stroke-width:" + (strokeWidth * 2) + ";stroke-opacity:" + strokeOpacity;
             },
             "callout-location-data": function(d) {
               var pos = getTextBoxCoords(d);
@@ -32294,77 +34659,109 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
             }
           });
 
-        text.filter(function (d) { return d.frame; })
+        text.filter(function(d) {
+          return d.frame;
+        })
           .append("rect")
           .attr({
-            "class": function(d, i) { return "textBoxFrame text-"+i; },
-            "id": function(d, i) { return "text-"+i; },
+            "class": function(d, i) {
+              return "textBoxFrame text-" + i;
+            },
+            "id": function(d, i) {
+              return "text-" + i;
+            },
             "transform": function(d) {
               var rotate = d.rotate,
-                  pos = getTextBoxCoords(d);
-              return "rotate("+rotate+" "+pos[0]+" "+pos[1]+")";
+                pos = getTextBoxCoords(d);
+              return "rotate(" + rotate + " " + pos[0] + " " + pos[1] + ")";
             },
             "style": function(d) {
               var backgroundColor = d.backgroundColor,
-                  strokeWidth = d.strokeWidthEms * fontSizeInPixels,
-                  strokeOpacity = d.strokeOpacity;
-              return "fill:"+backgroundColor+";opacity:1.0;fill-opacity:1;stroke:#000000;stroke-width:"+strokeWidth+";stroke-opacity:"+strokeOpacity;
+                strokeWidth = d.strokeWidthEms * fontSizeInPixels,
+                strokeOpacity = d.strokeOpacity;
+              return "fill:" + backgroundColor + ";opacity:1.0;fill-opacity:1;stroke:#000000;stroke-width:" + strokeWidth + ";stroke-opacity:" + strokeOpacity;
             },
             "width": 0,
             "height": 0,
-            "rx": function(d) { return d.frame === "rounded rectangle" ? textBoxFontSizeInPixels/2.5  : 0; },
-            "ry": function(d) { return d.frame === "rounded rectangle" ? textBoxFontSizeInPixels/2 : 0; },
-            "x":  function(d) { return getTextBoxCoords(d)[2]; },
-            "y":  function(d) { return getTextBoxCoords(d)[3]; }
+            "rx": function(d) {
+              return d.frame === "rounded rectangle" ? textBoxFontSizeInPixels / 2.5 : 0;
+            },
+            "ry": function(d) {
+              return d.frame === "rounded rectangle" ? textBoxFontSizeInPixels / 2 : 0;
+            },
+            "x": function(d) {
+              return getTextBoxCoords(d)[2];
+            },
+            "y": function(d) {
+              return getTextBoxCoords(d)[3];
+            }
           });
 
-        text.filter(function (d) { return d.calloutPoint; })
+        text.filter(function(d) {
+          return d.calloutPoint;
+        })
           .append("polygon")
           .attr({
             "points": "0,0 0,0 0,0",
             "style": function(d) {
               var backgroundColor = d.backgroundColor;
-              return "fill:"+backgroundColor+";opacity:1.0;fill-opacity:1;stroke:#000000;stroke-width:0;";
+              return "fill:" + backgroundColor + ";opacity:1.0;fill-opacity:1;stroke:#000000;stroke-width:0;";
             }
           });
 
         text.append("text")
           .attr({
-            "class": function() { return "textBox" + (AUTHORING ? " draggable" : ""); },
+            "class": function() {
+              return "textBox" + (AUTHORING ? " draggable" : "");
+            },
             "transform": function(d) {
               var rotate = d.rotate,
-                  pos = getTextBoxCoords(d);
-              return "rotate("+rotate+" "+pos[0]+" "+pos[1]+")";
+                pos = getTextBoxCoords(d);
+              return "rotate(" + rotate + " " + pos[0] + " " + pos[1] + ")";
             },
-            "x-data": function(d) { return getTextBoxCoords(d)[0]; },
-            "y": function(d)      { return getTextBoxCoords(d)[1]; },
-            "width-data": function(d) { return d.width; },
-            "height-data": function(d) { return d.height; },
-            "width":  model2px(size[0]),
+            "x-data": function(d) {
+              return getTextBoxCoords(d)[0];
+            },
+            "y": function(d) {
+              return getTextBoxCoords(d)[1];
+            },
+            "width-data": function(d) {
+              return d.width;
+            },
+            "height-data": function(d) {
+              return d.height;
+            },
+            "width": model2px(size[0]),
             "height": model2px(size[1]),
             "xml:space": "preserve",
             "font-family": "'" + labConfig.fontface + "', sans-serif",
             "font-size": function(d) {
               return d.fontScale * textBoxFontSizeInPixels + "px";
             },
-            "fill": function(d) { return d.color || "black"; },
-            "text-data": function(d) { return d.text; },
+            "fill": function(d) {
+              return d.color || "black";
+            },
+            "text-data": function(d) {
+              return d.text;
+            },
             "text-anchor": function(d) {
               var align = d.textAlign || "left";
               if (align === "center") align = "middle";
               return align;
             },
-            "has-host": function(d) { return !!d.hostType; }
+            "has-host": function(d) {
+              return !!d.hostType;
+            }
           })
           .call(d3.behavior.drag()
             .on("drag", textDrag)
             .on("dragend", function(d) {
               // simple output to console for now, eventually should just get
               // serialized back to interactive (or model?) JSON on author save
-              console.log('"x": '+d.x+",");
-              console.log('"y": '+d.y+",");
+              console.log('"x": ' + d.x + ",");
+              console.log('"y": ' + d.y + ",");
             })
-          );
+        );
         selection.exit().remove();
       };
 
@@ -32372,23 +34769,23 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       appendTextBoxes(2);
 
       // wrap text, set callouts
-      $(".textBox").each( function() {
-        var text      = this.getAttributeNS(null, "text-data"),
-            x         = this.getAttributeNS(null, "x-data"),
-            width     = this.getAttributeNS(null, "width-data"),
-            height    = this.getAttributeNS(null, "height-data"),
-            fontSize  = parseFloat(this.getAttributeNS(null, "font-size")),
-            transform = this.getAttributeNS(null, "transform"),
-            hasHost   = this.getAttributeNS(null, "has-host"),
-            textAlign = this.getAttributeNS(null, "text-anchor"),
-            $parentNode = $(this.parentNode),
-            horizontalPadding, verticalPadding,
-            result, fullWidth, fullHeight, frame, dy, tx, ty,
-            callout, calloutLocation;
+      $(".textBox").each(function() {
+        var text = this.getAttributeNS(null, "text-data"),
+          x = this.getAttributeNS(null, "x-data"),
+          width = this.getAttributeNS(null, "width-data"),
+          height = this.getAttributeNS(null, "height-data"),
+          fontSize = parseFloat(this.getAttributeNS(null, "font-size")),
+          transform = this.getAttributeNS(null, "transform"),
+          hasHost = this.getAttributeNS(null, "has-host"),
+          textAlign = this.getAttributeNS(null, "text-anchor"),
+          $parentNode = $(this.parentNode),
+          horizontalPadding, verticalPadding,
+          result, fullWidth, fullHeight, frame, dy, tx, ty,
+          callout, calloutLocation;
 
-        dy = fontSize*1.2;
-        horizontalPadding = +fontSize*1.5;
-        verticalPadding = fontSize/1.8;
+        dy = fontSize * 1.2;
+        horizontalPadding = +fontSize * 1.5;
+        verticalPadding = fontSize / 1.8;
 
         if (width === '') {
           width = -1;
@@ -32402,7 +34799,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
           height = model2px(height);
         }
 
-        while (this.firstChild) {     // clear element first
+        while (this.firstChild) { // clear element first
           this.removeChild(this.firstChild);
         }
 
@@ -32424,24 +34821,24 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
         callout = $parentNode.find("polygon");
         if (frame && callout.length > 0) {
           calloutLocation = callout.attr("callout-location-data").split(", ");
-          callout.attr("points", getCalloutPath(calloutLocation, frame, fullWidth, fullHeight, fontSize) );
+          callout.attr("points", getCalloutPath(calloutLocation, frame, fullWidth, fullHeight, fontSize));
         }
 
         // center all hosted labels simply by tweaking the g.transform
         if (textAlign === "middle") {
           tx = result.width / 2;
           if (height > 0) {
-            ty = height / 2 - verticalPadding * 1.5 - (result.lines-1) * dy / 2;
+            ty = height / 2 - verticalPadding * 1.5 - (result.lines - 1) * dy / 2;
           } else {
             ty = 0;
           }
-          transform = transform + " translate("+tx+","+ty+")";
+          transform = transform + " translate(" + tx + "," + ty + ")";
           $(this).attr("transform", transform);
         }
         if (hasHost === "true" && callout.length === 0) {
-          tx = result.width / -2 - horizontalPadding/2;
-          ty = result.lines * dy / -2 - verticalPadding/2;
-          $parentNode.attr("transform", "translate("+tx+","+ty+")");
+          tx = result.width / -2 - horizontalPadding / 2;
+          ty = result.lines * dy / -2 - verticalPadding / 2;
+          $parentNode.attr("transform", "translate(" + tx + "," + ty + ")");
         }
       });
     }
@@ -32459,7 +34856,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
 
     function setupParticles() {
       var showChargeSymbols = model.get("showChargeSymbols"),
-          useThreeLetterCode = model.get("useThreeLetterCode");
+        useThreeLetterCode = model.get("useThreeLetterCode");
 
       setupColorsOfParticles();
 
@@ -32472,17 +34869,17 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       particleEnterExit();
 
       label = mainContainer.selectAll("g.label")
-          .data(modelAtoms);
+        .data(modelAtoms);
 
       labelEnter = label.enter().append("g")
-          .attr("class", "label")
-          .attr("transform", function(d) {
-            return "translate(" + model2px(d.x) + "," + model2pxInv(d.y) + ")";
-          });
+        .attr("class", "label")
+        .attr("transform", function(d) {
+          return "translate(" + model2px(d.x) + "," + model2pxInv(d.y) + ")";
+        });
 
-      labelEnter.each(function (d) {
+      labelEnter.each(function(d) {
         var selection = d3.select(this),
-            txtValue, txtSelection;
+          txtValue, txtSelection;
         // Append appropriate label. For now:
         // If 'atomNumbers' option is enabled, use indices.
         // If not and there is available 'label'/'symbol' property, use one of them
@@ -32492,8 +34889,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
           selection.append("text")
             .text(d.idx)
             .style("font-size", model2px(1.4 * d.radius) + "px");
-        }
-        else if (useThreeLetterCode && d.label) {
+        } else if (useThreeLetterCode && d.label) {
           // Add shadow - a white stroke, which increases readability.
           selection.append("text")
             .text(d.label)
@@ -32502,8 +34898,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
           selection.append("text")
             .text(d.label)
             .style("font-size", model2px(d.radius) + "px");
-        }
-        else if (!useThreeLetterCode && d.symbol) {
+        } else if (!useThreeLetterCode && d.symbol) {
           // Add shadow - a white stroke, which increases readability.
           selection.append("text")
             .text(d.symbol)
@@ -32512,11 +34907,10 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
           selection.append("text")
             .text(d.symbol)
             .style("font-size", model2px(1.4 * d.radius) + "px");
-        }
-        else if (showChargeSymbols) {
-          if (d.charge > 0){
+        } else if (showChargeSymbols) {
+          if (d.charge > 0) {
             txtValue = "+";
-          } else if (d.charge < 0){
+          } else if (d.charge < 0) {
             txtValue = "-";
           } else {
             return;
@@ -32565,24 +34959,45 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       }
     }
 
-    function setupRectangles() {
-      rectangles = model.get_rectangles();
-      rectangleContainerTop.selectAll(".rectangle").remove();
-      rectangleContainerBelow.selectAll(".rectangle").remove();
-      if (rectangles) {
-        mockRectanglesTop=[];
-        mockRectanglesBelow=[];
-        for(var i = 0; i < rectangles.x.length ; i++){
-          if(rectangles.layer[i]===1){
-            mockRectanglesTop.push(i);
-          }
-          else{
-            mockRectanglesBelow.push(i);
+    function setupShapes() {
+      shapes = model.get_shapes();
+      shapeContainerTop.selectAll(".shape").remove();
+      shapeContainerBelow.selectAll(".shape").remove();
+      if (shapes) {
+        mockShapesTop = [];
+        mockShapesBelow = [];
+        for (var i = 0; i < shapes.x.length; i++) {
+          if (shapes.layer[i] === 1) {
+            mockShapesTop.push({
+              index: i,
+              layerPosition: shapes.layerPosition[i]
+            });
+          } else {
+            mockShapesBelow.push({
+              index: i,
+              layerPosition: shapes.layerPosition[i]
+            });
           }
         }
-        rectangleTop = rectangleContainerTop.selectAll(".rectangle").data(mockRectanglesTop);
-        rectangleBelow = rectangleContainerBelow.selectAll(".rectangle").data(mockRectanglesBelow);
-        rectangleEnter();
+        mockShapesTop.sort(function(a, b) {
+          return a.layerPosition - b.layerPosition
+        })
+        mockShapesBelow.sort(function(a, b) {
+          return a.layerPosition - b.layerPosition
+        })
+        shapeTop = shapeContainerTop.selectAll(".shape").data(mockShapesTop);
+        shapeBelow = shapeContainerBelow.selectAll(".shape").data(mockShapesBelow);
+        shapeEnter();
+      }
+    }
+
+    function setupLines() {
+      lines = model.get_lines();
+      lineContainerTop.selectAll(".line").remove();
+      if (lines) {
+        mockLinesTop.length = lines.x1.length;
+        lineTop = lineContainerTop.selectAll(".line").data(mockLinesTop);
+        lineEnter();
       }
     }
 
@@ -32611,6 +35026,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
     // The vdw hash returned by md2d consists of typed arrays of length N*N-1/2
     // To make these d3-friendly we turn them into an array of atom pairs, only
     // as long as we need.
+
     function updateVdwPairsArray() {
       var vdwHash = model.get_vdw_pairs();
       for (var i = 0; i < vdwHash.count; i++) {
@@ -32621,54 +35037,59 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
     }
 
     function setupVectors() {
-      mainContainer.selectAll("path.vector-"+VELOCITY_STR).remove();
-      mainContainer.selectAll("path.vector-"+FORCE_STR).remove();
+      mainContainer.selectAll("path.vector-" + VELOCITY_STR).remove();
+      mainContainer.selectAll("path.vector-" + FORCE_STR).remove();
 
       drawVelocityVectors = model.get("showVelocityVectors");
-      drawForceVectors    = model.get("showForceVectors");
+      drawForceVectors = model.get("showForceVectors");
       if (drawVelocityVectors) {
-        velVector = mainContainer.selectAll("path.vector-"+VELOCITY_STR).data(modelAtoms);
+        velVector = mainContainer.selectAll("path.vector-" + VELOCITY_STR).data(modelAtoms);
         vectorEnter(velVector, getVelVectorPath, getVelVectorWidth, velocityVectorColor, VELOCITY_STR);
       }
       if (drawForceVectors) {
-        forceVector = mainContainer.selectAll("path.vector-"+FORCE_STR).data(modelAtoms);
+        forceVector = mainContainer.selectAll("path.vector-" + FORCE_STR).data(modelAtoms);
         vectorEnter(forceVector, getForceVectorPath, getForceVectorWidth, forceVectorColor, FORCE_STR);
       }
     }
 
     function setupElectricField() {
       var density = model.get("electricFieldDensity"),
-          col, size;
-      drawElectricForceField = density > 0;
+        show = model.get("showElectricField"),
+        col, size;
+      drawElectricForceField = show && density > 0;
       // Do full enter-update-remove cycle to reuse DOM elements.
-      efVector = fieldVisualization.selectAll(".vector-electric-field").data(model.getElectricField());
+      efVector = fieldVisualization.selectAll(".vector-electric-field")
+        .data(show ? model.getElectricField() : []);
       efVector.exit().remove();
       if (drawElectricForceField) {
         // Enter.
         efVector.enter()
           .append("g")
-            .attr("class", "vector-electric-field")
+          .attr("class", "vector-electric-field")
           .append("g")
-            .attr("class", "rot-g")
+          .attr("class", "rot-g")
           .append("svg")
-            .attr("viewBox", "-5 -12 10 12")
+          .attr("viewBox", "-5 -12 10 12")
           .append("path")
-            .attr("d", "M0,0 L0,-8 L1,-8 L0,-10 L-1,-8, L0,-8");
+          .attr("d", "M0,0 L0,-8 L1,-8 L0,-10 L-1,-8, L0,-8");
         // Update.
-        col = color.contrastingColor(model.get("backgroundColor"));
+        col = model.get("electricFieldColor");
+        if (col === "auto")
+          col = color.contrastingColor(model.get("backgroundColor"));
+
         efVector
-            .attr("transform", function (d) {
-              return "translate(" + model2px(d.x) + ", " + model2pxInv(d.y) + ")";
-            })
-            .style("fill", col)
-            .style("stroke", col);
+          .attr("transform", function(d) {
+            return "translate(" + model2px(d.x) + ", " + model2pxInv(d.y) + ")";
+          })
+          .style("fill", col)
+          .style("stroke", col);
         // Size update.
         size = Math.sqrt(30 / density);
         efVector.select("svg")
-            .attr("x", (-0.5 * size) + "em")
-            .attr("y", (-size) + "em")
-            .attr("width", size + "em")
-            .attr("height", size + "em");
+          .attr("x", (-0.5 * size) + "em")
+          .attr("y", (-size) + "em")
+          .attr("width", size + "em")
+          .attr("height", size + "em");
         // Cache selection + update rotation.
         efVector = efVector.select(".rot-g");
         updateElectricForceField();
@@ -32678,12 +35099,12 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
     function updateElectricForceField() {
       var rad2deg = 180 / Math.PI;
       efVector
-          .attr("transform", function(d) {
-            return "rotate(" + (Math.atan2(d.fx, d.fy) * rad2deg) + ")";
-          })
-          .style("opacity", function(d) {
-            return Math.min(1, Math.pow(d.fx * d.fx + d.fy * d.fy, .2) * .3);
-          });
+        .attr("transform", function(d) {
+          return "rotate(" + (Math.atan2(d.fx, d.fy) * rad2deg) + ")";
+        })
+        .style("opacity", function(d) {
+          return Math.min(1, Math.pow(d.fx * d.fx + d.fy * d.fy, .2) * .3);
+        });
     }
 
     function setupAtomTrace() {
@@ -32732,41 +35153,46 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
 
     function renderAtomTooltip(i) {
       var pos = modelView.pos(),
-          left = pos.left + model2px(modelAtoms[i].x),
-          top  = pos.top +  model2pxInv(modelAtoms[i].y);
+        left = pos.left + model2px(modelAtoms[i].x),
+        top = pos.top + model2pxInv(modelAtoms[i].y);
 
       atomToolTip
-            .style("opacity", 1.0)
-            .style("display", "inline")
-            .style("background", "rgba(100%, 100%, 100%, 0.7)")
-            .style("left", left + "px")
-            .style("top",  top + "px")
-            .style("zIndex", 100)
-            .transition().duration(250);
+        .style("opacity", 1.0)
+        .style("display", "inline")
+        .style("background", "rgba(100%, 100%, 100%, 0.7)")
+        .style("left", left + "px")
+        .style("top", top + "px")
+        .style("zIndex", 100)
+        .transition().duration(250);
 
       atomToolTipPre.text(
-          "atom: " + i + "\n" +
-          "time: " + modelTimeLabel() + "\n" +
-          "speed: " + d3.format("+6.3e")(modelAtoms[i].speed) + "\n" +
-          "vx:    " + d3.format("+6.3e")(modelAtoms[i].vx)    + "\n" +
-          "vy:    " + d3.format("+6.3e")(modelAtoms[i].vy)    + "\n" +
-          "ax:    " + d3.format("+6.3e")(modelAtoms[i].ax)    + "\n" +
-          "ay:    " + d3.format("+6.3e")(modelAtoms[i].ay)    + "\n"
-        );
+        "atom: " + i + "\n" +
+        "time: " + modelTimeLabel() + "\n" +
+        "speed: " + d3.format("+6.3e")(modelAtoms[i].speed) + "\n" +
+        "vx:    " + d3.format("+6.3e")(modelAtoms[i].vx) + "\n" +
+        "vy:    " + d3.format("+6.3e")(modelAtoms[i].vy) + "\n" +
+        "ax:    " + d3.format("+6.3e")(modelAtoms[i].ax) + "\n" +
+        "ay:    " + d3.format("+6.3e")(modelAtoms[i].ay) + "\n"
+      );
     }
 
     function moleculeMouseOut() {
       if (!atomTooltipOn && atomTooltipOn !== 0) {
-        atomToolTip.style("opacity", 1e-6).style("zIndex" -1);
+        atomToolTip.style("opacity", 1e-6).style("zIndex" - 1);
       }
     }
 
     // TODO: this function name seems to be inappropriate to
     // its content.
+
     function updateParticles() {
       particle.attr({
-        "cx": function(d) { return model2px(d.x); },
-        "cy": function(d) { return model2pxInv(d.y); }
+        "cx": function(d) {
+          return model2px(d.x);
+        },
+        "cy": function(d) {
+          return model2pxInv(d.y);
+        }
       });
 
       if (keShadingMode || chargeShadingMode) {
@@ -32774,14 +35200,21 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
         // during each frame.
         setupColorsOfParticles();
         // Update particles "fill" attribute. Array of colors is already updated.
-        particle.attr("fill", function (d, i) { return gradientNameForParticle[i]; });
+        particle.attr("fill", function(d, i) {
+          return gradientNameForParticle[i];
+        });
       }
 
       if (useQuantumDynamics) {
-        particle.attr("filter", function (d) { if (d.excitation) {return "url(#glow)";} return null; });
+        particle.attr("filter", function(d) {
+          if (d.excitation) {
+            return "url(#glow)";
+          }
+          return null;
+        });
       }
 
-      label.attr("transform", function (d) {
+      label.attr("transform", function(d) {
         return "translate(" + model2px(d.x) + "," + model2pxInv(d.y) + ")";
       });
 
@@ -32792,19 +35225,23 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
 
     function getVelVectorPath(d) {
       var x_pos = model2px(d.x),
-          y_pos = model2pxInv(d.y),
-          path = "M "+x_pos+","+y_pos,
-          scale = velocityVectorLength * 100;
-      return path + " L "+(x_pos + model2px(d.vx*scale))+","+(y_pos - model2px(d.vy*scale));
+        y_pos = model2pxInv(d.y),
+        path = "M " + x_pos + "," + y_pos,
+        scale = velocityVectorLength * 100;
+      return path + " L " + (x_pos + model2px(d.vx * scale)) + "," + (y_pos - model2px(d.vy * scale));
     }
 
     function getForceVectorPath(d) {
-      var x_pos = model2px(d.x),
-          y_pos = model2pxInv(d.y),
-          mass  = d.mass,
-          scale = forceVectorLength * 100,
-          path  = "M "+x_pos+","+y_pos;
-      return path + " L "+(x_pos + model2px(d.ax*mass*scale))+","+(y_pos - model2px(d.ay*mass*scale));
+      var xPos = model2px(d.x),
+        yPos = model2pxInv(d.y),
+        mass = d.mass,
+        scale = forceVectorLength * 100 * mass;
+      if (forceVectorsDirectionOnly) {
+        mass *= mass;
+        scale /= Math.sqrt(d.ax * d.ax * mass + d.ay * d.ay * mass) * 1e3 || 1;
+      }
+      return "M" + xPos + "," + yPos +
+        "L" + (xPos + model2px(d.ax * scale)) + "," + (yPos - model2px(d.ay * scale));
     }
 
     function getVelVectorWidth(d) {
@@ -32817,8 +35254,8 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
 
     function updateVectors(vector, pathFunc, widthFunc) {
       vector.attr({
-         "d": pathFunc,
-         "stroke-width": widthFunc
+        "d": pathFunc,
+        "stroke-width": widthFunc
       });
     }
 
@@ -32826,13 +35263,13 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       // until we implement buffered array model output properties,
       // we just keep the path history in the path string
       var dx = Math.floor(model2px(d.x) * 100) / 100,
-          dy = Math.floor(model2pxInv(d.y) * 100) / 100,
-          lIndex, sIndex;
+        dy = Math.floor(model2pxInv(d.y) * 100) / 100,
+        lIndex, sIndex;
       if (!atomTracePath) {
-        atomTracePath = "M"+dx+","+dy+"L";
-        return "M "+dx+","+dy;
+        atomTracePath = "M" + dx + "," + dy + "L";
+        return "M " + dx + "," + dy;
       } else {
-        atomTracePath += dx+","+dy + " ";
+        atomTracePath += dx + "," + dy + " ";
       }
 
       // fake buffered array functionality by knocking out the first
@@ -32840,7 +35277,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       if (atomTracePath.length > 4000) {
         lIndex = atomTracePath.indexOf("L");
         sIndex = atomTracePath.indexOf(" ");
-        atomTracePath = "M" + atomTracePath.slice(lIndex+1, sIndex) + "L" + atomTracePath.slice(sIndex+1);
+        atomTracePath = "M" + atomTracePath.slice(lIndex + 1, sIndex) + "L" + atomTracePath.slice(sIndex + 1);
       }
       return atomTracePath;
     }
@@ -32852,8 +35289,12 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
     }
 
     function updateRadialBonds() {
-      radialBond1.attr("d", function (d) { return findPoints(d, 1); });
-      radialBond2.attr("d", function (d) { return findPoints(d, 2); });
+      radialBond1.attr("d", function(d) {
+        return findPoints(d, 1);
+      });
+      radialBond2.attr("d", function(d) {
+        return findPoints(d, 2);
+      });
 
       if (keShadingMode || chargeShadingMode) {
         // Update also radial bonds color when keShading or chargeShading is on.
@@ -32864,7 +35305,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
 
     function getImageCoords(i) {
       var props = imageProp[i],
-          x, y, img_width, img_height;
+        x, y, img_width, img_height;
       if (props.imageHostType) {
         if (props.imageHostType === "Atom") {
           x = modelAtoms[props.imageHostIndex].x;
@@ -32884,15 +35325,15 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       return [model2px(x), model2pxInv(y)];
     }
 
-    function updateImageAttachment(){
+    function updateImageAttachment() {
       var numImages, imglayer, container, coords, i;
-      numImages= imageProp.length;
-      for(i = 0; i < numImages; i++) {
+      numImages = imageProp.length;
+      for (i = 0; i < numImages; i++) {
         if (!imageSizes || !imageSizes[i]) continue;
         coords = getImageCoords(i);
         imglayer = imageProp[i].imageLayer;
         container = imglayer === 1 ? imageContainerTop : imageContainerBelow;
-        container.selectAll("image.image_attach"+i)
+        container.selectAll("image.image_attach" + i)
           .attr("x", coords[0])
           .attr("y", coords[1]);
       }
@@ -32902,8 +35343,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       if (model.isStopped()) {
         // cache the *original* atom position so we can go back to it if drag is disallowed
         dragOrigin = [d.x, d.y];
-      }
-      else if ( d.draggable ) {
+      } else if (d.draggable) {
         model.liveDragStart(i);
       }
     }
@@ -32912,13 +35352,17 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       Given x, y, and a bounding box (object with keys top, left, bottom, and right relative to
       (x, y), returns an (x, y) constrained to keep the bounding box within the molecule container.
     */
-    function dragBoundingBox(x, y, bbox) {
-      if (bbox.left + x < 0)                x = 0 - bbox.left;
-      if (bbox.right + x > modelWidth) x = modelWidth - bbox.right;
-      if (bbox.bottom + y < 0)              y = 0 - bbox.bottom;
-      if (bbox.top + y > modelHeight)  y = modelHeight - bbox.top;
 
-      return { x: x, y: y };
+    function dragBoundingBox(x, y, bbox) {
+      if (bbox.left + x < 0) x = 0 - bbox.left;
+      if (bbox.right + x > modelWidth) x = modelWidth - bbox.right;
+      if (bbox.bottom + y < 0) y = 0 - bbox.bottom;
+      if (bbox.top + y > modelHeight) y = modelHeight - bbox.top;
+
+      return {
+        x: x,
+        y: y
+      };
     }
 
     function clip(value, min, max) {
@@ -32931,35 +35375,40 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       Given x, y, make sure that x and y are clipped to remain within the model container's
       boundaries
     */
+
     function dragPoint(x, y) {
-      return { x: clip(x, 0, modelWidth), y: clip(y, 0, modelHeight) };
+      return {
+        x: clip(x, 0, modelWidth),
+        y: clip(y, 0, modelHeight)
+      };
     }
 
     function nodeDrag(d, i) {
       var dragX = model2px.invert(d3.event.x),
-          dragY = model2pxInv.invert(d3.event.y),
-          drag;
+        dragY = model2pxInv.invert(d3.event.y),
+        drag;
 
       if (model.isStopped()) {
         drag = dragBoundingBox(dragX, dragY, model.getMoleculeBoundingBox(i));
         setAtomPosition(i, drag.x, drag.y, false, true);
         update();
-      }
-      else if ( d.draggable ) {
+      } else if (d.draggable) {
         drag = dragPoint(dragX, dragY);
         model.liveDrag(drag.x, drag.y);
+      }
+      if (modelView.dragHandler.atom) {
+        modelView.dragHandler.atom(drag.x, drag.y, d, i);
       }
     }
 
     function textDrag(d) {
       var dragDx = model2px.invert(d3.event.dx),
-          dragDy = model2px.invert(d3.event.dy);
+        dragDy = model2px.invert(d3.event.dy);
 
       if (!(AUTHORING && model.isStopped())) {
-      // for now we don't have user-draggable textBoxes
+        // for now we don't have user-draggable textBoxes
         return;
-      }
-      else {
+      } else {
         d.x = d.x + dragDx;
         d.y = d.y - dragDy;
         updateTextBoxes();
@@ -32970,12 +35419,11 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       if (model.isStopped()) {
 
         if (!setAtomPosition(i, d.x, d.y, true, true)) {
-          alert("You can't drop the atom there");     // should be changed to a nice Lab alert box
+          alert("You can't drop the atom there"); // should be changed to a nice Lab alert box
           setAtomPosition(i, dragOrigin[0], dragOrigin[1], false, true);
         }
         update();
-      }
-      else if (d.draggable) {
+      } else if (d.draggable) {
         // here we just assume we are removing the one and only spring force.
         // This assumption will have to change if we can have more than one.
         model.liveDragEnd();
@@ -32984,33 +35432,51 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
 
     function setupToolTips() {
       var mc = d3.select("#model-container");
-      if ( atomToolTip === undefined && !mc.empty()) {
+      if (atomToolTip === undefined && !mc.empty()) {
         atomToolTip = mc.append("div")
-            .attr("class", "tooltip")
-            .style("opacity", 1e-6);
+          .attr("class", "tooltip")
+          .style("opacity", 1e-6);
         atomToolTipPre = atomToolTip.append("pre");
       }
     }
 
     function setupFirefoxWarning() {
       var $firefoxWarningPane,
-          pos,
-          top,
-          left,
-          b = benchmark.what_browser();   // we need to recalc this for FF, for some reason
+        pos,
+        top,
+        left,
+        b = benchmark.what_browser(); // we need to recalc this for FF, for some reason
 
       if (b.browser === "Firefox" && b.version >= "18" && b.version < "23") {
         $firefoxWarningPane = $("#firefox-warning-pane");
         pos = modelView.pos();
-        top  = pos.bottom - $firefoxWarningPane.height();
+        top = pos.bottom - $firefoxWarningPane.height();
         left = pos.right - $firefoxWarningPane.width();
         $firefoxWarningPane.css({
           display: "inline",
-          top: top -5,
+          top: top - 5,
           left: left - 15,
           'z-index': 100
         });
       }
+    }
+
+    function setupMiscOptions() {
+      // Note that vector options are specified in a very untypical way. They are nested objects.
+      velocityVectorColor = model.get("velocityVectors").color;
+      velocityVectorWidth = model.get("velocityVectors").width;
+      velocityVectorLength = model.get("velocityVectors").length;
+
+      forceVectorColor = model.get("forceVectors").color;
+      forceVectorWidth = model.get("forceVectors").width;
+      forceVectorLength = model.get("forceVectors").length;
+
+      forceVectorsDirectionOnly = model.get("forceVectorsDirectionOnly");
+
+      createVectorArrowHeads(velocityVectorColor, VELOCITY_STR);
+      createVectorArrowHeads(forceVectorColor, FORCE_STR);
+
+      atomTraceColor = model.get("atomTraceColor");
     }
 
     function setupRendererOptions() {
@@ -33019,23 +35485,9 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       modelImagePath = model.get('imagePath');
       if (modelImagePath) {
         imagePath = labConfig.actualRoot + modelImagePath;
-      }
-      else if (modelView.url) {
+      } else if (modelView.url) {
         imagePath = labConfig.actualRoot + modelView.url.slice(0, modelView.url.lastIndexOf("/") + 1);
       }
-
-      velocityVectorColor = model.get("velocityVectors").color;
-      velocityVectorWidth  = model.get("velocityVectors").width;
-      velocityVectorLength = model.get("velocityVectors").length;
-
-      forceVectorColor = model.get("forceVectors").color;
-      forceVectorWidth  = model.get("forceVectors").width;
-      forceVectorLength = model.get("forceVectors").length;
-
-      atomTraceColor = model.get("atomTraceColor");
-
-      createVectorArrowHeads(velocityVectorColor, VELOCITY_STR);
-      createVectorArrowHeads(forceVectorColor, FORCE_STR);
 
       useQuantumDynamics = model.properties.useQuantumDynamics;
       if (useQuantumDynamics) {
@@ -33044,7 +35496,6 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
 
       createSymbolImages();
       createImmutableGradients();
-
       // Register additional controls, context menus etc.
       // Note that special selector for class is used. Typical class selectors
       // (e.g. '.amino-acid') cause problems when interacting with SVG nodes.
@@ -33056,18 +35507,22 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
 
     function photonPath(d) {
       var lineData = [],
-          nPoints = 40,
-          line = d3.svg.line()
-            .x(function(d) { return model2px(0.5 / nPoints * d.x); })
-            .y(function(d) { return model2px(0.1 * d.y); }),
+        nPoints = 40,
+        line = d3.svg.line()
+          .x(function(d) {
+            return model2px(0.5 / nPoints * d.x);
+          })
+          .y(function(d) {
+            return model2px(0.1 * d.y);
+          }),
 
-          t = d.angularFrequency * 2 * Math.PI / nPoints,
-          i;
+        t = d.angularFrequency * 2 * Math.PI / nPoints,
+        i;
 
       // Reference implementation: https://github.com/concord-consortium/mw/blob/6e2f2d4630323b8e993fcfb531a3e7cb06644fef/src/org/concord/mw2d/models/Photon.java#L74-L79
       for (i = 0; i < nPoints; i++) {
         lineData.push({
-          x: i - nPoints/2,
+          x: i - nPoints / 2,
           y: Math.sin(i * t) / (1 + 0.01 * (i - 0.5 * nPoints) * (i - 0.5 * nPoints))
         });
       }
@@ -33076,8 +35531,11 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
     }
 
     function enterAndUpdatePhotons() {
-      var photonData = model.getPhotons(),
-          photons = mainContainer.selectAll(".photon").data(photonData);
+      var photons = mainContainer
+        .selectAll(".photon")
+        .data(model.getPhotons(), function(d) {
+          return d.id;
+        });
 
       photons.enter().append("path")
         .attr({
@@ -33091,9 +35549,8 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       photons.exit().remove();
 
       photons.attr("transform", function(d) {
-        var angle = -180 * Math.atan2(d.vy, d.vx) / Math.PI;
         return "translate(" + model2px(d.x) + ", " + model2pxInv(d.y) + ") " +
-               "rotate(" + angle + ")";
+          "rotate(" + d.angle + ")";
       });
 
     }
@@ -33105,6 +35562,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
     //
     // MD2D Renderer: init
     //
+
     function init() {
       timeSuffix = " (" + model.getPropertyDescription('displayTime').getUnitAbbreviation() + ")";
 
@@ -33114,19 +35572,19 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       fontSizeInPixels = modelView.getFontSizeInPixels();
       textBoxFontSizeInPixels = fontSizeInPixels * 0.9;
 
-      modelAtoms  = model.getAtoms();
+      modelAtoms = model.getAtoms();
       modelElements = model.get_elements();
-      modelWidth    = model.get('width');
-      modelHeight   = model.get('height');
-      aspectRatio   = modelWidth / modelHeight;
+      modelWidth = model.get('width');
+      modelHeight = model.get('height');
+      aspectRatio = modelWidth / modelHeight;
 
       setupRendererOptions();
 
       // Subscribe for model events.
       model.addPropertiesListener(["temperatureControl"], drawSymbolImages);
 
-      function redrawClickableObjects (redrawOperation) {
-        return function () {
+      function redrawClickableObjects(redrawOperation) {
+        return function() {
           redrawOperation();
           // All objects where repainted (probably removed and added again), so
           // it's necessary to apply click handlers again.
@@ -33136,24 +35594,30 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
 
       // Redraw container each time when some visual-related property is changed.
       model.addPropertiesListener([
-        "keShading", "chargeShading", "showChargeSymbols", "useThreeLetterCode",
-        "showVDWLines", "VDWLinesCutoff",
-        "showVelocityVectors", "showForceVectors",
-        "showAtomTrace", "atomTraceId", "aminoAcidColorScheme",
-        "backgroundColor", "markColor"],
-          redrawClickableObjects(repaint));
-      model.addPropertiesListener("electricFieldDensity", setupElectricField);
+          "keShading", "chargeShading", "showChargeSymbols", "useThreeLetterCode",
+          "showVDWLines", "VDWLinesCutoff",
+          "showVelocityVectors", "showForceVectors",
+          "showAtomTrace", "atomTraceId", "aminoAcidColorScheme",
+          "backgroundColor", "markColor", "forceVectorsDirectionOnly"
+        ],
+        redrawClickableObjects(repaint));
+      model.addPropertiesListener(["electricFieldDensity", "showElectricField", "electricFieldColor"],
+        setupElectricField);
 
       model.on('addAtom', redrawClickableObjects(setupParticles));
       model.on('removeAtom', redrawClickableObjects(repaint));
       model.on('addRadialBond', redrawClickableObjects(setupRadialBonds));
       model.on('removeRadialBond', redrawClickableObjects(setupRadialBonds));
       model.on('textBoxesChanged', redrawClickableObjects(drawTextBoxes));
+      model.on('addElectricField', setupElectricField);
+      model.on('removeElectricField', setupElectricField);
+      model.on('changeElectricField', setupElectricField);
 
       setupFirefoxWarning();
     }
 
     // Call when model is reset or reloaded.
+
     function bindModel(newModel) {
       model = newModel;
       init();
@@ -33168,6 +35632,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
     // Also call when the number of objects changes such that the container
     // must be setup again.
     //
+
     function repaint(m2px, m2pxInv) {
       if (arguments.length) {
         model2px = m2px;
@@ -33176,14 +35641,15 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       fontSizeInPixels = modelView.getFontSizeInPixels();
       textBoxFontSizeInPixels = fontSizeInPixels * 0.9;
 
+      setupMiscOptions();
       setupDynamicGradients();
       setupObstacles();
       setupVdwPairs();
       setupParticles();
       // Always setup radial bonds *after* particles to use correct atoms
       // color table.
-      setupRectangles();
-      //Rectangles are ON TOP of particles
+      setupShapes();
+      setupLines();
       setupRadialBonds();
       geneticRenderer.setup();
       setupVectors();
@@ -33205,20 +35671,21 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
     // Call to update visualization when model result state changes.
     // Normally called on every model tick.
     //
+
     function update() {
       console.time('view update');
       if (obstacles) {
-        obstacle.attr("transform", function (d, i) {
+        obstacle.attr("transform", function(d, i) {
           return "translate(" + model2px(obstacles.x[i]) + " " + model2pxInv(obstacles.y[i] + obstacles.height[i]) + ")";
         });
       }
 
-      if (rectangles) {
-        rectangleTop.attr("transform", function (d) {
-          return "translate(" + model2px(rectangles.x[d]) + " " + model2pxInv(rectangles.y[d] + rectangles.height[d]) + ")";
+      if (shapes) {
+        shapeTop.attr("transform", function(d) {
+          return "translate(" + model2px(shapes.x[d.index]) + " " + model2pxInv(shapes.y[d.index] + shapes.height[d.index]) + ")";
         });
-        rectangleBelow.attr("transform", function (d) {
-          return "translate(" + model2px(rectangles.x[d]) + " " + model2pxInv(rectangles.y[d] + rectangles.height[d]) + ")";
+        shapeBelow.attr("transform", function(d) {
+          return "translate(" + model2px(shapes.x[d.index]) + " " + model2pxInv(shapes.y[d.index] + shapes.height[d.index]) + ")";
         });
       }
 
@@ -33246,7 +35713,7 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
       if (drawAtomTrace) {
         updateAtomTrace();
       }
-      if(imageProp && imageProp.length !== 0) {
+      if (imageProp && imageProp.length !== 0) {
         updateImageAttachment();
       }
       if (textBoxes && textBoxes.length > 0) {
@@ -33273,7 +35740,6 @@ define('md2d/views/renderer',['require','lab.config','common/alert','common/cons
     return api;
   };
 });
-
 /*global define: false */
 
 define('md2d/views/view',['require','common/views/svg-container','md2d/views/renderer'],function (require) {
@@ -33356,10 +35822,9 @@ define('md2d/views/dna-edit-dialog',[],function () {
 
 /*global define, model */
 
-define('md2d/controllers/scripting-api',['require','common/alert','md2d/views/dna-edit-dialog'],function (require) {
+define('md2d/controllers/scripting-api',['require','md2d/views/dna-edit-dialog'],function (require) {
 
-  var alert = require('common/alert'),
-      DNAEditDialog = require('md2d/views/dna-edit-dialog');
+  var DNAEditDialog = require('md2d/views/dna-edit-dialog');
 
   /**
     Define the model-specific MD2D scripting API used by 'action' scripts on interactive elements.
@@ -33497,6 +35962,17 @@ define('md2d/controllers/scripting-api',['require','common/alert','md2d/views/dn
 
         if (n > numAtoms) n = numAtoms;
         return api.choose(n, numAtoms);
+      },
+
+
+      /** Turn on quantum dynamics light source. TODO: sort out whether it's possible to expose
+          lightSource[index].enabled */
+      turnOnLightSource: function turnOnLightSource(index) {
+        model.turnOnLightSource(index);
+      },
+
+      turnOffLightSource: function turnOffLightSource(index) {
+        model.turnOffLightSource(index);
       },
 
       /**
@@ -33758,7 +36234,7 @@ define('md2d/controllers/scripting-api',['require','common/alert','md2d/views/dn
         model.setObstacleProperties(i, props);
         api.repaintIfReady();
       },
-      
+
       /**
         Returns obstacle properties as a human-readable hash.
         e.g. getObstacleProperties(0) --> {x: 1, y: 0.5, externalAx: 0.00001, ... }
@@ -33781,23 +36257,68 @@ define('md2d/controllers/scripting-api',['require','common/alert','md2d/views/dn
         api.repaintIfReady();
       },
 
-      setRectangleProperties: function setRectangleProperties(i, props) {
-        model.setRectangleProperties(i, props);
+      setShapeProperties: function setShapeProperties(i, props) {
+        model.setShapeProperties(i, props);
         api.repaintIfReady();
       },
 
-      getRectangleProperties: function getRectangleProperties(i) {
-        return model.getRectangleProperties(i);
+      getShapeProperties: function getShapeProperties(i) {
+        return model.getShapeProperties(i);
       },
 
-      getAtomsWithinRectangle: function getAtomsInsideRectangle(i) {
-        var props=model.getRectangleProperties(i);
-        return this.atomsWithinRect(props.x,props.y,props.width,props.height)
+      setLineProperties: function setLineProperties(i, props) {
+        model.setLineProperties(i, props);
+        api.repaintIfReady();
       },
-      
-      removeRectangle: function removeRectangle(i, options) {
+
+      getLineProperties: function getLineProperties(i) {
+        return model.getLineProperties(i);
+      },
+
+      addElectricField: function addElectricField(props, options) {
         try {
-          model.removeRectangle(i);
+          model.addElectricField(props);
+        } catch (e) {
+          if (!options || !options.silent)
+            throw e;
+        }
+      },
+
+      removeElectricField: function removeElectricField(i, options) {
+        try {
+          model.removeElectricField(i);
+        } catch (e) {
+          if (!options || !options.silent)
+            throw e;
+        }
+      },
+
+      setElectricFieldProperties: function setElectricFieldProperties(i, props) {
+        model.setElectricFieldProperties(i, props);
+      },
+
+      getElectricFieldProperties: function getElectricFieldProperties(i) {
+        return model.getElectricFieldProperties(i);
+      },
+
+      getAtomsWithinShape: function getAtomsInsideShape(i) {
+        var props=model.getShapeProperties(i);
+        return this.atomsWithinRect(props.x, props.y, props.width, props.height);
+      },
+
+      removeShape: function removeShape(i, options) {
+        try {
+          model.removeShape(i);
+        } catch (e) {
+          if (!options || !options.silent)
+            throw e;
+        }
+        api.repaintIfReady();
+      },
+
+      removeLine: function removeLine(i, options) {
+        try {
+          model.removeLine(i);
         } catch (e) {
           if (!options || !options.silent)
             throw e;
@@ -37477,6 +39998,11 @@ define('sensor/metadata',[],function() {
       controlButtons: {
         defaultValue: "play_reset",
         propertyChangeInvalidates: false
+      },
+      controlButtonStyle: {
+        defaultValue: "video",
+        propertyChangeInvalidates: false,
+        serialize: false
       }
     }
   };
@@ -37684,9 +40210,6 @@ define('sensor/applet/errors',['require','common/inherit'],function(require) {
     errorConstructor.apply(this, Array.prototype.slice.apply(arguments));
   }
   inherit(SensorConnectionError, Error);
-
-  // temporary check:
-  window.JavaLoadError = JavaLoadError;
 
   return {
     JavaLoadError: JavaLoadError,
@@ -38159,7 +40682,7 @@ define('sensor/applet/sensor-definitions',[],function() {
 
 /*global define: false, d3: false $: true */
 
-define('sensor/modeler',['require','common/property-support','common/property-description','cs!common/running-average-filter','common/validator','./metadata','./units-definition','./applet/applet-classes','./applet/errors','./applet/sensor-definitions','common/controllers/basic-dialog'],function(require) {
+define('sensor/modeler',['require','common/property-support','common/property-description','cs!common/running-average-filter','common/validator','./metadata','./units-definition','./applet/applet-classes','./applet/errors','./applet/sensor-definitions','common/controllers/basic-dialog','common/controllers/export-controller'],function(require) {
 
   var PropertySupport      = require('common/property-support'),
       PropertyDescription  = require('common/property-description'),
@@ -38170,7 +40693,8 @@ define('sensor/modeler',['require','common/property-support','common/property-de
       appletClasses        = require('./applet/applet-classes'),
       appletErrors         = require('./applet/errors'),
       sensorDefinitions    = require('./applet/sensor-definitions'),
-      BasicDialog          = require('common/controllers/basic-dialog');
+      BasicDialog          = require('common/controllers/basic-dialog'),
+      ExportController     = require('common/controllers/export-controller');
 
   function simpleAlert(message, buttons) {
     var dialog = new BasicDialog({
@@ -38190,7 +40714,8 @@ define('sensor/modeler',['require','common/property-support','common/property-de
         viewOptions,
         mainProperties,
         isStopped = true,
-        dispatch = d3.dispatch('play', 'stop', 'tick', 'reset', 'stepForward', 'stepBack', 'seek', 'invalidation'),
+        dispatch = d3.dispatch('play', 'stop', 'tick', 'willReset', 'reset', 'stepForward',
+                               'stepBack', 'seek', 'invalidation'),
         sensorType,
         applet,
         didStop = false,
@@ -38239,6 +40764,11 @@ define('sensor/modeler',['require','common/property-support','common/property-de
       unitType = metadataForType[key].unitType;
       if (unitType) {
         descriptor.description = new PropertyDescription(unitsDefinition, { unitType: unitType });
+      } else {
+        // A property with no units should at least have a label
+        descriptor.description = new PropertyDescription(null, {
+          label: metadataForType.label || key
+        });
       }
 
       propertySupport.defineProperty(key, descriptor);
@@ -38337,6 +40867,7 @@ define('sensor/modeler',['require','common/property-support','common/property-de
     function handleUnplugged(what) {
       removeApplet();
       model.stop();
+      ExportController.logAction("User unplugged the " + what + " (" + model.properties[what+'Name'] + ").");
       simpleAlert("The " + model.properties[what+'Name'] + " was unplugged. Try plugging it back in, and then click \"Try Again\".", {
         "Try Again": function() {
           $(this).dialog("close");
@@ -38421,6 +40952,10 @@ define('sensor/modeler',['require','common/property-support','common/property-de
         makeInvalidatingChange(function() {
           didStop = true;
         });
+      },
+
+      willReset: function() {
+        dispatch.willReset();
       },
 
       isStopped: function() {
@@ -38585,13 +41120,96 @@ define('sensor/modeler',['require','common/property-support','common/property-de
   };
 });
 
+define('sensor/view',['common/views/select-box-view','common/views/numeric-output-view'],function() {
+
+  var SelectBoxView = require('common/views/select-box-view'),
+      NumericOutputView = require('common/views/numeric-output-view');
+
+  return function(model, modelUrl) {
+    var sensorTypeView = new SelectBoxView({
+          id: 'sensor-type-view',
+          options: [{
+            text: "GoMotion",
+            value: 'goMotion',
+            selected: true,
+            disabled: false
+          }, {
+            text: "Something Else",
+            value: 'somethingElse',
+            selected: false,
+            disabled: false
+          }],
+          label: "Sensor Type",
+          labelOn: "left",
+          onChange: function(option) {
+            console.log(option.value + " chosen.");
+          },
+        }),
+        // TODO use the formatter from the property description. Right now, it automatically adds
+        // units to the returned string (which we don't want here).
+        format = d3.format('.2f'),
+        sensorReadingView,
+        lastHeight = null;
+
+    return  {
+      $el: $("<div id='model-container' class='container' style='font-size: 0.7em'/>"),
+
+      bindModel: function(newModel, newModelUrl) {
+        modelUrl = newModelUrl || modelUrl;
+        model = newModel || model;
+      },
+
+      getHeightForWidth: function(width, fontSizeChanged) {
+        if (fontSizeChanged || lastHeight == null) {
+          lastHeight = 2 * parseInt(this.$el.parent().css('font-size'), 10);
+        }
+        return lastHeight;
+      },
+
+      // called once we're in the DOM
+      setup: function() {
+
+        this.$el.empty();
+
+        sensorReadingView = new NumericOutputView({
+          id: 'sensor-value-view',
+          label: "Reading: ",
+          units: model.getPropertyDescription('sensorReading').getUnitAbbreviation()
+        });
+
+        var $selectBox = sensorTypeView.render(this.$el),
+            $disconnectButton = $("<div><button>Disconnect</button></div>"),
+            $zeroButton = $("<div><button>Zero</button></div>"),
+            $sensorReading = sensorReadingView.render();
+
+        $selectBox.addClass('interactive-pulldown component component-spacing');
+        $disconnectButton.addClass('interactive-button component component-spacing');
+        $zeroButton.addClass('interactive-button component component-spacing');
+        $sensorReading.addClass('numeric-output component horizontal component-spacing');
+
+        this.$el.css('zIndex', 4);
+        this.$el.append($selectBox);
+        this.$el.append($disconnectButton);
+        this.$el.append($sensorReading);
+        this.$el.append($zeroButton);
+      },
+
+      resize: function() {},
+
+      update: function() {
+        sensorReadingView.update(format(model.properties.sensorReading));
+      }
+    };
+  };
+});
+
 /*global define $ */
 
-define('sensor/controller',['require','common/controllers/model-controller','sensor/modeler','common/views/null-model-view'],function (require) {
+define('sensor/controller',['require','common/controllers/model-controller','sensor/modeler','sensor/view'],function (require) {
   // Dependencies.
   var ModelController   = require('common/controllers/model-controller'),
       Model             = require('sensor/modeler'),
-      ModelContainer    = require('common/views/null-model-view'),
+      ModelContainer    = require('sensor/view'),
       ScriptingAPI      = function() {},
       Benchmarks        = function() {};
 
@@ -45208,7 +47826,7 @@ define('energy2d/controllers/controller',['require','energy2d/modeler','common/v
 
 /*global define, model, $, setTimeout, document, window */
 
-define('common/controllers/interactives-controller',['require','lab.config','arrays','common/alert','common/controllers/interactive-metadata','common/validator','common/interactive-not-found','common/controllers/bar-graph-controller','common/controllers/graph-controller','common/controllers/export-controller','common/controllers/scripting-api','common/controllers/button-controller','common/controllers/checkbox-controller','common/controllers/text-controller','common/controllers/image-controller','common/controllers/radio-controller','common/controllers/slider-controller','common/controllers/pulldown-controller','common/controllers/numeric-output-controller','common/controllers/parent-message-api','common/controllers/thermometer-controller','common/controllers/playback-controller','common/controllers/div-controller','common/controllers/setup-banner','common/controllers/about-dialog','common/controllers/share-dialog','common/controllers/credits-dialog','common/layout/semantic-layout','common/layout/templates','md2d/controllers/controller','solar-system/controllers/controller','signal-generator/controller','sensor/controller','energy2d/controllers/controller'],function (require) {
+define('common/controllers/interactives-controller',['require','lab.config','arrays','common/alert','common/controllers/interactive-metadata','common/validator','common/interactive-not-found','common/controllers/bar-graph-controller','common/controllers/graph-controller','common/controllers/export-controller','common/controllers/scripting-api','common/controllers/button-controller','common/controllers/checkbox-controller','common/controllers/text-controller','common/controllers/image-controller','common/controllers/radio-controller','common/controllers/slider-controller','common/controllers/pulldown-controller','common/controllers/numeric-output-controller','common/controllers/parent-message-api','common/controllers/thermometer-controller','common/controllers/playback-controller','common/controllers/div-controller','common/dispatch-support','common/controllers/help-system','common/views/tooltip','common/cookies','common/controllers/setup-banner','common/controllers/about-dialog','common/controllers/share-dialog','common/controllers/credits-dialog','common/layout/semantic-layout','common/layout/templates','md2d/controllers/controller','solar-system/controllers/controller','signal-generator/controller','sensor/controller','energy2d/controllers/controller'],function (require) {
   // Dependencies.
   var labConfig               = require('lab.config'),
       arrays                  = require('arrays'),
@@ -45232,6 +47850,10 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
       ThermometerController   = require('common/controllers/thermometer-controller'),
       PlaybackController      = require('common/controllers/playback-controller'),
       DivController           = require('common/controllers/div-controller'),
+      DispatchSupport         = require('common/dispatch-support'),
+      HelpSystem              = require('common/controllers/help-system'),
+      tooltip                 = require('common/views/tooltip'),
+      cookies                 = require('common/cookies'),
 
       // Helper function which just provides banner definition.
       setupBanner             = require('common/controllers/setup-banner'),
@@ -45299,6 +47921,7 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
         controller = {},
         modelController,
         $interactiveContainer,
+        helpSystem,
         models = [],
         modelsHash = {},
         propertiesListeners = [],
@@ -45306,6 +47929,9 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
         onLoadScripts = [],
         resizeCallbacks = [],
         modelLoadedCallbacks = [],
+        isModelLoaded = false,
+        interactiveRenderedCallbacks = [],
+        isInteractiveRendered = false,
 
         // Hash of instantiated components.
         // Key   - component ID.
@@ -45336,7 +47962,9 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
         creditsDialog,
 
         semanticLayout,
-        getNextTabIndex;
+        getNextTabIndex,
+
+        dispatch = new DispatchSupport("layoutUpdated");
 
 
     // simple tabindex support, also exposed via api.getNextTabIndex()
@@ -45366,6 +47994,7 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
           interactiveViewOptions,
           interactiveModelOptions;
 
+      isModelLoaded = false;
       controller.currentModel = modelDefinition;
 
       if (modelDefinition.viewOptions) {
@@ -45509,7 +48138,10 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
         modelLoaded();
 
         // Layout interactive after modelLoaded() callback!
-        semanticLayout.layoutInteractive();
+        layoutInteractive();
+
+        // notify observers that interactive is rendered.
+        interactiveRendered();
       }
 
       function createModelController(type, modelUrl, modelOptions) {
@@ -45528,6 +48160,17 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
           scriptingAPI.exposeScriptingAPI();
         }
       }
+    }
+
+    function layoutInteractive() {
+      // Do nothing if this is called before the model loads (for example via a resize event).
+      // The interactive will be laid out as soon as the model loads anyway, and furthermore the
+      // semantic layout mechanism calls at least one modelController method.
+      if (!semanticLayout.isReady()) {
+        return;
+      }
+      semanticLayout.layoutInteractive();
+      dispatch.layoutUpdated();
     }
 
     // ------------------------------------------------------------
@@ -45582,7 +48225,7 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
     }
 
     function setupLayout() {
-      var template, layout, comp, components, fontScale, banner, resizeAfterFullscreen;
+      var template, layout, comp, components, banner, resizeAfterFullscreen;
 
       if (typeof interactive.template === "string") {
         template = templates[interactive.template];
@@ -45592,13 +48235,11 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
 
       // The authored definition of which components go in which container.
       layout = interactive.layout;
-      // Font scale which affect whole interactive container.
-      fontScale = interactive.fontScale;
 
       // Banner hash containing components, layout containers and layout deinition
       // (components location). Keep it in a separate structure, because we do not
       // expect these objects to be serialized!
-      banner = setupBanner(scriptingAPI, interactive, creditsDialog, aboutDialog, shareDialog);
+      banner = setupBanner(controller, interactive, creditsDialog, aboutDialog, shareDialog);
       // Register callbacks of banner components.
       components = banner.components;
       for (comp in components) {
@@ -45620,7 +48261,8 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
 
       // Setup layout using both author components and components
       // created automatically in this controller.
-      semanticLayout.initialize(template, layout, components, fontScale);
+      semanticLayout.initialize(template, layout, components,
+                                interactive.aspectRatio, interactive.fontScale);
 
       // We are rendering in embeddable mode if only element on page
       // so resize when window resizes.
@@ -45685,6 +48327,18 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
       return str.join('\n');
     }
 
+
+    /**
+      Call this after the Interactive renders to process any callbacks.
+    */
+    function interactiveRendered() {
+      var i;
+      for(i = 0; i < interactiveRenderedCallbacks.length; i++) {
+        interactiveRenderedCallbacks[i]();
+      }
+      isInteractiveRendered = true;
+    }
+
     /**
       Call this after the model loads, to process any queued resize and update events
       that depend on the model's properties, then draw the screen.
@@ -45721,6 +48375,7 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
       for(i = 0; i < modelLoadedCallbacks.length; i++) {
         modelLoadedCallbacks[i]();
       }
+      isModelLoaded = true;
     }
 
     /**
@@ -45763,6 +48418,7 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
       validateArray("parameter", interactive.parameters);
       validateArray("output", interactive.outputs);
       validateArray("filteredOutput", interactive.filteredOutputs);
+      validateArray("helpTip", interactive.helpTips);
 
       // Validate also nested strucutres.
       models = interactive.models;
@@ -45823,6 +48479,8 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
         hash representing the interactive specification or string representing path or full url
     */
     function loadInteractive(newInteractive) {
+      isModelLoaded = false;
+      isInteractiveRendered = false;
       if (typeof newInteractive === "string") {
         $.get(newInteractive).done(function(results) {
           if (typeof results === 'string') results = JSON.parse(results);
@@ -45888,8 +48546,35 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
         }
       }
 
+      // Setup help system if help tips are defined.
+      if (interactive.helpTips.length > 0) {
+        helpSystem = new HelpSystem(interactive.helpTips, $interactiveContainer);
+        controller.on("interactiveRendered", function () {
+          function hashCode(string) {
+            var hash = 0, len = string.length, i, c;
+            if (len === 0) return hash;
+            for (i = 0; i < len; i++) {
+              c = string.charCodeAt(i);
+              hash = ((hash<<5) - hash) + c;
+              hash = hash & hash;
+            }
+            return hash;
+          }
+          var hash = hashCode(JSON.stringify(interactive));
+          // When displayOnLoad is set to true, the help mode will be automatically shown,
+          // but only when user opens interactive for the first time.
+          if (interactive.helpOnLoad && !cookies.hasItem("lab-help-" + hash)) {
+            helpSystem.start();
+            cookies.setItem("lab-help-" + hash, true);
+          }
+        });
+      }
+
       // When all components are created, we can initialize semantic layout.
       setupLayout();
+
+      // Replace native tooltips with custom, styled and responsive tooltips.
+      tooltip($interactiveContainer);
 
       // FIXME: I moved this after setupLayout() on the previous line
       // when I added the possiblity of including the model definition in the model
@@ -45899,8 +48584,33 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
       // But ... there is a performance issue, it makes sense to start the ajax request
       // for the model definition as soon as the Interactive Controller can.
       //
-      // Load first model
-      loadModel(models[0].id);
+      // Load first model in models array
+      if (models && models.length > 0) {
+        loadModel(models[0].id);
+      } else {
+        // Setup proxy modelController object with a 0x0 px view for semantic layout system
+        modelController = {
+          getViewContainer: function() {
+            var $el = $("<div>")
+              .attr({
+                "id": "model-container",
+                "class": "container",
+                "tabindex": getNextTabIndex
+              })
+              // Set initial dimensions.
+              .css({
+                "width": "0px",
+                "height": "0px"
+              });
+            return $el;
+          },
+          getHeightForWidth: function() { return 0; },
+          resize: function() {}
+        };
+        semanticLayout.setupModel(modelController);
+        // and layout a 'no-model' interactive
+        layoutInteractive();
+      }
     }
 
     /**
@@ -46008,11 +48718,20 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
     // Public API.
     //
     controller = {
+      get scriptingAPI() {
+        return scriptingAPI;
+      },
+      get helpSystem() {
+        return helpSystem;
+      },
       getDGExportController: function () {
         return exportController;
       },
       getModelController: function () {
         return modelController;
+      },
+      getComponent: function (id) {
+        return componentByID[id];
       },
       pushOnLoadScript: function (callback) {
         onLoadScripts.push(callback);
@@ -46025,19 +48744,17 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
         It triggers the layout algorithm again.
       */
       resize: function () {
-        var i;
-
-        semanticLayout.layoutInteractive();
+        layoutInteractive();
         // TODO: use events!
-        for(i = 0; i < resizeCallbacks.length; i++) {
+        for(var i = 0; i < resizeCallbacks.length; i++) {
           resizeCallbacks[i]();
         }
       },
       /**
-       * Adds an event listener for the specified type.
-       * Supported events are: "resize" and "modelLoaded".
+       * Adds an event listener for the specified type. Supported events:
+       * "resize", "modelLoaded", "interactiveRendered" and "layoutUpdated".
        *
-       * @param {string} type Event type ("resize" or "modelLoaded").
+       * @param {string} type
        * @param  {function|array} callback Callback function or an array of functions.
        */
       on: function (type, callback) {
@@ -46058,6 +48775,12 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
           case "modelLoaded":
             modelLoadedCallbacks = modelLoadedCallbacks.concat(callback);
             break;
+          case "interactiveRendered":
+            interactiveRenderedCallbacks = interactiveRenderedCallbacks.concat(callback);
+            break;
+          default:
+            // TODO FIXME: always use dispatch, don't support arrays of functions.
+            dispatch.on(type, callback[0]);
         }
       },
 
@@ -46103,7 +48826,9 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
           title: interactive.title,
           publicationStatus: interactive.publicationStatus,
           subtitle: interactive.subtitle,
+          aspectRatio: interactive.aspectRatio,
           fontScale: interactive.fontScale,
+          helpOnLoad: interactive.helpOnLoad,
           about: arrays.isArray(interactive.about) ? $.extend(true, [], interactive.about) : interactive.about,
           // Node that models section can also contain custom parameters definition. However, their initial values
           // should be already updated (take a look at the beginning of this function), so we can just serialize whole array.
@@ -46112,15 +48837,13 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
           parameters: $.extend(true, [], interactive.parameters),
           // Outputs are directly bound to the model, we can copy their initial definitions.
           outputs: $.extend(true, [], interactive.outputs),
-          filteredOutputs: $.extend(true, [], interactive.filteredOutputs)
+          filteredOutputs: $.extend(true, [], interactive.filteredOutputs),
+          helpTips: $.extend(true, [], interactive.helpTips)
         };
 
         // add optional attributes to result if defined
-        if (typeof interactive.fontScale !== 'undefined') {
-          result.fontScale = interactive.fontScale
-        }
         if (typeof interactive.importedFrom !== 'undefined') {
-          result.importedFrom = interactive.importedFrom
+          result.importedFrom = interactive.importedFrom;
         }
 
         // Serialize components.
@@ -46141,6 +48864,32 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
 
         return result;
       },
+      modelLoaded: function () {
+        return isModelLoaded;
+      },
+      interactiveRendered: function () {
+        return isInteractiveRendered;
+      },
+      benchmarks: [
+        {
+          name: "layout (iterations)",
+          numeric: true,
+          formatter: d3.format("g"),
+          run: function(done) {
+            done(semanticLayout.layoutInteractive());
+          }
+        },
+        {
+          name: "layout (time in ms)",
+          numeric: true,
+          formatter: d3.format("5.1f"),
+          run: function(done) {
+            var start = +Date.now();
+            semanticLayout.layoutInteractive();
+            done(Date.now() - start);
+          }
+        }
+      ],
       // Make these private variables and functions available
       loadInteractive: loadInteractive,
       validateInteractive: validateInteractive,
@@ -46168,59 +48917,10 @@ define('common/controllers/interactives-controller',['require','lab.config','arr
     shareDialog = new ShareDialog();
     controller.on("resize", $.proxy(shareDialog.updateIframeSize, shareDialog));
     // Run this when controller is created.
-    loadInteractive(interactiveReference, viewSelector);
+    loadInteractive(interactiveReference);
 
     return controller;
   };
-});
-
-/*global define: false console: true */
-
-define('common/structured-clone',['require'],function (require) {
-  var featureSupported = false,
-      publicAPI = {};
-
-  function isStructuredCloneSupported() {
-    var result = 0;
-
-    if (!!window.postMessage) {
-      try {
-        // Safari 5.1 will sometimes throw an exception and sometimes won't, lolwut?
-        // When it doesn't we capture the message event and check the
-        // internal [[Class]] property of the message being passed through.
-        // Safari will pass through DOM nodes as Null iOS safari on the other hand
-        // passes it through as DOMWindow, gotcha.
-        window.onmessage = function(e){
-          var type = Object.prototype.toString.call(e.data);
-          result = (type.indexOf("Null") != -1 || type.indexOf("DOMWindow") != -1) ? 1 : 0;
-          featureSupported = {
-            'structuredClones': result
-          };
-        };
-        // Spec states you can't transmit DOM nodes and it will throw an error
-        // postMessage implimentations that support cloned data will throw.
-        window.postMessage(document.createElement("a"),"*");
-      } catch(e) {
-        // BBOS6 throws but doesn't pass through the correct exception
-        // so check error message
-        result = (e.DATA_CLONE_ERR || e.message == "Cannot post cyclic structures.") ? 1 : 0;
-        featureSupported = {
-          'structuredClones': result
-        };
-      }
-    }
-  }
-
-  isStructuredCloneSupported();
-
-  function supported() {
-    return featureSupported && featureSupported.structuredClones > 0;
-  }
-
-  publicAPI.supported = supported;
-
-  return publicAPI;
-
 });
 
 /*global define: false, window: false */
@@ -46344,22 +49044,146 @@ define('import-export/public-api',['require','import-export/dg-exporter','import
 
 /*global define: false */
 
-define('public-api',['require','lab.version','lab.config','common/controllers/interactives-controller','common/benchmark/benchmark','common/structured-clone','grapher/public-api','import-export/public-api'],function (require) {
+define('iframe-phone/iframe-phone',['require','iframe-phone/structured-clone'],function (require){
+  var structuredClone = require('iframe-phone/structured-clone');
+
+  return function IFramePhone(iframe, afterConnectedCallback) {
+    var iframeOrigin = iframe.src.match(/(.*?\/\/.*?)\//)[1],
+        selfOrigin   = window.location.href.match(/(.*?\/\/.*?)\//)[1],
+        postMessageQueue = [],
+        connected = false,
+        handlers = {};
+
+    function post(message) {
+      if (connected) {
+        // if we are laready connected ... send the message
+        message.origin = selfOrigin;
+        // See http://dev.opera.com/articles/view/window-postmessage-messagechannel/#crossdoc
+        //     https://github.com/Modernizr/Modernizr/issues/388
+        //     http://jsfiddle.net/ryanseddon/uZTgD/2/
+        if (structuredClone.supported()) {
+          iframe.contentWindow.postMessage(message, iframeOrigin);
+        } else {
+          iframe.contentWindow.postMessage(JSON.stringify(message), iframeOrigin);
+        }
+      } else {
+        // else queue up the messages to send after connection complete.
+        postMessageQueue.push(message);
+      }
+    }
+
+    function addListener(messageName, func) {
+      handlers[messageName] = func;
+    }
+
+    function removeListener(messageName) {
+      handlers[messageName] = null;
+    }
+
+    function addDispatchListener(eventName,func,properties) {
+      addListener(eventName,func);
+      post({
+        'type': 'listenForDispatchEvent',
+        'eventName': eventName,
+        'properties': properties
+      });
+    }
+
+    function removeDispatchListener(messageName) {
+      post({
+        'type': 'removeListenerForDispatchEvent',
+        'eventName': messageName
+      });
+      removeListener(messageName);
+    }
+
+    function receiveMessage(message) {
+      var messageData;
+
+      if (message.source === iframe.contentWindow && message.origin === iframeOrigin) {
+        messageData = message.data;
+        if (typeof messageData === 'string') {
+          messageData = JSON.parse(messageData);
+        }
+        if (handlers[messageData.type]){
+          handlers[messageData.type](messageData.values);
+        }
+        else {
+          console.log("cant handle type: " + messageData.type);
+        }
+      }
+    }
+
+    // when we receive 'hello':
+    addListener('hello', function() {
+      connected = true;
+
+      // send hello response
+      post({type: 'hello'});
+
+      // give the user a chance to do things now that we are connected
+      // note that is will happen before any queued messages
+      if (afterConnectedCallback && typeof afterConnectedCallback === "function") {
+        afterConnectedCallback();
+      }
+
+      // Now send any messages that have been queued up ...
+      while(postMessageQueue.length > 0) {
+        post(postMessageQueue.shift());
+      }
+    });
+
+    window.addEventListener('message', receiveMessage, false);
+
+    // public API
+    return {
+      post: post,
+      addListener: addListener,
+      removeListener: removeListener,
+      addDispatchListener: addDispatchListener,
+      removeDispatchListener: removeDispatchListener
+    };
+  };
+});
+
+/*global define: false, window: false */
+
+define('iframe-phone/public-api',['require','iframe-phone/iframe-phone','iframe-phone/structured-clone'],function (require) {
+  'use strict';
+
+  var IFramePhone         = require('iframe-phone/iframe-phone'),
+      structuredClone     = require('iframe-phone/structured-clone');
+
+  // create Lab namespace if it doesn't exist
+  window.Lab = window.Lab || {};
+
+  // add ourselves to it
+  window.Lab.IFramePhone = IFramePhone;
+
+  // add some convienences properties to the 'class'
+  IFramePhone.structuredClone = structuredClone;
+  IFramePhone.version = "1.0";
+
+  // return the IFramePhone itself, it doesn't look like this is is used anywhere
+  return IFramePhone;
+});
+/*global define: false */
+
+define('public-api',['require','lab.version','lab.config','common/controllers/interactives-controller','common/benchmark/benchmark','grapher/public-api','import-export/public-api','iframe-phone/public-api'],function (require) {
   var version = require('lab.version'),
       config  = require('lab.config'),
       InteractivesController  = require('common/controllers/interactives-controller'),
-      benchmark               = require('common/benchmark/benchmark'),
-      structuredClone         = require('common/structured-clone');
+      benchmark               = require('common/benchmark/benchmark');
 
   // Require public-api modules.
   require('grapher/public-api');
   require('import-export/public-api');
+  require('iframe-phone/public-api');
 
   // Create or get 'Lab' global object (namespace).
   window.Lab = window.Lab || {};
   window.Lab.version = version;
   window.Lab.config = config;
-  window.Lab.structuredClone = structuredClone;
   window.Lab.InteractivesController = InteractivesController;
   window.Lab.benchmark = benchmark;
 });

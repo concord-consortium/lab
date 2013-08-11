@@ -1,0 +1,151 @@
+{
+  "title": "Disabled Components",
+  "publicationStatus": "public",
+  "subtitle": "You can disable/enable components using setComponentDisabled([id], [true/false]).",
+  "about": [],
+  "models": [
+    {
+      "type": "md2d",
+      "id": "simple-gas$0",
+      "url": "imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-gas$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "disable",
+      "text": "Disable components",
+      "action": [
+        "setComponentDisabled('button', true);",
+        "setComponentDisabled('pulldown', true);",
+        "setComponentDisabled('checkbox', true);",
+        "setComponentDisabled('radio', true);",
+        "setComponentDisabled('slider', true);"
+      ],
+      "tooltip": "Disable other components"
+    },
+    {
+      "type": "text",
+      "id": "label1",
+      "text": "Components that can be disabled:"
+    },
+    {
+      "type": "text",
+      "id": "label2",
+      "text": "You can use script to enable or disable them dynamically:",
+      "width": "15em"
+    },
+    {
+      "type": "button",
+      "id": "enable",
+      "text": "Enable components",
+      "action": [
+        "setComponentDisabled('button', false);",
+        "setComponentDisabled('pulldown', false);",
+        "setComponentDisabled('checkbox', false);",
+        "setComponentDisabled('radio', false);",
+        "setComponentDisabled('slider', false);"
+      ],
+      "tooltip": "Enable other components"
+    },
+    {
+      "type": "button",
+      "id": "button",
+      "text": "Button",
+      "action": "alert('click!');",
+      "disabled": true,
+      "tooltip": "I'm a button component!"
+    },
+    {
+      "type": "checkbox",
+      "id": "checkbox",
+      "text": "Checkbox",
+      "disabled": true,
+      "tooltip": "I'm a checkbox component!"
+    },
+    {
+      "type": "slider",
+      "id": "slider",
+      "title": "Slider",
+      "disabled": true,
+      "min": 1,
+      "max": 100,
+      "steps": 100,
+      "labels": [
+        {
+          "value": 1,
+          "label": "0"
+        },
+        {
+          "value": 100,
+          "label": "100"
+        }
+      ],
+      "action": "",
+      "tooltip": "I'm a slider component!"
+    },
+    {
+      "type": "pulldown",
+      "id": "pulldown",
+      "disabled": true,
+      "options": [
+        {
+          "text": "Option 1",
+          "action": ""
+        },
+        {
+          "text": "Option 2",
+          "action": ""
+        }
+      ],
+      "disabled": true,
+      "tooltip": "I'm a pulldown component!"
+    },
+    {
+      "type": "radio",
+      "id": "radio",
+      "disabled": true,
+      "options": [
+        {
+          "text": "Option 1",
+          "action": ""
+        },
+        {
+          "text": "Option 2",
+          "action": ""
+        }
+      ],
+      "tooltip": "I'm a radio component!"
+    }
+  ],
+  "template": [
+    {
+      "id": "right",
+      "top": "model.top",
+      "left": "model.right",
+      "height": "model.height",
+      "padding-left": "1em",
+      "padding-right": "0.5em"
+    },
+    {
+      "id": "bottom",
+      "top": "right.bottom",
+      "width": "interactive.width",
+      "padding-top": "1em"
+    }
+  ],
+  "layout": {
+    "right": [
+      ["label1"],
+      ["button", "pulldown"],
+      ["checkbox", "radio"],
+      ["slider"],
+      ["label2"],
+      ["enable"],
+      ["disable"]
+    ]
+  }
+}

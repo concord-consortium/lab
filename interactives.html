@@ -41,6 +41,7 @@
         <span class='title'>additional links:</span>
         <a class='opens-in-new-window' href='embeddable.html' id='embeddable-link' target='_blank'>Embeddable</a>
         <a class='opens-in-new-window' href='embeddable.html' id='datagames-link' target='_blank'>DataGames</a>
+        <a class='opens-in-new-window' href='embeddable.html' id='datagames-staging-link' target='_blank'>DataGames (Staging)</a>
         <a class='opens-in-new-window' href='' id='original-import-link' target='_blank'>Original Imported Model</a>
       </div>
       <div class='row'>
@@ -56,8 +57,8 @@
           <select class='serialize' id='select-interactive-size' name='select-interactive-size'>
             <option value='tiny'>tiny</option>
             <option value='small'>small</option>
-            <option value='medium'>medium</option>
-            <option selected='selected' value='large'>large</option>
+            <option selected='selected' value='medium'>medium</option>
+            <option value='large'>large</option>
           </select>
         </form>
       </div>
@@ -129,6 +130,8 @@
               <button id='update-interactive-button'>Update Interactive</button>
               <button id='update-json-from-interactive-button'>Update JSON from Interactive</button>
               <a class='opens-in-new-window' href='' id='json-interactive-link' target='_blank'>Interactive JSON</a>
+              <input id='edit-mode' type='checkbox'>
+              <label for='edit-mode'>Edit Mode</label>
               <button class='right' id='autoformat-interactive-json-button'>AutoFormat</button>
             </div>
             <textarea id='interactive-text-area'></textarea>

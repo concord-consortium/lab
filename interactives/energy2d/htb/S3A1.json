@@ -12,6 +12,7 @@
     "5.  In which material does heat flow the fastest?"
   ],
   "importedFrom": "imports/energy2d/content-htb/S3A.html",
+  "aspectRatio": 1.5,
   "models": [
     {
       "type": "energy2d",
@@ -36,6 +37,7 @@
       "xTickCount": 5,
       "xFormatter": "2s",
       "yFormatter": "2s",
+      "xProperty": "time",
       "properties": [
         "sensor-2", "sensor-3", "sensor-0", "sensor-1"
       ]

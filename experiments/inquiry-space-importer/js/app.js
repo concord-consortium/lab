@@ -1,8 +1,10 @@
-/*global defineClass extendClass Lab d3 */
-/*jshint eqnull:true */
+/*global defineClass, extendClass, Lab, d3 */
+/*jshint eqnull:true, indent: false */
 
 if (typeof ISImporter === 'undefined') ISImporter = {};
 (function() {
+
+Lab.importExport.dgExporter.gameName = "InquirySpace Sensor Data Collector";
 
 /**
   Quick & dirty fixed-digit formatter. Should work for reasonable ranges of numbers.
@@ -429,6 +431,7 @@ ISImporter.appController = new ISImporter.Object({
   started: false,
   selecting: false,
   filledMetadata: [],
+  runNumber: 1,
 
   // could split interface controller from generic app container--but not yet.
   $body: null,
@@ -457,7 +460,6 @@ ISImporter.appController = new ISImporter.Object({
     };
 
     this.initInterface();
-    ISImporter.DGExporter.init($(document.body).width() + 10, $(document.body).height() + 50);
   },
 
   initInterface: function() {
@@ -929,8 +931,7 @@ ISImporter.appController = new ISImporter.Object({
 
   exportData: function() {
     var data,
-        label,
-        metadata = [];
+        label;
 
     this.logAction('exported');
 
@@ -940,15 +941,8 @@ ISImporter.appController = new ISImporter.Object({
       data = this.dataset.getDataPoints();
     }
 
-    for (var i = 1, len = this.getMetadataItemCount(); i <= len; i++) {
-      label = this.getMetadataLabel(i);
-      if (label) {
-        metadata.push({ label: label, value: this.getMetadataValue(i) });
-      }
-      this._clearMetadata(i, "value");
-    }
-
-    ISImporter.DGExporter.exportData(this.sensor.title, data, metadata);
+    Lab.importExport.dgExporter.exportData(["Run"], [this.runNumber], ["Sensor reading"], data);
+    this.runNumber++;
 
     this.selecting = false;
 
@@ -989,7 +983,7 @@ ISImporter.appController = new ISImporter.Object({
       values: values
     });
 
-    ISImporter.DGExporter.logAction(logString);
+    Lab.importExport.dgExporter.logAction(logString);
   },
 
   select: function() {

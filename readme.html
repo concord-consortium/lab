@@ -55,7 +55,7 @@ A live version of the readme is always available here:
   <li><a href="#distribution-of-project-and-examples">Distribution of Project and Examples</a></li>
   <li><a href="#setup-development">Setup Development</a>    <ul>
       <li><a href="#prerequisites">Prerequisites:</a>        <ul>
-          <li><a href="#rvm-ruby-19-and-the-rubygem-bundler">RVM, Ruby 1.9 and the RubyGem bundler</a></li>
+          <li><a href="#rvm-ruby-20-and-the-rubygem-bundler">RVM, Ruby 2.0 and the RubyGem bundler</a></li>
           <li><a href="#nodejs-and-npm-the-node-package-manager">nodejs and npm, the Node Package Manager</a></li>
           <li><a href="#java">Java</a>            <ul>
               <li><a href="#customize-maven-mirror">Customize Maven mirror</a></li>
@@ -404,9 +404,9 @@ JavaScript dependency management is handled by <a href="http://requirejs.org/">R
 
 <h3 id="prerequisites">Prerequisites:</h3>
 
-<h4 id="rvm-ruby-19-and-the-rubygem-bundler">RVM, Ruby 1.9 and the RubyGem bundler</h4>
+<h4 id="rvm-ruby-20-and-the-rubygem-bundler">RVM, Ruby 2.0 and the RubyGem bundler</h4>
 
-<p>We normally use <a href="https://rvm.io/">RVM</a> to mange our development dependency on <a href="http://www.ruby-lang.org/en/">Ruby 1.9.3</a>
+<p>We normally use <a href="https://rvm.io/">RVM</a> to mange our development dependency on <a href="http://www.ruby-lang.org/en/">Ruby 2.0.0</a>
 and the specific Ruby Gems needed for building Lab and running the Lab server.</p>
 
 <ol>
@@ -416,7 +416,7 @@ and the specific Ruby Gems needed for building Lab and running the Lab server.</
 <p>After installation you should see something like the following:</p>
 
 <pre><code>$  ruby -v
-ruby 1.9.3p392 (2013-02-22 revision 39386) [x86_64-darwin10.8.0]
+ruby 2.0.0p247 (2013-06-27 revision 41674) [x86_64-darwin10.8.0]
 </code></pre>
 
 <p>If you already have RVM installed update to the most up-to-date stable version.</p>
@@ -424,7 +424,7 @@ ruby 1.9.3p392 (2013-02-22 revision 39386) [x86_64-darwin10.8.0]
 <pre><code>$ rvm get stable
 </code></pre>
 
-<p>Once you have a working version of Ruby 1.9.3 check to see if the RubyGem <a href="http://gembundler.com/">bundler</a>
+<p>Once you have a working version of Ruby 2.0.0 check to see if the RubyGem <a href="http://gembundler.com/">bundler</a>
 is already installed:</p>
 
 <pre><code>$ gem list bundler
@@ -434,7 +434,7 @@ is already installed:</p>
 bundler (1.3.5)
 </code></pre>
 
-<p>If Bundler is not installed install it now into the global gemset for ruby-1.9.3-p392</p>
+<p>If Bundler is not installed install it now into the global gemset for ruby-2.0.0-p247</p>
 
 <pre><code>$ rvm gemset use global
 $ gem install bundler
@@ -640,15 +640,16 @@ configuration samples:</p>
 
 <h3 id="setup-the-local-lab-repository-for-development">Setup the local Lab repository for development</h3>
 
-<p>Make sure you have already installed the prerequistes: <a href="http://www.ruby-lang.org/en/">Ruby 1.9</a>,
+<p>Make sure you have already installed the prerequistes: <a href="http://www.ruby-lang.org/en/">Ruby 2.0</a>,
 the RubyGem <a href="http://gembundler.com/">bundler</a>, and <a href="http://nodejs.org/">nodejs</a> (which now includes
 <a href="http://npmjs.org/">npm</a> the Node Package Manager.</p>
 
 <p>Open a shell and change to the <code>lab/</code> directory. The first time you <code>cd</code> into the <code>lab/</code> directory RVM will
-ask you if this <em>new</em> <code>.rvmrc</code> file should be trusted.</p>
+switch to using <code>ruby-2.0.0-p247</code> based on the <code>.ruby-version</code> file in the repository. If you don’t have
+this version of ruby installed rvm will tell you the command to install it.</p>
 
-<p>The <code>.rvmrc</code> specifies that this project dependeds on Ruby 1.9.3-p194 and all the required Ruby Gems
-will be installed in the RVM gemset named <code>ruby-1.9.3-p194@lab</code>.</p>
+<p>Additionally the <code>.ruby-gemset</code> tells RVM to install the gems in a gemset named <code>lab</code>. So together these
+files tell RVM to store and load gems from the <code>ruby-2.0.0-p247@lab</code> gemset.</p>
 
 <pre><code>cd lab
 make everything
@@ -1481,7 +1482,7 @@ the resulting library due to the RequireJS optimization process.</p>
 <p>The
 <strong><a href="https://github.com/concord-consortium/lab/tree/master/src/examples">src/examples/</a></strong>,
 <strong><a href="https://github.com/concord-consortium/lab/tree/master/src/doc">src/doc</a></strong> and,
-<strong><a href="https://github.com/concord-consortium/lab/tree/master/src/experiments">src/exoperments</a></strong>
+<strong><a href="https://github.com/concord-consortium/lab/tree/master/src/experiments">src/experiments</a></strong>
 directories contain additional resources for generating the html, css, and image resources
 for the matching target folders in <strong><code>public</code></strong>.</p>
 

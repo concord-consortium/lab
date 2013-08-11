@@ -40,7 +40,9 @@
     "VDWLinesCutoff": "medium",
     "showVelocityVectors": false,
     "showForceVectors": false,
-    "electricFieldDensity": 0,
+    "showElectricField": false,
+    "electricFieldDensity": 18,
+    "electricFieldColor": "auto",
     "showAtomTrace": false,
     "images": [
       {
@@ -222,7 +224,8 @@
       "color": "#169C30",
       "width": 0.01,
       "length": 2
-    }
+    },
+    "forceVectorsDirectionOnly": false
   },
   "pairwiseLJProperties": [],
   "elements": {
@@ -877,34 +880,87 @@
       false
     ],
     "color": [
-      [
-        128,
-        128,
-        128
-      ]
+      "rgb(128,128,128)"
     ],
     "visible": [
       true
     ]
   },
-  "rectangles": {
+  "shapes": {
+    "type": [
+      "rectangle",
+      "ellipse"
+    ],
     "x": [
-      1.44
+      1.44,
+      2.38
     ],
     "y": [
-      2.19
+      2.19,
+      2.06
     ],
     "height": [
-      0.21
+      0.21,
+      0.34
     ],
     "width": [
-      0.78
+      0.78,
+      0.24
     ],
     "fence": [
-      false
+      0,
+      0
     ],
     "color": [
-      "rgba(128,128,128,0.7058823529411765)"
+      "radial NaN 0% rgba(128,128,128,0.7058823529411765) 100%",
+      "rgb(192,255,255)"
+    ],
+    "lineColor": [
+      "rgb(128,128,128)",
+      "rgb(128,128,128)"
+    ],
+    "lineWeight": [
+      1,
+      1
+    ],
+    "lineDashes": [
+      "none",
+      "none"
+    ],
+    "layer": [
+      1,
+      1
+    ],
+    "layerPosition": [
+      12,
+      13
+    ],
+    "visible": [
+      1,
+      1
+    ]
+  },
+  "lines": {
+    "x1": [
+      2.74
+    ],
+    "y1": [
+      2.435
+    ],
+    "x2": [
+      2.74
+    ],
+    "y2": [
+      0.185
+    ],
+    "beginStyle": [
+      "none"
+    ],
+    "endStyle": [
+      "none"
+    ],
+    "fence": [
+      0
     ],
     "lineColor": [
       "black"
@@ -913,13 +969,16 @@
       1
     ],
     "lineDashes": [
-      "none"
+      "4,4"
     ],
     "layer": [
       1
     ],
+    "layerPosition": [
+      3
+    ],
     "visible": [
-      true
+      1
     ]
   }
 }

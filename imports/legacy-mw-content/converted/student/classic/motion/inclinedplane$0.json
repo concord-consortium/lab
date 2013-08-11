@@ -40,7 +40,9 @@
     "VDWLinesCutoff": "medium",
     "showVelocityVectors": false,
     "showForceVectors": false,
-    "electricFieldDensity": 0,
+    "showElectricField": false,
+    "electricFieldDensity": 18,
+    "electricFieldColor": "auto",
     "showAtomTrace": false,
     "images": [
       {
@@ -74,7 +76,8 @@
       "color": "#169C30",
       "width": 0.01,
       "length": 2
-    }
+    },
+    "forceVectorsDirectionOnly": false
   },
   "pairwiseLJProperties": [],
   "elements": {
@@ -826,7 +829,10 @@
       2
     ]
   },
-  "rectangles": {
+  "shapes": {
+    "type": [
+      "rectangle"
+    ],
     "x": [
       0.32
     ],
@@ -840,7 +846,7 @@
       0.32
     ],
     "fence": [
-      false
+      0
     ],
     "color": [
       "rgb(128,192,128)"
@@ -857,8 +863,91 @@
     "layer": [
       1
     ],
+    "layerPosition": [
+      1
+    ],
     "visible": [
-      true
+      1
+    ]
+  },
+  "lines": {
+    "x1": [
+      0.02,
+      0.47494362062744144,
+      0.4749435806274414,
+      0.4749435793334961
+    ],
+    "y1": [
+      1.7,
+      1.605484490258789,
+      1.6054844691406251,
+      1.6054844665527344
+    ],
+    "x2": [
+      3.65,
+      0.6649435406274413,
+      0.4749435806274414,
+      0.19994342933349607
+    ],
+    "y2": [
+      0.05,
+      2.005484290258789,
+      0.8454847691406249,
+      1.7254844665527345
+    ],
+    "beginStyle": [
+      "none",
+      "none",
+      "none",
+      "none"
+    ],
+    "endStyle": [
+      "none",
+      "M 0 0 L 10 5 L 0 10",
+      "M 0 0 L 10 5 L 0 10",
+      "M 0 0 L 10 5 L 0 10"
+    ],
+    "fence": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "lineColor": [
+      "rgb(128,128,128)",
+      "black",
+      "black",
+      "black"
+    ],
+    "lineWeight": [
+      9,
+      1,
+      1,
+      1
+    ],
+    "lineDashes": [
+      "none",
+      "none",
+      "none",
+      "none"
+    ],
+    "layer": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "layerPosition": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "visible": [
+      1,
+      1,
+      1,
+      1
     ]
   }
 }

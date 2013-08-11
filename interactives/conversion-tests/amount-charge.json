@@ -9,9 +9,8 @@
       "id": "mark-atoms$0",
       "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/amount-charge$0.json",
       "viewOptions": {
-        "controlButtons": "play_reset_step",
-        "modelTimeLabel": true,
-        "electricFieldDensity": 20
+        "controlButtons": "reset",
+        "showElectricField": true
       }
     }
   ],
@@ -48,7 +47,7 @@
         "label": "3"
       }
       ],
-      "steps": 12,
+      "steps": 50,
       "title": "Left Atom Charge",
       "property": "chargeLeft"
     },
@@ -68,21 +67,27 @@
         "label": "3"
       }
       ],
-      "steps": 12,
+      "steps": 50,
       "title": "Right Atom Charge",
       "property": "chargeRight"
     },
     {
       "type": "checkbox",
-      "id": "force_vectors",
-      "text": "Show forces",
+      "id": "force-vectors",
+      "text": "Show",
       "property": "showForceVectors"
+    },
+    {
+      "type": "checkbox",
+      "id": "dir-only",
+      "text": "Direction only",
+      "property": "forceVectorsDirectionOnly"
     },
     {
       "type": "slider",
       "id": "electric-field-density-slider",
       "min": 0,
-      "max": 20,
+      "max": 25,
       "displayValue": "return format('1f')(value)",
       "labels": [
         {
@@ -90,27 +95,50 @@
           "label": "0"
         },
         {
-          "value": 20,
-          "label": "20"
+          "value": 25,
+          "label": "25"
         }
       ],
-      "steps": 20,
-      "title": "Electric field density",
+      "steps": 25,
+      "title": "Density",
       "property": "electricFieldDensity"
+    },
+    {
+      "type": "checkbox",
+      "id": "show-electric-field",
+      "text": "Show",
+      "property": "showElectricField"
+    },
+    {
+      "id": "forces-label",
+      "type": "text",
+      "text": "**Force vectors**"
+    },
+    {
+      "id": "efield-label",
+      "type": "text",
+      "text": "**Electric field**"
     }
   ],
   "layout": {
     "bottom": [
-      [ "left-slider", "right-slider"],
-      [ "force_vectors", "electric-field-density-slider" ]
+      ["left-slider", "right-slider"]
+    ],
+    "right": [
+      ["forces-label"],
+      ["force-vectors"],
+      ["dir-only"],
+      ["efield-label"],
+      ["show-electric-field"],
+      ["electric-field-density-slider"]
     ]
   },
   "template": [
     {
       "id": "right",
-      "top": "2em",
       "left": "model.right",
-      "align": "left"
+      "top": "model.top",
+      "padding-right": "0.5em"
     },
     {
       "id": "bottom",
@@ -119,6 +147,12 @@
       "padding-top": "0.5em",
       "width": "model.width",
       "align": "center"
+    },
+    {
+      "id": "bottom2",
+      "left": "model.left",
+      "top": "bottom.bottom",
+      "width": "interactive.width"
     }
   ]
 }

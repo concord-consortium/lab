@@ -1,0 +1,43 @@
+<html>
+  <head>
+    <title>External Model</title>
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <style>
+      div {
+        position:absolute;
+        background-color:#abc;
+        left:50px;
+        width:90px;
+        height:90px;
+        margin:5px;
+      }
+    </style>
+  </head>
+  <body>
+    <p>This is an example of a model that is created outside of Lab.
+       The intention is to embed it in a Lab interactive as an new 'iframe-model'.
+    </p>
+    <button id="start">start</button> <button id="stop">stop</button>
+
+    <div class="block"></div>
+    <script>
+      var direction = "right";
+      function moveBox(){
+        var target;
+        if(direction == "right") {
+          direction = "left";
+          target = "250px";
+        } else {
+          direction = "right";
+          target = "50px";
+        }
+        $(".block").animate({"left": target}, "slow", "swing",moveBox);
+      }
+
+      $("#start").click(moveBox);
+      $("#stop").click(function(){
+        $(".block").stop();
+      })
+    </script>
+  </body>
+</html>

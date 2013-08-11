@@ -40,7 +40,9 @@
     "VDWLinesCutoff": "medium",
     "showVelocityVectors": false,
     "showForceVectors": false,
-    "electricFieldDensity": 0,
+    "showElectricField": false,
+    "electricFieldDensity": 18,
+    "electricFieldColor": "auto",
     "showAtomTrace": false,
     "images": [],
     "imageMapping": {},
@@ -78,7 +80,8 @@
       "color": "#169C30",
       "width": 0.01,
       "length": 2
-    }
+    },
+    "forceVectorsDirectionOnly": false
   },
   "pairwiseLJProperties": [],
   "elements": {
@@ -1053,56 +1056,16 @@
       false
     ],
     "color": [
-      [
-        255,
-        255,
-        255
-      ],
-      [
-        255,
-        255,
-        255
-      ],
-      [
-        255,
-        255,
-        255
-      ],
-      [
-        255,
-        255,
-        255
-      ],
-      [
-        255,
-        255,
-        255
-      ],
-      [
-        255,
-        255,
-        255
-      ],
-      [
-        255,
-        255,
-        255
-      ],
-      [
-        255,
-        255,
-        255
-      ],
-      [
-        255,
-        255,
-        255
-      ],
-      [
-        255,
-        255,
-        255
-      ]
+      "radial rgb(255,255,255) 0% rgb(128,128,128) 100%",
+      "rgb(128,128,128)",
+      "rgb(128,128,128)",
+      "rgb(128,128,128)",
+      "rgb(128,128,128)",
+      "rgb(128,128,128)",
+      "radial rgb(255,255,255) 0% rgb(128,128,128) 100%",
+      "radial rgb(255,255,255) 0% rgb(128,128,128) 100%",
+      "radial rgb(255,255,255) 0% rgb(128,128,128) 100%",
+      "radial rgb(255,255,255) 0% rgb(128,128,128) 100%"
     ],
     "visible": [
       true,

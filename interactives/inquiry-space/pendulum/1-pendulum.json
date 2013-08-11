@@ -9,6 +9,7 @@
     "starting angle and mass – and observe how each one affects the period. Can you explain why?",
     "Try the damping slider. Does damping change the period?"
   ],
+  "aspectRatio": 1.6,
   "fontScale": 0.8,
   "models": [
     {
@@ -16,7 +17,8 @@
       "id": "pendulum1$0",
       "url": "imports/legacy-mw-content/converted/inquiry-space/pendulum/pendulum1$0.json",
       "viewOptions": {
-        "controlButtons": "play_reset_step",
+        "controlButtons": "play_reset",
+        "controlButtonStyle": "text",
         "gridLines": true,
         "showClock": true,
         "velocityVectors": {
@@ -229,8 +231,9 @@
       "ymax": 100,
       "xmax": 10,
       "xTickCount": 5,
-      "xFormatter": "2s",
-      "yFormatter": "2s",
+      "yTickCount": 8,
+      "xFormatter": ".2r",
+      "yFormatter": ".2r",
       "properties": [
         "currentAngle"
       ]

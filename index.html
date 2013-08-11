@@ -41,23 +41,54 @@
     <div id='content'>
       <div class='column1'>
         <div class='item-list'>
-          <h2>Interactives</h2>
+          <p>
+            In November 2011 the Google Foundation awarded Concord Consortium a grant to develop an
+            HTML5 version of Molecular Workbench our award-winning Java-based physics simulation.
+            We've extended these goals and have created a general framework we call Lab for integrating
+            both simulations running in multiple modeling engines and data collection from sensors and
+            probes.
+          </p>
+          <p>
+            Lab Interactives are sharable, embeddable, and authorable components defined in JSON
+            that wrap a model with additional inquiry-oriented user interface components such as
+            buttons, checkboxes, sliders, graphs etc.
+          </p>
           <ul>
             <li>
-              <a href='interactives.html'>Interactive Browser</a>
-            </li>
-            <li>
-              <a href='doc/interactives/sampler/index.html'>Interactive Sampler</a>
-            </li>
-            <li>
-              <a href='doc/interactives/sampler/errors.html'>Embedded Interactives with Errors</a>
+              <a href='interactives.html'>Browse all Interactives</a>
             </li>
           </ul>
+          <p>
+            Here's an example Interactive using MD2D, our 2D Molecular dynamics engine for
+            exploring the emergent dynamics of a simple 2D model of charged and neutral atoms.
+          </p>
+          <blockquote>
+            <p>
+              Charged and Neutral Atoms: Explore Coulomb and intermolecular attractions.
+            </p>
+            <div class='iframe-container'>
+              <iframe allowfullscreen='true' height='315' mozallowfullscreen='true' scrolling='no' src='embeddable.html#interactives/samples/4-100-atoms-conceptual.json' webkitallowfullscreen='true' width='400'></iframe>
+            </div>
+            <p>
+              There are two kinds of attractive forces shown in this model: Coulomb forces
+              (the attraction between ions) and Van der Waals forces (an additional attractive
+              force between all atoms).
+            </p>
+            <p>
+              What kinds of patterns tend to form with charged and neutral atoms? How does
+              changing the Van der Waals attraction or charging the atoms affect the melting
+              and boiling point of the substance?
+            </p>
+          </blockquote>
         </div>
+      </div>
+      <div class='column2'>
         <div class='item-list'>
-          <h2>
-            <a href='doc/models/index.html'>Interactive Model Types</a>
-          </h2>
+          <p>
+            The following different
+            <a href='doc/models/index.html'>model types</a>
+            can be used in Interactives.
+          </p>
           <ul>
             <li>
               <a href='doc/models/md2d/index.html'>Next Generation Molecular Workbench</a>
@@ -72,31 +103,9 @@
               <a href='doc/probeware/index.html'>Probeware</a>
             </li>
           </ul>
-        </div>
-        <div class='item-list'>
-          <h2>Molecular Dynamics Documentation/Support</h2>
-          <ul>
-            <li>
-              <a href='doc/models/md2d/macroscopic-units/'>Unit Transformations for Modeling Macroscopic Phenomena</a>
-            </li>
-            <li>
-              <a href='doc/models/md2d/lennard-jones-potential/lennard-jones-potential.html'>Lennard-Jones Potential</a>
-            </li>
-            <li>
-              <a href='imports/legacy-mw-content/tutorial.html'>Java Molecular Workbench Tutorial/Reference Manual</a>
-            </li>
-            <li>
-              <a href='http://blog.concord.org/mw-applets-and-mwscript-javascript-interactions'>MW applets and MWScript-JavaScript interactions</a>
-            </li>
-            <li>
-              <a href='imports/legacy-mw-content/legacyMMLRunnables.html'>Big List of Converted Models</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class='column2'>
-        <div class='item-list'>
-          <h2>Grapher Examples</h2>
+          <p>
+            Bar and line graphs can also be integrated into Interactives.
+          </p>
           <ul>
             <li>
               <a href='examples/grapher/grapher.html'>Basic Grapher</a>
@@ -108,32 +117,28 @@
               <a href='experiments/dsp/dsp.html'>Digital Signal Processing Graphs</a>
             </li>
           </ul>
-        </div>
-        <div class='item-list'>
-          <h2>Probeware Examples</h2>
+          <h2>Performance</h2>
+          <p>
+            From the beginning we've kept a close eye on performance and extensibility. Performance
+            is best running in the latest browsers running on desktop computers however many of the
+            simpler models also run acceptably on tablets and smartphones.
+          </p>
+          <p>
+            Performance benchmarking can be run for every Interactive displayed in the
+            Interactive Browser.
+          </p>
+          <h2>Testing</h2>
           <ul>
             <li>
-              <a href='experiments/goio-sensor-grapher/index.html'>Vernier GoIO Sensor Grapher</a>
+              <a href='doc/interactives/sampler/index.html'>Interactive Sampler</a>
             </li>
             <li>
-              <a href='experiments/labquest-multiple-sensor-grapher/index.html'>Vernier LabQuest Mulitple Sensor Grapher</a>
+              <a href='doc/interactives/sampler/errors.html'>Embedded Interactives with Errors</a>
             </li>
           </ul>
-        </div>
-        <div class='item-list'>
-          <h2>Inquiry Space Integration</h2>
-          <ul>
-            <li>
-              <a href='experiments/inquiry-space-importer/'>InquirySpace: Sensor Data Collector</a>
-              <i>(probeware)</i>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div id='experiments-divider'></div>
-      <div class='column1'>
-        <div class='item-list'>
-          <a href='experiments'>Experiments</a>
+          <h3>
+            <a href='experiments/index.html'>Experiments</a>
+          </h3>
         </div>
       </div>
     </div>

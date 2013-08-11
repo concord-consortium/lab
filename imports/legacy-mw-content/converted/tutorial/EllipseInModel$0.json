@@ -40,7 +40,9 @@
     "VDWLinesCutoff": "medium",
     "showVelocityVectors": false,
     "showForceVectors": false,
-    "electricFieldDensity": 0,
+    "showElectricField": false,
+    "electricFieldDensity": 18,
+    "electricFieldColor": "auto",
     "showAtomTrace": false,
     "images": [],
     "imageMapping": {},
@@ -64,7 +66,8 @@
       "color": "#169C30",
       "width": 0.01,
       "length": 2
-    }
+    },
+    "forceVectorsDirectionOnly": false
   },
   "pairwiseLJProperties": [],
   "elements": {
@@ -193,6 +196,177 @@
       0,
       0,
       0
+    ]
+  },
+  "shapes": {
+    "type": [
+      "ellipse",
+      "ellipse",
+      "ellipse",
+      "ellipse",
+      "ellipse",
+      "ellipse",
+      "ellipse",
+      "ellipse",
+      "ellipse",
+      "ellipse",
+      "ellipse"
+    ],
+    "x": [
+      0.79,
+      0.92,
+      1.4,
+      1.64,
+      2.83,
+      2.13,
+      2.75,
+      0.82,
+      3.71,
+      2.14,
+      1.61
+    ],
+    "y": [
+      1.88,
+      1.2400000000000002,
+      1.0299999999999998,
+      1.0099999999999998,
+      0.12,
+      0.8400000000000001,
+      1.3399999999999999,
+      0.5900000000000001,
+      0.89,
+      0.26,
+      0.15000000000000002
+    ],
+    "height": [
+      0.58,
+      0.62,
+      0.62,
+      1.35,
+      0.5,
+      0.45,
+      0.62,
+      1,
+      0.67,
+      0.47,
+      0.47
+    ],
+    "width": [
+      3.45,
+      1.36,
+      1.36,
+      0.68,
+      0.5,
+      1.66,
+      1.36,
+      1,
+      0.62,
+      0.49,
+      0.49
+    ],
+    "fence": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "color": [
+      "transparent",
+      "rgba(255,255,0,0.5686274509803921)",
+      "rgb(128,192,255)",
+      "rgba(255,192,0,0.5882352941176471)",
+      "rgb(128,128,0)",
+      "rgba(128,0,255,0.6862745098039216)",
+      "rgba(0,192,255,0.7254901960784313)",
+      "transparent",
+      "linear 90deg NaN 0% rgb(128,128,128) 50% NaN 100%",
+      "linear 90deg NaN 0% NaN 50% NaN 100%",
+      "linear 90deg rgb(128,128,128) 0% NaN 50% rgb(128,128,128) 100%"
+    ],
+    "lineColor": [
+      "black",
+      "black",
+      "black",
+      "rgb(128,128,128)",
+      "black",
+      "black",
+      "black",
+      "rgb(128,128,128)",
+      "black",
+      "black",
+      "black"
+    ],
+    "lineWeight": [
+      1,
+      1,
+      1,
+      1,
+      12,
+      1,
+      1,
+      50,
+      0,
+      0,
+      0
+    ],
+    "lineDashes": [
+      "none",
+      "none",
+      "6,6",
+      "2,2",
+      "6,6",
+      "none",
+      "none",
+      "2,2",
+      "none",
+      "none",
+      "none"
+    ],
+    "layer": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "layerPosition": [
+      1,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "visible": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
     ]
   }
 }

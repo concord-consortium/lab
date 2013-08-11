@@ -1678,6 +1678,246 @@ modelList = [
     ]
   },
   {
+    "section": "interactions/atom-builder",
+    "content": [
+      {
+        "name": "atomBuilderIons",
+        "path": "interactions/atom-builder/",
+        "cml": "interactions/atom-builder/atomBuilderIons.cml",
+        "mml": "interactions/atom-builder/atomBuilderIons$0.mml",
+        "json": "converted/interactions/atom-builder/atomBuilderIons$0.json"
+      }
+    ]
+  },
+  {
+    "section": "interactions/basic-crookes-tube",
+    "content": [
+      {
+        "name": "crookesElectrodes",
+        "path": "interactions/basic-crookes-tube/",
+        "cml": "interactions/basic-crookes-tube/crookesElectrodes.cml",
+        "mml": "interactions/basic-crookes-tube/crookesElectrodes$0.mml",
+        "json": "converted/interactions/basic-crookes-tube/crookesElectrodes$0.json"
+      }
+    ]
+  },
+  {
+    "section": "interactions/charge-intensity-and-force",
+    "content": [
+      {
+        "name": "amount-charge",
+        "path": "interactions/charge-intensity-and-force/",
+        "cml": "interactions/charge-intensity-and-force/amount-charge.cml",
+        "mml": "interactions/charge-intensity-and-force/amount-charge$0.mml",
+        "json": "converted/interactions/charge-intensity-and-force/amount-charge$0.json"
+      }
+    ]
+  },
+  {
+    "section": "interactions/charged-balloon-and-wall",
+    "content": [
+      {
+        "name": "balloonModelElectrons",
+        "path": "interactions/charged-balloon-and-wall/",
+        "cml": "interactions/charged-balloon-and-wall/balloonModelElectrons.cml",
+        "mml": "interactions/charged-balloon-and-wall/balloonModelElectrons$0.mml",
+        "json": "converted/interactions/charged-balloon-and-wall/balloonModelElectrons$0.json"
+      }
+    ]
+  },
+  {
+    "section": "interactions/deformed-electron-cloud",
+    "content": [
+      {
+        "name": "deformedCloud",
+        "path": "interactions/deformed-electron-cloud/",
+        "cml": "interactions/deformed-electron-cloud/deformedCloud.cml",
+        "mml": "interactions/deformed-electron-cloud/deformedCloud$0.mml",
+        "json": "converted/interactions/deformed-electron-cloud/deformedCloud$0.json"
+      }
+    ]
+  },
+  {
+    "section": "interactions/dipole-rotation",
+    "content": [
+      {
+        "name": "dipoleRotation",
+        "path": "interactions/dipole-rotation/",
+        "cml": "interactions/dipole-rotation/dipoleRotation.cml",
+        "mml": "interactions/dipole-rotation/dipoleRotation$0.mml",
+        "json": "converted/interactions/dipole-rotation/dipoleRotation$0.json"
+      }
+    ]
+  },
+  {
+    "section": "interactions/distance-and-force",
+    "content": [
+      {
+        "name": "act2model",
+        "path": "interactions/distance-and-force/",
+        "cml": "interactions/distance-and-force/act2model.cml",
+        "mml": "interactions/distance-and-force/act2model$0.mml",
+        "json": "converted/interactions/distance-and-force/act2model$0.json"
+      }
+    ]
+  },
+  {
+    "section": "interactions/exploring-electrons",
+    "content": [
+      {
+        "name": "electronProperties",
+        "path": "interactions/exploring-electrons/",
+        "cml": "interactions/exploring-electrons/electronProperties.cml",
+        "mml": "interactions/exploring-electrons/electronProperties$0.mml",
+        "json": "converted/interactions/exploring-electrons/electronProperties$0.json"
+      }
+    ]
+  },
+  {
+    "section": "interactions/force-direction",
+    "content": [
+      {
+        "name": "forceDirection",
+        "path": "interactions/force-direction/",
+        "cml": "interactions/force-direction/forceDirection.cml",
+        "mml": "interactions/force-direction/forceDirection$0.mml",
+        "json": "converted/interactions/force-direction/forceDirection$0.json"
+      }
+    ]
+  },
+  {
+    "section": "interactions/force-direction-VDG-negative",
+    "content": [
+      {
+        "name": "forceDirectionVDG",
+        "path": "interactions/force-direction-VDG-negative/",
+        "cml": "interactions/force-direction-VDG-negative/forceDirectionVDG.cml",
+        "mml": "interactions/force-direction-VDG-negative/forceDirectionVDG$0.mml",
+        "json": "converted/interactions/force-direction-VDG-negative/forceDirectionVDG$0.json"
+      }
+    ]
+  },
+  {
+    "section": "interactions/force-direction-VDG-positive",
+    "content": [
+      {
+        "name": "forceDirectionVDG",
+        "path": "interactions/force-direction-VDG-positive/",
+        "cml": "interactions/force-direction-VDG-positive/forceDirectionVDG.cml",
+        "mml": "interactions/force-direction-VDG-positive/forceDirectionVDG$0.mml",
+        "json": "converted/interactions/force-direction-VDG-positive/forceDirectionVDG$0.json"
+      }
+    ]
+  },
+  {
+    "section": "interactions/force-magnitude-and-direction",
+    "content": [
+      {
+        "name": "forceStrengthDirection",
+        "path": "interactions/force-magnitude-and-direction/",
+        "cml": "interactions/force-magnitude-and-direction/forceStrengthDirection.cml",
+        "mml": "interactions/force-magnitude-and-direction/forceStrengthDirection$0.mml",
+        "json": "converted/interactions/force-magnitude-and-direction/forceStrengthDirection$0.json"
+      }
+    ]
+  },
+  {
+    "section": "interactions/maze-game",
+    "content": [
+      {
+        "name": "mazeGame",
+        "path": "interactions/maze-game/",
+        "cml": "interactions/maze-game/mazeGame.cml",
+        "mml": "interactions/maze-game/mazeGame$0.mml",
+        "json": "converted/interactions/maze-game/mazeGame$0.json"
+      }
+    ]
+  },
+  {
+    "section": "interactions/mixing-liquids",
+    "content": [
+      {
+        "name": "particleMixing",
+        "path": "interactions/mixing-liquids/",
+        "cml": "interactions/mixing-liquids/particleMixing.cml",
+        "mml": "interactions/mixing-liquids/particleMixing$0.mml",
+        "json": "converted/interactions/mixing-liquids/particleMixing$0.json"
+      }
+    ]
+  },
+  {
+    "section": "interactions/opposites-attract",
+    "content": [
+      {
+        "name": "chargeballs",
+        "path": "interactions/opposites-attract/",
+        "cml": "interactions/opposites-attract/chargeballs.cml",
+        "mml": "interactions/opposites-attract/chargeballs$0.mml",
+        "json": "converted/interactions/opposites-attract/chargeballs$0.json"
+      }
+    ]
+  },
+  {
+    "section": "interactions/rutherford-experiment",
+    "content": [
+      {
+        "name": "rutherford",
+        "path": "interactions/rutherford-experiment/",
+        "cml": "interactions/rutherford-experiment/rutherford.cml",
+        "mml": "interactions/rutherford-experiment/rutherford$0.mml",
+        "json": "converted/interactions/rutherford-experiment/rutherford$0.json"
+      }
+    ]
+  },
+  {
+    "section": "interactions/syringe",
+    "content": [
+      {
+        "name": "syringe",
+        "path": "interactions/syringe/",
+        "cml": "interactions/syringe/syringe.cml",
+        "mml": "interactions/syringe/syringe$0.mml",
+        "json": "converted/interactions/syringe/syringe$0.json"
+      }
+    ]
+  },
+  {
+    "section": "interactions/target-game-charge-magnitude",
+    "content": [
+      {
+        "name": "targetGameCharge",
+        "path": "interactions/target-game-charge-magnitude/",
+        "cml": "interactions/target-game-charge-magnitude/targetGameCharge.cml",
+        "mml": "interactions/target-game-charge-magnitude/targetGameCharge$0.mml",
+        "json": "converted/interactions/target-game-charge-magnitude/targetGameCharge$0.json"
+      }
+    ]
+  },
+  {
+    "section": "interactions/target-game-distance",
+    "content": [
+      {
+        "name": "targetGameDist",
+        "path": "interactions/target-game-distance/",
+        "cml": "interactions/target-game-distance/targetGameDist.cml",
+        "mml": "interactions/target-game-distance/targetGameDist$0.mml",
+        "json": "converted/interactions/target-game-distance/targetGameDist$0.json"
+      }
+    ]
+  },
+  {
+    "section": "interactions/target-game-free-play",
+    "content": [
+      {
+        "name": "targetFreePlay",
+        "path": "interactions/target-game-free-play/",
+        "cml": "interactions/target-game-free-play/targetFreePlay.cml",
+        "mml": "interactions/target-game-free-play/targetFreePlay$0.mml",
+        "json": "converted/interactions/target-game-free-play/targetFreePlay$0.json"
+      }
+    ]
+  },
+  {
     "section": "potential-tests",
     "content": [
       {
@@ -5661,6 +5901,67 @@ modelList = [
     ]
   },
   {
+    "section": "public/part1/molecularcrystal",
+    "content": [
+      {
+        "name": "amorphization",
+        "path": "public/part1/molecularcrystal/",
+        "cml": "public/part1/molecularcrystal/amorphization.cml",
+        "mml": "public/part1/molecularcrystal/amorphization$0.mml",
+        "json": "converted/public/part1/molecularcrystal/amorphization$0.json"
+      },
+      {
+        "name": "binary",
+        "path": "public/part1/molecularcrystal/",
+        "cml": "public/part1/molecularcrystal/binary.cml",
+        "mml": "public/part1/molecularcrystal/binary$0.mml",
+        "json": "converted/public/part1/molecularcrystal/binary$0.json"
+      },
+      {
+        "name": "compress",
+        "path": "public/part1/molecularcrystal/",
+        "cml": "public/part1/molecularcrystal/compress.cml",
+        "mml": "public/part1/molecularcrystal/compress$0.mml",
+        "json": "converted/public/part1/molecularcrystal/compress$0.json"
+      },
+      {
+        "name": "crystallography",
+        "path": "public/part1/molecularcrystal/",
+        "cml": "public/part1/molecularcrystal/crystallography.cml",
+        "mml": "public/part1/molecularcrystal/crystallography$0.mml",
+        "json": "converted/public/part1/molecularcrystal/crystallography$0.json"
+      },
+      {
+        "name": "molecularcrystal",
+        "path": "public/part1/molecularcrystal/",
+        "cml": "public/part1/molecularcrystal/molecularcrystal.cml",
+        "mml": "public/part1/molecularcrystal/molecularcrystal$0.mml",
+        "json": "converted/public/part1/molecularcrystal/molecularcrystal$0.json"
+      },
+      {
+        "name": "polymorphism",
+        "path": "public/part1/molecularcrystal/",
+        "cml": "public/part1/molecularcrystal/polymorphism.cml",
+        "mml": "public/part1/molecularcrystal/polymorphism$0.mml",
+        "json": "converted/public/part1/molecularcrystal/polymorphism$0.json"
+      },
+      {
+        "name": "simplematerial",
+        "path": "public/part1/molecularcrystal/",
+        "cml": "public/part1/molecularcrystal/simplematerial.cml",
+        "mml": "public/part1/molecularcrystal/simplematerial$0.mml",
+        "json": "converted/public/part1/molecularcrystal/simplematerial$0.json"
+      },
+      {
+        "name": "transform",
+        "path": "public/part1/molecularcrystal/",
+        "cml": "public/part1/molecularcrystal/transform.cml",
+        "mml": "public/part1/molecularcrystal/transform$0.mml",
+        "json": "converted/public/part1/molecularcrystal/transform$0.json"
+      }
+    ]
+  },
+  {
     "section": "public/part1/light",
     "content": [
       {
@@ -5704,6 +6005,832 @@ modelList = [
         "cml": "public/part1/light/light8.cml",
         "mml": "public/part1/light/light8$0.mml",
         "json": "converted/public/part1/light/light8$0.json"
+      }
+    ]
+  },
+  {
+    "section": "public/part1/chembond",
+    "content": [
+      {
+        "name": "chemPotential",
+        "path": "public/part1/chembond/",
+        "cml": "public/part1/chembond/chemPotential.cml",
+        "mml": "public/part1/chembond/chemPotential$0.mml",
+        "json": "converted/public/part1/chembond/chemPotential$0.json"
+      },
+      {
+        "name": "HClReaction",
+        "path": "public/part1/chembond/",
+        "cml": "public/part1/chembond/HClReaction.cml",
+        "mml": "public/part1/chembond/HClReaction$0.mml",
+        "json": "converted/public/part1/chembond/HClReaction$0.json"
+      },
+      {
+        "name": "makingChlorine",
+        "path": "public/part1/chembond/",
+        "cml": "public/part1/chembond/makingChlorine.cml",
+        "mml": "public/part1/chembond/makingChlorine$0.mml",
+        "json": "converted/public/part1/chembond/makingChlorine$0.json"
+      },
+      {
+        "name": "makingHCl",
+        "path": "public/part1/chembond/",
+        "cml": "public/part1/chembond/makingHCl.cml",
+        "mml": "public/part1/chembond/makingHCl$0.mml",
+        "json": "converted/public/part1/chembond/makingHCl$0.json"
+      },
+      {
+        "name": "manyHydrogen",
+        "path": "public/part1/chembond/",
+        "cml": "public/part1/chembond/manyHydrogen.cml",
+        "mml": "public/part1/chembond/manyHydrogen$0.mml",
+        "json": "converted/public/part1/chembond/manyHydrogen$0.json"
+      }
+    ]
+  },
+  {
+    "section": "public/part1/chemequil",
+    "content": [
+      {
+        "name": "equil1",
+        "path": "public/part1/chemequil/",
+        "cml": "public/part1/chemequil/equil1.cml",
+        "mml": "public/part1/chemequil/equil1a$0.mml",
+        "json": "converted/public/part1/chemequil/equil1a$0.json"
+      },
+      {
+        "name": "equil1a",
+        "path": "public/part1/chemequil/",
+        "cml": "public/part1/chemequil/equil1a.cml",
+        "mml": "public/part1/chemequil/equil1a$0.mml",
+        "json": "converted/public/part1/chemequil/equil1a$0.json"
+      },
+      {
+        "name": "equil2",
+        "path": "public/part1/chemequil/",
+        "cml": "public/part1/chemequil/equil2.cml",
+        "mml": "public/part1/chemequil/equil2$0.mml",
+        "json": "converted/public/part1/chemequil/equil2$0.json"
+      },
+      {
+        "name": "equil3",
+        "path": "public/part1/chemequil/",
+        "cml": "public/part1/chemequil/equil3.cml",
+        "mml": "public/part1/chemequil/equil3$0.mml",
+        "json": "converted/public/part1/chemequil/equil3$0.json"
+      },
+      {
+        "name": "equil4",
+        "path": "public/part1/chemequil/",
+        "cml": "public/part1/chemequil/equil4.cml",
+        "mml": "public/part1/chemequil/equil4$0.mml",
+        "json": "converted/public/part1/chemequil/equil4$0.json"
+      }
+    ]
+  },
+  {
+    "section": "public/part1/chempot",
+    "content": [
+      {
+        "name": "boiling",
+        "path": "public/part1/chempot/",
+        "cml": "public/part1/chempot/boiling.cml",
+        "mml": "public/part1/chempot/boiling$0.mml",
+        "json": "converted/public/part1/chempot/boiling$0.json"
+      },
+      {
+        "name": "chemPotential",
+        "path": "public/part1/chempot/",
+        "cml": "public/part1/chempot/chemPotential.cml",
+        "mml": "public/part1/chempot/chemPotential$0.mml",
+        "json": "converted/public/part1/chempot/chemPotential$0.json"
+      },
+      {
+        "name": "condensing",
+        "path": "public/part1/chempot/",
+        "cml": "public/part1/chempot/condensing.cml",
+        "mml": "public/part1/chempot/condensing$0.mml",
+        "json": "converted/public/part1/chempot/condensing$0.json"
+      },
+      {
+        "name": "energyCurves-1",
+        "path": "public/part1/chempot/",
+        "cml": "public/part1/chempot/energyCurves.cml",
+        "mml": "public/part1/chempot/energyCurves$0.mml",
+        "json": "converted/public/part1/chempot/energyCurves$0.json"
+      },
+      {
+        "name": "energyCurves-2",
+        "path": "public/part1/chempot/",
+        "cml": "public/part1/chempot/energyCurves.cml",
+        "mml": "public/part1/chempot/energyCurves2$0.mml",
+        "json": "converted/public/part1/chempot/energyCurves2$0.json"
+      },
+      {
+        "name": "energyCurves-3",
+        "path": "public/part1/chempot/",
+        "cml": "public/part1/chempot/energyCurves.cml",
+        "mml": "public/part1/chempot/energyCurves3$0.mml",
+        "json": "converted/public/part1/chempot/energyCurves3$0.json"
+      },
+      {
+        "name": "energyCurves-4",
+        "path": "public/part1/chempot/",
+        "cml": "public/part1/chempot/energyCurves.cml",
+        "mml": "public/part1/chempot/energyCurves4$0.mml",
+        "json": "converted/public/part1/chempot/energyCurves4$0.json"
+      },
+      {
+        "name": "energyCurves2",
+        "path": "public/part1/chempot/",
+        "cml": "public/part1/chempot/energyCurves2.cml",
+        "mml": "public/part1/chempot/energyCurves2$0.mml",
+        "json": "converted/public/part1/chempot/energyCurves2$0.json"
+      },
+      {
+        "name": "energyCurves3",
+        "path": "public/part1/chempot/",
+        "cml": "public/part1/chempot/energyCurves3.cml",
+        "mml": "public/part1/chempot/energyCurves3$0.mml",
+        "json": "converted/public/part1/chempot/energyCurves3$0.json"
+      },
+      {
+        "name": "energyCurves4",
+        "path": "public/part1/chempot/",
+        "cml": "public/part1/chempot/energyCurves4.cml",
+        "mml": "public/part1/chempot/energyCurves4$0.mml",
+        "json": "converted/public/part1/chempot/energyCurves4$0.json"
+      },
+      {
+        "name": "makingChlorine",
+        "path": "public/part1/chempot/",
+        "cml": "public/part1/chempot/makingChlorine.cml",
+        "mml": "public/part1/chempot/makingChlorine$0.mml",
+        "json": "converted/public/part1/chempot/makingChlorine$0.json"
+      },
+      {
+        "name": "makingHCl",
+        "path": "public/part1/chempot/",
+        "cml": "public/part1/chempot/makingHCl.cml",
+        "mml": "public/part1/chempot/makingHCl$0.mml",
+        "json": "converted/public/part1/chempot/makingHCl$0.json"
+      },
+      {
+        "name": "manyHydrogen",
+        "path": "public/part1/chempot/",
+        "cml": "public/part1/chempot/manyHydrogen.cml",
+        "mml": "public/part1/chempot/manyHydrogen$0.mml",
+        "json": "converted/public/part1/chempot/manyHydrogen$0.json"
+      },
+      {
+        "name": "potentialInHClReaction",
+        "path": "public/part1/chempot/",
+        "cml": "public/part1/chempot/potentialInHClReaction.cml",
+        "mml": "public/part1/chempot/potentialInHClReaction$0.mml",
+        "json": "converted/public/part1/chempot/potentialInHClReaction$0.json"
+      },
+      {
+        "name": "waterPotential",
+        "path": "public/part1/chempot/",
+        "cml": "public/part1/chempot/waterPotential.cml",
+        "mml": "public/part1/chempot/waterPotential$0.mml",
+        "json": "converted/public/part1/chempot/waterPotential$0.json"
+      }
+    ]
+  },
+  {
+    "section": "public/part1/conduction",
+    "content": [
+      {
+        "name": "page2",
+        "path": "public/part1/conduction/",
+        "cml": "public/part1/conduction/page2.cml",
+        "mml": "public/part1/conduction/page2$0.mml",
+        "json": "converted/public/part1/conduction/page2$0.json"
+      },
+      {
+        "name": "page3",
+        "path": "public/part1/conduction/",
+        "cml": "public/part1/conduction/page3.cml",
+        "mml": "public/part1/conduction/page3$0.mml",
+        "json": "converted/public/part1/conduction/page3$0.json"
+      },
+      {
+        "name": "page4",
+        "path": "public/part1/conduction/",
+        "cml": "public/part1/conduction/page4.cml",
+        "mml": "public/part1/conduction/page4$0.mml",
+        "json": "converted/public/part1/conduction/page4$0.json"
+      },
+      {
+        "name": "page5",
+        "path": "public/part1/conduction/",
+        "cml": "public/part1/conduction/page5.cml",
+        "mml": "public/part1/conduction/page5$0.mml",
+        "json": "converted/public/part1/conduction/page5$0.json"
+      },
+      {
+        "name": "page6",
+        "path": "public/part1/conduction/",
+        "cml": "public/part1/conduction/page6.cml",
+        "mml": "public/part1/conduction/page6$0.mml",
+        "json": "converted/public/part1/conduction/page6$0.json"
+      },
+      {
+        "name": "page7-1",
+        "path": "public/part1/conduction/",
+        "cml": "public/part1/conduction/page7.cml",
+        "mml": "public/part1/conduction/page7$0.mml",
+        "json": "converted/public/part1/conduction/page7$0.json"
+      },
+      {
+        "name": "page7-2",
+        "path": "public/part1/conduction/",
+        "cml": "public/part1/conduction/page7.cml",
+        "mml": "public/part1/conduction/page7$1.mml",
+        "json": "converted/public/part1/conduction/page7$1.json"
+      }
+    ]
+  },
+  {
+    "section": "public/part1/conserve",
+    "content": [
+      {
+        "name": "protein_conservation2",
+        "path": "public/part1/conserve/",
+        "cml": "public/part1/conserve/protein_conservation2.cml",
+        "mml": "public/part1/conserve/protein_conservation2$0.mml",
+        "json": "converted/public/part1/conserve/protein_conservation2$0.json"
+      },
+      {
+        "name": "protein_conservation3",
+        "path": "public/part1/conserve/",
+        "cml": "public/part1/conserve/protein_conservation3.cml",
+        "mml": "public/part1/conserve/protein_conservation3$0.mml",
+        "json": "converted/public/part1/conserve/protein_conservation3$0.json"
+      },
+      {
+        "name": "protein_conservation4",
+        "path": "public/part1/conserve/",
+        "cml": "public/part1/conserve/protein_conservation4.cml",
+        "mml": "public/part1/conserve/protein_conservation4$0.mml",
+        "json": "converted/public/part1/conserve/protein_conservation4$0.json"
+      },
+      {
+        "name": "protein_conservation5",
+        "path": "public/part1/conserve/",
+        "cml": "public/part1/conserve/protein_conservation5.cml",
+        "mml": "public/part1/conserve/protein_conservation5$0.mml",
+        "json": "converted/public/part1/conserve/protein_conservation5$0.json"
+      }
+    ]
+  },
+  {
+    "section": "public/part1/distillation",
+    "content": [
+      {
+        "name": "distillation-1",
+        "path": "public/part1/distillation/",
+        "cml": "public/part1/distillation/distillation.cml",
+        "mml": "public/part1/distillation/distillation2$0.mml",
+        "json": "converted/public/part1/distillation/distillation2$0.json"
+      },
+      {
+        "name": "distillation-2",
+        "path": "public/part1/distillation/",
+        "cml": "public/part1/distillation/distillation.cml",
+        "mml": "public/part1/distillation/distillation3$0.mml",
+        "json": "converted/public/part1/distillation/distillation3$0.json"
+      },
+      {
+        "name": "distillation2",
+        "path": "public/part1/distillation/",
+        "cml": "public/part1/distillation/distillation2.cml",
+        "mml": "public/part1/distillation/distillation2$0.mml",
+        "json": "converted/public/part1/distillation/distillation2$0.json"
+      },
+      {
+        "name": "distillation3",
+        "path": "public/part1/distillation/",
+        "cml": "public/part1/distillation/distillation3.cml",
+        "mml": "public/part1/distillation/distillation3$0.mml",
+        "json": "converted/public/part1/distillation/distillation3$0.json"
+      },
+      {
+        "name": "Still7",
+        "path": "public/part1/distillation/",
+        "cml": "public/part1/distillation/Still7.cml",
+        "mml": "public/part1/distillation/Still7$0.mml",
+        "json": "converted/public/part1/distillation/Still7$0.json"
+      }
+    ]
+  },
+  {
+    "section": "public/part1/elisa",
+    "content": [
+      {
+        "name": "elisa2-1",
+        "path": "public/part1/elisa/",
+        "cml": "public/part1/elisa/elisa2.cml",
+        "mml": "public/part1/elisa/elisa2$0.mml",
+        "json": "converted/public/part1/elisa/elisa2$0.json"
+      },
+      {
+        "name": "elisa2-2",
+        "path": "public/part1/elisa/",
+        "cml": "public/part1/elisa/elisa2.cml",
+        "mml": "public/part1/elisa/elisa2$1.mml",
+        "json": "converted/public/part1/elisa/elisa2$1.json"
+      },
+      {
+        "name": "elisa3",
+        "path": "public/part1/elisa/",
+        "cml": "public/part1/elisa/elisa3.cml",
+        "mml": "public/part1/elisa/elisa3$0.mml",
+        "json": "converted/public/part1/elisa/elisa3$0.json"
+      },
+      {
+        "name": "elisa4",
+        "path": "public/part1/elisa/",
+        "cml": "public/part1/elisa/elisa4.cml",
+        "mml": "public/part1/elisa/elisa4$0.mml",
+        "json": "converted/public/part1/elisa/elisa4$0.json"
+      },
+      {
+        "name": "elisa5",
+        "path": "public/part1/elisa/",
+        "cml": "public/part1/elisa/elisa5.cml",
+        "mml": "public/part1/elisa/elisa5$0.mml",
+        "json": "converted/public/part1/elisa/elisa5$0.json"
+      },
+      {
+        "name": "elisa6",
+        "path": "public/part1/elisa/",
+        "cml": "public/part1/elisa/elisa6.cml",
+        "mml": "public/part1/elisa/elisa6$0.mml",
+        "json": "converted/public/part1/elisa/elisa6$0.json"
+      },
+      {
+        "name": "indirect",
+        "path": "public/part1/elisa/",
+        "cml": "public/part1/elisa/indirect.cml",
+        "mml": "public/part1/elisa/indirect$0.mml",
+        "json": "converted/public/part1/elisa/indirect$0.json"
+      },
+      {
+        "name": "substrate-1",
+        "path": "public/part1/elisa/",
+        "cml": "public/part1/elisa/substrate.cml",
+        "mml": "public/part1/elisa/substrate$0.mml",
+        "json": "converted/public/part1/elisa/substrate$0.json"
+      },
+      {
+        "name": "substrate-2",
+        "path": "public/part1/elisa/",
+        "cml": "public/part1/elisa/substrate.cml",
+        "mml": "public/part1/elisa/substrate2$0.mml",
+        "json": "converted/public/part1/elisa/substrate2$0.json"
+      },
+      {
+        "name": "substrate2",
+        "path": "public/part1/elisa/",
+        "cml": "public/part1/elisa/substrate2.cml",
+        "mml": "public/part1/elisa/substrate2$0.mml",
+        "json": "converted/public/part1/elisa/substrate2$0.json"
+      }
+    ]
+  },
+  {
+    "section": "public/part1/emove",
+    "content": [
+      {
+        "name": "page1",
+        "path": "public/part1/emove/",
+        "cml": "public/part1/emove/page1.cml",
+        "mml": "public/part1/emove/page1$0.mml",
+        "json": "converted/public/part1/emove/page1$0.json"
+      },
+      {
+        "name": "page2-1",
+        "path": "public/part1/emove/",
+        "cml": "public/part1/emove/page2.cml",
+        "mml": "public/part1/emove/page2$0.mml",
+        "json": "converted/public/part1/emove/page2$0.json"
+      },
+      {
+        "name": "page2-2",
+        "path": "public/part1/emove/",
+        "cml": "public/part1/emove/page2.cml",
+        "mml": "public/part1/emove/page2$1.mml",
+        "json": "converted/public/part1/emove/page2$1.json"
+      },
+      {
+        "name": "page3",
+        "path": "public/part1/emove/",
+        "cml": "public/part1/emove/page3.cml",
+        "mml": "public/part1/emove/page3$0.mml",
+        "json": "converted/public/part1/emove/page3$0.json"
+      },
+      {
+        "name": "page4",
+        "path": "public/part1/emove/",
+        "cml": "public/part1/emove/page4.cml",
+        "mml": "public/part1/emove/page4$0.mml",
+        "json": "converted/public/part1/emove/page4$0.json"
+      },
+      {
+        "name": "page5",
+        "path": "public/part1/emove/",
+        "cml": "public/part1/emove/page5.cml",
+        "mml": "public/part1/emove/page5$0.mml",
+        "json": "converted/public/part1/emove/page5$0.json"
+      },
+      {
+        "name": "page7",
+        "path": "public/part1/emove/",
+        "cml": "public/part1/emove/page7.cml",
+        "mml": "public/part1/emove/page7$0.mml",
+        "json": "converted/public/part1/emove/page7$0.json"
+      },
+      {
+        "name": "page8-1",
+        "path": "public/part1/emove/",
+        "cml": "public/part1/emove/page8.cml",
+        "mml": "public/part1/emove/page8$0.mml",
+        "json": "converted/public/part1/emove/page8$0.json"
+      },
+      {
+        "name": "page8-2",
+        "path": "public/part1/emove/",
+        "cml": "public/part1/emove/page8.cml",
+        "mml": "public/part1/emove/page8$1.mml",
+        "json": "converted/public/part1/emove/page8$1.json"
+      }
+    ]
+  },
+  {
+    "section": "public/part1/energy",
+    "content": [
+      {
+        "name": "Compd.pendulum",
+        "path": "public/part1/energy/",
+        "cml": "public/part1/energy/Compd.pendulum.cml",
+        "mml": "public/part1/energy/Compd.pendulum$0.mml",
+        "json": "converted/public/part1/energy/Compd.pendulum$0.json"
+      },
+      {
+        "name": "Copy of Heatflow.experiment5",
+        "path": "public/part1/energy/",
+        "cml": "public/part1/energy/Copy of Heatflow.experiment5.cml",
+        "mml": "public/part1/energy/Copy of Heatflow.experiment5$0.mml",
+        "json": "converted/public/part1/energy/Copy of Heatflow.experiment5$0.json"
+      },
+      {
+        "name": "energy1-1",
+        "path": "public/part1/energy/",
+        "cml": "public/part1/energy/energy1.cml",
+        "mml": "public/part1/energy/energy1$0.mml",
+        "json": "converted/public/part1/energy/energy1$0.json"
+      },
+      {
+        "name": "energy1-2",
+        "path": "public/part1/energy/",
+        "cml": "public/part1/energy/energy1.cml",
+        "mml": "public/part1/energy/energy10$0.mml",
+        "json": "converted/public/part1/energy/energy10$0.json"
+      },
+      {
+        "name": "energy1-3",
+        "path": "public/part1/energy/",
+        "cml": "public/part1/energy/energy1.cml",
+        "mml": "public/part1/energy/energy1a$0.mml",
+        "json": "converted/public/part1/energy/energy1a$0.json"
+      },
+      {
+        "name": "energy10",
+        "path": "public/part1/energy/",
+        "cml": "public/part1/energy/energy10.cml",
+        "mml": "public/part1/energy/energy10$0.mml",
+        "json": "converted/public/part1/energy/energy10$0.json"
+      },
+      {
+        "name": "energy1a",
+        "path": "public/part1/energy/",
+        "cml": "public/part1/energy/energy1a.cml",
+        "mml": "public/part1/energy/energy1a$0.mml",
+        "json": "converted/public/part1/energy/energy1a$0.json"
+      },
+      {
+        "name": "energy2",
+        "path": "public/part1/energy/",
+        "cml": "public/part1/energy/energy2.cml",
+        "mml": "public/part1/energy/energy2$0.mml",
+        "json": "converted/public/part1/energy/energy2$0.json"
+      },
+      {
+        "name": "energy3",
+        "path": "public/part1/energy/",
+        "cml": "public/part1/energy/energy3.cml",
+        "mml": "public/part1/energy/energy3$0.mml",
+        "json": "converted/public/part1/energy/energy3$0.json"
+      },
+      {
+        "name": "energy4",
+        "path": "public/part1/energy/",
+        "cml": "public/part1/energy/energy4.cml",
+        "mml": "public/part1/energy/energy4$0.mml",
+        "json": "converted/public/part1/energy/energy4$0.json"
+      },
+      {
+        "name": "energy5",
+        "path": "public/part1/energy/",
+        "cml": "public/part1/energy/energy5.cml",
+        "mml": "public/part1/energy/energy5$0.mml",
+        "json": "converted/public/part1/energy/energy5$0.json"
+      },
+      {
+        "name": "energy6",
+        "path": "public/part1/energy/",
+        "cml": "public/part1/energy/energy6.cml",
+        "mml": "public/part1/energy/energy6$0.mml",
+        "json": "converted/public/part1/energy/energy6$0.json"
+      },
+      {
+        "name": "energy7",
+        "path": "public/part1/energy/",
+        "cml": "public/part1/energy/energy7.cml",
+        "mml": "public/part1/energy/energy7$0.mml",
+        "json": "converted/public/part1/energy/energy7$0.json"
+      },
+      {
+        "name": "energy8",
+        "path": "public/part1/energy/",
+        "cml": "public/part1/energy/energy8.cml",
+        "mml": "public/part1/energy/energy8$0.mml",
+        "json": "converted/public/part1/energy/energy8$0.json"
+      },
+      {
+        "name": "energy9",
+        "path": "public/part1/energy/",
+        "cml": "public/part1/energy/energy9.cml",
+        "mml": "public/part1/energy/energy9$0.mml",
+        "json": "converted/public/part1/energy/energy9$0.json"
+      },
+      {
+        "name": "energya",
+        "path": "public/part1/energy/",
+        "cml": "public/part1/energy/energya.cml",
+        "mml": "public/part1/energy/energya$0.mml",
+        "json": "converted/public/part1/energy/energya$0.json"
+      },
+      {
+        "name": "Heatflow.experiment4",
+        "path": "public/part1/energy/",
+        "cml": "public/part1/energy/Heatflow.experiment4.cml",
+        "mml": "public/part1/energy/Heatflow.experiment4$0.mml",
+        "json": "converted/public/part1/energy/Heatflow.experiment4$0.json"
+      },
+      {
+        "name": "ManySmallAtoms2",
+        "path": "public/part1/energy/",
+        "cml": "public/part1/energy/ManySmallAtoms2.cml",
+        "mml": "public/part1/energy/ManySmallAtoms2$0.mml",
+        "json": "converted/public/part1/energy/ManySmallAtoms2$0.json"
+      },
+      {
+        "name": "pendulum",
+        "path": "public/part1/energy/",
+        "cml": "public/part1/energy/pendulum.cml",
+        "mml": "public/part1/energy/pendulum$0.mml",
+        "json": "converted/public/part1/energy/pendulum$0.json"
+      },
+      {
+        "name": "Phases.under.pressure3",
+        "path": "public/part1/energy/",
+        "cml": "public/part1/energy/Phases.under.pressure3.cml",
+        "mml": "public/part1/energy/Phases.under.pressure3$0.mml",
+        "json": "converted/public/part1/energy/Phases.under.pressure3$0.json"
+      },
+      {
+        "name": "Shockwave-1",
+        "path": "public/part1/energy/",
+        "cml": "public/part1/energy/Shockwave.cml",
+        "mml": "public/part1/energy/Shockwave$0.mml",
+        "json": "converted/public/part1/energy/Shockwave$0.json"
+      },
+      {
+        "name": "Shockwave-2",
+        "path": "public/part1/energy/",
+        "cml": "public/part1/energy/Shockwave.cml",
+        "mml": "public/part1/energy/Shockwave2$0.mml",
+        "json": "converted/public/part1/energy/Shockwave2$0.json"
+      },
+      {
+        "name": "Shockwave2",
+        "path": "public/part1/energy/",
+        "cml": "public/part1/energy/Shockwave2.cml",
+        "mml": "public/part1/energy/Shockwave2$0.mml",
+        "json": "converted/public/part1/energy/Shockwave2$0.json"
+      },
+      {
+        "name": "The Kiss",
+        "path": "public/part1/energy/",
+        "cml": "public/part1/energy/The Kiss.cml",
+        "mml": "public/part1/energy/The Kiss$0.mml",
+        "json": "converted/public/part1/energy/The Kiss$0.json"
+      },
+      {
+        "name": "TwoBigAtoms.Energy",
+        "path": "public/part1/energy/",
+        "cml": "public/part1/energy/TwoBigAtoms.Energy.cml",
+        "mml": "public/part1/energy/TwoBigAtoms.Energy$0.mml",
+        "json": "converted/public/part1/energy/TwoBigAtoms.Energy$0.json"
+      }
+    ]
+  },
+  {
+    "section": "public/part1/fluorescence",
+    "content": [
+      {
+        "name": "fluorescence3",
+        "path": "public/part1/fluorescence/",
+        "cml": "public/part1/fluorescence/fluorescence3.cml",
+        "mml": "public/part1/fluorescence/fluorescence3$0.mml",
+        "json": "converted/public/part1/fluorescence/fluorescence3$0.json"
+      },
+      {
+        "name": "fluorescence4",
+        "path": "public/part1/fluorescence/",
+        "cml": "public/part1/fluorescence/fluorescence4.cml",
+        "mml": "public/part1/fluorescence/fluorescence4$0.mml",
+        "json": "converted/public/part1/fluorescence/fluorescence4$0.json"
+      },
+      {
+        "name": "fluorescence5",
+        "path": "public/part1/fluorescence/",
+        "cml": "public/part1/fluorescence/fluorescence5.cml",
+        "mml": "public/part1/fluorescence/fluorescence5$0.mml",
+        "json": "converted/public/part1/fluorescence/fluorescence5$0.json"
+      },
+      {
+        "name": "fluorescence6",
+        "path": "public/part1/fluorescence/",
+        "cml": "public/part1/fluorescence/fluorescence6.cml",
+        "mml": "public/part1/fluorescence/fluorescence6$0.mml",
+        "json": "converted/public/part1/fluorescence/fluorescence6$0.json"
+      },
+      {
+        "name": "fluorescence7",
+        "path": "public/part1/fluorescence/",
+        "cml": "public/part1/fluorescence/fluorescence7.cml",
+        "mml": "public/part1/fluorescence/fluorescence7$0.mml",
+        "json": "converted/public/part1/fluorescence/fluorescence7$0.json"
+      }
+    ]
+  },
+  {
+    "section": "public/part1/heatflow",
+    "content": [
+      {
+        "name": "Step1",
+        "path": "public/part1/heatflow/",
+        "cml": "public/part1/heatflow/Step1.cml",
+        "mml": "public/part1/heatflow/Step1$0.mml",
+        "json": "converted/public/part1/heatflow/Step1$0.json"
+      },
+      {
+        "name": "Step2",
+        "path": "public/part1/heatflow/",
+        "cml": "public/part1/heatflow/Step2.cml",
+        "mml": "public/part1/heatflow/Step2$0.mml",
+        "json": "converted/public/part1/heatflow/Step2$0.json"
+      },
+      {
+        "name": "Step3",
+        "path": "public/part1/heatflow/",
+        "cml": "public/part1/heatflow/Step3.cml",
+        "mml": "public/part1/heatflow/Step3$0.mml",
+        "json": "converted/public/part1/heatflow/Step3$0.json"
+      },
+      {
+        "name": "Step4",
+        "path": "public/part1/heatflow/",
+        "cml": "public/part1/heatflow/Step4.cml",
+        "mml": "public/part1/heatflow/Step4$0.mml",
+        "json": "converted/public/part1/heatflow/Step4$0.json"
+      }
+    ]
+  },
+  {
+    "section": "public/part1/insulin",
+    "content": [
+      {
+        "name": "insulin3",
+        "path": "public/part1/insulin/",
+        "cml": "public/part1/insulin/insulin3.cml",
+        "mml": "public/part1/insulin/insulin3$0.mml",
+        "json": "converted/public/part1/insulin/insulin3$0.json"
+      },
+      {
+        "name": "insulin4",
+        "path": "public/part1/insulin/",
+        "cml": "public/part1/insulin/insulin4.cml",
+        "mml": "public/part1/insulin/insulin4$0.mml",
+        "json": "converted/public/part1/insulin/insulin4$0.json"
+      },
+      {
+        "name": "insulin5",
+        "path": "public/part1/insulin/",
+        "cml": "public/part1/insulin/insulin5.cml",
+        "mml": "public/part1/insulin/insulin5$0.mml",
+        "json": "converted/public/part1/insulin/insulin5$0.json"
+      }
+    ]
+  },
+  {
+    "section": "public/part1/protein",
+    "content": [
+      {
+        "name": "aa2.charge-1",
+        "path": "public/part1/protein/",
+        "cml": "public/part1/protein/aa2.charge.cml",
+        "mml": "public/part1/protein/aa2.charge$0.mml",
+        "json": "converted/public/part1/protein/aa2.charge$0.json"
+      },
+      {
+        "name": "aa2.charge-2",
+        "path": "public/part1/protein/",
+        "cml": "public/part1/protein/aa2.charge.cml",
+        "mml": "public/part1/protein/aa2.charge2$0.mml",
+        "json": "converted/public/part1/protein/aa2.charge2$0.json"
+      },
+      {
+        "name": "aa2.charge-3",
+        "path": "public/part1/protein/",
+        "cml": "public/part1/protein/aa2.charge.cml",
+        "mml": "public/part1/protein/aa2.charge3$0.mml",
+        "json": "converted/public/part1/protein/aa2.charge3$0.json"
+      },
+      {
+        "name": "aa2.charge2",
+        "path": "public/part1/protein/",
+        "cml": "public/part1/protein/aa2.charge2.cml",
+        "mml": "public/part1/protein/aa2.charge2$0.mml",
+        "json": "converted/public/part1/protein/aa2.charge2$0.json"
+      },
+      {
+        "name": "aa2.charge3",
+        "path": "public/part1/protein/",
+        "cml": "public/part1/protein/aa2.charge3.cml",
+        "mml": "public/part1/protein/aa2.charge3$0.mml",
+        "json": "converted/public/part1/protein/aa2.charge3$0.json"
+      },
+      {
+        "name": "aa2.conclusions",
+        "path": "public/part1/protein/",
+        "cml": "public/part1/protein/aa2.conclusions.cml",
+        "mml": "public/part1/protein/aa2.conclusions$0.mml",
+        "json": "converted/public/part1/protein/aa2.conclusions$0.json"
+      },
+      {
+        "name": "dna2",
+        "path": "public/part1/protein/",
+        "cml": "public/part1/protein/dna2.cml",
+        "mml": "public/part1/protein/dna2$0.mml",
+        "json": "converted/public/part1/protein/dna2$0.json"
+      },
+      {
+        "name": "test-1",
+        "path": "public/part1/protein/",
+        "cml": "public/part1/protein/test.cml",
+        "mml": "public/part1/protein/test$0.mml",
+        "json": "converted/public/part1/protein/test$0.json"
+      },
+      {
+        "name": "test-2",
+        "path": "public/part1/protein/",
+        "cml": "public/part1/protein/test.cml",
+        "mml": "public/part1/protein/test2$0.mml",
+        "json": "converted/public/part1/protein/test2$0.json"
+      },
+      {
+        "name": "test2",
+        "path": "public/part1/protein/",
+        "cml": "public/part1/protein/test2.cml",
+        "mml": "public/part1/protein/test2$0.mml",
+        "json": "converted/public/part1/protein/test2$0.json"
+      }
+    ]
+  },
+  {
+    "section": "public/part1/redox",
+    "content": [
+      {
+        "name": "page4",
+        "path": "public/part1/redox/",
+        "cml": "public/part1/redox/page4.cml",
+        "mml": "public/part1/redox/page4$0.mml",
+        "json": "converted/public/part1/redox/page4$0.json"
       }
     ]
   },
@@ -6338,6 +7465,20 @@ modelList = [
         "json": "converted/conversion-and-physics-examples/electric-field$0.json"
       },
       {
+        "name": "ellipse-reflection",
+        "path": "conversion-and-physics-examples/",
+        "cml": "conversion-and-physics-examples/ellipse-reflection.cml",
+        "mml": "conversion-and-physics-examples/ellipse-reflection$0.mml",
+        "json": "converted/conversion-and-physics-examples/ellipse-reflection$0.json"
+      },
+      {
+        "name": "ellipses",
+        "path": "conversion-and-physics-examples/",
+        "cml": "conversion-and-physics-examples/ellipses.cml",
+        "mml": "conversion-and-physics-examples/ellipses$0.mml",
+        "json": "converted/conversion-and-physics-examples/ellipses$0.json"
+      },
+      {
         "name": "energy-minimization",
         "path": "conversion-and-physics-examples/",
         "cml": "conversion-and-physics-examples/energy-minimization.cml",
@@ -6345,11 +7486,39 @@ modelList = [
         "json": "converted/conversion-and-physics-examples/energy-minimization$0.json"
       },
       {
+        "name": "gradients",
+        "path": "conversion-and-physics-examples/",
+        "cml": "conversion-and-physics-examples/gradients.cml",
+        "mml": "conversion-and-physics-examples/gradients$0.mml",
+        "json": "converted/conversion-and-physics-examples/gradients$0.json"
+      },
+      {
         "name": "gravitational-field-test",
         "path": "conversion-and-physics-examples/",
         "cml": "conversion-and-physics-examples/gravitational-field-test.cml",
         "mml": "conversion-and-physics-examples/gravitational-field-test$0.mml",
         "json": "converted/conversion-and-physics-examples/gravitational-field-test$0.json"
+      },
+      {
+        "name": "latent-heat",
+        "path": "conversion-and-physics-examples/",
+        "cml": "conversion-and-physics-examples/latent-heat.cml",
+        "mml": "conversion-and-physics-examples/latent-heat.mml",
+        "json": "converted/conversion-and-physics-examples/latent-heat.json"
+      },
+      {
+        "name": "line-reflection",
+        "path": "conversion-and-physics-examples/",
+        "cml": "conversion-and-physics-examples/line-reflection.cml",
+        "mml": "conversion-and-physics-examples/line-reflection$0.mml",
+        "json": "converted/conversion-and-physics-examples/line-reflection$0.json"
+      },
+      {
+        "name": "lines",
+        "path": "conversion-and-physics-examples/",
+        "cml": "conversion-and-physics-examples/lines.cml",
+        "mml": "conversion-and-physics-examples/lines$0.mml",
+        "json": "converted/conversion-and-physics-examples/lines$0.json"
       },
       {
         "name": "obstacle-force",

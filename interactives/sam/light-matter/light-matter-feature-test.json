@@ -3,6 +3,7 @@
   "publicationStatus": "draft",
   "subtitle": "Testing of Light-Matter model features",
   "about": "",
+  "aspectRatio": 1.5,
   "models": [
     {
       "type": "md2d",

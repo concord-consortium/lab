@@ -9,6 +9,7 @@
     "",
     "Set up the model with high oxygen and low carbon dioxide outside the cell and low oxygen and high carbon dioxide inside the cell. In which direction do the oxygen and carbon dioxide molecules move?"
   ],
+  "aspectRatio": 1.6,
   "fontScale": 0.8,
   "models": [
     {
@@ -178,7 +179,7 @@
       "id": "left-concentration-CO2",
       "fontScale": 0.5,
       "min": 0,
-      "max": 80,
+      "max": 100,
       "labels": 0,
       "barColor": "rgb(143,113,178)",
       "fillColor": "rgb(225,243,253)",
@@ -192,7 +193,7 @@
       "type": "barGraph",
       "id": "left-concentration-O2",
       "min": 0,
-      "max": 80,
+      "max": 100,
       "labels": 0,
       "barColor": "rgb(242,234,27)",
       "fillColor": "rgb(225,243,253)",
@@ -206,7 +207,7 @@
       "type": "barGraph",
       "id": "right-concentration-CO2",
       "min": 0,
-      "max": 80,
+      "max": 100,
       "labels": 0,
       "barColor": "rgb(143,113,178)",
       "fillColor": "rgb(243,222,223)",
@@ -220,7 +221,7 @@
       "type": "barGraph",
       "id": "right-concentration-O2",
       "min": 0,
-      "max": 80,
+      "max": 100,
       "labels": 0,
       "barColor": "rgb(242,234,27)",
       "fillColor": "rgb(243,222,223)",

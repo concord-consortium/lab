@@ -65,7 +65,7 @@ h2 {
   color: #5f5f5f;
   font-family: 'Lato', georgia, times, "times new roman", serif;
   font-weight: 600;
-  font-size: 1.17em;
+  font-size: 1.15em;
   margin-top: 0; }
   h2 a {
     text-decoration: none; }
@@ -73,7 +73,7 @@ h2 {
 h3 {
   font-family: 'Lato', georgia, times, "times new roman", serif;
   font-weight: 600;
-  font-size: 1.12em; }
+  font-size: 1.1em; }
   h3 a {
     text-decoration: none; }
 
@@ -155,6 +155,17 @@ code {
 .playbacksvgbutton:active .pause-center {
   fill: #a5a5a5; }
 
+.lab-disabled {
+  opacity: 0.7; }
+
+.lab-disabled-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100; }
+
 .markdown-typography * {
   margin: 0.2em 0 !important; }
 .markdown-typography img {
@@ -176,6 +187,7 @@ code {
   font-size: 0.9em !important; }
 
 .component {
+  position: relative;
   display: inline-block;
   vertical-align: middle;
   white-space: normal;
@@ -190,45 +202,49 @@ code {
   .component.clickable {
     cursor: pointer; }
 
-button.component {
-  background-color: #eeeeee;
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fafafa), color-stop(100%, #c2c2c2));
-  background-image: -webkit-linear-gradient(top, #fafafa, #c2c2c2);
-  background-image: -moz-linear-gradient(top, #fafafa, #c2c2c2);
-  background-image: -ms-linear-gradient(top, #fafafa, #c2c2c2);
-  background-image: -o-linear-gradient(top, #fafafa, #c2c2c2);
-  background-image: linear-gradient(top, #fafafa, #c2c2c2);
-  font-size: 1em;
-  font-family: 'Lato', Verdana, Geneva, sans-serif;
+.interactive-button {
   height: 2em;
-  line-height: 2em;
-  border: 1px solid #cccccc;
-  border-radius: 0.7em;
-  color: #333333;
-  padding-left: 1em;
-  padding-right: 1em;
-  text-align: center;
-  text-shadow: 0 1px 0 #eeeeee;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3); }
-  button.component:hover {
-    background-color: #e6e6e6;
-    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, white), color-stop(100%, #e6e6e6));
-    background-image: -webkit-linear-gradient(top, white, #e6e6e6);
-    background-image: -moz-linear-gradient(top, white, #e6e6e6);
-    background-image: -ms-linear-gradient(top, white, #e6e6e6);
-    background-image: -o-linear-gradient(top, white, #e6e6e6);
-    background-image: linear-gradient(top, white, #e6e6e6);
-    cursor: pointer; }
-  button.component:active {
-    background-color: white;
-    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #e6e6e6), color-stop(100%, white));
-    background-image: -webkit-linear-gradient(top, #e6e6e6, white);
-    background-image: -moz-linear-gradient(top, #e6e6e6, white);
-    background-image: -ms-linear-gradient(top, #e6e6e6, white);
-    background-image: -o-linear-gradient(top, #e6e6e6, white);
-    background-image: linear-gradient(top, #e6e6e6, white);
-    border: 1px solid #aaaaaa;
-    border-bottom: 1px solid #888888; }
+  width: auto; }
+  .interactive-button > button {
+    background-color: #eeeeee;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fafafa), color-stop(100%, #c2c2c2));
+    background-image: -webkit-linear-gradient(top, #fafafa, #c2c2c2);
+    background-image: -moz-linear-gradient(top, #fafafa, #c2c2c2);
+    background-image: -ms-linear-gradient(top, #fafafa, #c2c2c2);
+    background-image: -o-linear-gradient(top, #fafafa, #c2c2c2);
+    background-image: linear-gradient(top, #fafafa, #c2c2c2);
+    font-family: 'Lato', Verdana, Geneva, sans-serif;
+    border: 1px solid #cccccc;
+    border-radius: 0.7em;
+    color: #333333;
+    padding-left: 1em;
+    padding-right: 1em;
+    text-align: center;
+    text-shadow: 0 1px 0 #eeeeee;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    height: 100%;
+    line-height: 2em;
+    font-size: 1em; }
+    .interactive-button > button:hover {
+      background-color: #e6e6e6;
+      background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, white), color-stop(100%, #e6e6e6));
+      background-image: -webkit-linear-gradient(top, white, #e6e6e6);
+      background-image: -moz-linear-gradient(top, white, #e6e6e6);
+      background-image: -ms-linear-gradient(top, white, #e6e6e6);
+      background-image: -o-linear-gradient(top, white, #e6e6e6);
+      background-image: linear-gradient(top, white, #e6e6e6);
+      cursor: pointer; }
+    .interactive-button > button:active {
+      background-color: white;
+      background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #e6e6e6), color-stop(100%, white));
+      background-image: -webkit-linear-gradient(top, #e6e6e6, white);
+      background-image: -moz-linear-gradient(top, #e6e6e6, white);
+      background-image: -ms-linear-gradient(top, #e6e6e6, white);
+      background-image: -o-linear-gradient(top, #e6e6e6, white);
+      background-image: linear-gradient(top, #e6e6e6, white);
+      border: 1px solid #aaaaaa;
+      border-bottom: 1px solid #888888; }
 
 .interactive-text.clickable {
   color: #004488; }
@@ -435,10 +451,60 @@ button.component {
 
 .interactive-playback {
   font-size: 1em;
-  border-bottom-left-radius: 0.7em;
-  border-bottom-right-radius: 0.7em;
-  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.4);
   height: 2em; }
+  .interactive-playback.text > button {
+    background-color: #eeeeee;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fafafa), color-stop(100%, #c2c2c2));
+    background-image: -webkit-linear-gradient(top, #fafafa, #c2c2c2);
+    background-image: -moz-linear-gradient(top, #fafafa, #c2c2c2);
+    background-image: -ms-linear-gradient(top, #fafafa, #c2c2c2);
+    background-image: -o-linear-gradient(top, #fafafa, #c2c2c2);
+    background-image: linear-gradient(top, #fafafa, #c2c2c2);
+    font-family: 'Lato', Verdana, Geneva, sans-serif;
+    border: 1px solid #cccccc;
+    border-radius: 0.7em;
+    color: #333333;
+    padding-left: 1em;
+    padding-right: 1em;
+    text-align: center;
+    text-shadow: 0 1px 0 #eeeeee;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+    height: 80%;
+    width: 6em;
+    font-size: 0.8em;
+    line-height: 1.6em;
+    margin: 0.5em 0.8em; }
+    .interactive-playback.text > button:hover {
+      background-color: #e6e6e6;
+      background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, white), color-stop(100%, #e6e6e6));
+      background-image: -webkit-linear-gradient(top, white, #e6e6e6);
+      background-image: -moz-linear-gradient(top, white, #e6e6e6);
+      background-image: -ms-linear-gradient(top, white, #e6e6e6);
+      background-image: -o-linear-gradient(top, white, #e6e6e6);
+      background-image: linear-gradient(top, white, #e6e6e6);
+      cursor: pointer; }
+    .interactive-playback.text > button:active {
+      background-color: white;
+      background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #e6e6e6), color-stop(100%, white));
+      background-image: -webkit-linear-gradient(top, #e6e6e6, white);
+      background-image: -moz-linear-gradient(top, #e6e6e6, white);
+      background-image: -ms-linear-gradient(top, #e6e6e6, white);
+      background-image: -o-linear-gradient(top, #e6e6e6, white);
+      background-image: linear-gradient(top, #e6e6e6, white);
+      border: 1px solid #aaaaaa;
+      border-bottom: 1px solid #888888; }
+    .interactive-playback.text > button.disabled {
+      background-color: #e6e6e6;
+      background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, white), color-stop(100%, #e6e6e6));
+      background-image: -webkit-linear-gradient(top, white, #e6e6e6);
+      background-image: -moz-linear-gradient(top, white, #e6e6e6);
+      background-image: -ms-linear-gradient(top, white, #e6e6e6);
+      background-image: -o-linear-gradient(top, white, #e6e6e6);
+      background-image: linear-gradient(top, white, #e6e6e6); }
+  .interactive-playback.video {
+    border-bottom-left-radius: 0.7em;
+    border-bottom-right-radius: 0.7em;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.4); }
   .interactive-playback a {
     display: inline-block;
     vertical-align: middle;
@@ -642,6 +708,7 @@ svg.graph circle {
   height: 100%;
   position: relative;
   border-radius: 0.5em;
+  overflow: hidden;
   background-color: #c7e7de;
   background-image: -webkit-radial-gradient(center, ellipse cover, #c7e7de 12%, #72c3c8 100%);
   background-image: -moz-radial-gradient(center, ellipse cover, #c7e7de 12%, #72c3c8 100%);
@@ -723,6 +790,100 @@ body:fullscreen .fullscreen {
   background-position: 0.3em 0.2em; }
   .credits:hover {
     background-image: url("./resources/layout/cc-logo-dark.png"); }
+
+#banner-help {
+  z-index: 101; }
+
+#help-icon > i {
+  color: black;
+  opacity: 0.5; }
+  #help-icon > i.active {
+    color: white; }
+  #help-icon > i:hover {
+    opacity: 0.9; }
+
+.lab-help-next, .lab-help-prev {
+  cursor: pointer; }
+  .lab-help-next.btn, .lab-help-prev.btn {
+    font-size: 2em;
+    margin: 0 0.4em; }
+
+.lab-help-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 200%;
+  background: rgba(60, 60, 60, 0.3);
+  z-index: 100; }
+
+.lab-help-instructions {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  font-size: 1.2em;
+  color: white;
+  text-shadow: 1px 1px 1px #444444;
+  z-index: 100;
+  margin-top: -0.55em; }
+  .lab-help-instructions > span {
+    vertical-align: middle; }
+
+.lab-help-tip {
+  display: inline-block;
+  max-width: 30em;
+  font-size: 1em;
+  padding: 0.4em 1em;
+  margin: 0.5em;
+  z-index: 101;
+  border-radius: 0.7em;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+  text-shadow: 1px 1px 2px white;
+  background-color: #e6e6e6;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, white), color-stop(100%, #e6e6e6));
+  background-image: -webkit-linear-gradient(top, white, #e6e6e6);
+  background-image: -moz-linear-gradient(top, white, #e6e6e6);
+  background-image: -ms-linear-gradient(top, white, #e6e6e6);
+  background-image: -o-linear-gradient(top, white, #e6e6e6);
+  background-image: linear-gradient(top, white, #e6e6e6);
+  cursor: pointer; }
+  .lab-help-tip:focus {
+    outline: none; }
+
+.lab-help-arrow.top:after {
+  background: white; }
+.lab-help-arrow.bottom:after {
+  background: #e6e6e6; }
+
+.lab-help-arrow {
+  width: 2.5em;
+  height: 1em;
+  overflow: hidden;
+  position: absolute;
+  margin-left: -1.25em;
+  left: 2em;
+  bottom: -1em; }
+  .lab-help-arrow.top {
+    top: -1em;
+    bottom: auto; }
+
+.lab-help-arrow:after {
+  content: "";
+  position: absolute;
+  top: -1em;
+  left: 0.4em;
+  width: 1.6em;
+  height: 1.6em;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  tranform: rotate(45deg); }
+
+.lab-help-arrow.top:after {
+  bottom: -1em;
+  top: auto; }
 
 #responsive-content .context-menu-list {
   min-width: 5em;
@@ -1303,6 +1464,59 @@ applet {
   background-image: -ms-linear-gradient(top, white, #e6e6e6);
   background-image: -o-linear-gradient(top, white, #e6e6e6);
   background-image: linear-gradient(top, white, #e6e6e6); }
+
+.ui-tooltip {
+  border: none;
+  background-color: #e6e6e6;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, white), color-stop(100%, #e6e6e6));
+  background-image: -webkit-linear-gradient(top, white, #e6e6e6);
+  background-image: -moz-linear-gradient(top, white, #e6e6e6);
+  background-image: -ms-linear-gradient(top, white, #e6e6e6);
+  background-image: -o-linear-gradient(top, white, #e6e6e6);
+  background-image: linear-gradient(top, white, #e6e6e6);
+  padding: 0.05em 0.15em;
+  color: #333333;
+  border-radius: 0.4em;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+  min-width: 2.5em;
+  max-width: 12em; }
+
+.ui-tooltip-content {
+  font-size: 0.85em; }
+
+.ui-tooltip-arrow.top:after {
+  background: white; }
+.ui-tooltip-arrow.bottom:after {
+  background: #e6e6e6; }
+
+.ui-tooltip-arrow {
+  width: 0.6em;
+  height: 0.5em;
+  overflow: hidden;
+  position: absolute;
+  left: 50%;
+  margin-left: -0.3em;
+  bottom: -0.5em; }
+  .ui-tooltip-arrow.top {
+    top: -0.5em;
+    bottom: auto; }
+
+.ui-tooltip-arrow:after {
+  content: "";
+  position: absolute;
+  top: -0.5em;
+  width: 0.6em;
+  height: 0.6em;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  tranform: rotate(45deg); }
+
+.ui-tooltip-arrow.top:after {
+  bottom: -0.5em;
+  top: auto; }
 
 /*  Font Awesome 3.0.2
  *  the iconic font designed for use with Twitter Bootstrap

@@ -112,6 +112,16 @@
       "publicationStatus": "public"
     },
     {
+      "title": "Disabled Components",
+      "path": "interactives/basic-examples/disabled-components.json",
+      "groupKey": "basic-examples",
+      "subtitle": "You can disable/enable components using setComponentDisabled([id], [true/false]).",
+      "about": [
+
+      ],
+      "publicationStatus": "public"
+    },
+    {
       "title": "DNA Animations Example",
       "path": "interactives/basic-examples/dna-example.json",
       "groupKey": "basic-examples",
@@ -196,10 +206,26 @@
       "publicationStatus": "public"
     },
     {
+      "title": "Interactive without model",
+      "path": "interactives/basic-examples/no-model.json",
+      "groupKey": "basic-examples",
+      "subtitle": "An Interactive without a model. Not yet working in Interactive Browser",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
       "title": "onClick Demo",
       "path": "interactives/basic-examples/on-click.json",
       "groupKey": "basic-examples",
       "subtitle": "Use onClick() to add a click listener to a specified type of objects.",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "onDrag Demo",
+      "path": "interactives/basic-examples/on-drag.json",
+      "groupKey": "basic-examples",
+      "subtitle": "Use onDrag() to attach an event handler that can react to dragging action.",
       "about": "",
       "publicationStatus": "public"
     },
@@ -220,6 +246,14 @@
       "subtitle": "Use onSelect() to attach an event handler function for select action.",
       "about": "",
       "publicationStatus": "public"
+    },
+    {
+      "title": "One atom model defined in Interactive",
+      "path": "interactives/basic-examples/one-atom-defined-in-interactive.json",
+      "groupKey": "basic-examples",
+      "subtitle": "A Interactive with the model with the model defined in the Interactive.",
+      "about": "",
+      "publicationStatus": "draft"
     },
     {
       "title": "Testing: Only One Atom",
@@ -288,6 +322,14 @@
       "publicationStatus": "public"
     },
     {
+      "title": "Sandboxed Script",
+      "path": "interactives/basic-examples/sandboxed-script.json",
+      "groupKey": "basic-examples",
+      "subtitle": "Example of methods that a script can't call",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
       "title": "Simple Ball Drop",
       "path": "interactives/basic-examples/simple-ball-drop.json",
       "groupKey": "basic-examples",
@@ -301,6 +343,16 @@
       "groupKey": "basic-examples",
       "subtitle": "Kinetic Energy Shading can be turned on and off with scripts (and many other items also).",
       "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Tooltips and Helptips Demo",
+      "path": "interactives/basic-examples/tooltips-helptips.json",
+      "groupKey": "basic-examples",
+      "subtitle": "You can define tooltips and helptips for every type of interactive component.",
+      "about": [
+
+      ],
       "publicationStatus": "public"
     },
     {
@@ -532,11 +584,27 @@
     },
     {
       "title": "Electric Field",
-      "path": "interactives/conversion-tests/eletric-field.json",
+      "path": "interactives/conversion-tests/electric-field.json",
       "groupKey": "conversion-tests",
       "subtitle": "",
       "about": "",
-      "publicationStatus": "draft"
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Ellipse Reflection",
+      "path": "interactives/conversion-tests/ellipse-reflection.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Ellipses",
+      "path": "interactives/conversion-tests/ellipses.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "public"
     },
     {
       "title": "Energy Minimization",
@@ -563,6 +631,22 @@
       "publicationStatus": "public"
     },
     {
+      "title": "Gradients",
+      "path": "interactives/conversion-tests/gradients.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Crystal in Gravitational Field",
+      "path": "interactives/conversion-tests/gravitational-field-test-crystal.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
       "title": "Gravitational Fields (property-pulldown)",
       "path": "interactives/conversion-tests/gravitational-field-test-property-pulldown.json",
       "groupKey": "conversion-tests",
@@ -585,6 +669,33 @@
       "subtitle": "",
       "about": "",
       "publicationStatus": "broken"
+    },
+    {
+      "title": "Latent Heat",
+      "path": "interactives/conversion-tests/latent-heat.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "",
+      "about": [
+        "This model experiments with adding 'heat' to the system. Inorder to generate a heating curve. ",
+        "It takes 2 different approaches which result in different heating curves."
+      ],
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Line Reflection",
+      "path": "interactives/conversion-tests/line-reflection.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "public"
+    },
+    {
+      "title": "Lines",
+      "path": "interactives/conversion-tests/lines.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "public"
     },
     {
       "title": "Mark Atoms",
@@ -932,7 +1043,8 @@
         "4.  Wait until the temperatures do not change any further.",
         "5.  In which material does heat flow the fastest?"
       ],
-      "publicationStatus": "public"
+      "publicationStatus": "public",
+      "aspectRatio": 1.5
     },
     {
       "title": "Conduction 3B: The effect of thermal conductivity",
@@ -954,7 +1066,8 @@
         "",
         "1.  Run the model and note the temperatures measured by the two thermometers."
       ],
-      "publicationStatus": "public"
+      "publicationStatus": "public",
+      "aspectRatio": 1.5
     },
     {
       "title": "Conduction 3C: The effect of wall thickness",
@@ -974,7 +1087,8 @@
         "",
         "1.  Run the model and note the temperatures measured by the two thermometers."
       ],
-      "publicationStatus": "public"
+      "publicationStatus": "public",
+      "aspectRatio": 1.5
     },
     {
       "title": "Conduction 3D: The effect of temperature difference",
@@ -992,10 +1106,11 @@
         "4.  Use the drop-down menu below the model to change the heater temperature.",
         "5.  Repeat 1-3 for two more different heater temperatures."
       ],
-      "publicationStatus": "public"
+      "publicationStatus": "public",
+      "aspectRatio": 1.4
     },
     {
-      "title": "Conduction 3E: Combine thermal conductivity and heat capacity",
+      "title": "Conduction 3E: Combine conductivity and heat capacity",
       "path": "interactives/energy2d/htb/S3E1.json",
       "groupKey": "energy2d/htb",
       "subtitle": "Which material provides the best insulation?",
@@ -1026,10 +1141,11 @@
         "2.  Change the order of the layers using the drop-down menu to test a different setup.",
         "3.  Repeat the above steps until you reach the conclusion."
       ],
-      "publicationStatus": "public"
+      "publicationStatus": "public",
+      "aspectRatio": 1.4
     },
     {
-      "title": "Conduction 3G: Combine thermal conductivity and heat capacity",
+      "title": "Conduction 3G: Combine conductivity and heat capacity",
       "path": "interactives/energy2d/htb/S3G1.json",
       "groupKey": "energy2d/htb",
       "subtitle": "Which material provides the best insulation?",
@@ -1042,10 +1158,11 @@
         "2.  Choose *Thermal energy* from the **Heat map** drop-down list to switch the view from temperature distribution to",
         "    thermal energy distribution. In the thermal energy view, you will see where the energy goes."
       ],
-      "publicationStatus": "public"
+      "publicationStatus": "public",
+      "aspectRatio": 1.4
     },
     {
-      "title": "Conduction 3H: Build your own layered wall (Optional)",
+      "title": "Conduction 3H: Build your own layered wall",
       "path": "interactives/energy2d/htb/S3H1.json",
       "groupKey": "energy2d/htb",
       "subtitle": "",
@@ -1127,7 +1244,8 @@
         "",
         "Set the wind speed to be **Low** and **High** and repeat steps 1-2, respectively."
       ],
-      "publicationStatus": "public"
+      "publicationStatus": "public",
+      "aspectRatio": 1.5
     },
     {
       "title": "Convection 4D: The stack effect",
@@ -1141,7 +1259,8 @@
         "2.  Click on the wall and roof elements to change the sizes and locations of the leaks.",
         "3.  Note the convection pattern in each situation."
       ],
-      "publicationStatus": "public"
+      "publicationStatus": "public",
+      "aspectRatio": 1.0
     },
     {
       "title": "Convection 4E: Blowing wind",
@@ -1156,10 +1275,11 @@
         "    heated by a heating board on the floor.",
         "2.  Change the wind condition and open or close the windows to examine how heat flow will change."
       ],
-      "publicationStatus": "public"
+      "publicationStatus": "public",
+      "aspectRatio": 1.0
     },
     {
-      "title": "Radiation 5A: Radiation energy depends on temperature",
+      "title": "Radiation 5A: Radiation energy and temperature",
       "path": "interactives/energy2d/htb/S5A1.json",
       "groupKey": "energy2d/htb",
       "subtitle": "Does a hotter object radiate more energy?",
@@ -1191,7 +1311,7 @@
       "publicationStatus": "draft"
     },
     {
-      "title": "Energy Detective 7A: A well-insulated house vs. a poorly-insulated house",
+      "title": "Energy Detective 7A: Well and poorly-insulated houses",
       "path": "interactives/energy2d/htb/S7A1.json",
       "groupKey": "energy2d/htb",
       "subtitle": "Compare how much more heat a poorly-insulated house needs with a well-insulated one.",
@@ -1206,7 +1326,7 @@
       "publicationStatus": "draft"
     },
     {
-      "title": "Energy Detective 7B: Where does this house lose heat the most?",
+      "title": "Energy Detective 7B: Where is the most heat lost?",
       "path": "interactives/energy2d/htb/S7B1.json",
       "groupKey": "energy2d/htb",
       "subtitle": "Use the temperature difference across walls to find the ones most poorly insulated.",
@@ -1221,7 +1341,7 @@
       "publicationStatus": "draft"
     },
     {
-      "title": "Energy Detective 7C: Discover a vertical temperature gradient",
+      "title": "Energy Detective 7C: Vertical temperature gradients",
       "path": "interactives/energy2d/htb/S7C1.json",
       "groupKey": "energy2d/htb",
       "subtitle": "How does a ceiling effect the range of temperatures in a house?",
@@ -1304,6 +1424,14 @@
       "groupKey": "energy2d/imported",
       "subtitle": "A Self-Organizing Pattern of Fluid Flow",
       "about": "Rayleigh-Bénard convection is a type of natural convection, occurring in\na plane of fluid heated from below, in which the fluid develops a\nregular pattern of convection cells known as the Bénard cells. The\nfollowing model shows this.\n\n",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Blowing Wind",
+      "path": "interactives/energy2d/imported/blowing-wind.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "",
+      "about": "* no further description available",
       "publicationStatus": "draft"
     },
     {
@@ -1416,6 +1544,14 @@
       "groupKey": "energy2d/imported",
       "subtitle": "Exploring Factors that Affect Thermal Convection",
       "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Convection Number1",
+      "path": "interactives/energy2d/imported/convection-number1.json",
+      "groupKey": "energy2d/imported",
+      "subtitle": "",
+      "about": "* no further description available",
       "publicationStatus": "draft"
     },
     {
@@ -2338,7 +2474,8 @@
       "about": [
         "Geniverse Gene to Protein Genie"
       ],
-      "publicationStatus": "public"
+      "publicationStatus": "public",
+      "aspectRatio": 1.6
     },
     {
       "title": "Pendulum",
@@ -2352,7 +2489,8 @@
         "starting angle and mass – and observe how each one affects the period. Can you explain why?",
         "Try the damping slider. Does damping change the period?"
       ],
-      "publicationStatus": "public"
+      "publicationStatus": "public",
+      "aspectRatio": 1.6
     },
     {
       "title": "Spring and Mass",
@@ -2367,7 +2505,8 @@
         "Can you explain why? Is this different from the relationships for a pendulum? Try the",
         "damping slider. Does damping change the period?"
       ],
-      "publicationStatus": "public"
+      "publicationStatus": "public",
+      "aspectRatio": 1.6
     },
     {
       "title": "Pendulum and Spring",
@@ -2384,15 +2523,298 @@
         "and up and down? Does the initial starting angle affect the patterns when all the",
         "other variables are unchanged?"
       ],
-      "publicationStatus": "public"
+      "publicationStatus": "public",
+      "aspectRatio": 1.4
     },
     {
-      "title": "Electrostatics: Charged balls",
-      "path": "interactives/interactions-project/chargeballs.json",
-      "groupKey": "interactions-project",
-      "subtitle": "Opposite Charges Attract, Like Charges Repel",
+      "title": "act2model",
+      "path": "interactives/interactions/act2model.json",
+      "groupKey": "interactions",
+      "subtitle": "",
       "about": "",
       "publicationStatus": "draft"
+    },
+    {
+      "title": "amount-charge",
+      "path": "interactives/interactions/amount-charge.json",
+      "groupKey": "interactions",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "atomBuilderIons",
+      "path": "interactives/interactions/atomBuilderIons.json",
+      "groupKey": "interactions",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "balloonModelElectrons",
+      "path": "interactives/interactions/balloonModelElectrons.json",
+      "groupKey": "interactions",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Opposites Attract",
+      "path": "interactives/interactions/chargeballs.json",
+      "groupKey": "interactions",
+      "subtitle": "Explore how charged objects interact.",
+      "about": "Change the charge on each ball to positive or negative. Observe how the different charges on each ball affect the relationship between the balls.",
+      "publicationStatus": "draft",
+      "aspectRatio": 1.8
+    },
+    {
+      "title": "continuous",
+      "path": "interactives/interactions/continuous.json",
+      "groupKey": "interactions",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "crookesElectrodes",
+      "path": "interactives/interactions/crookesElectrodes.json",
+      "groupKey": "interactions",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "deformedCloud",
+      "path": "interactives/interactions/deformedCloud.json",
+      "groupKey": "interactions",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "dipoleRotation",
+      "path": "interactives/interactions/dipoleRotation.json",
+      "groupKey": "interactions",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "electronProperties",
+      "path": "interactives/interactions/electronProperties.json",
+      "groupKey": "interactions",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "forceDirection",
+      "path": "interactives/interactions/forceDirection.json",
+      "groupKey": "interactions",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "forceDirectionVDG",
+      "path": "interactives/interactions/forceDirectionVDG.json",
+      "groupKey": "interactions",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "forceStrengthDirection",
+      "path": "interactives/interactions/forceStrengthDirection.json",
+      "groupKey": "interactions",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "mazeGame",
+      "path": "interactives/interactions/mazeGame.json",
+      "groupKey": "interactions",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "particle",
+      "path": "interactives/interactions/particle.json",
+      "groupKey": "interactions",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "particleMixing",
+      "path": "interactives/interactions/particleMixing.json",
+      "groupKey": "interactions",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "rutherford",
+      "path": "interactives/interactions/rutherford.json",
+      "groupKey": "interactions",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "syringe",
+      "path": "interactives/interactions/syringe.json",
+      "groupKey": "interactions",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "targetFreePlay",
+      "path": "interactives/interactions/targetFreePlay.json",
+      "groupKey": "interactions",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "targetGameCharge",
+      "path": "interactives/interactions/targetGameCharge.json",
+      "groupKey": "interactions",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "targetGameDist",
+      "path": "interactives/interactions/targetGameDist.json",
+      "groupKey": "interactions",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Molecular Crystal - Compressing a crystal (MOLO)",
+      "path": "interactives/itsi/crystal/compress_crystal.json",
+      "groupKey": "itsi/crystal",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Crystals: Introduction to crystals (MOLO)",
+      "path": "interactives/itsi/crystal/crystal_intro2.json",
+      "groupKey": "itsi/crystal",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Crystals: Molecular Crystal Packing (MOLO)",
+      "path": "interactives/itsi/crystal/crystal_intro5.json",
+      "groupKey": "itsi/crystal",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft",
+      "aspectRatio": 1.2
+    },
+    {
+      "title": "Crystals: Defects (Molecular Logic Project)",
+      "path": "interactives/itsi/crystal/crystal_intro6.json",
+      "groupKey": "itsi/crystal",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft",
+      "aspectRatio": 1.5
+    },
+    {
+      "title": "Crystals: Introduction to crystals - Far and Near Atoms (MOLO)",
+      "path": "interactives/itsi/crystal/crystal_intro_far_and_near.json",
+      "groupKey": "itsi/crystal",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Crystals: Molecular Crystal 2 (MOLO)",
+      "path": "interactives/itsi/crystal/polymorphism.json",
+      "groupKey": "itsi/crystal",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Conduction B - area",
+      "path": "interactives/itsi/energy2d/conduction-area.json",
+      "groupKey": "itsi/energy2d",
+      "subtitle": "How does Conducting Area Affect Conduction Rate?",
+      "about": "The following model compares heat conduction through two test pieces\nmade of identical material but their conducting areas are different.\n\n",
+      "publicationStatus": "draft",
+      "aspectRatio": 1.5
+    },
+    {
+      "title": "Conduction D - Heat Capacity",
+      "path": "interactives/itsi/energy2d/conduction-heat-capacity.json",
+      "groupKey": "itsi/energy2d",
+      "subtitle": "How does Specific Heat Affect Conduction Rate?",
+      "about": "The following model compares heat conduction through two test pieces\nthat differ ONLY in specific heat. Choosing \\\"Thermal energy\\\" in the\n\\\"Heat map\\\" drop-down list will provide an explanation of the\ndependence of heat conduction rate on specific heat.\n\n",
+      "publicationStatus": "draft",
+      "aspectRatio": 1.5
+    },
+    {
+      "title": "Conduction C: Temperature Difference",
+      "path": "interactives/itsi/energy2d/conduction-temperature-difference.json",
+      "groupKey": "itsi/energy2d",
+      "subtitle": "How does Temperature Difference Affect Conduction Rate?",
+      "about": "If the fire under a frying pan is more intense, will your hand feel\nhotter?\n\n![Skillet over an intense flame.](_assets/img/skillet-more-flame.jpg)\n![Skillet over a low flame.](_assets/img/skillet-less-flame.jpg)\n{: align=\"center\"}\n\nThe following model compares heat conduction through two identical test\npieces but the temperature differences across them are different.\n\n",
+      "publicationStatus": "draft",
+      "aspectRatio": 1.5
+    },
+    {
+      "title": "Conduction A - wood vs metal",
+      "path": "interactives/itsi/energy2d/conduction-wood-metal.json",
+      "groupKey": "itsi/energy2d",
+      "subtitle": "Thermal Conductivity: The Ability to Conduct Heat",
+      "about": "Which conducts heat more quickly from a frying pan to your hand, a wood\nhandle or a metal one?\n\n![Skillet with a wood handle being heated over open\nflame.](_assets/img/skillet-conductivity-low.jpg) ![Skillet with a metal\nhandle being heated over open\nflame.](_assets/img/skillet-conductivity-high.jpg)\n{: align=\"center\"}\n\nThe following model compares heat conduction through two materials of\ndifferent thermal conductivities.\n\n",
+      "publicationStatus": "draft",
+      "aspectRatio": 1.5
+    },
+    {
+      "title": "Pressure Equilibrium",
+      "path": "interactives/itsi/gas-laws/7-why-did-the-can-collapse.json",
+      "groupKey": "itsi/gas-laws",
+      "subtitle": "Explore how heat and number of molecules affect pressure equilibrium between two gases.",
+      "about": [
+        "There are gases on both sides of a moveable barrier (piston), which stays in the same place",
+        "(more or less) when you run the model because the gas pressure on the piston is in equilibrium.",
+        "",
+        "Add purple gas molecules and watch what happens to the piston. Reset the model. Now add",
+        "yellow gas molecules. What happens to the piston?",
+        "",
+        "Try heating or cooling the gas molecules. Explain the change in equilibrium with each",
+        "change. Which has a greater effect on equilibrium -- changing the number of gas molecules",
+        "or changing the temperature? Why?"
+      ],
+      "publicationStatus": "public",
+      "aspectRatio": 1.9
+    },
+    {
+      "title": "Collapsing Soda Can",
+      "path": "interactives/itsi/gas-laws/7b-why-did-the-can-collapse.json",
+      "groupKey": "itsi/gas-laws",
+      "subtitle": "Explore how heat and number of molecules affect pressure equilibrium between two gases.",
+      "about": [
+        "The model is an incomplete model of a soda can. ",
+        "Currently it is showing gas molecules inside and outside the soda can before it is plunged in ice water. ",
+        "The rectangle in the middle of the model represents a micro-section of the soda can wall. ",
+        "Design a model that shows what happens after the can is placed in ice water. ",
+        "Use the tools on the sides of the model to more accurately represent the experiment. ",
+        "Use tools to heat and cool the molecules where it is appropriate. "
+      ],
+      "publicationStatus": "draft",
+      "aspectRatio": 1.7
     },
     {
       "title": "Horizontal Align",
@@ -2447,6 +2869,310 @@
         "   Created by hand, this SVG image uses SVG text elements and the SVG feGaussianBlur filter to create the drop-shadow effect."
       ],
       "publicationStatus": "public"
+    },
+    {
+      "title": "HClReaction",
+      "path": "interactives/public/part1/chembond/HClReaction.json",
+      "groupKey": "public/part1/chembond",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "chemPotential",
+      "path": "interactives/public/part1/chembond/chemPotential.json",
+      "groupKey": "public/part1/chembond",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "makingChlorine",
+      "path": "interactives/public/part1/chembond/makingChlorine.json",
+      "groupKey": "public/part1/chembond",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "makingHCl",
+      "path": "interactives/public/part1/chembond/makingHCl.json",
+      "groupKey": "public/part1/chembond",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "manyHydrogen",
+      "path": "interactives/public/part1/chembond/manyHydrogen.json",
+      "groupKey": "public/part1/chembond",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "equil1a",
+      "path": "interactives/public/part1/chemequil/equil1a.json",
+      "groupKey": "public/part1/chemequil",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "equil2",
+      "path": "interactives/public/part1/chemequil/equil2.json",
+      "groupKey": "public/part1/chemequil",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "equil3",
+      "path": "interactives/public/part1/chemequil/equil3.json",
+      "groupKey": "public/part1/chemequil",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "equil4",
+      "path": "interactives/public/part1/chemequil/equil4.json",
+      "groupKey": "public/part1/chemequil",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "boiling",
+      "path": "interactives/public/part1/chempot/boiling.json",
+      "groupKey": "public/part1/chempot",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "chemPotential",
+      "path": "interactives/public/part1/chempot/chemPotential.json",
+      "groupKey": "public/part1/chempot",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "condensing",
+      "path": "interactives/public/part1/chempot/condensing.json",
+      "groupKey": "public/part1/chempot",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "energyCurves",
+      "path": "interactives/public/part1/chempot/energyCurves.json",
+      "groupKey": "public/part1/chempot",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "energyCurves2",
+      "path": "interactives/public/part1/chempot/energyCurves2.json",
+      "groupKey": "public/part1/chempot",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "energyCurves3",
+      "path": "interactives/public/part1/chempot/energyCurves3.json",
+      "groupKey": "public/part1/chempot",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "energyCurves4",
+      "path": "interactives/public/part1/chempot/energyCurves4.json",
+      "groupKey": "public/part1/chempot",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "makingChlorine",
+      "path": "interactives/public/part1/chempot/makingChlorine.json",
+      "groupKey": "public/part1/chempot",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "makingHCl",
+      "path": "interactives/public/part1/chempot/makingHCl.json",
+      "groupKey": "public/part1/chempot",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "manyHydrogen",
+      "path": "interactives/public/part1/chempot/manyHydrogen.json",
+      "groupKey": "public/part1/chempot",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "potentialInHClReaction",
+      "path": "interactives/public/part1/chempot/potentialInHClReaction.json",
+      "groupKey": "public/part1/chempot",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "waterPotential",
+      "path": "interactives/public/part1/chempot/waterPotential.json",
+      "groupKey": "public/part1/chempot",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "1",
+      "path": "interactives/public/part1/conduction/1.json",
+      "groupKey": "public/part1/conduction",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "page2",
+      "path": "interactives/public/part1/conduction/page2.json",
+      "groupKey": "public/part1/conduction",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "page3",
+      "path": "interactives/public/part1/conduction/page3.json",
+      "groupKey": "public/part1/conduction",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "page4",
+      "path": "interactives/public/part1/conduction/page4.json",
+      "groupKey": "public/part1/conduction",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "page5",
+      "path": "interactives/public/part1/conduction/page5.json",
+      "groupKey": "public/part1/conduction",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "page6",
+      "path": "interactives/public/part1/conduction/page6.json",
+      "groupKey": "public/part1/conduction",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "page7$1",
+      "path": "interactives/public/part1/conduction/page7$1.json",
+      "groupKey": "public/part1/conduction",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "page7",
+      "path": "interactives/public/part1/conduction/page7.json",
+      "groupKey": "public/part1/conduction",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "fold_oil",
+      "path": "interactives/public/part1/conserve/fold_oil.json",
+      "groupKey": "public/part1/conserve",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "indivAAoil",
+      "path": "interactives/public/part1/conserve/indivAAoil.json",
+      "groupKey": "public/part1/conserve",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "mutate_charged",
+      "path": "interactives/public/part1/conserve/mutate_charged.json",
+      "groupKey": "public/part1/conserve",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "mutate_phob",
+      "path": "interactives/public/part1/conserve/mutate_phob.json",
+      "groupKey": "public/part1/conserve",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "mutate_polar",
+      "path": "interactives/public/part1/conserve/mutate_polar.json",
+      "groupKey": "public/part1/conserve",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "protein_conservation2",
+      "path": "interactives/public/part1/conserve/protein_conservation2.json",
+      "groupKey": "public/part1/conserve",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "protein_conservation3",
+      "path": "interactives/public/part1/conserve/protein_conservation3.json",
+      "groupKey": "public/part1/conserve",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "protein_conservation4",
+      "path": "interactives/public/part1/conserve/protein_conservation4.json",
+      "groupKey": "public/part1/conserve",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "protein_conservation5",
+      "path": "interactives/public/part1/conserve/protein_conservation5.json",
+      "groupKey": "public/part1/conserve",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
     },
     {
       "title": "crystal_intro2",
@@ -2505,6 +3231,622 @@
       "publicationStatus": "draft"
     },
     {
+      "title": "PCB",
+      "path": "interactives/public/part1/distillation/PCB.json",
+      "groupKey": "public/part1/distillation",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Still7",
+      "path": "interactives/public/part1/distillation/Still7.json",
+      "groupKey": "public/part1/distillation",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "alcohol",
+      "path": "interactives/public/part1/distillation/alcohol.json",
+      "groupKey": "public/part1/distillation",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "distillation2",
+      "path": "interactives/public/part1/distillation/distillation2.json",
+      "groupKey": "public/part1/distillation",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "distillation3",
+      "path": "interactives/public/part1/distillation/distillation3.json",
+      "groupKey": "public/part1/distillation",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "pureWater",
+      "path": "interactives/public/part1/distillation/pureWater.json",
+      "groupKey": "public/part1/distillation",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "salt",
+      "path": "interactives/public/part1/distillation/salt.json",
+      "groupKey": "public/part1/distillation",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "abNoEnzyme",
+      "path": "interactives/public/part1/elisa/abNoEnzyme.json",
+      "groupKey": "public/part1/elisa",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "addAntibodies",
+      "path": "interactives/public/part1/elisa/addAntibodies.json",
+      "groupKey": "public/part1/elisa",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "addAntigen",
+      "path": "interactives/public/part1/elisa/addAntigen.json",
+      "groupKey": "public/part1/elisa",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "addBlocking",
+      "path": "interactives/public/part1/elisa/addBlocking.json",
+      "groupKey": "public/part1/elisa",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "antibodyA",
+      "path": "interactives/public/part1/elisa/antibodyA.json",
+      "groupKey": "public/part1/elisa",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "antibodyAB",
+      "path": "interactives/public/part1/elisa/antibodyAB.json",
+      "groupKey": "public/part1/elisa",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "antibodyB",
+      "path": "interactives/public/part1/elisa/antibodyB.json",
+      "groupKey": "public/part1/elisa",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "catalyst",
+      "path": "interactives/public/part1/elisa/catalyst.json",
+      "groupKey": "public/part1/elisa",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "elisa2$1",
+      "path": "interactives/public/part1/elisa/elisa2$1.json",
+      "groupKey": "public/part1/elisa",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "elisa2",
+      "path": "interactives/public/part1/elisa/elisa2.json",
+      "groupKey": "public/part1/elisa",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "elisa3",
+      "path": "interactives/public/part1/elisa/elisa3.json",
+      "groupKey": "public/part1/elisa",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "elisa4",
+      "path": "interactives/public/part1/elisa/elisa4.json",
+      "groupKey": "public/part1/elisa",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "elisa5",
+      "path": "interactives/public/part1/elisa/elisa5.json",
+      "groupKey": "public/part1/elisa",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "elisa6",
+      "path": "interactives/public/part1/elisa/elisa6.json",
+      "groupKey": "public/part1/elisa",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "finalIndirect",
+      "path": "interactives/public/part1/elisa/finalIndirect.json",
+      "groupKey": "public/part1/elisa",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "finalIndirect2",
+      "path": "interactives/public/part1/elisa/finalIndirect2.json",
+      "groupKey": "public/part1/elisa",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "indirect",
+      "path": "interactives/public/part1/elisa/indirect.json",
+      "groupKey": "public/part1/elisa",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "noCatalyst",
+      "path": "interactives/public/part1/elisa/noCatalyst.json",
+      "groupKey": "public/part1/elisa",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "substrate",
+      "path": "interactives/public/part1/elisa/substrate.json",
+      "groupKey": "public/part1/elisa",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "substrate2",
+      "path": "interactives/public/part1/elisa/substrate2.json",
+      "groupKey": "public/part1/elisa",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "veryEmpty",
+      "path": "interactives/public/part1/elisa/veryEmpty.json",
+      "groupKey": "public/part1/elisa",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "example1",
+      "path": "interactives/public/part1/emove/example1.json",
+      "groupKey": "public/part1/emove",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "example2",
+      "path": "interactives/public/part1/emove/example2.json",
+      "groupKey": "public/part1/emove",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "example3",
+      "path": "interactives/public/part1/emove/example3.json",
+      "groupKey": "public/part1/emove",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "example4",
+      "path": "interactives/public/part1/emove/example4.json",
+      "groupKey": "public/part1/emove",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "level1",
+      "path": "interactives/public/part1/emove/level1.json",
+      "groupKey": "public/part1/emove",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "level2",
+      "path": "interactives/public/part1/emove/level2.json",
+      "groupKey": "public/part1/emove",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "modelWithInstructions",
+      "path": "interactives/public/part1/emove/modelWithInstructions.json",
+      "groupKey": "public/part1/emove",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "page1",
+      "path": "interactives/public/part1/emove/page1.json",
+      "groupKey": "public/part1/emove",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "page2$1",
+      "path": "interactives/public/part1/emove/page2$1.json",
+      "groupKey": "public/part1/emove",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "page2",
+      "path": "interactives/public/part1/emove/page2.json",
+      "groupKey": "public/part1/emove",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "page3",
+      "path": "interactives/public/part1/emove/page3.json",
+      "groupKey": "public/part1/emove",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "page4",
+      "path": "interactives/public/part1/emove/page4.json",
+      "groupKey": "public/part1/emove",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "page5",
+      "path": "interactives/public/part1/emove/page5.json",
+      "groupKey": "public/part1/emove",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "page7",
+      "path": "interactives/public/part1/emove/page7.json",
+      "groupKey": "public/part1/emove",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "page8$1",
+      "path": "interactives/public/part1/emove/page8$1.json",
+      "groupKey": "public/part1/emove",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "page8",
+      "path": "interactives/public/part1/emove/page8.json",
+      "groupKey": "public/part1/emove",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Compd.pendulum",
+      "path": "interactives/public/part1/energy/Compd.pendulum.json",
+      "groupKey": "public/part1/energy",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Heatflow.experiment4",
+      "path": "interactives/public/part1/energy/Heatflow.experiment4.json",
+      "groupKey": "public/part1/energy",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "ManySmallAtoms2",
+      "path": "interactives/public/part1/energy/ManySmallAtoms2.json",
+      "groupKey": "public/part1/energy",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Phases.under.pressure3",
+      "path": "interactives/public/part1/energy/Phases.under.pressure3.json",
+      "groupKey": "public/part1/energy",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Shockwave",
+      "path": "interactives/public/part1/energy/Shockwave.json",
+      "groupKey": "public/part1/energy",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Shockwave2",
+      "path": "interactives/public/part1/energy/Shockwave2.json",
+      "groupKey": "public/part1/energy",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "The Kiss",
+      "path": "interactives/public/part1/energy/The-Kiss.json",
+      "groupKey": "public/part1/energy",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "TwoBigAtoms.Energy",
+      "path": "interactives/public/part1/energy/TwoBigAtoms.Energy.json",
+      "groupKey": "public/part1/energy",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "energy1",
+      "path": "interactives/public/part1/energy/energy1.json",
+      "groupKey": "public/part1/energy",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "energy10",
+      "path": "interactives/public/part1/energy/energy10.json",
+      "groupKey": "public/part1/energy",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "energy1a",
+      "path": "interactives/public/part1/energy/energy1a.json",
+      "groupKey": "public/part1/energy",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "energy2",
+      "path": "interactives/public/part1/energy/energy2.json",
+      "groupKey": "public/part1/energy",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "energy3",
+      "path": "interactives/public/part1/energy/energy3.json",
+      "groupKey": "public/part1/energy",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "energy4",
+      "path": "interactives/public/part1/energy/energy4.json",
+      "groupKey": "public/part1/energy",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "energy5",
+      "path": "interactives/public/part1/energy/energy5.json",
+      "groupKey": "public/part1/energy",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "energy6",
+      "path": "interactives/public/part1/energy/energy6.json",
+      "groupKey": "public/part1/energy",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "energy7",
+      "path": "interactives/public/part1/energy/energy7.json",
+      "groupKey": "public/part1/energy",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "energy8",
+      "path": "interactives/public/part1/energy/energy8.json",
+      "groupKey": "public/part1/energy",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "energy9",
+      "path": "interactives/public/part1/energy/energy9.json",
+      "groupKey": "public/part1/energy",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "energya",
+      "path": "interactives/public/part1/energy/energya.json",
+      "groupKey": "public/part1/energy",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "pendulum",
+      "path": "interactives/public/part1/energy/pendulum.json",
+      "groupKey": "public/part1/energy",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "fluorescence3",
+      "path": "interactives/public/part1/fluorescence/fluorescence3.json",
+      "groupKey": "public/part1/fluorescence",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "fluorescence4",
+      "path": "interactives/public/part1/fluorescence/fluorescence4.json",
+      "groupKey": "public/part1/fluorescence",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "fluorescence5",
+      "path": "interactives/public/part1/fluorescence/fluorescence5.json",
+      "groupKey": "public/part1/fluorescence",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "fluorescence6",
+      "path": "interactives/public/part1/fluorescence/fluorescence6.json",
+      "groupKey": "public/part1/fluorescence",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "fluorescence7",
+      "path": "interactives/public/part1/fluorescence/fluorescence7.json",
+      "groupKey": "public/part1/fluorescence",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
+    },
+    {
+      "title": "Step1",
+      "path": "interactives/public/part1/heatflow/Step1.json",
+      "groupKey": "public/part1/heatflow",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Step2",
+      "path": "interactives/public/part1/heatflow/Step2.json",
+      "groupKey": "public/part1/heatflow",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Step3",
+      "path": "interactives/public/part1/heatflow/Step3.json",
+      "groupKey": "public/part1/heatflow",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Step4",
+      "path": "interactives/public/part1/heatflow/Step4.json",
+      "groupKey": "public/part1/heatflow",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "insulin3",
+      "path": "interactives/public/part1/insulin/insulin3.json",
+      "groupKey": "public/part1/insulin",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "insulin4",
+      "path": "interactives/public/part1/insulin/insulin4.json",
+      "groupKey": "public/part1/insulin",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "insulin5",
+      "path": "interactives/public/part1/insulin/insulin5.json",
+      "groupKey": "public/part1/insulin",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
       "title": "light2",
       "path": "interactives/public/part1/light/light2.json",
       "groupKey": "public/part1/light",
@@ -2551,6 +3893,166 @@
       "subtitle": "",
       "about": "",
       "publicationStatus": "draft"
+    },
+    {
+      "title": "A4B8_2",
+      "path": "interactives/public/part1/molecularcrystal/A4B8_2.json",
+      "groupKey": "public/part1/molecularcrystal",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "amorphization",
+      "path": "interactives/public/part1/molecularcrystal/amorphization.json",
+      "groupKey": "public/part1/molecularcrystal",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "binary",
+      "path": "interactives/public/part1/molecularcrystal/binary.json",
+      "groupKey": "public/part1/molecularcrystal",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "compress",
+      "path": "interactives/public/part1/molecularcrystal/compress.json",
+      "groupKey": "public/part1/molecularcrystal",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "crystallography",
+      "path": "interactives/public/part1/molecularcrystal/crystallography.json",
+      "groupKey": "public/part1/molecularcrystal",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "molecularcrystal",
+      "path": "interactives/public/part1/molecularcrystal/molecularcrystal.json",
+      "groupKey": "public/part1/molecularcrystal",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "polymorphism",
+      "path": "interactives/public/part1/molecularcrystal/polymorphism.json",
+      "groupKey": "public/part1/molecularcrystal",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "simplematerial",
+      "path": "interactives/public/part1/molecularcrystal/simplematerial.json",
+      "groupKey": "public/part1/molecularcrystal",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "single",
+      "path": "interactives/public/part1/molecularcrystal/single.json",
+      "groupKey": "public/part1/molecularcrystal",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "strk1",
+      "path": "interactives/public/part1/molecularcrystal/strk1.json",
+      "groupKey": "public/part1/molecularcrystal",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "strk2",
+      "path": "interactives/public/part1/molecularcrystal/strk2.json",
+      "groupKey": "public/part1/molecularcrystal",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "transform",
+      "path": "interactives/public/part1/molecularcrystal/transform.json",
+      "groupKey": "public/part1/molecularcrystal",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "aa2.charge",
+      "path": "interactives/public/part1/protein/aa2.charge.json",
+      "groupKey": "public/part1/protein",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "aa2.charge2",
+      "path": "interactives/public/part1/protein/aa2.charge2.json",
+      "groupKey": "public/part1/protein",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "aa2.charge3",
+      "path": "interactives/public/part1/protein/aa2.charge3.json",
+      "groupKey": "public/part1/protein",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "aa2.conclusions",
+      "path": "interactives/public/part1/protein/aa2.conclusions.json",
+      "groupKey": "public/part1/protein",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "dna2",
+      "path": "interactives/public/part1/protein/dna2.json",
+      "groupKey": "public/part1/protein",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "test",
+      "path": "interactives/public/part1/protein/test.json",
+      "groupKey": "public/part1/protein",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "test2",
+      "path": "interactives/public/part1/protein/test2.json",
+      "groupKey": "public/part1/protein",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "page4",
+      "path": "interactives/public/part1/redox/page4.json",
+      "groupKey": "public/part1/redox",
+      "subtitle": "",
+      "about": "",
+      "publicationStatus": "broken"
     },
     {
       "title": "O2",
@@ -3004,7 +4506,8 @@
         "",
         "After translation, inspect the protein to see how the amino acid sequence folded."
       ],
-      "publicationStatus": "public"
+      "publicationStatus": "public",
+      "aspectRatio": 1.2
     },
     {
       "title": "Modeling Transcription",
@@ -3018,7 +4521,8 @@
         "",
         "Use the **A**, **U**, **G** and **C** buttons to place the correct mRNA nucleotide with each DNA nucleotide."
       ],
-      "publicationStatus": "public"
+      "publicationStatus": "public",
+      "aspectRatio": 1.2
     },
     {
       "title": "Modeling Translation",
@@ -3046,7 +4550,8 @@
         "",
         "Are some types of mutations more damaging than others?"
       ],
-      "publicationStatus": "public"
+      "publicationStatus": "public",
+      "aspectRatio": 1.2
     },
     {
       "title": "Diffusion of a Drop",
@@ -3057,7 +4562,8 @@
         "Click in the model to add a drop of dye.  Watch how the molecules move through the water.",
         "Trace an individual molecule to see how it moves through the liquid."
       ],
-      "publicationStatus": "public"
+      "publicationStatus": "public",
+      "aspectRatio": 1.25
     },
     {
       "title": "Basic Diffusion",
@@ -3068,7 +4574,8 @@
         "Add a drop of dye to the model.  Watch how the molecules move through the water.",
         "Trace a random individual molecule to see how it moves through the liquid."
       ],
-      "publicationStatus": "draft"
+      "publicationStatus": "draft",
+      "aspectRatio": 1.25
     },
     {
       "title": "Diffusion & Temperature",
@@ -3076,7 +4583,8 @@
       "groupKey": "sam/diffusion",
       "subtitle": "How does temperature affect the rate of diffusion?",
       "about": "Explore the role of temperature on the rate of diffusion. Set the temperature, then remove the barrier, and measure the amount of time it takes the blue molecules to reach the gas sensor. When the gas sensor has detected three blue molecules, it will stop the experiment. Compare the diffusion rates at low, medium and high temperatures. Trace an individual molecule to see the path it takes.",
-      "publicationStatus": "public"
+      "publicationStatus": "public",
+      "aspectRatio": 1.7
     },
     {
       "title": "Diffusion & Molecular Mass",
@@ -3084,7 +4592,8 @@
       "groupKey": "sam/diffusion",
       "subtitle": "How does molecular mass affect the rate of diffusion?",
       "about": "Explore the role of molecular mass on the rate of diffusion. Select the mass of the molecules behind the barrier. Remove the barrier, and measure the amount of time it takes the molecules to reach the gas sensor. When the gas sensor has detected three molecules, it will stop the experiment. Compare the diffusion rates of the lightest, heavier and heaviest molecules. Trace an individual molecule to see the path it takes.",
-      "publicationStatus": "public"
+      "publicationStatus": "public",
+      "aspectRatio": 1.7
     },
     {
       "title": "Diffusion Across Semipermeable Membranes",
@@ -3092,7 +4601,8 @@
       "groupKey": "sam/diffusion",
       "subtitle": "How does pore size affect the diffusion of different molecules?",
       "about": "Biological membranes are selectively permeable; some molecules can cross while others cannot. One way to affect this is through pore size. Change the pore size with the slider to change the permeability of the membranes to the different types of molecules. Trace an individual molecule to see the path it takes.",
-      "publicationStatus": "public"
+      "publicationStatus": "public",
+      "aspectRatio": 1.2
     },
     {
       "title": "Diffusion Across a Semipermeable Membrane",
@@ -3100,7 +4610,8 @@
       "groupKey": "sam/diffusion",
       "subtitle": "How does pore size affect the diffusion of different molecules?",
       "about": "Biological membranes are selectively permeable; some molecules can cross while others cannot. One way to affect this is through pore size. Change the pore size with the slider to change the permeability of the membrane to the different types of molecules. Trace an individual molecule to see the path it takes.",
-      "publicationStatus": "public"
+      "publicationStatus": "public",
+      "aspectRatio": 1.2
     },
     {
       "title": "Diffusion Across a Permeable Membrane",
@@ -3114,7 +4625,8 @@
         "",
         "Set up the model with high oxygen and low carbon dioxide outside the cell and low oxygen and high carbon dioxide inside the cell. In which direction do the oxygen and carbon dioxide molecules move?"
       ],
-      "publicationStatus": "public"
+      "publicationStatus": "public",
+      "aspectRatio": 1.6
     },
     {
       "title": "Diffusion - Build your own model",
@@ -3122,7 +4634,8 @@
       "groupKey": "sam/diffusion",
       "subtitle": "Explore how size and number of particles affect diffusion among gases.",
       "about": "Modify the model by adding and arranging molecules in order to explore how diffusion works.",
-      "publicationStatus": "draft"
+      "publicationStatus": "draft",
+      "aspectRatio": 1.5
     },
     {
       "title": "Diffusion Sandbox",
@@ -3130,7 +4643,8 @@
       "groupKey": "sam/diffusion",
       "subtitle": "Explore how size and number of particles affect diffusion among gases.",
       "about": "Modify the model by adding and arranging molecules in order to explore how diffusion works.",
-      "publicationStatus": "draft"
+      "publicationStatus": "draft",
+      "aspectRatio": 1.5
     },
     {
       "title": "Empty diffusion model",
@@ -3138,7 +4652,8 @@
       "groupKey": "sam/diffusion",
       "subtitle": "",
       "about": "",
-      "publicationStatus": "draft"
+      "publicationStatus": "draft",
+      "aspectRatio": 1.4
     },
     {
       "title": "What is Pressure?",
@@ -3210,7 +4725,8 @@
         "----",
         "*Note: Although the atoms in this model are in a flat plane, volume is calculated using 0.1 nm as the depth of the container.*"
       ],
-      "publicationStatus": "public"
+      "publicationStatus": "public",
+      "aspectRatio": 1.2
     },
     {
       "title": "Pressure Equilibrium",
@@ -3228,7 +4744,8 @@
         "change. Which has a greater effect on equilibrium -- changing the number of gas molecules",
         "or changing the temperature? Why?"
       ],
-      "publicationStatus": "public"
+      "publicationStatus": "public",
+      "aspectRatio": 1.8
     },
     {
       "title": "Collapsing Soda Can",
@@ -3243,7 +4760,8 @@
         "Use the tools on the sides of the model to more accurately represent the experiment. ",
         "Use tools to heat and cool the molecules where it is appropriate. "
       ],
-      "publicationStatus": "draft"
+      "publicationStatus": "draft",
+      "aspectRatio": 1.6
     },
     {
       "title": "Seeing Intermolecular Attractions",
@@ -3295,7 +4813,8 @@
         "Attractions between molecules are shown with dotted lines. Run the model, then heat the liquids.",
         "What does boiling look like at the molecular level?"
       ],
-      "publicationStatus": "public"
+      "publicationStatus": "public",
+      "aspectRatio": 1.7
     },
     {
       "title": "Polarity and Attractive Strength",
@@ -3307,7 +4826,8 @@
         "menu and \"pull\" on the star to separate the molecules. Why does polarity have an effect",
         "on the strength of attraction between molecules?"
       ],
-      "publicationStatus": "public"
+      "publicationStatus": "public",
+      "aspectRatio": 1.4
     },
     {
       "title": "Factors Affecting London Dispersion Attractions",
@@ -3319,7 +4839,8 @@
         "molecules from the drop-down menu and \"pull\" on the star to separate the molecules.",
         "Why do size and shape affect the strength of attraction between two non-polar molecules?"
       ],
-      "publicationStatus": "public"
+      "publicationStatus": "public",
+      "aspectRatio": 1.4
     },
     {
       "title": "Hydrogen Bonds: A Special Type of Attraction",
@@ -3351,7 +4872,8 @@
       "groupKey": "sam/intermolecular-attractions",
       "subtitle": "",
       "about": "",
-      "publicationStatus": "draft"
+      "publicationStatus": "draft",
+      "aspectRatio": 1.0
     },
     {
       "title": "Absoprtion Spectra",
@@ -3359,7 +4881,8 @@
       "groupKey": "sam/light-matter",
       "subtitle": "Explore how light interacts mixtured of elements",
       "about": "",
-      "publicationStatus": "draft"
+      "publicationStatus": "draft",
+      "aspectRatio": 1.6
     },
     {
       "title": "Blackbody Heat and Emission",
@@ -3367,7 +4890,8 @@
       "groupKey": "sam/light-matter",
       "subtitle": "Blackbody radiation at different temperatures",
       "about": "",
-      "publicationStatus": "draft"
+      "publicationStatus": "draft",
+      "aspectRatio": 1.7
     },
     {
       "title": "Emission Spectrometer",
@@ -3383,7 +4907,8 @@
       "groupKey": "sam/light-matter",
       "subtitle": "Different colored leaves absorb, reflect, and transmit different photons. Is the light that a leaf absorbs the same color as the leaf?",
       "about": "Different colored leaves absorb, reflect, and transmit different photons. Is the light that a leaf absorbs the same color as the leaf?",
-      "publicationStatus": "draft"
+      "publicationStatus": "draft",
+      "aspectRatio": 1.0
     },
     {
       "title": "Light Matter Feature Test",
@@ -3391,7 +4916,8 @@
       "groupKey": "sam/light-matter",
       "subtitle": "Testing of Light-Matter model features",
       "about": "",
-      "publicationStatus": "draft"
+      "publicationStatus": "draft",
+      "aspectRatio": 1.5
     },
     {
       "title": "Sunlight, Infrared, CO2 and the Ground",
@@ -3399,7 +4925,8 @@
       "groupKey": "sam/light-matter",
       "subtitle": "Explore how light interacts with both the ground and CO2",
       "about": "",
-      "publicationStatus": "draft"
+      "publicationStatus": "draft",
+      "aspectRatio": 1.7
     },
     {
       "title": "Molecular View of a Gas",
@@ -3411,7 +4938,8 @@
         "how the molecules move relative to each other. How do the distances between gas",
         "molecules change over time?"
       ],
-      "publicationStatus": "public"
+      "publicationStatus": "public",
+      "aspectRatio": 1.2
     },
     {
       "title": "Molecular View of a Liquid",
@@ -3423,7 +4951,8 @@
         "how the molecules in a liquid move relative to each other. How does the movement",
         "of molecules explain why liquids take the shape of their containers?"
       ],
-      "publicationStatus": "public"
+      "publicationStatus": "public",
+      "aspectRatio": 1.2
     },
     {
       "title": "Molecular View of a Solid",
@@ -3435,7 +4964,8 @@
         "run the model to see how the molecules in a solid move relative to each other. How",
         "would you describe the movement and arrangement of molecules in a solid?"
       ],
-      "publicationStatus": "public"
+      "publicationStatus": "public",
+      "aspectRatio": 1.2
     },
     {
       "title": "Intermolecular Attractions and States of Matter",
@@ -3447,7 +4977,8 @@
         "strength of attractions between the molecules. How does changing the force of attraction",
         "between molecules affect the state of that material?"
       ],
-      "publicationStatus": "public"
+      "publicationStatus": "public",
+      "aspectRatio": 1.2
     },
     {
       "title": "Phase Changes with two bar graphs",
@@ -3465,7 +4996,8 @@
         "Run the model. How much energy is able to penetrate the barrier? Remove the barrier.",
         "How quickly do the more energetic atoms melt the solid?"
       ],
-      "publicationStatus": "draft"
+      "publicationStatus": "draft",
+      "aspectRatio": 1.65
     },
     {
       "title": "Phase Changes",
@@ -3483,7 +5015,8 @@
         "Run the model. How much energy is able to penetrate the barrier? Remove the barrier.",
         "How quickly do the more energetic atoms melt the solid?"
       ],
-      "publicationStatus": "public"
+      "publicationStatus": "public",
+      "aspectRatio": 1.5
     },
     {
       "title": "Latent Heat",
@@ -3588,6 +5121,14 @@
       "path": "interactives/solar-system/inner-four-planets.json",
       "groupKey": "solar-system",
       "subtitle": "Mercury, Venus, Earth and Mars.",
+      "about": "",
+      "publicationStatus": "draft"
+    },
+    {
+      "title": "Measure Sun-Earth Distance",
+      "path": "interactives/solar-system/measure-sun-earth.json",
+      "groupKey": "solar-system",
+      "subtitle": "How does the distance from the Earth to the Sun change during the year?",
       "about": "",
       "publicationStatus": "draft"
     },
@@ -5840,20 +7381,72 @@
       "publicationStatus": "draft"
     },
     {
-      "title": "latentheat2",
+      "title": "Seeing Specific Heat and Latent Heat",
       "path": "interactives/student/stateofmatter/latentheat2.json",
       "groupKey": "student/stateofmatter",
-      "subtitle": "",
-      "about": "",
-      "publicationStatus": "draft"
+      "subtitle": "Seeing Specific Heat and Latent Heat in a Melting Experiment",
+      "about": [
+        "Specific heat capacitiy is the measure of the heat energy required",
+        "to raise the temperature of a given quantity of a substance by one",
+        "kelvin. Latent heat of melting describes tœhe amount of heat",
+        "required to melt a solid. When a solid is undergoing melting, the",
+        "temperature basically remains constant until the entire solid is",
+        "molten. The above simulation demonstrates the specific heat and",
+        "the latent heat.",
+        "",
+        "The physical origin of latent heat is that when a system is in a",
+        "phase transition, its structure will change. Changing structure",
+        "usually results in changes of potential energy, because potential",
+        "energy depends primarily on structure. In the simulation,",
+        "the energy added to the system is absorbed by the atoms and used",
+        "to break the interatomic interactions (so that they can leave the",
+        "condensed state). During the phase transition the kinetic energy",
+        "doesn't increase, as the",
+        "potential energy increases in the expense of the input energy.",
+        "During this period, the interatomic interactions diminish and the",
+        "structure breaks up, resulting in a phase transition.",
+        "",
+        "One thing you would notice is that the temperature-energy curve on",
+        "the right has fluctuations. This is because we have much fewer",
+        "atoms (169) in the simulation than there would be in a real",
+        "physical model."
+      ],
+      "publicationStatus": "public",
+      "aspectRatio": 2.1
     },
     {
-      "title": "latentheat3",
+      "title": "Specific Heat and Latent Heat in Condensation",
       "path": "interactives/student/stateofmatter/latentheat3.json",
       "groupKey": "student/stateofmatter",
-      "subtitle": "",
-      "about": "",
-      "publicationStatus": "draft"
+      "subtitle": "Seeing Specific Heat and Latent Heat in a Condensation Experiment",
+      "about": [
+        "Specific heat capacitiy is the measure of the heat energy required",
+        "to raise the temperature of a given quantity of a substance by one",
+        "kelvin. Latent heat of melting describes tœhe amount of heat",
+        "required to melt a solid. When a solid is undergoing melting, the",
+        "temperature basically remains constant until the entire solid is",
+        "molten. The above simulation demonstrates the specific heat and",
+        "the latent heat.",
+        "",
+        "The physical origin of latent heat is that when a system is in a",
+        "phase transition, its structure will change. Changing structure",
+        "usually results in changes of potential energy, because potential",
+        "energy depends primarily on structure. In the simulation,",
+        "the energy added to the system is absorbed by the atoms and used",
+        "to break the interatomic interactions (so that they can leave the",
+        "condensed state). During the phase transition the kinetic energy",
+        "doesn't increase, as the",
+        "potential energy increases in the expense of the input energy.",
+        "During this period, the interatomic interactions diminish and the",
+        "structure breaks up, resulting in a phase transition.",
+        "",
+        "One thing you would notice is that the temperature-energy curve on",
+        "the right has fluctuations. This is because we have much fewer",
+        "atoms (169) in the simulation than there would be in a real",
+        "physical model."
+      ],
+      "publicationStatus": "public",
+      "aspectRatio": 2.1
     },
     {
       "title": "liquidsolid$1",
@@ -6832,7 +8425,7 @@
       "publicationStatus": "draft"
     },
     {
-      "title": "pressurediff",
+      "title": "Pressure equilibrium measured by gauges",
       "path": "interactives/tutorial/pressurediff.json",
       "groupKey": "tutorial",
       "subtitle": "",
@@ -7583,11 +9176,6 @@
       "category": "Samples"
     },
     {
-      "path": "interactions-project",
-      "name": "Interactions Project",
-      "category": "Curriculum"
-    },
-    {
       "path": "sam/intermolecular-attractions",
       "name": "Science of Atoms and Molecules: Intermolecular Attractions",
       "category": "Curriculum"
@@ -7620,6 +9208,26 @@
     {
       "path": "inquiry-space/pendulum",
       "name": "Inquiry Space: Pendulums",
+      "category": "Curriculum"
+    },
+    {
+      "path": "itsi/crystal",
+      "name": "ITSI: Crystals",
+      "category": "Curriculum"
+    },
+    {
+      "path": "itsi/gas-laws",
+      "name": "ITSI: Gas Laws",
+      "category": "Curriculum"
+    },
+    {
+      "path": "itsi/energy2d",
+      "name": "ITSI: Energy2D",
+      "category": "Curriculum"
+    },
+    {
+      "path": "interactions",
+      "name": "Interactions Project",
       "category": "Curriculum"
     },
     {
@@ -7675,77 +9283,77 @@
     {
       "path": "student/classic/pendulum",
       "name": "Classic Java MW Examples: Pendulum",
-      "category": "Examples"
+      "category": "Curriculum"
     },
     {
       "path": "student/classic/motion",
       "name": "Classic Java MW Examples: Motion",
-      "category": "Examples"
+      "category": "Curriculum"
     },
     {
       "path": "student/classic/freefall",
       "name": "Classic Java MW Examples: Freefall",
-      "category": "Examples"
+      "category": "Curriculum"
     },
     {
       "path": "student/classic/gear",
       "name": "Classic Java MW Examples: Gear",
-      "category": "Examples"
+      "category": "Curriculum"
     },
     {
       "path": "student/classic/harmonic",
       "name": "Classic Java MW Examples: Harmonic",
-      "category": "Examples"
+      "category": "Curriculum"
     },
     {
       "path": "student/classic/machine",
       "name": "Classic Java MW Examples: Machine",
-      "category": "Examples"
+      "category": "Curriculum"
     },
     {
       "path": "student/classic/pulley",
       "name": "Classic Java MW Examples: Pulley",
-      "category": "Examples"
+      "category": "Curriculum"
     },
     {
       "path": "student/classic/spring",
       "name": "Classic Java MW Examples: Spring",
-      "category": "Examples"
+      "category": "Curriculum"
     },
     {
       "path": "student/fluid",
       "name": "Classic Java MW Examples: Fluid",
-      "category": "Examples"
+      "category": "Curriculum"
     },
     {
       "path": "student/materials",
       "name": "Classic Java MW Examples: Materials",
-      "category": "Examples"
+      "category": "Curriculum"
     },
     {
       "path": "student/motionandforce",
       "name": "Classic Java MW Examples: Motion and Force",
-      "category": "Examples"
+      "category": "Curriculum"
     },
     {
       "path": "student/osmosis",
       "name": "Classic Java MW Examples: Osmosis",
-      "category": "Examples"
+      "category": "Curriculum"
     },
     {
       "path": "student/stateofmatter",
       "name": "Classic Java MW Examples: States of Matter",
-      "category": "Examples"
+      "category": "Curriculum"
     },
     {
       "path": "student/wave",
       "name": "Classic Java MW Examples: Waves",
-      "category": "Examples"
+      "category": "Curriculum"
     },
     {
       "path": "student/classic/wave",
       "name": "Classic Java MW Examples: Wave",
-      "category": "Examples"
+      "category": "Curriculum"
     },
     {
       "path": "public/part1/light",
@@ -7755,6 +9363,71 @@
     {
       "path": "public/part1/crystal",
       "name": "Classic Java MW Examples: Part1/Crystal",
+      "category": "Examples"
+    },
+    {
+      "path": "public/part1/molecularcrystal",
+      "name": "Classic Java MW Examples: Part1/Molecular Crystals",
+      "category": "Examples"
+    },
+    {
+      "path": "public/part1/chembond",
+      "name": "Classic Java MW Examples: Part1/Chemical Binding",
+      "category": "Examples"
+    },
+    {
+      "path": "public/part1/chemequil",
+      "name": "Classic Java MW Examples: Part1/Chemical Equilibrium",
+      "category": "Examples"
+    },
+    {
+      "path": "public/part1/chempot",
+      "name": "Classic Java MW Examples: Part1/Chemical Potential",
+      "category": "Examples"
+    },
+    {
+      "path": "public/part1/conserve",
+      "name": "Classic Java MW Examples: Part1/Conservation",
+      "category": "Examples"
+    },
+    {
+      "path": "public/part1/distillation",
+      "name": "Classic Java MW Examples: Part1/Distillation",
+      "category": "Examples"
+    },
+    {
+      "path": "public/part1/emove",
+      "name": "Classic Java MW Examples: Part1/Electron Movement",
+      "category": "Examples"
+    },
+    {
+      "path": "public/part1/energy",
+      "name": "Classic Java MW Examples: Part1/Energy",
+      "category": "Examples"
+    },
+    {
+      "path": "public/part1/fluorescence",
+      "name": "Classic Java MW Examples: Part1/Fluorescence",
+      "category": "Examples"
+    },
+    {
+      "path": "public/part1/heatflow",
+      "name": "Classic Java MW Examples: Part1/Heat Flow",
+      "category": "Examples"
+    },
+    {
+      "path": "public/part1/insulin",
+      "name": "Classic Java MW Examples: Part1/Insulin",
+      "category": "Examples"
+    },
+    {
+      "path": "public/part1/protein",
+      "name": "Classic Java MW Examples: Part1/Protein",
+      "category": "Examples"
+    },
+    {
+      "path": "public/part1/redox",
+      "name": "Classic Java MW Examples: Part1/Redox",
       "category": "Examples"
     },
     {

@@ -10,6 +10,7 @@
     "Can you explain why? Is this different from the relationships for a pendulum? Try the",
     "damping slider. Does damping change the period?"
   ],
+  "aspectRatio": 1.6,
   "fontScale": 0.8,
   "models": [
     {
@@ -17,7 +18,8 @@
       "id": "spring-mass",
       "url": "imports/legacy-mw-content/converted/inquiry-space/pendulum/spring-mass$0.json",
       "viewOptions": {
-        "controlButtons": "play_reset_step",
+        "controlButtons": "play_reset",
+        "controlButtonStyle": "text",
         "gridLines": true,
         "showClock": true,
         "velocityVectors": {

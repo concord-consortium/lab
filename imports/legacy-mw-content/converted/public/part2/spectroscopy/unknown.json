@@ -41,7 +41,9 @@
     "VDWLinesCutoff": "medium",
     "showVelocityVectors": false,
     "showForceVectors": false,
-    "electricFieldDensity": 0,
+    "showElectricField": false,
+    "electricFieldDensity": 18,
+    "electricFieldColor": "auto",
     "showAtomTrace": false,
     "images": [
       {
@@ -515,7 +517,8 @@
       "color": "#169C30",
       "width": 0.01,
       "length": 2
-    }
+    },
+    "forceVectorsDirectionOnly": false
   },
   "pairwiseLJProperties": [],
   "elements": {
@@ -1073,17 +1076,34 @@
   "quantumDynamics": {
     "elementEnergyLevels": [
       [
+        null,
+        -0.00023156471991039065,
+        -0.00021226765991785813,
         -0.000173673539932793,
         null
       ],
       [
+        -0.00028945589988798833,
+        -0.00027015883989545575,
+        -0.00024121324990665694,
         -0.00020261912992159184
       ],
       [
+        -0.00028945589988798833,
+        -0.00027980736989172204,
+        -0.00014472794994399417,
         -0.00013507941994772788
       ],
-      [],
-      []
+      [
+        -0.00028945589988798833,
+        -0.00023156471991039065,
+        -0.00009648529996266278
+      ],
+      [
+        -0.0003859411998506511,
+        -0.00009648529996266278,
+        -0.00004824264998133139
+      ]
     ],
     "photons": {},
     "radiationlessEmissionProbability": 0

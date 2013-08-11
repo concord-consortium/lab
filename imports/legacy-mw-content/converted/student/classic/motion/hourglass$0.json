@@ -40,7 +40,9 @@
     "VDWLinesCutoff": "medium",
     "showVelocityVectors": false,
     "showForceVectors": false,
-    "electricFieldDensity": 0,
+    "showElectricField": false,
+    "electricFieldDensity": 18,
+    "electricFieldColor": "auto",
     "showAtomTrace": false,
     "images": [],
     "imageMapping": {},
@@ -74,7 +76,8 @@
       "color": "#169C30",
       "width": 0.01,
       "length": 2
-    }
+    },
+    "forceVectorsDirectionOnly": false
   },
   "pairwiseLJProperties": [
     {
@@ -4130,6 +4133,99 @@
       0,
       0,
       0
+    ]
+  },
+  "lines": {
+    "x1": [
+      0,
+      2.2,
+      -0.04,
+      4,
+      1.68
+    ],
+    "y1": [
+      2.05,
+      1.4,
+      0.645,
+      0.645,
+      1.39
+    ],
+    "x2": [
+      1.8,
+      4,
+      1.8,
+      2.2,
+      2.28
+    ],
+    "y2": [
+      1.4,
+      2.05,
+      1.395,
+      1.395,
+      1.39
+    ],
+    "beginStyle": [
+      "none",
+      "none",
+      "none",
+      "none",
+      "none"
+    ],
+    "endStyle": [
+      "none",
+      "none",
+      "none",
+      "none",
+      "none"
+    ],
+    "fence": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "lineColor": [
+      "rgb(128,128,128)",
+      "rgb(128,128,128)",
+      "rgb(128,128,128)",
+      "rgb(128,128,128)",
+      "rgb(255,0,255)"
+    ],
+    "lineWeight": [
+      18,
+      18,
+      18,
+      18,
+      10
+    ],
+    "lineDashes": [
+      "none",
+      "none",
+      "none",
+      "none",
+      "none"
+    ],
+    "layer": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "layerPosition": [
+      1,
+      1,
+      2,
+      3,
+      4
+    ],
+    "visible": [
+      1,
+      1,
+      1,
+      1,
+      1
     ]
   }
 }

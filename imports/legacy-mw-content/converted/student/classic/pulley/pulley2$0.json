@@ -40,7 +40,9 @@
     "VDWLinesCutoff": "medium",
     "showVelocityVectors": false,
     "showForceVectors": false,
-    "electricFieldDensity": 0,
+    "showElectricField": false,
+    "electricFieldDensity": 18,
+    "electricFieldColor": "auto",
     "showAtomTrace": false,
     "images": [],
     "imageMapping": {},
@@ -86,7 +88,8 @@
       "color": "#169C30",
       "width": 0.01,
       "length": 2
-    }
+    },
+    "forceVectorsDirectionOnly": false
   },
   "pairwiseLJProperties": [],
   "elements": {
@@ -997,20 +1000,120 @@
       false
     ],
     "color": [
-      [
-        128,
-        128,
-        128
-      ],
-      [
-        128,
-        128,
-        128
-      ]
+      "rgb(128,128,128)",
+      "rgb(128,128,128)"
     ],
     "visible": [
       true,
       true
+    ]
+  },
+  "shapes": {
+    "type": [
+      "ellipse"
+    ],
+    "x": [
+      0.14
+    ],
+    "y": [
+      2.79
+    ],
+    "height": [
+      0.06
+    ],
+    "width": [
+      0.06
+    ],
+    "fence": [
+      0
+    ],
+    "color": [
+      "rgb(255,192,0)"
+    ],
+    "lineColor": [
+      "black"
+    ],
+    "lineWeight": [
+      1
+    ],
+    "lineDashes": [
+      "none"
+    ],
+    "layer": [
+      1
+    ],
+    "layerPosition": [
+      2
+    ],
+    "visible": [
+      1
+    ]
+  },
+  "lines": {
+    "x1": [
+      0.28,
+      0.07,
+      2.58
+    ],
+    "y1": [
+      2.91,
+      2.89,
+      2.89
+    ],
+    "x2": [
+      0.19,
+      0.165,
+      2.585
+    ],
+    "y2": [
+      2.84,
+      2.815,
+      2.665
+    ],
+    "beginStyle": [
+      "none",
+      "none",
+      "none"
+    ],
+    "endStyle": [
+      "none",
+      "none",
+      "none"
+    ],
+    "fence": [
+      0,
+      0,
+      0
+    ],
+    "lineColor": [
+      "black",
+      "black",
+      "rgb(128,128,128)"
+    ],
+    "lineWeight": [
+      1,
+      1,
+      8
+    ],
+    "lineDashes": [
+      "none",
+      "none",
+      "none"
+    ],
+    "layer": [
+      1,
+      1,
+      1
+    ],
+    "layerPosition": [
+      3,
+      4,
+      5
+    ],
+    "visible": [
+      1,
+      1,
+      1
     ]
   }
 }

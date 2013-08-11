@@ -1,0 +1,23 @@
+{
+  "title": "targetGameCharge",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "targetGameCharge$0",
+      "url": "imports/legacy-mw-content/converted/interactions/target-game-charge-magnitude/targetGameCharge$0.json",
+      "importedFrom": "imports/legacy-mw-content/interactions/target-game-charge-magnitude/targetGameCharge$0.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

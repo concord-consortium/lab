@@ -40,7 +40,9 @@
     "VDWLinesCutoff": "medium",
     "showVelocityVectors": false,
     "showForceVectors": false,
-    "electricFieldDensity": 0,
+    "showElectricField": false,
+    "electricFieldDensity": 18,
+    "electricFieldColor": "auto",
     "showAtomTrace": false,
     "images": [],
     "imageMapping": {},
@@ -78,7 +80,8 @@
       "color": "#169C30",
       "width": 0.01,
       "length": 2
-    }
+    },
+    "forceVectorsDirectionOnly": false
   },
   "pairwiseLJProperties": [],
   "elements": {
@@ -1878,6 +1881,140 @@
       101,
       101,
       101
+    ]
+  },
+  "shapes": {
+    "type": [
+      "ellipse",
+      "ellipse",
+      "ellipse"
+    ],
+    "x": [
+      1.18,
+      2.38,
+      1.42
+    ],
+    "y": [
+      0.62,
+      1.1800000000000002,
+      1.7000000000000002
+    ],
+    "height": [
+      0.9,
+      0.9,
+      0.9
+    ],
+    "width": [
+      0.9,
+      0.9,
+      0.9
+    ],
+    "fence": [
+      0,
+      0,
+      0
+    ],
+    "color": [
+      "rgb(192,0,255)",
+      "transparent",
+      "transparent"
+    ],
+    "lineColor": [
+      "black",
+      "black",
+      "black"
+    ],
+    "lineWeight": [
+      1,
+      1,
+      1
+    ],
+    "lineDashes": [
+      "none",
+      "none",
+      "none"
+    ],
+    "layer": [
+      1,
+      1,
+      1
+    ],
+    "layerPosition": [
+      1,
+      2,
+      3
+    ],
+    "visible": [
+      1,
+      1,
+      1
+    ]
+  },
+  "lines": {
+    "x1": [
+      2.798139341738281,
+      1.818753279375,
+      1.6692797889648439
+    ],
+    "y1": [
+      1.6847431946875,
+      2.133881569511719,
+      1.0610217296972655
+    ],
+    "x2": [
+      3.0276132217382816,
+      2.325133439375,
+      1.1587200889648437
+    ],
+    "y2": [
+      1.2178251646875,
+      2.2446236795117187,
+      1.1517983996972658
+    ],
+    "beginStyle": [
+      "none",
+      "none",
+      "none"
+    ],
+    "endStyle": [
+      "none",
+      "none",
+      "none"
+    ],
+    "fence": [
+      0,
+      0,
+      0
+    ],
+    "lineColor": [
+      "black",
+      "black",
+      "black"
+    ],
+    "lineWeight": [
+      2,
+      2,
+      2
+    ],
+    "lineDashes": [
+      "2,2",
+      "2,2",
+      "2,2"
+    ],
+    "layer": [
+      1,
+      1,
+      1
+    ],
+    "layerPosition": [
+      4,
+      5,
+      6
+    ],
+    "visible": [
+      1,
+      1,
+      1
     ]
   }
 }

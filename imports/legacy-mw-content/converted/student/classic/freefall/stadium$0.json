@@ -40,7 +40,9 @@
     "VDWLinesCutoff": "medium",
     "showVelocityVectors": false,
     "showForceVectors": false,
-    "electricFieldDensity": 0,
+    "showElectricField": false,
+    "electricFieldDensity": 18,
+    "electricFieldColor": "auto",
     "showAtomTrace": false,
     "images": [],
     "imageMapping": {},
@@ -64,7 +66,8 @@
       "color": "#169C30",
       "width": 0.01,
       "length": 2
-    }
+    },
+    "forceVectorsDirectionOnly": false
   },
   "pairwiseLJProperties": [
     {
@@ -1300,39 +1303,125 @@
       1
     ]
   },
-  "rectangles": {
+  "shapes": {
+    "type": [
+      "rectangle",
+      "ellipse",
+      "ellipse"
+    ],
     "x": [
-      1.08
+      1.08,
+      2.8,
+      0.09
     ],
     "y": [
-      0.5500000000000003
+      0.5500000000000003,
+      0.5099999999999998,
+      0.5099999999999998
     ],
     "height": [
-      1.9
+      1.9,
+      2,
+      2
     ],
     "width": [
-      2.76
+      2.76,
+      2,
+      2
     ],
     "fence": [
-      false
-    ],
-    "color": [
-      "rgb(255,255,255)"
-    ],
-    "lineColor": [
-      "rgb(255,0,0)"
-    ],
-    "lineWeight": [
+      0,
+      0,
       0
     ],
+    "color": [
+      "rgb(255,255,255)",
+      "transparent",
+      "transparent"
+    ],
+    "lineColor": [
+      "rgb(255,0,0)",
+      "rgb(128,128,128)",
+      "rgb(128,128,128)"
+    ],
+    "lineWeight": [
+      0,
+      10,
+      10
+    ],
     "lineDashes": [
+      "none",
+      "none",
       "none"
     ],
     "layer": [
+      2,
+      2,
       2
     ],
+    "layerPosition": [
+      4,
+      2,
+      3
+    ],
     "visible": [
-      true
+      1,
+      1,
+      1
+    ]
+  },
+  "lines": {
+    "x1": [
+      1.07,
+      1.135
+    ],
+    "y1": [
+      2.51,
+      0.51
+    ],
+    "x2": [
+      3.78,
+      3.845
+    ],
+    "y2": [
+      2.51,
+      0.51
+    ],
+    "beginStyle": [
+      "none",
+      "none"
+    ],
+    "endStyle": [
+      "none",
+      "none"
+    ],
+    "fence": [
+      1,
+      1
+    ],
+    "lineColor": [
+      "rgb(128,128,128)",
+      "rgb(128,128,128)"
+    ],
+    "lineWeight": [
+      10,
+      10
+    ],
+    "lineDashes": [
+      "none",
+      "none"
+    ],
+    "layer": [
+      1,
+      1
+    ],
+    "layerPosition": [
+      1,
+      1
+    ],
+    "visible": [
+      1,
+      1
     ]
   }
 }

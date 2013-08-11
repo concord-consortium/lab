@@ -413,14 +413,14 @@ define('lab.version',['require'],function (require) {
     "repo": {
       "branch": "master",
       "commit": {
-        "sha":           "8a4732fb055118ff161d4b392c6fb7913058b031",
-        "short_sha":      "8a4732fb",
-        "url":            "https://github.com/concord-consortium/lab/commit/8a4732fb",
+        "sha":           "663bd5c14ef5479c8b8899404d75ff052fef1430",
+        "short_sha":      "663bd5c1",
+        "url":            "https://github.com/concord-consortium/lab/commit/663bd5c1",
         "author":        "Stephen Bannasch",
         "email":         "stephen.bannasch@gmail.com",
-        "date":          "2013-07-18 22:51:35 -0400",
-        "short_message": "don&#39;t include Shutterbug in gh-pages branch",
-        "message":       "don&#39;t include Shutterbug in gh-pages branch\n\nFIXME:\nThis should also be done when generating the versioned\ntar.gz archives  but since they are created from running\ncode on a server using Rack, Shutterbug can&#39;t be easily\nremoved ..."
+        "date":          "2013-08-10 16:57:28 -0400",
+        "short_message": "add scytacki@concord.org to travis-ci notifications",
+        "message":       "add scytacki@concord.org to travis-ci notifications"
       },
       "dirty": false
     }
@@ -453,6 +453,8 @@ define('lab.config',['require','common/actual-root'],function (require) {
       publicAPI;
   publicAPI = {
   "sharing": true,
+  "logging": true,
+  "tracing": false,
   "home": "http://lab.concord.org",
   "homeForSharing": "http://lab.concord.org",
   "homeInteractivePath": "/interactive.html",
@@ -461,8 +463,6 @@ define('lab.config',['require','common/actual-root'],function (require) {
   "fontface": "Lato",
   "hostName": "lab.dev.concord.org",
   "dataGamesProxyPrefix": "DataGames/Games/concord/lab/",
-  "logging": true,
-  "tracing": false,
   "authoring": false,
   "actualRoot": "",
   "environment": "development"
@@ -549,6 +549,8 @@ define('grapher/core/axis',['require'],function (require) {
           }
         }
       }
+      newdomain[0] = +newdomain[0].toPrecision(5)
+      newdomain[1] = +newdomain[1].toPrecision(5)
       return newdomain;
     }
   };
@@ -613,9 +615,13 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         // Instantiated D3 line function: d3.svg.line()
         line,
 
-        // Instantiated D3 numeric format functions: d3.format()
+        // numeric format functions wrapping the d3.format() functions
         fx,
         fy,
+
+        // Instantiated D3 numeric format functions: d3.format()
+        fx_d3,
+        fy_d3,
 
         // Function for stroke styling of major and minor grid lines
         gridStroke = function(d) { return d ? "#ccc" : "#666"; },
@@ -716,7 +722,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         markerStrokeWidth,
 
         // Stroke width used for lines in graph
-        strokeWidth,
+        lineWidth,
 
         // Used to categorize size of graphs in responsive layout mode where
         // certain graph chrome is removed when graph is rendered smaller.
@@ -825,10 +831,10 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
           xTickCount:      10,
           yTickCount:      10,
 
-          // The formatter used to convert numbers into strings.
+          // The formatter strings used to convert numbers into strings.
           // see: https://github.com/mbostock/d3/wiki/Formatting#wiki-d3_format
           xFormatter:      ".3s",
-          yFormatter:      ".3r",
+          yFormatter:      ".3s",
 
           // Scale type: options are:
           //   linear: https://github.com/mbostock/d3/wiki/Quantitative-Scales#wiki-linear
@@ -861,7 +867,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
           showRulersOnSelection: false,
 
           // width of the line used for plotting
-          strokeWidth:      2.0,
+          lineWidth:      2.0,
 
           // Enable values of data points to be changed by selecting and dragging.
           dataChange:      false,
@@ -917,13 +923,43 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
       }
       titles.reverse();
 
-      fx = d3.format(options.xFormatter);
-      fy = d3.format(options.yFormatter);
-
       // use local variables for both access speed and for responsive over-riding
       sampleInterval = options.sampleInterval;
       dataSampleStart = options.dataSampleStart;
-      strokeWidth = options.strokeWidth;
+      lineWidth = options.lineWidth;
+
+      size = {
+        "width":  120,
+        "height": 120
+      };
+
+      setupScales();
+
+      fx_d3 = d3.format(options.xFormatter);
+      fy_d3 = d3.format(options.yFormatter);
+
+      // Wrappers around certain d3 formatters to prevent problems like this:
+      //   scale = d3.scale.linear().domain([-.7164, .7164])
+      //   scale.ticks(10).map(d3.format('.3r'))
+      //   => ["-0.600", "-0.400", "-0.200", "-0.0000000000000000888", "0.200", "0.400", "0.600"]
+
+      fx = function(num) {
+        var domain = xScale.domain(),
+            onePercent = Math.abs((domain[1] - domain[0])*0.01);
+        if (Math.abs(0+num) < onePercent) {
+          num = 0;
+        }
+        return fx_d3(num);
+      };
+
+      fy = function(num) {
+        var domain = yScale.domain(),
+            onePercent = Math.abs((domain[1] - domain[0])*0.01);
+        if (Math.abs(0+num) < onePercent) {
+          num = 0;
+        }
+        return fy_d3(num);
+      };
 
       xTickCount = options.xTickCount;
       yTickCount = options.yTickCount;
@@ -1016,7 +1052,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
       calculateSizeType();
     }
 
-    function calculateLayout() {
+    function calculateLayout(forceUpdate) {
       scale();
 
       fontSizeInPixels = parseFloat($node.css("font-size"));
@@ -1041,7 +1077,30 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         xlabelFontSizeInPixels = parseFloat($("svg.graph text.xlabel").css("font-size"));
         ylabelFontSizeInPixels = parseFloat($("svg.graph text.ylabel").css("font-size"));
       }
+      updateAxesAndSize();
 
+      updateScales();
+
+      line = d3.svg.line()
+          .x(function(d, i) { return xScale(points[i][0]); })
+          .y(function(d, i) { return yScale(points[i][1]); });
+    }
+
+    function setupOptions(options) {
+      if (options) {
+        for(var p in default_options) {
+          if (options[p] === undefined) {
+            options[p] = default_options[p];
+          }
+        }
+      } else {
+        options = default_options;
+      }
+      if (options.axisShift < 1) options.axisShift = 1;
+      return options;
+    }
+
+    function updateAxesAndSize() {
       if (xScale === undefined) {
         xlabelMetrics = [fontSizeInPixels, fontSizeInPixels];
         ylabelMetrics = [fontSizeInPixels*2, fontSizeInPixels];
@@ -1055,13 +1114,14 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
 
       xAxisNumberWidth  = xlabelMetrics[0];
       xAxisNumberHeight = xlabelMetrics[1];
-      yAxisNumberWidth  = ylabelMetrics[0];
-      yAxisNumberHeight = ylabelMetrics[0];
 
       xAxisLabelHorizontalPadding = xAxisNumberWidth * 0.6;
       xAxisDraggableHeight = xAxisNumberHeight * 1.1;
       xAxisVerticalPadding = xAxisDraggableHeight + xAxisNumberHeight*1.3;
       xAxisLabelBaseline = xAxisVerticalPadding-xAxisNumberHeight/3;
+
+      yAxisNumberWidth  = ylabelMetrics[0];
+      yAxisNumberHeight = ylabelMetrics[1];
 
       yAxisDraggableWidth    = yAxisNumberWidth + xAxisNumberHeight/4;
       yAxisHorizontalPadding = yAxisDraggableWidth + yAxisNumberHeight;
@@ -1122,48 +1182,8 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         titles = [titles[0]];
       }
 
-      size = {
-        "width":  Math.max(cx - padding.left - padding.right, 60),
-        "height": Math.max(cy - padding.top  - padding.bottom, 60)
-      };
-
-      xScale = d3.scale[options.xscale]()
-        .domain([options.xmin, options.xmax])
-        .range([0, size.width]);
-
-      if (options.xscale === "pow") {
-        xScale.exponent(options.xscaleExponent);
-      }
-
-      yScale = d3.scale[options.yscale]()
-        .domain([options.ymin, options.ymax]).nice()
-        .range([size.height, 0]).nice();
-
-      if (options.yscale === "pow") {
-        yScale.exponent(options.yscaleExponent);
-      }
-
-      updateXScale();
-      updateYScale();
-
-      line = d3.svg.line()
-          .x(function(d, i) { return xScale(points[i][0]); })
-          .y(function(d, i) { return yScale(points[i][1]); });
-
-    }
-
-    function setupOptions(options) {
-      if (options) {
-        for(var p in default_options) {
-          if (options[p] === undefined) {
-            options[p] = default_options[p];
-          }
-        }
-      } else {
-        options = default_options;
-      }
-      if (options.axisShift < 1) options.axisShift = 1;
-      return options;
+      size.width  = Math.max(cx - padding.left - padding.right, 60);
+      size.height = Math.max(cy - padding.top  - padding.bottom, 60);
     }
 
     function calculateSizeType() {
@@ -1207,6 +1227,18 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
         }
       }
       return formatter(array[index]);
+    }
+
+
+    function setupScales() {
+      xScale = d3.scale[options.xscale]();
+      yScale = d3.scale[options.yscale]();
+      updateScales();
+    }
+
+    function updateScales() {
+      updateXScale();
+      updateYScale();
     }
 
     // Update the x-scale.
@@ -1602,6 +1634,8 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
     // Redraw the plot and axes when plot is translated or axes are re-scaled
     //
     function redraw() {
+      updateAxesAndSize();
+      repaintExistingGraph();
       // Regenerate x-ticks
       var gx = vis.selectAll("g.x")
           .data(xScale.ticks(xTickCount), String)
@@ -2327,6 +2361,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
     function clearCanvas() {
       if (gcanvas.getContext) {
         gcanvas.width = gcanvas.width;
+        gctx.lineWidth = lineWidth;
         gctx.fillStyle = canvasFillStyle;
         gctx.fillRect(0, 0, gcanvas.width, gcanvas.height);
         gctx.strokeStyle = "rgba(255,65,0, 1.0)";
@@ -2337,7 +2372,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
       if (gcanvas.getContext) {
         gctx = gcanvas.getContext( '2d' );
         gctx.globalCompositeOperation = "source-over";
-        gctx.lineWidth = 1;
+        gctx.lineWidth = lineWidth;
         gctx.fillStyle = canvasFillStyle;
         gctx.fillRect(0, 0, gcanvas.width, gcanvas.height);
         gctx.strokeStyle = "rgba(255,65,0, 1.0)";
@@ -2447,25 +2482,38 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
       } else {
         for (i = 0; i < numberOfLines; i++) {
           points = pointArray[i];
-          lengthX = 0;
-          setFillColor(i);
-          setStrokeColor(i, true);
-          pointStop = samplePoint - 1;
-          for (index=0; index < pointStop; index++) {
-            px = xScale(points[index][0]);
-            py = yScale(points[index][1]);
-            gctx.arc(px, py, 1, 0, twopi, false);
-            gctx.fill();
+          index = 0;
+          // find first point >= xAxisStart
+          for (j = 0; j < pointsLength; j++) {
+            if (points[j][0] >= xAxisStart) { break; }
+            index++;
           }
-          pointStop = points.length-1;
-          if (index < pointStop) {
+          if (index > 0) { --index; }
+          if (index >= pointsLength) { break; }
+          px = xScale(points[index][0]);
+          py = yScale(points[index][1]);
+          setFillColor(i);
+          dx = points[index][0];
+          index++;
+          // plot all ... or until one point past xAxisEnd
+          // or until we reach currentSample
+          for (; index < samplePoint; index++) {
+            dx = points[index][0];
+            px = xScale(dx);
+            py = yScale(points[index][1]);
+            gctx.fillRect(px, py, lineWidth, lineWidth);
+            if (dx >= xAxisEnd) { break; }
+          }
+          // now plot in a desaturated style all the rest of the points
+          // ... or until one point past xAxisEnd
+          if (index < pointsLength && dx < xAxisEnd) {
             setFillColor(i, true);
-            setStrokeColor(i, true);
-            for (;index < pointStop; index++) {
-              px = xScale(points[index][0]);
+            for (;index < pointsLength; index++) {
+              dx = points[index][0];
+              px = xScale(dx);
               py = yScale(points[index][1]);
-              gctx.arc(px, py, 1, 0, twopi, false);
-              gctx.fill();
+              gctx.fillRect(px, py, lineWidth, lineWidth);
+              if (dx >= xAxisEnd) { break; }
             }
           }
         }
@@ -2725,6 +2773,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
       renderGraph();
       // and then render again using actual size of SVG text elements are
       renderGraph();
+      redraw();
       registerKeyboardHandler();
       return api;
     }
@@ -2733,6 +2782,7 @@ define('grapher/core/graph',['require','grapher/core/axis'],function (require) {
       scale(w, h);
       initializeLayout();
       renderGraph();
+      redraw();
       return api;
     }
 

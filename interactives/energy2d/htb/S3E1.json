@@ -1,5 +1,5 @@
 {
-  "title": "Conduction 3E: Combine thermal conductivity and heat capacity",
+  "title": "Conduction 3E: Combine conductivity and heat capacity",
   "publicationStatus": "draft",
   "subtitle": "Which material provides the best insulation?",
   "about": [
@@ -59,6 +59,7 @@
       "xTickCount": 5,
       "xFormatter": "2s",
       "yFormatter": "2s",
+      "xProperty": "time",
       "properties": [
         "sensor-1", "sensor-0", "sensor-2"
       ]

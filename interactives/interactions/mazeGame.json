@@ -1,0 +1,23 @@
+{
+  "title": "mazeGame",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "mazeGame$0",
+      "url": "imports/legacy-mw-content/converted/interactions/maze-game/mazeGame$0.json",
+      "importedFrom": "imports/legacy-mw-content/interactions/maze-game/mazeGame$0.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}
