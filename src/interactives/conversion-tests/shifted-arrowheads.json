@@ -1,0 +1,30 @@
+{
+  "title": "Shifted Arroheads",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "This is just to show how the arrowheads need to be shifted.",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "shifted-arroheads",
+      "url": "models/md2d/shifted-arrowheads.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "textBoxes": [
+          {
+            "text": "begining of line",
+            "x": 0.27,
+            "y": 0.39,
+            "layer": 2
+          },
+          {
+            "text": "end of line",
+            "x": 0.27,
+            "y": 0.125,
+            "layer": 2
+          }
+        ]
+      }
+    }
+  ]
+}
