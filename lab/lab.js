@@ -413,14 +413,14 @@ define('lab.version',['require'],function (require) {
     "repo": {
       "branch": "master",
       "commit": {
-        "sha":           "20e73000b75067328c1d6fa2ce7d0c78ff82ee58",
-        "short_sha":      "20e73000",
-        "url":            "https://github.com/concord-consortium/lab/commit/20e73000",
+        "sha":           "f64c10ac7230ba403acc65c94d4d39c98e660c1a",
+        "short_sha":      "f64c10ac",
+        "url":            "https://github.com/concord-consortium/lab/commit/f64c10ac",
         "author":        "Stephen Bannasch",
         "email":         "stephen.bannasch@gmail.com",
-        "date":          "2013-08-12 12:40:56 -0400",
-        "short_message": "fix more relative references to css resources",
-        "message":       "fix more relative references to css resources"
+        "date":          "2013-08-12 13:09:23 -0400",
+        "short_message": "probeware doc: fix more relative references",
+        "message":       "probeware doc: fix more relative references"
       },
       "dirty": false
     }
