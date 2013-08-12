@@ -276,8 +276,16 @@ define(function (require) {
             trackEvent('Interactive', "Start", "Starting interactive: " + interactivesController.get('title') );
           },
 
+          onStart: function onStart(handler) {
+            model.on("play.custom-script", handler);
+          },
+
           stop: function stop() {
             model.stop();
+          },
+
+          onStop: function onStop(handler) {
+            model.on("stop.custom-script", handler);
           },
 
           reset: function reset() {
