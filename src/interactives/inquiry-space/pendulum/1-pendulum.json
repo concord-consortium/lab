@@ -9,7 +9,7 @@
     "starting angle and mass – and observe how each one affects the period. Can you explain why?",
     "Try the damping slider. Does damping change the period?"
   ],
-  "aspectRatio": 1.6,
+  "aspectRatio": 1.5,
   "fontScale": 0.8,
   "models": [
     {
@@ -231,7 +231,7 @@
       "ymax": 100,
       "xmax": 10,
       "xTickCount": 5,
-      "yTickCount": 8,
+      "yTickCount": 6,
       "xFormatter": ".2r",
       "yFormatter": ".2r",
       "properties": [
@@ -259,5 +259,26 @@
       ]
     ]
   },
-  "template": "wide-right"
+  "template": [
+    {
+      "id": "top",
+      "bottom": "model.top",
+      "width": "interactive.width"
+    },
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "width": "model.width*2.5",
+      "padding-top": "0.5em"
+    },
+    {
+      "id": "right",
+      "top": "model.top",
+      "left": "model.right",
+      "height": "model.height",
+      "width": "24em",
+      "padding-left": "1em",
+      "padding-right": "0.5em"
+    }
+  ]
 }
