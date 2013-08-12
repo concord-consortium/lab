@@ -3,6 +3,7 @@
   "publicationStatus": "public",
   "subtitle": "Test for smooth charge shading",
   "about": "",
+  "aspectRatio": 1.4,
   "models": [
     {
       "type": "md2d",
@@ -145,13 +146,6 @@
       "left": "model.left",
       "top": "model.bottom",
       "padding-top": "0.5em",
-      "width": "model.width",
-      "align": "center"
-    },
-    {
-      "id": "bottom2",
-      "left": "model.left",
-      "top": "bottom.bottom",
       "width": "interactive.width"
     }
   ]
