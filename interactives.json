@@ -495,7 +495,8 @@
       "groupKey": "conversion-tests",
       "subtitle": "Test for smooth charge shading",
       "about": "",
-      "publicationStatus": "public"
+      "publicationStatus": "public",
+      "aspectRatio": 1.4
     },
     {
       "title": "Angular Bonds",
@@ -808,6 +809,14 @@
       "subtitle": "",
       "about": "",
       "publicationStatus": "public"
+    },
+    {
+      "title": "Shifted Arroheads",
+      "path": "interactives/conversion-tests/shifted-arrowheads.json",
+      "groupKey": "conversion-tests",
+      "subtitle": "",
+      "about": "This is just to show how the arrowheads need to be shifted.",
+      "publicationStatus": "draft"
     },
     {
       "title": "Single Image on an Atom",
@@ -1424,7 +1433,8 @@
       "groupKey": "energy2d/imported",
       "subtitle": "A Self-Organizing Pattern of Fluid Flow",
       "about": "Rayleigh-Bénard convection is a type of natural convection, occurring in\na plane of fluid heated from below, in which the fluid develops a\nregular pattern of convection cells known as the Bénard cells. The\nfollowing model shows this.\n\n",
-      "publicationStatus": "draft"
+      "publicationStatus": "draft",
+      "aspectRatio": 1.0
     },
     {
       "title": "Blowing Wind",
@@ -1744,7 +1754,8 @@
       "groupKey": "energy2d/imported",
       "subtitle": "An Open Cup vs. a Closed Cup",
       "about": "This model simulates the heat losses from two cups of hot water, one\nbeing covered the other closed. Only a part of the cups is modeled.\nConvection in water is not considered.\n\n",
-      "publicationStatus": "draft"
+      "publicationStatus": "draft",
+      "aspectRatio": 1.0
     },
     {
       "title": "Energy Loss from Hot Water",
@@ -1968,7 +1979,8 @@
       "groupKey": "energy2d/imported",
       "subtitle": "Laminar Flow vs. Turbulent Flow",
       "about": "In fluid mechanics, the Reynolds number Re is a dimensionless number\nthat gives a measure of the ratio of inertial forces to viscous forces\nand consequently quantifies the relative importance of these two types\nof forces for given flow conditions:\n\nRe=VL<sub>c</sub>/ν\n{: .formula}\n\nwhere *ν* is the kinematic viscosity, *V* is the mean velocity of the\nfluid, and *L*<sub>c</sub> is the characteristic length of the geometry.\nThe higher the Reynolds number is, the more turbulent the flow will be.\nThe following simulation compares four different Reynolds numbers. The\nfluid is the same in the four separate flow channels, but the driving\nvelocities are different. The viscosity of the fluid can be altered\nusing a slider.\n\n",
-      "publicationStatus": "draft"
+      "publicationStatus": "draft",
+      "aspectRatio": 1.0
     },
     {
       "title": "Series Conductors",
@@ -2032,7 +2044,8 @@
       "groupKey": "energy2d/imported",
       "subtitle": "",
       "about": "",
-      "publicationStatus": "draft"
+      "publicationStatus": "draft",
+      "aspectRatio": 1.0
     },
     {
       "title": "What is Modeling?",
@@ -2490,7 +2503,7 @@
         "Try the damping slider. Does damping change the period?"
       ],
       "publicationStatus": "public",
-      "aspectRatio": 1.6
+      "aspectRatio": 1.5
     },
     {
       "title": "Spring and Mass",
@@ -2669,7 +2682,7 @@
       "groupKey": "interactions",
       "subtitle": "",
       "about": "",
-      "publicationStatus": "draft"
+      "publicationStatus": "broken"
     },
     {
       "title": "targetFreePlay",
@@ -5106,7 +5119,8 @@
       "groupKey": "solar-system",
       "subtitle": "Simple model of the Sun and Earth.",
       "about": "",
-      "publicationStatus": "draft"
+      "publicationStatus": "draft",
+      "aspectRatio": 1.6
     },
     {
       "title": "Testing: four planets",

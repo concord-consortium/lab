@@ -413,14 +413,14 @@ define('lab.version',['require'],function (require) {
     "repo": {
       "branch": "master",
       "commit": {
-        "sha":           "663bd5c14ef5479c8b8899404d75ff052fef1430",
-        "short_sha":      "663bd5c1",
-        "url":            "https://github.com/concord-consortium/lab/commit/663bd5c1",
+        "sha":           "8c512fe477093e423b36fe1f6adc9adecec758e7",
+        "short_sha":      "8c512fe4",
+        "url":            "https://github.com/concord-consortium/lab/commit/8c512fe4",
         "author":        "Stephen Bannasch",
         "email":         "stephen.bannasch@gmail.com",
-        "date":          "2013-08-10 16:57:28 -0400",
-        "short_message": "add scytacki@concord.org to travis-ci notifications",
-        "message":       "add scytacki@concord.org to travis-ci notifications"
+        "date":          "2013-08-12 12:04:16 -0400",
+        "short_message": "doc: embed interactives 420px wide, correct aspect ratios",
+        "message":       "doc: embed interactives 420px wide, correct aspect ratios"
       },
       "dirty": false
     }
@@ -8724,8 +8724,16 @@ define('common/controllers/scripting-api',['require','common/alert'],function (r
             trackEvent('Interactive', "Start", "Starting interactive: " + interactivesController.get('title') );
           },
 
+          onStart: function onStart(handler) {
+            model.on("play.custom-script", handler);
+          },
+
           stop: function stop() {
             model.stop();
+          },
+
+          onStop: function onStop(handler) {
+            model.on("stop.custom-script", handler);
           },
 
           reset: function reset() {

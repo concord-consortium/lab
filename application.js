@@ -55,6 +55,8 @@ AUTHORING = false;
 
       interactivesPromise,
 
+      buttonHandlersAdded = false,
+
       widthBeforeEditMode,
       editMode = false;
 
@@ -350,10 +352,11 @@ AUTHORING = false;
         intAspectRatio = descriptionByPath && interactiveUrl &&
                          descriptionByPath[interactiveUrl].aspectRatio || DEF_ASPECT_RATIO,
         widths = {
-          "tiny":   "318px",
-          "small":  "364px",
-          "medium": "565px",
-          "large":  "960px"
+          "tiny":         "318px",
+          "small":        "364px",
+          "medium-small": "420px",
+          "medium":       "565px",
+          "large":        "960px"
         },
         width  = widths[selection],
         height = parseInt(width, 10) / intAspectRatio + "px";
@@ -661,7 +664,6 @@ AUTHORING = false;
         $interactiveTextArea = $("#interactive-text-area"),
         $editor = $("#editor"),
         $editorContent = $("#editor-content"),
-        buttonHandlersAdded,
         foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
 
     $interactiveTextArea.text(JSON.stringify(interactive, null, indent));
@@ -722,8 +724,22 @@ AUTHORING = false;
       });
 
       $editModeCheckbox.on('change', function () {
-        widthBeforeEditMode = $("#iframe-wrapper").width();
+        var $wrapper = $("#iframe-wrapper"),
+            w = $wrapper.width(),
+            h = $wrapper.height(),
+            aspectRatio = w / h;
+
+        widthBeforeEditMode = w;
         editMode = $editModeCheckbox.prop("checked");
+
+        if (editMode && isFullIFramePage()) {
+          interactive.aspectRatio = aspectRatio;
+          descriptionByPath[interactiveUrl].aspectRatio = aspectRatio;
+          iframePhone.post({ type:'loadInteractive', data: interactive });
+          // Update editor.
+          editor.setValue(JSON.stringify(interactive, null, indent));
+          console.log("new aspect ratio: " + aspectRatio);
+        }
       });
 
       $showEditor.change(function() {

@@ -1,0 +1,70 @@
+{
+  "type": "md2d",
+  "width": 0.5,
+  "height": 0.5,
+  "elements": {
+    "mass": [
+      20
+    ],
+    "sigma": [
+      0.07
+    ],
+    "epsilon": [
+      -0.0010000000474974513
+    ]
+  },
+  "lines": {
+    "x1": [
+      0.25,
+      0.21
+    ],
+    "y1": [
+      0.375,
+      0.375
+    ],
+    "x2": [
+      0.25,
+      0.21
+    ],
+    "y2": [
+      0.125,
+      0.125
+    ],
+    "beginStyle": [
+      "M 10 0 L 0 5 L 10 10 L 7 5 z",
+      "none"
+    ],
+    "endStyle": [
+      "M 0 0 L 10 5 L 0 10 L 3 5 z",
+      "none"
+    ],
+    "fence": [
+      0,
+      0
+    ],
+    "lineColor": [
+      "black",
+      "black"
+    ],
+    "lineWeight": [
+      4,
+      4
+    ],
+    "lineDashes": [
+      "none",
+      "none"
+    ],
+    "layer": [
+      2,
+      2
+    ],
+    "layerPosition": [
+      1,
+      1
+    ],
+    "visible": [
+      1,
+      1
+    ]
+  }
+}

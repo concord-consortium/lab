@@ -3,6 +3,7 @@
   "publicationStatus": "draft",
   "subtitle": "Simple model of the Sun and Earth.",
   "about": "",
+  "aspectRatio": 1.6,
   "models": [
     {
       "type": "solar-system",

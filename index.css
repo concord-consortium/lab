@@ -2603,6 +2603,7 @@ ul {
 .column2 {
   width: 45%;
   max-width: 80em;
+  margin-left: 1em;
   vertical-align: top;
   display: inline-block; }
 
