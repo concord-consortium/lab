@@ -722,8 +722,22 @@ AUTHORING = false;
       });
 
       $editModeCheckbox.on('change', function () {
-        widthBeforeEditMode = $("#iframe-wrapper").width();
+        var $wrapper = $("#iframe-wrapper"),
+            w = $wrapper.width(),
+            h = $wrapper.height(),
+            aspectRatio = w / h;
+
+        widthBeforeEditMode = w;
         editMode = $editModeCheckbox.prop("checked");
+
+        if (editMode && isFullIFramePage()) {
+          interactive.aspectRatio = aspectRatio;
+          descriptionByPath[interactiveUrl].aspectRatio = aspectRatio;
+          iframePhone.post({ type:'loadInteractive', data: interactive });
+          // Update editor.
+          editor.setValue(JSON.stringify(interactive, null, indent));
+          console.log("new aspect ratio: " + aspectRatio);
+        }
       });
 
       $showEditor.change(function() {
