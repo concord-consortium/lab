@@ -55,6 +55,8 @@ AUTHORING = false;
 
       interactivesPromise,
 
+      buttonHandlersAdded = false,
+
       widthBeforeEditMode,
       editMode = false;
 
@@ -661,7 +663,6 @@ AUTHORING = false;
         $interactiveTextArea = $("#interactive-text-area"),
         $editor = $("#editor"),
         $editorContent = $("#editor-content"),
-        buttonHandlersAdded,
         foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
 
     $interactiveTextArea.text(JSON.stringify(interactive, null, indent));
