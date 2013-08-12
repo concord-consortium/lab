@@ -582,12 +582,15 @@ parseMML = (mmlString) ->
     electricFieldDensity = do () ->
       EFCellSize = getIntProperty $mml.root(), "EFCellSize", "int"
       [EFCellSize] = toNextgenLengths EFCellSize
-      if EFCellSize < 100
+      if EFCellSize < 10 && EFCellSize >= 0
         Math.round width / EFCellSize
       else
         # Quite often in Classic MW cell size equal to 100 was used to disable
         # electric field completely. Instead of using density 0, use defaul
         # density + set showElectricField to false.
+        #
+        # In rare cases (e.g. maze game), EFCellSize = -1 or 1000 was also
+        # used to disable electric field.
         showElectricField = false
         return undefined
 
