@@ -352,10 +352,11 @@ AUTHORING = false;
         intAspectRatio = descriptionByPath && interactiveUrl &&
                          descriptionByPath[interactiveUrl].aspectRatio || DEF_ASPECT_RATIO,
         widths = {
-          "tiny":   "318px",
-          "small":  "364px",
-          "medium": "565px",
-          "large":  "960px"
+          "tiny":         "318px",
+          "small":        "364px",
+          "medium-small": "420px",
+          "medium":       "565px",
+          "large":        "960px"
         },
         width  = widths[selection],
         height = parseInt(width, 10) / intAspectRatio + "px";
