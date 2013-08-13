@@ -213,7 +213,8 @@
         }
       ],
       "steps": 20,
-      "title": "Damping (Newton per m/s)",
+      "title": "Damping (N per m/s)",
+      "tooltip": "Damping force in Newtons per m/s",
       "property": "damping"
     },
     {
