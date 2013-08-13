@@ -9,7 +9,7 @@
     "starting angle and mass – and observe how each one affects the period. Can you explain why?",
     "Try the damping slider. Does damping change the period?"
   ],
-  "aspectRatio": 1.6,
+  "aspectRatio": 1.5,
   "fontScale": 0.8,
   "models": [
     {
