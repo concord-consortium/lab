@@ -54,9 +54,11 @@ else
 git checkout -b static
 fi
 git merge public
+cd ..
 LAB_DISABLE_SHUTTERBUG=true LAB_DISABLE_MODEL_LIST=true  bin/haml -r ./script/setup.rb src/interactives.html.haml public/interactives.html
 LAB_DISABLE_SHUTTERBUG=true LAB_DISABLE_MODEL_LIST=true  bin/haml -r ./script/setup.rb src/embeddable.html.haml public/embeddable.html
-LAB_STATIC=true ./script/generate-js-config.rb
+rm -f src/lab/lab.config.js; make public/lab/lab.js STATIC=true
+cd public
 git commit -am "commit html files modified for static distribution into static branch"
 git checkout public
 cd ..
