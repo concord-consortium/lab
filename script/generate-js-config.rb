@@ -31,6 +31,12 @@ CONFIG[:jsconfig][:fontface] = "Open Sans" if CONFIG[:jsconfig][:fontface] == ni
 CONFIG[:jsconfig][:dataGamesProxyPrefix] = "DataGames/Games/concord/lab/" if CONFIG[:jsconfig][:dataGamesProxyPrefix] == nil
 CONFIG[:jsconfig][:environment] = CONFIG[:environment]
 
+if ENV['LAB_STATIC'] || CONFIG[:jsconfig][:static]
+  CONFIG[:jsconfig][:static] = true
+else
+  CONFIG[:jsconfig][:static] = false
+end
+
 jsconfig = <<HEREDOC
 // this file is generated during build process by: ./script/generate-js-config.rb
 define(function (require) {

@@ -14,6 +14,9 @@
   production:
     :hostname: lab.concord.org
 :jsconfig:
+  # This can be set optionally set to true to disable links to DataGames and Java models
+  # Can even be done dynamically: LAB_STATIC=true ./script/generate-js-config.rb
+  :static: false
   :sharing: true
   :logging: true
   :tracing: false
