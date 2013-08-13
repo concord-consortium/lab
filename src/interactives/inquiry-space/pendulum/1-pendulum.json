@@ -275,8 +275,8 @@
       "id": "right",
       "top": "model.top",
       "left": "model.right",
+      "right": "interactive.right",
       "height": "model.height",
-      "width": "24em",
       "padding-left": "1em",
       "padding-right": "0.5em"
     }
