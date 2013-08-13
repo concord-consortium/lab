@@ -419,9 +419,15 @@ define(function (require) {
           return availableWidth;
         case "container.height":
           return availableHeight;
+        case "interactive.left":
+          return leftBoundary;
+        case "interactive.top":
+          return topBoundary;
         case "interactive.width":
+        case "interactive.right":
           return availableWidth - leftBoundary;
         case "interactive.height":
+        case "interactive.bottom":
           return availableHeight - topBoundary - bottomBarWidth;
         default:
           dim = dim.split(".");
