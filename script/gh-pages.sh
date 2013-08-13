@@ -26,11 +26,19 @@ then
 cd public
 git fetch
 git reset --hard origin/gh-pages
-cd ..; export LAB_DISABLE_SHUTTERBUG=1; make clean; make; unset LAB_DISABLE_SHUTTERBUG; cd public
+cd ..
+export LAB_DISABLE_SHUTTERBUG=1
+export LAB_DISABLE_MODEL_LIST=1
+make clean; make
+rm -f src/lab/lab.config.js; make public/lab/lab.js STATIC=true
+unset LAB_DISABLE_SHUTTERBUG
+unset LAB_DISABLE_MODEL_LIST
+cd public
 git add --all .
 git commit -am "generated from commit: `git --git-dir ../.git log -1 --format="%H%n%n%an <%ae>%n%cd%n%n    %s%n%n    %b"`"
 git push origin gh-pages
 cd ..
+rm -f src/lab/lab.config.js; make public/lab/lab.js
 else
 cat <<heredoc
 
