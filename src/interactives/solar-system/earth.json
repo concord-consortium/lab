@@ -213,11 +213,11 @@
       "ylabel": "Distance (AU)",
       "ymin": 0.0,
       "ymax": 2.0,
-      "xmax": 1200,
+      "xmax": 1100,
       "yTickCount": 5,
-      "xTickCount": 5,
-      "xFormatter": "3r",
-      "yFormatter": "3r",
+      "xTickCount": 4,
+      "xFormatter": "r",
+      "yFormatter": ".2s",
       "properties": [
         "earthOrbitalDistance"
       ]

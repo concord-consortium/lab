@@ -193,9 +193,9 @@
       "ymax": 160,
       "xmax": 400,
       "yTickCount": 5,
-      "xTickCount": 6,
-      "xFormatter": "3r",
-      "yFormatter": "3.1f",
+      "xTickCount": 4,
+      "xFormatter": "r",
+      "yFormatter": ".1f",
       "properties": [
         "earthOrbitalDistance"
       ]
@@ -226,21 +226,24 @@
       "id": "right-upper",
       "top": "model.top",
       "left": "model.right",
-      "width": "model.width"
+      "width": "model.width",
+      "padding-left": "0.5em"
     },
     {
       "id": "right-lower",
       "left": "model.right",
       "padding-top": "0.5em",
       "bottom": "interactive.height",
-      "width": "model.width"
+      "width": "model.width",
+      "padding-left": "0.5em"
     },
     {
       "id": "right-middle",
       "left": "model.right",
       "top": "right-upper.bottom",
       "height": "15em",
-      "width": "model.width"
+      "width": "model.width",
+      "padding-left": "0.5em"
     }
   ]
 }

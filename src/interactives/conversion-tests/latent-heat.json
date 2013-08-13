@@ -80,11 +80,11 @@
       "title": "temperature vs time",
       "xmin": -10,
       "xmax": 200000,
-      "xFormatter": "2s",
+      "xFormatter": ".2s",
       "xTickCount": 5,
       "ymin": -10,
       "ymax": 4000,
-      "yFormatter": "2s",
+      "yFormatter": ".2s",
       "properties": [
         "temperatureFiltered"
       ]
@@ -96,7 +96,7 @@
       "xlabel": "Model Time (ps)",
       "xmin": -10,
       "xmax": 200000,
-      "xFormatter": "2s",
+      "xFormatter": ".2s",
       "xTickCount": 5,
       "ylabel": "eV",
       "ymin": -160,

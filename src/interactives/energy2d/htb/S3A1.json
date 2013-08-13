@@ -35,8 +35,8 @@
       "ymax": 50,
       "xmax": 1200,
       "xTickCount": 5,
-      "xFormatter": "2s",
-      "yFormatter": "2s",
+      "xFormatter": ".2s",
+      "yFormatter": ".2s",
       "xProperty": "time",
       "properties": [
         "sensor-2", "sensor-3", "sensor-0", "sensor-1"

@@ -73,8 +73,8 @@
       "lineWidth": 1,
       "yTickCount": 5,
       "xTickCount": 5,
-      "xFormatter": "2s",
-      "yFormatter": "2s",
+      "xFormatter": ".2s",
+      "yFormatter": ".2s",
       "properties": [
         "pressureLeftFiltered", "pressureRightFiltered"
       ]

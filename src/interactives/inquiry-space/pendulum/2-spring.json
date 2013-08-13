@@ -244,10 +244,10 @@
       "ymin": -0.6,
       "ymax": 0.6,
       "xmax": 10,
-      "yFormatter": "2s",
       "xTickCount": 5,
       "yTickCount": 6,
-      "xFormatter": "2s",
+      "xFormatter": ".2s",
+      "yFormatter": ".2s",
       "properties": [
         "currentDisplacement"
       ]

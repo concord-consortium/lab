@@ -233,7 +233,7 @@
       "xTickCount": 5,
       "yTickCount": 6,
       "xFormatter": ".2r",
-      "yFormatter": ".2r",
+      "yFormatter": ".2s",
       "properties": [
         "currentAngle"
       ]

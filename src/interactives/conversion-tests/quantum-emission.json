@@ -100,8 +100,8 @@
       "xmax": 6000,
       "xTickCount": 5,
       "yTickCount": 5,
-      "xFormatter": "2s",
-      "yFormatter": "2s",
+      "xFormatter": ".2s",
+      "yFormatter": ".2s",
       "properties": [
         "totalEnergy"
       ]

@@ -29,8 +29,8 @@
       "ymax": 6,
       "xmax": 30,
       "xTickCount": 6,
-      "xFormatter": "2s",
-      "yFormatter": "2s",
+      "xFormatter": ".2s",
+      "yFormatter": ".2s",
       "properties": [
         "sensorReading"
       ]
