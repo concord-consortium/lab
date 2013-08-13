@@ -25,6 +25,8 @@ heredoc
 cd public
 git init .
 git checkout -b public
+git checkout -b static
+git checkout public
 cp ../script/dot-gitignore-for-public .gitignore
 git add --all .
 git commit -am "generated from commit: `git --git-dir ../.git log -1 --format="%H%n%n%an <%ae>%n%cd%n%n    %s%n%n    %b"`"
@@ -44,6 +46,19 @@ git checkout -b public
 fi
 git add --all .
 git commit -am "generated from commit: `git --git-dir ../.git log -1 --format="%H%n%n%an <%ae>%n%cd%n%n    %s%n%n    %b"`"
+
+if git checkout --quiet static
+then
+echo "checked out existing static branch"
+else
+git checkout -b static
+fi
+git merge public
+LAB_DISABLE_SHUTTERBUG=true LAB_DISABLE_MODEL_LIST=true  bin/haml -r ./script/setup.rb src/interactives.html.haml public/interactives.html
+LAB_DISABLE_SHUTTERBUG=true LAB_DISABLE_MODEL_LIST=true  bin/haml -r ./script/setup.rb src/embeddable.html.haml public/embeddable.html
+LAB_STATIC=true ./script/generate-js-config.rb
+git commit -am "commit html files modified for static distribution into static branch"
+git checkout public
 cd ..
 fi
 
@@ -60,20 +75,23 @@ archivename="$version.tar.gz"
 mkdir -p version
 cat <<heredoc
 
-***  copying public into: ./version/$version/public
+***  copying public branch in ./public into: ./version/$version/public
 
 heredoc
 
 cd public
+git checkout public
 git checkout-index -f -a --prefix=../version/$version/public/
 
 cat <<heredoc
 
-***  archiving public into: ./version/$archivename
+***  archiving static branch in ./public into: ./version/$archivename
 
 heredoc
 
+git checkout static
 git archive HEAD | gzip > ../version/$archivename
+git checkout public
 
 else
 cat <<heredoc
