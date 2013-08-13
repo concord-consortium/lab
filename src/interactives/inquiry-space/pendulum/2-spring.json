@@ -10,7 +10,7 @@
     "Can you explain why? Is this different from the relationships for a pendulum? Try the",
     "damping slider. Does damping change the period?"
   ],
-  "aspectRatio": 1.6,
+  "aspectRatio": 1.5,
   "fontScale": 0.8,
   "models": [
     {
@@ -172,7 +172,8 @@
         }
       ],
       "steps": 24,
-      "title": "Starting distance from equilibrium (m)",
+      "title": "Starting position (m)",
+      "tooltip": "Starting distance from equilibrium position",
       "property": "startingDisplacement"
     },
     {
@@ -244,6 +245,7 @@
       "xmax": 10,
       "yFormatter": "2s",
       "xTickCount": 5,
+      "yTickCount": 6,
       "xFormatter": "2s",
       "properties": [
         "currentDisplacement"
@@ -271,5 +273,25 @@
       ]
     ]
   },
-  "template": "wide-right"
+  "template": [
+    {
+      "id": "top",
+      "bottom": "model.top",
+      "width": "interactive.width"
+    },
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "padding-top": "0.5em"
+    },
+    {
+      "id": "right",
+      "top": "model.top",
+      "left": "model.right",
+      "right": "interactive.right",
+      "height": "model.height",
+      "padding-left": "1em",
+      "padding-right": "0.5em"
+    }
+  ]
 }
