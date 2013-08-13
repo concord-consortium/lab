@@ -390,10 +390,15 @@ public/lab/lab.js: \
 src/lab/lab.version.js: script/generate-js-version.rb
 	./script/generate-js-version.rb
 
+ifdef STATIC
+src/lab/lab.config.js:
+	LAB_STATIC=true ./script/generate-js-config.rb
+else
 src/lab/lab.config.js: \
 	script/generate-js-config.rb \
 	config/config.yml
 	./script/generate-js-config.rb
+endif
 
 public/lab/lab.grapher.js: \
 	$(GRAPHER_SRC_FILES) \
