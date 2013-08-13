@@ -2519,7 +2519,7 @@
         "damping slider. Does damping change the period?"
       ],
       "publicationStatus": "public",
-      "aspectRatio": 1.6
+      "aspectRatio": 1.5
     },
     {
       "title": "Pendulum and Spring",

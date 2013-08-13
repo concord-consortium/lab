@@ -413,14 +413,14 @@ define('lab.version',['require'],function (require) {
     "repo": {
       "branch": "master",
       "commit": {
-        "sha":           "f64c10ac7230ba403acc65c94d4d39c98e660c1a",
-        "short_sha":      "f64c10ac",
-        "url":            "https://github.com/concord-consortium/lab/commit/f64c10ac",
+        "sha":           "864d620289c2482ed9a4904a345c67be893ad156",
+        "short_sha":      "864d6202",
+        "url":            "https://github.com/concord-consortium/lab/commit/864d6202",
         "author":        "Stephen Bannasch",
         "email":         "stephen.bannasch@gmail.com",
-        "date":          "2013-08-12 13:09:23 -0400",
-        "short_message": "probeware doc: fix more relative references",
-        "message":       "probeware doc: fix more relative references"
+        "date":          "2013-08-13 18:05:55 -0400",
+        "short_message": "make the gh-pages branch a full static site also",
+        "message":       "make the gh-pages branch a full static site also"
       },
       "dirty": false
     }
@@ -452,6 +452,7 @@ define('lab.config',['require','common/actual-root'],function (require) {
   var actualRoot = require('common/actual-root'),
       publicAPI;
   publicAPI = {
+  "static": false,
   "sharing": true,
   "logging": true,
   "tracing": false,

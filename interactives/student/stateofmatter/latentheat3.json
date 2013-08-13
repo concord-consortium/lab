@@ -190,17 +190,16 @@
       "top": "model.top",
       "bottom": "model.bottom",
       "left": "model.right",
-      "padding-left": "1em",
+      "padding-left": "0.5em",
       "padding-right": "0.5em",
-      "padding-bottom": "0.5em",
-      "width": "model.width*0.6"
+      "padding-bottom": "0.5em"
     },
     {
       "id": "right-lines",
       "top": "model.top",
       "bottom": "model.bottom",
       "left": "right-bars.right",
-      "width": "model.width*0.8"
+      "right": "interactive.right"
     },
     {
       "id": "bottom",

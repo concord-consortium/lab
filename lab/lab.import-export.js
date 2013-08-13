@@ -432,6 +432,7 @@ define('lab.config',['require','common/actual-root'],function (require) {
   var actualRoot = require('common/actual-root'),
       publicAPI;
   publicAPI = {
+  "static": false,
   "sharing": true,
   "logging": true,
   "tracing": false,

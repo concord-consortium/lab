@@ -268,15 +268,14 @@
     {
       "id": "bottom",
       "top": "model.bottom",
-      "width": "model.width*2.5",
       "padding-top": "0.5em"
     },
     {
       "id": "right",
       "top": "model.top",
       "left": "model.right",
+      "right": "interactive.right",
       "height": "model.height",
-      "width": "24em",
       "padding-left": "1em",
       "padding-right": "0.5em"
     }

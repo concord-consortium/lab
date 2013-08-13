@@ -413,14 +413,14 @@ define('lab.version',['require'],function (require) {
     "repo": {
       "branch": "master",
       "commit": {
-        "sha":           "f64c10ac7230ba403acc65c94d4d39c98e660c1a",
-        "short_sha":      "f64c10ac",
-        "url":            "https://github.com/concord-consortium/lab/commit/f64c10ac",
+        "sha":           "864d620289c2482ed9a4904a345c67be893ad156",
+        "short_sha":      "864d6202",
+        "url":            "https://github.com/concord-consortium/lab/commit/864d6202",
         "author":        "Stephen Bannasch",
         "email":         "stephen.bannasch@gmail.com",
-        "date":          "2013-08-12 13:09:23 -0400",
-        "short_message": "probeware doc: fix more relative references",
-        "message":       "probeware doc: fix more relative references"
+        "date":          "2013-08-13 18:05:55 -0400",
+        "short_message": "make the gh-pages branch a full static site also",
+        "message":       "make the gh-pages branch a full static site also"
       },
       "dirty": false
     }
@@ -452,6 +452,7 @@ define('lab.config',['require','common/actual-root'],function (require) {
   var actualRoot = require('common/actual-root'),
       publicAPI;
   publicAPI = {
+  "static": true,
   "sharing": true,
   "logging": true,
   "tracing": false,
@@ -15061,7 +15062,7 @@ define('common/controllers/credits-dialog',['require','lab.config','mustache','c
         "&utm_medium=embedded_interactive&utm_campaign=" + labConfig.utmCampaign;
       view.concordUrl += "?" + utmString;
       view.nextGenUrl += "?" + utmString;
-      view.interactiveCreditsUrl += "&" + encodeURI("utm_source=embed_link&utm_medium=embedded_interactive&utm_campaign=" + labConfig.utmCampaign);
+      view.interactiveCreditsUrl += "?" + encodeURI("utm_source=embed_link&utm_medium=embedded_interactive&utm_campaign=" + labConfig.utmCampaign);
     }
 
     if (!labConfig.sharing) {
@@ -15535,9 +15536,15 @@ define('common/layout/semantic-layout',['require','lab.config','common/layout/se
           return availableWidth;
         case "container.height":
           return availableHeight;
+        case "interactive.left":
+          return leftBoundary;
+        case "interactive.top":
+          return topBoundary;
         case "interactive.width":
+        case "interactive.right":
           return availableWidth - leftBoundary;
         case "interactive.height":
+        case "interactive.bottom":
           return availableHeight - topBoundary - bottomBarWidth;
         default:
           dim = dim.split(".");
@@ -15960,7 +15967,7 @@ define('common/array-types',['require','arrays'],function (require) {
   // Return all available types of arrays.
   // If you need to use new type, declare it here.
   return {
-    floatType:  useTyped ? 'Float32Array' : 'regular',
+    floatType:  useTyped ? 'Float64Array' : 'regular',
     int32Type:  useTyped ? 'Int32Array'   : 'regular',
     int16Type:  useTyped ? 'Int16Array'   : 'regular',
     int8Type:   useTyped ? 'Int8Array'    : 'regular',
@@ -19911,7 +19918,7 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
             if (!shapeFence[j])
               continue;
 
-            if (shapeType[j] == 'rectangle') {
+            if (shapeType[j] === 'rectangle') {
 
               x_outside_left = shapeX[j] - r;
               x_outside_right = shapeX[j] + shapeWidth[j] + r;
@@ -19947,22 +19954,20 @@ define('md2d/models/engine/md2d',['require','exports','module','arrays','common/
                 if (xi <= x_inside_left) {
                   x[i] = x_inside_left + (x_inside_left - xi);
                   vx[i] *= -1;
-                }
-                else if (xi >= x_inside_right) {
+                } else if (xi >= x_inside_right) {
                   x[i] = x_inside_right - (xi - x_inside_right);
                   vx[i] *= -1;
                 }
-                else if (yi <= y_inside_bottom) {
+                if (yi <= y_inside_bottom) {
                   y[i] = y_inside_bottom + (y_inside_bottom - yi);
                   vy[i] *= -1;
-                }
-                else if (yi >= y_inside_top) {
+                } else if (yi >= y_inside_top) {
                   y[i] = y_inside_top - (yi - y_inside_top);
                   vy[i] *= -1;
                 }
               }
             }
-            else if (shapeType[j] == 'ellipse') {
+            else if (shapeType[j] === 'ellipse') {
               a = shapeWidth[j] / 2;
               b = shapeHeight[j] / 2;
               // Transform points from model space to ellipse space
