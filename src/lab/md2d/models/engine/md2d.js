@@ -1313,7 +1313,7 @@ define(function (require, exports) {
             if (!shapeFence[j])
               continue;
 
-            if (shapeType[j] == 'rectangle') {
+            if (shapeType[j] === 'rectangle') {
 
               x_outside_left = shapeX[j] - r;
               x_outside_right = shapeX[j] + shapeWidth[j] + r;
@@ -1349,22 +1349,20 @@ define(function (require, exports) {
                 if (xi <= x_inside_left) {
                   x[i] = x_inside_left + (x_inside_left - xi);
                   vx[i] *= -1;
-                }
-                else if (xi >= x_inside_right) {
+                } else if (xi >= x_inside_right) {
                   x[i] = x_inside_right - (xi - x_inside_right);
                   vx[i] *= -1;
                 }
-                else if (yi <= y_inside_bottom) {
+                if (yi <= y_inside_bottom) {
                   y[i] = y_inside_bottom + (y_inside_bottom - yi);
                   vy[i] *= -1;
-                }
-                else if (yi >= y_inside_top) {
+                } else if (yi >= y_inside_top) {
                   y[i] = y_inside_top - (yi - y_inside_top);
                   vy[i] *= -1;
                 }
               }
             }
-            else if (shapeType[j] == 'ellipse') {
+            else if (shapeType[j] === 'ellipse') {
               a = shapeWidth[j] / 2;
               b = shapeHeight[j] / 2;
               // Transform points from model space to ellipse space
