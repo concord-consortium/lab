@@ -276,11 +276,18 @@ AUTHORING = false;
       "url": Lab.config.dataGamesProxyPrefix + "embeddable.html#" +  interactiveUrl
     }]);
 
-    $dataGamesLink.attr("href", encodeURI("http://is.kcptech.com/dg?moreGames=" + dgGameSpecification));
-    $dataGamesLink.attr("title", "Run this Interactive inside DataGames");
+    if (Lab.config.static) {
+      $dataGamesLink.hide();
+      $dataGamesStagingLink.hide();
+    } else {
+      $dataGamesLink.show();
+      $dataGamesLink.attr("href", encodeURI("http://is.kcptech.com/dg?moreGames=" + dgGameSpecification));
+      $dataGamesLink.attr("title", "Run this Interactive inside DataGames");
 
-    $dataGamesStagingLink.attr("href", encodeURI("http://is-test.kcptech.com/dg?moreGames=" + dgGameSpecification));
-    $dataGamesStagingLink.attr("title", "Run this Interactive inside DataGames' staging server");
+      $dataGamesStagingLink.show();
+      $dataGamesStagingLink.attr("href", encodeURI("http://is-test.kcptech.com/dg?moreGames=" + dgGameSpecification));
+      $dataGamesStagingLink.attr("title", "Run this Interactive inside DataGames' staging server");
+    }
 
     setupOriginalImportLinks();
     setupExtras();
@@ -534,6 +541,8 @@ AUTHORING = false;
         $originalImportLink.attr("target", "");
         if (typeof modelList !== 'undefined') {
           contentItems = getObjects(modelList, "mml", mmlPath.replace("imports/legacy-mw-content/", ""));
+        } else {
+          $originalImportLink.hide();
         }
         if (contentItems.length > 0) {
           javaMWhref = javaMW + origin + Lab.config.actualRoot + "imports/legacy-mw-content/" + contentItems[0].cml;
@@ -580,6 +589,11 @@ AUTHORING = false;
       disableOriginalImportLink();
       disableOriginalModelLink();
       disableJsonModelLink();
+    }
+    if (Lab.config.static) {
+      $originalImportLink.hide();
+    } else {
+      $originalImportLink.show();
     }
   }
 
