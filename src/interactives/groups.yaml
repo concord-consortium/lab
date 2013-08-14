@@ -38,6 +38,10 @@
   :name: "ITSI: Gas Laws"
   :category: Curriculum
 
+- :path: itsi/heattransfer
+  :name: "ITSI: Heat Transfer"
+  :category: Curriculum
+
 - :path: itsi/energy2d
   :name: "ITSI: Energy2D"
   :category: Curriculum
@@ -120,6 +124,10 @@
 
 - :path: student/fluid
   :name: "Classic Java MW Examples: Fluid"
+  :category: Curriculum
+
+- :path: student/heattransfer
+  :name: "Classic Java MW Examples: Heat Transfer"
   :category: Curriculum
 
 - :path: student/materials

@@ -1,0 +1,78 @@
+{
+  "title": "changing-temp-page5",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "largesolid",
+      "url": "imports/legacy-mw-content/converted/itsi/heattransfer/largesolid.json",
+      "importedFrom": "imports/legacy-mw-content/itsi/heattransfer/largesolid.mml",
+      "viewOptions": {
+        "controlButtons": ""
+      },
+      "onLoad": [
+        "set({ temperatureControl: true });",
+        "set({ targetTemperature: 1 });"
+      ]
+    },
+    {
+      "type": "md2d",
+      "id": "smallsolid",
+      "url": "imports/legacy-mw-content/converted/itsi/heattransfer/smallsolid.json",
+      "importedFrom": "imports/legacy-mw-content/itsi/heattransfer/smallsolid.mml",
+      "viewOptions": {
+        "controlButtons": ""
+      },
+      "onLoad": [
+        "set({ temperatureControl: true });",
+        "set({ targetTemperature: 1 });"
+      ]
+    }
+  ],
+  "components": [
+    {
+      "type": "radio",
+      "id": "select-model-buttons",
+      "orientation": "horizontal",
+      "options": [
+        {
+          "text": "Large solid",
+          "loadModel": "largesolid"
+        },
+        {
+          "text": "Small solid (half size)",
+          "loadModel": "smallsolid"
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "id": "add-energy",
+      "text": "Add energy",
+      "action": [
+        "start();",
+        "set({ targetTemperature: get('targetTemperature')*1.5 });"
+      ]
+    },
+    {
+      "type": "barGraph",
+      "id": "thermometer",
+      "property": "temperature",
+      "units": true,
+      "labelFormat": "3r",
+      "min": 0,
+      "max": 800
+    }
+  ],
+  "layout": {
+    "bottom": [
+      "add-energy",
+      "select-model-buttons"
+    ],
+    "right": [
+      "thermometer"
+    ]
+  }
+}

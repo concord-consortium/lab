@@ -1,0 +1,67 @@
+{
+  "title": "heatflow1",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "heatflow1$0",
+      "url": "imports/legacy-mw-content/converted/itsi/heattransfer/heatflow1$0.json",
+      "importedFrom": "imports/legacy-mw-content/itsi/heattransfer/heatflow1$0.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      },
+      "modelOptions": {
+        "temperatureControl": true
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "name": "temperature-modified",
+      "unitAbbreviation": "°C",
+      "label": "Temperature",
+      "value": "return get('temperature') * 2 / 7;"
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "cool",
+      "text": "Cool",
+      "action": "adjustTemperature(0.9);"
+    },
+    {
+      "type": "button",
+      "id": "heat",
+      "text": "Heat",
+      "action": "adjustTemperature(1.1); limitHighTemperature(6950);"
+    },
+    {
+      "type": "checkbox",
+      "id": "ke-shading",
+      "text": "KE shading",
+      "property": "keShading"
+    },
+    {
+      "type": "barGraph",
+      "id": "thermometer",
+      "property": "temperature-modified",
+      "units": true,
+      "labelFormat": "3r",
+      "min": 0,
+      "max": 2000
+    }
+  ],
+  "layout": {
+    "right": [
+      "thermometer"
+    ],
+    "bottom": [
+      "ke-shading",
+      "cool",
+      "heat"
+    ]
+  }
+}

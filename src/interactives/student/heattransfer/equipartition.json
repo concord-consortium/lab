@@ -1,0 +1,23 @@
+{
+  "title": "equipartition",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "equipartition$0",
+      "url": "imports/legacy-mw-content/converted/student/heattransfer/equipartition$0.json",
+      "importedFrom": "imports/legacy-mw-content/student/heattransfer/equipartition$0.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

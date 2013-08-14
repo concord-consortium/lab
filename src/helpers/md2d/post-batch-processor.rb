@@ -161,6 +161,7 @@ class MD2DImports
       @model_list.push(MD2DDirectory.new("student/classic/wave").section)
 
       @model_list.push(MD2DDirectory.new("student/fluid").section)
+      @model_list.push(MD2DDirectory.new("student/heattransfer").section)
       @model_list.push(MD2DDirectory.new("student/materials").section)
       @model_list.push(MD2DDirectory.new("student/motionandforce").section)
       @model_list.push(MD2DDirectory.new("student/osmosis").section)
@@ -168,6 +169,10 @@ class MD2DImports
       @model_list.push(MD2DDirectory.new("student/wave").section)
 
       @model_list.push(MD2DDirectory.new("rites").section)
+
+      @model_list.push(MD2DDirectory.new("itsi/crystal").section)
+      @model_list.push(MD2DDirectory.new("itsi/gas-laws").section)
+      @model_list.push(MD2DDirectory.new("itsi/heattransfer").section)
 
       @model_list.push(MD2DDirectory.new("public/part1/crystal").section)
       @model_list.push(MD2DDirectory.new("public/part1/molecularcrystal").section)

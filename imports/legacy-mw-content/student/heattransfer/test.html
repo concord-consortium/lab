@@ -1,0 +1,32 @@
+<html>
+<body>
+
+<center>
+<applet archive="energy2d.jar" 
+code="org.concord.energy2d.system.System2D" width="400" height="400">
+<param 
+  name="script" 
+  value="set convective true;
+add image (50, 50) cclogo.gif;
+set timestep 1;
+set background_conductivity 1;
+set viscosity .001;
+set viewupdate 10;
+part rectangle(0, 5, 10, 1);
+set part[0].conductivity 10;
+part rectangle(0, 1, 4.8, 1); 
+set part[1].conductivity 10;
+part rectangle(4.8, 1, 0.4, 1);
+set part[2].conductivity 10;
+part rectangle(5.2, 1, 4.8, 1); 
+set part[3].conductivity 10;
+set part[0].temperature 0;
+set part[1].temperature 15;
+set part[2].temperature 30;
+set part[3].temperature 15;
+boundary flux(0, 0, 0, 0);"/> 
+</applet>
+</center>
+
+</body>
+</html>

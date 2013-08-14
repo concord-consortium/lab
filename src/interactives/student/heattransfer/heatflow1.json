@@ -1,0 +1,23 @@
+{
+  "title": "heatflow1",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "heatflow1$0",
+      "url": "imports/legacy-mw-content/converted/student/heattransfer/heatflow1$0.json",
+      "importedFrom": "imports/legacy-mw-content/student/heattransfer/heatflow1$0.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

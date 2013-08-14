@@ -1,0 +1,148 @@
+{
+  "title": "changing-temp-page6",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "aspectRatio": 2.1,
+  "fontScale": 0.75,
+  "models": [
+    {
+      "type": "md2d",
+      "id": "thick-short-bar",
+      "url": "imports/legacy-mw-content/converted/itsi/heattransfer/option2.json",
+      "importedFrom": "imports/legacy-mw-content/itsi/heattransfer/option2.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    },
+    {
+      "type": "md2d",
+      "id": "thin-short-bar",
+      "url": "imports/legacy-mw-content/converted/itsi/heattransfer/option3.json",
+      "importedFrom": "imports/legacy-mw-content/itsi/heattransfer/option3.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    },
+    {
+      "type": "md2d",
+      "id": "thick-long-bar",
+      "url": "imports/legacy-mw-content/converted/itsi/heattransfer/option4.json",
+      "importedFrom": "imports/legacy-mw-content/itsi/heattransfer/option4.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    },
+    {
+      "type": "md2d",
+      "id": "thin-long-bar",
+      "url": "imports/legacy-mw-content/converted/itsi/heattransfer/option5.json",
+      "importedFrom": "imports/legacy-mw-content/itsi/heattransfer/option5.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    },
+    {
+      "type": "md2d",
+      "id": "gas",
+      "url": "imports/legacy-mw-content/converted/itsi/heattransfer/option6.json",
+      "importedFrom": "imports/legacy-mw-content/itsi/heattransfer/option6.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    },
+    {
+      "type": "md2d",
+      "id": "sponge",
+      "url": "imports/legacy-mw-content/converted/itsi/heattransfer/option7.json",
+      "importedFrom": "imports/legacy-mw-content/itsi/heattransfer/option7.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    },
+    {
+      "type": "md2d",
+      "id": "vacuum",
+      "url": "imports/legacy-mw-content/converted/itsi/heattransfer/option1.json",
+      "importedFrom": "imports/legacy-mw-content/itsi/heattransfer/option1.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "text",
+      "id": "instructions",
+      "text": "Choose a heat conductor through which heat flows from the hot solid to the cold one."
+    },
+    {
+      "type": "checkbox",
+      "id": "show-ke",
+      "text": "K. E. Shading",
+      "property": "keShading"
+    },
+    {
+      "type": "radio",
+      "id": "select-model-buttons",
+      "orientation": "horizontal",
+      "options": [
+        {
+          "text": "Vacuum",
+          "loadModel": "vacuum"
+        },
+        {
+          "text": "Thick short bar",
+          "loadModel": "thick-short-bar"
+        },
+        {
+          "text": "Thin short bar",
+          "loadModel": "thin-short-bar"
+        },
+        {
+          "text": "Thick long bar",
+          "loadModel": "thick-long-bar"
+        },
+        {
+          "text": "Thin long bar",
+          "loadModel": "thin-long-bar"
+        },
+        {
+          "text": "Gas",
+          "loadModel": "gas"
+        },
+        {
+          "text": "Sponge",
+          "loadModel": "sponge"
+        }
+      ]
+    },
+    {
+      "type": "graph",
+      "id": "graph",
+      "title": "Temperature",
+      "xlabel": "Time  (ps)",
+      "ylabel": "Temperature (°)",
+      "ymin": 0,
+      "ymax": 1000,
+      "xmax": 40,
+      "xTickCount": 5,
+      "yTickCount": 6,
+      "xFormatter": ".2r",
+      "yFormatter": ".2s",
+      "properties": [
+        "temperature"
+      ]
+    }
+  ],
+  "layout": {
+    "bottom": [
+      [ "instructions", "show-ke" ],
+      [ "select-model-buttons" ]
+    ],
+    "right": [
+      "graph"
+    ]
+  },
+  "template": "wide-right"
+}
