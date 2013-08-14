@@ -60,7 +60,7 @@
       "steps": 36,
       "width": "20em",
       "property": "targetTemperature",
-      "displayValue": "return format('1.1f')(value)",
+      "displayValue": "return format('.1f')(value)",
       "labels": [
         {
           "value": 200,

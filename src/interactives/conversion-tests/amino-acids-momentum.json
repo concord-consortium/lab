@@ -91,7 +91,7 @@
           "label": "3"
         }
       ],
-      "displayValue": "return format('1.2f')(value)",
+      "displayValue": "return format('.2f')(value)",
       "property": "solventForceFactor"
     },
     {
@@ -111,7 +111,7 @@
           "label": "100"
         }
       ],
-      "displayValue": "return format('1.2f')(value)",
+      "displayValue": "return format('.2f')(value)",
       "property": "solventForceFactor"
     },
     {
@@ -131,7 +131,7 @@
           "label": "50"
         }
       ],
-      "displayValue": "return format('1.2f')(value)",
+      "displayValue": "return format('.2f')(value)",
       "property": "additionalSolventForceMult"
     },
     {
@@ -151,7 +151,7 @@
           "label": "10"
         }
       ],
-      "displayValue": "return format('1.2f')(value)",
+      "displayValue": "return format('.2f')(value)",
       "property": "additionalSolventForceThreshold"
     },
     {
@@ -159,7 +159,7 @@
       "id": "epsilon-slider",
       "min": -3.0,
       "max": -0.1,
-      "displayValue": "return format('1.2f')(value)",
+      "displayValue": "return format('.2f')(value)",
       "labels": [
         {
           "value": -3.0,

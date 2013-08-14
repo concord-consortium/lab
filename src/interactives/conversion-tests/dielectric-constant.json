@@ -80,7 +80,7 @@
           "label": "water"
         }
       ],
-      "displayValue": "return format('1.2f')(value)",
+      "displayValue": "return format('.2f')(value)",
       "property": "dielectricConstant"
     },
     {

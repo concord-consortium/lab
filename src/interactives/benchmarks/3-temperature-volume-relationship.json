@@ -52,7 +52,7 @@
       "id": "volume-slider",
       "min": 0,
       "max": 10,
-      "displayValue": "return format('1.2f')(value)",
+      "displayValue": "return format('.2f')(value)",
       "steps": 80,
       "title": "Volume of Gas",
       "property": "volume"

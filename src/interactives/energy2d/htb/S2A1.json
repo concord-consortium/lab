@@ -88,14 +88,14 @@
       "id": "left-specific-heat-output",
       "property": "left-specific-heat",
       "orientation": "horizontal",
-      "displayValue": "return format('1f')(value)"
+      "displayValue": "return format('.1f')(value)"
     },
     {
       "type": "numericOutput",
       "id": "right-specific-heat-output",
       "property": "right-specific-heat",
       "orientation": "horizontal",
-      "displayValue": "return format('1f')(value)"
+      "displayValue": "return format('.1f')(value)"
     },
     {
       "type": "graph",

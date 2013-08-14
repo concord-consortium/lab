@@ -166,7 +166,7 @@
       "title": "Viewport Position",
       "property": "viewPortX",
       "width": "35em",
-      "displayValue": "return format('1.1f')(value)",
+      "displayValue": "return format('.1f')(value)",
       "min": -31,
       "max": 35,
       "steps": 2000

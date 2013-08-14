@@ -43,7 +43,7 @@
       "id": "gravity-slider",
       "min": 1,
       "max": 20,
-      "displayValue": "return format('1.1f')(value)",
+      "displayValue": "return format('.1f')(value)",
       "labels": [
         {
           "value": 1,
@@ -67,28 +67,28 @@
       "id": "time-display",
       "orientation": "vertical",
       "property": "time",
-      "displayValue": "return format('1.2f')(value)"
+      "displayValue": "return format('.2f')(value)"
     },
     {
       "type": "numericOutput",
       "id": "ball-height-display",
       "orientation": "vertical",
       "property": "ballHeight",
-      "displayValue": "return format('1.2f')(value)"
+      "displayValue": "return format('.2f')(value)"
     },
     {
       "type": "numericOutput",
       "id": "height-property",
       "orientation": "vertical",
       "property": "modelHeight",
-      "displayValue": "return format('1.2f')(value)"
+      "displayValue": "return format('.2f')(value)"
     },
     {
       "type": "numericOutput",
       "id": "width-property",
       "orientation": "vertical",
       "property": "modelWidth",
-      "displayValue": "return format('1.2f')(value)"
+      "displayValue": "return format('.2f')(value)"
     },
     {
       "type": "text",

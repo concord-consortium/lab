@@ -160,7 +160,7 @@
       "label": "Gas volume",
       "units": "nm³",
       "property": "volume",
-      "displayValue": "return format('1.2f')(value)"
+      "displayValue": "return format('.2f')(value)"
     }
   ]
 }

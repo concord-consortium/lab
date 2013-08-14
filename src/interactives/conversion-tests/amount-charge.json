@@ -37,7 +37,7 @@
       "id": "left-slider",
       "min": -3,
       "max": 3,
-      "displayValue": "return format('1.1f')(value)",
+      "displayValue": "return format('.1f')(value)",
       "labels": [
       {
         "value": -3,
@@ -57,7 +57,7 @@
       "id": "right-slider",
       "min": -3,
       "max": 3,
-      "displayValue": "return format('1.1f')(value)",
+      "displayValue": "return format('.1f')(value)",
       "labels": [
       {
         "value": -3,
@@ -89,7 +89,7 @@
       "id": "electric-field-density-slider",
       "min": 0,
       "max": 25,
-      "displayValue": "return format('1f')(value)",
+      "displayValue": "return format('.1f')(value)",
       "labels": [
         {
           "value": 0,

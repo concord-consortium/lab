@@ -93,7 +93,7 @@
       "steps": 99,
       "width": "10em",
       "property": "targetTemperature",
-      "displayValue": "return format('1f')(value)",
+      "displayValue": "return format('.1f')(value)",
       "labels": [
         {
           "value": 50,
@@ -158,84 +158,84 @@
       "id": "atom0speed-output",
       "property": "atom0speed",
       "width": "6em",
-      "displayValue": "return format('1.1e')(value)"
+      "displayValue": "return format('.1e')(value)"
     },
     {
       "type": "numericOutput",
       "id": "atom1speed-output",
       "property": "atom1speed",
       "width": "6em",
-      "displayValue": "return format('1.1e')(value)"
+      "displayValue": "return format('.1e')(value)"
     },
     {
       "type": "numericOutput",
       "id": "atom2speed-output",
       "property": "atom2speed",
       "width": "6em",
-      "displayValue": "return format('1.1e')(value)"
+      "displayValue": "return format('.1e')(value)"
     },
     {
       "type": "numericOutput",
       "id": "atom3speed-output",
       "property": "atom3speed",
       "width": "6em",
-      "displayValue": "return format('1.1e')(value)"
+      "displayValue": "return format('.1e')(value)"
     },
     {
       "type": "numericOutput",
       "id": "atom0x-output",
       "property": "atom0x",
       "width": "6em",
-      "displayValue": "return format('1.2f')(value)"
+      "displayValue": "return format('.2f')(value)"
     },
     {
       "type": "numericOutput",
       "id": "atom1x-output",
       "property": "atom1x",
       "width": "6em",
-      "displayValue": "return format('1.2f')(value)"
+      "displayValue": "return format('.2f')(value)"
     },
     {
       "type": "numericOutput",
       "id": "atom2x-output",
       "property": "atom2x",
       "width": "6em",
-      "displayValue": "return format('1.2f')(value)"
+      "displayValue": "return format('.2f')(value)"
     },
     {
       "type": "numericOutput",
       "id": "atom3x-output",
       "property": "atom3x",
       "width": "6em",
-      "displayValue": "return format('1.2f')(value)"
+      "displayValue": "return format('.2f')(value)"
     },
     {
       "type": "numericOutput",
       "id": "atom0y-output",
       "property": "atom0y",
       "width": "6em",
-      "displayValue": "return format('1.2f')(value)"
+      "displayValue": "return format('.2f')(value)"
     },
     {
       "type": "numericOutput",
       "id": "atom1y-output",
       "property": "atom1y",
       "width": "6em",
-      "displayValue": "return format('1.2f')(value)"
+      "displayValue": "return format('.2f')(value)"
     },
     {
       "type": "numericOutput",
       "id": "atom2y-output",
       "property": "atom2y",
       "width": "6em",
-      "displayValue": "return format('1.2f')(value)"
+      "displayValue": "return format('.2f')(value)"
     },
     {
       "type": "numericOutput",
       "id": "atom3y-output",
       "property": "atom3y",
       "width": "6em",
-      "displayValue": "return format('1.2f')(value)"
+      "displayValue": "return format('.2f')(value)"
     },
     {
       "type": "text",

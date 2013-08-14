@@ -87,7 +87,7 @@
         "setTimeout(function() {",
         "stop();",
         "var time = getTime() - startTime;",
-        "alert( (format('1.2f')(time / (get('timeStepsPerTick') * get('timeStep')) / 2)) + ' fps');",
+        "alert( (format('.2f')(time / (get('timeStepsPerTick') * get('timeStep')) / 2)) + ' fps');",
         "}, 2000);",
         "}, 100);",
         "}, 2000);"
@@ -98,7 +98,7 @@
       "id": "timestep-slider",
       "min": 0.01,
       "max": 5,
-      "displayValue": "return format('1.2f')(value)",
+      "displayValue": "return format('.2f')(value)",
       "labels": [
         {
           "value": 0.01,

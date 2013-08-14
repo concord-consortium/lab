@@ -83,7 +83,7 @@
       "id": "temperature-output",
       "property": "filteredSimplifiedTemperature",
       "orientation": "vertical",
-      "displayValue": "return format('1.1f')(value)"
+      "displayValue": "return format('.1f')(value)"
     }
   ],
   "layout": {

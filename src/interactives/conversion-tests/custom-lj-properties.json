@@ -33,7 +33,7 @@
       "id": "sigma-slider",
       "min": 0.01,
       "max": 0.5,
-      "displayValue": "return format('1.2f')(value)",
+      "displayValue": "return format('.2f')(value)",
       "labels": [
         {
           "value": 0.01,
@@ -53,7 +53,7 @@
       "id": "epsilon-slider",
       "min": -0.5,
       "max": -0.01,
-      "displayValue": "return format('1.2f')(value)",
+      "displayValue": "return format('.2f')(value)",
       "labels": [
         {
           "value": -0.5,

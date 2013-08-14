@@ -157,7 +157,7 @@
       "id": "earth-distance-output",
       "property": "earthOrbitalDistance",
       "width": "16em",
-      "displayValue": "return format('1.3r')(value)"
+      "displayValue": "return format('.3r')(value)"
     },
     {
       "type": "radio",
@@ -227,7 +227,7 @@
       "id": "earth-distance-output",
       "property": "earthOrbitalDistance",
       "width": "16em",
-      "displayValue": "return format('1.3r')(value)"
+      "displayValue": "return format('.3r')(value)"
     }
   ],
   "layout": {

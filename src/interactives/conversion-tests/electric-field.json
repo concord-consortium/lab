@@ -137,7 +137,7 @@
       "id": "electric-field-density-slider",
       "min": 0,
       "max": 20,
-      "displayValue": "return format('1f')(value)",
+      "displayValue": "return format('.1f')(value)",
       "steps": 20,
       "title": "Electric field visualization density",
       "property": "electricFieldDensity"

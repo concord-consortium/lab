@@ -29,7 +29,7 @@
       "id": "sun-angle-slider",
       "min": 1.57079,
       "max": 3.14159,
-      "displayValue": "return format('1f')((value - 3.14159) * -rad2deg )",
+      "displayValue": "return format('.1f')((value - 3.14159) * -rad2deg )",
       "labels": [
         {
           "value": 3.14159,

@@ -45,7 +45,7 @@
       "property": "ticksPerGPUSync",
       "min": 0,
       "max": 300,
-      "displayValue": "return format('1f')(value)",
+      "displayValue": "return format('.1f')(value)",
       "steps": 300
     },
     {
@@ -55,7 +55,7 @@
       "property": "timeStepsPerTick",
       "min": 1,
       "max": 50,
-      "displayValue": "return format('1f')(value)",
+      "displayValue": "return format('.1f')(value)",
       "steps": 50
     }
   ],

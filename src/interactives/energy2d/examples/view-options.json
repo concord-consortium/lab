@@ -44,7 +44,7 @@
       "property": "minimum_temperature",
       "min": 0,
       "max": 50,
-      "displayValue": "return format('1f')(value)",
+      "displayValue": "return format('.1f')(value)",
       "steps": 100
     },
     {
@@ -54,7 +54,7 @@
       "property": "maximum_temperature",
       "min": 0,
       "max": 50,
-      "displayValue": "return format('1f')(value)",
+      "displayValue": "return format('.1f')(value)",
       "steps": 100
     },
     {
