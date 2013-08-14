@@ -387,7 +387,15 @@ parseMML = (mmlString) ->
         fence         = getBooleanProperty $node, 'reflection'
         color         = getFillColor $node,alpha
         lineColor     = getLineColor $node
+        alphaAtCenter = getFloatProperty $node, 'alphaAtCenter'
+        alphaAtEdge   = getFloatProperty $node, 'alphaAtEdge'
 
+        # Support additional alphaAtCenter/Edge properties. They were separate properties in
+        # Classic MW, however in MW just merge them into gradient definition.
+        if alphaAtCenter? and color.indexOf 'radial' == 0
+          color = color.replace /rgba?(\(\d+,\d+,\d+)[\d,\.]*(\) 0%)/, "rgba$1,#{alphaAtCenter/255}$2"
+        if alphaAtEdge? and color.indexOf 'radial' == 0
+          color = color.replace /rgba?(\(\d+,\d+,\d+)[\d,\.]*(\) 100%)/, "rgba$1,#{alphaAtEdge/255}$2"
         # Change all Boolean values to 0/1.
         visible = Number visible if visible?
         fence   = Number fence if fence?
