@@ -7,7 +7,7 @@
     {
       "type": "md2d",
       "id": "arrowheads",
-      "url": "models/md2d/shifted-arrowheads.json",
+      "url": "models/md2d/arrowheads.json",
       "viewOptions": {
         "controlButtons": "",
         "textBoxes": [
