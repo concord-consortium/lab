@@ -294,12 +294,12 @@ define(function(require) {
       gradients.createRadialGradient("orange-grad", "#F0E6D1", "#E0A21B", "#AD7F1C", mainContainer);
     }
 
-    function createCustomArrowHead(path){
-      if(!path||path=="none"){
-        return "none"
+    function createCustomArrowHead(path, start) {
+      if(!path || path === "none"){
+        return "none";
       }
       var defs,
-        id = "Arrowhead-" + path.toLowerCase().replace(/[^a-z0-9]/g,''),
+        id = "Arrowhead-" + path.toLowerCase().replace(/[^a-z0-9]/g,'') + (start ? "-start" : ""),
         arrowHead;
       defs = mainContainer.select("defs");
       if (defs.empty()) {
@@ -310,14 +310,15 @@ define(function(require) {
         arrowHead = defs.append("marker")
           .attr("id", id)
           .attr("viewBox", "0 0 10 10")
-          .attr("refX", "0")
+          .attr("refX", "5")
           .attr("refY", "5")
           .attr("markerUnits", "strokeWidth")
           .attr("markerWidth", "4")
           .attr("markerHeight", "4")
           .attr("orient", "auto");
         arrowHead.append("path")
-          .attr("d", path);
+          .attr("d", path)
+          .attr("transform", start ? "translate(10, 10) rotate(180)" : "");
       }
       return "url(#" + id + ")";
     }
@@ -803,7 +804,7 @@ define(function(require) {
           return lines.visible[i] ? lines.lineColor[i] : "transparent";
         },
         "marker-start": function(d,i){
-          return createCustomArrowHead(lines.beginStyle[i]);
+          return createCustomArrowHead(lines.beginStyle[i], true);
         },
         "marker-end": function(d,i){
           return createCustomArrowHead(lines.endStyle[i]);
