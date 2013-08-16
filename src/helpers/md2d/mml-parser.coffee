@@ -741,7 +741,7 @@ parseMML = (mmlString) ->
         textHostIndex = 0
       textHostType = $textBoxNode.find("[property=hostType] string").text()
       textHostType = textHostType.slice(textHostType.lastIndexOf(".")+1)
-      colorDef  = $textBoxNode.find "[property=foregroundColor]>.java-awt-Color>int"
+      colorDef  = getNode $textBoxNode.find "[property=foregroundColor]>.java-awt-Color>int"
       if colorDef and colorDef.length > 0
         fontColor    = "rgb("
         fontColor   += parseInt(cheerio(colorDef[0]).text()) + ","
