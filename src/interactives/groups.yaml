@@ -34,6 +34,10 @@
   :name: "ITSI: Crystals"
   :category: Curriculum
 
+- :path: itsi/states-of-matter
+  :name: "ITSI: States of Matter"
+  :category: Curriculum
+
 - :path: itsi/gas-laws
   :name: "ITSI: Gas Laws"
   :category: Curriculum

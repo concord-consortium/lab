@@ -1,0 +1,48 @@
+{
+  "title": "Intermolecular Attractions and States of Matter",
+  "publicationStatus": "draft",
+  "subtitle": "Explore how states of matter are related to the strength of intermolecular attractions.",
+  "aspectRatio": 1.2,
+  "about": [
+    "There are three states of matter—solid, liquid and gas. Run the model and change the",
+    "strength of attractions between the molecules. How does changing the force of attraction",
+    "between molecules affect the state of that material?"
+  ],
+  "models": [
+    {
+      "type": "md2d",
+      "id": "page5$0",
+      "url": "imports/legacy-mw-content/converted/itsi/states-of-matter/page5$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "slider",
+      "id": "epsilon-slider",
+      "min": 0.01,
+      "max": 0.16,
+      "labels": [
+        {
+          "value": 0.01,
+          "label": "Weak"
+        },
+        {
+          "value": 0.16,
+          "label": "Strong"
+        }
+      ],
+      "steps": 50,
+      "title": "Attraction between atoms",
+      "initialValue": 0.144,
+      "action": "setElementProperties(2, { epsilon: -value });"
+    }
+  ],
+  "layout": {
+    "bottom": [
+      "epsilon-slider"
+    ]
+  }
+}

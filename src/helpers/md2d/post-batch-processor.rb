@@ -173,6 +173,7 @@ class MD2DImports
       @model_list.push(MD2DDirectory.new("itsi/crystal").section)
       @model_list.push(MD2DDirectory.new("itsi/gas-laws").section)
       @model_list.push(MD2DDirectory.new("itsi/heattransfer").section)
+      @model_list.push(MD2DDirectory.new("itsi/states-of-matter").section)
 
       @model_list.push(MD2DDirectory.new("public/part1/crystal").section)
       @model_list.push(MD2DDirectory.new("public/part1/molecularcrystal").section)
