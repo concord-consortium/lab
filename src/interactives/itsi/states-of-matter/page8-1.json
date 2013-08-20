@@ -2,7 +2,7 @@
   "title": "Evaporation - A more realistic model",
   "publicationStatus": "draft",
   "subtitle": "",
-  "aspectRatio": 1.8,
+  "aspectRatio": 2.0,
   "about": "",
   "models": [
     {
@@ -14,6 +14,7 @@
         "controlButtons": "play_reset"
       },
       "onLoad": [
+        "setComponentDisabled('remove-cover', false);",
         "onPropertyChange('time', function(t) {",
         "  var atoms = atomsWithinRect(0, 1.575, 5, 0.125);",
         "  batch(function() {",
@@ -55,6 +56,8 @@
         "if (getNumberOfObstacles() > 0) {",
         "  removeObstacle(0);",
         "  removeTextBox(1);",
+        "  setComponentDisabled('remove-cover', true);",
+        "  start();",
         "}"
       ]
     },
