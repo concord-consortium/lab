@@ -1,33 +1,33 @@
 define(function() {
 
   var SelectBoxView = require('common/views/select-box-view'),
-      NumericOutputView = require('common/views/numeric-output-view');
+      NumericOutputView = require('common/views/numeric-output-view'),
+      sensorDefinitions = require('sensor/applet/sensor-definitions');
 
   return function(model, modelUrl) {
+
     var sensorTypeView = new SelectBoxView({
-          id: 'sensor-type-view',
-          options: [{
-            text: "GoMotion",
-            value: 'goMotion',
-            selected: true,
-            disabled: false
-          }, {
-            text: "Something Else",
-            value: 'somethingElse',
-            selected: false,
-            disabled: false
-          }],
-          label: "Sensor Type",
-          labelOn: "left",
-          onChange: function(option) {
-            console.log(option.value + " chosen.");
-          },
-        }),
-        // TODO use the formatter from the property description. Right now, it automatically adds
-        // units to the returned string (which we don't want here).
-        format = d3.format('.2f'),
-        sensorReadingView,
-        lastHeight = null;
+      id: 'sensor-type-view',
+      options: Object.keys(sensorDefinitions).map(function(key) {
+        return {
+          value: key,
+          text: sensorDefinitions[key].sensorName,
+          selected: key === model.properties.sensorType,
+          disabled: false
+        };
+      }),
+      label: "Sensor Type",
+      labelOn: 'left',
+      onChange: function(option) {
+        model.properties.sensorType = option.value;
+      },
+    });
+
+    // TODO use the formatter from the property description. Right now, it automatically adds
+    // units to the returned string (which we don't want here).
+    var format = d3.format('.2f');
+    var sensorReadingView;
+    var lastHeight = null;
 
     return  {
       $el: $("<div id='model-container' class='container' style='font-size: 0.7em'/>"),
