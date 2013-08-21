@@ -1020,6 +1020,10 @@ define(function (require) {
           result.importedFrom = interactive.importedFrom;
         }
 
+        if (typeof interactive.exports !== 'undefined') {
+          result.exports = $.extend(true, {}, interactive.exports);
+        }
+
         // Serialize components.
         result.components = [];
         for (i = 0, len = componentList.length; i < len; i++) {
