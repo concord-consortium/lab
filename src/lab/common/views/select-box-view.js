@@ -106,7 +106,7 @@ define(function() {
         $wrapper.find(".selectboxit-text").css("max-width", ulWidth + "em");
 
         // set hidden select box dimensions too, for mobile devices
-        $wrapper.find(".selectboxit-container select").css({ width: boxWidth, height: "100%" });
+        $wrapper.find(".selectboxit-container select").css({ width: boxWidth + "em", height: "100%" });
 
         return $wrapper;
       }
