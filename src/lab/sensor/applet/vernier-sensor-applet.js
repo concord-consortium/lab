@@ -2,8 +2,9 @@
 
 define(function(require) {
 
-  var miniClass    = require('common/mini-class'),
-      SensorApplet = require('./sensor-applet');
+  var miniClass    = require('common/mini-class');
+  var SensorApplet = require('./sensor-applet');
+  var console = require('common/console');
 
   return miniClass.extendClass(SensorApplet, {
 
@@ -150,6 +151,9 @@ define(function(require) {
     },
 
     sensorUnplugged: function() {
+      console.log("received sensorUnplugged message; deviceType = " + this.deviceType);
+      return;
+
       var self = this;
       this.startAppletCallback();
       window.setTimeout(function() { self.emit('sensorUnplugged'); }, 10);
