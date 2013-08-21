@@ -266,17 +266,19 @@ AUTHORING = false;
     $jsonModelLink.attr("href", origin + Lab.config.actualRoot + jsonModelPath);
     $jsonModelLink.attr("title", "View model JSON in another window");
 
-    // construct link to DataGames embeddable version of Interactive
-    dgGameSpecification = JSON.stringify([{
-      "name": $selectInteractive.find("option:selected").text(),
-      "dimensions": {
-        "width": 600,
-        "height":400
-      },
-      "url": Lab.config.dataGamesProxyPrefix + "embeddable.html#" +  interactiveUrl
-    }]);
+    if (Lab.config.dataGamesProxyPrefix) {
+      // construct link to DataGames embeddable version of Interactive
+      dgGameSpecification = JSON.stringify([{
+        "name": $selectInteractive.find("option:selected").text(),
+        "dimensions": {
+          "width": 600,
+          "height":400
+        },
+        "url": Lab.config.dataGamesProxyPrefix + "embeddable.html#" +  interactiveUrl
+      }]);
+    }
 
-    if (Lab.config.static) {
+    if (Lab.config.static || !Lab.config.dataGamesProxyPrefix) {
       $dataGamesLink.hide();
       $dataGamesStagingLink.hide();
     } else {

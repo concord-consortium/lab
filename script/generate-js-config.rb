@@ -28,7 +28,6 @@ CONFIG[:jsconfig][:tracing] = false if CONFIG[:jsconfig][:tracing] == nil
 CONFIG[:jsconfig][:authoring] = false if CONFIG[:jsconfig][:authoring] == nil
 CONFIG[:jsconfig][:actualRoot] = "" if CONFIG[:jsconfig][:actualRoot] == nil
 CONFIG[:jsconfig][:fontface] = "Open Sans" if CONFIG[:jsconfig][:fontface] == nil
-CONFIG[:jsconfig][:dataGamesProxyPrefix] = "DataGames/Games/concord/lab/" if CONFIG[:jsconfig][:dataGamesProxyPrefix] == nil
 CONFIG[:jsconfig][:environment] = CONFIG[:environment]
 
 if ENV['LAB_STATIC'] || CONFIG[:jsconfig][:static]
