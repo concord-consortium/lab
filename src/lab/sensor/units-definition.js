@@ -12,6 +12,11 @@ define(function() {
         name: "meter",
         pluralName: "meters",
         symbol: "m"
+      },
+      lightIntensity: {
+        name: "lux",
+        pluralName: "lux",
+        symbol: "lux"
       }
     }
   };

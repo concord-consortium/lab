@@ -14,6 +14,15 @@ define(function() {
 
       samplesPerSecond: 20,
       tareable: true
+    },
+
+    labQuestLight: {
+      appletClass: 'labquest',
+      measurementType: 'lightIntensity',
+      sensorName: "LabQuest Light Sensor",
+      deviceName: "LabQuest",
+      samplesPerSecond: 10,
+      tareable: false
     }
   };
 });
