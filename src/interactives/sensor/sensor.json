@@ -22,9 +22,9 @@
     {
       "type": "graph",
       "id": "propertiesGraph",
-      "title": "GoMotion Sensor Reading",
+      "title": "Sensor Reading",
       "xlabel": "Time (s)",
-      "ylabel": "Distance (m)",
+      "ylabel": "Reading",
       "ymin": 0,
       "ymax": 6,
       "xmax": 30,
