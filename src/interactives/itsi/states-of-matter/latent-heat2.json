@@ -195,7 +195,7 @@
       "top": "model.top",
       "bottom": "model.bottom",
       "left": "right-bars.right",
-      "right": "interactive.right"
+      "width": "16em"
     },
     {
       "id": "bottom",

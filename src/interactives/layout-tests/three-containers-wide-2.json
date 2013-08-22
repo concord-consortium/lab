@@ -1,11 +1,11 @@
 {
-  "title": "Seeing Specific Heat and Latent Heat",
+  "title": "Three containers wide-2",
   "publicationStatus": "public",
-  "subtitle": "Seeing Specific Heat and Latent Heat in a Melting Experiment",
-  "aspectRatio": 2.1,
+  "subtitle": "Three containers wide: model, line-graph, line-graph",
+  "aspectRatio": 2.4,
   "fontScale": 0.8,
   "about": [
-    "Specific heat capacity is the measure of the heat energy required",
+    "Specific heat capacitiy is the measure of the heat energy required",
     "to raise the temperature of a given quantity of a substance by one",
     "kelvin. Latent heat of melting describes tœhe amount of heat",
     "required to melt a solid. When a solid is undergoing melting, the",
@@ -99,28 +99,6 @@
   ],
   "components": [
     {
-      "type": "barGraph",
-      "id": "ke-bar-graph",
-      "min": 0,
-      "max": 75,
-      "labels": 0,
-      "barWidth": "1.5em",
-      "title": "Kinetic Energy",
-      "property": "kineticEnergy",
-      "averagePeriod": 2500
-    },
-    {
-      "type": "barGraph",
-      "id": "pe-bar-graph",
-      "min": -200,
-      "max": 0,
-      "labels": 0,
-      "barWidth": "1.5em",
-      "title": "Potential Energy",
-      "property": "potentialEnergy",
-      "averagePeriod": 2500
-    },
-    {
       "type": "button",
       "id": "start-heating",
       "text": "Start adding heat",
@@ -149,12 +127,32 @@
     },
     {
       "type": "graph",
+      "id": "ke-pe-graph",
+      "title": "",
+      "xlabel": "Time",
+      "ylabel": "PE (green), KE (red)",
+      "ymin": -200,
+      "ymax": 50,
+      "xmin": 0,
+      "xmax": 160,
+      "lines": true,
+      "lineWidth": 2,
+      "yTickCount": 5,
+      "xTickCount": 5,
+      "xFormatter": ".2s",
+      "yFormatter": ".2s",
+      "properties": [
+        "kineticEnergy", "potentialEnergy"
+      ]
+    },
+    {
+      "type": "graph",
       "id": "temperature-energy-graph",
       "title": "",
       "xlabel": "Total energy",
       "ylabel": "Temperature (K)",
       "ymin": 0,
-      "ymax": 2500,
+      "ymax": 2600,
       "xmin": -160,
       "xmax": 40,
       "lines": false,
@@ -170,10 +168,10 @@
     }
   ],
   "layout": {
-    "right-bars": [
-      "ke-bar-graph", "pe-bar-graph"
+    "right-lines-one": [
+      "ke-pe-graph"
     ],
-    "right-lines": [
+    "right-lines-two": [
       "temperature-energy-graph"
     ],
     "bottom": [
@@ -182,19 +180,20 @@
   },
   "template": [
     {
-      "id": "right-bars",
+      "id": "right-lines-one",
       "top": "model.top",
       "bottom": "model.bottom",
       "left": "model.right",
+      "width": "16em",
       "padding-left": "0.5em",
       "padding-right": "0.5em",
       "padding-bottom": "0.5em"
     },
     {
-      "id": "right-lines",
+      "id": "right-lines-two",
       "top": "model.top",
       "bottom": "model.bottom",
-      "left": "right-bars.right",
+      "left": "right-lines-one.right",
       "width": "16em"
     },
     {
