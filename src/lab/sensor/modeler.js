@@ -14,6 +14,10 @@ define(function(require) {
       BasicDialog          = require('common/controllers/basic-dialog'),
       ExportController     = require('common/controllers/export-controller');
 
+  // TODO. Obviously, this amounts to view-layer code in the model layer. Ultimately, we'd like to
+  // have the interactives controller (or the controller layer)  manage requests to send messages to
+  // the user, and additionally put the actual wording of the messages in a separate module, rather
+  // than bury the message text in the model code.
   function simpleAlert(message, buttons) {
     var dialog = new BasicDialog({
           width: "60%",
