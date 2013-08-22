@@ -397,7 +397,7 @@ define(function (require) {
       }
 
       // find all strings of the form x.y
-      vars = dim.match(/[a-zA-Z\-]+\.[a-zA-Z]+/g);
+      vars = dim.match(/[a-zA-Z][a-zA-Z0-9\-]+\.[a-zA-Z]+/g);
 
       // replace all x.y's with the actual dimension
       for (i=0, ii=vars.length; i<ii; i++) {

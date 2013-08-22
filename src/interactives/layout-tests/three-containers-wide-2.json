@@ -170,10 +170,10 @@
     }
   ],
   "layout": {
-    "right-lines-one": [
+    "right-lines1": [
       "ke-pe-graph"
     ],
-    "right-lines-two": [
+    "right-lines2": [
       "temperature-energy-graph"
     ],
     "bottom": [
@@ -182,7 +182,7 @@
   },
   "template": [
     {
-      "id": "right-lines-one",
+      "id": "right-lines1",
       "top": "model.top",
       "bottom": "model.bottom",
       "left": "model.right",
@@ -192,10 +192,10 @@
       "padding-bottom": "0.5em"
     },
     {
-      "id": "right-lines-two",
+      "id": "right-lines2",
       "top": "model.top",
       "bottom": "model.bottom",
-      "left": "right-lines-one.right",
+      "left": "right-lines1.right",
       "width": "16em"
     },
     {
