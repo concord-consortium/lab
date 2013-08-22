@@ -109,7 +109,7 @@ define(function() {
     labQuestPH: {
       appletClass: 'labquest',
       measurementType: 'pH',
-      sensorName: "labQuest pH Sensor",
+      sensorName: "LabQuest pH Sensor",
       deviceName: "LabQuest",
       samplesPerSecond: 10,
       tareable: false
