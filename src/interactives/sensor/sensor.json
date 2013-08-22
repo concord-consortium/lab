@@ -8,9 +8,6 @@
       "type": "sensor",
       "id": "signal1",
       "url": "models/sensor/sensor.json",
-      "modelOptions": {
-        "sensorType": "goMotion"
-      },
       "viewOptions": {
         "controlButtons": "play_reset",
         "controlButtonStyle": "text",
