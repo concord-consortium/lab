@@ -8,19 +8,22 @@ define(function() {
 
     var sensorTypeView = new SelectBoxView({
       id: 'sensor-type-view',
-      options: Object.keys(sensorDefinitions).map(function(key) {
+      options: [{
+        value: null,
+        text: "Select type of sensor...",
+        selected: model.properties.sensorType == null,
+        disabled: true
+      }].concat(Object.keys(sensorDefinitions).map(function(key) {
         return {
           value: key,
           text: sensorDefinitions[key].sensorName,
           selected: key === model.properties.sensorType,
           disabled: false
         };
-      }),
-      label: "Sensor Type",
-      labelOn: 'left',
+      })),
       onChange: function(option) {
         model.properties.sensorType = option.value;
-      },
+      }
     });
 
     // TODO use the formatter from the property description. Right now, it automatically adds
