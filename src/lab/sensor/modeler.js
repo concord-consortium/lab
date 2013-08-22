@@ -213,16 +213,18 @@ define(function(require) {
         removeApplet();
       }
 
-      samplesPerSecond = sensorDefinitions[sensorType].samplesPerSecond;
-      AppletClass = appletClasses[sensorDefinitions[sensorType].appletClass];
+      if (sensorType) {
+        samplesPerSecond = sensorDefinitions[sensorType].samplesPerSecond;
+        AppletClass = appletClasses[sensorDefinitions[sensorType].appletClass];
 
-      applet = window.Lab.sensor[sensorType] = new AppletClass({
-        listenerPath: 'Lab.sensor.' + sensorType,
-        measurementType: sensorDefinitions[sensorType].measurementType,
-        appletId: sensorType+'-sensor'
-      });
+        applet = window.Lab.sensor[sensorType] = new AppletClass({
+          listenerPath: 'Lab.sensor.' + sensorType,
+          measurementType: sensorDefinitions[sensorType].measurementType,
+          appletId: sensorType+'-sensor'
+        });
 
-      appendApplet();
+        appendApplet();
+      }
     }
 
     function appletDataCallback(d) {
