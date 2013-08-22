@@ -405,6 +405,8 @@ define(function (require) {
         dim = dim.replace(vars[i], value);
       }
       // eval only if we contain no more alphabetic letters
+      // dim can contain strings which are just numbers ...
+      // or strings with with expressions like this: "839/2 - 117/2"
       if (/^[^a-zA-Z]*$/.test(dim)) {
         return eval(dim);
       } else {
