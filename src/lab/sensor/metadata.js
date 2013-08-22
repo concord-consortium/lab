@@ -9,7 +9,7 @@ define(function() {
         immutable: true
       },
       sensorType: {
-        defaultValue: 'goMotion'
+        defaultValue: null
       },
       samplesPerSecond: {
         readOnly: true
