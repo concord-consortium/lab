@@ -42,7 +42,7 @@
         "timeStep": 2.5
       },
       "onLoad": [
-        "setComponentDisabled('start-heating', false);",
+        "setComponentDisabled('start-cooling', false);",
         "callEvery(200, function() {",
         "  if (get('experimentRunning')) {",
         "    var numAtoms, i, props, vx2, vy2, newVx, newVy, ratio, vXConstant, vYConstant;",
@@ -131,7 +131,7 @@
       "text": "Start removing heat",
       "action": [
         "if (isStopped()) {",
-        "  setComponentDisabled('start-heating', true);",
+        "  setComponentDisabled('start-cooling', true);",
         "  start();",
         "}",
         "set('timeExperimentStarted', get('time'));",
