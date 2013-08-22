@@ -42,6 +42,7 @@
         "timeStep": 2.5
       },
       "onLoad": [
+        "setComponentDisabled('start-heating', false);",
         "callEvery(200, function() {",
         "  if (get('experimentRunning')) {",
         "    var numAtoms, i, props, newVx, newVy, ratio, vXConstant, vYConstant;",
@@ -126,6 +127,7 @@
       "text": "Start adding heat",
       "action": [
         "if (isStopped()) {",
+        "  setComponentDisabled('start-heating', true);",
         "  start();",
         "}",
         "set('timeExperimentStarted', get('time'));",
