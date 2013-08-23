@@ -40,8 +40,8 @@ define(function(require) {
                                'stepBack', 'seek', 'invalidation'),
         sensorType,
         applet,
-        didStop = false,
         sensorIsReady = false,
+        didCollectData = false,
         samplesPerSecond,
         time = 0,
         sensorReading,
@@ -238,6 +238,7 @@ define(function(require) {
       window.__bizarreSafariFix = 1;
 
       sensorReading = d;
+      didCollectData = true;
 
       propertySupport.deleteComputedPropertyCachedValues();
       propertySupport.notifyAllComputedProperties();
@@ -270,12 +271,6 @@ define(function(require) {
           applet.stop();
         }
         dispatch.stop();
-
-        // Needed in order to recompute isPlaying. FIXME: need a better paradigm for standard
-        // MVC style properties that don't flow from model physics.
-        makeInvalidatingChange(function() {
-          didStop = true;
-        });
       },
 
       willReset: function() {
@@ -430,11 +425,11 @@ define(function(require) {
       return sensorDefinitions[sensorType].deviceName;
     });
 
-    // TODO. We need a way to make "model-writable" read only properties. custom getters could
+    // TODO. We need a way to make "model-writable" read only properties.
     model.defineOutput('isPlayable', {
       label: "Playable"
     }, function() {
-      return !didStop && sensorIsReady;
+      return sensorIsReady && !didCollectData;
     });
 
     // Kick things off by doing this explicitly:
