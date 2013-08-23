@@ -78,7 +78,29 @@ define(function(require) {
       after the <applet> tag is appended to the DOM).
     */
     isSensorConnected: function() {
-      return this.appletInstance.isInterfaceConnected(this.deviceType);
+      var attachedSensors;
+      var i;
+
+      // Note this appears only to return a meaningful result when first called. After that, it
+      // returns the same value for a given deviceType, even if the device has been unplugged from
+      // the USB port.
+      if (!this.appletInstance.isInterfaceConnected(this.deviceType)) {
+        return false;
+      }
+
+      try {
+        attachedSensors = this.appletInstance.getAttachedSensors(this.deviceType) || [];
+      } catch (e) {
+        // isInterfaceConnected is not a wholly reliable check, and calling getAttachedSensors with
+        // the wrong deviceType may throw (?).
+        return false;
+      }
+      for (i = 0; i < attachedSensors.length; i++) {
+        if (this.appletInstance.getTypeConstantName(attachedSensors[i].getType()) === this.measurementType) {
+          return true;
+        }
+      }
+      return false;
     },
 
     /**
