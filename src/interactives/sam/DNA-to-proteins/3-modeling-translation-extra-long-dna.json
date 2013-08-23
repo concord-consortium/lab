@@ -17,7 +17,7 @@
       "url": "imports/legacy-mw-content/converted/sam-activities/DNA-to-proteins/page3/page3$0.json",
       "viewOptions": {
         "controlButtons": "",
-        "enableKeyboardHandlers": false
+        "enableKeyboardHandlers": true
       },
       "modelOptions": {
         "DNA": "ATGACAGTGGGATTTTTTCTCGCAACAATGAAAAGGAAGAACCTTTTCCTAAGCCTATTGTGGGATTTATATATATA",
