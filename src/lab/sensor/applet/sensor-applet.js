@@ -196,10 +196,21 @@ define(function(require) {
     },
 
     start: function() {
-      if (this.getState() === 'stopped') {
-        this._state = 'started';
-        this._startSensor();
+      if (this.getState() !== 'stopped') {
+        throw new Error("Tried to start the applet from non-stopped state '" + this.getState() + '"');
       }
+
+      // Remain in state 'stopped' if sensor is not connected. This is because we want the user to
+      // be able to click 'start' again after plugging in the sensor. Changing to a different state
+      // would require having some way to detect when to leave that state. We lack a way to
+      // automatically detect that the sensor has been plugged in, and we don't want to force the
+      // user to tell us.
+      if (!this.isSensorConnected()) {
+        throw new errors.SensorConnectionError("Device reported the requested sensor type was not attached.");
+      }
+
+     this._startSensor();
+     this._state = 'started';
     },
 
     stop: function() {

@@ -258,10 +258,17 @@ define(function(require) {
           return;
         }
 
-        isStopped = false;
-        if (applet) {
+        try {
           applet.start();
+        } catch (e) {
+          if (e instanceof appletErrors.SensorConnectionError) {
+            handleSensorConnectionError();
+            return;
+          } else {
+            throw e;
+          }
         }
+        isStopped = false;
         dispatch.play();
       },
 
