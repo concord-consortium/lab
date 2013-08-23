@@ -14,7 +14,8 @@
         "controlButtons": ""
       },
       "onLoad": [
-        "callEvery(get('timeStep')*get('timeStepsPerTick'), function(t) {",
+        "var renderUpdateTimeStep = get('timeStep') * get('timeStepsPerTick');",
+        "callEvery(renderUpdateTimeStep, function(t) {",
         "  if (get('countdown') <= 0) { ",
         "    stop();",
         "    alert('game over!');",
