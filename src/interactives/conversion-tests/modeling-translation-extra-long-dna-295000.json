@@ -12,6 +12,7 @@
         "controlButtons": "play_reset_step",
         "enableAtomTooltips": true,
         "enableKeyboardHandlers": true,
+        "showClock": true,
         "gridLines": true,
         "xunits": true,
         "yunits": true
