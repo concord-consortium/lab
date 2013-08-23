@@ -172,11 +172,14 @@ define(function(require) {
         if (self.getState() === 'appended') {
           self._state = 'applet ready';
         }
-        if (!self.isSensorConnected()) {
+
+        if (self.isSensorConnected()) {
+          self.initializeSensor();
+          // now, do nothing. We just wait for the callback from the sensor applet to sensorIsReady.
+        } else {
           self._appendCallback(new errors.SensorConnectionError("Device reported the requested sensor type was not attached."));
         }
-        self.initializeSensor();
-        // now, do nothing. We just wait for the callback from the sensor applet to sensorIsReady.
+
       }
 
       function fail() {

@@ -112,11 +112,6 @@ define(function(require) {
     */
     initializeSensor: function() {
       var req;
-
-      if (!this.isSensorConnected()) {
-        return false;
-      }
-
       req = this.appletInstance.getSensorRequest(this.measurementType);
       return this.appletInstance.initSensorInterface(this.listenerPath, this.deviceType, [req]);
     },
