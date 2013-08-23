@@ -113,15 +113,16 @@ define(function (require) {
     },
 
     text: function () {
-      if ( ! this._modelPlayable) {
-        this._$start.addClass("disabled");
-        this._$stop.addClass("disabled");
-      } else if (this._modelStopped) {
-        this._$start.removeClass("disabled");
+      if (this._modelStopped) {
         this._$stop.addClass("disabled");
       } else {
-        this._$start.addClass("disabled");
         this._$stop.removeClass("disabled");
+      }
+
+      if (this._modelPlayable) {
+        this._$start.removeClass("disabled");
+      } else {
+        this._$start.addClass("disabled");
       }
     }
   };
