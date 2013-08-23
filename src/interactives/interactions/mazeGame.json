@@ -1,23 +1,121 @@
 {
-  "title": "mazeGame",
+  "title": "Electrostatics: Maze Game",
   "publicationStatus": "draft",
   "subtitle": "",
   "about": "",
+  "aspectRatio": 1.7,
   "models": [
     {
       "type": "md2d",
-      "id": "mazeGame$0",
-      "url": "imports/legacy-mw-content/converted/interactions/maze-game/mazeGame$0.json",
+      "id": "three-atoms-three-elements$0",
+      "url": "models/md2d/interactions/mazeGame.json",
       "importedFrom": "imports/legacy-mw-content/interactions/maze-game/mazeGame$0.mml",
       "viewOptions": {
-        "controlButtons": "play_reset"
-      }
+        "controlButtons": ""
+      },
+      "onLoad": [
+        "callEvery(get('timeStep')*get('timeStepsPerTick'), function(t) {",
+        "  if (get('countdown') <= 0) { ",
+        "    stop();",
+        "    alert('game over!');",
+        "  } else {",
+        "    setTextBoxProperties(1,{text: get('countdown')});",
+        "    var target = getShapeProperties(0);",
+        "    if (atomsWithinRect(target.x, target.y, target.width, target.height).length > 0) {",
+        "      stop();",
+        "      alert('you won!');",
+        "    }",
+        "  }",
+        "});"
+      ]
     }
   ],
+  "outputs": [
+    {
+      "name": "countdown",
+      "label": "Countdown",
+      "value": "return Math.round((1 - get('time')/get('max-model-time'))*10)"
+    }
+  ],
+  "parameters": [
+    {
+      "name": "max-model-time",
+      "initialValue": 250000,
+      "onChange": []
+    }
+  ], 
   "components": [
+    {
+      "type": "button",
+      "id": "set-negative",
+      "text": "-",
+      "action": "setAtomProperties(0,{charge:-1});start()"
+    },
+    {
+      "type": "button",
+      "id": "set-neutral",
+      "text": "0",
+      "action": "setAtomProperties(0,{charge:0});start()"
+    },
+    {
+      "type": "button",
+      "id": "set-positive",
+      "text": "+",
+      "action": "setAtomProperties(0,{charge:1});start()"
+    },
+    {
+      "type": "button",
+      "id": "run",
+      "text": "Run",
+      "action": "start()"
+    },
+    {
+      "type": "button",
+      "id": "stop",
+      "text": "Stop",
+      "action": "stop()"
+    },
+    {
+      "type": "button",
+      "id": "reset",
+      "text": "Reset",
+      "action": "reset()"
+    },
+    {
+      "type": "button",
+      "id": "hint",
+      "text": "Hint",
+      "action": ""
+    },
+    {
+      "type": "pulldown",
+      "id": "difficulty",
+      "property": "max-model-time",
+      "options": [
+        {
+          "text": "Easier",
+          "value": 1000000
+        },
+        {
+          "text": "Harder",
+          "value": 300000
+        }
+      ]
+    }
   ],
   "layout": {
     "bottom": [
+      "set-negative", "set-neutral", "set-positive", "run", "reset", "stop", "hint", "difficulty"
     ]
-  }
+  },
+  "template":[
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "width": "model.width",
+      "left": "model.left",
+      "padding-top": "0.5em",
+      "align": "center"
+    }
+  ]
 }
