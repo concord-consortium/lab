@@ -1320,12 +1320,24 @@ AUTHORING = false;
     }
 
     function addEventListeners() {
-      model.on("tick.dataTable", renderModelDatatable);
-      model.on('play.dataTable', renderModelDatatable);
-      model.on('reset.dataTable', renderModelDatatable);
-      model.on('seek.dataTable', renderModelDatatable);
-      model.on('stepForward.dataTable', renderModelDatatable);
-      model.on('stepBack.dataTable', renderModelDatatable);
+      model.on("tick.dataTable", function() {
+        renderModelDatatable()
+      });
+      model.on('play.dataTable', function() {
+        renderModelDatatable()
+      });
+      model.on('reset.dataTable', function() {
+        renderModelDatatable(true)
+      });
+      model.on('seek.dataTable', function() {
+        renderModelDatatable()
+      });
+      model.on('stepForward.dataTable', function() {
+        renderModelDatatable()
+      });
+      model.on('stepBack.dataTable', function() {
+        renderModelDatatable()
+      });
       model.on('addAtom.dataTable', function() {
         renderModelDatatable(true)
       });
@@ -1350,7 +1362,7 @@ AUTHORING = false;
       if (this.checked) {
         addEventListeners();
         $modelDatatableContent.show(100);
-        renderModelDatatable();
+        renderModelDatatable(true);
       } else {
         removeEventListeners();
         $modelDatatableContent.hide(100);
