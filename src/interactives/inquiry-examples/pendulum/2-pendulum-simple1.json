@@ -11,7 +11,7 @@
     "",
     "After closing this window click the **?** help icon in the upper left to find out more."
   ],
-  "aspectRatio": 1.1,
+  "aspectRatio": 1.15,
   "fontScale": 0.8,
   "models": [
     {
@@ -458,7 +458,8 @@
     {
       "id": "top",
       "bottom": "experiment-controls.top",
-      "padding-left": "1em",
+      "fontScale": "0.95",
+      "padding-left": "0.5em",
       "padding-bottom": "0.3em"
     },
     {
