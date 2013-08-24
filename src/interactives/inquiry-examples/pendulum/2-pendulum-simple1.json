@@ -65,6 +65,22 @@
         "    stopRun()",
         "  }",
         "});",
+        "function clearExperiment() {",
+        "  setComponentDisabled('start-run', false);",
+        "  setComponentDisabled('stop-run', true);",
+        "  setComponentDisabled('clear-run', true);",
+        "  setComponentDisabled('length-slider', false);",
+        "  setComponentDisabled('mass-slider', false);",
+        "  setComponentDisabled('angle-slider', false);",
+        "  set('experimentTime', 0);",
+        "  set('experimentCleared', false);",
+        "}",
+        "onPropertyChange('experimentCleared', function() {",
+        "  if (get('experimentCleared')) {",
+        "    clearExperiment();",
+        "    set('experimentCleared', false);",
+        "  }",
+        "});",
         "",
         "function resetAngle() {",
         "  set({startingAngle: get('startingAngle')});",
@@ -137,6 +153,11 @@
     },
     {
       "name": "experimentRunning",
+      "initialValue": false,
+      "onChange": ""
+    },
+    {
+      "name": "experimentCleared",
       "initialValue": false,
       "onChange": ""
     },
@@ -284,15 +305,7 @@
       "id": "clear-run",
       "text": "Clear",
       "tooltip": "Clear experiment data and setup next run.",
-      "action": [
-        "setComponentDisabled('start-run', false);",
-        "setComponentDisabled('stop-run', true);",
-        "setComponentDisabled('clear-run', true);",
-        "setComponentDisabled('length-slider', false);",
-        "setComponentDisabled('mass-slider', false);",
-        "setComponentDisabled('angle-slider', false);",
-        "set('experimentTime', 0);"
-      ]
+      "action": "set('experimentCleared', true);"
     },
     {
       "type": "graph",
