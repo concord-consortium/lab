@@ -62,19 +62,44 @@ define(function() {
       e.preventDefault();
     }
 
+    function appendDataRow(rowData, index) {
+      var i, datum;
+      $tr = $('<tr class="data">');
+      $($tr).data('index', index);
+      for(i = 0; i < rowData.length; i++) {
+        $td = $('<td>');
+        datum = rowData[i];
+        if(typeof datum === "string") {
+          $td.text(datum);
+        } else if(typeof datum === "number") {
+          $td.text(formatters[i](datum));
+        }
+        $tr.append($td);
+      }
+      $tbody.append($tr);
+    }
+
+    function removeDataRow(index) {
+      var $tr = $($tbody.find('tr')).filter(function() { return $(this).data("index") == index; });
+      $tr.remove();
+    }
+
+    function replaceDataRow(rowData, index) {
+      var $tr = $($tbody.find('tr')).filter(function() { return $(this).data("index") == index; });
+      $tr.find('td').remove();
+      for(i = 0; i < rowData.length; i++) {
+        $td = $('<td>');
+        $td.text(formatters[i](rowData[i]));
+        $tr.append($td);
+      }
+    }
+
     function renderTableData() {
       var i, j, rowData, $tr, $td;
       $tbody.find('.data').remove();
       if (!tableData) { return; }
       for(i = 0; i < tableData.length; i++) {
-        $tr = $('<tr class="data">');
-        $tbody.append($tr);
-        rowData = tableData[i];
-        for(j = 0; j < rowData.length; j++) {
-          $td = $('<td>');
-          $td.text(rowData[j]);
-          $tr.append($td);
-        }
+        appendDataRow(tableData[i], i+1);
       }
     }
 
@@ -90,7 +115,7 @@ define(function() {
           .append($('<thead>').append($titlerow))
           .append($tbody);
         renderColumnTitles();
-        renderTableData(tableData);
+        renderTableData();
         $tableWrapper = $('<div>')
           .addClass("table-wrapper")
           .append($table);
@@ -105,16 +130,11 @@ define(function() {
         return $el;
       },
 
-      appendDataRow: function(rowData) {
-        var i;
-        $tr = $('<tr class="data">');
-        for(i = 0; i < rowData.length; i++) {
-          $td = $('<td>');
-          $td.text(formatters[i](rowData[i]));
-          $tr.append($td);
-        }
-        $tbody.append($tr);
-      },
+      appendDataRow: appendDataRow,
+
+      removeDataRow: removeDataRow,
+
+      replaceDataRow: replaceDataRow,
 
       updateTable: function(opts) {
         columns     = opts.columns || columns;
@@ -127,3 +147,4 @@ define(function() {
     };
   };
 });
+

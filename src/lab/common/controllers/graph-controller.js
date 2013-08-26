@@ -33,7 +33,7 @@ define(function (require) {
         bars: 'bars'
       },
 
-  graphControllerCount = 0;
+      graphControllerCount = 0;
 
   return function graphController(component, scriptingAPI, interactivesController) {
     var // HTML element containing view

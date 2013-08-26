@@ -585,6 +585,9 @@ define(function() {
       streamDataFromModel: {
         defaultValue: true
       },
+      addNewRows: {
+        defaultValue: true
+      },
       visibleRows: {
         defaultValue: 4
       },
@@ -594,7 +597,7 @@ define(function() {
       propertyColumns: {
         defaultValue: []
       },
-      tableData: {
+      headerData: {
         defaultValue: []
       },
       tableData: {

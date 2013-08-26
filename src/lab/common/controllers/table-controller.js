@@ -3,8 +3,8 @@
 define(function (require) {
   var metadata  = require('common/controllers/interactive-metadata'),
       validator = require('common/validator'),
-      TableView = require('common/views/table-view');
-
+      TableView = require('common/views/table-view'),
+      tableControllerCount = 0;
 
   return function TableController(component, scriptingAPI, interactivesController) {
         // Public API.
@@ -16,23 +16,26 @@ define(function (require) {
         rowIndex,
         columns,
         formatters,
-        tableData;
+        tableData,
+        namespace = "tableController" + (++tableControllerCount);
 
     function initialize() {
       var parent = interactivesController.interactiveContainer,
-          i, len, propertyName, propertyDescription, propertyTitle;
+          i, len,propertyName, propertyDescription, propertyTitle;
 
       // Validate component definition, use validated copy of the properties.
       component = validator.validateCompleteness(metadata.table, component);
 
       generateColumnTitlesAndFormatters();
       rowIndex = 0;
-      tableData = [];
+      tableData = $.extend(true, [], component.tableData);
+      headerData = $.extend(true, [], component.headerData);
 
       view = new TableView({
         id: component.id,
         title: component.title,
         columns: columns,
+        tableData: tableData,
         formatters: formatters,
         visibleRows: component.visibleRows
       });
@@ -94,15 +97,30 @@ define(function (require) {
 
     function appendPropertyRow() {
       var i, rowData = [];
-      if (component.indexColumn) {
+      if (component.addNewRows) {
         rowIndex++;
+      }
+      if (component.indexColumn) {
         rowData.push(rowIndex);
       }
       for(i = 0; i < component.propertyColumns.length; i++) {
         rowData.push(model.get(component.propertyColumns[i]));
       }
-      tableData.push(rowData);
-      view.appendDataRow(rowData);
+      if (component.addNewRows) {
+        tableData.push(rowData);
+        view.appendDataRow(rowData, rowIndex);
+      } else {
+        tableData[tableData.length-1] = rowData;
+        view.replaceDataRow(rowData, 1);
+      }
+    }
+
+    function registerModelListeners() {
+      // Namespace listeners to '.tableController' so we can eventually remove them all at once
+      model.on('tick.'+namespace, appendPropertyRow);
+      model.on('invalidation.'+namespace, function() {
+        appendPropertyRow();
+      });
     }
 
     // Public API.
@@ -111,8 +129,12 @@ define(function (require) {
         Called by the interactives controller when the model finishes loading.
       */
       modelLoadedCallback: function() {
-        tableData = [];
+        tableData = $.extend(true, [], component.tableData);
+        headerData = $.extend(true, [], component.headerData);
         updateTable();
+        if (component.streamDataFromModel) {
+          registerModelListeners()
+        }
       },
 
       /**
@@ -120,7 +142,8 @@ define(function (require) {
       */
       modelResetCallback: function() {
         if (component.clearDataOnReset) {
-          tableData = [];
+          tableData = $.extend(true, [], component.tableData);
+          headerData = $.extend(true, [], component.headerData);
           updateTable();
         }
       },
@@ -137,8 +160,12 @@ define(function (require) {
 
       // Returns serialized component definition.
       serialize: function () {
-        // Return the initial component definition.
-        return $.extend(true, {}, component);
+        // start with the initial component definition.
+        var result = $.extend(true, {}, component);
+        // add headerData and tableData
+        result.headerData = columns;
+        result.tableData = tableData;
+        return result;
       }
     };
 

@@ -88,6 +88,7 @@
         "  resetAngle();",
         "  stopMotion();",
         "  set('rodLength', get('rodLength'));",
+        "  appendDataPropertiesToComponent('last-run-table');",
         "}",
         "onPropertyChange('experimentCleared', function() {",
         "  if (get('experimentCleared')) {",
@@ -107,7 +108,8 @@
         "onPropertyChange('ballMass', resetAngle);",
         "onPropertyChange('gravitationalField', resetAngle);",
         "onPropertyChange('damping', resetAngle);",
-        "onPropertyChange('startingAngle', stopMotion);"
+        "onPropertyChange('startingAngle', stopMotion);",
+        "appendDataPropertiesToComponent('last-run-table');"
       ]
     }
   ],
@@ -337,7 +339,8 @@
       "type": "table",
       "id": "last-run-table",
       "clearDataOnReset": true,
-      "streamDataFromModel": false,
+      "streamDataFromModel": true,
+      "addNewRows": false,
       "title": "Current Run Table",
       "visibleRows": 1,
       "indexColumn": false,
@@ -346,6 +349,9 @@
         "ballMass",
         "startingAngle",
         "period"
+      ],
+      "tableData": [
+        [ "", " ", " ", " ", " " ]
       ]
     },
     {
@@ -539,7 +545,7 @@
     {
       "id": "top",
       "bottom": "last-run-data.top",
-      "fontScale": "0.95",
+      "fontScale": "0.9",
       "padding-left": "0.5em",
       "padding-bottom": "0em"
     },
@@ -558,7 +564,7 @@
       "left": "model.right",
       "height": "model.height+experiment-controls.height",
       "width": "model.width",
-      "padding-top": "1.2em",
+      "padding-top": "0.2em",
       "padding-left": "1em",
       "padding-right": "0.5em"
     },
@@ -568,7 +574,7 @@
       "left": "model.right",
       "height": "model.height",
       "width": "model.width",
-      "padding-top": "0.5em",
+      "padding-top": "0.2em",
       "padding-left": "1em",
       "padding-right": "0.5em"
     }
