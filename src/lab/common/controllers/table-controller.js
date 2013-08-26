@@ -137,22 +137,8 @@ define(function (require) {
 
       // Returns serialized component definition.
       serialize: function () {
-        // var i, len, $options;
-        // if (component.property === undefined) {
-        //   // When property binding is not defined, we need to keep track
-        //   // which option is currently selected.
-        //   $options = $element.find('option');
-        //   for (i = 0, len = options.length; i < len; i++) {
-        //     if ($($options[i]).prop("selected")) {
-        //       options[i].selected = true;
-        //     } else {
-        //       delete options[i].selected;
-        //     }
-        //   }
-        // }
-        // // Note that 'options' array above is a reference to component.options array.
-        // // Every thing is updated, return a copy.
-        // return $.extend(true, {}, component);
+        // Return the initial component definition.
+        return $.extend(true, {}, component);
       }
     };
 
