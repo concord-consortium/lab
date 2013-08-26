@@ -35,6 +35,7 @@
       "onLoad": [
         "setComponentDisabled('start-run', false);",
         "setComponentDisabled('stop-run', true);",
+        "setComponentDisabled('save-run', true);",
         "setComponentDisabled('clear-run', true);",
         "callEvery(0.1, function() {",
         "  if (get('experimentRunning')) {",
@@ -49,12 +50,14 @@
         "  setComponentDisabled('angle-slider', true);",
         "  setComponentDisabled('start-run', true);",
         "  setComponentDisabled('stop-run', false);",
+        "  setComponentDisabled('save-run', true);",
         "  setComponentDisabled('clear-run', true);",
         "  start();",
         "}",
         "function stopRun() {",
         "  setComponentDisabled('start-run', true);",
         "  setComponentDisabled('stop-run', true);",
+        "  setComponentDisabled('save-run', false);",
         "  setComponentDisabled('clear-run', false);",
         "  stop();",
         "}",
@@ -68,12 +71,17 @@
         "function clearExperiment() {",
         "  setComponentDisabled('start-run', false);",
         "  setComponentDisabled('stop-run', true);",
+        "  setComponentDisabled('save-run', true);",
         "  setComponentDisabled('clear-run', true);",
         "  setComponentDisabled('length-slider', false);",
         "  setComponentDisabled('mass-slider', false);",
         "  setComponentDisabled('angle-slider', false);",
         "  set('experimentTime', 0);",
         "  set('experimentCleared', false);",
+        "  reset();",
+        "  resetAngle();",
+        "  stopMotion();",
+        "  set('rodLength', get('rodLength'));",
         "}",
         "onPropertyChange('experimentCleared', function() {",
         "  if (get('experimentCleared')) {",
@@ -89,7 +97,6 @@
         "  stop();",
         "  setAtomProperties(1, { vx: 0, vy: 0 });",
         "}",
-        "onPropertyChange('rodLength', resetAngle);",
         "onPropertyChange('rodLength', resetAngle);",
         "onPropertyChange('ballMass', resetAngle);",
         "onPropertyChange('gravitationalField', resetAngle);",
@@ -110,6 +117,15 @@
       ]
     }
   ],
+  "filteredOutputs": [
+    {
+      "name": "period",
+      "unitType": "time",
+      "label": "Period",
+      "property": "currentAngle",
+      "type": "SimplePeriod"
+    }
+   ],
   "parameters": [
     {
       "name": "gravity",
@@ -164,6 +180,7 @@
     {
       "name": "experimentTime",
       "label": "Experiment time",
+      "unitType": "time",
       "initialValue": 0,
       "onChange": ""
     }
@@ -181,14 +198,6 @@
     ]
   },
   "components": [
-    {
-      "type": "text",
-      "id": "experiment-header",
-      "text": [
-        "Adjust parameters then click **Start** to begin experiment run,",
-        "**Stop** to end run, and **Clear** to setup new run."
-      ]
-    },
     {
       "type": "text",
       "id": "parameters-header",
@@ -258,34 +267,10 @@
       "property": "startingAngle"
     },
     {
-      "type": "numericOutput",
-      "id": "experiment-time",
-      "property": "experimentTime",
-      "displayValue": "return format('.1f')(value)"
-    },
-    {
-      "type": "numericOutput",
-      "id": "starting-angle-output",
-      "property": "startingAngle",
-      "displayValue": "return format('f')(value)"
-    },
-    {
-      "type": "numericOutput",
-      "id": "rod-length-output",
-      "property": "rodLength",
-      "displayValue": "return format('f')(value)"
-    },
-    {
-      "type": "numericOutput",
-      "id": "ball-mass-output",
-      "property": "ballMass",
-      "displayValue": "return format('1f')(value)"
-    },
-    {
       "type": "button",
       "id": "start-run",
       "text": "Start",
-      "tooltip": "Start experiment run.",
+      "tooltip": "Start experiment run. Will stop automatically after 8s.",
       "action": [
         "set('timeExperimentStarted', get('time'));",
         "set('experimentRunning', true);"
@@ -298,6 +283,17 @@
       "tooltip": "Stop currently running experiment.",
       "action": [
         "set('experimentRunning', false);"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "save-run",
+      "text": "Save",
+      "tooltip": "Save parameter data from current run.",
+      "action": [
+        "appendDataPropertiesToComponent('experiment-table');",
+        "appendDataPropertiesToComponent('parameter-graph');",
+        "setComponentDisabled('save-run', true);"
       ]
     },
     {
@@ -325,24 +321,43 @@
       ]
     },
     {
+      "type": "table",
+      "id": "experiment-table",
+      "title": "Experiment Table",
+      "clearDataOnReset": false,
+      "streamDataFromModel": false,
+      "visibleRows": 4,
+      "indexColumn": true,
+      "propertyColumns": [
+        "rodLength",
+        "ballMass",
+        "startingAngle",
+        "period"
+      ]
+    },
+    {
       "type": "graph",
-      "id": "p-graph",
+      "id": "parameter-graph",
       "title": "Parameter Graph",
-      "xlabel": "Mass (g)",
+      "clearDataOnReset": false,
+      "streamDataFromModel": false,
+      "markAllDataPoints": true,
+      "showRulersOnSelection": true,
+      "xlabel": "Rod length (cm",
       "xmin": 0,
-      "xmax": 500,
-      "ylabel": "Rod length (cm)",
+      "xmax": 200,
+      "ylabel": "Period (s)",
       "ymin": 0,
-      "ymax": 250,
+      "ymax": 4,
       "lines": false,
       "lineWidth": 2,
       "yTickCount": 5,
       "xTickCount": 5,
       "xFormatter": ".2s",
       "yFormatter": ".2s",
-      "xProperty": "ballMass",
+      "xProperty": "rodLength",
       "properties": [
-        "rodLength"
+        "period"
       ]
     }
   ],
@@ -407,6 +422,14 @@
       ]
     },
     {
+      "component": "save-run",
+      "text": [
+        "Save parameter data from an experiment run into the parameter graph.",
+        "",
+        ""
+      ]
+    },
+    {
       "component": "clear-run",
       "text": [
         "Clears the data from the last experiment run in the graph and resets the model",
@@ -427,7 +450,13 @@
       ]
     },
     {
-      "component": "p-graph",
+      "component": "experiment-table",
+      "text": [
+        "This is a table where you can save the parameters and the period from each experiment run."
+      ]
+    },
+    {
+      "component": "parameter-graph",
       "text": [
         "This is currently just a graph of the parameters **Rod length** and **Mass of the ball**.",
         "",
@@ -439,23 +468,19 @@
   ],
   "layout": {
     "top": [
-      [ "experiment-header" ],
-      [ "parameters-header", "length-slider", "mass-slider", "angle-slider" ]
+      "parameters-header", "length-slider", "mass-slider", "angle-slider"
     ],
     "top-right": [
       "angle-graph"
     ],
     "experiment-controls": [
-      [ "start-run", "stop-run", "clear-run" ]
+      [ "start-run", "stop-run", "save-run", "clear-run" ]
     ],
     "bottom-left": [
-      [ "starting-angle-output" ],
-      [ "rod-length-output" ],
-      [ "ball-mass-output" ],
-      [ "experiment-time" ]
+      "experiment-table"
     ],
     "bottom-right": [
-      "p-graph"
+      "parameter-graph"
     ]
   },
   "template": [
@@ -477,12 +502,12 @@
     },
     {
       "id": "bottom-left",
+      "fontScale": "0.9",
       "top": "model.bottom",
       "left": "model.left",
       "width": "model.width",
       "padding-top": "0.5em",
-      "padding-right": "8em",
-      "align": "right"
+      "padding-left": "1em"
     },
     {
       "id": "top-right",
