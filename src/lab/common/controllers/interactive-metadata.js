@@ -569,6 +569,48 @@ define(function() {
       }
     },
 
+    table: {
+      id: {
+        required: true
+      },
+      type: {
+        required: true
+      },
+      title: {
+        defaultValue: null
+      },
+      clearDataOnReset: {
+        defaultValue: true
+      },
+      streamDataFromModel: {
+        defaultValue: true
+      },
+      visibleRows: {
+        defaultValue: 4
+      },
+      indexColumn: {
+        defaultValue: true
+      },
+      propertyColumns: {
+        defaultValue: []
+      },
+      tableData: {
+        defaultValue: []
+      },
+      tableData: {
+        defaultValue: []
+      },
+      width: {
+        defaultValue: "100%"
+      },
+      height: {
+        defaultValue: "100%"
+      },
+      tooltip: {
+        defaultValue: ""
+      }
+    },
+
     graph: {
       id: {
         required: true

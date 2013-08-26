@@ -170,6 +170,57 @@
       right: 0.22197em
       bottom: 0.22197em
 
+.interactive-table
+  div.title
+    text-align: center
+    padding: 0.3em 0em
+    color: black
+  div.table-wrapper
+    padding: 0.2em 0.4em 0.2em 0.4em
+    background-color: #eee
+    border-radius: 0.4em
+    overflow: auto
+    table
+      background-color: #eee
+      border-collapse: collapse
+    th
+      text-align: left
+      background-repeat: no-repeat
+      background-position: center right
+      cursor: n-resize
+      font-weight: normal
+      font-size: 90%
+      margin-bottom: 0.1em
+      padding: 0.4em 0.5em 0.5em 0.2em
+      border-radius: 0.1em
+      min-width: 1em
+    th.sorted
+      background: darken(#eee, 10%)
+    th.sorted.asc
+      background-image: url("#{$directory}/resources/down.png")
+      background-size: 15%
+      background-repeat: no-repeat
+      background-position: bottom right
+    th.sorted.desc
+      background-image: url("#{$directory}/resources/up.png")
+      background-size: 15%
+      background-repeat: no-repeat
+      background-position: top right
+      cursor: s-resize
+    tbody
+      padding-top: 0.3em
+    tr: nth-child(odd)
+      background-color: #eee
+    tr: nth-child(even)
+      background-color: #fff
+    td
+      font-size: 80%
+      font-weight: normal
+      text-align: left
+      background-color: white
+      border-top: 1px solid #888
+      padding: 0.2em 0.3em 0.2em 0.3em
+
 .numeric-output
   padding: 0.3em 0.2em 0.3em 0.7em
   span.output

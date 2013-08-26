@@ -20,6 +20,7 @@ define(function (require) {
       SliderController        = require('common/controllers/slider-controller'),
       PulldownController      = require('common/controllers/pulldown-controller'),
       NumericOutputController = require('common/controllers/numeric-output-controller'),
+      TableController         = require('common/controllers/table-controller'),
       ParentMessageAPI        = require('common/controllers/parent-message-api'),
       ThermometerController   = require('common/controllers/thermometer-controller'),
       PlaybackController      = require('common/controllers/playback-controller'),
@@ -87,6 +88,7 @@ define(function (require) {
         'graph':         GraphController,
         'slider':        SliderController,
         'numericOutput': NumericOutputController,
+        'table':         TableController,
         'div':           DivController,
         'playback':      PlaybackController
       };
