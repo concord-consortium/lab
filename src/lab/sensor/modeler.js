@@ -220,6 +220,7 @@ define(function(require) {
         applet = window.Lab.sensor[sensorType] = new AppletClass({
           listenerPath: 'Lab.sensor.' + sensorType,
           measurementType: sensorDefinitions[sensorType].measurementType,
+          sensorDefinition: sensorDefinitions[sensorType],
           appletId: sensorType+'-sensor'
         });
 

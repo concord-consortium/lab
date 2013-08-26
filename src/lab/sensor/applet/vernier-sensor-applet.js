@@ -15,8 +15,7 @@ define(function(require) {
     // supported values are:
     //   "temperature"
     //   "light"
-    //   "force 5n"
-    //   "force 50n"
+    //   "force"
     //   "co2"
     //   "o2"
     //   "ph"
@@ -27,6 +26,10 @@ define(function(require) {
     //  "labquest"
     //  "golink"
     deviceType: '',
+
+    // Packet of information about the sensor type. See
+    // src/lab/senosr/applet/sensor-definitions.js
+    sensorDefinition: null,
 
     appletId:     'sensor-applet',
     classNames:   'applet sensor-applet',
@@ -96,7 +99,7 @@ define(function(require) {
         return false;
       }
       for (i = 0; i < attachedSensors.length; i++) {
-        if (this.appletInstance.getTypeConstantName(attachedSensors[i].getType()) === this.measurementType) {
+        if (this.appletInstance.getTypeConstantName(attachedSensors[i].getType()) === this.sensorDefinition.typeConstantName) {
           return true;
         }
       }
