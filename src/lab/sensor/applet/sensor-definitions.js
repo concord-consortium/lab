@@ -27,7 +27,7 @@ define(function() {
 
     goLinkLight: {
       appletClass: 'goio',
-      measurementType: 'lightIntensity',
+      measurementType: 'light',
       sensorName: "GoIO Light Sensor",
       deviceName: "GoIO",
       samplesPerSecond: 10,
@@ -45,7 +45,7 @@ define(function() {
 
     goLinkPH: {
       appletClass: 'goio',
-      measurementType: 'pH',
+      measurementType: 'ph',
       sensorName: "GoIO pH Sensor",
       deviceName: "GoIO",
       samplesPerSecond: 10,
@@ -54,18 +54,18 @@ define(function() {
 
     goLinkCO2: {
       appletClass: 'goio',
+      measurementType: 'co2',
       sensorName: "GoIO CO₂ sensor",
       deviceName: "GoIO",
-      measurementType: 'ppm',
       samplesPerSecond: 1,
       tareable: false
     },
 
     goLinkO2: {
       appletClass: 'goio',
+      measurementType: 'o2',
       sensorName: "GoIO O₂ sensor",
       deviceName: "GoIO",
-      measurementType: 'ppm',
       samplesPerSecond: 1,
       tareable: false
     },
@@ -90,7 +90,7 @@ define(function() {
 
     labQuestLight: {
       appletClass: 'labquest',
-      measurementType: 'lightIntensity',
+      measurementType: 'light',
       sensorName: "LabQuest Light Sensor",
       deviceName: "LabQuest",
       samplesPerSecond: 10,
@@ -108,7 +108,7 @@ define(function() {
 
     labQuestPH: {
       appletClass: 'labquest',
-      measurementType: 'pH',
+      measurementType: 'ph',
       sensorName: "LabQuest pH Sensor",
       deviceName: "LabQuest",
       samplesPerSecond: 10,
@@ -117,18 +117,18 @@ define(function() {
 
     labQuestCO2: {
       appletClass: 'labquest',
+      measurementType: 'co2',
       sensorName: "LabQuest CO₂ sensor",
       deviceName: "LabQuest",
-      measurementType: 'ppm',
       samplesPerSecond: 1,
       tareable: false
     },
 
     labQuestO2: {
       appletClass: 'labquest',
+      measurementType: 'o2',
       sensorName: "LabQuest O₂ sensor",
       deviceName: "LabQuest",
-      measurementType: 'ppm',
       samplesPerSecond: 1,
       tareable: false
     }
