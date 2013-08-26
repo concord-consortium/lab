@@ -643,10 +643,10 @@ define(function() {
         defaultValue: 0.5
       },
       xFormatter: {
-        defaultValue: "3.2r"
+        defaultValue: ".2r"
       },
       yFormatter: {
-        defaultValue: "3.2r"
+        defaultValue: ".2r"
       },
       lines: {
         defaultValue: true
