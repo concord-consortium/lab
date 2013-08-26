@@ -11,6 +11,8 @@ define(function (require) {
       grapherOptionForComponentSpecProperty = {
         title: 'title',
         dataPoints: 'dataPoints',
+        markAllDataPoints: 'markAllDataPoints',
+        showRulersOnSelection: 'showRulersOnSelection',
         fontScaleRelativeToParent: 'fontScaleRelativeToParent',
         xlabel: 'xlabel',
         xmin: 'xmin',

@@ -579,6 +579,12 @@ define(function() {
       dataPoints: {
         defaultValue: []
       },
+      markAllDataPoints: {
+        defaultValue: false
+      },
+      showRulersOnSelection: {
+        defaultValue: false
+      },
       fontScaleRelativeToParent: {
         defaultValue: true
       },
