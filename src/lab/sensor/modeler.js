@@ -443,6 +443,10 @@ define(function(require) {
     // Kick things off by doing this explicitly:
     setSensorType(model.properties.sensorType);
 
+    // Clean up state before we go -- failing to remove the applet from the page before switching
+    // between 2 sensor types that use the same interface causes an applet exception.
+    model.on('willReset', removeApplet);
+
     return model;
   };
 });
