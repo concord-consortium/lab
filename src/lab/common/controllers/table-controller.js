@@ -111,6 +111,7 @@ define(function (require) {
         Called by the interactives controller when the model finishes loading.
       */
       modelLoadedCallback: function() {
+        tableData = [];
         updateTable();
       },
 
@@ -118,6 +119,10 @@ define(function (require) {
         Called by the interactives controller when the model is reset.
       */
       modelResetCallback: function() {
+        if (component.clearDataOnReset) {
+          tableData = [];
+          updateTable();
+        }
       },
 
       /**

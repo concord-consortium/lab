@@ -103,10 +103,12 @@ define(function (require) {
         models = [],
         modelsHash = {},
         propertiesListeners = [],
-        componentCallbacks = [],
+        componentModelLoadedCallbacks = [],
+        componentModelResetCallbacks = [],
         onLoadScripts = [],
         resizeCallbacks = [],
         modelLoadedCallbacks = [],
+        modelResetCallbacks = [],
         isModelLoaded = false,
         interactiveRenderedCallbacks = [],
         isInteractiveRendered = false,
@@ -306,6 +308,7 @@ define(function (require) {
           createModelController(modelConfig.type, modelUrl, modelOptions);
           // also be sure to get notified when the underlying model changes
           modelController.on('modelLoaded', modelLoaded);
+          modelController.on('modelReset', modelReset);
           controller.modelController = modelController;
         }
         // This will attach model container to DOM.
@@ -426,7 +429,7 @@ define(function (require) {
           if (comp.modelLoadedCallback) {
             // $.proxy ensures that callback will be always executed
             // in the context of correct object ('this' binding).
-            componentCallbacks.push($.proxy(comp.modelLoadedCallback, comp));
+            componentModelLoadedCallbacks.push($.proxy(comp.modelLoadedCallback, comp));
           }
         }
       }
@@ -486,12 +489,19 @@ define(function (require) {
       componentByID[id] = comp;
       componentList.push(comp);
 
-      // Register component callback if it is available.
+      // Register component modelLoaded and modelReset callbacks if available.
       if (comp.modelLoadedCallback) {
         // $.proxy ensures that callback will be always executed
         // in the context of correct object ('this' binding).
-        componentCallbacks.push($.proxy(comp.modelLoadedCallback, comp));
+        componentModelLoadedCallbacks.push($.proxy(comp.modelLoadedCallback, comp));
       }
+
+      if (comp.modelResetCallback) {
+        // $.proxy ensures that callback will be always executed
+        // in the context of correct object ('this' binding).
+        componentModelResetCallbacks.push($.proxy(comp.modelResetCallback, comp));
+      }
+
     }
 
     /**
@@ -534,8 +544,8 @@ define(function (require) {
       // Call component callbacks *when* the layout is created.
       // Some callbacks require that their views are already attached to the DOM, e.g. (bar graph uses
       //getBBox() which in Firefox works only when element is visible and rendered).
-      for(i = 0; i < componentCallbacks.length; i++) {
-        componentCallbacks[i]();
+      for(i = 0; i < componentModelLoadedCallbacks.length; i++) {
+        componentModelLoadedCallbacks[i]();
       }
 
       // setup messaging with embedding parent window
@@ -554,6 +564,20 @@ define(function (require) {
         modelLoadedCallbacks[i]();
       }
       isModelLoaded = true;
+    }
+
+    /**
+      Call this in response to a modelReset, to update listeners and components
+      that have a modelResetCalback.
+    */
+    function modelReset() {
+      var i;
+      for(i = 0; i < modelResetCallbacks.length; i++) {
+        modelResetCallbacks[i]();
+      }
+      for(i = 0; i < componentModelResetCallbacks.length; i++) {
+        componentModelResetCallbacks[i]();
+      }
     }
 
     /**
@@ -681,7 +705,7 @@ define(function (require) {
       var componentJsons,
           i, len;
 
-      componentCallbacks = [];
+      componentModelLoadedCallbacks = [];
 
       // Validate interactive.
       controller.interactive = validateInteractive(controller.interactive);
@@ -710,7 +734,7 @@ define(function (require) {
         // setup export controller so you can debug exports by typing script.exportData() in the
         // console.
         exportController = new ExportController(interactive.exports);
-        componentCallbacks.push(exportController.modelLoadedCallback);
+        componentModelLoadedCallbacks.push(exportController.modelLoadedCallback);
 
         // If there is an enclosing container we can export data to (e.g., we're iframed into
         // DataGames) then add an "Analyze Data" button the bottom position of the interactive
@@ -930,7 +954,7 @@ define(function (require) {
       },
       /**
        * Adds an event listener for the specified type. Supported events:
-       * "resize", "modelLoaded", "interactiveRendered" and "layoutUpdated".
+       * "resize", "modelLoaded", "modelReset", "interactiveRendered" and "layoutUpdated".
        *
        * @param {string} type
        * @param  {function|array} callback Callback function or an array of functions.
@@ -952,6 +976,9 @@ define(function (require) {
             break;
           case "modelLoaded":
             modelLoadedCallbacks = modelLoadedCallbacks.concat(callback);
+            break;
+          case "modelReset":
+            modelResetCallbacks = modeResetCallbacks.concat(callback);
             break;
           case "interactiveRendered":
             interactiveRenderedCallbacks = interactiveRenderedCallbacks.concat(callback);

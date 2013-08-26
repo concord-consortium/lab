@@ -202,11 +202,13 @@ define(function (require) {
       */
       modelResetCallback: function() {
         if (grapher) {
-          resetGrapher();
+          if (getOptions().clearDataOnReset) {
+            resetData();
+            resetGrapher();
+          }
         } else {
           grapher = new Graph($container[0], getOptions(), undefined, interactivesController.getNextTabIndex());
         }
-        resetData();
       },
 
       /**
