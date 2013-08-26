@@ -377,6 +377,8 @@
       "streamDataFromModel": false,
       "markAllDataPoints": true,
       "showRulersOnSelection": true,
+      "enableAutoScaleButton": false,
+      "enableAxisScaling": false,
       "xlabel": "Rod length (cm",
       "xmin": 0,
       "xmax": 200,
