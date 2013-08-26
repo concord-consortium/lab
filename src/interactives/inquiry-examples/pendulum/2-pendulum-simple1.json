@@ -460,15 +460,15 @@
     {
       "component": "save-run",
       "text": [
-        "Save parameter data from an experiment run into the parameter graph.",
-        "",
+        "Save parameter data and Period from your current experiment run into the Experiment Table and",
+        "Parameter Graphs.",
         ""
       ]
     },
     {
       "component": "clear-run",
       "text": [
-        "Clears the data from the last experiment run in the graph and resets the model",
+        "Clears the data from the last experiment run in the Pendulum Ange graph and resets the model",
         "so you can setup the next experiment run.",
         ""
       ]
@@ -477,6 +477,13 @@
       "component": "clear-all",
       "text": [
         "Clears **all** the data from the all experiment runs"
+      ]
+    },
+    {
+      "component": "last-run-table",
+      "text": [
+        "This table shows the values of the parameters for your current run. Initially Period is 0.0",
+        "but after the pendulum has swung back and forth once the Period value will be updated."
       ]
     },
     {
@@ -492,14 +499,18 @@
     {
       "component": "experiment-table",
       "text": [
-        "This is a table where you can save the parameters and the period from each experiment run."
+        "This is a table where the parameters and the period from each experiment run can be saved.",
+        "Data saved here is also plotted in the Parameter Graph."
       ]
     },
     {
       "component": "parameter-graph",
       "text": [
-        "This is currently just a graph of the parameters **Rod length** and **Period**.",
-        ""
+        "This graph shows the relationship of **Rod length** to **Period**.",
+        "",
+        "The axes for this graph are not changeable.",
+        "",
+        "In the future you will be able to compare changes in any model parameter to Period."
       ]
     }
   ],
