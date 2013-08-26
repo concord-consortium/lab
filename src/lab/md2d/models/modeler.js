@@ -893,7 +893,7 @@ define(function(require) {
       } while (++numTries < maxTries);
 
       return false;
-    },
+    };
 
     /**
       Adds a new atom defined by properties.
@@ -951,7 +951,7 @@ define(function(require) {
       }
 
       return true;
-    },
+    };
 
     model.removeAtom = function(i, options) {
       var prevRadBondsCount = engine.getNumberOfRadialBonds(),
@@ -978,7 +978,7 @@ define(function(require) {
           dispatch.removeAngularBond();
         }
       }
-    },
+    };
 
     model.addElement = function(props) {
       // Validate properties, use default values if there is such need.
@@ -1037,7 +1037,7 @@ define(function(require) {
     };
 
     model.removeLine = function (idx) {
-      var prevElFieldsCount = engine.getNumberOfElectricFields();
+      //var prevElFieldsCount = engine.getNumberOfElectricFields();
 
       propertySupport.invalidatingChangePreHook();
       engine.removeLine(idx);
@@ -1080,7 +1080,7 @@ define(function(require) {
       }
 
       dispatch.addRadialBond();
-    },
+    };
 
     model.removeRadialBond = function(idx) {
       propertySupport.invalidatingChangePreHook();
@@ -1162,7 +1162,7 @@ define(function(require) {
       cy = atoms.y[atomIndex];
 
       return { top: top-cy, left: left-cx, bottom: bottom-cy, right: right-cx };
-    },
+    };
 
     model.setTemperatureOfAtoms = function(atomIndices, T) {
       propertySupport.invalidatingChangePreHook();
@@ -1689,7 +1689,7 @@ define(function(require) {
       return model;
     };
 
-    model.tick = function(elapsedTime) {
+    model.tick = function() {
       var timeStep = model.get('timeStep'),
           // Save number of radial bonds in engine before integration,
           // as integration can create new disulfide bonds. This is the
