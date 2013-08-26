@@ -234,6 +234,9 @@ define(function (require) {
           // foint-size of the labels in thegraph will be smaller.
           fontScaleRelativeToParent: true,
 
+          enableAutoScaleButton: true,
+          enableAxisScaling: true,
+
           //
           // dataType can be either 'points or 'samples'
           //
@@ -759,17 +762,20 @@ define(function (require) {
 
       buttonLayer
         .attr("class", "button-layer")
-        .style("z-index", 3)
-        .append('a')
-          .attr({
-            "class": "autoscale-button",
-            "title": tooltips.autoscale
-          })
-          .on("click", function() {
-            autoscale();
-          })
-          .append("i")
-            .attr("class", "icon-picture");
+        .style("z-index", 3);
+
+      if (options.enableAutoScaleButton) {
+        buttonLayer.append('a')
+            .attr({
+              "class": "autoscale-button",
+              "title": tooltips.autoscale
+            })
+            .on("click", function() {
+              autoscale();
+            })
+            .append("i")
+              .attr("class", "icon-picture");
+      }
 
       resizeButtonLayer();
     }
@@ -1392,32 +1398,34 @@ define(function (require) {
     }
 
     function plotDrag() {
-      var p;
-      d3.event.preventDefault();
-      d3.select('body').style("cursor", "move");
-      if (d3.event.altKey) {
-        plot.style("cursor", "nesw-resize");
-        if (d3.event.shiftKey && options.addData) {
-          p = d3.mouse(vis.node());
-          var newpoint = [];
-          newpoint[0] = xScale.invert(Math.max(0, Math.min(size.width,  p[0])));
-          newpoint[1] = yScale.invert(Math.max(0, Math.min(size.height, p[1])));
-          points.push(newpoint);
-          points.sort(function(a, b) {
-            if (a[0] < b[0]) { return -1; }
-            if (a[0] > b[0]) { return  1; }
-            return 0;
-          });
-          selected = newpoint;
-          update();
-        } else {
-          p = d3.mouse(vis.node());
-          downx = xScale.invert(p[0]);
-          downy = yScale.invert(p[1]);
-          draggedPoint = false;
-          d3.event.stopPropagation();
+      if(options.enableAxisScaling) {
+        var p;
+        d3.event.preventDefault();
+        d3.select('body').style("cursor", "move");
+        if (d3.event.altKey) {
+          plot.style("cursor", "nesw-resize");
+          if (d3.event.shiftKey && options.addData) {
+            p = d3.mouse(vis.node());
+            var newpoint = [];
+            newpoint[0] = xScale.invert(Math.max(0, Math.min(size.width,  p[0])));
+            newpoint[1] = yScale.invert(Math.max(0, Math.min(size.height, p[1])));
+            points.push(newpoint);
+            points.sort(function(a, b) {
+              if (a[0] < b[0]) { return -1; }
+              if (a[0] > b[0]) { return  1; }
+              return 0;
+            });
+            selected = newpoint;
+            update();
+          } else {
+            p = d3.mouse(vis.node());
+            downx = xScale.invert(p[0]);
+            downy = yScale.invert(p[1]);
+            draggedPoint = false;
+            d3.event.stopPropagation();
+          }
+          // d3.event.stopPropagation();
         }
-        // d3.event.stopPropagation();
       }
     }
 
@@ -1426,19 +1434,23 @@ define(function (require) {
     }
 
     function xAxisDrag() {
-      node.focus();
-      document.onselectstart = falseFunction;
-      d3.event.preventDefault();
-      var p = d3.mouse(vis.node());
-      downx = xScale.invert(p[0]);
+      if(options.enableAxisScaling) {
+        node.focus();
+        document.onselectstart = falseFunction;
+        d3.event.preventDefault();
+        var p = d3.mouse(vis.node());
+        downx = xScale.invert(p[0]);
+      }
     }
 
     function yAxisDrag() {
-      node.focus();
-      d3.event.preventDefault();
-      document.onselectstart = falseFunction;
-      var p = d3.mouse(vis.node());
-      downy = yScale.invert(p[1]);
+      if(options.enableAxisScaling) {
+        node.focus();
+        d3.event.preventDefault();
+        document.onselectstart = falseFunction;
+        var p = d3.mouse(vis.node());
+        downy = yScale.invert(p[1]);
+      }
     }
 
     function dataPointDrag(d) {

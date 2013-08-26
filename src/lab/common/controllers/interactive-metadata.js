@@ -627,6 +627,12 @@ define(function() {
       streamDataFromModel: {
         defaultValue: true
       },
+      enableAutoScaleButton: {
+        defaultValue: true
+      },
+      enableAxisScaling: {
+        defaultValue: true
+      },
       dataPoints: {
         defaultValue: []
       },

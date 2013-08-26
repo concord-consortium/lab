@@ -12,6 +12,8 @@ define(function (require) {
         title: 'title',
         clearDataOnReset: 'clearDataOnReset',
         streamDataFromModel: 'streamDataFromModel',
+        enableAutoScaleButton: 'enableAutoScaleButton',
+        enableAxisScaling: 'enableAxisScaling',
         dataPoints: 'dataPoints',
         markAllDataPoints: 'markAllDataPoints',
         showRulersOnSelection: 'showRulersOnSelection',
