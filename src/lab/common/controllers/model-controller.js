@@ -59,6 +59,8 @@ define(function (require) {
       arguments will simply reload the current model.
     */
     function reload(newModelUrl, newModelOptions, suppressEvents) {
+      // Since we won't call model.reset() (instead, we will discard the model) we need to make sure
+      // that the model knows to dispatch a willReset event.
       if (model.willReset) {
         model.willReset();
       }
@@ -77,9 +79,6 @@ define(function (require) {
       Note: suppressEvents optional.
     */
     function reset(suppressEvents) {
-      if (model.willReset) {
-        model.willReset();
-      }
       model.stop();
       model.reset();
       if (!suppressEvents) {
