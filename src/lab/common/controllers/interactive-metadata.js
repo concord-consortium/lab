@@ -576,6 +576,12 @@ define(function() {
       type: {
         required: true
       },
+      clearDataOnReset: {
+        defaultValue: true
+      },
+      streamDataFromModel: {
+        defaultValue: true
+      },
       dataPoints: {
         defaultValue: []
       },

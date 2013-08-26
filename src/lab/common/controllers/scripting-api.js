@@ -271,6 +271,16 @@ define(function (require) {
             interactivesController.getComponent(compID).setDisabled(v);
           },
 
+          /**
+            Used when manually adding points to a graph or a table.
+            Normally the graph or table property streamDataFromModel should be false
+            when using this function.
+          */
+          appendDataPropertiesToComponent: function appendDataPropertiesToComponent(compID) {
+            var component = interactivesController.getComponent(compID);
+            component.appendDataPropertiesToComponent();
+          },
+
           start: function start() {
             model.start();
             trackEvent('Interactive', "Start", "Starting interactive: " + interactivesController.get('title') );

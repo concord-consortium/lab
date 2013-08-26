@@ -10,6 +10,8 @@ define(function (require) {
       // internal implementation detail (the grapher options format).
       grapherOptionForComponentSpecProperty = {
         title: 'title',
+        clearDataOnReset: 'clearDataOnReset',
+        streamDataFromModel: 'streamDataFromModel',
         dataPoints: 'dataPoints',
         markAllDataPoints: 'markAllDataPoints',
         showRulersOnSelection: 'showRulersOnSelection',
@@ -82,10 +84,17 @@ define(function (require) {
       var dataPoint = getDataPoint(),
           i;
 
-      for (i = 0; i < dataPoint.length; i++) {
-        data[i] = [dataPoint[i]];
+      if (getOptions().streamDataFromModel) {
+        for (i = 0; i < dataPoint.length; i++) {
+          data[i] = [dataPoint[i]];
+        }
+        grapher.resetPoints(data);
+      } else {
+        for (i = 0; i < dataPoint.length; i++) {
+          data[i] = [];
+        }
+        grapher.resetPoints();
       }
-      grapher.resetPoints(data);
     }
 
     /**
@@ -133,23 +142,26 @@ define(function (require) {
       grapher.reset('#' + component.id, getOptions());
     }
 
-
     function registerModelListeners() {
-      // Namespace listeners to '.graphController' so we can eventually remove them all at once
-      model.on('tick.'+namespace, appendDataPoint);
-      model.on('stepBack.'+namespace, redrawCurrentStepPointer);
-      model.on('stepForward.'+namespace, redrawCurrentStepPointer);
-      model.on('seek.'+namespace, redrawCurrentStepPointer);
-      model.on('reset.'+namespace, function() {
-        resetGrapher();
-        resetData();
-      });
-      model.on('play.'+namespace, function() {
-        if (grapher.numberOfPoints() && model.stepCounter() < grapher.numberOfPoints()) {
+      if (getOptions().streamDataFromModel) {
+        // Namespace listeners to '.graphController' so we can eventually remove them all at once
+        model.on('tick.'+namespace, appendDataPoint);
+        model.on('stepBack.'+namespace, redrawCurrentStepPointer);
+        model.on('stepForward.'+namespace, redrawCurrentStepPointer);
+        model.on('seek.'+namespace, redrawCurrentStepPointer);
+        model.on('reset.'+namespace, function() {
+          resetGrapher();
+          resetData();
+        });
+        model.on('play.'+namespace, function() {
+          if (grapher.numberOfPoints() && model.stepCounter() < grapher.numberOfPoints()) {
+            removeDataAfterStepPointer();
+          }
+        });
+        model.on('invalidation.'+namespace, function() {
           removeDataAfterStepPointer();
-        }
-      });
-      model.on('invalidation.'+namespace, removeDataAfterStepPointer);
+        });
+      }
     }
 
     //
@@ -184,6 +196,23 @@ define(function (require) {
         resetData();
         registerModelListeners();
       },
+
+      /**
+        Called by the interactives controller when the model is reset.
+      */
+      modelResetCallback: function() {
+        if (grapher) {
+          resetGrapher();
+        } else {
+          grapher = new Graph($container[0], getOptions(), undefined, interactivesController.getNextTabIndex());
+        }
+        resetData();
+      },
+
+      /**
+        Used when manually adding points to the graph.
+      */
+      appendDataPropertiesToComponent: appendDataPoint,
 
       /**
         Returns the grapher object itself.

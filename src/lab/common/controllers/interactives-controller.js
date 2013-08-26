@@ -64,6 +64,8 @@ define(function (require) {
       //                           DOM elements of the component.
       // # modelLoadedCallback() - optional function taking no arguments, a callback
       //                           which is called when the model is loaded.
+      // # modelResetCallback()  - optional function taking no arguments, a callback
+      //                           which is called when the model is reset.
       // # resize()              - optional function taking no arguments, a callback
       //                           which is called by the layout algorithm when component's container
       //                           dimensions are changed. This lets component to adjust itself to the
