@@ -696,7 +696,7 @@ define(function (require) {
         });
       } else {
         // we were passed an interactive object
-        controller.interactive = newInteractive
+        controller.interactive = newInteractive;
         finishLoadingInteractive();
       }
     }
@@ -978,7 +978,7 @@ define(function (require) {
             modelLoadedCallbacks = modelLoadedCallbacks.concat(callback);
             break;
           case "modelReset":
-            modelResetCallbacks = modeResetCallbacks.concat(callback);
+            modelResetCallbacks = modelResetCallbacks.concat(callback);
             break;
           case "interactiveRendered":
             interactiveRenderedCallbacks = interactiveRenderedCallbacks.concat(callback);
