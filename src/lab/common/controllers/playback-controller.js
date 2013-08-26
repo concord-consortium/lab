@@ -56,7 +56,7 @@ define(function (require) {
       this._$stepForward.before('<div class="spacer step">');
 
       // Bind click handlers.
-      this._$reset.on("click", scriptingAPI.reset);
+      this._$reset.on("click", scriptingAPI.reload);
 
       this._$playPause.on("click", $.proxy(function () {
         if (this._modelStopped) {
@@ -87,7 +87,7 @@ define(function (require) {
       this._$reset = $('<button class="reset">Reset</button>').appendTo(this.$element);
 
       // Bind click handlers
-      this._$reset.on('click', scriptingAPI.reset);
+      this._$reset.on('click', scriptingAPI.reload);
       this._$start.on('click', scriptingAPI.start);
       this._$stop.on('click', scriptingAPI.stop);
 
