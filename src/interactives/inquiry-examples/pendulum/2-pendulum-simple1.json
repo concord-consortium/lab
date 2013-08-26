@@ -19,9 +19,11 @@
       "id": "pendulum1$0",
       "url": "models/md2d/inquiry-examples/pendulum/pendulum.json",
       "viewOptions": {
-        "controlButtons": "play_reset_step",
-        "gridLines": true,
-        "showClock": true,
+        "controlButtons": "",
+        "gridLines": false,
+        "xunits": false,
+        "yunits": false,
+        "showClock": false,
         "velocityVectors": {
           "length": 10
         }
@@ -37,6 +39,9 @@
         "setComponentDisabled('stop-run', true);",
         "setComponentDisabled('save-run', true);",
         "setComponentDisabled('clear-run', true);",
+        "setComponentDisabled('length-slider', false);",
+        "setComponentDisabled('mass-slider', false);",
+        "setComponentDisabled('angle-slider', false);",
         "callEvery(0.1, function() {",
         "  if (get('experimentRunning')) {",
         "    var runningTime = get('time') - get('timeExperimentStarted');",
@@ -60,6 +65,7 @@
         "  setComponentDisabled('save-run', false);",
         "  setComponentDisabled('clear-run', false);",
         "  stop();",
+        "  appendDataPropertiesToComponent('last-run-table');",
         "}",
         "onPropertyChange('experimentRunning', function() {",
         "  if (get('experimentRunning')) {",
@@ -289,7 +295,7 @@
       "type": "button",
       "id": "save-run",
       "text": "Save",
-      "tooltip": "Save parameter data from current run.",
+      "tooltip": "Save parameter data and period from current run into Experiment Table.",
       "action": [
         "appendDataPropertiesToComponent('experiment-table');",
         "appendDataPropertiesToComponent('parameter-graph');",
@@ -302,6 +308,13 @@
       "text": "Clear",
       "tooltip": "Clear experiment data and setup next run.",
       "action": "set('experimentCleared', true);"
+    },
+    {
+      "type": "button",
+      "id": "clear-all",
+      "text": "Clear All",
+      "tooltip": "Clear all experiment data.",
+      "action": "reload();"
     },
     {
       "type": "graph",
@@ -318,6 +331,21 @@
       "yFormatter": ".2s",
       "properties": [
         "currentAngle"
+      ]
+    },
+    {
+      "type": "table",
+      "id": "last-run-table",
+      "clearDataOnReset": true,
+      "streamDataFromModel": false,
+      "title": "Current Run Table",
+      "visibleRows": 1,
+      "indexColumn": false,
+      "propertyColumns": [
+        "rodLength",
+        "ballMass",
+        "startingAngle",
+        "period"
       ]
     },
     {
@@ -434,9 +462,13 @@
       "text": [
         "Clears the data from the last experiment run in the graph and resets the model",
         "so you can setup the next experiment run.",
-        "",
-        "*NOTE*: currently this doesn't clear data from the graph or reset the model.",
         ""
+      ]
+    },
+    {
+      "component": "clear-all",
+      "text": [
+        "Clears **all** the data from the all experiment runs"
       ]
     },
     {
@@ -458,11 +490,8 @@
     {
       "component": "parameter-graph",
       "text": [
-        "This is currently just a graph of the parameters **Rod length** and **Mass of the ball**.",
-        "",
-        "In the near future you will be able to graph any of the experiment parameters",
-        "and compare how changing them in multiple experiment runs affects the measured",
-        "period of the pendulum for that run."
+        "This is currently just a graph of the parameters **Rod length** and **Period**.",
+        ""
       ]
     }
   ],
@@ -474,7 +503,10 @@
       "angle-graph"
     ],
     "experiment-controls": [
-      [ "start-run", "stop-run", "save-run", "clear-run" ]
+      [ "start-run", "stop-run", "save-run", "clear-run", "clear-all" ]
+    ],
+    "last-run-data": [
+      "last-run-table"
     ],
     "bottom-left": [
       "experiment-table"
@@ -485,20 +517,31 @@
   },
   "template": [
     {
+      "id": "last-run-data",
+      "fontScale": "0.9",
+      "bottom": "model.top",
+      "left": "model.right",
+      "width": "model.width",
+      "padding-top": "0em",
+      "padding-left": "1.5em",
+      "align": "center"
+    },
+    {
       "id": "experiment-controls",
       "bottom": "model.top",
       "left": "model.left",
       "width": "model.width",
       "padding-top": "0.5em",
+      "padding-bottom": "0.4em",
       "fontScale": "0.8",
       "align": "center"
     },
     {
       "id": "top",
-      "bottom": "experiment-controls.top",
+      "bottom": "last-run-data.top",
       "fontScale": "0.95",
       "padding-left": "0.5em",
-      "padding-bottom": "0.3em"
+      "padding-bottom": "0em"
     },
     {
       "id": "bottom-left",
@@ -507,11 +550,11 @@
       "left": "model.left",
       "width": "model.width",
       "padding-top": "0.5em",
-      "padding-left": "1em"
+      "padding-left": "0.5em"
     },
     {
       "id": "top-right",
-      "top": "experiment-controls.top",
+      "top": "last-run-data.bottom",
       "left": "model.right",
       "height": "model.height+experiment-controls.height",
       "width": "model.width",
@@ -521,7 +564,7 @@
     },
     {
       "id": "bottom-right",
-      "top": "model.bottom",
+      "top": "top-right.bottom",
       "left": "model.right",
       "height": "model.height",
       "width": "model.width",
