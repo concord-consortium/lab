@@ -1261,8 +1261,8 @@ define(function (require) {
       var d = xScale.domain(),
           r = xScale.range();
       markerRadius = (r[1] - r[0]) / ((d[1] - d[0]));
-      markerRadius = Math.min(markerRadius, 6);
-      markerStrokeWidth = markerRadius/4;
+      markerRadius = Math.min(Math.max(markerRadius, 4), 8);
+      markerStrokeWidth = markerRadius/3;
     }
 
     function updateMarkers() {
