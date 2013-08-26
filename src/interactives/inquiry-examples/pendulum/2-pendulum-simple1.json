@@ -216,6 +216,7 @@
       "id": "length-slider",
       "min": 10,
       "max": 200,
+      "width": "14em",
       "tooltip": "Adjust length of pendulum.",
       "displayValue": "return format('f')(value)",
       "labels": [
@@ -237,6 +238,7 @@
       "id": "mass-slider",
       "min": 10,
       "max": 400,
+      "width": "14em",
       "tooltip": "Adjust mass of ball at end of pendulum.",
       "displayValue": "return format('f')(value)",
       "labels": [
@@ -258,6 +260,7 @@
       "id": "angle-slider",
       "min": 0,
       "max": 90,
+      "width": "14em",
       "tooltip": "Adjust angle of pendulum when starting experiment run.",
       "displayValue": "return format('f')(value)",
       "labels": [
@@ -419,7 +422,7 @@
     {
       "component": "length-slider",
       "text": [
-        "Adjust the length of the pendulum rod with this slider.",
+        "Adjust the length of the pendulum rod.",
         "",
         ""
       ]
@@ -427,7 +430,7 @@
     {
       "component": "mass-slider",
       "text": [
-        "Adjust the mass of the ball at the end of pendulum with this slider.",
+        "Adjust the mass of the ball at the end of pendulum.",
         "",
         ""
       ]
@@ -436,15 +439,13 @@
       "component": "angle-slider",
       "text": [
         "Adjust the angle of pendulum at the start of an experiment run.",
-        "",
         ""
       ]
     },
     {
       "component": "start-run",
       "text": [
-        "Start an experiment run.",
-        "",
+        "Start an experiment run. Experiment runs will automatically stop after 8 seconds.",
         ""
       ]
     },
@@ -459,15 +460,15 @@
     {
       "component": "save-run",
       "text": [
-        "Save parameter data and Period from your current experiment run into the Experiment Table and",
-        "Parameter Graphs.",
+        "Save parameter data and **Period** from your current experiment run into the **Experiment Table** and",
+        "**Parameter Graph**.",
         ""
       ]
     },
     {
       "component": "clear-run",
       "text": [
-        "Clears the data from the last experiment run in the Pendulum Ange graph and resets the model",
+        "Clears the data from the last experiment run and resets the model",
         "so you can setup the next experiment run.",
         ""
       ]
@@ -475,14 +476,16 @@
     {
       "component": "clear-all",
       "text": [
-        "Clears **all** the data from the all experiment runs"
+        "Clears **all** the data, including data in the **Experiment Table** and **Parameter Graph**."
       ]
     },
     {
       "component": "last-run-table",
       "text": [
-        "This table shows the values of the parameters for your current run. Initially Period is 0.0",
-        "but after the pendulum has swung back and forth once the Period value will be updated."
+        "This table shows the values of the parameters as well as the **Period** for your current run.",
+        "",
+        "Initially the value for Period is 0.0 but after the pendulum has swung back and forth",
+        "once the Period value will be updated."
       ]
     },
     {
@@ -498,8 +501,8 @@
     {
       "component": "experiment-table",
       "text": [
-        "This is a table where the parameters and the period from each experiment run can be saved.",
-        "Data saved here is also plotted in the Parameter Graph."
+        "A table where the parameters and the period from each experiment run can be saved.",
+        "Data saved here is also plotted in the **Parameter Graph**."
       ]
     },
     {
@@ -507,9 +510,9 @@
       "text": [
         "This graph shows the relationship of **Rod length** to **Period**.",
         "",
-        "The axes for this graph are not changeable.",
+        "The axes for this graph are not adjustable.",
         "",
-        "In the future you will be able to compare changes in any model parameter to Period."
+        "In the future you will be able to compare how changing any model parameter affects **Period**."
       ]
     }
   ],
@@ -579,7 +582,7 @@
       "width": "model.width",
       "padding-top": "0.2em",
       "padding-left": "1em",
-      "padding-right": "0.5em"
+      "padding-right": "0.7em"
     },
     {
       "id": "bottom-right",
@@ -589,7 +592,7 @@
       "width": "model.width",
       "padding-top": "0.2em",
       "padding-left": "1em",
-      "padding-right": "0.5em"
+      "padding-right": "0.7em"
     }
   ]
 }
