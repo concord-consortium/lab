@@ -847,6 +847,7 @@ define(function(require) {
       engine.setTime(0);
       tickHistory.restoreInitialState();
       propertySupport.invalidatingChangePostHook();
+      model.resetAllOutputProperties();
       dispatch.reset();
     };
 

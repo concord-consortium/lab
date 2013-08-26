@@ -63,6 +63,12 @@ define(function() {
         // Invariant: counter == index + startCounter
         startCounter: 0
       };
+      // Send push request to external objects defining TickHistoryCompatible Interface.
+      for (i = 0; i < externalObjects.length; i++) {
+        if (externalObjects[i].reset) {
+          externalObjects[i].reset();
+        };
+      }
     }
 
     function copyModelState(destination) {

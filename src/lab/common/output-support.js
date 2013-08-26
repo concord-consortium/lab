@@ -4,6 +4,7 @@ define(function (require) {
 
   var PropertyDescription  = require('common/property-description'),
       RunningAverageFilter = require('cs!common/running-average-filter');
+      SimplePeriodFilter   = require('cs!common/simple-period-filter');
 
   return function OutputSupport(args) {
     var propertySupport = args.propertySupport,
@@ -15,6 +16,12 @@ define(function (require) {
     function updateFilteredOutputs() {
       filteredOutputs.forEach(function(output) {
         output.addSample();
+      });
+    }
+
+    function resetFilteredOutputs() {
+      filteredOutputs.forEach(function(output) {
+        output.reset();
       });
     }
 
@@ -84,6 +91,8 @@ define(function (require) {
 
           if (type === "RunningAverage") {
             filter = new RunningAverageFilter(period);
+          } else if (type === "SimplePeriod") {
+            filter = new SimplePeriodFilter();
           } else {
             throw new Error("FilteredOutput: unknown filter type " + type + ".");
           }
@@ -101,7 +110,7 @@ define(function (require) {
             tickHistory.registerExternalObject({
               push: function () {
                 // Filtered outputs are updated only at the end of tick() operation,
-                // druing tickHistory.push() call. So they are *not* updated
+                // during tickHistory.push() call. So they are *not* updated
                 // immediately after property change, e.g. using model.set("prop", 5).
                 // Filtered ouput bound to "prop" property will reflect this change
                 // in the next tick.
@@ -115,6 +124,9 @@ define(function (require) {
               },
               setHistoryLength: function (length) {
                 filter.setMaxBufferLength(length);
+              },
+              reset: function() {
+                filter.reset();
               }
             });
           } else {
@@ -157,6 +169,10 @@ define(function (require) {
           propertySupport.deleteComputedPropertyCachedValues();
           propertySupport.notifyAllComputedProperties();
           updateFilteredOutputs();
+        };
+
+        target.resetAllOutputProperties = function () {
+          resetFilteredOutputs();
         };
       }
     };

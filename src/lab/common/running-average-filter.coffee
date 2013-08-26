@@ -126,3 +126,12 @@ define (require) ->
       @_value.length = location + 1
       @_time.length = location + 1
       @_idx = location
+
+    ###
+    Reset filter
+    ###
+    reset: ->
+      @_values.length = 0
+      @_time = 0
+      @_idx = 0
+
