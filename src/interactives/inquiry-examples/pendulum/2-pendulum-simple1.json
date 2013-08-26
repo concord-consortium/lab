@@ -11,7 +11,7 @@
     "",
     "After closing this window click the **?** help icon in the upper left to find out more."
   ],
-  "aspectRatio": 1.15,
+  "aspectRatio": 1.25,
   "fontScale": 0.8,
   "models": [
     {
@@ -321,9 +321,9 @@
     {
       "type": "graph",
       "id": "angle-graph",
-      "title": "Pendulum Angle",
+      "title": "",
       "xlabel": "Time  (s)",
-      "ylabel": "Angle (°)",
+      "ylabel": "Pendulum Angle (°)",
       "ymin": -100,
       "ymax": 100,
       "xmax": 10,
@@ -341,7 +341,6 @@
       "clearDataOnReset": true,
       "streamDataFromModel": true,
       "addNewRows": false,
-      "title": "Current Run Table",
       "visibleRows": 1,
       "indexColumn": false,
       "propertyColumns": [
@@ -541,8 +540,9 @@
       "bottom": "model.top",
       "left": "model.right",
       "width": "model.width",
-      "padding-top": "0em",
+      "padding-top": "0.5em",
       "padding-left": "1.5em",
+      "padding-right": "0.5em",
       "align": "center"
     },
     {
@@ -575,7 +575,7 @@
       "id": "top-right",
       "top": "last-run-data.bottom",
       "left": "model.right",
-      "height": "model.height+experiment-controls.height",
+      "height": "model.height",
       "width": "model.width",
       "padding-top": "0.2em",
       "padding-left": "1em",
