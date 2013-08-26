@@ -9,7 +9,7 @@ define(function (require) {
     var controller = {},
 
         // event dispatcher
-        dispatch = d3.dispatch('modelLoaded');
+        dispatch = d3.dispatch('modelLoaded', 'modelReset');
 
     // ------------------------------------------------------------
     //
@@ -73,6 +73,20 @@ define(function (require) {
       }
     }
 
+    /**
+      Note: suppressEvents optional.
+    */
+    function reset(suppressEvents) {
+      if (model.willReset) {
+        model.willReset();
+      }
+      model.stop();
+      model.reset();
+      if (!suppressEvents) {
+        dispatch.modelReset();
+      }
+    }
+
     function repaint() {
       controller.modelContainer.repaint();
     }
@@ -112,6 +126,7 @@ define(function (require) {
     };
 
     controller.reload = reload;
+    controller.reset = reset;
     controller.repaint = repaint;
     controller.resize = resize;
     controller.state = state;

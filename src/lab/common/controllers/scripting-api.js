@@ -289,7 +289,10 @@ define(function (require) {
           },
 
           reset: function reset() {
-            model.stop();
+            interactivesController.modelController.reset();
+          },
+
+          reload: function reload() {
             interactivesController.modelController.reload();
           },
 

@@ -100,15 +100,15 @@
         },
         {
           "text": "vacuum",
-          "action": "reset(); setSolvent('vacuum');"
+          "action": "reload(); setSolvent('vacuum');"
         },
         {
           "text": "oil",
-          "action": "reset(); setSolvent('oil');"
+          "action": "reload(); setSolvent('oil');"
         },
         {
           "text": "water",
-          "action": "reset(); setSolvent('water');"
+          "action": "reload(); setSolvent('water');"
         }
       ]
     },

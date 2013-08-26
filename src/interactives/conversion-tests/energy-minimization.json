@@ -30,7 +30,7 @@
       "type": "button",
       "id": "reset",
       "text": "Reset",
-      "action": "reset();"
+      "action": "reload();"
     },
     {
       "type": "button",
