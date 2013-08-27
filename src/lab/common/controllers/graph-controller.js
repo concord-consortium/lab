@@ -151,10 +151,6 @@ define(function (require) {
         model.on('stepBack.'+namespace, redrawCurrentStepPointer);
         model.on('stepForward.'+namespace, redrawCurrentStepPointer);
         model.on('seek.'+namespace, redrawCurrentStepPointer);
-        model.on('reset.'+namespace, function() {
-          resetGrapher();
-          resetData();
-        });
         model.on('play.'+namespace, function() {
           if (grapher.numberOfPoints() && model.stepCounter() < grapher.numberOfPoints()) {
             removeDataAfterStepPointer();
