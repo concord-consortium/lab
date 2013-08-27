@@ -74,14 +74,14 @@ define(function (require) {
             }
             columns.push(propertyTitle);
             // formatters.push(propertyDescription.format);
-            formatters.push(d3.format('.2r'));
+            formatters.push(d3.format('.3r'));
           } else {
             columns.push(component.propertyColumns[i]);
-            formatters.push(d3.format('.2r'));
+            formatters.push(d3.format('.3r'));
           }
         } else {
           columns.push(component.propertyColumns[i]);
-          formatters.push(d3.format('.2r'));
+          formatters.push(d3.format('.3r'));
         }
       }
     }
