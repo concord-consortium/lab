@@ -62,8 +62,9 @@
       "label": "Angle",
       "value": [
         "var a0 = getAtomProperties(0),",
-        "    a1 = getAtomProperties(1);",
-        "return Math.atan2(-Math.abs(a1.y-a0.y), a1.x-a0.x) * rad2deg + 90;"
+        "    a1 = getAtomProperties(1),",
+        "    ang = Math.atan2(a1.y-a0.y, a1.x-a0.x) * rad2deg;",
+        "return (a1.x < a0.x && a1.y >= a0.y) ? ang - 270 : ang + 90;"
       ]
     },
     {

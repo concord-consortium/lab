@@ -1,7 +1,7 @@
 {
   "title": "Pendulum 180: rod length and mass",
   "publicationStatus": "public",
-  "subtitle": "Explore how the factors of starting angle, rod length and mass affect the period of a pendulum.",
+  "subtitle": "Explore how the factors of starting angles up to 180°, rod length and mass affect the period of a pendulum.",
   "about": [
     "Adjust the **Rod length**, **Mass of the ball** and **Starting angle** parameters.",
     "Then click the **Start** button to start an experiment run. Watch the **Pendulum Angle**",
@@ -120,8 +120,9 @@
       "label": "Angle",
       "value": [
         "var a0 = getAtomProperties(0),",
-        "    a1 = getAtomProperties(1);",
-        "return Math.atan2(-Math.abs(a1.y-a0.y), a1.x-a0.x) * rad2deg + 90;"
+        "    a1 = getAtomProperties(1),",
+        "    ang = Math.atan2(a1.y-a0.y, a1.x-a0.x) * rad2deg;",
+        "return (a1.x < a0.x && a1.y >= a0.y) ? ang - 270 : ang + 90;"
       ]
     }
   ],
