@@ -10,7 +10,7 @@
   "devel": false,
   "eqeqeq": true,
   "evil": true,
-  "forin": true,
+  "forin": false,
   "immed": true,
   "indent": false,
   "laxbreak": false,
