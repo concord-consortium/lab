@@ -382,9 +382,9 @@
       "showRulersOnSelection": true,
       "enableAutoScaleButton": false,
       "enableAxisScaling": false,
-      "xlabel": "Rod length (cm",
+      "xlabel": "Starting angle ()",
       "xmin": 0,
-      "xmax": 210,
+      "xmax": 200,
       "ylabel": "Period (s)",
       "ymin": -0.5,
       "ymax": 10,
@@ -394,7 +394,7 @@
       "xTickCount": 5,
       "xFormatter": ".2s",
       "yFormatter": ".2s",
-      "xProperty": "rodLength",
+      "xProperty": "startingAngle",
       "properties": [
         "period"
       ]
