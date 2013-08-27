@@ -299,23 +299,23 @@ define(function (require) {
           },
 
           reset: function reset() {
-            interactivesController.modelController.reset();
+            interactivesController.resetModel();
           },
 
           reload: function reload() {
-            interactivesController.modelController.reload();
+            interactivesController.reloadModel();
           },
 
           stepForward: function stepForward() {
             model.stepForward();
             if (!model.isNewStep()) {
-              interactivesController.modelController.modelContainer.update();
+              interactivesController.updateModelView();
             }
           },
 
           stepBack: function stepBack() {
             model.stepBack();
-            interactivesController.modelController.modelContainer.update();
+            interactivesController.updateModelView();
           },
 
           tick: function tick() {
@@ -353,7 +353,7 @@ define(function (require) {
           },
 
           repaint: function repaint() {
-            interactivesController.getModelController().repaint();
+            interactivesController.repaintModelView();
           },
 
           exportData: function exportData() {

@@ -941,6 +941,22 @@ define(function (require) {
 
       getNextTabIndex: getNextTabIndex,
 
+      reloadModel: function() {
+        modelController.reload();
+      },
+
+      resetModel: function() {
+        modelController.reset();
+      },
+
+      updateModelView: function() {
+        modelController.updateView();
+      },
+
+      repaintModelView: function() {
+        modelController.repaint();
+      },
+
       /**
         Notifies interactive controller that the dimensions of its container have changed.
         It triggers the layout algorithm again.

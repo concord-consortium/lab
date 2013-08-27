@@ -124,6 +124,10 @@ define(function (require) {
       controller.modelContainer.setup();
     };
 
+    controller.updateView = function() {
+      controller.modelContainer.update();
+    };
+
     controller.reload = reload;
     controller.reset = reset;
     controller.repaint = repaint;
