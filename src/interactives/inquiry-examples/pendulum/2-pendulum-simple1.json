@@ -383,7 +383,7 @@
       "enableAxisScaling": false,
       "xlabel": "Rod length (cm",
       "xmin": 0,
-      "xmax": 200,
+      "xmax": 210,
       "ylabel": "Period (s)",
       "ymin": 0,
       "ymax": 4,
