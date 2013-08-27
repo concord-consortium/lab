@@ -542,9 +542,8 @@
       "fontScale": "0.85",
       "bottom": "model.top",
       "left": "experiment-controls.right",
-      "width": "model.width*1.5",
       "padding-top": "0.5em",
-      "padding-left": "0.5em",
+      "padding-left": "1.0em",
       "padding-right": "0.3em"
     },
     {
@@ -572,9 +571,8 @@
     {
       "id": "bottom-left",
       "fontScale": "0.9",
-      "bottom": "interactive.bottom",
+      "top": "model.bottom",
       "left": "interactive.left",
-      "height": "model.height",
       "width": "experiment-controls.width",
       "padding-top": "0em",
       "padding-left": "0em"
@@ -583,21 +581,21 @@
       "id": "bottom-right",
       "bottom": "interactive.bottom",
       "left": "experiment-controls.right",
-      "height": "model.height",
-      "width": "model.width*1.5",
+      "height": "model.height*0.9",
+      "width": "model.width*1.3",
       "padding-top": "0.2em",
       "padding-left": "1em",
-      "padding-right": "0.7em"
+      "padding-right": "1.0em"
     },
     {
       "id": "top-right",
       "top": "last-run-data.bottom",
       "left": "experiment-controls.right",
       "bottom": "bottom-right.top",
-      "width": "model.width*1.5",
+      "width": "model.width*1.3",
       "padding-top": "0.2em",
       "padding-left": "0em",
-      "padding-right": "0.4em"
+      "padding-right": "1.0em"
     }
   ]
 }
