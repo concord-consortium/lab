@@ -62,13 +62,13 @@
   &lt;/head&gt;
   &lt;body&gt;
     &lt;center&gt;
-      &lt;input value=&quot;-&quot; alt=&quot;tooltip&quot; script=&quot;script:mw2d:1:set atom[0].charge -2;&quot; name=&quot;button name&quot; type=&quot;submit&quot;&gt;
-      &lt;input value=&quot;0&quot; script=&quot;script:mw2d:1:set atom[0].charge 0;&quot; type=&quot;submit&quot;&gt;
-      &lt;input value=&quot;+&quot; script=&quot;script:mw2d:1:set atom[0].charge 2;&quot; type=&quot;submit&quot;&gt;
-      &lt;input value=&quot;Run&quot; selfscript=&quot;enablecomponent 3 false;enablecomponent 5 true;&quot; script=&quot;script:mw2d:1:select textbox 2;remove;run;&quot; type=&quot;submit&quot;&gt;
-      &lt;input value=&quot;Reset&quot; selfscript=&quot;enablecomponent 3 true;enablecomponent 5 false;&quot; script=&quot;script:mw2d:1:reset;select textbox 2;remove;&quot; type=&quot;submit&quot;&gt;
-      &lt;input value=&quot;Stop&quot; selfscript=&quot;enablecomponent 3 true;enablecomponent 5 false;&quot; script=&quot;script:mw2d:1:stop;&quot; type=&quot;submit&quot;&gt;
-      &lt;input value=&quot;Hint&quot; script=&quot;script:mw2d:1:message &lt;t&gt;&lt;font face=Verdana size=3&gt;When the moving atom bumps to a static atom at a corner, it bounces a lot.&lt;br&gt;You should try to change its charge after the bouncing becomes much less.&lt;/font&gt;&lt;/t&gt;;&quot; type=&quot;submit&quot;&gt;
+      &lt;input script=&quot;script:mw2d:1:set atom[0].charge -2;&quot; type=&quot;submit&quot; value=&quot;-&quot; alt=&quot;tooltip&quot; name=&quot;button name&quot;&gt;
+      &lt;input script=&quot;script:mw2d:1:set atom[0].charge 0;&quot; type=&quot;submit&quot; value=&quot;0&quot;&gt;
+      &lt;input script=&quot;script:mw2d:1:set atom[0].charge 2;&quot; type=&quot;submit&quot; value=&quot;+&quot;&gt;
+      &lt;input selfscript=&quot;enablecomponent 3 false;enablecomponent 5 true;&quot; script=&quot;script:mw2d:1:select textbox 2;remove;run;&quot; type=&quot;submit&quot; value=&quot;Run&quot;&gt;
+      &lt;input selfscript=&quot;enablecomponent 3 true;enablecomponent 5 false;&quot; script=&quot;script:mw2d:1:reset;select textbox 2;remove;&quot; type=&quot;submit&quot; value=&quot;Reset&quot;&gt;
+      &lt;input selfscript=&quot;enablecomponent 3 true;enablecomponent 5 false;&quot; script=&quot;script:mw2d:1:stop;&quot; type=&quot;submit&quot; value=&quot;Stop&quot;&gt;
+      &lt;input script=&quot;script:mw2d:1:message &lt;t&gt;&lt;font face=Verdana size=3&gt;When the moving atom bumps to a static atom at a corner, it bounces a lot.&lt;br&gt;You should try to change its charge after the bouncing becomes much less.&lt;/font&gt;&lt;/t&gt;;&quot; type=&quot;submit&quot; value=&quot;Hint&quot;&gt;
       &amp;#160; 
       &lt;select script2=&quot;script:mw2d:1:set %MAX 250000&quot; script1=&quot;script:mw2d:1:set %MAX 100000&quot; name=&quot;combo box name&quot;&gt;
         &lt;option&gt;Harder 

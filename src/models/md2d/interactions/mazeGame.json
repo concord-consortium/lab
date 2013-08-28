@@ -46,29 +46,7 @@
     "showAtomTrace": false,
     "images": [],
     "imageMapping": {},
-    "textBoxes": [
-      {
-        "text": "Target\nArea",
-        "x": 6.17,
-        "y": 0.45,
-        "layer": 1,
-        "frame": "rounded rectangle",
-        "calloutPoint": [
-          6.5,
-          0.51
-        ],
-        "backgroundColor": "rgb(0,255,0)",
-        "anchor": "upper-left"
-      },
-      {
-        "text": "10",
-        "x": 5.93,
-        "y": 1.09,
-        "layer": 1,
-        "anchor": "upper-left",
-        "fontScale": 2.5
-      }
-    ],
+    "textBoxes": [],
     "xlabel": false,
     "ylabel": false,
     "xunits": false,

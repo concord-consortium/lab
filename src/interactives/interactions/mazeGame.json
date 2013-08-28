@@ -1,17 +1,22 @@
 {
   "title": "Electrostatics: Maze Game",
   "publicationStatus": "draft",
-  "subtitle": "",
-  "about": "",
-  "aspectRatio": 1.7,
+  "subtitle": "Guide a charged object through a maze by setting its charge at the right time in the right place.",
+  "about": "The initially neutral object (it is gray) has a variable charge that is controlled by the -, 0, and + buttons below the game. Use the attractive and repulsive forces between charged objects to navigate through the maze. Can you get it to the target before time runs out?",
+  "aspectRatio": 1.5,
   "models": [
     {
       "type": "md2d",
       "id": "three-atoms-three-elements$0",
-      "url": "models/md2d/interactions/mazeGame.json",
+      "url": "imports/legacy-mw-content/converted/interactions/maze-game/mazeGameModified$0.json",
       "importedFrom": "imports/legacy-mw-content/interactions/maze-game/mazeGame$0.mml",
       "viewOptions": {
-        "controlButtons": ""
+        "controlButtons": "",
+        "imageMapping": [
+          {
+            "target.png": "target.svg"
+          }
+        ]
       },
       "onLoad": [
         "var renderUpdateTimeStep = get('timeStep') * get('timeStepsPerTick');",
@@ -20,7 +25,6 @@
         "    stop();",
         "    alert('game over!');",
         "  } else {",
-        "    setTextBoxProperties(1,{text: get('countdown')});",
         "    var target = getShapeProperties(0);",
         "    if (atomsWithinRect(target.x, target.y, target.width, target.height).length > 0) {",
         "      stop();",
@@ -35,7 +39,9 @@
     {
       "name": "countdown",
       "label": "Countdown",
-      "value": "return Math.round((1 - get('time')/get('max-model-time'))*10)"
+      "value": "return (1 - get('time')/get('max-model-time'))*get('max-countdown-time')",
+      "unitType": "",
+      "unitAbbreviation": ""
     }
   ],
   "parameters": [
@@ -43,26 +49,42 @@
       "name": "max-model-time",
       "initialValue": 250000,
       "onChange": []
+    },
+    {
+      "name": "max-countdown-time",
+      "initialValue": 50,
+      "onChange": []
     }
   ], 
   "components": [
     {
+      "type": "numericOutput",
+      "id": "countdownDisplay",
+      "label": "Time remaining",
+      "property": "countdown",
+      "displayValue": "return format('1.0f')(value)",
+      "tooltip": "How much time remains to get the atom into the target."
+    },
+    {
       "type": "button",
       "id": "set-negative",
       "text": "-",
-      "action": "setAtomProperties(0,{charge:-1});start()"
+      "action": "setAtomProperties(0,{charge:-1});start()",
+      "tooltip": "Make the atom negatively charged."
     },
     {
       "type": "button",
       "id": "set-neutral",
       "text": "0",
-      "action": "setAtomProperties(0,{charge:0});start()"
+      "action": "setAtomProperties(0,{charge:0});start()",
+      "tooltip": "Remove any charge from the atom."
     },
     {
       "type": "button",
       "id": "set-positive",
       "text": "+",
-      "action": "setAtomProperties(0,{charge:1});start()"
+      "action": "setAtomProperties(0,{charge:1});start()",
+      "tooltip": "Make the atom positively charged."
     },
     {
       "type": "button",
@@ -83,40 +105,44 @@
       "action": "reload();"
     },
     {
-      "type": "button",
-      "id": "hint",
-      "text": "Hint",
-      "action": ""
-    },
-    {
       "type": "pulldown",
       "id": "difficulty",
-      "property": "max-model-time",
+      "property": "max-countdown-time",
+      "tooltip": "Change the game diffulty. Harder mode has a shorter countdown.",
       "options": [
         {
           "text": "Easier",
-          "value": 1000000
+          "value": 50
         },
         {
           "text": "Harder",
-          "value": 300000
+          "value": 25
         }
       ]
     }
   ],
   "layout": {
+    "overlay": [
+      "countdownDisplay"
+    ],
     "bottom": [
-      "set-negative", "set-neutral", "set-positive", "run", "reset", "stop", "hint", "difficulty"
+      "set-negative", "set-neutral", "set-positive", "run", "reset", "stop", "difficulty"
     ]
   },
   "template":[
     {
       "id": "bottom",
-      "top": "model.bottom",
+      "top": "overlay.bottom",
       "width": "model.width",
       "left": "model.left",
-      "padding-top": "0.5em",
       "align": "center"
+    },
+    {
+      "id": "overlay",
+      "right": "model.right",
+      "top": "model.bottom",
+      "width": "model.width",
+      "align": "right"
     }
   ]
 }

@@ -609,7 +609,7 @@
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1377728135000</long> 
+     <long>1377729800000</long> 
     </object> 
    </void> 
    <void method="put"> 
@@ -618,7 +618,7 @@
    </void> 
    <void method="put"> 
     <string>size</string> 
-    <long>24106</long> 
+    <long>24090</long> 
    </void> 
    <void method="put"> 
     <string>codebase</string> 
@@ -804,6 +804,9 @@ endif;</string>
       </void> 
       <void property="lineStyle"> 
        <int>1</int> 
+      </void> 
+      <void property="visible"> 
+       <boolean>false</boolean> 
       </void> 
       <void property="width"> 
        <float>67.0</float> 
