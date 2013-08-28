@@ -46,6 +46,8 @@ define(function (require) {
         'energy2d':         require('energy2d/controllers/controller')
       },
 
+      ModelController = require('common/controllers/model-controller'),
+
       // Set of available components.
       // - Key defines 'type', which is used in the interactive JSON.
       // - Value is a constructor function of the given component.
@@ -163,7 +165,6 @@ define(function (require) {
 
     /**
       Load the model from the model definitions hash.
-      'modelLoaded' is called after the model loads.
 
       @param: modelId.
       @optionalParam modelObject
@@ -306,6 +307,7 @@ define(function (require) {
         } else {
           createModelController(modelConfig.type, modelUrl, modelOptions);
           // also be sure to get notified when the underlying model changes
+          // (this catches reloads)
           modelController.on('modelLoaded', modelLoadedHandler);
           modelController.on('modelReset', modelResetHandler);
           controller.modelController = modelController;
@@ -316,7 +318,7 @@ define(function (require) {
         setupModelPlayerKeyboardHandler();
 
         // Setup model and notify observers that model was loaded.
-        modelLoadedHandler();
+        modelLoadedHandler(ModelController.LOAD_CAUSE.INITIAL_LOAD);
 
         // Layout interactive after modelLoaded() callback!
         layoutInteractive();
@@ -525,7 +527,7 @@ define(function (require) {
       Call this after the model loads, to process any queued resize and update events
       that depend on the model's properties, then draw the screen.
     */
-    function modelLoadedHandler() {
+    function modelLoadedHandler(cause) {
       var i, listener;
 
       setupCustomOutputs("basic", controller.currentModel.outputs, interactive.outputs);
@@ -555,17 +557,17 @@ define(function (require) {
       }
 
       for(i = 0; i < modelLoadedCallbacks.length; i++) {
-        modelLoadedCallbacks[i]();
+        modelLoadedCallbacks[i](cause);
       }
       isModelLoaded = true;
     }
 
     /**
-      Notify observers that a model was reset.
+      Notify observers that a model was reset, passing along the cause of the reset event.
     */
-    function modelResetHandler() {
+    function modelResetHandler(cause) {
       modelResetCallbacks.forEach(function(cb) {
-        cb();
+        cb(cause);
       });
     }
 
@@ -934,8 +936,9 @@ define(function (require) {
         modelController.reload();
       },
 
-      resetModel: function() {
-        modelController.reset();
+      resetModel: function(cause, options) {
+        modelController.reset(cause);
+        // TODO handle options
       },
 
       updateModelView: function() {

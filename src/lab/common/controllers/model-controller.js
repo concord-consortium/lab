@@ -4,7 +4,7 @@ define(function (require) {
 
   var labConfig = require('lab.config');
 
-  return function ModelController(modelUrl, modelOptions, interactivesController,
+  function ModelController(modelUrl, modelOptions, interactivesController,
                                   Model, ModelContainer, ScriptingAPI, Benchmarks) {
     var controller = {},
 
@@ -71,19 +71,16 @@ define(function (require) {
       controller.modelContainer.bindModel(model, controller.modelUrl);
 
       if (!suppressEvents) {
-        dispatch.modelLoaded();
+        dispatch.modelLoaded(ModelController.LOAD_CAUSE.RELOAD);
       }
     }
 
-    /**
-      Note: suppressEvents optional.
-    */
-    function reset(suppressEvents) {
+    function reset(cause) {
+      cause = cause || ModelController.RESET_CAUSE.RESET;
+
       model.stop();
       model.reset();
-      if (!suppressEvents) {
-        dispatch.modelReset();
-      }
+      dispatch.modelReset(cause);
     }
 
     function repaint() {
@@ -166,5 +163,16 @@ define(function (require) {
     setupModelPlayer();
 
     return controller;
+  }
+
+  ModelController.LOAD_CAUSE = {
+    RELOAD: 'reload',
+    INITIAL_LOAD: 'initialLoad'
   };
+
+  ModelController.RESET_CAUSE = {
+    RESET: 'reset'
+  };
+
+  return ModelController;
 });
