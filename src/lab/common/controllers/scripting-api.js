@@ -481,8 +481,8 @@ define(function (require) {
           "}";
 
         try {
-          scriptFunctionMaker = new Function('shadowedGlobals', 'scriptingAPI', 'scriptSource', scriptFunctionMakerSource);
-          scriptFunction = scriptFunctionMaker(shadowedGlobals, this.api, scriptSource);
+          scriptFunctionMaker = new Function('shadowedGlobals', 'scriptingAPI', scriptFunctionMakerSource);
+          scriptFunction = scriptFunctionMaker(shadowedGlobals, controller.api);
         } catch (e) {
           alert("Error compiling script: \"" + e.toString() + "\"\nScript:\n\n" + scriptSource);
           return function() {
