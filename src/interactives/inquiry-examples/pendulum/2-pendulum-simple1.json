@@ -38,7 +38,8 @@
         "setComponentDisabled('start-run', false);",
         "setComponentDisabled('stop-run', true);",
         "setComponentDisabled('save-run', true);",
-        "setComponentDisabled('clear-run', true);",
+        "setComponentDisabled('next-run', true);",
+        "setComponentDisabled('clear-all', true);",
         "setComponentDisabled('length-slider', false);",
         "setComponentDisabled('mass-slider', false);",
         "setComponentDisabled('angle-slider', false);",
@@ -50,20 +51,21 @@
         "  }",
         "});",
         "function startRun() {",
+        "  setComponentDisabled('clear-all', false);",
         "  setComponentDisabled('length-slider', true);",
         "  setComponentDisabled('mass-slider', true);",
         "  setComponentDisabled('angle-slider', true);",
         "  setComponentDisabled('start-run', true);",
         "  setComponentDisabled('stop-run', false);",
         "  setComponentDisabled('save-run', true);",
-        "  setComponentDisabled('clear-run', true);",
+        "  setComponentDisabled('next-run', true);",
         "  start();",
         "}",
         "function stopRun() {",
         "  setComponentDisabled('start-run', true);",
         "  setComponentDisabled('stop-run', true);",
         "  setComponentDisabled('save-run', false);",
-        "  setComponentDisabled('clear-run', false);",
+        "  setComponentDisabled('next-run', false);",
         "  stop();",
         "  appendDataPropertiesToComponent('last-run-table');",
         "}",
@@ -74,11 +76,11 @@
         "    stopRun()",
         "  }",
         "});",
-        "function clearExperiment() {",
+        "function nextExperiment() {",
         "  setComponentDisabled('start-run', false);",
         "  setComponentDisabled('stop-run', true);",
         "  setComponentDisabled('save-run', true);",
-        "  setComponentDisabled('clear-run', true);",
+        "  setComponentDisabled('next-run', true);",
         "  setComponentDisabled('length-slider', false);",
         "  setComponentDisabled('mass-slider', false);",
         "  setComponentDisabled('angle-slider', false);",
@@ -92,7 +94,7 @@
         "}",
         "onPropertyChange('experimentCleared', function() {",
         "  if (get('experimentCleared')) {",
-        "    clearExperiment();",
+        "    nextExperiment();",
         "    set('experimentCleared', false);",
         "  }",
         "});",
@@ -310,9 +312,9 @@
     },
     {
       "type": "button",
-      "id": "clear-run",
-      "text": "Clear",
-      "tooltip": "Clear experiment data and setup next run.",
+      "id": "next-run",
+      "text": "Next Run",
+      "tooltip": "Clear just the last experiment run and setup next run.",
       "action": "set('experimentCleared', true);"
     },
     {
@@ -467,17 +469,17 @@
       ]
     },
     {
-      "component": "clear-run",
+      "component": "next-run",
       "text": [
         "Clears the data from the last experiment run and resets the model",
-        "so you can setup the next experiment run.",
+        "so you can setup the **next** experiment run.",
         ""
       ]
     },
     {
       "component": "clear-all",
       "text": [
-        "Clears **all** the data, including data in the **Experiment Table** and **Parameter Graph**."
+        "Clear **all** the data, including data in the **Experiment Table** and **Parameter Graph**."
       ]
     },
     {
@@ -525,7 +527,7 @@
       "angle-graph"
     ],
     "experiment-controls": [
-      [ "start-run", "stop-run", "save-run", "clear-run", "clear-all" ]
+      [ "start-run", "stop-run", "save-run", "next-run", "clear-all" ]
     ],
     "last-run-data": [
       "last-run-table"
@@ -539,24 +541,21 @@
   },
   "template": [
     {
-      "id": "last-run-data",
-      "fontScale": "0.9",
+      "id": "experiment-controls",
+      "fontScale": "0.8",
       "bottom": "model.top",
-      "left": "model.right",
-      "width": "model.width",
       "padding-top": "0.5em",
-      "padding-left": "1.5em",
-      "padding-right": "0.5em",
-      "align": "center"
+      "padding-left": "0em",
+      "padding-bottom": "0.4em"
     },
     {
-      "id": "experiment-controls",
-      "bottom": "model.top",
-      "left": "model.left",
-      "width": "model.width",
+      "id": "last-run-data",
+      "fontScale": "0.85",
+      "bottom": "experiment-controls.bottom",
+      "left": "experiment-controls.right",
       "padding-top": "0.5em",
-      "padding-bottom": "0.4em",
-      "fontScale": "0.8",
+      "padding-left": "1.5em",
+      "padding-right": "0.4em",
       "align": "center"
     },
     {
@@ -583,7 +582,7 @@
       "width": "model.width",
       "padding-top": "0.2em",
       "padding-left": "1em",
-      "padding-right": "0.7em"
+      "padding-right": "1.5em"
     },
     {
       "id": "bottom-right",
@@ -593,7 +592,7 @@
       "width": "model.width",
       "padding-top": "0.2em",
       "padding-left": "1em",
-      "padding-right": "0.7em"
+      "padding-right": "1.5em"
     }
   ]
 }
