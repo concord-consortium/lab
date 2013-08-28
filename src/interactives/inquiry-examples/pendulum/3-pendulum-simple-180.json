@@ -578,8 +578,8 @@
       "top": "model.bottom",
       "left": "interactive.left",
       "width": "experiment-controls.width",
-      "height": "14em",
-      "padding-top": "0em",
+      "height": "16em",
+      "padding-top": "0.3em",
       "padding-left": "0em"
     },
     {
