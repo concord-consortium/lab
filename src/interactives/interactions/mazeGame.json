@@ -12,11 +12,9 @@
       "importedFrom": "imports/legacy-mw-content/interactions/maze-game/mazeGame$0.mml",
       "viewOptions": {
         "controlButtons": "",
-        "imageMapping": [
-          {
-            "target.png": "target.svg"
-          }
-        ]
+        "imageMapping": {
+          "target.png": "target.svg"
+        }
       },
       "onLoad": [
         "var renderUpdateTimeStep = get('timeStep') * get('timeStepsPerTick');",
