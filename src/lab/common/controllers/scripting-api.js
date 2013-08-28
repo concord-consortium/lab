@@ -300,6 +300,7 @@ define(function (require) {
 
           reset: function reset() {
             interactivesController.resetModel();
+            interactivesController.repaintModelView();
           },
 
           reload: function reload() {
