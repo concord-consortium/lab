@@ -13,7 +13,7 @@ define(function (require) {
     model = new Model(modelOptions);
 
     var api,
-        dispatch = d3.dispatch('modelLoaded'),
+        dispatch = d3.dispatch('modelLoaded', 'modelReset'),
         modelContainer = new SVGContainer(model, modelUrl, Renderer, {origin: 'top-left'}),
         benchmarks;
 
@@ -63,6 +63,17 @@ define(function (require) {
         api.modelContainer.bindModel(model);
 
         if (!suppressEvents) dispatch.modelLoaded();
+      },
+
+      /**
+        Note: suppressEvents optional.
+      */
+      reset: function (suppressEvents) {
+        model.stop();
+        model.reset();
+        if (!suppressEvents) {
+          dispatch.modelReset();
+        }
       },
 
       modelInDOM: function () {
