@@ -26,7 +26,11 @@
         "    var target = getShapeProperties(0);",
         "    if (atomsWithinRect(target.x, target.y, target.width, target.height).length > 0) {",
         "      stop();",
-        "      alert('you won!');",
+        "      if(get('time') < 10000) {",
+        "        alert('Did you cheat?');",
+        "      } else {",
+        "        alert('you won!');",
+        "      }",
         "    }",
         "  }",
         "});"
