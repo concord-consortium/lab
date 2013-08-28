@@ -162,9 +162,21 @@ define(function (require) {
       }
     }
 
+    function modelResetHandler() {
+      if (grapher) {
+        if (getOptions().clearDataOnReset) {
+          resetData();
+          resetGrapher();
+        }
+      } else {
+        grapher = new Graph($container[0], getOptions(), undefined, interactivesController.getNextTabIndex());
+      }
+    }
+
     //
     // Initialization.
     //
+
     // Validate component definition, use validated copy of the properties.
     component = validator.validateCompleteness(metadata.graph, component);
     // The list of properties we are being asked to graph.
@@ -181,6 +193,8 @@ define(function (require) {
       $container.attr("title", component.tooltip);
     }
 
+    interactivesController.on('modelReset', modelResetHandler);
+
     return controller = {
       /**
         Called by the interactives controller when the model finishes loading.
@@ -193,20 +207,6 @@ define(function (require) {
         }
         resetData();
         registerModelListeners();
-      },
-
-      /**
-        Called by the interactives controller when the model is reset.
-      */
-      modelResetCallback: function() {
-        if (grapher) {
-          if (getOptions().clearDataOnReset) {
-            resetData();
-            resetGrapher();
-          }
-        } else {
-          grapher = new Graph($container[0], getOptions(), undefined, interactivesController.getNextTabIndex());
-        }
       },
 
       /**

@@ -65,8 +65,6 @@ define(function (require) {
       //                           DOM elements of the component.
       // # modelLoadedCallback() - optional function taking no arguments, a callback
       //                           which is called when the model is loaded.
-      // # modelResetCallback()  - optional function taking no arguments, a callback
-      //                           which is called when the model is reset.
       // # resize()              - optional function taking no arguments, a callback
       //                           which is called by the layout algorithm when component's container
       //                           dimensions are changed. This lets component to adjust itself to the
@@ -104,7 +102,6 @@ define(function (require) {
         modelsHash = {},
         propertiesListeners = [],
         componentModelLoadedCallbacks = [],
-        componentModelResetCallbacks = [],
         onLoadScripts = [],
         resizeCallbacks = [],
         modelLoadedCallbacks = [],
@@ -144,7 +141,9 @@ define(function (require) {
         semanticLayout,
         getNextTabIndex,
 
-        dispatch = new DispatchSupport("layoutUpdated");
+        // This is not the complete list of events, as we have custom hacks to maintain lists of
+        // event listeners.
+        dispatch = new DispatchSupport('layoutUpdated');
 
 
     // simple tabindex support, also exposed via api.getNextTabIndex()
@@ -307,16 +306,17 @@ define(function (require) {
         } else {
           createModelController(modelConfig.type, modelUrl, modelOptions);
           // also be sure to get notified when the underlying model changes
-          modelController.on('modelLoaded', modelLoaded);
-          modelController.on('modelReset', modelReset);
+          modelController.on('modelLoaded', modelLoadedHandler);
+          modelController.on('modelReset', modelResetHandler);
           controller.modelController = modelController;
         }
         // This will attach model container to DOM.
         semanticLayout.setupModel(modelController);
 
         setupModelPlayerKeyboardHandler();
+
         // Setup model and notify observers that model was loaded.
-        modelLoaded();
+        modelLoadedHandler();
 
         // Layout interactive after modelLoaded() callback!
         layoutInteractive();
@@ -489,19 +489,13 @@ define(function (require) {
       componentByID[id] = comp;
       componentList.push(comp);
 
-      // Register component modelLoaded and modelReset callbacks if available.
+      // Register component modelLoaded callbacks if available.
+      // FIXME. These callbacks should be event listeners.
       if (comp.modelLoadedCallback) {
         // $.proxy ensures that callback will be always executed
         // in the context of correct object ('this' binding).
         componentModelLoadedCallbacks.push($.proxy(comp.modelLoadedCallback, comp));
       }
-
-      if (comp.modelResetCallback) {
-        // $.proxy ensures that callback will be always executed
-        // in the context of correct object ('this' binding).
-        componentModelResetCallbacks.push($.proxy(comp.modelResetCallback, comp));
-      }
-
     }
 
     /**
@@ -531,7 +525,7 @@ define(function (require) {
       Call this after the model loads, to process any queued resize and update events
       that depend on the model's properties, then draw the screen.
     */
-    function modelLoaded() {
+    function modelLoadedHandler() {
       var i, listener;
 
       setupCustomOutputs("basic", controller.currentModel.outputs, interactive.outputs);
@@ -567,17 +561,12 @@ define(function (require) {
     }
 
     /**
-      Call this in response to a modelReset, to update listeners and components
-      that have a modelResetCalback.
+      Notify observers that a model was reset.
     */
-    function modelReset() {
-      var i;
-      for(i = 0; i < modelResetCallbacks.length; i++) {
-        modelResetCallbacks[i]();
-      }
-      for(i = 0; i < componentModelResetCallbacks.length; i++) {
-        componentModelResetCallbacks[i]();
-      }
+    function modelResetHandler() {
+      modelResetCallbacks.forEach(function(cb) {
+        cb();
+      });
     }
 
     /**
@@ -974,12 +963,27 @@ define(function (require) {
        *
        * @param {string} type
        * @param  {function|array} callback Callback function or an array of functions.
+       *
+       * FIXME: We should using DispatchSupport exclusively to emit events (i.e., instead of
+       * maintaining custom arrays of callbacks in interactives controller, pass each callback we
+       * are given to dispatch.on()). The first step would be to modify dispatchSupport to handle
+       * multiple listeners for a given event, instead of reusing d3.dispatch, which is intended for
+       * a simpler use case. Similar code is already checked into Lab!
+       *
+       * As a second step, we should modify components so that instead of defining a
+       * 'modelLoadedCallback' they simply register listeners for some event. (Note that we will
+       * want to create 2 events to disambiguate the 2 senses of 'modelLoaded';
+       * componentModelLoadedCallbacks are called at a slightly different point in the model loading
+       * sequence than 'regular' modelLoadedCallbacks.)
        */
       on: function (type, callback) {
+        var callbacks;
+
         if (typeof callback === "function") {
-          callback = [callback];
-        } else if ($.isArray(callback)) {
-          if (callback.some(function (cb) { return typeof cb !== 'function'; })) {
+          callbacks = [callback];
+        } else if (Array.isArray(callback)) {
+          callbacks = callback;
+          if (callbacks.some(function (cb) { return typeof cb !== 'function'; })) {
             throw new Error("Invalid callback, must be an array of functions.");
           }
         } else {
@@ -988,20 +992,22 @@ define(function (require) {
 
         switch(type) {
           case "resize":
-            resizeCallbacks = resizeCallbacks.concat(callback);
+            resizeCallbacks = resizeCallbacks.concat(callbacks);
             break;
           case "modelLoaded":
-            modelLoadedCallbacks = modelLoadedCallbacks.concat(callback);
+            modelLoadedCallbacks = modelLoadedCallbacks.concat(callbacks);
             break;
           case "modelReset":
-            modelResetCallbacks = modelResetCallbacks.concat(callback);
+            modelResetCallbacks = modelResetCallbacks.concat(callbacks);
             break;
           case "interactiveRendered":
-            interactiveRenderedCallbacks = interactiveRenderedCallbacks.concat(callback);
+            interactiveRenderedCallbacks = interactiveRenderedCallbacks.concat(callbacks);
             break;
           default:
-            // TODO FIXME: always use dispatch, don't support arrays of functions.
-            dispatch.on(type, callback[0]);
+            if (typeof callback !== "function") {
+              throw new Error("Event type " + type + " does not support multiple callbacks in one call to .on()");
+            }
+            dispatch.on(type, callback);
         }
       },
 

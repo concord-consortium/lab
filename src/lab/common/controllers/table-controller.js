@@ -49,6 +49,8 @@ define(function (require) {
       if (component.tooltip) {
         $element.attr("title", component.tooltip);
       }
+
+      interactivesController.on('modelReset', modelResetHandler);
     }
 
     function generateColumnTitlesAndFormatters() {
@@ -123,6 +125,14 @@ define(function (require) {
       });
     }
 
+    function modelResetHandler() {
+      if (component.clearDataOnReset) {
+        tableData = $.extend(true, [], component.tableData);
+        headerData = $.extend(true, [], component.headerData);
+        updateTable();
+      }
+    }
+
     // Public API.
     controller = {
       /**
@@ -134,17 +144,6 @@ define(function (require) {
         updateTable();
         if (component.streamDataFromModel) {
           registerModelListeners()
-        }
-      },
-
-      /**
-        Called by the interactives controller when the model is reset.
-      */
-      modelResetCallback: function() {
-        if (component.clearDataOnReset) {
-          tableData = $.extend(true, [], component.tableData);
-          headerData = $.extend(true, [], component.headerData);
-          updateTable();
         }
       },
 
