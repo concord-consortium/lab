@@ -281,6 +281,24 @@ define(function (require) {
             component.appendDataPropertiesToComponent();
           },
 
+          /**
+            Change attributes of an existing component.
+          */
+          setComponentAttributes: function setComponentAttributes(compID, opts) {
+            var comp = interactivesController.getComponent(compID);
+            if (comp.setAttributes) {
+              comp.setAttributes(opts);
+            }
+          },
+
+
+          getComponentData: function getComponentData(compID, propArray) {
+            var comp = interactivesController.getComponent(compID);
+            if (comp.getData) {
+              return comp.getData(propArray);
+            }
+          },
+
           start: function start() {
             model.start();
             trackEvent('Interactive', "Start", "Starting interactive: " + interactivesController.get('title') );

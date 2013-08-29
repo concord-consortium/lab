@@ -214,6 +214,17 @@ define(function (require) {
       */
       appendDataPropertiesToComponent: appendDataPoint,
 
+      setAttributes: function(opts) {
+        if (grapher) {
+          $.extend(component, opts);
+          resetData();
+          if (opts.dataPoints) {
+            data = opts.dataPoints
+          }
+          resetGrapher();
+        }
+      },
+
       /**
         Returns the grapher object itself.
       */

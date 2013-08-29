@@ -143,8 +143,25 @@ define(function (require) {
         headerData = $.extend(true, [], component.headerData);
         updateTable();
         if (component.streamDataFromModel) {
-          registerModelListeners()
+          registerModelListeners();
         }
+      },
+
+      getData: function(propArray) {
+        var i, row, index, j, result = [], rowResult;
+        for(i = 0; i < tableData.length; i++) {
+          row = tableData[i];
+          rowResult = [];
+          for(j = 0; j < propArray.length; j++) {
+            index = component.propertyColumns.indexOf(propArray[j]);
+            if(component.indexColumn) {
+              index++;
+            }
+            rowResult.push(row[index]);
+          }
+          result.push(rowResult);
+        }
+        return [result];
       },
 
       /**
