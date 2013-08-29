@@ -298,29 +298,30 @@ define(function(require) {
       if(!path || path === "none"){
         return "none";
       }
+      // Create marker defs for _each_ path in order to account for differing path colors and visibility
       var defs,
-        id = "Arrowhead-" + path.toLowerCase().replace(/[^a-z0-9]/g,'') + (start ? "-start" : ""),
+        id = "Arrowhead-path" + i + '-' + path.toLowerCase().replace(/[^a-z0-9]/g,'') + (start ? "-start" : ""),
         arrowHead;
       defs = mainContainer.select("defs");
       if (defs.empty()) {
         defs = mainContainer.append("defs");
       }
       arrowHead = defs.select("#" + id);
-      if(arrowHead.empty()){
-        arrowHead = defs.append("marker")
-          .attr("id", id)
-          .attr("viewBox", "0 0 10 10")
-          .attr("refX", "5")
-          .attr("refY", "5")
-          .attr("markerUnits", "strokeWidth")
-          .attr("markerWidth", "4")
-          .attr("markerHeight", "4")
-          .attr("orient", "auto");
-        arrowHead.append("path")
-          .attr("d", path)
-          .attr("fill",lines.visible[i] ? lines.lineColor[i] : "transparent")
-          .attr("transform", start ? "translate(10, 10) rotate(180)" : "");
-      }
+      // Must rerender markers to account for changes in line properties (e.g. visibility, color)
+      arrowHead.remove();
+      arrowHead = defs.append("marker")
+        .attr("id", id)
+        .attr("viewBox", "0 0 10 10")
+        .attr("refX", "5")
+        .attr("refY", "5")
+        .attr("markerUnits", "strokeWidth")
+        .attr("markerWidth", "4")
+        .attr("markerHeight", "4")
+        .attr("orient", "auto");
+      arrowHead.append("path")
+        .attr("d", path)
+        .attr("fill",lines.visible[i] ? lines.lineColor[i] : "transparent")
+        .attr("transform", start ? "translate(10, 10) rotate(180)" : "");
       return "url(#" + id + ")";
     }
 
