@@ -1,0 +1,37 @@
+{
+  "title": "forceDirectionVDG Negative",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "forceDirectionVDG$0",
+      "url": "imports/legacy-mw-content/converted/interactions/force-direction-VDG-negative/forceDirectionVDG$0.json",
+      "importedFrom": "imports/legacy-mw-content/interactions/force-direction-VDG-negative/forceDirectionVDG$0.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      },
+      "onLoad": [
+          "onDrag('atom', function(x, y, d, i) {",
+          "  if( i === 0 ) {",
+          "    var dragAtomProps   = getAtomProperties(0);",
+          "    var targetAtomProps = getAtomProperties(1);",
+          "    var dx = targetAtomProps.x - dragAtomProps.x;",
+          "    var dy = targetAtomProps.y - dragAtomProps.y;",
+          "    var L = Math.sqrt(dx*dx + dy*dy);",
+          "    var targetX = dragAtomProps.x + 0.4/L*dx;",
+          "    var targetY = dragAtomProps.y + 0.4/L*dy;",
+          "    setLineProperties(0, {x1: dragAtomProps.x, y1: dragAtomProps.y, x2: targetX, y2: targetY});",
+          "  }",
+          "});"
+        ]
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}
