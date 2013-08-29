@@ -820,7 +820,7 @@ AUTHORING = false;
           $updateJsonFromModelButton.on('click', function() {
             var modelState;
             if(isFullPage()) {
-              modelState = controller.getModelController().state();
+              modelState = controller.modelController.state();
               modelEditor.setValue(JSON.stringify(modelState, null, indent));
             } else {
               iframePhone.post({ type:'getModelState' });
@@ -897,7 +897,7 @@ AUTHORING = false;
           benchmarksTable = document.getElementById("model-benchmark-results");
 
       if(isFullPage()) {
-        modelController = controller.getModelController();
+        modelController = controller.modelController;
         // Run interactive benchmarks + model benchmarks.
         Lab.benchmark.run(controller.benchmarks.concat(modelController.benchmarks),
           benchmarksTable,

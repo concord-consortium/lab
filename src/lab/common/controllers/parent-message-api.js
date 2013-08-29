@@ -37,12 +37,12 @@ define(function(require) {
       }
     });
 
-    // on message 'getModelState' call and return controller.getModelController().state()
+    // on message 'getModelState' call and return controller.modelController.state()
     parentMessageController.addListener('getModelState', function(message) {
       if (controller && controller.getModelController) {
         parentMessageController.post({
           type:  'modelState',
-          values: controller.getModelController().state()
+          values: controller.modelController.state()
         });
       }
     });
@@ -61,7 +61,7 @@ define(function(require) {
     parentMessageController.addListener('runBenchmarks', function() {
       var modelController, benchmarks;
       if (controller && controller.getModelController) {
-        modelController = controller.getModelController();
+        modelController = controller.modelController;
         benchmarks = controller.benchmarks.concat(modelController.benchmarks);
         benchmark.bench(benchmarks, function(results) {
           console.log(results);

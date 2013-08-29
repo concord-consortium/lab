@@ -304,12 +304,11 @@ define(function (require) {
         if (modelController) {
           modelController.reload(modelUrl, modelOptions, true);
         } else {
-          createModelController(modelConfig.type, modelUrl, modelOptions);
+          modelController = createModelController(modelConfig.type, modelUrl, modelOptions);
           // also be sure to get notified when the underlying model changes
           // (this catches reloads)
           modelController.on('modelLoaded', modelLoadedHandler);
           modelController.on('modelReset', modelResetHandler);
-          controller.modelController = modelController;
         }
         // This will attach model container to DOM.
         semanticLayout.setupModel(modelController);
@@ -329,6 +328,7 @@ define(function (require) {
       function createModelController(type, modelUrl, modelOptions) {
         // set default model type to "md2d"
         var modelType = type || "md2d";
+        var modelController;
 
         if (ModelControllerFor[modelType] === null) {
           throw new Error("Couldn't understand modelType '" + modelType + "'!");
@@ -341,6 +341,8 @@ define(function (require) {
           scriptingAPI.extend(modelController.ScriptingAPI);
           scriptingAPI.exposeScriptingAPI();
         }
+
+        return modelController;
       }
     }
 
@@ -910,6 +912,9 @@ define(function (require) {
       },
       get helpSystem() {
         return helpSystem;
+      },
+      get modelController() {
+        return modelController;
       },
       getDGExportController: function () {
         return exportController;

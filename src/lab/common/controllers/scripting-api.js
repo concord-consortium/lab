@@ -224,7 +224,7 @@ define(function (require) {
           onClick: function onClick(type, handler) {
             // Append '.' to make API simpler.
             // So authors can just specify onClick("atom", ...) instead of class selectors.
-            interactivesController.getModelController().modelContainer.setClickHandler("." + type, handler);
+            interactivesController.modelController.modelContainer.setClickHandler("." + type, handler);
           },
 
           /**
@@ -248,7 +248,7 @@ define(function (require) {
            *                             i - ID of an object (usually its value makes sense if d is defined).
            */
           onDrag: function onDrag(type, handler) {
-            interactivesController.getModelController().modelContainer.setDragHandler(type, handler);
+            interactivesController.modelController.modelContainer.setDragHandler(type, handler);
           },
 
           /**
@@ -264,7 +264,7 @@ define(function (require) {
            *                             height - height of selection rectangle (in model units).
            */
           onSelect: function onSelect(handler) {
-            interactivesController.getModelController().modelContainer.setSelectHandler(handler);
+            interactivesController.modelController.modelContainer.setSelectHandler(handler);
           },
 
           setComponentDisabled: function setComponentDisabled(compID, v) {

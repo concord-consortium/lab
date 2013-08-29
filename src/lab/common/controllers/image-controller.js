@@ -65,7 +65,7 @@ define(function (require) {
       // follow pattern used for images inside model container.
       // TODO: not sure if it makes sense for the Interactive images. When web
       // application is ready, probably it will be changed anyway.
-      modelUrl = this._controller.getModelController().modelUrl;
+      modelUrl = this._controller.modelController.modelUrl;
       // Remove <model-name>.json from url.
       modelUrl = modelUrl.slice(0, modelUrl.lastIndexOf("/") + 1);
       src = labConfig.actualRoot + modelUrl + src;
