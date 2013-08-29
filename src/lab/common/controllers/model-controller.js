@@ -37,6 +37,7 @@ define(function (require) {
     function setupModel() {
       model = new Model(modelOptions);
       model.on('tick', tickHandler);
+      model.on('reset', repaint);
     }
 
     // ------------------------------------------------------------
