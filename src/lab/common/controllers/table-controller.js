@@ -49,8 +49,6 @@ define(function (require) {
       if (component.tooltip) {
         $element.attr("title", component.tooltip);
       }
-
-      interactivesController.on('modelReset', modelResetHandler);
     }
 
     function generateColumnTitlesAndFormatters() {
@@ -123,6 +121,7 @@ define(function (require) {
       model.on('invalidation.'+namespace, function() {
         appendPropertyRow();
       });
+      model.on('reset.'+namespace, modelResetHandler);
     }
 
     function modelResetHandler() {

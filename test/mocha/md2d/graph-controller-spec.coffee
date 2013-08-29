@@ -21,20 +21,9 @@ helpers.withIsolatedRequireJS (requirejs) ->
   GraphController = requirejs 'common/controllers/graph-controller'
   Model           = requirejs 'md2d/models/modeler'
 
-  class InteractivesController
-    constructor: ->
-      @modelResetHandlers = []
-
+  interactivesController =
     getNextTabIndex: ->
       1
-
-    on: (type, handler) ->
-      if type is 'modelReset'
-        @modelResetHandlers.push handler
-
-    resetModel: ->
-      model.reset()
-      @modelResetHandlers.forEach (handler) -> handler()
 
   scriptingAPI = ->
 
@@ -49,16 +38,14 @@ helpers.withIsolatedRequireJS (requirejs) ->
       should.exist GraphController
 
     it "should act as a constructor that accepts the component spec as its argument", ->
-      controller = new GraphController getComponentSpec(), scriptingAPI, new InteractivesController()
+      controller = new GraphController getComponentSpec(), scriptingAPI, interactivesController
       should.exist controller
 
     describe "A GraphController instance", ->
       controller = null
-      interactivesController = null
 
       beforeEach ->
         global.model = new Model simpleModel
-        interactivesController = new InteractivesController()
         controller = new GraphController getComponentSpec(), scriptingAPI, interactivesController
 
       it "should have a getViewContainer method", ->
@@ -205,7 +192,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
             beforeEach ->
               grapher.reset.reset()
               grapher.addPoints.reset()
-              interactivesController.resetModel()
+              model.reset()
 
             it "should call grapher.reset", ->
               grapher.reset.callCount.should.equal 1
@@ -227,7 +214,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
         describe "an invalidating property change, after 2 model ticks and a stepBack", ->
           expectedData = null
           beforeEach ->
-            interactivesController.resetModel()
+            model.reset()
             expectedData = [[],[]]
             pePoint0 = [model.get('displayTime'), model.get('potentialEnergy')]
             kePoint0 = [model.get('displayTime'), model.get('kineticEnergy')]
@@ -282,7 +269,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
 
     describe "handling of graph configuration options in component spec", ->
       grapherOptionsForComponentSpec = (componentSpec) ->
-        controller = new GraphController componentSpec, scriptingAPI, new InteractivesController()
+        controller = new GraphController componentSpec, scriptingAPI, interactivesController
         sinon.spy mock, 'Graph'
         controller.modelLoadedCallback()
         options = mock.Graph.getCall(0).args[1]

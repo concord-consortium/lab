@@ -159,6 +159,7 @@ define(function (require) {
         model.on('invalidation.'+namespace, function() {
           removeDataAfterStepPointer();
         });
+        model.on('reset.'+namespace, modelResetHandler);
       }
     }
 
@@ -192,8 +193,6 @@ define(function (require) {
     if (component.tooltip) {
       $container.attr("title", component.tooltip);
     }
-
-    interactivesController.on('modelReset', modelResetHandler);
 
     return controller = {
       /**
