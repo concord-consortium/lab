@@ -194,6 +194,44 @@
       "unitType": "time",
       "initialValue": 0,
       "onChange": ""
+    },
+    {
+      "name": "xAxis",
+      "label": "X Axis",
+      "unitType": "",
+      "onChange": [
+        "var xAxisParams = {",
+        "     'rodLength' : {",
+        "       'xProperty': 'rodLength',",
+        "       'xlabel': 'Rod length (cm)',",
+        "       'xmin': 0,",
+        "       'xmax': 210",
+        "     },",
+        "     'ballMass' : {",
+        "       'xProperty': 'ballMass',",
+        "       'xlabel': 'Mass of the ball (g)',",
+        "       'xmin': 0,",
+        "       'xmax': 500",
+        "     },",
+        "     'startingAngle' : {",
+        "       'xProperty': 'startingAngle',",
+        "       'xlabel': 'Starting angle (°)',",
+        "       'xmin': 0,",
+        "       'xmax': 100",
+        "     },",
+        "   },",
+        "   opts = xAxisParams[value];",
+        "opts.dataPoints = getComponentData('experiment-table', [value, 'period']);",
+        "setComponentAttributes('parameter-graph', opts);"
+      ],
+      "initialValue": "rodLength"
+    },
+    {
+      "name": "xAxisSelection",
+      "label": "X Axis Selection",
+      "unitType": "",
+      "onChange": "set('xAxis', value);",
+      "initialValue": "rodLength"
     }
   ],
   "exports": {
@@ -400,6 +438,25 @@
       "properties": [
         "period"
       ]
+    },
+    {
+      "type": "pulldown",
+      "id": "x-axis-pulldown",
+      "property": "xAxisSelection",
+      "options": [
+        {
+          "text": "Rod length",
+          "value": "rodLength"
+        },
+        {
+          "text": "Mass of the ball",
+          "value": "ballMass"
+        },
+        {
+          "text": "Starting angle",
+          "value": "startingAngle"
+        }
+      ]
     }
   ],
   "helpTips": [
@@ -517,6 +574,15 @@
         "",
         "In the future you will be able to compare how changing any model parameter affects **Period**."
       ]
+    },
+    {
+      "component": "x-axis-pulldown",
+      "text": [
+        "After collecting data in the Experiment Table you can look for relationships between any",
+        "of the parameters: **Rod length**, **Mass of the ball**, and **Starting angle** by changing",
+        "the X axis in the Parameter graph.",
+        ""
+      ]
     }
   ],
   "layout": {
@@ -537,6 +603,9 @@
     ],
     "bottom-right": [
       "parameter-graph"
+    ],
+    "pgraph-xaxis-pulldown": [
+      "x-axis-pulldown"
     ]
   },
   "template": [
@@ -592,7 +661,16 @@
       "width": "model.width",
       "padding-top": "0.2em",
       "padding-left": "1em",
-      "padding-right": "1.5em"
+      "padding-right": "1.5em",
+      "padding-bottom": "1.0em"
+    },
+    {
+      "id": "pgraph-xaxis-pulldown",
+      "fontScale": "0.7",
+      "top": "bottom-right.bottom*0.95",
+      "right": "bottom-right.right*1.0",
+      "padding-top": "0em",
+      "padding-right": "0.3em"
     }
   ]
 }
