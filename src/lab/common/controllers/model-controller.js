@@ -40,8 +40,8 @@ define(function (require) {
     // ------------------------------------------------------------
     function setupModel() {
       model = new Model(modelOptions);
-      model.on('tick', tickHandler);
-      model.on('reset', resetHandler);
+      model.on('tick.modelController', tickHandler);
+      model.on('reset.modelController', resetHandler);
     }
 
     function resetHandler() {
