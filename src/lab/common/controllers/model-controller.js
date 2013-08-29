@@ -8,6 +8,10 @@ define(function (require) {
                                   Model, ModelContainer, ScriptingAPI, Benchmarks) {
     var controller = {},
 
+        // Used to track cause of model reset, if known; required to be kept in this closure because
+        // it doesn't get passed directly to our model.reset handler
+        resetCause,
+
         // event dispatcher
         dispatch = d3.dispatch('modelLoaded', 'modelReset');
 
@@ -37,7 +41,15 @@ define(function (require) {
     function setupModel() {
       model = new Model(modelOptions);
       model.on('tick', tickHandler);
-      model.on('reset', repaint);
+      model.on('reset', resetHandler);
+    }
+
+    function resetHandler() {
+      // Just use the generic cause, "reset", if no more specific cause of the model reset is
+      // available.
+      resetCause = resetCause || ModelController.RESET_CAUSE.RESET;
+      repaint();
+      dispatch.modelReset(resetCause);
     }
 
     // ------------------------------------------------------------
@@ -77,11 +89,12 @@ define(function (require) {
     }
 
     function reset(cause) {
-      cause = cause || ModelController.RESET_CAUSE.RESET;
-
       model.stop();
+      // use the resetCause closure var to make the cause (which the model doesn't know about)
+      // available to resetHandler()
+      resetCause = cause;
       model.reset();
-      dispatch.modelReset(cause);
+      resetCause = undefined;
     }
 
     function repaint() {

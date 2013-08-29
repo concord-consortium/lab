@@ -285,6 +285,11 @@ define(function(require) {
         dispatch.willReset();
       },
 
+      reset: function() {
+        dispatch.reset();
+        // TODO
+      },
+
       isStopped: function() {
         return isStopped;
       },
