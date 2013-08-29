@@ -166,7 +166,7 @@ define(function(require) {
           d.addEventTypes("tick",
                           "addAtom", "removeAtom", "addRadialBond", "removeRadialBond",
                           "addElectricField", "removeElectricField", "changeElectricField",
-                          "removeAngularBond", "invalidation", "textBoxesChanged");
+                          "removeAngularBond", "textBoxesChanged");
           return d;
         }()),
 
