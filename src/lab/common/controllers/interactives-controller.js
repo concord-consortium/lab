@@ -102,7 +102,6 @@ define(function (require) {
         helpSystem,
         models = [],
         modelsHash = {},
-        propertiesListeners = [],
         componentModelLoadedCallbacks = [],
         onLoadScripts = [],
         resizeCallbacks = [],
@@ -528,7 +527,7 @@ define(function (require) {
       that depend on the model's properties, then draw the screen.
     */
     function modelLoadedHandler(cause) {
-      var i, listener;
+      var i;
 
       setupCustomOutputs("basic", controller.currentModel.outputs, interactive.outputs);
       setupCustomParameters(controller.currentModel.parameters, interactive.parameters);
@@ -546,11 +545,6 @@ define(function (require) {
 
       // setup messaging with embedding parent window
       parentMessageAPI = new ParentMessageAPI(model, modelController.modelContainer, controller);
-
-      for(i = 0; i < propertiesListeners.length; i++) {
-        listener = propertiesListeners[i];
-        model.addPropertiesListener(listener[0], listener[1]);
-      }
 
       for(i = 0; i < onLoadScripts.length; i++) {
         onLoadScripts[i]();
