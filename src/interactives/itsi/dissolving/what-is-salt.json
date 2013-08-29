@@ -1,0 +1,23 @@
+{
+  "title": "what-is-salt",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "what-is-salt$0",
+      "url": "imports/legacy-mw-content/converted/itsi/dissolving/what-is-salt$0.json",
+      "importedFrom": "imports/legacy-mw-content/itsi/dissolving/what-is-salt$0.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

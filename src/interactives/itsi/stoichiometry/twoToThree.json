@@ -1,0 +1,23 @@
+{
+  "title": "twoToThree",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "twoToThree",
+      "url": "imports/legacy-mw-content/converted/itsi/stoichiometry/twoToThree.json",
+      "importedFrom": "imports/legacy-mw-content/itsi/stoichiometry/twoToThree.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

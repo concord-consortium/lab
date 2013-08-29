@@ -1,0 +1,23 @@
+{
+  "title": "constructucting-water-molecules",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "constructucting-water-molecules$0",
+      "url": "imports/legacy-mw-content/converted/itsi/stoichiometry/constructucting-water-molecules$0.json",
+      "importedFrom": "imports/legacy-mw-content/itsi/stoichiometry/constructucting-water-molecules$0.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

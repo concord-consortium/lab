@@ -1,0 +1,23 @@
+{
+  "title": "mixing-polar-and-non-polar",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "mixing-polar-and-non-polar$0",
+      "url": "imports/legacy-mw-content/converted/itsi/dissolving/mixing-polar-and-non-polar$0.json",
+      "importedFrom": "imports/legacy-mw-content/itsi/dissolving/mixing-polar-and-non-polar$0.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

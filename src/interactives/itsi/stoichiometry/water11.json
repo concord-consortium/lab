@@ -1,0 +1,23 @@
+{
+  "title": "water11",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "water11",
+      "url": "imports/legacy-mw-content/converted/itsi/stoichiometry/water11.json",
+      "importedFrom": "imports/legacy-mw-content/itsi/stoichiometry/water11.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}
