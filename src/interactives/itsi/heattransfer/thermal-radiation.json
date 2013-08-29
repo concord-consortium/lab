@@ -1,0 +1,102 @@
+{
+  "title": "changing-temp-page7",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "changing-temp-page7$0",
+      "url": "imports/legacy-mw-content/converted/itsi/heattransfer/changing-temp-page7$0.json",
+      "importedFrom": "imports/legacy-mw-content/itsi/heattransfer/changing-temp-page7$0.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      },
+      "modelOptions": {
+        "temperatureControl": false
+      },
+      "onLoad": [
+        "callEvery(200, function() {",
+        "  var numAtoms, i, props, newVx, newVy, ratio, vXConstant, vYConstant;",
+        "  batch(function() {",
+        "    numAtoms = getNumberOfAtoms();",
+        "    for(i=0; i<numAtoms; i++){",
+        "      // The idea here is to add the same amount of KE to every atom, and to keep",
+        "      // the direction of the velocity the same",
+        "      props = getAtomProperties(i);",
+        "      if (props.x < 2.2) {",
+        "        ratio = props.vx*props.vx/(props.vy*props.vy);",
+        "        vXConstant = 0.000000002*ratio/(1+ratio);",
+        "        vYConstant = 0.000000002 - vXConstant;",
+        "        if(props.vx >= 0) newVx =  Math.sqrt(vXConstant+props.vx*props.vx);",
+        "        if(props.vx < 0) newVx = - Math.sqrt(vXConstant+props.vx*props.vx);",
+        "        if(props.vy >= 0) newVy =  Math.sqrt(vYConstant+props.vy*props.vy);",
+        "        if(props.vy < 0) newVy = - Math.sqrt(vYConstant+props.vy*props.vy);",
+        "        setAtomProperties(i, {vx:newVx, vy:newVy});",
+        "      }",
+        "    }",
+        "  });",
+        "});"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "name": "temperature-modified",
+      "unitAbbreviation": "°C",
+      "label": "Temperature",
+      "value": "return get('temperature') * 2 / 7;"
+    }
+  ],
+  "parameters": [
+    {
+      "name": "myTargetTemperature",
+      "label": "",
+      "initialValue": 10,
+      "onChange": ""
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "cool",
+      "text": "Cool",
+      "action": "adjustTemperature(0.9);"
+    },
+    {
+      "type": "button",
+      "id": "heat",
+      "text": "Heat",
+      "action": [
+        "var t = get('myTargetTemperature');",
+        " t *= 1.1;",
+        "set('myTargetTemperature', t);"
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "ke-shading",
+      "text": "KE shading",
+      "property": "keShading"
+    },
+    {
+      "type": "barGraph",
+      "id": "thermometer",
+      "property": "temperature-modified",
+      "units": true,
+      "labelFormat": "3r",
+      "min": 0,
+      "max": 2000
+    }
+  ],
+  "layout": {
+    "right": [
+      "thermometer"
+    ],
+    "bottom": [
+      "ke-shading",
+      "cool",
+      "heat"
+    ]
+  }
+}
