@@ -552,6 +552,8 @@ define(function (require) {
         onLoadScripts[i]();
       }
 
+      modelController.modelSetupComplete();
+
       for(i = 0; i < modelLoadedCallbacks.length; i++) {
         modelLoadedCallbacks[i](cause);
       }

@@ -25,10 +25,12 @@ define(function(require) {
       // plugins
       QuantumDynamics      = require('md2d/models/engine/plugins/quantum-dynamics');
 
-  return function Model(initialProperties) {
+  return function Model(initialProperties, initializationOptions) {
 
     // all models created with this constructor will be of type: "md2d"
     this.constructor.type = "md2d";
+
+    initializationOptions = initializationOptions || {};
 
     var model = {},
 
@@ -2074,6 +2076,10 @@ define(function(require) {
       state: engine.getState()
     }, model, defaultMaxTickHistory);
 
+    // Since we can't provide tickHistory to the mixed-in methods at the time we create
+    // labModelerMixin (see below comment), provide it now.
+    labModelerMixin.tickHistory = tickHistory;
+
     // FIXME: ugly workaround - mixin OutputSupport again, this time providing
     // tickHistory, so filtered outputs will use it. We couldn't pass
     // tickHistory directly to LabModelerMixin, as tickHistory depends on
@@ -2208,8 +2214,18 @@ define(function(require) {
       return value;
     });
 
+    model.defineOutput('isPlayable', {
+      label: "Playable"
+    }, function() {
+      return model.isReady;
+    });
+
     readModelState();
     model.updateAllOutputProperties();
+
+    if (!initializationOptions.waitForSetup) {
+      model.ready();
+    }
 
     model.performanceOptimizer = new PerformanceOptimizer(model);
 

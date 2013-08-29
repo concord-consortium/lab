@@ -16,14 +16,14 @@ define(function(require) {
       unitDefinitions      = require('solar-system/models/unit-definitions/index'),
       _ = require('underscore');
 
-  return function Model(initialProperties) {
+  return function Model(initialProperties, initializationOptions) {
 
     // all models created with this constructor will be of type: "solar-system"
     this.constructor.type = "solar-system";
 
     var model = {},
         dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack",
-            "seek", "addBody", "removeBody", "invalidation", "textBoxesChanged"),
+            "seek", "addBody", "removeBody", "invalidation", "textBoxesChanged", "ready"),
 
         propertySupport = new PropertySupport({
           types: ["output", "parameter", "mainProperty", "viewOption"]
@@ -83,6 +83,8 @@ define(function(require) {
 
         // The initial viewOptions, validated and filtered from the initialProperties
         viewOptions;
+
+    var isReady = false;
 
     function defineBuiltinProperty(type, key, setter) {
       var metadataForType,
@@ -674,11 +676,28 @@ define(function(require) {
       return model;
     };
 
+    model.ready = function() {
+      if (isReady) {
+        throw new Error("ready() called on an already-ready model.");
+      }
+
+      tickHistory.saveInitialState();
+      tickHistory.push();
+
+      propertySupport.invalidatingChangePreHook();
+      isReady = true;
+      propertySupport.invalidatingChangePostHook();
+
+      dispatch.ready();
+    };
+
     model.reset = function() {
       engine.setTime(0);
       tickHistory.restoreInitialState();
       dispatch.reset();
     };
+
+
 
 
     /**
@@ -1156,7 +1175,17 @@ define(function(require) {
       return newStep;
     });
 
+    model.defineOutput('isPlayable', {
+      label: "Playable"
+    }, function() {
+      return isReady;
+    });
+
     updateAllOutputProperties();
+
+    if (!initializationOptions.waitForSetup) {
+      model.ready();
+    }
 
     return model;
   };

@@ -13,7 +13,7 @@ define(function (require) {
         resetCause,
 
         // event dispatcher
-        dispatch = d3.dispatch('modelLoaded', 'modelReset');
+        dispatch = d3.dispatch('modelLoaded', 'modelReset', 'modelSetupComplete');
 
     // ------------------------------------------------------------
     //
@@ -39,7 +39,9 @@ define(function (require) {
     //   Model Setup
     // ------------------------------------------------------------
     function setupModel() {
-      model = new Model(modelOptions);
+      model = new Model(modelOptions, {
+        waitForSetup: true
+      });
       model.on('tick.modelController', tickHandler);
       model.on('reset.modelController', resetHandler);
     }
@@ -133,6 +135,19 @@ define(function (require) {
 
     controller.modelInDOM = function () {
       controller.modelContainer.setup();
+    };
+
+    /**
+      Call this method once all post-load setup of the model object has been completed. It will
+      cause the model to execute any post-load setup and issue its 'ready' event, if any.
+
+      In general, the model must be called in order to put the model in a runnable state.
+    */
+    controller.modelSetupComplete = function() {
+      if (model.ready) {
+        model.ready();
+      }
+      dispatch.modelSetupComplete();
     };
 
     controller.updateView = function() {
