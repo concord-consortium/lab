@@ -2222,10 +2222,24 @@ define(function(require) {
       return value;
     });
 
+    // FIXME. More yuck: We still need a pattern for recompute model properties which don't depend
+    // on physics (and which therefore can be recomputed without invalidating and recomputing all
+    // the physics based properties) while still making them (1) observable and (2) read-only.
+
+    // used to triggers recomputation of isPlayable property based on isStopped and isReady:
+    model.on('play.model', recomputeProperties);
+    model.on('stop.model', recomputeProperties);
+
+    function recomputeProperties() {
+      propertySupport.invalidatingChangePreHook();
+      propertySupport.invalidatingChangePostHook();
+    }
+
     model.defineOutput('isPlayable', {
       label: "Playable"
     }, function() {
-      return model.isReady;
+      // FIXME: isStopped predates the use of ES5 getters, therefore it must be invoked
+      return model.isReady && model.isStopped();
     });
 
     readModelState();

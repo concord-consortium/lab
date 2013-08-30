@@ -99,16 +99,19 @@ define(function (require) {
 
   PlaybackController.prototype._updateButtonStatesFor = {
     video: function () {
-      if (this._modelStopped) {
-        this._$playPause.removeClass("playing");
-      } else {
+      var playing = !this._modelStopped;
+      var playable = this._modelPlayable;
+
+      if (playing) {
         this._$playPause.addClass("playing");
+      } else {
+        this._$playPause.removeClass("playing");
       }
 
-      if (this._modelPlayable) {
-        this._$playPause.removeClass("disabled");
-      } else {
+      if (!playable && !playing) {
         this._$playPause.addClass("disabled");
+      } else {
+        this._$playPause.removeClass("disabled");
       }
     },
 
