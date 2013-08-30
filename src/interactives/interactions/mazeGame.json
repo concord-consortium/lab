@@ -14,12 +14,27 @@
         "controlButtons": "",
         "imageMapping": {
           "target.png": "target.svg"
-        }
+        },
+        "textBoxes": [
+          {
+            "text": "50",
+            "x": 6.2,
+            "y": 1.8,
+            "layer": 2,
+            "width": 0.25,
+            "textAlign": "center",
+            "fontScale": 1.6,
+            "frame": "rounded rectangle",
+            "backgroundColor": "rgba(249,238,193,1)"
+          }
+        ]
       },
       "onLoad": [
         "var renderUpdateTimeStep = get('timeStep') * get('timeStepsPerTick');",
         "callEvery(renderUpdateTimeStep, function(t) {",
-        "  if (get('countdown') <= 0) { ",
+        "  var countdown = get('countdown');",
+        "  setTextBoxProperties(0,{text: format('0.0f')(countdown)});",
+        "  if (countdown <= 0) { ",
         "    stop();",
         "    alert('game over!');",
         "  } else {",
@@ -55,18 +70,12 @@
     {
       "name": "max-countdown-time",
       "initialValue": 50,
-      "onChange": []
+      "onChange": [
+        "setTextBoxProperties(0,{text: format('0.0f')(value)});"
+      ]
     }
   ], 
   "components": [
-    {
-      "type": "numericOutput",
-      "id": "countdownDisplay",
-      "label": "Time remaining",
-      "property": "countdown",
-      "displayValue": "return format('1.0f')(value)",
-      "tooltip": "How much time remains to get the atom into the target."
-    },
     {
       "type": "button",
       "id": "set-negative",
@@ -124,9 +133,6 @@
     }
   ],
   "layout": {
-    "overlay": [
-      "countdownDisplay"
-    ],
     "bottom": [
       "set-negative", "set-neutral", "set-positive", "run", "reset", "stop", "difficulty"
     ]
@@ -134,17 +140,16 @@
   "template":[
     {
       "id": "bottom",
-      "top": "overlay.bottom",
+      "top": "model.bottom",
       "width": "model.width",
       "left": "model.left",
       "align": "center"
     },
     {
-      "id": "overlay",
-      "right": "model.right",
-      "top": "model.bottom",
-      "width": "model.width",
-      "align": "right"
+      "id": "right",
+      "padding-left": "0.5em",
+      "left": "model.right",
+      "top": "model.top"
     }
   ]
 }
