@@ -107,6 +107,7 @@ define(function (require) {
         resizeCallbacks = [],
         modelLoadedCallbacks = [],
         modelResetCallbacks = [],
+        ignoreModelResetEvent = false,
         isModelLoaded = false,
         interactiveRenderedCallbacks = [],
         isInteractiveRendered = false,
@@ -560,10 +561,18 @@ define(function (require) {
       isModelLoaded = true;
     }
 
+    function modelResetHandler(cause) {
+      if (ignoreModelResetEvent) {
+        return;
+      }
+
+      notifyModelResetCallbacks(cause);
+    }
+
     /**
       Notify observers that a model was reset, passing along the cause of the reset event.
     */
-    function modelResetHandler(cause) {
+    function notifyModelResetCallbacks(cause) {
       modelResetCallbacks.forEach(function(cb) {
         cb(cause);
       });
@@ -1014,8 +1023,28 @@ define(function (require) {
         }
 
         parameters = getProperties(parametersToRetain);
+
+        // Consumers of the model's events will see a reset event followed by the invalidation event
+        // emitted when we set the model's parameters to their desired initial state. That's because
+        // the model semantics don't include reset-with-saving-of-parameters, just reset-to-initial-
+        // state. However, consumers of the interactive controller's modelReset event would expect
+        // reset-to-initial-state and restoration-of-saved-parameter-values to be a single,
+        // atomic event, given that they are triggered by the single
+        // interactiveController.resetModel() method. (This is similar to the reason that the
+        // interactive controller decorates its modelReset with a "cause" -- the model itself has no
+        // notion of *why* it's reset, and doesn't distinguish "setting up an experimental run" from
+        // "starting over"; those are interactive-level concepts.)
+        //
+        // Therefore, make sure to supress the modelReset event that would be automatically
+        // emitted by our listener to the modelController's modelReset event, and emit modelReset
+        // only after parameter values have been reset/restored.
+        ignoreModelResetEvent = true;
+
         modelController.reset(options.cause);
         model.set(parameters);
+        notifyModelResetCallbacks(options.cause);
+
+        ignoreModelResetEvent = false;
       },
 
       updateModelView: function() {
