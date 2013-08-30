@@ -78,7 +78,7 @@
         "    var target = getShapeProperties(0);",
         "    if (atomsWithinRect(target.x, target.y, target.width, target.height).length > 0) {",
         "      stop();",
-        "      if(get('time') < 10000) {",
+        "      if(get('max-countdown-time') - countdown <= 15) {",
         "        alert('Did you cheat?');",
         "      } else {",
         "        alert('you won!');",
