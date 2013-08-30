@@ -218,7 +218,7 @@ define(function (require) {
           "\" is not understood or is not compatible with controlButtonStyle \"text\"");
       }
     }
-  },
+  };
 
   /**
    * Updates playback controller mode (none, "play", "play_reset" or "play_reset_step").
