@@ -1,5 +1,5 @@
 {
-  "title": "forceDirectionVDG Negative",
+  "title": "Force Direction with VDG and Negatively Charged Object Negative",
   "publicationStatus": "draft",
   "subtitle": "",
   "about": "",
@@ -10,7 +10,7 @@
       "url": "imports/legacy-mw-content/converted/interactions/force-direction-VDG-negative/forceDirectionVDG$0.json",
       "importedFrom": "imports/legacy-mw-content/interactions/force-direction-VDG-negative/forceDirectionVDG$0.mml",
       "viewOptions": {
-        "controlButtons": "play_reset"
+        "controlButtons": "reset"
       },
       "onLoad": [
           "onDrag('atom', function(x, y, d, i) {",
