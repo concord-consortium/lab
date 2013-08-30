@@ -561,9 +561,7 @@ define(function() {
         Object.defineProperty(target, 'properties', {
           configurable: false,
           enumerable: true,
-          get: function() {
-            return getPropertiesObject();
-          }
+          get: getPropertiesObject
         });
 
         /**
