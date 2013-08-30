@@ -36,6 +36,7 @@
         "function setButtonState() {",
         "  setComponentDisabled('start-button', !get('isPlayable'));",
         "  setComponentDisabled('stop-button', get('isPlayable'));",
+        "  setComponentDisabled('new-run-button', !get('hasPlayed'));",
         "}",
         "function resetAngle() {",
         "  set({startingAngle: get('startingAngle')});",
@@ -49,7 +50,8 @@
         "onPropertyChange('gravitationalField', resetAngle);",
         "onPropertyChange('damping', resetAngle);",
         "onPropertyChange('startingAngle', stopMotion);",
-        "onPropertyChange('isPlayable', setButtonState);"
+        "onPropertyChange('isPlayable', setButtonState);",
+        "onPropertyChange('hasPlayed', setButtonState);"
       ]
     }
   ],
