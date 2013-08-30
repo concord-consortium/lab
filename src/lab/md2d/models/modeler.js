@@ -2242,6 +2242,12 @@ define(function(require) {
       return model.isReady && model.isStopped();
     });
 
+    model.defineOutput('hasPlayed', {
+      label: "has Played"
+    }, function() {
+      return model.hasPlayed;
+    });
+
     readModelState();
     model.updateAllOutputProperties();
 

@@ -29,7 +29,8 @@ define(function (require) {
 
         stopped = true,
         stopRequest = false,
-        restartRequest = false;
+        restartRequest = false,
+        hasPlayed = false;
 
     /**
       Repeatedly calls `f` at an interval defined by the modelSampleRate property, until f returns
@@ -123,6 +124,21 @@ define(function (require) {
         target.isStopped = function () {
           return stopped || stopRequest;
         };
+
+        target.on('play.playback-support', function() {
+          hasPlayed = true;
+        });
+
+        target.on('reset.playback-support', function() {
+          hasPlayed = false;
+        });
+
+        Object.defineProperty(target, 'hasPlayed', {
+          enumerable: true,
+          get: function() {
+            return hasPlayed;
+          }
+        });
       }
     };
   };
