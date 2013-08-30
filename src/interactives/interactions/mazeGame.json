@@ -4,6 +4,7 @@
   "subtitle": "Guide a charged object through a maze by setting its charge at the right time in the right place.",
   "about": "The initially neutral object (it is gray) has a variable charge that is controlled by the -, 0, and + buttons below the game. Use the attractive and repulsive forces between charged objects to navigate through the maze. Can you get it to the target before time runs out?",
   "aspectRatio": 1.5,
+  "helpOnLoad": true,
   "models": [
     {
       "type": "md2d",
@@ -18,8 +19,8 @@
         "textBoxes": [
           {
             "text": "50",
-            "x": 6.2,
-            "y": 1.8,
+            "x": 6.25,
+            "y": 1.6,
             "layer": 2,
             "width": 0.25,
             "textAlign": "center",
@@ -30,6 +31,42 @@
         ]
       },
       "onLoad": [
+        "var props;",
+        "setObstacleProperties(1,{",
+        "  height: get('height') - getObstacleProperties(0).y",
+        "});",
+        "props = getObstacleProperties(3);",
+        "setObstacleProperties(3,{",
+        "  height: props.y + props.height,",
+        "  width: props.x + props.width,",
+        "  x: 0,",
+        "  y: 0",
+        "});",
+        "props = getObstacleProperties(4);",
+        "setObstacleProperties(4,{",
+        "  width: props.x + props.width,",
+        "  height: get('height') - props.y,",
+        "  x: 0",
+        "});",
+        "props = getObstacleProperties(5);",
+        "setObstacleProperties(5,{",
+        "  width: getObstacleProperties(1).x - props.x",
+        "});",
+        "props = getObstacleProperties(2);",
+        "setObstacleProperties(2, {",
+        "  y: getObstacleProperties(6).y + getObstacleProperties(6).height,",
+        "  height: getObstacleProperties(0).x - (getObstacleProperties(6).y + getObstacleProperties(6).height)",
+        "});",
+        "props = getObstacleProperties(6);",
+        "setObstacleProperties(6,{",
+        "  y: 0,",
+        "  height: getObstacleProperties(2).y",
+        "});",
+        "props = getObstacleProperties(7);",
+        "setObstacleProperties(7,{",
+        "  height: props.y + props.height,",
+        "  y: 0",
+        "});",
         "var renderUpdateTimeStep = get('timeStep') * get('timeStepsPerTick');",
         "callEvery(renderUpdateTimeStep, function(t) {",
         "  var countdown = get('countdown');",
@@ -49,6 +86,25 @@
         "    }",
         "  }",
         "});"
+      ]
+    }
+  ],
+  "helpTips": [
+    {
+      "component": "",
+      "text": [
+        "Welcome to the Maze Game!",
+        "- - -",
+        "The **-**, **0**, and **+** buttons will set the charge of the object in the lower left of the maze.",
+        "Can you get the charged object into the target before time runs out?"
+      ]
+    },
+    {
+      "component": "difficulty",
+      "text": [
+        "Set the game difficulty.",
+        "- - -",
+        "If the game is too easy, try to do it in Harder mode. Harder mode gives you less time to get the object to the target."
       ]
     }
   ],
@@ -80,22 +136,19 @@
       "type": "button",
       "id": "set-negative",
       "text": "-",
-      "action": "setAtomProperties(0,{charge:-1});start()",
-      "tooltip": "Make the atom negatively charged."
+      "action": "setAtomProperties(0,{charge:-1});start()"
     },
     {
       "type": "button",
       "id": "set-neutral",
       "text": "0",
-      "action": "setAtomProperties(0,{charge:0});start()",
-      "tooltip": "Remove any charge from the atom."
+      "action": "setAtomProperties(0,{charge:0});start()"
     },
     {
       "type": "button",
       "id": "set-positive",
       "text": "+",
-      "action": "setAtomProperties(0,{charge:1});start()",
-      "tooltip": "Make the atom positively charged."
+      "action": "setAtomProperties(0,{charge:1});start()"
     },
     {
       "type": "button",

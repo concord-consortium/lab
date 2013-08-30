@@ -618,7 +618,7 @@
    </void> 
    <void method="put"> 
     <string>size</string> 
-    <long>24090</long> 
+    <long>24099</long> 
    </void> 
    <void method="put"> 
     <string>codebase</string> 
@@ -758,10 +758,10 @@ endif;</string>
        <byte>1</byte> 
       </void> 
       <void property="x"> 
-       <double>609.0</double> 
+       <double>624.0</double> 
       </void> 
       <void property="y"> 
-       <double>128.0</double> 
+       <double>146.0</double> 
       </void> 
      </object> 
     </void> 
