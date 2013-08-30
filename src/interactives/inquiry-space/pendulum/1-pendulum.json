@@ -17,8 +17,7 @@
       "id": "pendulum1$0",
       "url": "imports/legacy-mw-content/converted/inquiry-space/pendulum/pendulum1$0.json",
       "viewOptions": {
-        "controlButtons": "play_reset",
-        "controlButtonStyle": "text",
+        "controlButtons": "",
         "gridLines": true,
         "showClock": true,
         "velocityVectors": {
@@ -110,6 +109,45 @@
     ]
   },
   "components": [
+    {
+      "type": "button",
+      "id": "start-button",
+      "text": "Start",
+      "tooltip": "Start the experiment run.",
+      "action": [
+        "start();"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "stop-button",
+      "text": "Stop",
+      "tooltip": "Stop the experiment run.",
+      "action": [
+        "stop();"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "new-run-button",
+      "text": "New Run",
+      "tooltip": "Set up a new experiment run.",
+      "action": [
+        "reset({",
+        "  retainParameters: ['gravity', 'rodLength', 'startingAngle', 'ballMass', 'damping'],",
+        "  cause: 'new-run'",
+        "});"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "reset-button",
+      "text": "Reset",
+      "tooltip": "Reset the experiment parameters to the original settings.",
+      "action": [
+        "reload();"
+      ]
+    },
     {
       "type": "slider",
       "id": "gravity-slider",
@@ -245,6 +283,12 @@
       "propertiesGraph"
     ],
     "bottom": [
+      [
+        "start-button",
+        "stop-button",
+        "new-run-button",
+        "reset-button"
+      ],
       [
         "gravity-slider",
         "length-slider",
