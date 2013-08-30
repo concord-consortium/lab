@@ -1495,6 +1495,10 @@ define(function(require) {
       }
     };
 
+    model.getTextBoxProperties = function(i) {
+      return model.get('textBoxes')[i];
+    };
+
     /**
       Implements dragging of an atom in a running model, by creating a spring force that pulls the
       atom towards the mouse cursor position (x, y) and damping the resulting motion by temporarily
@@ -1664,6 +1668,10 @@ define(function(require) {
     // FIXME. Should be an output property.
     model.getNumberOfElectricFields = function () {
       return engine.getNumberOfElectricFields();
+    };
+
+    model.getNumberOfTextBoxes = function () {
+      return  model.get('textBoxes').length;
     };
 
     model.get_radial_bonds = function() {

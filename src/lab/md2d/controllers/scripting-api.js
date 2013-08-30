@@ -22,6 +22,11 @@ define(function (require) {
         inBatch = false;
 
     return {
+
+      getCurrentComputerTime: function() {
+        return Date.now();
+      },
+
       /* Returns number of atoms in the system. */
       getNumberOfAtoms: function getNumberOfAtoms(f) {
         return model.getNumberOfAtoms(f);
@@ -712,6 +717,18 @@ define(function (require) {
 
       setTextBoxProperties: function(i, props) {
         model.setTextBoxProperties(i, props);
+      },
+
+      getTextBoxProperties: function(i) {
+        return model.getTextBoxProperties(i);
+      },
+
+      getNumberOfTextBoxes: function() {
+        return model.getNumberOfTextBoxes();
+      },
+
+      getNumberOfLines: function() {
+        return model.getNumberOfLines();
       },
 
       repaintIfReady: function(options) {
