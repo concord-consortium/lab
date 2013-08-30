@@ -1,5 +1,5 @@
 {
-  "title": "Force Direction with VDG and Positively Charged Object",
+  "title": "Direction of Force Around a VDG (Positively Charged)",
   "publicationStatus": "draft",
   "subtitle": "",
   "about": "",
@@ -65,13 +65,7 @@
     {
       "name": "trace-force-vectors",
       "initialValue": false,
-      "onChange": [
-        "if( !value ) {",
-        "  batch( function() { ",
-        "    for( var i = 2; i < 98; setLineProperties(i++, {visible: false})); // clear traces",
-        "  });",
-        "}"
-      ]
+      "onChange": []
     }
   ],
   "components": [
@@ -102,6 +96,16 @@
       "type": "text",
       "id": "label-tracing",
       "text": "**Tracing:**"
+    },
+    {
+      "type": "button",
+      "id": "clear-trace",
+      "text": "Clear",
+      "action": [
+        "batch( function() { ",
+        "  for( var i = 2; i < 98; setLineProperties(i++, {visible: false})); // clear traces",
+        "});"
+      ]
     }
   ],
   "layout": {
@@ -110,7 +114,8 @@
       ["toggle-show-force-on-object"],
       ["toggle-show-force-on-VDG"],
       ["label-tracing"],
-      ["toggle-trace-force-vectors"]
+      ["toggle-trace-force-vectors"],
+      ["clear-trace"]
     ]
   },
   "template": "wide-right"
