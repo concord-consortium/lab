@@ -316,8 +316,8 @@ define(function (require) {
             model.on("stop.custom-script", handler);
           },
 
-          reset: function reset() {
-            interactivesController.resetModel();
+          reset: function reset(options) {
+            interactivesController.resetModel(options);
           },
 
           reload: function reload() {

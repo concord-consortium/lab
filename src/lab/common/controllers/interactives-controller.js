@@ -905,6 +905,28 @@ define(function (require) {
       model.set(initialValues);
     }
 
+    function allParametersExcept(exceptions) {
+      var exceptionsByName = {};
+
+      exceptions.forEach(function(exception) {
+        exceptionsByName[exception] = true;
+      });
+
+      return Object.keys(customParametersByName).filter(function(key) {
+        return !exceptionsByName[key];
+      });
+    }
+
+    function getProperties(propertyKeys) {
+      var properties = {};
+
+      propertyKeys.forEach(function(key) {
+        properties[key] = model.properties[key];
+      });
+
+      return properties;
+    }
+
     //
     // Public API.
     //
@@ -937,9 +959,63 @@ define(function (require) {
         modelController.reload();
       },
 
-      resetModel: function(cause, options) {
-        modelController.reset(cause);
-        // TODO handle options
+      /**
+        Reset the model to its initial state, restoring or retaining model parameters according to
+        these options. The model will issue a 'reset' event and reset its tick history.
+
+        Options:
+          parametersToRetain:
+            a list of parameters to save before the model reset and restore after reset
+            if the value is 'all', retain all parameters
+
+          parametersToReset:
+           (mutually exclusive with parametersToRetain)
+            a list of parameters to reset to their initial values after the model reset
+            if the value is 'all', reset all parameters
+
+          cause:
+            optional string giving the cause of the reset, e.g., "new-run"
+      */
+      resetModel: function(options) {
+        options = options || {};
+
+        var parameters;
+
+        // Option processing.
+        var parametersToRetain = options.retainParameters;
+        var parametersToReset = options.resetParameters;
+
+        if (parametersToReset && parametersToRetain) {
+          throw new Error("resetModel: resetParameters and retainParameters are mutually exclusive");
+        }
+
+        // default behavior is to reset all parameters
+        if (!parametersToRetain && !parametersToReset) {
+          parametersToReset = 'all';
+        }
+
+        if (parametersToRetain === 'all') {
+          parametersToRetain = undefined;
+          parametersToReset = [];
+        }
+
+        if (parametersToReset === 'all') {
+          parametersToRetain = [];
+          parametersToReset = undefined;
+        }
+
+        // Invariants (assuming correct input):
+        // 1. exactly one of (parametersToReset, parametersToRetain) is defined
+        // 2. for each x in (parametersToReset, parametersToRetain), x is defined => x is an array
+
+        // identify the complete list of parametersToRetain (whose values need to be saved)
+        if (parametersToReset) {
+          parametersToRetain = allParametersExcept(parametersToReset);
+        }
+
+        parameters = getProperties(parametersToRetain);
+        modelController.reset(options.cause);
+        model.set(parameters);
       },
 
       updateModelView: function() {
