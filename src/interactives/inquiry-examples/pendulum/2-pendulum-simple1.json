@@ -86,7 +86,7 @@
         "  setComponentDisabled('angle-slider', false);",
         "  set('experimentTime', 0);",
         "  set('experimentCleared', false);",
-        "  reset();",
+        "  reset({retainParameters: ['gravity', 'rodLength', 'startingAngle', 'ballMass', 'damping']});",
         "  resetAngle();",
         "  stopMotion();",
         "  set('rodLength', get('rodLength'));",
