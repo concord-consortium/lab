@@ -141,7 +141,7 @@ define(function (require) {
       Call this method once all post-load setup of the model object has been completed. It will
       cause the model to execute any post-load setup and issue its 'ready' event, if any.
 
-      In general, the model must be called in order to put the model in a runnable state.
+      In general, this method must be called in order to put the model in a runnable state.
     */
     controller.modelSetupComplete = function() {
       if (model.ready) {
