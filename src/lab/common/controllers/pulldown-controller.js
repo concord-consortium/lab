@@ -65,7 +65,7 @@ define(function () {
 
     // Public API.
     controller = {
-      modelLoadedCallback: function (model) {
+      modelLoadedCallback: function (model, scriptingAPI) {
         // Connect pulldown with model's property if its name is defined.
         if (component.property !== undefined) {
           // Register listener for property.

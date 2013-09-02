@@ -59,7 +59,8 @@
             "backgroundColor": "rgb(250,250,250)"
           }
         ]
-      }
+      },
+      "onLoad": "start();"
     },
     {
       "type": "md2d",
@@ -81,7 +82,8 @@
             "backgroundColor": "rgb(250,250,250)"
           }
         ]
-      }
+      },
+      "onLoad": "start();"
     },
     {
       "type": "md2d",
@@ -103,7 +105,8 @@
             "backgroundColor": "rgb(250,250,250)"
           }
         ]
-      }
+      },
+      "onLoad": "start();"
     }
   ],
   "components": [
@@ -117,15 +120,15 @@
         },
         {
           "text": "Low polarity",
-          "action": "loadModel('leastPolarPull', start);"
+          "loadModel": "leastPolarPull"
         },
         {
           "text": "Medium polarity",
-          "action": "loadModel('medPolarPull', start);"
+          "loadModel": "medPolarPull"
         },
         {
           "text": "High polarity",
-          "action": "loadModel('mostPolarPull', start);"
+          "loadModel": "mostPolarPull"
         }
       ]
     },

@@ -106,14 +106,9 @@ define(function (require) {
             return model.set.apply(model, arguments);
           },
 
-          loadModel: function loadModel(modelId, cb) {
+          loadModel: function loadModel(modelId, onLoadScript) {
             model.stop();
-
-            interactivesController.loadModel(modelId);
-
-            if (typeof cb === 'function') {
-              interactivesController.pushOnLoadScript(cb);
-            }
+            interactivesController.loadModel(modelId, null, onLoadScript);
           },
 
           /**
