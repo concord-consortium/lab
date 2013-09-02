@@ -1,4 +1,4 @@
-/*global require, define, $, model */
+/*global require, define, $ */
 
 define(function () {
 
@@ -9,7 +9,7 @@ define(function () {
 
       require('common/jquery-plugins');
 
-  return function PulldownController(component, scriptingAPI, interactivesController) {
+  return function PulldownController(component, scriptingAPI, interactivesController, model) {
         // Public API.
     var controller,
         // Options definitions from component JSON definition.
@@ -65,7 +65,7 @@ define(function () {
 
     // Public API.
     controller = {
-      modelLoadedCallback: function () {
+      modelLoadedCallback: function (model) {
         // Connect pulldown with model's property if its name is defined.
         if (component.property !== undefined) {
           // Register listener for property.

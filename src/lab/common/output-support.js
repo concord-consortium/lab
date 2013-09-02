@@ -80,7 +80,8 @@ define(function (require) {
 
           `filteredPropertyKey` should be name of the basic property which should be filtered.
 
-          `type` should be type of filter, defined as string. For now only "RunningAverage" is supported.
+          `type` should be type of filter, defined as string. For now only "RunningAverage" and "SimplePeriod"
+          are supported.
 
           `period` should be number defining length of time period used for calculating filtered value. It should
           be specified in femtoseconds.

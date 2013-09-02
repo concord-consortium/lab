@@ -1,4 +1,4 @@
-/*global define, $, model*/
+/*global define, $*/
 
 define(function (require) {
   var metadata  = require('common/controllers/interactive-metadata'),
@@ -6,7 +6,7 @@ define(function (require) {
       TableView = require('common/views/table-view'),
       tableControllerCount = 0;
 
-  return function TableController(component, scriptingAPI, interactivesController) {
+  return function TableController(component, scriptingAPI, interactivesController, model) {
         // Public API.
     var controller,
         // Options definitions from component JSON definition.
@@ -137,7 +137,7 @@ define(function (require) {
       /**
         Called by the interactives controller when the model finishes loading.
       */
-      modelLoadedCallback: function() {
+      modelLoadedCallback: function(model) {
         tableData = $.extend(true, [], component.tableData);
         headerData = $.extend(true, [], component.headerData);
         updateTable();

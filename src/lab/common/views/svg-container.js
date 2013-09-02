@@ -1,7 +1,7 @@
 /*global $, define: false, d3: false */
 // ------------------------------------------------------------
 //
-//   PTA View Container
+//   SVG View Container
 //
 // ------------------------------------------------------------
 define(function (require) {

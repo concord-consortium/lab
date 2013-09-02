@@ -1,4 +1,4 @@
-/*global define, $, model */
+/*global define, $ */
 
 define(function (require) {
 
@@ -18,7 +18,7 @@ define(function (require) {
      getViewContainer:     DOM element containing the Thermometer div and the label div.
      getView:              Returns base Thermometer object, with no label.
   */
-  return function ThermometerController(component, scriptingAPI, interactivesController) {
+  return function ThermometerController(component, scriptingAPI, interactivesController, model) {
     var units,
         digits,
         // Returns scaled value using provided 'scale' and 'offset' component properties.
@@ -138,7 +138,7 @@ define(function (require) {
     // Public API.
     controller = {
       // No modelLoadeCallback is defined. In case of need:
-      modelLoadedCallback: function () {
+      modelLoadedCallback: function (model) {
         // TODO: update to observe actual system temperature once output properties are observable
         model.addPropertiesListener('targetTemperature', function() {
           updateThermometer();

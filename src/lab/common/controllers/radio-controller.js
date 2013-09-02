@@ -1,4 +1,4 @@
-/*global define, $, model */
+/*global define, $ */
 
 define(function () {
 
@@ -6,7 +6,7 @@ define(function () {
       validator  = require('common/validator'),
       disablable = require('common/controllers/disablable');
 
-  return function RadioController(component, scriptingAPI, interactivesController) {
+  return function RadioController(component, scriptingAPI, interactivesController, model) {
         // Public API.
     var controller,
         // DOM elements.
@@ -155,7 +155,7 @@ define(function () {
 
     // Public API.
     controller = {
-      modelLoadedCallback: function () {
+      modelLoadedCallback: function (model) {
         // Connect radio with model's property if its name is defined.
         if (component.property !== undefined) {
           // Register listener for property.

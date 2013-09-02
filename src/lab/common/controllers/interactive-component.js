@@ -15,7 +15,10 @@ define(function (require) {
    * @param {ScriptingAPI} scriptingAPI
    * @param {InteractivesController} interactivesController
    */
-  function InteractiveComponent(type, component, scriptingAPI, interactivesController) {
+  function InteractiveComponent(type, component, scriptingAPI, interactivesController, model) {
+    this._scriptingAPI = scriptingAPI.api;
+    this._model = model;
+    
     var onClickFunction;
 
     /**
@@ -43,20 +46,7 @@ define(function (require) {
       this.setDisabled(this.component.disabled);
     }
 
-    // optionally add onClick handler. If components such as buttons and sliders
-    // start inheriting from InteractiveComponent, we should think further on this.
-    if (this.component.onClick) {
-      if (typeof this.component.onClick !== "function") {
-        // Create function from the string or array of strings.
-        onClickFunction = scriptingAPI.makeFunctionInScriptContext(this.component.onClick);
-      } else {
-        // Just assign ready function.
-        onClickFunction = this.component.onClick;
-      }
-      this.$element.on("click", onClickFunction);
-      // Also add a special class indicating that this text node is a clickable.
-      this.$element.addClass("clickable");
-    }
+    this._optionallyAddOnClickHandlers();
 
     // optionally add new css classes
     if (this.component.classes && this.component.classes.length) {
@@ -68,6 +58,33 @@ define(function (require) {
       this.$element.attr("title", this.component.tooltip);
     }
   }
+
+  /**
+   * Called when the Interactive Controller reloads the model ... creating a new model and scriptingAPI
+   */
+  InteractiveComponent.prototype._modelLoadedCallback = function (model, scriptingAPI) {
+    this._scriptingAPI = scriptingAPI.api;
+    this._model = model;
+    this._optionallyAddOnClickHandlers();
+  };
+
+
+  InteractiveComponent.prototype._optionallyAddOnClickHandlers = function () {
+    // optionally add onClick handler. If components such as buttons and sliders
+    // start inheriting from InteractiveComponent, we should think further on this.
+    if (this.component.onClick) {
+      if (typeof this.component.onClick !== "function") {
+        // Create function from the string or array of strings.
+        onClickFunction = this._scriptingAPI.makeFunctionInScriptContext(this.component.onClick);
+      } else {
+        // Just assign ready function.
+        onClickFunction = this.component.onClick;
+      }
+      this.$element.on("click", onClickFunction);
+      // Also add a special class indicating that this text node is a clickable.
+      this.$element.addClass("clickable");
+    }
+  };
 
   /**
    * @return {jQuery} The most outer element.

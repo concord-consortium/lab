@@ -1,4 +1,4 @@
-/*global define, $, model*/
+/*global define, $*/
 
 define(function () {
 
@@ -6,7 +6,7 @@ define(function () {
       validator  = require('common/validator'),
       disablable = require('common/controllers/disablable');
 
-  return function SliderController(component, scriptingAPI, interactivesController) {
+  return function SliderController(component, scriptingAPI, interactivesController, model) {
     var min, max, steps, propertyName,
         action, initialValue,
         title, labels, displayValue,
@@ -36,7 +36,7 @@ define(function () {
     // Public API.
     controller = {
       // This callback should be trigger when model is loaded.
-      modelLoadedCallback: function () {
+      modelLoadedCallback: function (model) {
         if (propertyName) {
           model.addPropertiesListener([propertyName], updateSlider);
         }

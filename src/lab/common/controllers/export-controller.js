@@ -1,4 +1,4 @@
-/*global define, model*/
+/*global define*/
 /*jslint boss: true*/
 
 define(function (require) {
@@ -242,7 +242,7 @@ define(function (require) {
 
     return controller = {
 
-      modelLoadedCallback: function() {
+      modelLoadedCallback: function(model) {
         resetData();
         registerModelListeners();
       },

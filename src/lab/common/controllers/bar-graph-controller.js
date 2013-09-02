@@ -1,4 +1,4 @@
-/*global $: false, define: false, model: false */
+/*global $: false, define: false */
 
 // Bar graph controller.
 // It provides specific interface used in MD2D environment
@@ -72,7 +72,7 @@ define(function (require) {
         return options;
       };
 
-  return function BarGraphController(component, scriptingAPI, interactivesController) {
+  return function BarGraphController(component, scriptingAPI, interactivesController, model) {
     var // Object with Public API.
         controller,
         // Model with options and current value.
@@ -109,7 +109,7 @@ define(function (require) {
 
     controller = {
       // This callback should be trigger when model is loaded.
-      modelLoadedCallback: function () {
+      modelLoadedCallback: function (model) {
         var units = "";
 
         // Register properties listeners.

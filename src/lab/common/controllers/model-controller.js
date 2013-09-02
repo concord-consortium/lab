@@ -1,4 +1,4 @@
-/*global define, d3, alert, model: true */
+/*global define, d3, alert */
 
 define(function (require) {
 
@@ -7,6 +7,7 @@ define(function (require) {
   function ModelController(modelUrl, modelOptions, interactivesController,
                                   Model, ModelContainer, ScriptingAPI, Benchmarks) {
     var controller = {},
+        model,
 
         // Used to track cause of model reset, if known; required to be kept in this closure because
         // it doesn't get passed directly to our model.reset handler
@@ -127,6 +128,10 @@ define(function (require) {
 
     controller.getHeightForWidth = function (width, fontSizeChanged) {
       return controller.modelContainer.getHeightForWidth(width, fontSizeChanged);
+    };
+
+    controller.getModel = function () {
+      return model;
     };
 
     controller.enableKeyboardHandlers = function () {

@@ -15,7 +15,7 @@ define(function (require) {
 
     @param: api
   */
-  return function MD2DScriptingAPI (api) {
+  return function MD2DScriptingAPI (api, model) {
 
     var dnaEditDialog = new DNAEditDialog(),
         // whether we are currently processing a batch command, suppresses repaint

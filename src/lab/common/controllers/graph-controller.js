@@ -1,4 +1,4 @@
-/*global define, $, model*/
+/*global define, $*/
 
 define(function (require) {
   var Graph = require('grapher/core/graph'),
@@ -10,8 +10,6 @@ define(function (require) {
       // internal implementation detail (the grapher options format).
       grapherOptionForComponentSpecProperty = {
         title: 'title',
-        clearDataOnReset: 'clearDataOnReset',
-        streamDataFromModel: 'streamDataFromModel',
         enableAutoScaleButton: 'enableAutoScaleButton',
         enableAxisScaling: 'enableAxisScaling',
         dataPoints: 'dataPoints',
@@ -37,7 +35,7 @@ define(function (require) {
 
       graphControllerCount = 0;
 
-  return function graphController(component, scriptingAPI, interactivesController) {
+  return function graphController(component, scriptingAPI, interactivesController, model) {
     var // HTML element containing view
         $container,
         grapher,
@@ -86,7 +84,7 @@ define(function (require) {
       var dataPoint = getDataPoint(),
           i;
 
-      if (getOptions().streamDataFromModel) {
+      if (component.streamDataFromModel) {
         for (i = 0; i < dataPoint.length; i++) {
           data[i] = [dataPoint[i]];
         }
@@ -145,7 +143,7 @@ define(function (require) {
     }
 
     function registerModelListeners() {
-      if (getOptions().streamDataFromModel) {
+      if (component.streamDataFromModel) {
         // Namespace listeners to '.graphController' so we can eventually remove them all at once
         model.on('tick.'+namespace, appendDataPoint);
         model.on('stepBack.'+namespace, redrawCurrentStepPointer);
@@ -165,7 +163,7 @@ define(function (require) {
 
     function modelResetHandler() {
       if (grapher) {
-        if (getOptions().clearDataOnReset) {
+        if (component.clearDataOnReset) {
           resetData();
           resetGrapher();
         }
@@ -198,7 +196,7 @@ define(function (require) {
       /**
         Called by the interactives controller when the model finishes loading.
       */
-      modelLoadedCallback: function() {
+      modelLoadedCallback: function(model) {
         if (grapher) {
           resetGrapher();
         } else {

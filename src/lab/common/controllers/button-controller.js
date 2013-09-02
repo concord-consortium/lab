@@ -4,7 +4,7 @@ define(function () {
   var inherit              = require('common/inherit'),
       InteractiveComponent = require('common/controllers/interactive-component');
 
-  function ButtonController(component, scriptingAPI, interactivesController) {
+  function ButtonController(component, scriptingAPI, interactivesController, model) {
     // Call super constructor.
     InteractiveComponent.call(this, "button", component, scriptingAPI, interactivesController);
     this.$element.addClass("interactive-button");

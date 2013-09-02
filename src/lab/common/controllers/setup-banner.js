@@ -25,7 +25,7 @@ define(function () {
    * @param {AboutDialog} aboutDialog
    * @param {ShareDialog} shareDialog
    */
-  return function setupBanner(controller, interactive, creditsDialog, aboutDialog, shareDialog) {
+  return function setupBanner(controller, interactive, model, creditsDialog, aboutDialog, shareDialog) {
     var components = {},
         template = [],
         layout = {},
@@ -66,7 +66,7 @@ define(function () {
         Controller = PlaybackController;
       }
 
-      components[element.id] = new Controller(element, controller.scriptingAPI, controller);
+      components[element.id] = new Controller(element, controller.scriptingAPI, controller, model);
       template.push(container);
       layout[container.id] = [element.id];
     }

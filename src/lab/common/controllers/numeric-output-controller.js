@@ -1,4 +1,4 @@
-/*global define, $, model */
+/*global define, $ */
 
 define(function () {
 
@@ -6,7 +6,7 @@ define(function () {
       validator = require('common/validator'),
       NumericOutputView = require('common/views/numeric-output-view');
 
-  return function NumericOutputController(component, scriptingAPI, interactivesController) {
+  return function NumericOutputController(component, scriptingAPI, interactivesController, model) {
     var propertyName,
         label,
         units,
@@ -67,7 +67,7 @@ define(function () {
     // Public API.
     controller = {
       // This callback should be trigger when model is loaded.
-      modelLoadedCallback: function () {
+      modelLoadedCallback: function (model) {
         if (propertyName) {
           propertyDescription = model.getPropertyDescription(propertyName);
           if (propertyDescription) {

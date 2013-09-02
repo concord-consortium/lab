@@ -1,4 +1,4 @@
-/*global define, $, model */
+/*global define, $ */
 
 define(function () {
 
@@ -6,7 +6,7 @@ define(function () {
       disablable = require('common/controllers/disablable'),
       validator  = require('common/validator');
 
-  return function CheckboxController(component, scriptingAPI, interactivesController) {
+  return function CheckboxController(component, scriptingAPI, interactivesController, model) {
     var propertyName,
         onClickScript,
         initialValue,
@@ -123,7 +123,7 @@ define(function () {
     // Public API.
     controller = {
       // This callback should be trigger when model is loaded.
-      modelLoadedCallback: function () {
+      modelLoadedCallback: function (model, scriptingAPI) {
         // Connect checkbox with model's property if its name is defined.
         if (propertyName !== undefined) {
           // Register listener for 'propertyName'.

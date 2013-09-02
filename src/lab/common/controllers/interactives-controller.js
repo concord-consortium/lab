@@ -1,4 +1,4 @@
-/*global define, model, $, setTimeout, document, window */
+/*global define, $, setTimeout, document, window */
 
 define(function (require) {
   // Dependencies.
@@ -65,8 +65,7 @@ define(function (require) {
       //                           it should just return a copy (!) of the initial component definition.
       // # getViewContainer()    - function returning a jQuery object containing
       //                           DOM elements of the component.
-      // # modelLoadedCallback() - optional function taking no arguments, a callback
-      //                           which is called when the model is loaded.
+      // # modelLoadedCallback(model) - optional function with , a callback which is called when the model is loaded.
       // # resize()              - optional function taking no arguments, a callback
       //                           which is called by the layout algorithm when component's container
       //                           dimensions are changed. This lets component to adjust itself to the
@@ -98,10 +97,11 @@ define(function (require) {
     var interactive = {},
         controller = {},
         modelController,
+        model,
         $interactiveContainer,
         helpSystem,
-        models = [],
-        modelsHash = {},
+        modelDefinitions = [],
+        modelHash = {},
         componentModelLoadedCallbacks = [],
         onLoadScripts = [],
         resizeCallbacks = [],
@@ -124,10 +124,8 @@ define(function (require) {
         customParametersByName = [],
 
         // API for scripts defined in the interactive JSON file.
+        // and additional model-specific scripting api if one is defined
         scriptingAPI,
-
-        // additional model-specific scripting api
-        modelScriptingAPI,
 
         // Handles exporting data to DataGames, if 'exports' are specified.
         exportController,
@@ -156,11 +154,369 @@ define(function (require) {
       };
     });
 
-    function getModel(modelId) {
-      if (modelsHash[modelId]) {
-        return modelsHash[modelId];
+    function getModelDefinition(modelId) {
+      if (modelHash[modelId]) {
+        return modelHash[modelId];
       }
       throw new Error("No model found with id "+modelId);
+    }
+
+    function layoutInteractive() {
+      // Do nothing if this is called before the model loads (for example via a resize event).
+      // The interactive will be laid out as soon as the model loads anyway, and furthermore the
+      // semantic layout mechanism calls at least one modelController method.
+      if (!semanticLayout.isReady()) {
+        return;
+      }
+      semanticLayout.layoutInteractive();
+      dispatch.layoutUpdated();
+    }
+
+    // ------------------------------------------------------------
+    //
+    // Handle keyboard shortcuts for model operation.
+    //
+    // ------------------------------------------------------------
+
+    function setupModelPlayerKeyboardHandler() {
+      // Deregister previous keydown handlers. Use namespaces so the code
+      // will not inadvertently remove event handlers attached by other code.
+      $interactiveContainer.off('keydown.interactiveController');
+      if (modelController && modelController.enableKeyboardHandlers()) {
+        $interactiveContainer.on('keydown.interactiveController', function(event) {
+          var keycode = event.keycode || event.which;
+          switch(keycode) {
+            case 13:                 // return
+            event.preventDefault();
+            scriptingAPI.api.start();
+            break;
+
+            case 32:                 // space
+            event.preventDefault();
+            if (!scriptingAPI.api.isStopped()) {
+              scriptingAPI.api.stop();
+            } else {
+              scriptingAPI.api.start();
+            }
+            break;
+
+            case 37:                 // left-arrow
+            event.preventDefault();
+            if (!scriptingAPI.api.isStopped()) {
+              scriptingAPI.api.stop();
+            } else {
+              scriptingAPI.api.stepBack();
+            }
+            break;
+
+            case 39:                 // right-arrow
+            event.preventDefault();
+            if (!scriptingAPI.api.isStopped()) {
+              scriptingAPI.api.stop();
+            } else {
+              scriptingAPI.api.stepForward();
+            }
+            break;
+          }
+        });
+        // $interactiveContainer.focus();
+      }
+    }
+
+    function setupLayout() {
+      var template, layout, comp, components, banner, resizeAfterFullscreen;
+
+      if (typeof interactive.template === "string") {
+        template = templates[interactive.template];
+      } else {
+        template = interactive.template;
+      }
+
+      // The authored definition of which components go in which container.
+      layout = interactive.layout;
+
+      // Banner hash containing components, layout containers and layout deinition
+      // (components location). Keep it in a separate structure, because we do not
+      // expect these objects to be serialized!
+      banner = setupBanner(controller, interactive, model, creditsDialog, aboutDialog, shareDialog);
+      // Register callbacks of banner components.
+      components = banner.components;
+      for (comp in components) {
+        if (components.hasOwnProperty(comp)) {
+          comp = components[comp];
+          if (comp.modelLoadedCallback) {
+            // $.proxy ensures that callback will be always executed
+            // in the context of correct object ('this' binding).
+            componentModelLoadedCallbacks.push($.proxy(comp.modelLoadedCallback, comp));
+          }
+        }
+      }
+      // Note that all of these operations create a new object.
+      // So interactive definition specified by the author won't be affected.
+      // This is important for serialization correctness.
+      template = banner.template.concat(template);
+      layout = $.extend({}, layout, banner.layout);
+      components = $.extend({}, componentByID, banner.components);
+
+      // Setup layout using both author components and components
+      // created automatically in this controller.
+      semanticLayout.initialize(template, layout, components,
+                                interactive.aspectRatio, interactive.fontScale);
+
+      // We are rendering in embeddable mode if only element on page
+      // so resize when window resizes.
+      if (onlyElementOnPage()) {
+        $(window).unbind('resize');
+        $(window).on('resize', function() {
+          controller.resize();
+        });
+      }
+
+      // in all cases, call resize when entering and existing fullscreen
+      resizeAfterFullscreen = function() {
+        // need to call twice, as safari requires two attempts before it has
+        // the correct dimensions.
+        controller.resize();
+        setTimeout(controller.resize, 50);
+      };
+      document.addEventListener("fullscreenchange", resizeAfterFullscreen, false);
+
+      document.addEventListener("mozfullscreenchange", resizeAfterFullscreen, false);
+
+      document.addEventListener("webkitfullscreenchange", resizeAfterFullscreen, false);
+    }
+
+    function createComponent(component) {
+          // Get type and ID of the requested component from JSON definition.
+      var type = component.type,
+          id = component.id,
+          comp;
+
+      // Use an appropriate constructor function and create a new instance of the given type.
+      // Note that we use constant set of parameters for every type:
+      // 1. component definition (exact object from interactive JSON),
+      // 2. scripting API object,
+      // 3. public API of the InteractiveController.
+      comp = new ComponentConstructor[type](component, scriptingAPI, controller, model);
+
+      if (!comp.getViewContainer().hasClass("component")) {
+        throw new Error("Invalid Interactive Component implementation. Each component has to have 'component' class.");
+      }
+
+      // Save the new instance.
+      componentByID[id] = comp;
+      componentList.push(comp);
+
+      // Register component modelLoaded callbacks if available.
+      // FIXME. These callbacks should be event listeners.
+      if (comp.modelLoadedCallback) {
+        // $.proxy ensures that callback will be always executed
+        // in the context of correct object ('this' binding).
+        componentModelLoadedCallbacks.push($.proxy(comp.modelLoadedCallback, comp));
+      }
+    }
+
+    /**
+      Generic function that accepts either a string or an array of strings,
+      and returns the complete string
+    */
+    function getStringFromArray(str) {
+      if (typeof str === 'string') {
+        return str;
+      }
+      return str.join('\n');
+    }
+
+
+    /**
+      Call this after the Interactive renders to process any callbacks.
+    */
+    function interactiveRendered() {
+      var i;
+      for(i = 0; i < interactiveRenderedCallbacks.length; i++) {
+        interactiveRenderedCallbacks[i]();
+      }
+      isInteractiveRendered = true;
+    }
+
+    /**
+      Validates interactive definition.
+
+      Displays meaningful info in case of any errors. Also an exception is being thrown.
+
+      @param interactive
+        hash representing the interactive specification
+    */
+    function validateInteractive(interactive) {
+      var i, len, modelDefinitions, modelDefinition, components, errMsg;
+
+      function validateArray(modelName, array) {
+        var i, len, errMsg;
+        // Support undefined / null values - just return.
+        if (!array) return;
+
+        try {
+          for (i = 0, len = array.length; i < len; i++) {
+            array[i] = validator.validateCompleteness(metadata[modelName], array[i]);
+          }
+        } catch (e) {
+          errMsg = "Incorrect " + modelName +  " definition:\n" + e.message;
+          alert(errMsg);
+          throw new Error(errMsg);
+        }
+      }
+
+      // Validate top level interactive properties.
+      try {
+        interactive = validator.validateCompleteness(metadata.interactive, interactive);
+      } catch (e) {
+        errMsg = "Incorrect interactive definition:\n" + e.message;
+        alert(errMsg);
+        throw new Error(errMsg);
+      }
+
+      validateArray("model", interactive.models);
+      validateArray("parameter", interactive.parameters);
+      validateArray("output", interactive.outputs);
+      validateArray("filteredOutput", interactive.filteredOutputs);
+      validateArray("helpTip", interactive.helpTips);
+
+      // Validate also nested structures.
+      modelDefinitions = interactive.models;
+      for (i = 0, len = modelDefinitions.length; i < len; i++) {
+        modelDefinition = modelDefinitions[i];
+        validateArray("parameter", modelDefinition.parameters);
+        validateArray("output", modelDefinition.outputs);
+        validateArray("filteredOutput", modelDefinition.filteredOutputs);
+      }
+
+      components = interactive.components;
+      try {
+        for (i = 0, len = components.length; i < len; i++) {
+          components[i] = validator.validateCompleteness(metadata[components[i].type], components[i]);
+        }
+      } catch (e) {
+        errMsg = "Incorrect " + components[i].type + " component definition:\n" + e.message;
+        alert(errMsg);
+        throw new Error(errMsg);
+      }
+
+      // Validate exporter, if any...
+      if (interactive.exports) {
+        try {
+          interactive.exports = validator.validateCompleteness(metadata.exports, interactive.exports);
+        } catch (e) {
+          errMsg = "Incorrect exports definition:\n" + e.message;
+          alert(errMsg);
+          throw new Error(errMsg);
+        }
+      }
+
+      return interactive;
+    }
+
+    /**
+      Is the Interactive the only element on the page?
+
+      An Interactive can either be displayed as the only content on a page
+      (often in an iframe) or in a dom element on a page with other elements.
+
+      TODO: make more robust
+      This function makes a simplifying assumption that the Interactive is the
+      only content on the page if the parent of the parent is the <body> element
+    */
+    function onlyElementOnPage() {
+      return $interactiveContainer.parent().parent().prop("nodeName") === "BODY";
+    }
+
+    function createScriptingAPI() {
+      // Only create scripting API after model is loaded.
+      scriptingAPI = new ScriptingAPI(controller, model);
+      // Expose API to global namespace (prototyping / testing using the browser console).
+      scriptingAPI.exposeScriptingAPI();
+
+      // Extend universal Interactive scriptingAPI with optional model-specific scripting API
+      if (modelController.ScriptingAPI) {
+        scriptingAPI.extend(modelController.ScriptingAPI);
+        scriptingAPI.exposeScriptingAPI();
+      }
+    }
+
+    /**
+      The main method called when this controller is created.
+
+      Populates the element pointed to by viewSelector with divs to contain the
+      molecule container (view) and the various components specified in the interactive
+      definition, and
+
+      @param newInteractive
+        hash representing the interactive specification or string representing path or full url
+    */
+    function loadInteractive(newInteractive) {
+      isModelLoaded = false;
+      isInteractiveRendered = false;
+      function nextStep() {
+        // Validate interactive.
+        controller.interactive = validateInteractive(controller.interactive);
+        interactive = controller.interactive;
+
+        // Set up the list of possible modelDefinitions.
+        modelDefinitions = interactive.models;
+        for (i = 0, len = modelDefinitions.length; i < len; i++) {
+          modelHash[modelDefinitions[i].id] = modelDefinitions[i];
+        }
+        loadModelFirstBeforeCompletingInteractive();
+      }
+      if (typeof newInteractive === "string") {
+        $.get(newInteractive).done(function(results) {
+          if (typeof results === 'string') results = JSON.parse(results);
+          controller.interactive = results;
+          nextStep();
+        })
+        .fail(function() {
+          document.title = "Interactive not found";
+          controller.interactive = interactiveNotFound(newInteractive);
+          nextStep();
+        });
+      } else {
+        // we were passed an interactive object
+        controller.interactive = newInteractive;
+        nextStep();
+      }
+    }
+
+    function loadModelFirstBeforeCompletingInteractive() {
+      // There is a performance issue, it makes sense to start the ajax request
+      // for the model definition as soon as the Interactive Controller can.
+      //
+      // Load first model in modelDefinitions array
+      if (modelDefinitions && modelDefinitions.length > 0) {
+        loadModel(modelDefinitions[0].id);
+      } else {
+        // Setup proxy modelController object with a 0x0 px view for semantic layout system
+        modelController = {
+          getViewContainer: function() {
+            var $el = $("<div>")
+              .attr({
+                "id": "model-container",
+                "class": "container",
+                "tabindex": getNextTabIndex
+              })
+              // Set initial dimensions.
+              .css({
+                "width": "0px",
+                "height": "0px"
+              });
+            return $el;
+          },
+          getHeightForWidth: function() { return 0; },
+          resize: function() {},
+          getModel: function() { return {}; }
+        };
+        model = modelController.getModel();
+        createScriptingAPI();
+        finishLoadingInteractive();
+      }
     }
 
     /**
@@ -170,7 +526,7 @@ define(function (require) {
       @optionalParam modelObject
     */
     function loadModel(modelId, modelConfig) {
-      var modelDefinition = getModel(modelId),
+      var modelDefinition = getModelDefinition(modelId),
           interactiveViewOptions,
           interactiveModelOptions;
 
@@ -183,11 +539,6 @@ define(function (require) {
         interactiveViewOptions = $.extend(true, {}, modelDefinition.viewOptions);
       } else {
         interactiveViewOptions = { controlButtons: 'play' };
-      }
-
-      onLoadScripts = [];
-      if (modelDefinition.onLoad) {
-        onLoadScripts.push( scriptingAPI.makeFunctionInScriptContext( getStringFromArray(modelDefinition.onLoad) ) );
       }
 
       if (modelDefinition.modelOptions) {
@@ -310,20 +661,13 @@ define(function (require) {
           // (this catches reloads)
           modelController.on('modelLoaded', modelLoadedHandler);
           modelController.on('modelReset', modelResetHandler);
+          // model = modelController.getModel();
+          // createScriptingAPI();
         }
-        // This will attach model container to DOM.
-        semanticLayout.setupModel(modelController);
 
         setupModelPlayerKeyboardHandler();
 
-        // Setup model and notify observers that model was loaded.
-        modelLoadedHandler(ModelController.LOAD_CAUSE.INITIAL_LOAD);
-
-        // Layout interactive after modelLoaded() callback!
-        layoutInteractive();
-
-        // notify observers that interactive is rendered.
-        interactiveRendered();
+        finishLoadingInteractive(modelDefinition);
       }
 
       function createModelController(type, modelUrl, modelOptions) {
@@ -337,383 +681,15 @@ define(function (require) {
 
         modelController = new ModelControllerFor[modelType](modelUrl, modelOptions, controller);
 
-        // Extending universal Interactive scriptingAPI with model-specific scripting API
-        if (modelController.ScriptingAPI) {
-          scriptingAPI.extend(modelController.ScriptingAPI);
-          scriptingAPI.exposeScriptingAPI();
-        }
-
         return modelController;
       }
     }
 
-    function layoutInteractive() {
-      // Do nothing if this is called before the model loads (for example via a resize event).
-      // The interactive will be laid out as soon as the model loads anyway, and furthermore the
-      // semantic layout mechanism calls at least one modelController method.
-      if (!semanticLayout.isReady()) {
-        return;
-      }
-      semanticLayout.layoutInteractive();
-      dispatch.layoutUpdated();
-    }
-
-    // ------------------------------------------------------------
-    //
-    // Handle keyboard shortcuts for model operation.
-    //
-    // ------------------------------------------------------------
-
-    function setupModelPlayerKeyboardHandler() {
-      // Deregister previous keydown handlers. Use namespaces so the code
-      // will not inadvertently remove event handlers attached by other code.
-      $interactiveContainer.off('keydown.interactiveController');
-      if (modelController && modelController.enableKeyboardHandlers()) {
-        $interactiveContainer.on('keydown.interactiveController', function(event) {
-          var keycode = event.keycode || event.which;
-          switch(keycode) {
-            case 13:                 // return
-            event.preventDefault();
-            scriptingAPI.api.start();
-            break;
-
-            case 32:                 // space
-            event.preventDefault();
-            if (!scriptingAPI.api.isStopped()) {
-              scriptingAPI.api.stop();
-            } else {
-              scriptingAPI.api.start();
-            }
-            break;
-
-            case 37:                 // left-arrow
-            event.preventDefault();
-            if (!scriptingAPI.api.isStopped()) {
-              scriptingAPI.api.stop();
-            } else {
-              scriptingAPI.api.stepBack();
-            }
-            break;
-
-            case 39:                 // right-arrow
-            event.preventDefault();
-            if (!scriptingAPI.api.isStopped()) {
-              scriptingAPI.api.stop();
-            } else {
-              scriptingAPI.api.stepForward();
-            }
-            break;
-          }
-        });
-        // $interactiveContainer.focus();
-      }
-    }
-
-    function setupLayout() {
-      var template, layout, comp, components, banner, resizeAfterFullscreen;
-
-      if (typeof interactive.template === "string") {
-        template = templates[interactive.template];
-      } else {
-        template = interactive.template;
-      }
-
-      // The authored definition of which components go in which container.
-      layout = interactive.layout;
-
-      // Banner hash containing components, layout containers and layout deinition
-      // (components location). Keep it in a separate structure, because we do not
-      // expect these objects to be serialized!
-      banner = setupBanner(controller, interactive, creditsDialog, aboutDialog, shareDialog);
-      // Register callbacks of banner components.
-      components = banner.components;
-      for (comp in components) {
-        if (components.hasOwnProperty(comp)) {
-          comp = components[comp];
-          if (comp.modelLoadedCallback) {
-            // $.proxy ensures that callback will be always executed
-            // in the context of correct object ('this' binding).
-            componentModelLoadedCallbacks.push($.proxy(comp.modelLoadedCallback, comp));
-          }
-        }
-      }
-      // Note that all of these operations create a new object.
-      // So interactive definition specified by the author won't be affected.
-      // This is important for serialization correctness.
-      template = banner.template.concat(template);
-      layout = $.extend({}, layout, banner.layout);
-      components = $.extend({}, componentByID, banner.components);
-
-      // Setup layout using both author components and components
-      // created automatically in this controller.
-      semanticLayout.initialize(template, layout, components,
-                                interactive.aspectRatio, interactive.fontScale);
-
-      // We are rendering in embeddable mode if only element on page
-      // so resize when window resizes.
-      if (onlyElementOnPage()) {
-        $(window).unbind('resize');
-        $(window).on('resize', function() {
-          controller.resize();
-        });
-      }
-
-      // in all cases, call resize when entering and existing fullscreen
-      resizeAfterFullscreen = function() {
-        // need to call twice, as safari requires two attempts before it has
-        // the correct dimensions.
-        controller.resize();
-        setTimeout(controller.resize, 50);
-      };
-      document.addEventListener("fullscreenchange", resizeAfterFullscreen, false);
-
-      document.addEventListener("mozfullscreenchange", resizeAfterFullscreen, false);
-
-      document.addEventListener("webkitfullscreenchange", resizeAfterFullscreen, false);
-    }
-
-    function createComponent(component) {
-          // Get type and ID of the requested component from JSON definition.
-      var type = component.type,
-          id = component.id,
-          comp;
-
-      // Use an appropriate constructor function and create a new instance of the given type.
-      // Note that we use constant set of parameters for every type:
-      // 1. component definition (exact object from interactive JSON),
-      // 2. scripting API object,
-      // 3. public API of the InteractiveController.
-      comp = new ComponentConstructor[type](component, scriptingAPI, controller);
-
-      if (!comp.getViewContainer().hasClass("component")) {
-        throw new Error("Invalid Interactive Component implementation. Each component has to have 'component' class.");
-      }
-
-      // Save the new instance.
-      componentByID[id] = comp;
-      componentList.push(comp);
-
-      // Register component modelLoaded callbacks if available.
-      // FIXME. These callbacks should be event listeners.
-      if (comp.modelLoadedCallback) {
-        // $.proxy ensures that callback will be always executed
-        // in the context of correct object ('this' binding).
-        componentModelLoadedCallbacks.push($.proxy(comp.modelLoadedCallback, comp));
-      }
-    }
-
-    /**
-      Generic function that accepts either a string or an array of strings,
-      and returns the complete string
-    */
-    function getStringFromArray(str) {
-      if (typeof str === 'string') {
-        return str;
-      }
-      return str.join('\n');
-    }
-
-
-    /**
-      Call this after the Interactive renders to process any callbacks.
-    */
-    function interactiveRendered() {
-      var i;
-      for(i = 0; i < interactiveRenderedCallbacks.length; i++) {
-        interactiveRenderedCallbacks[i]();
-      }
-      isInteractiveRendered = true;
-    }
-
-    /**
-      Call this after the model loads, to process any queued resize and update events
-      that depend on the model's properties, then draw the screen.
-    */
-    function modelLoadedHandler(cause) {
-      var i;
-
-      setupCustomOutputs("basic", controller.currentModel.outputs, interactive.outputs);
-      setupCustomParameters(controller.currentModel.parameters, interactive.parameters);
-      // Setup filtered outputs after basic outputs and parameters, as filtered output require its input
-      // to exist during its definition.
-      setupCustomOutputs("filtered", controller.currentModel.filteredOutputs, interactive.filteredOutputs);
-
-      modelController.modelInDOM();
-      // Call component callbacks *when* the layout is created.
-      // Some callbacks require that their views are already attached to the DOM, e.g. (bar graph uses
-      //getBBox() which in Firefox works only when element is visible and rendered).
-      for(i = 0; i < componentModelLoadedCallbacks.length; i++) {
-        componentModelLoadedCallbacks[i]();
-      }
-
-      // setup messaging with embedding parent window
-      parentMessageAPI = new ParentMessageAPI(model, modelController.modelContainer, controller);
-
-      for(i = 0; i < onLoadScripts.length; i++) {
-        onLoadScripts[i]();
-      }
-
-      modelController.modelSetupComplete();
-
-      for(i = 0; i < modelLoadedCallbacks.length; i++) {
-        modelLoadedCallbacks[i](cause);
-      }
-      isModelLoaded = true;
-    }
-
-    function modelResetHandler(cause) {
-      if (ignoreModelResetEvent) {
-        return;
-      }
-
-      notifyModelResetCallbacks(cause);
-    }
-
-    /**
-      Notify observers that a model was reset, passing along the cause of the reset event.
-    */
-    function notifyModelResetCallbacks(cause) {
-      modelResetCallbacks.forEach(function(cb) {
-        cb(cause);
-      });
-    }
-
-    /**
-      Validates interactive definition.
-
-      Displays meaningful info in case of any errors. Also an exception is being thrown.
-
-      @param interactive
-        hash representing the interactive specification
-    */
-    function validateInteractive(interactive) {
-      var i, len, models, model, components, errMsg;
-
-      function validateArray(modelName, array) {
-        var i, len, errMsg;
-        // Support undefined / null values - just return.
-        if (!array) return;
-
-        try {
-          for (i = 0, len = array.length; i < len; i++) {
-            array[i] = validator.validateCompleteness(metadata[modelName], array[i]);
-          }
-        } catch (e) {
-          errMsg = "Incorrect " + modelName +  " definition:\n" + e.message;
-          alert(errMsg);
-          throw new Error(errMsg);
-        }
-      }
-
-      // Validate top level interactive properties.
-      try {
-        interactive = validator.validateCompleteness(metadata.interactive, interactive);
-      } catch (e) {
-        errMsg = "Incorrect interactive definition:\n" + e.message;
-        alert(errMsg);
-        throw new Error(errMsg);
-      }
-
-      validateArray("model", interactive.models);
-      validateArray("parameter", interactive.parameters);
-      validateArray("output", interactive.outputs);
-      validateArray("filteredOutput", interactive.filteredOutputs);
-      validateArray("helpTip", interactive.helpTips);
-
-      // Validate also nested strucutres.
-      models = interactive.models;
-      for (i = 0, len = models.length; i < len; i++) {
-        model = models[i];
-        validateArray("parameter", model.parameters);
-        validateArray("output", model.outputs);
-        validateArray("filteredOutput", model.filteredOutputs);
-      }
-
-      components = interactive.components;
-      try {
-        for (i = 0, len = components.length; i < len; i++) {
-          components[i] = validator.validateCompleteness(metadata[components[i].type], components[i]);
-        }
-      } catch (e) {
-        errMsg = "Incorrect " + components[i].type + " component definition:\n" + e.message;
-        alert(errMsg);
-        throw new Error(errMsg);
-      }
-
-      // Validate exporter, if any...
-      if (interactive.exports) {
-        try {
-          interactive.exports = validator.validateCompleteness(metadata.exports, interactive.exports);
-        } catch (e) {
-          errMsg = "Incorrect exports definition:\n" + e.message;
-          alert(errMsg);
-          throw new Error(errMsg);
-        }
-      }
-
-      return interactive;
-    }
-
-    /**
-      Is the Interactive the only element on the page?
-
-      An Interactive can either be displayed as the only content on a page
-      (often in an iframe) or in a dom element on a page with other elements.
-
-      TODO: make more robust
-      This function makes a simplifying assumption that the Interactive is the
-      only content on the page if the parent of the parent is the <body> element
-    */
-    function onlyElementOnPage() {
-      return $interactiveContainer.parent().parent().prop("nodeName") === "BODY";
-    }
-
-    /**
-      The main method called when this controller is created.
-
-      Populates the element pointed to by viewSelector with divs to contain the
-      molecule container (view) and the various components specified in the interactive
-      definition, and
-
-      @param newInteractive
-        hash representing the interactive specification or string representing path or full url
-    */
-    function loadInteractive(newInteractive) {
-      isModelLoaded = false;
-      isInteractiveRendered = false;
-      if (typeof newInteractive === "string") {
-        $.get(newInteractive).done(function(results) {
-          if (typeof results === 'string') results = JSON.parse(results);
-          controller.interactive = results;
-          finishLoadingInteractive();
-        })
-        .fail(function() {
-          document.title = "Interactive not found";
-          controller.interactive = interactiveNotFound(newInteractive);
-          finishLoadingInteractive();
-        });
-      } else {
-        // we were passed an interactive object
-        controller.interactive = newInteractive;
-        finishLoadingInteractive();
-      }
-    }
-
-    function finishLoadingInteractive() {
+    function finishLoadingInteractive(modelDefinition) {
       var componentJsons,
           i, len;
 
       componentModelLoadedCallbacks = [];
-
-      // Validate interactive.
-      controller.interactive = validateInteractive(controller.interactive);
-      interactive = controller.interactive;
-
-      // Set up the list of possible models.
-      models = interactive.models;
-      for (i = 0, len = models.length; i < len; i++) {
-        modelsHash[models[i].id] = models[i];
-      }
 
       // Prepare interactive components.
       componentJsons = interactive.components || [];
@@ -721,6 +697,19 @@ define(function (require) {
       // Clear component instances.
       componentList = [];
       componentByID = {};
+
+      // Setup model and notify observers that model was loaded.
+      // modelLoadedHandler(ModelController.LOAD_CAUSE.INITIAL_LOAD);
+
+      model = modelController.getModel();
+      createScriptingAPI();
+
+      initializedModelOutputsAndParamaters();
+
+      onLoadScripts = [];
+      if (modelDefinition.onLoad) {
+        onLoadScripts.push( scriptingAPI.makeFunctionInScriptContext( getStringFromArray(modelDefinition.onLoad) ) );
+      }
 
       for (i = 0, len = componentJsons.length; i < len; i++) {
         createComponent(componentJsons[i]);
@@ -731,7 +720,7 @@ define(function (require) {
         // Regardless of whether or not we are able to export data to an enclosing container,
         // setup export controller so you can debug exports by typing script.exportData() in the
         // console.
-        exportController = new ExportController(interactive.exports, controller);
+        exportController = new ExportController(interactive.exports, model);
         componentModelLoadedCallbacks.push(exportController.modelLoadedCallback);
 
         // If there is an enclosing container we can export data to (e.g., we're iframed into
@@ -773,44 +762,96 @@ define(function (require) {
       // When all components are created, we can initialize semantic layout.
       setupLayout();
 
+      modelController.modelInDOM();
+
+      // This will attach model container to DOM.
+      semanticLayout.setupModel(modelController);
+
+      // Setup model outputs and properties added by the Interactive
+      initializedModelOutputsAndParamaters();
+
+      layoutInteractive();
+
+      // Call component callbacks *when* the layout is created.
+      // Some callbacks require that their views are already attached to the DOM, e.g. (bar graph uses
+      //getBBox() which in Firefox works only when element is visible and rendered).
+      for(i = 0; i < componentModelLoadedCallbacks.length; i++) {
+        componentModelLoadedCallbacks[i](model, scriptingAPI);
+      }
+
+      // setup messaging with embedding parent window
+      parentMessageAPI = new ParentMessageAPI(model, modelController.modelContainer, controller);
+
+      for(i = 0; i < onLoadScripts.length; i++) {
+        onLoadScripts[i]();
+      }
+
+      modelController.modelSetupComplete();
+
+      for(i = 0; i < modelLoadedCallbacks.length; i++) {
+        modelLoadedCallbacks[i](model);
+      }
+
+      isModelLoaded = true;
+
       // Replace native tooltips with custom, styled and responsive tooltips.
       tooltip($interactiveContainer);
 
-      // FIXME: I moved this after setupLayout() on the previous line
-      // when I added the possiblity of including the model definition in the model
-      // section of the Interactive. We were counting on the ajax get operation taking
-      // long enough to not occur until after setupLayout() finished.
-      //
-      // But ... there is a performance issue, it makes sense to start the ajax request
-      // for the model definition as soon as the Interactive Controller can.
-      //
-      // Load first model in models array
-      if (models && models.length > 0) {
-        loadModel(models[0].id);
-      } else {
-        // Setup proxy modelController object with a 0x0 px view for semantic layout system
-        modelController = {
-          getViewContainer: function() {
-            var $el = $("<div>")
-              .attr({
-                "id": "model-container",
-                "class": "container",
-                "tabindex": getNextTabIndex
-              })
-              // Set initial dimensions.
-              .css({
-                "width": "0px",
-                "height": "0px"
-              });
-            return $el;
-          },
-          getHeightForWidth: function() { return 0; },
-          resize: function() {}
-        };
-        semanticLayout.setupModel(modelController);
-        // and layout a 'no-model' interactive
-        layoutInteractive();
+      // notify observers that interactive is rendered.
+      interactiveRendered();
+
+    }
+
+    function initializedModelOutputsAndParamaters() {
+      setupCustomOutputs("basic", controller.currentModel.outputs, interactive.outputs);
+      setupCustomParameters(controller.currentModel.parameters, interactive.parameters);
+      // Setup filtered outputs after basic outputs and parameters, as filtered output require its input
+      // to exist during its definition.
+      setupCustomOutputs("filtered", controller.currentModel.filteredOutputs, interactive.filteredOutputs);
+    }
+
+    /**
+      Call this after the model loads, to process any queued resize and update events
+      that depend on the model's properties, then draw the screen.
+    */
+    function modelLoadedHandler(cause) {
+      var i;
+
+      model = modelController.getModel();
+      createScriptingAPI();
+
+      initializedModelOutputsAndParamaters();
+
+      modelController.modelInDOM();
+      // Call component callbacks *when* the layout is created.
+      // Some callbacks require that their views are already attached to the DOM, e.g. (bar graph uses
+      //getBBox() which in Firefox works only when element is visible and rendered).
+      for(i = 0; i < componentModelLoadedCallbacks.length; i++) {
+        componentModelLoadedCallbacks[i](model, scriptingAPI);
       }
+
+      // setup messaging with embedding parent window
+      parentMessageAPI = new ParentMessageAPI(model, modelController.modelContainer, controller);
+
+      for(i = 0; i < onLoadScripts.length; i++) {
+        onLoadScripts[i]();
+      }
+
+      modelController.modelSetupComplete();
+
+      for(i = 0; i < modelLoadedCallbacks.length; i++) {
+        modelLoadedCallbacks[i](model, cause);
+      }
+      isModelLoaded = true;
+    }
+
+    /**
+      Notify observers that a model was reset, passing along the cause of the reset event.
+    */
+    function modelResetHandler(cause) {
+      modelResetCallbacks.forEach(function(cb) {
+        cb(cause);
+      });
     }
 
     /**
@@ -906,7 +947,7 @@ define(function (require) {
         }
         // Save reference to the definition which is finally used.
         // Note that if parameter is defined both in interactive top-level scope
-        // and models section, one from model sections will be defined in this hash.
+        // and modelDefinitions section, one from model sections will be defined in this hash.
         // It's necessary to update correctly values of parameters during serialization.
         customParametersByName[parameter.name] = parameter;
       }
@@ -952,7 +993,7 @@ define(function (require) {
       getDGExportController: function () {
         return exportController;
       },
-      getModelController: function () {
+      getModelDefinitionController: function () {
         return modelController;
       },
       getComponent: function (id) {
@@ -1141,7 +1182,7 @@ define(function (require) {
         // property of the interactive definition. 'customParameters' list contains references to all parameters
         // currently used by the interactive, no matter where they were specified. So, it's enough to process
         // and update only these parameters. Because of that, later we can easily serialize interactive definition
-        // with updated values and avoid deciding whether this parameter is defined in 'models' section
+        // with updated values and avoid deciding whether this parameter is defined in 'modelDefinitions' section
         // or top-level 'parameters' section. It will be updated anyway.
         if (model !== undefined && model.get !== undefined) {
           for (param in customParametersByName) {
@@ -1166,7 +1207,7 @@ define(function (require) {
           fontScale: interactive.fontScale,
           helpOnLoad: interactive.helpOnLoad,
           about: arrays.isArray(interactive.about) ? $.extend(true, [], interactive.about) : interactive.about,
-          // Node that models section can also contain custom parameters definition. However, their initial values
+          // Node that modelDefinitions section can also contain custom parameters definition. However, their initial values
           // should be already updated (take a look at the beginning of this function), so we can just serialize whole array.
           models: $.extend(true, [], interactive.models),
           // All used parameters are already updated, they contain currently used values.
@@ -1241,10 +1282,6 @@ define(function (require) {
     // Initialization.
     //
 
-    // Create scripting API.
-    scriptingAPI = new ScriptingAPI(controller, modelScriptingAPI);
-    // Expose API to global namespace (prototyping / testing using the browser console).
-    scriptingAPI.exposeScriptingAPI();
     // Select interactive container.
     // TODO: controller rather should create it itself to follow pattern of other components.
     $interactiveContainer = $(viewSelector);

@@ -1,4 +1,4 @@
-/*global d3, $, define, model */
+/*global d3, $, define */
 
 define(function (require) {
 
@@ -13,7 +13,7 @@ define(function (require) {
   // script context; and scripts are run in strict mode so they don't
   // accidentally expose or read globals.
   //
-  return function ScriptingAPI (interactivesController) {
+  return function ScriptingAPI (interactivesController, model) {
 
     var controller = {
 
@@ -96,7 +96,7 @@ define(function (require) {
 
           format: d3.format,
 
-
+          model: model,
 
           get: function get() {
             return model.get.apply(model, arguments);
@@ -410,7 +410,7 @@ define(function (require) {
         Extend Scripting API
       */
       extend: function (ModelScriptingAPI) {
-        $.extend(this.api, new ModelScriptingAPI(this.api));
+        $.extend(this.api, new ModelScriptingAPI(this.api, model));
       },
 
       /**
