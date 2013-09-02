@@ -14,7 +14,7 @@ define(function (require) {
 
     GET_WEBGL = '<p><a href="http://get.webgl.org" target="_blank">Click to learn more about WebGL.</a></p>';
 
-  return function WebGLStatusView(html_id) {
+  return function WebGLStatusView(html_id, model) {
     var
       DEFAULT_ID = 'e2d-webgl-status',
 
@@ -28,7 +28,7 @@ define(function (require) {
         "id": "webgl-status-checkbox",
         "text": "WebGL-accelerated physics engine",
         "property": "use_WebGL"
-      }),
+      }, null, null, model),
       $checkbox = webgl_checkbox.getViewContainer(),
 
       // Energy2D modeler.
@@ -77,7 +77,7 @@ define(function (require) {
         bindModel: function (model) {
           energy2d_modeler = model;
           // Actually this function should be named 'bindModel(model)'.
-          webgl_checkbox.modelLoadedCallback();
+          webgl_checkbox.modelLoadedCallback(model);
         },
 
         render: function () {

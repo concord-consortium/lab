@@ -345,6 +345,34 @@ define(function (require) {
         dispatch.partsChanged();
       },
 
+      // Beware. The "reset" button in Lab interactives do not call this method. Instead they "reload"
+      // the model, discarding this model object and creating a new one from the model JSON.
+      reset: function() {
+        dispatch.willReset();
+        propertySupport.invalidatingChangePreHook();
+        
+        model.stop();
+        coreModel.reset();
+
+        var parts;
+        // Validate parts before passing options to coreModel.
+        if (initialProperties.structure && initialProperties.structure.part) {
+          parts = validateParts(initialProperties.structure.part);
+        }
+        coreModel = coremodel.makeCoreModel(model.properties, parts);
+        setWebGLEnabled(model.properties.use_WebGL);
+        if (initialProperties.sensors) {
+          createSensors(initialProperties.sensors);
+        }
+        updatePartsViewModel();
+        updateSensorViewModel();
+
+        propertySupport.invalidatingChangePostHook();
+        model.resetAllOutputProperties();
+        dispatch.reset();
+        dispatch.invalidation();
+      },
+
       stepCounter: function () {
         return coreModel.getIndexOfStep();
       },
@@ -471,6 +499,19 @@ define(function (require) {
 
       updatePartsViewModel();
       updateSensorViewModel();
+
+      // FIXME. More yuck: We still need a pattern for recompute model properties which don't depend
+      // on physics (and which therefore can be recomputed without invalidating and recomputing all
+      // the physics based properties) while still making them (1) observable and (2) read-only.
+
+      // used to triggers recomputation of isPlayable property based on isStopped and isReady:
+      model.on('play.model', recomputeProperties);
+      model.on('stop.model', recomputeProperties);
+
+      function recomputeProperties() {
+        propertySupport.invalidatingChangePreHook();
+        propertySupport.invalidatingChangePostHook();
+      }
 
       // Temporal workaround. In fact width and height should
       // be outputs based on min / max.

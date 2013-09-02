@@ -1,4 +1,4 @@
-/*global define: false, Lab: false, model: false, d3: false */
+/*global define: false, Lab: false, d3: false */
 
 define(function () {
 

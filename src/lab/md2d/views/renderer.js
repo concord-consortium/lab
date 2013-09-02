@@ -2309,6 +2309,8 @@ define(function(require) {
       model2pxInv: modelView.model2pxInv
     };
 
+    init();
+
     return api;
   };
 });

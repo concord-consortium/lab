@@ -3,7 +3,7 @@
 define(function(require) {
   var HeatmapView        = require('energy2d/views/heatmap'),
       HeatmapWebGLView   = require('energy2d/views/heatmap-webgl'),
-      WebGLStatus        = require('energy2d/views/webgl-status'),
+      WebGLStatusView    = require('energy2d/views/webgl-status'),
       VectormapView      = require('energy2d/views/vectormap'),
       VectormapWebGLView = require('energy2d/views/vectormap-webgl'),
       PhotonsView        = require('energy2d/views/photons'),
@@ -11,16 +11,15 @@ define(function(require) {
       SensorsView        = require('energy2d/views/sensors');
 
 
-  return function Renderer(SVGContainer) {
+  return function Renderer(SVGContainer, model) {
     var api,
-        model,
 
         heatmap_view,
         velocity_view,
         photons_view,
         parts_view,
         sensors_view,
-        webgl_status = new WebGLStatus(),
+        webgl_status = new WebGLStatusView(null, model),
         $status = webgl_status.getHTMLElement(),
         $canvasCont = $("<div id='e2d-canvas-views'>"),
         cavasCount = 0,
@@ -111,7 +110,7 @@ define(function(require) {
         return width * model.properties.grid_height / model.properties.grid_width;
       },
 
-      setup: function () {
+      setup: function (model) {
         beforeSetup = false;
         setupCavnasViews();
 
