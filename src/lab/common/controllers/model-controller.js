@@ -6,8 +6,10 @@ define(function (require) {
 
   function ModelController(modelUrl, modelOptions, interactivesController,
                                   Model, ModelContainer, ScriptingAPI, Benchmarks) {
-    var controller = {},
+    var controller,
         model,
+        benchmarks,
+        modelContainer,
 
         // Used to track cause of model reset, if known; required to be kept in this closure because
         // it doesn't get passed directly to our model.reset handler
@@ -29,14 +31,6 @@ define(function (require) {
 
     // ------------------------------------------------------------
     //
-    //   Benchmarks Setup
-    //
-    function setupBenchmarks() {
-      controller.benchmarks = new Benchmarks(controller);
-    }
-
-    // ------------------------------------------------------------
-    //
     //   Model Setup
     // ------------------------------------------------------------
     function setupModel() {
@@ -51,7 +45,7 @@ define(function (require) {
       // Just use the generic cause, "reset", if no more specific cause of the model reset is
       // available.
       resetCause = resetCause || ModelController.RESET_CAUSE.RESET;
-      repaint();
+      modelContainer.repaint();
       dispatch.modelReset(resetCause);
     }
 
@@ -67,7 +61,7 @@ define(function (require) {
       // Create container view for model
       //
       // ------------------------------------------------------------
-      controller.modelContainer = new ModelContainer(model, controller.modelUrl);
+      modelContainer = new ModelContainer(model, controller.modelUrl);
     }
 
     /**
@@ -81,35 +75,14 @@ define(function (require) {
         model.willReset();
       }
 
-      controller.modelUrl = newModelUrl || controller.modelUrl;
+      modelUrl = newModelUrl || modelUrl;
       modelOptions = newModelOptions || modelOptions;
       setupModel();
-      controller.modelContainer.bindModel(model, controller.modelUrl);
+      modelContainer.bindModel(model, modelUrl);
 
       if (!suppressEvents) {
         dispatch.modelLoaded(ModelController.LOAD_CAUSE.RELOAD);
       }
-    }
-
-    function reset(cause) {
-      model.stop();
-      // use the resetCause closure var to make the cause (which the model doesn't know about)
-      // available to resetHandler()
-      resetCause = cause;
-      model.reset();
-      resetCause = undefined;
-    }
-
-    function repaint() {
-      controller.modelContainer.repaint();
-    }
-
-    function resize() {
-      controller.modelContainer.resize();
-    }
-
-    function state() {
-      return model.serialize();
     }
 
     // ------------------------------------------------------------
@@ -118,63 +91,85 @@ define(function (require) {
     //
     // ------------------------------------------------------------
 
-    controller.on = function(type, listener) {
-      dispatch.on(type, listener);
-    };
+    controller = {
+      
+      get type() {
+        return Model.type;
+      },
+      get benchmarks() {
+        return benchmarks;
+      },
+      get modelUrl() {
+        return modelUrl;
+      },
+      get model() {
+        return model;
+      },
+      get modelContainer() {
+        return modelContainer;
+      },
+      
+      on: function(type, listener) {
+        dispatch.on(type, listener);
+      },
 
-    controller.getViewContainer = function () {
-      return controller.modelContainer.$el;
-    };
+      getViewContainer: function () {
+        return controller.modelContainer.$el;
+      },
 
-    controller.getHeightForWidth = function (width, fontSizeChanged) {
-      return controller.modelContainer.getHeightForWidth(width, fontSizeChanged);
-    };
+      getHeightForWidth: function (width, fontSizeChanged) {
+        return controller.modelContainer.getHeightForWidth(width, fontSizeChanged);
+      },
 
-    controller.getModel = function () {
-      return model;
-    };
+      resize: function () {
+        controller.modelContainer.resize();
+      },
 
-    controller.enableKeyboardHandlers = function () {
-      return model.get("enableKeyboardHandlers");
-    };
+      repaint: function () {
+        controller.modelContainer.repaint();
+      },
 
-    controller.modelInDOM = function () {
-      controller.modelContainer.setup();
-    };
+      updateView: function() {
+        controller.modelContainer.update();
+      },
 
-    /**
-      Call this method once all post-load setup of the model object has been completed. It will
-      cause the model to execute any post-load setup and issue its 'ready' event, if any.
+      reload: function (cause) {
+        model.stop();
+        // use the resetCause closure var to make the cause (which the model doesn't know about)
+        // available to resetHandler()
+        resetCause = cause;
+        model.reset();
+        resetCause = undefined;
+      },
 
-      In general, this method must be called in order to put the model in a runnable state.
-    */
-    controller.modelSetupComplete = function() {
-      if (model.ready) {
-        model.ready();
+      modelInDOM: function () {
+        controller.modelContainer.setup();
+      },
+
+      state: function() {
+        return model.serialize();
+      },
+
+      ScriptingAPI: ScriptingAPI,
+
+      enableKeyboardHandlers: function () {
+        return model.get("enableKeyboardHandlers");
+      },
+
+      /**
+        Call this method once all post-load setup of the model object has been completed. It will
+        cause the model to execute any post-load setup and issue its 'ready' event, if any.
+
+        In general, this method must be called in order to put the model in a runnable state.
+      */
+      modelSetupComplete: function() {
+        if (model.ready) {
+          model.ready();
+        }
+        dispatch.modelSetupComplete();
       }
-      dispatch.modelSetupComplete();
+
     };
-
-    controller.updateView = function() {
-      controller.modelContainer.update();
-    };
-
-    controller.reload = reload;
-    controller.reset = reset;
-    controller.repaint = repaint;
-    controller.resize = resize;
-    controller.state = state;
-    controller.ScriptingAPI = ScriptingAPI;
-
-    // ------------------------------------------------------------
-    //
-    // Public variables
-    //
-    // ------------------------------------------------------------
-    controller.modelContainer = null;
-    controller.benchmarks = null;
-    controller.type = Model.type;
-    controller.modelUrl = modelUrl;
 
     // ------------------------------------------------------------
     //
@@ -193,9 +188,8 @@ define(function (require) {
       setupModel();
     }
 
-    setupBenchmarks();
+    benchmarks = new Benchmarks(controller);
     setupModelPlayer();
-
     return controller;
   }
 

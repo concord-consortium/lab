@@ -513,7 +513,7 @@ define(function (require) {
           resize: function() {},
           getModel: function() { return {}; }
         };
-        model = modelController.getModel();
+        model = modelController.model;
         createScriptingAPI();
         finishLoadingInteractive();
       }
@@ -661,7 +661,7 @@ define(function (require) {
           // (this catches reloads)
           modelController.on('modelLoaded', modelLoadedHandler);
           modelController.on('modelReset', modelResetHandler);
-          // model = modelController.getModel();
+          // model = modelController.model;
           // createScriptingAPI();
         }
 
@@ -701,7 +701,7 @@ define(function (require) {
       // Setup model and notify observers that model was loaded.
       // modelLoadedHandler(ModelController.LOAD_CAUSE.INITIAL_LOAD);
 
-      model = modelController.getModel();
+      model = modelController.model;
       createScriptingAPI();
 
       initializedModelOutputsAndParamaters();
@@ -821,7 +821,7 @@ define(function (require) {
     function modelLoadedHandler(cause) {
       var i;
 
-      model = modelController.getModel();
+      model = modelController.model;
       createScriptingAPI();
 
       initializedModelOutputsAndParamaters();
