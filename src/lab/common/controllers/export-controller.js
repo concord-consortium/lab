@@ -5,12 +5,13 @@ define(function (require) {
 
   var dgExporter = require('import-export/dg-exporter');
 
-  var ExportController = function exportController(spec) {
+  var ExportController = function exportController(spec, interactivesController) {
     var perRun  = (spec.perRun || []).slice(),
         perTick = ['displayTime'].concat(spec.perTick.slice()),
         runNumber = 1,
         perTickValues,
-        controller;
+        controller,
+        savedModelState;
 
     function getDataPoint() {
       var ret = [], i, len;
@@ -34,25 +35,18 @@ define(function (require) {
       perTickValues.length = model.stepCounter() + 1;
     }
 
-    function logAction(action) {
-      var logString,
-          perRunPropertyLabels = [],
-          perRunPropertyValues = [],
-          i;
+    function logAction(action, state) {
+      var logString = "User " + action + ".";
 
-      for (i = 0; i < perRun.length; i++) {
-        perRunPropertyLabels[i] = getLabelForProperty(perRun[i]);
-        perRunPropertyValues[i] = model.get(perRun[i]);
+      if (state) {
+        logString += " Per-run Settings and Data: ";
+        logString += JSON.stringify({
+          action: action,
+          type: "model",
+          fields: state.perRunPropertyLabels,
+          values: state.perRunPropertyValues
+        });
       }
-
-      logString = "User " + action + " model. ";
-      logString += "Per-run Settings and Data: ";
-      logString += JSON.stringify({
-        action: action,
-        type: "model",
-        fields: perRunPropertyLabels,
-        values: perRunPropertyValues
-      });
 
       ExportController.logAction(logString);
     }
@@ -65,13 +59,57 @@ define(function (require) {
       model.on('invalidation.exportController', removeDataAfterStepPointer);
 
       model.on('play.exportController', function() {
-        logAction('started');
+        logAction("started the model", getCurrentModelState());
       });
 
       model.on('willReset.exportController', function() {
-        logAction('reset');
+        savedModelState = getCurrentModelState();
+      });
+    }
+
+    function registerInteractiveListeners() {
+      // Currently there is no need to namespace these particular listeners, because interactive
+      // controller uses a *special* on() method that doesn't just delegate to d3.dispatch; in fact
+      // it doesn't understand namespacing!
+      interactivesController.on('modelLoaded', function(cause) {
+        handleModelInitialization('modelLoaded', cause);
       });
 
+      interactivesController.on('modelReset', function(cause) {
+        handleModelInitialization('modelReset', cause);
+      });
+    }
+
+    function handleModelInitialization(eventName, cause) {
+
+      if (eventName === 'modelLoaded') {
+        if (cause === 'reload') {
+          logAction("reloaded the model", savedModelState);
+        } else {
+          logAction("loaded a model");
+        }
+      } else if (eventName === 'modelReset') {
+        if (cause === 'new-run') {
+          logAction("set up a new run", savedModelState);
+        } else {
+          logAction("reset the model", savedModelState);
+        }
+      }
+
+      savedModelState = null;
+    }
+
+    function getCurrentModelState() {
+      var state = {};
+
+      state.perRunPropertyLabels = [];
+      state.perRunPropertyValues = [];
+
+      for (var i = 0; i < perRun.length; i++) {
+        state.perRunPropertyLabels[i] = getLabelForProperty(perRun[i]);
+        state.perRunPropertyValues[i] = model.get(perRun[i]);
+      }
+      return state;
     }
 
     function getLabelForProperty(property) {
@@ -94,6 +132,9 @@ define(function (require) {
       return ret;
     }
 
+    // Initialization.
+    registerInteractiveListeners();
+
     return controller = {
 
       modelLoadedCallback: function() {
@@ -107,7 +148,7 @@ define(function (require) {
             perTickLabels = [],
             i;
 
-        logAction('exported');
+        logAction("exported the model", getCurrentModelState());
         perRunPropertyLabels[0] = "Run";
         perRunPropertyValues[0] = runNumber++;
 

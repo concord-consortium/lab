@@ -19,46 +19,81 @@ helpers.withIsolatedRequireJS (requirejs) ->
   Model            = requirejs 'md2d/models/modeler'
   ExportController = requirejs 'common/controllers/export-controller'
 
+  class MockInteractivesController
+    constructor: () ->
+      @modelResetCallbacks = []
+      @modelLoadedCallbacks = []
+
+    on: (event, callback) ->
+      if event is 'modelReset' then @modelResetCallbacks.push(callback)
+      if event is 'modelLoaded' then @modelLoadedCallbacks.push(callback)
+
+    loadModel: ->
+      loadModel()
+      @model = model
+      @modelLoadedCallbacks.forEach (cb) -> cb('initialLoad')
+
+    reloadModel: (opts) ->
+      @model.willReset()
+      loadModel()
+      @model = model
+      @modelLoadedCallbacks.forEach (cb) -> cb('reload')
+
+    resetModel: (opts) ->
+      opts ||= { cause: 'reset' }
+      @model.willReset()
+      @model.reset()
+      @modelResetCallbacks.forEach (cb) -> cb(opts.cause)
+
+
+  loadModel = ->
+    global.model = new Model {}
+
+    # for convenience, make the model advance 1 *ps* per tick
+    model.set
+      timeStep: 1000
+      timeStepsPerTick: 1
+
+    model.defineOutput 'perRunOutput', {
+      label: "per-run output"
+      unitAbbreviation: "units 1"
+    }, -> 1 + model.get 'time'
+
+    model.defineOutput 'perTickOutput', {
+      label: "per-tick output"
+      unitAbbreviation: "units 2"
+    }, -> 2 + model.get 'time'
+
+    model.defineParameter 'perRunParam', {
+      label: "per-run parameter",
+      unitAbbreviation: "units 3"
+    }, -> null
+
+    model.defineParameter 'perTickParam', {
+      label: "per-tick parameter",
+      unitAbbreviation: "units 4"
+    }, -> null
+
+    model.set
+      perRunParam: 10
+      perTickParam: 20
+
+
   describe "Export controller", ->
     exportController = null
+    interactivesController = null
+
     beforeEach ->
-      # TODO pass model as first parameter to ExportController ... not yet
-      # b/c we're focused on writing tests for existing implementation.
-      global.model = new Model {}
-
-      # for convenience, make the model advance 1 *ps* per tick
-      model.set
-        timeStep: 1000
-        timeStepsPerTick: 1
-
-      model.defineOutput 'perRunOutput', {
-        label: "per-run output"
-        unitAbbreviation: "units 1"
-      }, -> 1 + model.get 'time'
-
-      model.defineOutput 'perTickOutput', {
-        label: "per-tick output"
-        unitAbbreviation: "units 2"
-      }, -> 2 + model.get 'time'
-
-      model.defineParameter 'perRunParam', {
-        label: "per-run parameter",
-        unitAbbreviation: "units 3"
-      }, -> null
-
-      model.defineParameter 'perTickParam', {
-        label: "per-tick parameter",
-        unitAbbreviation: "units 4"
-      }, -> null
-
-      model.set
-        perRunParam: 10
-        perTickParam: 20
-
       dgExporter.exportData.reset()
       dgExporter.openTable.reset()
-      exportController = new ExportController exportsSpec
-      exportController.modelLoadedCallback()
+      interactivesController = new MockInteractivesController()
+      exportController = new ExportController(exportsSpec, interactivesController)
+
+      # need to mock the model loading sequence; for the time being, the exportController defines
+      # a modelLoadedCallback which is magically added to the list of modelLoaded listeners by the
+      # real interacttives controller.
+      interactivesController.on('modelLoaded', -> exportController.modelLoadedCallback() )
+      interactivesController.loadModel()
 
 
     describe "when exportData is called", ->
@@ -146,58 +181,92 @@ helpers.withIsolatedRequireJS (requirejs) ->
         beforeEach ->
           model.start()
 
-        it "should log \"User started model\"", ->
+        it "should log \"User started the model\"", ->
           dgExporter.logAction.callCount.should.eql 1
           call = dgExporter.logAction.getCall 0
-          call.args[0].should.match /^User started model./
+          call.args[0].should.match /^User started the model./
 
         it "should pass the per-run parameters", ->
           call = dgExporter.logAction.getCall 0
           json = call.args[0].match(/Per-run Settings and Data: (.*)$/)[1]
           hash = JSON.parse(json)
           hash.should.eql {
-            action: "started",
+            action: "started the model",
             type: "model",
             fields: ["per-run parameter (units 3)", "per-run output (units 1)"]
             values: [10, 1]
+          }
+
+
+      describe "after a model reload", ->
+        beforeEach ->
+          model.properties.perRunParam = "updated before reload"
+          interactivesController.reloadModel()
+
+        it "should log \"User reloaded the model\"", ->
+          dgExporter.logAction.callCount.should.eql 1
+          call = dgExporter.logAction.getCall 0
+          call.args[0].should.match /^User reloaded the model./
+
+        it "should pass the per-run parameters as they were before reload", ->
+          call = dgExporter.logAction.getCall 0
+          json = call.args[0].match(/Per-run Settings and Data: (.*)$/)[1]
+          hash = JSON.parse(json)
+          hash.should.eql {
+            action: "reloaded the model",
+            type: "model",
+            fields: ["per-run parameter (units 3)", "per-run output (units 1)"]
+            values: ["updated before reload", 1]
           }
 
 
       describe "after a model reset", ->
         beforeEach ->
-          model.reset()
+          model.properties.perRunParam = "updated before reset"
+          interactivesController.resetModel()
 
-        it "should log \"User reset model\"", ->
+        it "should log \"User reset the model\"", ->
           dgExporter.logAction.callCount.should.eql 1
           call = dgExporter.logAction.getCall 0
-          call.args[0].should.match /^User reset model./
+          call.args[0].should.match /^User reset the model./
 
-        it "should pass the per-run parameters", ->
+        it "should pass the per-run parameters as they were before reset", ->
           call = dgExporter.logAction.getCall 0
           json = call.args[0].match(/Per-run Settings and Data: (.*)$/)[1]
           hash = JSON.parse(json)
           hash.should.eql {
-            action: "reset",
+            action: "reset the model",
             type: "model",
             fields: ["per-run parameter (units 3)", "per-run output (units 1)"]
-            values: [10, 1]
+            values: ["updated before reset", 1]
           }
+
+
+      describe "after a model reset with cause 'new-run'", ->
+        beforeEach ->
+          interactivesController.resetModel({ cause: 'new-run' })
+
+        it "should log \"User set up a new run\"", ->
+          dgExporter.logAction.callCount.should.eql 1
+          call = dgExporter.logAction.getCall 0
+          call.args[0].should.match /^User set up a new run./
+
 
       describe "after exportData is called", ->
         beforeEach ->
           exportController.exportData()
 
-        it "should log \"User exported model\"", ->
+        it "should log \"User exported the model\"", ->
           dgExporter.logAction.callCount.should.eql 1
           call = dgExporter.logAction.getCall 0
-          call.args[0].should.match /^User exported model./
+          call.args[0].should.match /^User exported the model./
 
         it "should pass the per-run parameters", ->
           call = dgExporter.logAction.getCall 0
           json = call.args[0].match(/Per-run Settings and Data: (.*)$/)[1]
           hash = JSON.parse(json)
           hash.should.eql {
-            action: "exported",
+            action: "exported the model",
             type: "model",
             fields: ["per-run parameter (units 3)", "per-run output (units 1)"]
             values: [10, 1]
