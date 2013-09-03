@@ -191,8 +191,6 @@ helpers.withIsolatedRequireJS (requirejs) ->
           json = call.args[0].match(/Per-run Settings and Data: (.*)$/)[1]
           hash = JSON.parse(json)
           hash.should.eql {
-            action: "started the model",
-            type: "model",
             fields: ["per-run parameter (units 3)", "per-run output (units 1)"]
             values: [10, 1]
           }
@@ -213,8 +211,6 @@ helpers.withIsolatedRequireJS (requirejs) ->
           json = call.args[0].match(/Per-run Settings and Data: (.*)$/)[1]
           hash = JSON.parse(json)
           hash.should.eql {
-            action: "reloaded the model",
-            type: "model",
             fields: ["per-run parameter (units 3)", "per-run output (units 1)"]
             values: ["updated before reload", 1]
           }
@@ -235,8 +231,6 @@ helpers.withIsolatedRequireJS (requirejs) ->
           json = call.args[0].match(/Per-run Settings and Data: (.*)$/)[1]
           hash = JSON.parse(json)
           hash.should.eql {
-            action: "reset the model",
-            type: "model",
             fields: ["per-run parameter (units 3)", "per-run output (units 1)"]
             values: ["updated before reset", 1]
           }
@@ -266,8 +260,6 @@ helpers.withIsolatedRequireJS (requirejs) ->
           json = call.args[0].match(/Per-run Settings and Data: (.*)$/)[1]
           hash = JSON.parse(json)
           hash.should.eql {
-            action: "exported the model",
-            type: "model",
             fields: ["per-run parameter (units 3)", "per-run output (units 1)"]
             values: [10, 1]
           }

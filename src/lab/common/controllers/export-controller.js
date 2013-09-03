@@ -4,6 +4,19 @@
 define(function (require) {
 
   var dgExporter = require('import-export/dg-exporter');
+  var BasicDialog = require('common/controllers/basic-dialog');
+  var _ = require('underscore');
+
+  function modalAlert(message, buttons) {
+    var dialog = new BasicDialog({
+      width: "60%",
+      modal: true,
+      buttons: buttons
+    });
+
+    dialog.setContent(message);
+    dialog.open();
+  }
 
   var ExportController = function exportController(spec, interactivesController) {
     var perRun  = (spec.perRun || []).slice(),
@@ -11,7 +24,14 @@ define(function (require) {
         runNumber = 1,
         perTickValues,
         controller,
-        savedModelState;
+
+        // Data that is saved just before an about-to-be-reset model is reset. This data is what
+        // will be logged, so that we don't lose information about the state the user put the model
+        // into before resetting.
+        savedPerRunData,
+
+        // Has exportData been called for this model since the last load or reset event?
+        isUnexportedDataPresent = false;
 
     function getDataPoint() {
       var ret = [], i, len;
@@ -28,6 +48,8 @@ define(function (require) {
 
     function appendDataPoint() {
       perTickValues.push(getDataPoint());
+      // indicate that latest data hasn't been exported
+      isUnexportedDataPresent = true;
     }
 
     function removeDataAfterStepPointer() {
@@ -35,20 +57,68 @@ define(function (require) {
       perTickValues.length = model.stepCounter() + 1;
     }
 
-    function logAction(action, state) {
+    function logAction(action, state, additionalData) {
       var logString = "User " + action + ".";
+      var data;
 
       if (state) {
-        logString += " Per-run Settings and Data: ";
-        logString += JSON.stringify({
-          action: action,
-          type: "model",
+        data = {
           fields: state.perRunPropertyLabels,
           values: state.perRunPropertyValues
-        });
+        };
+      }
+
+      if (additionalData) {
+        data = _.extend(data || {}, additionalData);
+      }
+
+      if (data) {
+        logString += " Per-run Settings and Data: ";
+        logString += JSON.stringify(data);
       }
 
       ExportController.logAction(logString);
+    }
+
+    // Called every time a model is reset or reloaded, but not on inital load
+    function handlePossibleDataDiscard() {
+      var $textarea;
+
+      // If there's no unexported data, never mind
+      if ( ! isUnexportedDataPresent ) {
+        return;
+      }
+
+      // If we're not in the DG environment, never mind
+      if ( ! ExportController.isExportAvailable() ) {
+        return;
+      }
+
+      // Yuck, but here we go.
+      modalAlert(
+        "<p>You've set up a new run without saving your data. Please indicate why:</p>" +
+        "<form id='export-alert-form'>" +
+        "  <p><input type='radio' name='reason' value='trying-things-out'>I'm just trying things out.</input></p>" +
+        "  <p><input type='radio' name='reason' value='strange-data'>The data looks strange.</input></p>" +
+        "  <p><input type='radio' name='reason' value='making-adjustments'>I'm making adjustments before collecting data.</input></p>" +
+        "  <p><input type='radio' name='reason' value='other'>Other</input></p>" +
+        "  <label for ='export-alert-explanation'><em>Please explain &quot;other&quot; responses below</em></label>"+
+        "  <textarea id='export-alert-explanation' rows='4' cols='60'/>" +
+        "</form>", {
+        OK: function() {
+          logAction('discarded data', getCurrentPerRunData(), {
+            reasonCode: $(this).find('input:radio:checked').val(),
+            reasonText: $(this).find('textarea').val()
+          });
+          $(this).dialog('close');
+        }
+      });
+
+      $textarea = $('#export-alert-form textarea').attr('disabled', true);
+
+      $('#export-alert-form input:radio').on('change', function() {
+        $textarea.attr('disabled', $('#export-alert-form input:radio:checked').val() !== 'other');
+      });
     }
 
     function registerModelListeners() {
@@ -59,11 +129,11 @@ define(function (require) {
       model.on('invalidation.exportController', removeDataAfterStepPointer);
 
       model.on('play.exportController', function() {
-        logAction("started the model", getCurrentModelState());
+        logAction("started the model", getCurrentPerRunData());
       });
 
       model.on('willReset.exportController', function() {
-        savedModelState = getCurrentModelState();
+        savedPerRunData = getCurrentPerRunData();
       });
     }
 
@@ -84,22 +154,25 @@ define(function (require) {
 
       if (eventName === 'modelLoaded') {
         if (cause === 'reload') {
-          logAction("reloaded the model", savedModelState);
+          handlePossibleDataDiscard();
+          logAction("reloaded the model", savedPerRunData);
         } else {
           logAction("loaded a model");
         }
       } else if (eventName === 'modelReset') {
+        handlePossibleDataDiscard();
         if (cause === 'new-run') {
-          logAction("set up a new run", savedModelState);
+          logAction("set up a new run", savedPerRunData);
         } else {
-          logAction("reset the model", savedModelState);
+          logAction("reset the model", savedPerRunData);
         }
       }
 
-      savedModelState = null;
+      savedPerRunData = null;
+      isUnexportedDataPresent = false;
     }
 
-    function getCurrentModelState() {
+    function getCurrentPerRunData() {
       var state = {};
 
       state.perRunPropertyLabels = [];
@@ -148,7 +221,7 @@ define(function (require) {
             perTickLabels = [],
             i;
 
-        logAction("exported the model", getCurrentModelState());
+        logAction("exported the model", getCurrentPerRunData());
         perRunPropertyLabels[0] = "Run";
         perRunPropertyValues[0] = runNumber++;
 
@@ -163,12 +236,15 @@ define(function (require) {
 
         dgExporter.exportData(perRunPropertyLabels, perRunPropertyValues, perTickLabels, perTickValues);
         dgExporter.openTable();
+
+        // all data was just exported
+        isUnexportedDataPresent = false;
       }
     };
   };
 
   // "Class method" (want to be able to call this before instantiating)
-  // Do we have a sink
+  // Do we have a
   ExportController.isExportAvailable = function() {
     return dgExporter.isExportAvailable();
   };
