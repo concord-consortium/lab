@@ -59,8 +59,10 @@ parseMML = (mmlString) ->
       $entity
 
     getProperty = ($node, propertyName, additionalSelector) ->
-      additionalSelector = '' if not additionalSelector?
-      $node.find("[property=#{propertyName}] #{additionalSelector}").text()
+      if additionalSelector
+        $node.find("[property=#{propertyName}]>#{additionalSelector}").text()
+      else
+        $node.find("[property=#{propertyName}]").text()
 
     parseBoolean = (str, defaultOption) ->
       bool = str.replace(/^\s+|\s+$/g, '')
@@ -212,7 +214,7 @@ parseMML = (mmlString) ->
     ### Find and parse mml nodes representing obstacles ###
     parseObstacles = ->
       obstacles = []
-      obstacleNodes = $mml "[property=obstacles] .org-concord-mw2d-models-RectangularObstacle-Delegate"
+      obstacleNodes = $mml "void[property=obstacles] .org-concord-mw2d-models-RectangularObstacle-Delegate"
       for node in obstacleNodes
         $node = getNode cheerio node
 
@@ -304,7 +306,7 @@ parseMML = (mmlString) ->
     ### Find and parse mml nodes representing rectangles ###
     parseRectangles = ->
       rectangles = []
-      rectangleNodes = $mml "[property=rectangles] object.org-concord-mw2d-models-RectangleComponent-Delegate"
+      rectangleNodes = $mml "void[property=rectangles] object.org-concord-mw2d-models-RectangleComponent-Delegate"
       for node, idx in rectangleNodes
         $node = getNode cheerio node
 
@@ -357,8 +359,22 @@ parseMML = (mmlString) ->
 
         rectangles.push validatedData
 
+        # <void property="vectorField"> 
+        #  <object class="org.concord.mw2d.models.ElectricField"> 
+        #   <void property="frequency"> 
+        #    <double>0.06911503837897545</double> 
+        #   </void> 
+        #   <void property="intensity"> 
+        #    <double>0.10000000149011612</double> 
+        #   </void> 
+        #   <void property="local"> 
+        #    <boolean>true</boolean> 
+        #   </void> 
+        #  </object> 
+        # </void> 
+
         # Shape can also specify electric field.
-        $elField = $node.find "object.org-concord-mw2d-models-ElectricField"
+        $elField = $node.find "[property=vectorField]>object.org-concord-mw2d-models-ElectricField"
         if $elField.length > 0
           parsedElField = parseElectricField $elField
           parsedElField.shapeIdx = idx
@@ -369,7 +385,7 @@ parseMML = (mmlString) ->
     ### Find and parse mml nodes representing ellipses ###
     parseEllipses = ->
       ellipses = []
-      ellipseNodes = $mml "[property=ellipses] object.org-concord-mw2d-models-EllipseComponent-Delegate"
+      ellipseNodes = $mml "void[property=ellipses] object.org-concord-mw2d-models-EllipseComponent-Delegate"
       for node, idx in ellipseNodes
         $node = getNode cheerio node
 
@@ -441,7 +457,7 @@ parseMML = (mmlString) ->
 
     parseLines = ->
       lines = []
-      lineNodes = $mml "[property=lines] object.org-concord-mw2d-models-LineComponent-Delegate"
+      lineNodes = $mml "void[property=lines] object.org-concord-mw2d-models-LineComponent-Delegate"
       for node, idx in lineNodes
         $node = getNode cheerio node
 
@@ -517,12 +533,12 @@ parseMML = (mmlString) ->
       Find the view-port size. Do it at the beginning, as view-port X and Y dimensions
       are used during conversion of other objects.
     ###
-    viewPort = viewProps.find("[property=viewSize] .java-awt-Dimension int")
-    if (viewPort)
+    viewPort = viewProps.find("[property=viewSize]>.java-awt-Dimension>int")
+    if (viewPort.length)
       originalViewPortWidth  = parseInt viewPort[0].children[0].data
       originalViewPortHeight = parseInt viewPort[1].children[0].data
-      originalViewPortX = parseInt viewProps.find("[property=x] double").text() || 0
-      originalViewPortY = parseInt viewProps.find("[property=y] double").text() || 0
+      originalViewPortX = parseInt viewProps.find("[property=x]>double").text() || 0
+      originalViewPortY = parseInt viewProps.find("[property=y]>double").text() || 0
     else
       originalViewPortWidth  = width
       originalViewPortHeight = height
@@ -546,7 +562,7 @@ parseMML = (mmlString) ->
     ###
       Find the background color
     ###
-    bgColors = (cheerio(n).text() for n in $mml "[property=background] > .java-awt-Color > int")
+    bgColors = (cheerio(n).text() for n in $mml "void[property=background] > .java-awt-Color > int")
     # If array of RGBA values is found, use it. Otherwise, left 'backgroundColor' undefined, so default value will be used.
     backgroundColor = "rgba(#{bgColors[0]},#{bgColors[1]},#{bgColors[2]},#{bgColors[3]})" if bgColors.length == 4
     # A tiny "hack" - replace background color of water or oil used in Classic MW to one used in Next Gen MW.
@@ -570,7 +586,7 @@ parseMML = (mmlString) ->
       'solventForceType', 'dielectricConstant' and 'backgroundColor'. See:
       md2d/models/solvent.coffee and md2d/models/modeler.#setSolvent(solventName)
     ###
-    $solvent = $mml "[property=solvent] .org-concord-mw2d-models-Solvent"
+    $solvent = $mml "[property=solvent]>.org-concord-mw2d-models-Solvent"
     solventForceType = getIntProperty $solvent, "type", "short"
 
     ###
@@ -594,7 +610,7 @@ parseMML = (mmlString) ->
         Math.round width / EFCellSize
       else
         # Quite often in Classic MW cell size equal to 100 was used to disable
-        # electric field completely. Instead of using density 0, use defaul
+        # electric field completely. Instead of using density 0, use default
         # density + set showElectricField to false.
         #
         # In rare cases (e.g. maze game), EFCellSize = -1 or 1000 was also
@@ -704,22 +720,22 @@ parseMML = (mmlString) ->
         { ...
       ]
     ###
-    imageProps = $mml("[property=images] array")
+    imageProps = $mml("[property=images]>array")
     imageBlock = imageProps.find("object.org-concord-mw2d-models-ImageComponent-Delegate")
     images = [];
     if imageProps.length > 0
       for image in imageBlock
         $image = getNode(cheerio(image))
-        imageUri = $image.find("[property=URI] string").text()
-        imageHostIndex = parseInt $image.find("[property=hostIndex] int").text()
+        imageUri = $image.find("[property=URI]>string").text()
+        imageHostIndex = parseInt $image.find("[property=hostIndex]>int").text()
         if (isNaN(imageHostIndex))
           imageHostIndex = 0
-        imageHostType = $image.find("[property=hostType] string").text()
+        imageHostType = $image.find("[property=hostType]>string").text()
         imageHostType = imageHostType.slice(imageHostType.lastIndexOf(".")+1)
-        imageLayer = parseInt $image.find("[property=layer] int").text()
-        imageLayerPosition = parseInt $image.find("[property=layerPosition] byte").text()
-        imageX = parseFloat $image.find("[property=x] double").text()
-        imageY = parseFloat $image.find("[property=y] double").text()
+        imageLayer = parseInt $image.find("[property=layer]>int").text()
+        imageLayerPosition = parseInt $image.find("[property=layerPosition]>byte").text()
+        imageX = parseFloat $image.find("[property=x]>double").text()
+        imageY = parseFloat $image.find("[property=y]>double").text()
         [imageX, imageY] = toNextgenCoordinates imageX, imageY
         images.push {imageUri: imageUri, imageHostIndex: imageHostIndex, imageHostType: imageHostType, imageLayer: imageLayer, imageLayerPosition: imageLayerPosition, imageX: imageX, imageY: imageY }
 
@@ -732,34 +748,34 @@ parseMML = (mmlString) ->
 
     parseTextBoxNode = (textBoxNode) ->
       $textBoxNode = getNode cheerio textBoxNode
-      text = wrapTextBoxText $textBoxNode.find("[property=text] string").text()
-      $x = parseFloat $textBoxNode.find("[property=x] double").text() || 0.001
-      $y = parseFloat $textBoxNode.find("[property=y] double").text() || 0
-      layer = parseInt($textBoxNode.find("[property=layer] int").text()) || 1
-      textHostIndex = parseInt $textBoxNode.find("[property=hostIndex] int").text()
+      text = wrapTextBoxText $textBoxNode.find("[property=text]>string").text()
+      $x = parseFloat $textBoxNode.find("[property=x]>double").text() || 0.001
+      $y = parseFloat $textBoxNode.find("[property=y]>double").text() || 0
+      layer = parseInt($textBoxNode.find("[property=layer]>int").text()) || 1
+      textHostIndex = parseInt $textBoxNode.find("[property=hostIndex]>int").text()
       if (isNaN(textHostIndex))
         textHostIndex = 0
-      textHostType = $textBoxNode.find("[property=hostType] string").text()
+      textHostType = $textBoxNode.find("[property=hostType]>string").text()
       textHostType = textHostType.slice(textHostType.lastIndexOf(".")+1)
-      colorDef  = getNode $textBoxNode.find "[property=foregroundColor]>.java-awt-Color>int"
+      colorDef  = getNode $textBoxNode.find "void[property=foregroundColor] .java-awt-Color>int"
       if colorDef and colorDef.length > 0
         fontColor    = "rgb("
         fontColor   += parseInt(cheerio(colorDef[0]).text()) + ","
         fontColor   += parseInt(cheerio(colorDef[1]).text()) + ","
         fontColor   += parseInt(cheerio(colorDef[2]).text()) + ")"
-      backgroundColorDef = $textBoxNode.find "[property=fillMode] .java-awt-Color>int"
+      backgroundColorDef = $textBoxNode.find "void[property=fillMode] .java-awt-Color>int"
       if backgroundColorDef and backgroundColorDef.length > 0
         backgroundTextColor    = "rgb("
         backgroundTextColor   += parseInt(cheerio(backgroundColorDef[0]).text()) + ","
         backgroundTextColor   += parseInt(cheerio(backgroundColorDef[1]).text()) + ","
         backgroundTextColor   += parseInt(cheerio(backgroundColorDef[2]).text()) + ")"
-      borderType = parseInt($textBoxNode.find("[property=borderType] int").text()) || 0
+      borderType = parseInt($textBoxNode.find("[property=borderType]>int").text()) || 0
       frame = switch borderType
         when 0 then ""
         when 1 then "rectangle"
         when 2 then "rounded rectangle"
-      callout = parseBoolean($textBoxNode.find("[property=callOut] boolean").text()) || false
-      calloutPointDef = $textBoxNode.find "[property=callOutPoint] .java-awt-Point>int"
+      callout = parseBoolean($textBoxNode.find("[property=callOut]>boolean").text()) || false
+      calloutPointDef = $textBoxNode.find "void[property=callOutPoint] .java-awt-Point>int"
       if callout and calloutPointDef and calloutPointDef.length > 1
         calloutPoint = (parseInt(cheerio(el).text()) for el in calloutPointDef)
 
@@ -779,7 +795,7 @@ parseMML = (mmlString) ->
       textBox.anchor = "upper-left"
       textBox
 
-    $textBoxesArray = $mml "[property=textBoxes] array"
+    $textBoxesArray = $mml "[property=textBoxes]>array"
     if $textBoxesArray.length > 0
       $textBoxNodes = $textBoxesArray.find "object.org-concord-mw2d-models-TextBoxComponent-Delegate"
       textBoxes = (parseTextBoxNode(node) for node in $textBoxNodes)
@@ -824,7 +840,23 @@ parseMML = (mmlString) ->
 
       return props
 
-    $fields = $mml "[property=fields] object.org-concord-mw2d-models-ElectricField"
+    # <void property="fields"> 
+    #  <void method="add"> 
+    #   <object class="org.concord.mw2d.models.ElectricField"> 
+    #    <void property="frequency"> 
+    #     <double>0.006283185307179587</double> 
+    #    </void> 
+    #    <void property="intensity"> 
+    #     <double>0.07000000029802322</double> 
+    #    </void> 
+    #    <void property="orientation"> 
+    #     <int>3003</int> 
+    #    </void> 
+    #   </object> 
+    #  </void> 
+    # </void> 
+
+    $fields = $mml "[method=add]>object.org-concord-mw2d-models-ElectricField"
     if $fields.length > 0
       electricFields = (parseElectricField(node) for node in $fields)
     else
@@ -888,7 +920,7 @@ parseMML = (mmlString) ->
 
     elementColors = [-855310, -9066941, -9092186, -2539040]
 
-    elementColorNodes = $mml("[property=elementColors] > void")
+    elementColorNodes = $mml("void[property=elementColors] > void")
     for node in elementColorNodes
       $node = getNode(cheerio(node))
       index = $node.attr("index")
@@ -936,11 +968,11 @@ parseMML = (mmlString) ->
     pairwiseLJProperties = []
 
     # This set defines whether mean values are used for pair (so lbMixing is true) or custom (lbMixing is false).
-    lbMixingProps = $mml ".org-concord-mw2d-models-Affinity [property=lbMixing]>[method=put]"
+    lbMixingProps = $mml ".org-concord-mw2d-models-Affinity>[property=lbMixing]>[method=put]"
 
     # Custom values for sigma and epsilon.
-    epsilonProps = $mml ".org-concord-mw2d-models-Affinity [property=epsilon]"
-    sigmaProps = $mml ".org-concord-mw2d-models-Affinity [property=sigma]"
+    epsilonProps = $mml ".org-concord-mw2d-models-Affinity>[property=epsilon]"
+    sigmaProps = $mml ".org-concord-mw2d-models-Affinity>[property=sigma]"
 
     # Iterate over lbMixing properties first.
     for prop in lbMixingProps
@@ -999,7 +1031,7 @@ parseMML = (mmlString) ->
       for node in atomNodes
         $node = getNode(cheerio(node))
 
-        element = getIntProperty $node, 'ID', 'int' # selector = "[property=ID] int"
+        element = getIntProperty $node, 'ID', 'int' # selector = "void[property=ID] int"
         x       = getFloatProperty $node, 'rx'
         y       = getFloatProperty $node, 'ry'
         vx      = getFloatProperty $node, 'vx'
@@ -1167,7 +1199,7 @@ parseMML = (mmlString) ->
     ###
       Quantum Dynamics
     ###
-    excitationStates = $mml(".org-concord-mw2d-models-ExcitedStates [method=put]")
+    excitationStates = $mml("void[property=excitedStates] void[method=put]")
     useQuantumDynamics = excitationStates.length > 0
 
     if useQuantumDynamics
@@ -1223,7 +1255,7 @@ parseMML = (mmlString) ->
 
         $elementNode = getNode(cheerio(elementNode))
 
-        for node in $elementNode.find '[property=energyLevels] > void'
+        for node in $elementNode.find 'void[property=energyLevels] > void'
           $node = getNode(cheerio(node))
           if $node.attr('method') is 'clear'
             energyLevels = []
@@ -1243,7 +1275,7 @@ parseMML = (mmlString) ->
       for atom in excitationStates
         $node = getNode cheerio atom
         atomIndex = parseInt cheerio($node.find("int")[0]).text()
-        excitation = parseInt $node.find("[index=1] int").text()
+        excitation = parseInt $node.find("void[index=1] int").text()
         excitation = 0 if isNaN excitation
         atoms[atomIndex].excitation = excitation
 
@@ -1255,7 +1287,7 @@ parseMML = (mmlString) ->
 
       quantumRule = $mml(".org-concord-mw2d-models-QuantumRule")
       if quantumRule.length
-        probabilityMap = quantumRule.find "[property=probabilityMap]>[method=put]"
+        probabilityMap = quantumRule.find "void[property=probabilityMap]>[method=put]"
         for put in probabilityMap
           $node = getNode(cheerio(put))
           key = parseInt $node.find("int").text()
