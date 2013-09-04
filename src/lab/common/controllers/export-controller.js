@@ -30,6 +30,9 @@ define(function (require) {
         // into before resetting.
         savedPerRunData,
 
+        // used to compare initial parameters to parameters at export
+        initialPerRunData,
+
         // Has exportData been called for this model since the last load or reset event?
         isUnexportedDataPresent = false;
 
@@ -121,16 +124,44 @@ define(function (require) {
       });
     }
 
+    // Called when exporting data; detects changes to per-run parameters since the model's initial
+    // 'play' event and returns in a changelist form ready to be exported to the DG log.
+    function getChangedParameterValues() {
+      if (!initialPerRunData) {
+        return [];
+      }
+
+      var currentPerRunData = getCurrentPerRunData();
+      var changed = [];
+
+      currentPerRunData.perRunPropertyValues.forEach(function(currentValue, i) {
+        var initialValue = initialPerRunData.perRunPropertyValues[i];
+        if (currentValue !== initialValue) {
+          changed.push({
+            field:         initialPerRunData.perRunPropertyLabels[i],
+            valueAtStart:  initialValue,
+            valueExported: currentValue
+          });
+        }
+      });
+
+      return changed;
+    }
+
     function registerModelListeners() {
       // Namespace listeners to '.exportController' so we can eventually remove them all at once
       model.on('tick.exportController', appendDataPoint);
       model.on('reset.exportController', resetData);
-      model.on('play.exportController', removeDataAfterStepPointer);
-      model.on('invalidation.exportController', removeDataAfterStepPointer);
-
       model.on('play.exportController', function() {
+        removeDataAfterStepPointer();
         logAction("started the model", getCurrentPerRunData());
+        // Save the per-run parameters we see now -- we'll log if a user changes any parameters
+        // before exporting the data
+        if (!initialPerRunData) {
+          initialPerRunData = getCurrentPerRunData();
+        }
       });
+      model.on('invalidation.exportController', removeDataAfterStepPointer);
 
       model.on('willReset.exportController', function() {
         savedPerRunData = getCurrentPerRunData();
@@ -168,6 +199,7 @@ define(function (require) {
         }
       }
 
+      initialPerRunData = null;
       savedPerRunData = null;
       isUnexportedDataPresent = false;
     }
@@ -219,9 +251,22 @@ define(function (require) {
         var perRunPropertyLabels = [],
             perRunPropertyValues = [],
             perTickLabels = [],
+            changedParameters,
             i;
 
-        logAction("exported the model", getCurrentPerRunData());
+        changedParameters = getChangedParameterValues();
+
+        logAction("exported the model", getCurrentPerRunData(), {
+          changedParameters: changedParameters
+        });
+
+        // Create a separate log event for the act of having changed parameters
+        if (changedParameters.length > 0) {
+          logAction("changed parameters between start and export", null, {
+            changedParameters: changedParameters
+          });
+        }
+
         perRunPropertyLabels[0] = "Run";
         perRunPropertyValues[0] = runNumber++;
 
