@@ -103,9 +103,16 @@ suite.addBatch({
       assert.equal(cellList.getRowsNum(), 2);
 
       cellList.reinitialize(1);
-
       assert.equal(cellList.getColsNum(), 2);
-      assert.equal(cellList.getRowsNum(), 1);
+      assert.equal(cellList.getRowsNum(), 2);
+
+      cellList.reinitialize(1, 2);
+      assert.equal(cellList.getColsNum(), 2);
+      assert.equal(cellList.getRowsNum(), 4);
+
+      cellList.reinitialize(10, 20, 2);
+      assert.equal(cellList.getColsNum(), 5);
+      assert.equal(cellList.getRowsNum(), 10);
     }
   }
 });
