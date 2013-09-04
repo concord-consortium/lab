@@ -34,19 +34,23 @@ helpers.withIsolatedRequireJS (requirejs) ->
 
   # actual tests
   describe "GraphController", ->
+    model = null
+
+    beforeEach ->
+      model = new Model simpleModel
+    
     it "should exist", ->
       should.exist GraphController
 
     it "should act as a constructor that accepts the component spec as its argument", ->
-      controller = new GraphController getComponentSpec(), scriptingAPI, interactivesController
+      controller = new GraphController getComponentSpec(), scriptingAPI, interactivesController, model
       should.exist controller
 
     describe "A GraphController instance", ->
       controller = null
 
       beforeEach ->
-        global.model = new Model simpleModel
-        controller = new GraphController getComponentSpec(), scriptingAPI, interactivesController
+        controller = new GraphController getComponentSpec(), scriptingAPI, interactivesController, model
 
       it "should have a getViewContainer method", ->
         controller.should.have.property 'getViewContainer'
@@ -269,7 +273,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
 
     describe "handling of graph configuration options in component spec", ->
       grapherOptionsForComponentSpec = (componentSpec) ->
-        controller = new GraphController componentSpec, scriptingAPI, interactivesController
+        controller = new GraphController componentSpec, scriptingAPI, interactivesController, model
         sinon.spy mock, 'Graph'
         controller.modelLoadedCallback()
         options = mock.Graph.getCall(0).args[1]

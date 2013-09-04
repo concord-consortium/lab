@@ -23,6 +23,13 @@ helpers.withIsolatedRequireJSAndViewsMocked (requirejs) ->
     describe "interactives controller", ->
       controller = null
       interactive = null
+      model = null
+
+      setupControllerAndModel = ->
+        helpers.withModel simpleModel, ->
+          controller = interactivesController interactive, 'body'
+        model = controller.modelController.model
+
       beforeEach ->
         interactive =
           {
@@ -43,26 +50,22 @@ helpers.withIsolatedRequireJSAndViewsMocked (requirejs) ->
 
       it "lets you define a custom output property at the toplevel of the interactive definition", ->
         interactive.outputs = [output1]
-        helpers.withModel simpleModel, ->
-          controller = interactivesController interactive, 'body'
+        setupControllerAndModel()
         model.get('customOutput').should.equal 'output1'
 
       it "respects the 'unitType' key of the property definition", ->
         interactive.outputs = [output1]
-        helpers.withModel simpleModel, ->
-          controller = interactivesController interactive, 'body'
+        setupControllerAndModel()
         model.getPropertyDescription('customOutput').getHash().should.have.property 'unitType', 'length'
 
       it "respects the 'label' key of the property definition", ->
         interactive.outputs = [output1]
-        helpers.withModel simpleModel, ->
-          controller = interactivesController interactive, 'body'
+        setupControllerAndModel()
         model.getPropertyDescription('customOutput').getHash().should.have.property 'label', 'customLabel'
 
       it "lets you define a custom output property in the models section of the interactive definition", ->
         interactive.models[0].outputs = [output1]
-        helpers.withModel simpleModel, ->
-          controller = interactivesController interactive, 'body'
+        setupControllerAndModel()
         model.get('customOutput').should.equal 'output1'
 
       describe "overriding of custom output property defined in interactive", ->
@@ -73,8 +76,7 @@ helpers.withIsolatedRequireJSAndViewsMocked (requirejs) ->
           beforeEach ->
             interactive.models.length = 1
             interactive.models[0].outputs = [output2]
-            helpers.withModel simpleModel, ->
-              controller = interactivesController interactive, 'body'
+            setupControllerAndModel()
 
           it "uses the property defined in the models section", ->
             model.get('customOutput').should.equal 'output2'
@@ -83,8 +85,7 @@ helpers.withIsolatedRequireJSAndViewsMocked (requirejs) ->
           describe "and the default model has no model-specific custom output property", ->
             beforeEach ->
               interactive.models[1].outputs = [output2]
-              helpers.withModel simpleModel, ->
-                controller = interactivesController interactive, 'body'
+              setupControllerAndModel()
 
             it "uses the property defined at the toplevel", ->
               model.get('customOutput').should.equal 'output1'
@@ -93,6 +94,7 @@ helpers.withIsolatedRequireJSAndViewsMocked (requirejs) ->
               beforeEach ->
                 helpers.withModel simpleModel, ->
                   controller.loadModel 'model2'
+                model = controller.modelController.model
 
               it "uses the property defined in the model section", ->
                 model.get('customOutput').should.equal 'output2'
@@ -100,8 +102,7 @@ helpers.withIsolatedRequireJSAndViewsMocked (requirejs) ->
           describe "and the default model has a model-specific custom output property", ->
             beforeEach ->
               interactive.models[0].outputs = [output2]
-              helpers.withModel simpleModel, ->
-                controller = interactivesController interactive, 'body'
+              setupControllerAndModel()
 
             it "uses the property defined in the model section", ->
               model.get('customOutput').should.equal 'output2'
@@ -110,6 +111,7 @@ helpers.withIsolatedRequireJSAndViewsMocked (requirejs) ->
               beforeEach ->
                 helpers.withModel simpleModel, ->
                   controller.loadModel 'model2'
+                model = controller.modelController.model
 
               it "uses the property defined at the toplevel", ->
                 model.get('customOutput').should.equal 'output1'
