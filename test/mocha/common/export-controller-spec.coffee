@@ -263,3 +263,50 @@ helpers.withIsolatedRequireJS (requirejs) ->
             values: [10, 1],
             changedParameters: []
           }
+
+      describe "after the model is run and a parameter is changed, and exportData is called again", ->
+        calls = null
+        getLogCallsMatching = (pattern) ->
+          changedParametersLogs = (call for call in calls when call.args[0].match(pattern))
+
+        beforeEach ->
+          model.start()
+          model.stop()
+          model.properties.perRunParam = 11
+          exportController.exportData()
+          calls = (dgExporter.logAction.getCall(i) for i in [0...dgExporter.logAction.callCount])
+
+        describe "the \"User exported the model\" log event", ->
+          it "should list the changed parameters", ->
+            exportLogCalls = getLogCallsMatching /^User exported the model./
+            exportLogCall = exportLogCalls[0]
+            json = exportLogCall.args[0].match(/Per-run Settings and Data: (.*)$/)[1]
+            hash = JSON.parse json
+
+            hash.changedParameters.should.eql [
+              field: "per-run parameter (units 3)",
+              valueAtStart: 10,
+              valueExported: 11
+            ]
+
+        it "should log \"User changed parameters between start and export\"", ->
+          changedParametersLogCalls = getLogCallsMatching /^User changed parameters between start and export/
+          changedParametersLogCalls.length.should.equal 1
+
+        describe "the \"User changed parameters between start and export\" log event", ->
+
+          it "should list the changed parameters", ->
+            changedParametersLogCalls = getLogCallsMatching /^User changed parameters between start and export/
+            changedParametersLogCall = changedParametersLogCalls[0]
+            json = changedParametersLogCall.args[0].match(/Per-run Settings and Data: (.*)$/)[1]
+            hash = JSON.parse json
+
+            hash.changedParameters.should.eql [
+              field: "per-run parameter (units 3)",
+              valueAtStart: 10,
+              valueExported: 11
+            ]
+
+
+
+
