@@ -10,7 +10,10 @@
       "url": "imports/legacy-mw-content/converted/interactions/force-direction-VDG-negative/forceDirectionVDG$0.json",
       "importedFrom": "imports/legacy-mw-content/interactions/force-direction-VDG-negative/forceDirectionVDG$0.mml",
       "viewOptions": {
-        "controlButtons": "reset"
+        "controlButtons": "reset",
+        "imageMapping": {
+          "vdg.png": "vdg.svg"
+        }
       },
       "onLoad": [
           "onDrag('atom', function(x, y, d, i) {",
