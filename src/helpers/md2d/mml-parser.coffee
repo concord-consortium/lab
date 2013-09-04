@@ -1031,13 +1031,14 @@ parseMML = (mmlString) ->
       for node in atomNodes
         $node = getNode(cheerio(node))
 
-        element = getIntProperty $node, 'ID', 'int' # selector = "void[property=ID] int"
-        x       = getFloatProperty $node, 'rx'
-        y       = getFloatProperty $node, 'ry'
-        vx      = getFloatProperty $node, 'vx'
-        vy      = getFloatProperty $node, 'vy'
-        charge  = getFloatProperty $node, 'charge'
+        element   = getIntProperty $node, 'ID', 'int' # selector = "void[property=ID] int"
+        x         = getFloatProperty $node, 'rx'
+        y         = getFloatProperty $node, 'ry'
+        vx        = getFloatProperty $node, 'vx'
+        vy        = getFloatProperty $node, 'vy'
+        charge    = getFloatProperty $node, 'charge'
         friction  = getFloatProperty $node, 'friction'
+        radical   = getBooleanProperty $node, 'radical'
         visible   = getBooleanProperty $node, 'visible'
         marked    = getBooleanProperty $node, 'marked'
         movable   = getBooleanProperty $node, 'movable'
@@ -1049,6 +1050,7 @@ parseMML = (mmlString) ->
         pinned  = if movable? then not movable else undefined
 
         # Change all Boolean values to 0/1.
+        radical   = Number radical if radical?
         pinned    = Number pinned if pinned?
         visible   = Number visible if visible?
         marked    = Number marked if marked?
@@ -1086,7 +1088,7 @@ parseMML = (mmlString) ->
           restraints.push restraintValidatedData
 
 
-        atomRawData = { element, x, y, vx, vy, charge, friction, pinned, marked, visible, draggable }
+        atomRawData = { element, x, y, vx, vy, charge, friction, radical, pinned, marked, visible, draggable }
 
         # Unit conversion performed on undefined values can convert them to NaN.
         # Revert back all NaNs to undefined, as we do not expect any NaN
@@ -1188,6 +1190,7 @@ parseMML = (mmlString) ->
     vy = (atom.vy for atom in atoms)
     charge = (atom.charge for atom in atoms)
     friction = (atom.friction for atom in atoms)
+    radical = (atom.radical for atom in atoms)
     element = (atom.element for atom in atoms)
     pinned = (atom.pinned for atom in atoms)
     marked = (atom.marked for atom in atoms)
@@ -1195,6 +1198,74 @@ parseMML = (mmlString) ->
     draggable = (atom.draggable for atom in atoms)
 
     id = atoms[0]?.element || 0
+
+    ###
+      Chemical Reactions
+      Reaction Types/Parameters
+       nA__An
+         VAA
+         VBB
+         VCC
+         VDD
+         VAB
+         VAC
+         VAD
+         VBC
+         VBD
+         VCD
+       A2_B2__2AB
+         VAA
+         VBB
+         VAB
+         VAB2
+         VA2B
+       O2_2H2__2H2O
+         VHH
+         VOO
+         VHO
+         VHO2
+         VOH2
+       A2_B2_C__2AB_C
+         VAA
+         VBB
+         VCC
+         VAB
+         VAC
+         VBC
+         VAB2
+         VBA2
+         VCA2
+         VCB2
+         VABC
+         VBAC
+    ###
+
+    A2_B2__2AB_reactionParameters = $mml(".org-concord-mw2d-models-Reaction-A2_B2__2AB [method=put]")
+    O2_2H2__2H2O_reactionParameters = $mml(".org-concord-mw2d-models-Reaction-O2_2H2__2H2O [method=put]")
+
+    useChemicalReactions = A2_B2__2AB_reactionParameters.length > 0 | O2_2H2__2H2O_reactionParameters.length > 0
+
+    if useChemicalReactions
+      reaction = {}
+      reactionParameters = {}
+      if A2_B2__2AB_reactionParameters.length > 0
+        parameters = A2_B2__2AB_reactionParameters
+      else
+        parameters = O2_2H2__2H2O_reactionParameters
+      for prop in parameters
+        $node = cheerio(prop)
+        key = $node.find('string').text()
+        value = parseFloat($node.find('double').text())
+        reactionParameters[key] = value
+
+      if A2_B2__2AB_reactionParameters.length > 0
+        reaction.type = "A2_B2__2AB"
+        reaction.parameters = reactionParameters
+      else
+        reaction.type = "O2_2H2__2H2O"
+        reaction.parameters = reactionParameters
+
+      reaction = validator.validateCompleteness metadata.chemicalReaction, reaction
 
     ###
       Quantum Dynamics
@@ -1383,6 +1454,7 @@ parseMML = (mmlString) ->
       vy: vy
       charge: charge
       friction: friction
+      radical: radical
       element: element
       pinned: pinned
       marked: marked
@@ -1417,6 +1489,11 @@ parseMML = (mmlString) ->
 
     if useQuantumDynamics
       json.quantumDynamics = quantumDynamics
+      json.useQuantumDynamics = true
+
+    if useChemicalReactions
+      json.chemicalReactions = reaction
+      json.useChemicalReactions = true
 
     # Remove some properties from the final serialized model.
     removeArrayIfDefault = (name, array, defaultVal) ->
@@ -1433,6 +1510,8 @@ parseMML = (mmlString) ->
     delete json.viewOptions.atomTraceId if not json.viewOptions.showAtomTrace
     # Remove excitation if not using quantum dynamics
     delete json.atoms.excitation if not useQuantumDynamics
+    # Remove radicals if not using chemical reactions
+    delete json.atoms.radical if not useChemicalReactions
 
     # Remove modelSampleRate as this is Next Gen MW specific option.
     delete json.modelSampleRate

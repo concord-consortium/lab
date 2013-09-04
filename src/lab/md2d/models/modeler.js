@@ -1881,6 +1881,10 @@ define(function(require) {
       };
     }
 
+    function serializeChemicalReactions() {
+      return {};
+    }
+
     model.serialize = function() {
       var propCopy = {},
           ljProps, i, len,
@@ -1957,6 +1961,12 @@ define(function(require) {
       // TODO. Should be able to ask plugins to serialize their data.
       if (model.properties.useQuantumDynamics) {
         propCopy.quantumDynamics = serializeQuantumDynamics();
+      }
+
+      if (model.properties.useChemicalReactions) {
+        propCopy.chemicalReactions = serializeChemicalReactions();
+      } else {
+        delete propCopy.atoms.radical;
       }
 
       removeAtomsArrayIfDefault("marked", metadata.atom.marked.defaultValue);

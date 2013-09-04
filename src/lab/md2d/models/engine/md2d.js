@@ -170,7 +170,7 @@ define(function (require, exports) {
         //                      Atom Properties
 
         // Individual property arrays for the atoms, indexed by atom number
-        radius, px, py, x, y, vx, vy, speed, ax, ay, charge, element, friction, pinned, mass, hydrophobicity,
+        radius, px, py, x, y, vx, vy, speed, ax, ay, charge, element, friction, radical, pinned, mass, hydrophobicity,
         // Helper array, which may be used by various engine routines traversing atoms in untypical order.
         // Make sure that you reset it before use. At the moment, it's used by updateAminoAcidForces() function.
         visited,
@@ -637,6 +637,7 @@ define(function (require, exports) {
             ay             = atoms.ay;
             charge         = atoms.charge;
             friction       = atoms.friction;
+            radical        = atoms.radical;
             element        = atoms.element;
             pinned         = atoms.pinned;
             mass           = atoms.mass;
@@ -780,6 +781,7 @@ define(function (require, exports) {
           atoms.ay             = arrays.create(num, 0, arrayTypes.floatType);
           atoms.charge         = arrays.create(num, 0, arrayTypes.floatType);
           atoms.friction       = arrays.create(num, 0, arrayTypes.floatType);
+          atoms.radical        = arrays.create(num, 0, arrayTypes.uint8Type);
           atoms.element        = arrays.create(num, 0, arrayTypes.uint8Type);
           atoms.pinned         = arrays.create(num, 0, arrayTypes.uint8Type);
           atoms.mass           = arrays.create(num, 0, arrayTypes.floatType);
