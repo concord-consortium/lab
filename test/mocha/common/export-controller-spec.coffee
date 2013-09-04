@@ -261,5 +261,6 @@ helpers.withIsolatedRequireJS (requirejs) ->
           hash = JSON.parse(json)
           hash.should.eql {
             fields: ["per-run parameter (units 3)", "per-run output (units 1)"]
-            values: [10, 1]
+            values: [10, 1],
+            changedParameters: []
           }
