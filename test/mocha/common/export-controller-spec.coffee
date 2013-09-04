@@ -8,7 +8,6 @@ exportsSpec =
   }
 
 helpers.withIsolatedRequireJS (requirejs) ->
-  model = null
 
   dgExporter =
     exportData: sinon.spy()
@@ -48,7 +47,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
 
 
   loadModel = ->
-    model = new Model {}
+    global.model = new Model {}
 
     # for convenience, make the model advance 1 *ps* per tick
     model.set

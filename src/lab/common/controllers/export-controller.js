@@ -18,7 +18,7 @@ define(function (require) {
     dialog.open();
   }
 
-  var ExportController = function exportController(spec, interactivesController) {
+  var ExportController = function exportController(spec, interactivesController, model) {
     var perRun  = (spec.perRun || []).slice(),
         perTick = ['displayTime'].concat(spec.perTick.slice()),
         runNumber = 1,
