@@ -726,7 +726,7 @@ define(function (require) {
         // Regardless of whether or not we are able to export data to an enclosing container,
         // setup export controller so you can debug exports by typing script.exportData() in the
         // console.
-        exportController = new ExportController(interactive.exports, model);
+        exportController = new ExportController(interactive.exports, controller, model);
         componentModelLoadedCallbacks.push(exportController.modelLoadedCallback);
 
         // If there is an enclosing container we can export data to (e.g., we're iframed into
@@ -859,6 +859,15 @@ define(function (require) {
       Notify observers that a model was reset, passing along the cause of the reset event.
     */
     function modelResetHandler(cause) {
+      modelResetCallbacks.forEach(function(cb) {
+        cb(cause);
+      });
+    }
+
+    /**
+      Notify observers that a model was reset, passing along the cause of the reset event.
+    */
+    function notifyModelResetCallbacks(cause) {
       modelResetCallbacks.forEach(function(cb) {
         cb(cause);
       });
