@@ -82,18 +82,17 @@ helpers.withIsolatedRequireJS (requirejs) ->
   describe "Export controller", ->
     exportController = null
     interactivesController = null
+    model = null
 
     beforeEach ->
       dgExporter.exportData.reset()
       dgExporter.openTable.reset()
       interactivesController = new MockInteractivesController()
-      exportController = new ExportController(exportsSpec, interactivesController)
-
-      # need to mock the model loading sequence; for the time being, the exportController defines
-      # a modelLoadedCallback which is magically added to the list of modelLoaded listeners by the
-      # real interacttives controller.
-      interactivesController.on('modelLoaded', -> exportController.modelLoadedCallback() )
       interactivesController.loadModel()
+      model = interactivesController.model
+
+      exportController = new ExportController(exportsSpec, interactivesController, model)
+      exportController.modelLoadedCallback()
 
 
     describe "when exportData is called", ->
