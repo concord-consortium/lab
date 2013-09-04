@@ -588,7 +588,7 @@ define(function (require, exports) {
           if (cellList === undefined) {
             cellList = new CellList(size[0], size[1], computeMaxCutoff());
           } else {
-            cellList.reinitialize(computeMaxCutoff());
+            cellList.reinitialize(size[0], size[1], computeMaxCutoff());
           }
         },
 

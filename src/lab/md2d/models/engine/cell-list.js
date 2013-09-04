@@ -29,11 +29,12 @@ define(function () {
 
     // Public API.
     api = {
-      reinitialize: function (newCellSize) {
-        if (newCellSize !== cellSize) {
-          cellSize = newCellSize;
-          init();
-        }
+      reinitialize: function (newWidth, newHeight, newCellSize) {
+        var change = false;
+        if (newWidth !== width) { width = newWidth; change = true; }
+        if (newHeight !== height) { height = newHeight; change = true; }
+        if (newCellSize !== cellSize) { cellSize = newCellSize; change = true; }
+        if (change) init();
       },
 
       addToCell: function (atomIdx, x, y) {
