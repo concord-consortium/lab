@@ -29,14 +29,12 @@ helpers.withIsolatedRequireJS (requirejs) ->
       if event is 'modelLoaded' then @modelLoadedCallbacks.push(callback)
 
     loadModel: ->
-      loadModel()
-      @model = model
+      @model = loadModel()
       @modelLoadedCallbacks.forEach (cb) -> cb('initialLoad')
 
     reloadModel: (opts) ->
       @model.willReset()
-      loadModel()
-      @model = model
+      @model = loadModel()
       @modelLoadedCallbacks.forEach (cb) -> cb('reload')
 
     resetModel: (opts) ->
@@ -47,12 +45,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
 
 
   loadModel = ->
-    global.model = new Model {}
-
-    # for convenience, make the model advance 1 *ps* per tick
-    model.set
-      timeStep: 1000
-      timeStepsPerTick: 1
+    model = new Model {}
 
     model.defineOutput 'perRunOutput', {
       label: "per-run output"
@@ -75,8 +68,12 @@ helpers.withIsolatedRequireJS (requirejs) ->
     }, -> null
 
     model.set
+      timeStep: 1000
+      timeStepsPerTick: 1
       perRunParam: 10
       perTickParam: 20
+
+    model
 
 
   describe "Export controller", ->
