@@ -272,8 +272,10 @@ define(function (require) {
             when using this function.
           */
           appendDataPropertiesToComponent: function appendDataPropertiesToComponent(compID) {
-            var component = interactivesController.getComponent(compID);
-            component.appendDataPropertiesToComponent();
+            var comp = interactivesController.getComponent(compID);
+            if (comp !== undefined) {
+              comp.appendDataPropertiesToComponent();
+            }
           },
 
           /**
@@ -281,7 +283,7 @@ define(function (require) {
           */
           setComponentAttributes: function setComponentAttributes(compID, opts) {
             var comp = interactivesController.getComponent(compID);
-            if (comp.setAttributes) {
+            if (comp !== undefined) {
               comp.setAttributes(opts);
             }
           },
@@ -289,7 +291,7 @@ define(function (require) {
 
           getComponentData: function getComponentData(compID, propArray) {
             var comp = interactivesController.getComponent(compID);
-            if (comp.getData) {
+            if (comp !== undefined && comp.getData) {
               return comp.getData(propArray);
             }
           },
