@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Simplest Reaction</page_title>
+<text>  
+ </text>
+<section start="0" end="5">
+<paragraph start="0" end="3">
+<content start="0" end="1">
+<component><class>org.concord.modeler.PagePotentialWell</class>
+<width>200</width>
+<height>200</height>
+<description>VAA</description>
+<maximum>10.0</maximum>
+<opaque>false</opaque>
+<model>4</model>
+</component></content>
+
+<content start="1" end="2">
+<component><class>org.concord.mw2d.activity.ChemContainer</class>
+<resource>simplest-free-radical-reaction$0.mml</resource><button>Select Object</button><button>Delete Objects</button><button>Rotate Object</button><button>Duplicate Object</button><button>Add Nt</button><button>Add Pl</button><button>Add Ws</button><button>Add Ck</button><button>Heat Selected Objects</button><button>Cool Selected Objects</button></component></content>
+
+<content start="2" end="3">
+</content>
+
+</paragraph>
+<paragraph start="3" end="5">
+<content start="3" end="4">
+<component><class>org.concord.modeler.PagePotentialHill</class>
+<width>200</width>
+<height>200</height>
+<maximum>1.0</maximum>
+<description>VAB2</description>
+<opaque>false</opaque>
+<model>4</model>
+</component></content>
+
+</paragraph>
+</section>
+</document>

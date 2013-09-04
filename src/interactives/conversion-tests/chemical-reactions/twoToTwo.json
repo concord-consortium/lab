@@ -1,0 +1,23 @@
+{
+  "title": "twoToTwo",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "twoToTwo",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/chemical-reactions/twoToTwo.json",
+      "importedFrom": "imports/legacy-mw-content/conversion-and-physics-examples/chemical-reactions/twoToTwo.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

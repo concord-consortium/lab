@@ -102,6 +102,10 @@
   :name: "Physics Conversion Tests"
   :category: Tests
 
+- :path: conversion-tests/chemical-reactions
+  :name: "Chemical Reaction Conversion Tests"
+  :category: Tests
+
 - :path: layout-tests
   :name: "Layout Tests"
   :category: Tests

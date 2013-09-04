@@ -1,0 +1,23 @@
+{
+  "title": "chemreact-page1",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "chemreact-page1$0",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/chemical-reactions/chemreact-page1$0.json",
+      "importedFrom": "imports/legacy-mw-content/conversion-and-physics-examples/chemical-reactions/chemreact-page1$0.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

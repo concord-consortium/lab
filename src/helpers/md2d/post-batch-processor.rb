@@ -212,6 +212,7 @@ class MD2DImports
         @model_list.push(@tutorial_section) if @tutorial_section
       end
       @model_list.push(MD2DDirectory.new("conversion-and-physics-examples").section)
+      @model_list.push(MD2DDirectory.new("conversion-and-physics-examples/chemical-reactions").section)
     end
   end
 

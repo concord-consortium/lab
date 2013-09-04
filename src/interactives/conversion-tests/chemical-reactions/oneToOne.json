@@ -1,0 +1,23 @@
+{
+  "title": "oneToOne",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "oneToOne",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/chemical-reactions/oneToOne.json",
+      "importedFrom": "imports/legacy-mw-content/conversion-and-physics-examples/chemical-reactions/oneToOne.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}
