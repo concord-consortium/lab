@@ -133,7 +133,9 @@ define(function (require) {
         controller.modelContainer.update();
       },
 
-      reload: function (cause) {
+      reload: reload,
+
+      reset: function (cause) {
         model.stop();
         // use the resetCause closure var to make the cause (which the model doesn't know about)
         // available to resetHandler()
