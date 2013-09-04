@@ -2186,6 +2186,8 @@ define(function(require) {
       model.on('changeElectricField', setupElectricField);
 
       setupFirefoxWarning();
+
+      repaint();
     }
 
     // Call when model is reset or reloaded.
