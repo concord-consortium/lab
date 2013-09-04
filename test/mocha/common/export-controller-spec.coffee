@@ -173,6 +173,10 @@ helpers.withIsolatedRequireJS (requirejs) ->
           points.should.eql [0]
 
     describe "event logging", ->
+
+      objectAttachedTo = (call) ->
+        JSON.parse call.args[0].match(/Per-run Settings and Data: (.*)$/)[1]
+
       beforeEach ->
         dgExporter.logAction.reset()
 
@@ -187,9 +191,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
 
         it "should pass the per-run parameters", ->
           call = dgExporter.logAction.getCall 0
-          json = call.args[0].match(/Per-run Settings and Data: (.*)$/)[1]
-          hash = JSON.parse(json)
-          hash.should.eql {
+          objectAttachedTo(call).should.eql {
             fields: ["per-run parameter (units 3)", "per-run output (units 1)"]
             values: [10, 1]
           }
@@ -207,9 +209,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
 
         it "should pass the per-run parameters as they were before reload", ->
           call = dgExporter.logAction.getCall 0
-          json = call.args[0].match(/Per-run Settings and Data: (.*)$/)[1]
-          hash = JSON.parse(json)
-          hash.should.eql {
+          objectAttachedTo(call).should.eql {
             fields: ["per-run parameter (units 3)", "per-run output (units 1)"]
             values: ["updated before reload", 1]
           }
@@ -227,9 +227,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
 
         it "should pass the per-run parameters as they were before reset", ->
           call = dgExporter.logAction.getCall 0
-          json = call.args[0].match(/Per-run Settings and Data: (.*)$/)[1]
-          hash = JSON.parse(json)
-          hash.should.eql {
+          objectAttachedTo(call).should.eql {
             fields: ["per-run parameter (units 3)", "per-run output (units 1)"]
             values: ["updated before reset", 1]
           }
@@ -256,9 +254,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
 
         it "should pass the per-run parameters", ->
           call = dgExporter.logAction.getCall 0
-          json = call.args[0].match(/Per-run Settings and Data: (.*)$/)[1]
-          hash = JSON.parse(json)
-          hash.should.eql {
+          objectAttachedTo(call).should.eql {
             fields: ["per-run parameter (units 3)", "per-run output (units 1)"]
             values: [10, 1],
             changedParameters: []
@@ -277,36 +273,27 @@ helpers.withIsolatedRequireJS (requirejs) ->
           calls = (dgExporter.logAction.getCall(i) for i in [0...dgExporter.logAction.callCount])
 
         describe "the \"User exported the model\" log event", ->
-          it "should list the changed parameters", ->
-            exportLogCalls = getLogCallsMatching /^User exported the model./
-            exportLogCall = exportLogCalls[0]
-            json = exportLogCall.args[0].match(/Per-run Settings and Data: (.*)$/)[1]
-            hash = JSON.parse json
 
-            hash.changedParameters.should.eql [
-              field: "per-run parameter (units 3)",
-              valueAtStart: 10,
-              valueExported: 11
-            ]
+          it "should list the changed parameters", ->
+            call = getLogCallsMatching(/^User exported the model./)[0]
+            objectAttachedTo(call).changedParameters
+              .should.eql [
+                field: "per-run parameter (units 3)",
+                valueAtStart: 10,
+                valueExported: 11
+              ]
 
         it "should log \"User changed parameters between start and export\"", ->
-          changedParametersLogCalls = getLogCallsMatching /^User changed parameters between start and export/
-          changedParametersLogCalls.length.should.equal 1
+          getLogCallsMatching(/^User changed parameters between start and export/)
+            .should.have.lengthOf 1
 
         describe "the \"User changed parameters between start and export\" log event", ->
 
           it "should list the changed parameters", ->
-            changedParametersLogCalls = getLogCallsMatching /^User changed parameters between start and export/
-            changedParametersLogCall = changedParametersLogCalls[0]
-            json = changedParametersLogCall.args[0].match(/Per-run Settings and Data: (.*)$/)[1]
-            hash = JSON.parse json
-
-            hash.changedParameters.should.eql [
-              field: "per-run parameter (units 3)",
-              valueAtStart: 10,
-              valueExported: 11
-            ]
-
-
-
-
+            call = getLogCallsMatching(/^User changed parameters between start and export/)[0]
+            objectAttachedTo(call).changedParameters
+              .should.eql [
+                field: "per-run parameter (units 3)",
+                valueAtStart: 10,
+                valueExported: 11
+              ]
