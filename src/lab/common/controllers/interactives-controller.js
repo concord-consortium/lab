@@ -685,7 +685,7 @@ define(function (require) {
       }
     }
 
-    function finishLoadingInteractive(modelDefinition, onLoadScript) {
+    function finishLoadingInteractive(onLoadScript) {
       var componentJsons,
           i, len;
 
