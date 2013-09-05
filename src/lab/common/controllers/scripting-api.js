@@ -109,6 +109,10 @@ define(function (require) {
             interactivesController.loadModel(modelId, null);
           },
 
+          getLoadedModelId: function getLoadedModel(modelId, onLoadScript) {
+            return interactivesController.getLoadedModelId();
+          },
+
           /**
             Observe property `propertyName` on the model, and perform `action` when it changes.
             Pass property value to action.

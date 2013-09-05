@@ -98,6 +98,7 @@ define(function (require) {
         controller = {},
         modelController,
         model,
+        modelId,
         $interactiveContainer,
         helpSystem,
         modelDefinitions = [],
@@ -154,7 +155,8 @@ define(function (require) {
       };
     });
 
-    function getModelDefinition(modelId) {
+    function getModelDefinition(id) {
+      modelId = id;
       if (modelHash[modelId]) {
         return modelHash[modelId];
       }
@@ -525,11 +527,12 @@ define(function (require) {
       @param: modelId.
       @optionalParam modelObject
     */
-    function loadModel(modelId, modelConfig) {
-      var modelDefinition = getModelDefinition(modelId),
+    function loadModel(id, modelConfig, onLoadScript) {
+      var modelDefinition = getModelDefinition(id),
           interactiveViewOptions,
           interactiveModelOptions;
 
+      modelId = id;
       isModelLoaded = false;
       controller.currentModel = modelDefinition;
 
@@ -1293,6 +1296,11 @@ define(function (require) {
           }
         }
       ],
+
+      getLoadedModelId: function () {
+        return modelId;
+      },
+
       // Make these private variables and functions available
       loadInteractive: loadInteractive,
       validateInteractive: validateInteractive,
