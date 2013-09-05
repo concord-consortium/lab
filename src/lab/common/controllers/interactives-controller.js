@@ -1006,6 +1006,15 @@ define(function (require) {
       getDGExportController: function () {
         return exportController;
       },
+
+      /**
+        Return the model object. Note this is provided behind a method because we eventually
+        want to support multiple model objects accesible by id.
+      */
+      getModel: function() {
+        return model;
+      },
+
       getModelController: function () {
         return modelController;
       },
