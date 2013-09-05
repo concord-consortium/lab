@@ -1006,7 +1006,7 @@ define(function (require) {
       getDGExportController: function () {
         return exportController;
       },
-      getModelDefinitionController: function () {
+      getModelController: function () {
         return modelController;
       },
       getComponent: function (id) {
