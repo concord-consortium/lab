@@ -45,7 +45,7 @@ parseMML = (mmlString) ->
     ### perform any pre-processing on the string ###
 
     # MML classes have periods or $ in them, which is not valid in DOM
-    mmlString = mmlString.replace /class=".*"/g, (match) ->
+    mmlString = mmlString.replace /class=".*"|id=".*"|idref=".*"/g, (match) ->
       match.replace /[\.$]/g, "-"
 
     ### load the string into Cheerio ###
@@ -359,19 +359,19 @@ parseMML = (mmlString) ->
 
         rectangles.push validatedData
 
-        # <void property="vectorField"> 
-        #  <object class="org.concord.mw2d.models.ElectricField"> 
-        #   <void property="frequency"> 
-        #    <double>0.06911503837897545</double> 
-        #   </void> 
-        #   <void property="intensity"> 
-        #    <double>0.10000000149011612</double> 
-        #   </void> 
-        #   <void property="local"> 
-        #    <boolean>true</boolean> 
-        #   </void> 
-        #  </object> 
-        # </void> 
+        # <void property="vectorField">
+        #  <object class="org.concord.mw2d.models.ElectricField">
+        #   <void property="frequency">
+        #    <double>0.06911503837897545</double>
+        #   </void>
+        #   <void property="intensity">
+        #    <double>0.10000000149011612</double>
+        #   </void>
+        #   <void property="local">
+        #    <boolean>true</boolean>
+        #   </void>
+        #  </object>
+        # </void>
 
         # Shape can also specify electric field.
         $elField = $node.find "[property=vectorField]>object.org-concord-mw2d-models-ElectricField"
@@ -840,21 +840,21 @@ parseMML = (mmlString) ->
 
       return props
 
-    # <void property="fields"> 
-    #  <void method="add"> 
-    #   <object class="org.concord.mw2d.models.ElectricField"> 
-    #    <void property="frequency"> 
-    #     <double>0.006283185307179587</double> 
-    #    </void> 
-    #    <void property="intensity"> 
-    #     <double>0.07000000029802322</double> 
-    #    </void> 
-    #    <void property="orientation"> 
-    #     <int>3003</int> 
-    #    </void> 
-    #   </object> 
-    #  </void> 
-    # </void> 
+    # <void property="fields">
+    #  <void method="add">
+    #   <object class="org.concord.mw2d.models.ElectricField">
+    #    <void property="frequency">
+    #     <double>0.006283185307179587</double>
+    #    </void>
+    #    <void property="intensity">
+    #     <double>0.07000000029802322</double>
+    #    </void>
+    #    <void property="orientation">
+    #     <int>3003</int>
+    #    </void>
+    #   </object>
+    #  </void>
+    # </void>
 
     $fields = $mml "[method=add]>object.org-concord-mw2d-models-ElectricField"
     if $fields.length > 0
