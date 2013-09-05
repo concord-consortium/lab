@@ -104,9 +104,9 @@ define(function (require) {
             return model.set.apply(model, arguments);
           },
 
-          loadModel: function loadModel(modelId, onLoadScript) {
+          loadModel: function loadModel(modelId) {
             model.stop();
-            interactivesController.loadModel(modelId, null, onLoadScript);
+            interactivesController.loadModel(modelId, null);
           },
 
           /**

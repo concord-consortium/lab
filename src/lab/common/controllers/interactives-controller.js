@@ -525,7 +525,7 @@ define(function (require) {
       @param: modelId.
       @optionalParam modelObject
     */
-    function loadModel(modelId, modelConfig, onLoadScript) {
+    function loadModel(modelId, modelConfig) {
       var modelDefinition = getModelDefinition(modelId),
           interactiveViewOptions,
           interactiveModelOptions;
@@ -547,13 +547,13 @@ define(function (require) {
       }
 
       if (modelConfig) {
-        finishWithLoadedModel(modelDefinition.url, modelConfig, onLoadScript);
+        finishWithLoadedModel(modelDefinition.url, modelConfig);
       } else {
         if (modelDefinition.url) {
           $.get(labConfig.actualRoot + modelDefinition.url).done(function(modelConfig) {
             // Deal with the servers that return the json as text/plain
             modelConfig = typeof modelConfig === 'string' ? JSON.parse(modelConfig) : modelConfig;
-            finishWithLoadedModel(modelDefinition.url, modelConfig, onLoadScript);
+            finishWithLoadedModel(modelDefinition.url, modelConfig);
           }).fail(function() {
             modelConfig = {
               "type": "md2d",
@@ -650,7 +650,7 @@ define(function (require) {
         return modelOptions;
       }
 
-      function finishWithLoadedModel(modelUrl, modelConfig, onLoadScript) {
+      function finishWithLoadedModel(modelUrl, modelConfig) {
         var modelOptions = processOptions(modelConfig, interactiveModelOptions, interactiveViewOptions);
 
         if (modelController) {
@@ -661,13 +661,11 @@ define(function (require) {
           // (this catches reloads)
           modelController.on('modelLoaded', modelLoadedHandler);
           modelController.on('modelReset', modelResetHandler);
-          // model = modelController.model;
-          // createScriptingAPI();
         }
 
         setupModelPlayerKeyboardHandler();
 
-        finishLoadingInteractive(onLoadScript);
+        finishLoadingInteractive();
       }
 
       function createModelController(type, modelUrl, modelOptions) {
@@ -685,7 +683,7 @@ define(function (require) {
       }
     }
 
-    function finishLoadingInteractive(onLoadScript) {
+    function finishLoadingInteractive() {
       var componentJsons,
           i, len;
 
@@ -711,10 +709,6 @@ define(function (require) {
       onLoadScripts = [];
       if (controller.currentModel.onLoad) {
         onLoadScripts.push( scriptingAPI.makeFunctionInScriptContext( getStringFromArray(controller.currentModel.onLoad) ) );
-      }
-
-      if (onLoadScript) {
-        onLoadScripts.push( scriptingAPI.makeFunctionInScriptContext( onLoadScript ) );
       }
 
       for (i = 0, len = componentJsons.length; i < len; i++) {
