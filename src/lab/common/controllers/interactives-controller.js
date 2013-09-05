@@ -462,7 +462,7 @@ define(function (require) {
 
         // Set up the list of possible modelDefinitions.
         modelDefinitions = interactive.models;
-        for (i = 0, len = modelDefinitions.length; i < len; i++) {
+        for (var i = 0, len = modelDefinitions.length; i < len; i++) {
           modelHash[modelDefinitions[i].id] = modelDefinitions[i];
         }
         loadModelFirstBeforeCompletingInteractive();
