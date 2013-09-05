@@ -704,7 +704,7 @@ define(function (require) {
       model = modelController.model;
       createScriptingAPI();
 
-      initializedModelOutputsAndParamaters();
+      initializeModelOutputsAndParameters();
 
       modelController.modelInDOM();
 
@@ -772,7 +772,7 @@ define(function (require) {
       semanticLayout.setupModel(modelController);
 
       // Setup model outputs and properties added by the Interactive
-      initializedModelOutputsAndParamaters();
+      initializeModelOutputsAndParameters();
 
       // Call component callbacks *when* the layout is created.
       // Some callbacks require that their views are already attached to the DOM, e.g. (bar graph uses
@@ -806,7 +806,7 @@ define(function (require) {
 
     }
 
-    function initializedModelOutputsAndParamaters() {
+    function initializeModelOutputsAndParameters() {
       setupCustomOutputs("basic", controller.currentModel.outputs, interactive.outputs);
       setupCustomParameters(controller.currentModel.parameters, interactive.parameters);
       // Setup filtered outputs after basic outputs and parameters, as filtered output require its input
@@ -824,7 +824,7 @@ define(function (require) {
       model = modelController.model;
       createScriptingAPI();
 
-      initializedModelOutputsAndParamaters();
+      initializeModelOutputsAndParameters();
 
       modelController.modelInDOM();
 
