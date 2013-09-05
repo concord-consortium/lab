@@ -450,7 +450,7 @@ define(function(require) {
 
     // Clean up state before we go -- failing to remove the applet from the page before switching
     // between 2 sensor types that use the same interface causes an applet exception.
-    model.on('willReset', removeApplet);
+    model.on('willReset.model', removeApplet);
 
     return model;
   };
