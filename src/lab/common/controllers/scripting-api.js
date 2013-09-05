@@ -96,8 +96,6 @@ define(function (require) {
 
           format: d3.format,
 
-          model: model,
-
           get: function get() {
             return model.get.apply(model, arguments);
           },
