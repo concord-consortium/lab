@@ -511,7 +511,7 @@ define(function (require) {
           },
           getHeightForWidth: function() { return 0; },
           resize: function() {},
-          getModel: function() { return {}; }
+          model: function() { return {}; }
         };
         model = modelController.model;
         createScriptingAPI();
