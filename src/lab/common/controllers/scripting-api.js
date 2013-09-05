@@ -1,4 +1,5 @@
 /*global d3, $, define */
+/*jshint loopfunc: true */
 
 define(function (require) {
 
@@ -109,7 +110,7 @@ define(function (require) {
             interactivesController.loadModel(modelId, null);
           },
 
-          getLoadedModelId: function getLoadedModel(modelId, onLoadScript) {
+          getLoadedModelId: function getLoadedModel() {
             return interactivesController.getLoadedModelId();
           },
 
