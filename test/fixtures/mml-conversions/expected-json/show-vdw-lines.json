@@ -78,6 +78,7 @@
         "layer": 1,
         "frame": "rounded rectangle",
         "backgroundColor": "rgb(232,231,231)",
+        "fontScale": 1,
         "anchor": "upper-left"
       }
     ]
