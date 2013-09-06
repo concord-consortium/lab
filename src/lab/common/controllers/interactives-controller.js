@@ -703,11 +703,9 @@ define(function (require) {
       // modelLoadedHandler(ModelController.LOAD_CAUSE.INITIAL_LOAD);
 
       model = modelController.model;
+
       createScriptingAPI();
-
       initializeModelOutputsAndParameters();
-
-      modelController.modelInDOM();
 
       onLoadScripts = [];
       if (controller.currentModel.onLoad) {
@@ -768,8 +766,7 @@ define(function (require) {
       // This will attach model container to DOM.
       semanticLayout.setupModel(modelController);
 
-      // Setup model outputs and properties added by the Interactive
-      initializeModelOutputsAndParameters();
+      modelController.modelInDOM();
 
       // Call component callbacks *when* the layout is created.
       // Some callbacks require that their views are already attached to the DOM, e.g. (bar graph uses
