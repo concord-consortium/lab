@@ -778,6 +778,8 @@ parseMML = (mmlString) ->
       calloutPointDef = $textBoxNode.find "void[property=callOutPoint] .java-awt-Point>int"
       if callout and calloutPointDef and calloutPointDef.length > 1
         calloutPoint = (parseInt(cheerio(el).text()) for el in calloutPointDef)
+      $font = getNode $textBoxNode.find "[property=font] > object"
+      fontScale = $font.children().eq(2).text() / 12
 
       [x, y] = toNextgenCoordinates $x, $y
 
@@ -790,6 +792,7 @@ parseMML = (mmlString) ->
         textBox.hostType = textHostType
         textBox.hostIndex = textHostIndex
       textBox.backgroundColor = backgroundTextColor if backgroundTextColor
+      textBox.fontScale = fontScale if fontScale
 
       # default anchor is upper-left when importing from Java MW
       textBox.anchor = "upper-left"
