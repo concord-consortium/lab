@@ -46,6 +46,8 @@ define(function (require) {
         'energy2d':         require('energy2d/controllers/controller')
       },
 
+      ExperimentController = require('common/controllers/experiment-controller'),
+
       ModelController = require('common/controllers/model-controller'),
 
       // Set of available components.
@@ -96,6 +98,8 @@ define(function (require) {
 
     var interactive = {},
         controller = {},
+        experimentController,
+        experimentDefinition,
         modelController,
         model,
         modelId,
@@ -146,14 +150,13 @@ define(function (require) {
         // event listeners.
         dispatch = new DispatchSupport('layoutUpdated');
 
-
     // simple tabindex support, also exposed via api.getNextTabIndex()
-    getNextTabIndex = (function () {
+    getNextTabIndex = function () {
       var tabIndex = -1;
       return function() {
         return tabIndex++;
       };
-    });
+    };
 
     function getModelDefinition(id) {
       modelId = id;
@@ -392,6 +395,16 @@ define(function (require) {
         validateArray("filteredOutput", modelDefinition.filteredOutputs);
       }
 
+
+      // If an experiment template exists validate nested experiment structures.
+      if (interactive.experiment) {
+        experimentDefinition = interactive.experiment;
+        validator.validateCompleteness(metadata.experimentTimeSeries, experimentDefinition.timeSeries);
+        validateArray("experimentParameter", experimentDefinition.parameters);
+        validateArray("experimentDestination", experimentDefinition.destinations);
+        validateArray("experimentSavedRun", experimentDefinition.savedRuns);
+      }
+
       components = interactive.components;
       try {
         for (i = 0, len = components.length; i < len; i++) {
@@ -527,7 +540,7 @@ define(function (require) {
       @param: modelId.
       @optionalParam modelObject
     */
-    function loadModel(id, modelConfig, onLoadScript) {
+    function loadModel(id, modelConfig) {
       var modelDefinition = getModelDefinition(id),
           interactiveViewOptions,
           interactiveModelOptions;
@@ -780,6 +793,12 @@ define(function (require) {
 
       for(i = 0; i < onLoadScripts.length; i++) {
         onLoadScripts[i]();
+      }
+
+      // Setup experimentController, if defined...
+      if (interactive.experiment) {
+        experimentController = new ExperimentController(interactive.experiment, scriptingAPI, onLoadScripts, controller, model);
+        modelLoadedCallbacks.push(experimentController.modelLoadedCallback);
       }
 
       modelController.modelSetupComplete();

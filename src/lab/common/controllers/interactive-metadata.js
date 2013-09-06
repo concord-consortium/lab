@@ -59,6 +59,10 @@ define(function() {
         defaultValue: []
       },
 
+      experiment: {
+        required: false
+      },
+
       exports: {
         required: false
       },
@@ -174,6 +178,100 @@ define(function() {
       },
       perTick: {
         required: true
+      }
+    },
+
+    /**
+      Interactive experiment template:
+    */
+    experiment: {
+      timeSeries: {
+        required: true
+      },
+      parameters: {
+        required: true,
+        defaultValue: []
+      },
+      destinations: {
+        required: true,
+        defaultValue: []
+      },
+      stateButtons: {
+        required: true,
+        startRun: {
+          required: true,
+          defaultValue: "start-run"
+        },
+        stopRun: {
+          required: true,
+          defaultValue: "stop-run"
+        },
+        saveRun: {
+          required: true,
+          defaultValue: "save-run"
+        },
+        nextRun: {
+          required: true,
+          defaultValue: "next-run"
+        },
+        clearAll: {
+          required: true,
+          defaultValue: "clear-all"
+        }
+      },
+      onReset: {
+      },
+      savedRuns: {
+        defaultValue: []
+      }
+    },
+
+    experimentTimeSeries: {
+      time: {
+        defaultValue: "displayTime"
+      },
+      properties: {
+        required: true,
+        defaultValue: []
+      }
+    },
+
+    experimentParameter: {
+      inputs: {
+        required: true,
+        defaultValue: []
+      },
+      outputs: {
+        required: true,
+        defaultValue: []
+      }
+    },
+
+    experimentDestination: {
+      type: {
+        required: true
+      },
+      componentIds: {
+        required: true,
+        defaultValue: []
+      },
+      properties: {
+        required: true,
+        defaultValue: []
+      }
+    },
+
+    experimentSavedRun: {
+      timeStamp: {
+        required: true
+      },
+      timeSeries: {
+        required: true,
+        defaultValue: []
+      },
+      parameters: {
+        required: true,
+        defaultValue: []
       }
     },
 

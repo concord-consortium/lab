@@ -35,70 +35,6 @@
         "modelSampleRate": 60
       },
       "onLoad": [
-        "setComponentDisabled('start-run', false);",
-        "setComponentDisabled('stop-run', true);",
-        "setComponentDisabled('save-run', true);",
-        "setComponentDisabled('next-run', true);",
-        "setComponentDisabled('clear-all', true);",
-        "setComponentDisabled('length-slider', false);",
-        "setComponentDisabled('mass-slider', false);",
-        "setComponentDisabled('angle-slider', false);",
-        "callEvery(0.1, function() {",
-        "  if (get('experimentRunning')) {",
-        "    var runningTime = get('time') - get('timeExperimentStarted');",
-        "    set('experimentTime', runningTime);",
-        "    if (runningTime > 8) stopRun();",
-        "  }",
-        "});",
-        "function startRun() {",
-        "  setComponentDisabled('clear-all', false);",
-        "  setComponentDisabled('length-slider', true);",
-        "  setComponentDisabled('mass-slider', true);",
-        "  setComponentDisabled('angle-slider', true);",
-        "  setComponentDisabled('start-run', true);",
-        "  setComponentDisabled('stop-run', false);",
-        "  setComponentDisabled('save-run', true);",
-        "  setComponentDisabled('next-run', true);",
-        "  start();",
-        "}",
-        "function stopRun() {",
-        "  setComponentDisabled('start-run', true);",
-        "  setComponentDisabled('stop-run', true);",
-        "  setComponentDisabled('save-run', false);",
-        "  setComponentDisabled('next-run', false);",
-        "  stop();",
-        "  appendDataPropertiesToComponent('last-run-table');",
-        "}",
-        "onPropertyChange('experimentRunning', function() {",
-        "  if (get('experimentRunning')) {",
-        "    startRun();",
-        "  } else {",
-        "    stopRun()",
-        "  }",
-        "});",
-        "function nextExperiment() {",
-        "  setComponentDisabled('start-run', false);",
-        "  setComponentDisabled('stop-run', true);",
-        "  setComponentDisabled('save-run', true);",
-        "  setComponentDisabled('next-run', true);",
-        "  setComponentDisabled('length-slider', false);",
-        "  setComponentDisabled('mass-slider', false);",
-        "  setComponentDisabled('angle-slider', false);",
-        "  set('experimentTime', 0);",
-        "  set('experimentCleared', false);",
-        "  reset({retainParameters: ['gravity', 'rodLength', 'startingAngle', 'ballMass', 'damping']});",
-        "  resetAngle();",
-        "  stopMotion();",
-        "  set('rodLength', get('rodLength'));",
-        "  appendDataPropertiesToComponent('last-run-table');",
-        "}",
-        "onPropertyChange('experimentCleared', function() {",
-        "  if (get('experimentCleared')) {",
-        "    nextExperiment();",
-        "    set('experimentCleared', false);",
-        "  }",
-        "});",
-        "",
         "function resetAngle() {",
         "  set({startingAngle: get('startingAngle')});",
         "}",
@@ -234,6 +170,72 @@
       "initialValue": "rodLength"
     }
   ],
+  "experiment": {
+    "timeSeries": {
+      "time": "displayTime",
+      "properties": [
+        "currentAngle"
+      ]
+    },
+    "parameters": {
+      "inputs": [
+        "rodLength",
+        "ballMass",
+        "startingAngle"
+      ],
+      "outputs": [
+        "period"
+      ]
+    },
+    "destinations": [
+      {
+        "type": "timeSeries",
+        "componentIds": [
+          "angle-graph"
+        ],
+        "properties": [
+          "currentAngle"
+        ]
+      },
+      {
+        "type": "timeSeries",
+        "componentIds": [
+          "last-run-table"
+        ],
+        "properties": [
+          "rodLength",
+          "ballMass",
+          "startingAngle",
+          "period"
+        ]
+      },
+      {
+        "type": "parameterSeries",
+        "componentIds": [
+          "experiment-table",
+          "parameter-graph"
+        ],
+        "properties": [
+          "rodLength",
+          "ballMass",
+          "startingAngle",
+          "period"
+        ]
+      }
+    ],
+    "stateButtons": {
+      "startRun": "start-run",
+      "stopRun": "stop-run",
+      "saveRun": "save-run",
+      "nextRun": "next-run",
+      "clearAll": "clear-all"
+    },
+    "onReset": [
+      "resetAngle();",
+      "stopMotion();",
+      "set('rodLength', get('rodLength'));"
+    ]
+  },
   "exports": {
     "perRun": [
       "gravity",
@@ -323,44 +325,35 @@
       "id": "start-run",
       "text": "Start",
       "tooltip": "Start experiment run. Will stop automatically after 8s.",
-      "action": [
-        "set('timeExperimentStarted', get('time'));",
-        "set('experimentRunning', true);"
-      ]
+      "action": ""
     },
     {
       "type": "button",
       "id": "stop-run",
       "text": "Stop",
       "tooltip": "Stop currently running experiment.",
-      "action": [
-        "set('experimentRunning', false);"
-      ]
+      "action": ""
     },
     {
       "type": "button",
       "id": "save-run",
       "text": "Save",
       "tooltip": "Save parameter data and period from current run into Experiment Table.",
-      "action": [
-        "appendDataPropertiesToComponent('experiment-table');",
-        "appendDataPropertiesToComponent('parameter-graph');",
-        "setComponentDisabled('save-run', true);"
-      ]
+      "action": ""
     },
     {
       "type": "button",
       "id": "next-run",
       "text": "Next Run",
       "tooltip": "Clear just the last experiment run and setup next run.",
-      "action": "set('experimentCleared', true);"
+      "action": ""
     },
     {
       "type": "button",
       "id": "clear-all",
       "text": "Clear All",
       "tooltip": "Clear all experiment data.",
-      "action": "reload();"
+      "action": ""
     },
     {
       "type": "graph",
