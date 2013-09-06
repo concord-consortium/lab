@@ -705,6 +705,10 @@ define(function (require) {
       model = modelController.model;
       createScriptingAPI();
 
+      initializeModelOutputsAndParameters();
+
+      modelController.modelInDOM();
+
       onLoadScripts = [];
       if (controller.currentModel.onLoad) {
         onLoadScripts.push( scriptingAPI.makeFunctionInScriptContext( getStringFromArray(controller.currentModel.onLoad) ) );
@@ -763,8 +767,6 @@ define(function (require) {
 
       // This will attach model container to DOM.
       semanticLayout.setupModel(modelController);
-
-      modelController.modelInDOM();
 
       // Setup model outputs and properties added by the Interactive
       initializeModelOutputsAndParameters();
