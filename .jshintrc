@@ -3,7 +3,6 @@
 
   "browser" : true,
 
-  "es5": true,
   "eqnull": true,
   "boss" : false,
   "curly": false,
