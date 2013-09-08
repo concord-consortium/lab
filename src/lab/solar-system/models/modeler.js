@@ -5,14 +5,14 @@ define(function(require) {
   // Dependencies.
   var arrays               = require('arrays'),
       console              = require('common/console'),
-      solarSystem          = require('solar-system/models/engine/solar-system'),
-      metadata             = require('solar-system/models/metadata'),
-      TickHistory          = require('common/models/tick-history'),
-      PropertySupport      = require('common/property-support'),
       serialize            = require('common/serialize'),
       validator            = require('common/validator'),
-      units                = require('solar-system/models/engine/constants/units'),
+      PropertySupport      = require('common/property-support'),
       PropertyDescription  = require('common/property-description'),
+      TickHistory          = require('common/models/tick-history'),
+      solarSystem          = require('solar-system/models/engine/solar-system'),
+      metadata             = require('solar-system/models/metadata'),
+      units                = require('solar-system/models/engine/constants/units'),
       unitDefinitions      = require('solar-system/models/unit-definitions/index'),
       _ = require('underscore');
 
