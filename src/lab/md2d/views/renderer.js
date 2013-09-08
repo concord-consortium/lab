@@ -1,4 +1,6 @@
 /*global $, define: false, d3: false, Image */
+/*jshint loopfunc: true */
+
 // ------------------------------------------------------------
 //
 //   MD2D View Renderer
@@ -393,7 +395,7 @@ define(function(require) {
       }
 
       if (keShadingMode) {
-        ke = model.getAtomKineticEnergy(d.idx),
+        ke = model.getAtomKineticEnergy(d.idx);
         // Convert Kinetic Energy to [0, 1] range
         // using empirically tested transformations.
         // K.E. shading should be similar to the classic MW K.E. shading.
@@ -1552,11 +1554,11 @@ define(function(require) {
           }
         }
         mockShapesTop.sort(function(a, b) {
-          return a.layerPosition - b.layerPosition
-        })
+          return a.layerPosition - b.layerPosition;
+        });
         mockShapesBelow.sort(function(a, b) {
-          return a.layerPosition - b.layerPosition
-        })
+          return a.layerPosition - b.layerPosition;
+        });
         shapeTop = shapeContainerTop.selectAll(".shape").data(mockShapesTop);
         shapeBelow = shapeContainerBelow.selectAll(".shape").data(mockShapesBelow);
         shapeEnter();
@@ -1675,7 +1677,7 @@ define(function(require) {
           return "rotate(" + (Math.atan2(d.fx, d.fy) * rad2deg) + ")";
         })
         .style("opacity", function(d) {
-          return Math.min(1, Math.pow(d.fx * d.fx + d.fy * d.fy, .2) * .3);
+          return Math.min(1, Math.pow(d.fx * d.fx + d.fy * d.fy, 0.2) * 0.3);
         });
     }
 
