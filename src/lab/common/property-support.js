@@ -359,12 +359,12 @@ define(function() {
     }
 
     // Given a list of callbacks, invoke each one in order, but skip repeats.
-    function notifyCallbacksOnce(callbacks) {
+    function notifyCallbacksOnce(callbacks, value) {
       var called = [];
       callbacks.forEach(function(callback) {
         // TODO: explore ES6 Map/WeakMap shim that would allow this check to happen in O(1)
         if (called.indexOf(callback) < 0) {
-          callback();
+          callback(value);
           called.push(callback);
         }
       });
@@ -392,11 +392,11 @@ define(function() {
     // Notify observers of the passed-in property immediately if notifications are not batched
     // (see withBatchedNotifications), or else queue the passed-in property key for later
     // notification
-    function notify(key) {
+    function notify(key, value) {
       if (notificationsAreBatched) {
         changedPropertyKeys.push(key);
       } else {
-        notifyCallbacksOnce(propertyInformation[key].observers);
+        notifyCallbacksOnce(propertyInformation[key].observers, value);
       }
     }
 
@@ -498,7 +498,7 @@ define(function() {
             info.descriptor.afterSetCallback();
           }
 
-          notify(key);
+          notify(key, value);
         }
       });
     }
@@ -883,15 +883,16 @@ define(function() {
       setRawValues: function(values) {
         withBatchedNotifications(function() {
           Object.keys(values).forEach(function(key) {
-            var info = propertyInformation[key];
+            var info = propertyInformation[key],
+                value = values[key];
             if (!info) {
               return;
             }
             // During bulk state restoration, only actually changed values should trigger observers!
-            if (get(key) !== values[key]) {
-              notify(key);
+            if (get(key) !== value) {
+              notify(key, value);
             }
-            set(key, values[key]);
+            set(key, value);
             if (info.descriptor.invokeSetterAfterBulkRestore && info.descriptor.set) {
               info.descriptor.set(get(key));
             }
