@@ -1268,6 +1268,10 @@ define(function (require) {
           result.exports = $.extend(true, {}, interactive.exports);
         }
 
+        if (typeof interactive.experiment !== 'undefined') {
+          result.experiment = $.extend(true, {}, interactive.experiment);
+        }
+
         // Serialize components.
         result.components = [];
         for (i = 0, len = componentList.length; i < len; i++) {
