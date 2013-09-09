@@ -363,10 +363,10 @@ define(function(require) {
       if (glow.empty()) {
         glow = defs.append("filter")
           .attr("id", "glow")
-          .attr("x", "-1")
-          .attr("y", "-1")
-          .attr("width", "400%")
-          .attr("height", "400%");
+          .attr("x", "-2")
+          .attr("y", "-2")
+          .attr("width", "800%")
+          .attr("height", "800%");
         glow.append("feMorphology")
           .attr("result", "bigger")
           .attr("in", "SourceGraphic")
