@@ -1,4 +1,4 @@
-/*global Lab, _, $, jQuery, d3, Shutterbug, CodeMirror, controllers, alert, model, modelList, benchmark, _gaq, DEVELOPMENT: true, AUTHORING: true */
+/*global Lab, _, $, jQuery, d3, Shutterbug, CodeMirror, controllers, alert, modelList, benchmark, _gaq, DEVELOPMENT: true, AUTHORING: true */
 /*jshint boss:true */
 
 // Strawman setting for telling the interactive to be in "author mode",
@@ -43,6 +43,7 @@ AUTHORING = false;
       interactiveUrl,
       interactive,
       hash,
+      model,
 
       editor,
       modelEditor,
@@ -165,6 +166,7 @@ AUTHORING = false;
       // instance of the Interactive now.
       controller = new Lab.InteractivesController(interactiveUrl, '#interactive-container');
       controller.on("modelLoaded", function() {
+        model = controller.getModel();
         interactive = controller.serialize();
         setupFullPage();
       });
