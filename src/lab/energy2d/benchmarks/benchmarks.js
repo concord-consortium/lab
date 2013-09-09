@@ -3,6 +3,7 @@
 define(function () {
 
   return function Benchmarks(controller) {
+    var model = controller.model;
 
     var benchmarks = [
       {

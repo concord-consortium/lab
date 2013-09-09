@@ -1,8 +1,9 @@
-/*global define, model, Lab, d3 */
+/*global define, Lab, d3 */
 
 define(function () {
 
   return function Benchmarks(controller) {
+    var model = controller.model;
 
     var benchmarks = [
       {
