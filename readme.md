@@ -276,7 +276,7 @@ After RVM has finnished installing it will ask you to run a command similar to
 After installation you should see something like the following:
 
     $  ruby -v
-    ruby 1.9.3p194 (2012-04-20 revision 35410) [x86_64-linux]
+    ruby 2.0.0p247 (2013-06-27 revision 41674) [x86_64-darwin12.4.0]
 
 RVM has some additional dependancies, to view these type:
 
@@ -288,9 +288,9 @@ and install them using `sudo`. The command will look something like this:
     sudo /usr/bin/apt-get install build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion</code></pre>
 
 Becouse of some unknown bugs RVM doesn't recognise readline without being explictly pointed to it.
-To do this I've had to reinstall ruby 1.9.3-p194.
+To do this I've had to reinstall ruby 2.0.0p247.
 
-  $ rvm reinstall 1.9.3-p194 --with-zlib1g-dev
+  $ rvm reinstall 2.0.0p247 --with-zlib1g-dev
 
 [ruby gem bundler](http://gembundler.com/) should be installed. To check if it has been try:
 
