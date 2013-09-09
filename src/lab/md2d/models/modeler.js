@@ -23,7 +23,8 @@ define(function(require) {
       _ = require('underscore'),
 
       // plugins
-      QuantumDynamics      = require('md2d/models/engine/plugins/quantum-dynamics');
+      QuantumDynamics      = require('md2d/models/engine/plugins/quantum-dynamics'),
+      ChemicalReactions    = require('md2d/models/engine/plugins/chemical-reactions');
 
   return function Model(initialProperties, initializationOptions) {
 
@@ -602,6 +603,13 @@ define(function(require) {
         engine.addPlugin(new QuantumDynamics(engine, pluginProperties.quantumDynamics));
       } else {
         properties.useQuantumDynamics = false;
+      }
+
+      if (pluginProperties.chemicalReactions) {
+        properties.useChemicalReactions = true;
+        engine.addPlugin(new ChemicalReactions(engine, pluginProperties.chemicalReactions));
+      } else {
+        properties.useChemicalReactions = false;
       }
 
       // Copy reference to basic properties.
@@ -2026,7 +2034,8 @@ define(function(require) {
     // requires changing the model JSON schema when functionality is moved out of the main engine
     // and into a plugin, or vice-versa.
     pluginProperties = {
-      quantumDynamics: initialProperties.quantumDynamics
+      quantumDynamics: initialProperties.quantumDynamics,
+      chemicalReactions: initialProperties.chemicalReactions
     };
 
     // TODO: Elements are stored and treated different from other objects. This was enforced by

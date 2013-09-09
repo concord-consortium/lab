@@ -367,6 +367,10 @@ define(function() {
         serialize: false
       },
       excitation: {
+        // [Quantum Dynamics plugin]
+      },
+      sharedElectrons: {
+        // [Chemical Reactions plugin]
       }
     },
 
@@ -720,7 +724,12 @@ define(function() {
       hostIndex: {},
       textAlign: {}
     },
-    chemicalReaction: {
+
+    chemicalReactions: {
+      valenceElectrons: {
+        defaultValue: [1, 1, 8, 8]
+      },
+      // unused for now:
       type: {},
       parameters: {
         VA2B: {
@@ -769,6 +778,7 @@ define(function() {
         }
       }
     },
+
     quantumDynamics: {
       elementEnergyLevels: {
         defaultValue: []
