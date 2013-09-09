@@ -1323,28 +1323,28 @@ AUTHORING = false;
 
     function addEventListeners() {
       model.on("tick.dataTable", function() {
-        renderModelDatatable()
+        renderModelDatatable();
       });
       model.on('play.dataTable', function() {
-        renderModelDatatable()
+        renderModelDatatable();
       });
       model.on('reset.dataTable', function() {
-        renderModelDatatable(true)
+        renderModelDatatable(true);
       });
       model.on('seek.dataTable', function() {
-        renderModelDatatable()
+        renderModelDatatable();
       });
       model.on('stepForward.dataTable', function() {
-        renderModelDatatable()
+        renderModelDatatable();
       });
       model.on('stepBack.dataTable', function() {
-        renderModelDatatable()
+        renderModelDatatable();
       });
       model.on('addAtom.dataTable', function() {
-        renderModelDatatable(true)
+        renderModelDatatable(true);
       });
       model.on('removeAtom.dataTable', function() {
-        renderModelDatatable(true)
+        renderModelDatatable(true);
       });
     }
 
