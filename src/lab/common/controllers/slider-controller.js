@@ -25,7 +25,8 @@ define(function () {
         // Make sure that this function is only called when:
         // a) model is loaded,
         // b) slider is bound to some property.
-        updateSlider = function  (value) {
+        updateSlider = function  () {
+          var value = model.get(propertyName);
           $slider.slider('value', value);
           if (displayValue) {
             $sliderHandle.text(displayValue(value));
@@ -51,7 +52,7 @@ define(function () {
             }
           }
         } else if (propertyName) {
-          updateSlider(model.get(propertyName));
+          updateSlider();
         }
       },
 
