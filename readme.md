@@ -290,7 +290,7 @@ and install them using `sudo`. The command will look something like this:
 Becouse of some unknown bugs RVM doesn't recognise readline without being explictly pointed to it.
 To do this I've had to reinstall ruby 2.0.0p247.
 
-  $ rvm reinstall 2.0.0p247 --with-zlib1g-dev
+  $ rvm reinstall 2.0.0-p247 --with-zlib1g-dev
 
 [ruby gem bundler](http://gembundler.com/) should be installed. To check if it has been try:
 
