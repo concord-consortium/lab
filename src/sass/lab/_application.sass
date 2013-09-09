@@ -80,3 +80,8 @@
 
 applet
   border: thin solid #EEE
+  // make sure the test applet shows up in front of the graph and its builtin autoscale button.
+  // (That way, users can click-to-play if necessary)
+  // which have (z-index 2 and 3, currently; set by code, so they're not currently SASS variables)
+  &.test-sensor-applet
+    z-index: 4
