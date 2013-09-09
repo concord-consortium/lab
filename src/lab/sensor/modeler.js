@@ -40,7 +40,8 @@ define(function(require) {
                                'stepBack', 'seek', 'invalidation'),
         sensorType,
         applet,
-        sensorIsReady = false,
+        isSensorReady = false,
+        isSensorInitializing = false,
         didCollectData = false,
         samplesPerSecond,
         time = 0,
@@ -133,33 +134,49 @@ define(function(require) {
 
       applet.remove();
       makeInvalidatingChange(function() {
-        sensorIsReady = false;
+        isSensorReady = false;
+        isSensorInitializing = false;
       });
     }
 
     function appendApplet() {
-      applet.on('data', appletDataCallback);
-      applet.on('deviceUnplugged', function() { handleUnplugged('device'); });
-      applet.on('sensorUnplugged', function() { handleUnplugged('sensor'); });
-
-      applet.append(function(error) {
-        if (error) {
-          if (error instanceof appletErrors.JavaLoadError) {
-            handleLoadingFailure("It appears that Java applets cannot run in your browser. If you are able to fix this, reload the page to use the sensor");
-          } else if (error instanceof appletErrors.AppletInitializationError) {
-            handleLoadingFailure("The sensor applet appears not to be loading. If you are able to fix this, reload the page to use the sensor");
-          } else if (error instanceof appletErrors.SensorConnectionError) {
-            handleSensorConnectionError();
-          } else {
-            handleLoadingFailure("There was an unexpected error when connecting to the sensor.");
-          }
-          return;
-        }
-
-        makeInvalidatingChange(function() {
-          sensorIsReady = true;
-        });
+      makeInvalidatingChange(function() {
+        isSensorInitializing = true;
       });
+
+      // Wrapped in a setTimeout to allow all property observers to finish their work before
+      // actually firing up the applet, which freezes the UI and possibly blocks until the user
+      // clicks through security dialogs to allow the applet to run.
+      // TODO: A setImmediate shim (using window.postMessage) would be useful here.
+      setTimeout(function() {
+        applet.on('data', appletDataCallback);
+        applet.on('deviceUnplugged', function() { handleUnplugged('device'); });
+        applet.on('sensorUnplugged', function() { handleUnplugged('sensor'); });
+
+        applet.append(function(error) {
+
+          if (error) {
+            if (error instanceof appletErrors.JavaLoadError) {
+              handleLoadingFailure("It appears that Java applets cannot run in your browser. If you are able to fix this, reload the page to use the sensor");
+            } else if (error instanceof appletErrors.AppletInitializationError) {
+              handleLoadingFailure("The sensor applet appears not to be loading. If you are able to fix this, reload the page to use the sensor");
+            } else if (error instanceof appletErrors.SensorConnectionError) {
+              handleSensorConnectionError();
+            } else {
+              handleLoadingFailure("There was an unexpected error when connecting to the sensor.");
+            }
+            makeInvalidatingChange(function() {
+              isSensorInitializing = false;
+            });
+            return;
+          }
+
+          makeInvalidatingChange(function() {
+            isSensorReady = true;
+            isSensorInitializing = false;
+          });
+        });
+      }, 10);
     }
 
     function handleSensorConnectionError() {
@@ -442,7 +459,13 @@ define(function(require) {
     model.defineOutput('isPlayable', {
       label: "Playable"
     }, function() {
-      return sensorIsReady && !didCollectData;
+      return isSensorReady && !didCollectData;
+    });
+
+    model.defineOutput('isSensorInitializing', {
+      label: "Loading Sensor"
+    }, function() {
+      return isSensorInitializing;
     });
 
     // Kick things off by doing this explicitly:

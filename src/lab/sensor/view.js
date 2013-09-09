@@ -75,6 +75,30 @@ define(function() {
         this.$el.append($zeroButton);
       },
 
+      showInitializationProgress: function() {
+        var $progressbar;
+
+        if (!this.$progressbarContainer) {
+          $progressbar = $('<div/>')
+            .attr('id', 'sensor-progressbar');
+
+          this.$progressbarContainer = $('<div/>')
+            .attr('id', 'sensor-progressbar-container')
+            .css('bottom', $('body').height() / 2 + 75 + $('#responsive-content').offset().top)
+            .append('<div class="label">Loading sensor...</div>')
+            .append($progressbar)
+            .appendTo('#responsive-content');
+
+          $progressbar.progressbar({ value: false });
+        }
+
+        this.$progressbarContainer.show();
+      },
+
+      hideInitializationProgress: function() {
+        this.$progressbarContainer.hide();
+      },
+
       resize: function() {},
 
       update: function() {
