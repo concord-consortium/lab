@@ -16,7 +16,7 @@
         "onPropertyChange('initialVelocityInMKS', function() {",
         "  var vx = get('initialVelocity');",
         "  var vxInMKS = get('initialVelocityInMKS');",
-        "  reload();",
+        "  reset();",
         "  set('initialVelocity', vx);",
         "  setTextBoxProperties(0,{text: 'initial speed= ' + vxInMKS + ' m/s'});",
         "});"
@@ -64,7 +64,7 @@
       "ylabel": "eV",
       "ymin": 0,
       "ymax": 7,
-      "xmax": 6000,
+      "xmax": 60,
       "xTickCount": 5,
       "yTickCount": 5,
       "xFormatter": ".2s",
