@@ -3,6 +3,7 @@
 define(function (require) {
 
   var labConfig = require('lab.config');
+  var global = (function() { return this; }());
 
   function ModelController(modelUrl, modelOptions, interactivesController,
                                   Model, ModelContainer, ScriptingAPI, Benchmarks) {
@@ -188,6 +189,8 @@ define(function (require) {
       }
     } else {
       setupModel();
+      // publish model so it can be inspected at console
+      global.model = model;
     }
 
     benchmarks = new Benchmarks(controller);
