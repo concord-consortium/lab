@@ -117,7 +117,7 @@ define(function(require) {
     initializeSensor: function() {
       var req;
       req = this.appletInstance.getSensorRequest(this.measurementType);
-      return this.appletInstance.initSensorInterface(this.listenerPath, this.deviceType, [req]);
+      this.appletInstance.initSensorInterface(this.listenerPath, this.deviceType, [req]);
     },
 
     _readSensor: function() {
@@ -162,9 +162,19 @@ define(function(require) {
 
     // applet callbacks
 
-    sensorsReady: function() {
+    initSensorInterfaceComplete: function(success) {
       this.startAppletCallback();
-      this.sensorIsReady();
+      var self = this;
+      setTimeout(function() {
+        if(success){
+          self._state = 'stopped';
+          self._appendCallback(null);
+          self._appendCallback = null;
+        } else {
+          // state should remain 'applet ready'
+          self._appendCallback(new errors.SensorConnectionError("Device reported the requested sensor type was not attached."));
+        }
+      }, 10);
       this.endAppletCallback();
     },
 

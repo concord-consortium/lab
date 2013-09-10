@@ -36,22 +36,22 @@ MW_ANT_BUILD = "ant clean; ant dist2"
 
 PROJECT_LIST = {
   'sensor'         => { :build_type => :download,
-                        :url => 'http://jnlp.concord.org/dev3/org/concord/sensor/sensor/sensor-1.0-20130314.171142-32.jar',
-                        :version => '1.0-20130314.171142-32',
+                        :url => 'http://jnlp.concord.org/dev3/org/concord/sensor/sensor/sensor-1.0-20130909.215301-41.jar',
+                        :version => '1.0-20130909.215301-41',
                         :path => 'org/concord/sensor',
                         :sign => true },
 
   'sensor-applets' => { :build_type => :maven,
                         :build => MAVEN_STD_CLEAN_BUILD,
                         :repository => 'git://github.com/concord-consortium/sensor-applets.git',
-                        :branch => 'master',
+                        :branch => 'wip-revise-initialization',
                         :path => 'org/concord/sensor/sensor-applets',
                         :has_applet_class => true,
                         :sign => true },
 
   'sensor-vernier' => { :build_type => :download,
-                        :url => 'http://jnlp.concord.org/dev3/org/concord/sensor/sensor-vernier/sensor-vernier-1.0-20130314.171142-33.jar',
-                        :version => '1.0-20130314.171142-33',
+                        :url => 'http://jnlp.concord.org/dev3/org/concord/sensor/sensor-vernier/sensor-vernier-1.0-20130909.215301-42.jar',
+                        :version => '1.0-20130909.215301-42',
                         :path => 'org/concord/sensor/sensor-vernier',
                         :sign => true },
 
@@ -62,8 +62,8 @@ PROJECT_LIST = {
                         :sign => true },
 
   'labquest-jna'   => { :build_type => :download,
-                        :url => 'http://jnlp.concord.org/dev3/org/concord/sensor/labquest-jna/labquest-jna-1.0-20130314.171142-33.jar',
-                        :version => '1.0-20130314.171142-33',
+                        :url => 'http://jnlp.concord.org/dev3/org/concord/sensor/labquest-jna/labquest-jna-1.0-20130909.215301-42.jar',
+                        :version => '1.0-20130909.215301-42',
                         :path => 'org/concord/sensor/labquest-jna',
                         :sign => true },
 

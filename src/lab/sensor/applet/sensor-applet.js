@@ -176,13 +176,7 @@ define(function(require) {
           self._state = 'applet ready';
         }
 
-        if (self.isSensorConnected()) {
-          self.initializeSensor();
-          // now, do nothing. We just wait for the callback from the sensor applet to sensorIsReady.
-        } else {
-          self._appendCallback(new errors.SensorConnectionError("Device reported the requested sensor type was not attached."));
-        }
-
+        self.initializeSensor();
       }
 
       function fail() {
@@ -190,15 +184,6 @@ define(function(require) {
       }
 
       waitForTestFunction(testFunction, this.testAppletReadyInterval, 10, done, fail);
-    },
-
-    sensorIsReady: function() {
-      var self = this;
-      this._state = 'stopped';
-      setTimeout(function() {
-        self._appendCallback(null);
-        self._appendCallback = null;
-      }, 10);
     },
 
     readSensor: function() {
