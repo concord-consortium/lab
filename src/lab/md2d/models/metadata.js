@@ -729,6 +729,14 @@ define(function() {
       valenceElectrons: {
         defaultValue: [1, 1, 8, 8]
       },
+      bondEnergy: {
+        defaultValue: [
+          [4, 6, 6, 6],
+          [6, 4, 6, 6],
+          [6, 6, 4, 6],
+          [6, 6, 6, 4]
+        ]
+      },
       // unused for now:
       type: {},
       parameters: {
