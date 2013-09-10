@@ -27,6 +27,13 @@ define(function (require) {
           view.hideInitializationProgress();
         }
       });
+
+      model.addObserver('sensorReading', function() {
+        // if the model is running, the tick handler will take care of it
+        if (model.isStopped()) {
+          controller.updateView();
+        }
+      });
     }
 
     setupModelObservers();

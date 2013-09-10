@@ -201,6 +201,13 @@ define(function(require) {
       }, 10);
     },
 
+    readSensor: function() {
+      if (this.getState() !== 'stopped') {
+        throw new Error("Tried to read the sensor value from non-stopped state '" + this.getState() + '"');
+      }
+      return this._readSensor();
+    },
+
     start: function() {
       if (this.getState() !== 'stopped') {
         throw new Error("Tried to start the applet from non-stopped state '" + this.getState() + '"');

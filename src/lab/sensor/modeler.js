@@ -43,6 +43,8 @@ define(function(require) {
         isSensorReady = false,
         isSensorInitializing = false,
         didCollectData = false,
+        sensorPollsPerSecond = 1,
+        sensorPollingIntervalID,
         samplesPerSecond,
         time = 0,
         sensorReading,
@@ -216,6 +218,25 @@ define(function(require) {
           $(this).dialog("close");
         }
       });
+    }
+
+    function startPollingSensor() {
+      if (sensorPollingIntervalID) {
+        clearInterval(sensorPollingIntervalID);
+      }
+
+      sensorPollingIntervalID = setInterval(function() {
+        makeInvalidatingChange(function() {
+          sensorReading = applet.readSensor();
+        });
+      }, 1000/sensorPollsPerSecond);
+    }
+
+    function stopPollingSensor() {
+      if (sensorPollingIntervalID) {
+        clearInterval(sensorPollingIntervalID);
+        sensorPollingIntervalID = null;
+      }
     }
 
     function setSensorType(_sensorType) {
@@ -457,13 +478,19 @@ define(function(require) {
 
     // TODO. We need a way to make "model-writable" read only properties.
     model.defineOutput('isPlayable', {
-      label: "Playable"
+      label: "Playable?"
     }, function() {
       return isSensorReady && !didCollectData;
     });
 
+    model.defineOutput('shouldPollSensor', {
+      label: "Polling Sensor?"
+    }, function() {
+      return model.properties.isPlayable && model.isStopped();
+    });
+
     model.defineOutput('isSensorInitializing', {
-      label: "Loading Sensor"
+      label: "Loading Sensor?"
     }, function() {
       return isSensorInitializing;
     });
@@ -474,6 +501,14 @@ define(function(require) {
     // Clean up state before we go -- failing to remove the applet from the page before switching
     // between 2 sensor types that use the same interface causes an applet exception.
     model.on('willReset.model', removeApplet);
+
+    model.addObserver('shouldPollSensor', function() {
+      if (model.properties.shouldPollSensor) {
+        startPollingSensor();
+      } else {
+        stopPollingSensor();
+      }
+    });
 
     return model;
   };
