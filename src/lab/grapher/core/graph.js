@@ -918,7 +918,7 @@ define(function (require) {
       }
 
       // Add the x-axis label
-      if (options.xlabel && sizeType.value > 2) {
+      if (sizeType.value > 2) {
         xlabel = vis.append("text")
             .attr("class", "axis")
             .attr("class", "xlabel")
@@ -930,7 +930,7 @@ define(function (require) {
       }
 
       // add y-axis label
-      if (options.ylabel && sizeType.value > 2) {
+      if (sizeType.value > 2) {
         ylabel = vis.append("g").append("text")
             .attr("class", "axis")
             .attr("class", "ylabel")
