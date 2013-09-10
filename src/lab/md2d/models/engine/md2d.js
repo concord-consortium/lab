@@ -2375,7 +2375,7 @@ define(function (require, exports) {
           // plugins can update the data arrays as needed so we pass in the arrays.
           // we do this as an object, so we can add new arrays as needed by the plugins
           // without needing to update all existing plugins
-          plugin.initialize({atoms: atoms, elements: elements});
+          plugin.initialize({atoms: atoms, elements: elements, radialBonds: radialBonds});
         }
 
         pluginController.registerPlugin(plugin);
@@ -3906,6 +3906,9 @@ define(function (require, exports) {
 
         // "micro" state. TODO: put radial bonds, etc here.
         state.atoms = atoms;
+
+        // Let plugins modify output state, e.g. PE, KE etc.
+        pluginController.callPluginFunction('processOutputState', [state]);
       },
 
 
