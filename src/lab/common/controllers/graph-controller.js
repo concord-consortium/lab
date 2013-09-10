@@ -44,6 +44,8 @@ define(function (require) {
         data = [],
         namespace = "graphController" + (++graphControllerCount);
 
+    // Name of the model property whose description sets the current yLabel.
+   var yLabelProperty;
 
     /**
       Returns an array containing two-element arrays each containing the current model
@@ -161,6 +163,24 @@ define(function (require) {
       }
     }
 
+    function updateYLabelHandler() {
+      if (yLabelProperty) {
+        model.removePropertyDescriptionObserver(yLabelProperty, setYLabelFromProperty);
+        yLabelProperty = null;
+      }
+
+      if (!component.ylabel && properties.length === 1) {
+        yLabelProperty = properties[0];
+        setYLabelFromProperty();
+        model.addPropertyDescriptionObserver(yLabelProperty, setYLabelFromProperty);
+      }
+    }
+
+    function setYLabelFromProperty() {
+      var description = model.getPropertyDescription(yLabelProperty);
+      grapher.yLabel(description.getLabel() + " (" + description.getUnitAbbreviation() + ")");
+    }
+
     function modelResetHandler() {
       if (grapher) {
         if (component.clearDataOnReset) {
@@ -170,6 +190,7 @@ define(function (require) {
       } else {
         grapher = new Graph($container[0], getOptions(), undefined, interactivesController.getNextTabIndex());
       }
+      updateYLabelHandler();
     }
 
     //
@@ -196,7 +217,7 @@ define(function (require) {
       /**
         Called by the interactives controller when the model finishes loading.
       */
-      modelLoadedCallback: function(model) {
+      modelLoadedCallback: function() {
         if (grapher) {
           resetGrapher();
         } else {
@@ -204,6 +225,7 @@ define(function (require) {
         }
         resetData();
         registerModelListeners();
+        updateYLabelHandler();
       },
 
       /**
@@ -211,15 +233,22 @@ define(function (require) {
       */
       appendDataPropertiesToComponent: appendDataPoint,
 
+      /**
+        Modifies the current list of graph options with new values and resets the graph.the
+        Note: does not support changes to the 'properties' list.
+      */
       setAttributes: function(opts) {
         if (grapher) {
           $.extend(component, opts);
           resetData();
           if (opts.dataPoints) {
-            data = opts.dataPoints
+            data = opts.dataPoints;
           }
           resetGrapher();
         }
+        // We may have set or unset the explicit 'ylabel' option; update the graph's ylabel as
+        // appropriate
+        updateYLabelHandler();
       },
 
       /**
