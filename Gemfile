@@ -49,7 +49,7 @@ group :development do
   gem "travis-lint"
 
   # guard related ...
-  gem "guard",              "~> 1.8.1"
+  gem "guard",              "~> 1.8.2"
   gem "guard-haml",         "~> 0.4"
   gem "guard-sass",         "~> 1.3.2"
   gem "guard-shell",        "~> 0.5.1"
