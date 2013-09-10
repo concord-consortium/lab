@@ -400,6 +400,12 @@ define(function() {
       }
     }
 
+    // Note this does not respect batched notifications, as property descriptions are not expected
+    // to be updated en masse during an engine tick as are property values.
+    function notifyPropertyDescriptionObservers(key) {
+      notifyCallbacksOnce(propertyInformation[key].propertyDescriptionObservers);
+    }
+
     // Private implementation of the getter for the property specified by 'key'. Handles caching
     // concerns, but not afterGetTransform, etc.
     function get(key) {
@@ -435,6 +441,13 @@ define(function() {
         info.hasCachedValue = true;
         info.cachedValue = value;
       }
+    }
+
+    function setPropertyDescription(key, description) {
+      var info = propertyInformation[key];
+
+      info.descriptor.description = description;
+      notifyPropertyDescriptionObservers(key);
     }
 
     function invalidateCachedPropertiesObjects(type) {
@@ -657,6 +670,36 @@ define(function() {
         };
 
         /**
+          The 'addPropertyDescriptionObserver' method mixed into 'target' adds 'callback' to the end
+          of the list of property-description observers of the property specified by key. Note that
+          adding a callback more than once to the property-description observer list for a given
+          property has no effect.
+
+          Property-description observers are called immediately when the observed property's
+          description object is reassigned. Note that observing of mutation of the description
+          object is not supported; to change a property's description after the property is created,
+          always pass a property description object to propertySupport.setPropertyDescription.
+        */
+        target.addPropertyDescriptionObserver = function(key, callback) {
+          if (!propertyInformation[key]) {
+            return;
+          }
+          var observers = propertyInformation[key].propertyDescriptionObservers;
+          if (observers.indexOf(callback) < 0) {
+            observers.push(callback);
+          }
+        };
+
+        target.removePropertyDescriptionObserver = function(key, callback) {
+          var observers = propertyInformation[key].propertyDescriptionObservers,
+              index = observers.indexOf(callback);
+
+          if (index > 0) {
+            observers.splice(index, 1);
+          }
+        };
+
+        /**
           The 'getPropertyDescription' method mixed into 'target' simply returns the object passed
           in as the 'description' property of the descriptor passed to `defineProperty` when the
           property named 'key' was defined.
@@ -718,6 +761,7 @@ define(function() {
         propertyInformation[key] = {
           descriptor: descriptor,
           observers: [],
+          propertyDescriptionObservers: [],
           hasCachedValue: false,
           cachedValue: undefined,
           previousValue: undefined
@@ -731,6 +775,14 @@ define(function() {
         }
 
         invalidateCachedPropertiesObjects(descriptor.type);
+      },
+
+      /**
+        Set the PropertyDescription associated with 'key' to 'description' and notify any
+        property-description observers (added via target.addPropertyDescriptionObserver())
+      */
+      setPropertyDescription: function(key, description) {
+        setPropertyDescription(key, description);
       },
 
       /**
