@@ -241,6 +241,9 @@ define(function(require) {
 
     function setSensorType(_sensorType) {
       var AppletClass;
+      var sensorDefinition;
+      var description;
+      var measurementType;
 
       if (sensorType === _sensorType) {
         return;
@@ -252,17 +255,27 @@ define(function(require) {
       }
 
       if (sensorType) {
-        samplesPerSecond = sensorDefinitions[sensorType].samplesPerSecond;
-        AppletClass = appletClasses[sensorDefinitions[sensorType].appletClass];
+        sensorDefinition = sensorDefinitions[sensorType];
+        samplesPerSecond = sensorDefinition.samplesPerSecond;
+        measurementType = sensorDefinition.measurementType;
+        AppletClass = appletClasses[sensorDefinition.appletClass];
 
         applet = window.Lab.sensor[sensorType] = new AppletClass({
           listenerPath: 'Lab.sensor.' + sensorType,
-          measurementType: sensorDefinitions[sensorType].measurementType,
-          sensorDefinition: sensorDefinitions[sensorType],
+          measurementType: measurementType,
+          sensorDefinition: sensorDefinition,
           appletId: sensorType+'-sensor'
         });
 
         appendApplet();
+
+        // Update the description of the main 'sensorReading' output
+        description = new PropertyDescription(unitsDefinition, {
+          label: sensorDefinition.measurementName,
+          unitType: measurementType
+        });
+
+        propertySupport.setPropertyDescription('sensorReading', description);
       }
     }
 
@@ -454,6 +467,7 @@ define(function(require) {
 
     model.defineOutput('sensorReading', {
       label: "Sensor Reading",
+      unitAbbreviation: "-",
       format: '.2f'
     }, function() {
       return sensorReading;

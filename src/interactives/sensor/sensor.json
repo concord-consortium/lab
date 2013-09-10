@@ -21,7 +21,6 @@
       "id": "propertiesGraph",
       "title": "Sensor Reading",
       "xlabel": "Time (s)",
-      "ylabel": "Reading",
       "ymin": 0,
       "ymax": 6,
       "xmax": 30,
