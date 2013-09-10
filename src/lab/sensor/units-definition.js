@@ -1,5 +1,8 @@
 /*global define: false*/
 
+// The keys are taken from the values of the 'measurementType' property
+// of the elements of ./sensor-definitions
+
 define(function() {
   return {
     units: {
@@ -18,7 +21,7 @@ define(function() {
         pluaralName: "degrees Celsius",
         symbol: "°C"
       },
-      lightIntensity: {
+      light: {
         name: "lux",
         pluralName: "lux",
         symbol: "lux"
@@ -28,13 +31,17 @@ define(function() {
         pluralName: "Newtons",
         symbol: "N"
       },
-      // Yes, for some sensors, we willfully conflate type of quantity with its measurement units
-      pH: {
+      ph: {
         name: "pH Unit",
         pluralName: "pH Units",
         symbol: "pH"
       },
-      ppm: {
+      co2: {
+        name: "part per million",
+        pluralName: "parts per million",
+        symbol: "ppm"
+      },
+      o2: {
         name: "part per million",
         pluralName: "parts per million",
         symbol: "ppm"
