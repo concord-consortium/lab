@@ -178,6 +178,13 @@ parseMML = (mmlString) ->
         else if fillColor.is ".org-concord-modeler-draw-FillMode-GradientFill"
           color1  = getColorProperty (getNode fillColor.find "[property=color1]>object"), alpha
           color2  = getColorProperty (getNode fillColor.find "[property=color2]>object"), alpha
+          # Sometimes color can't be found due to problems with ID references. See:
+          # https://www.pivotaltracker.com/story/show/55563212
+          # Use white color as a fallback value.
+          if not color1
+            color1 = if alpha? then "rgba(255,255,255,#{alpha/255})" else "#fff"
+          if not color2
+            color2 = if alpha? then "rgba(255,255,255,#{alpha/255})" else "#fff"
           style   = getIntProperty fillColor, "style"
           variant = getIntProperty fillColor, "variant"
           if style is 1036
