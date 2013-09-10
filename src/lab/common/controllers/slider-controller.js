@@ -6,10 +6,10 @@ define(function () {
       validator  = require('common/validator'),
       disablable = require('common/controllers/disablable');
 
-  return function SliderController(component, scriptingAPI, interactivesController, model) {
+  return function SliderController(component, scriptingAPI, interactivesController) {
     var min, max, steps, propertyName,
         action, initialValue,
-        title, labels, displayValue,
+        title, labels, displayValue, displayFunc,
         i, label,
         // View elements.
         $elem,
@@ -18,6 +18,7 @@ define(function () {
         $slider,
         $sliderHandle,
         $container,
+        model,
         // Public API object.
         controller,
 
@@ -26,20 +27,132 @@ define(function () {
         // a) model is loaded,
         // b) slider is bound to some property.
         updateSlider = function  () {
-          var value = model.get(propertyName);
+          var value = interactivesController.getModel().get(propertyName);
           $slider.slider('value', value);
           if (displayValue) {
-            $sliderHandle.text(displayValue(value));
+            $sliderHandle.text(displayFunc(value));
           }
         };
+
+    function bindTargets() {
+      // Bind action or/and property, process other options.
+      if (action) {
+        // The 'action' property is a source of a function which assumes we pass it a parameter
+        // called 'value'.
+        action = scriptingAPI.makeFunctionInScriptContext('value', action);
+        $slider.bind('slide', function(event, ui) {
+          action(ui.value);
+          if (displayValue) {
+            $sliderHandle.text(displayFunc(ui.value));
+          }
+        });
+      }
+
+      if (propertyName) {
+        $slider.bind('slide', function(event, ui) {
+          // Just ignore slide events that occur before the model is loaded.
+          var obj = {};
+          obj[propertyName] = ui.value;
+          if (model) model.set(obj);
+          if (displayValue) {
+            $sliderHandle.text(displayFunc(ui.value));
+          }
+        });
+      }
+      
+      if (displayValue) {
+        displayFunc = scriptingAPI.makeFunctionInScriptContext('value', displayValue);
+      }
+    }
+    
+    function initialize() {
+      //
+      // Initialize.
+      //
+      // Validate component definition, use validated copy of the properties.
+      component = validator.validateCompleteness(metadata.slider, component);
+      min = component.min;
+      max = component.max;
+      steps = component.steps;
+      action = component.action;
+      propertyName = component.property;
+      initialValue = component.initialValue;
+      title = component.title;
+      labels = component.labels;
+      displayValue = component.displayValue;
+
+      model = interactivesController.getModel();
+
+      // Setup view.
+      if (min === undefined) min = 0;
+      if (max === undefined) max = 10;
+      if (steps === undefined) steps = 10;
+
+      $title = $('<p class="title">' + title + '</p>');
+      // we pick up the SVG slider component CSS if we use the generic class name 'slider'
+      $container = $('<div class="container">');
+      $slider = $('<div class="html-slider">').attr('id', component.id);
+      $slider.appendTo($container);
+
+      $slider.slider({
+        min: min,
+        max: max,
+        step: (max - min) / steps
+      });
+
+      $sliderHandle = $slider.find(".ui-slider-handle");
+
+      $sliderHandle.attr('tabindex', interactivesController.getNextTabIndex());
+
+      $elem = $('<div class="interactive-slider">')
+                .append($title)
+                .append($container);
+      // Each interactive component has to have class "component".
+      $elem.addClass("component");
+
+      for (i = 0; i < labels.length; i++) {
+        label = labels[i];
+        $label = $('<p class="label">' + label.label + '</p>');
+        $label.css('left', (label.value-min) / (max-min) * 100 + '%');
+        $container.append($label);
+      }
+
+      bindTargets();
+
+      if (component.tooltip) {
+        $elem.attr("title", component.tooltip);
+      }
+
+      disablable(controller, component);
+
+      // Apply custom width and height settings.
+      // Also not that we set dimensions of the most outer container, not slider.
+      // Slider itself will always follow dimensions of container DIV.
+      // We have to do it that way to ensure that labels refer correct dimensions.
+      $elem.css({
+        "width": component.width,
+        "height": component.height
+      });
+      if (component.width === "auto") {
+        // Ensure that min width is 12em, when width is set to "auto".
+        // Prevent from situation when all sliders with short labels have
+        // different widths, what looks distracting.
+        $elem.css("min-width", "12em");
+      }
+      // Call resize function to support complex resizing when height is different from "auto".
+      controller.resize();
+    }
 
     // Public API.
     controller = {
       // This callback should be trigger when model is loaded.
-      modelLoadedCallback: function (model) {
+      modelLoadedCallback: function () {
+        model = interactivesController.getModel();
         if (propertyName) {
           model.addPropertiesListener([propertyName], updateSlider);
         }
+        
+        bindTargets();
 
         if (initialValue !== undefined && initialValue !== null) {
           // Make sure to call the action with the startup value of slider. (The script action may
@@ -96,106 +209,7 @@ define(function () {
       }
     };
 
-    //
-    // Initialize.
-    //
-    // Validate component definition, use validated copy of the properties.
-    component = validator.validateCompleteness(metadata.slider, component);
-    min = component.min;
-    max = component.max;
-    steps = component.steps;
-    action = component.action;
-    propertyName = component.property;
-    initialValue = component.initialValue;
-    title = component.title;
-    labels = component.labels;
-    displayValue = component.displayValue;
-
-    // Setup view.
-    if (min === undefined) min = 0;
-    if (max === undefined) max = 10;
-    if (steps === undefined) steps = 10;
-
-    $title = $('<p class="title">' + title + '</p>');
-    // we pick up the SVG slider component CSS if we use the generic class name 'slider'
-    $container = $('<div class="container">');
-    $slider = $('<div class="html-slider">').attr('id', component.id);
-    $slider.appendTo($container);
-
-    $slider.slider({
-      min: min,
-      max: max,
-      step: (max - min) / steps
-    });
-
-    $sliderHandle = $slider.find(".ui-slider-handle");
-
-    $sliderHandle.attr('tabindex', interactivesController.getNextTabIndex());
-
-    $elem = $('<div class="interactive-slider">')
-              .append($title)
-              .append($container);
-    // Each interactive component has to have class "component".
-    $elem.addClass("component");
-
-    for (i = 0; i < labels.length; i++) {
-      label = labels[i];
-      $label = $('<p class="label">' + label.label + '</p>');
-      $label.css('left', (label.value-min) / (max-min) * 100 + '%');
-      $container.append($label);
-    }
-
-    // Bind action or/and property, process other options.
-    if (action) {
-      // The 'action' property is a source of a function which assumes we pass it a parameter
-      // called 'value'.
-      action = scriptingAPI.makeFunctionInScriptContext('value', action);
-      $slider.bind('slide', function(event, ui) {
-        action(ui.value);
-        if (displayValue) {
-          $sliderHandle.text(displayValue(ui.value));
-        }
-      });
-    }
-
-    if (propertyName) {
-      $slider.bind('slide', function(event, ui) {
-        // Just ignore slide events that occur before the model is loaded.
-        var obj = {};
-        obj[propertyName] = ui.value;
-        if (model) model.set(obj);
-        if (displayValue) {
-          $sliderHandle.text(displayValue(ui.value));
-        }
-      });
-    }
-
-    if (displayValue) {
-      displayValue = scriptingAPI.makeFunctionInScriptContext('value', displayValue);
-    }
-
-    if (component.tooltip) {
-      $elem.attr("title", component.tooltip);
-    }
-
-    disablable(controller, component);
-
-    // Apply custom width and height settings.
-    // Also not that we set dimensions of the most outer container, not slider.
-    // Slider itself will always follow dimensions of container DIV.
-    // We have to do it that way to ensure that labels refer correct dimensions.
-    $elem.css({
-      "width": component.width,
-      "height": component.height
-    });
-    if (component.width === "auto") {
-      // Ensure that min width is 12em, when width is set to "auto".
-      // Prevent from situation when all sliders with short labels have
-      // different widths, what looks distracting.
-      $elem.css("min-width", "12em");
-    }
-    // Call resize function to support complex resizing when height is different from "auto".
-    controller.resize();
+    initialize();
 
     // Return Public API object.
     return controller;
