@@ -1268,7 +1268,7 @@ parseMML = (mmlString) ->
         reaction.type = "O2_2H2__2H2O"
         reaction.parameters = reactionParameters
 
-      reaction = validator.validateCompleteness metadata.chemicalReaction, reaction
+      reaction = validator.validateCompleteness metadata.chemicalReactions, reaction
 
     ###
       Quantum Dynamics
