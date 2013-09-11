@@ -9,8 +9,7 @@
       "id": "signal1",
       "url": "models/sensor/sensor.json",
       "viewOptions": {
-        "controlButtons": "play_reset",
-        "controlButtonStyle": "text",
+        "controlButtons": "",
         "showClock": true
       }
     }
@@ -30,11 +29,56 @@
       "properties": [
         "sensorReading"
       ]
+    },
+    {
+      "type": "button",
+      "id": "start-button",
+      "text": "Start",
+      "tooltip": "Start the experiment run.",
+      "action": [
+        "start();"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "stop-button",
+      "text": "Stop",
+      "tooltip": "Stop the experiment run.",
+      "action": [
+        "stop();"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "new-run-button",
+      "text": "New Run",
+      "tooltip": "Set up a new experiment run.",
+      "action": [
+        "reset({",
+        "  retainParameters: ['sensorType'],",
+        "  cause: 'new-run'",
+        "});"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "reset-button",
+      "text": "Reset",
+      "tooltip": "Reset the sensor.",
+      "action": [
+        "reload();"
+      ]
     }
   ],
   "layout": {
     "below-model": [
       "propertiesGraph"
+    ],
+    "container-bottom": [
+      "start-button",
+      "stop-button",
+      "new-run-button",
+      "reset-button"
     ]
   },
   "exports": {
