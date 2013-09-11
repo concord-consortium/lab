@@ -84,6 +84,7 @@
         "x": 4.78,
         "y": 3.74,
         "layer": 1,
+        "color": "rgb(255,255,255)",
         "hostType": "Atom",
         "hostIndex": 1,
         "fontScale": 1.1666666666666667,
