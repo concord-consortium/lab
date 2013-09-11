@@ -52,6 +52,16 @@
       "initialValue": false
     }
   ],
+  "filteredOutputs": [
+    {
+      "name": "averageTemperature",
+      "property": "temperature",
+      "type": "RunningAverage",
+      "period": 2500,
+      "label": "Average Temperature",
+      "unitType": "temperature"
+    }
+  ],
   "components": [
     {
       "type": "text",
@@ -89,11 +99,11 @@
     {
       "type": "barGraph",
       "id": "thermometer",
-      "property": "temperature",
+      "property": "averageTemperature",
       "title": "Temperature",
       "labels": 0,
       "min": 0,
-      "max": 350
+      "max": 2000
     },
     {
       "type": "checkbox",
