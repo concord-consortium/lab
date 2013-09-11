@@ -231,6 +231,9 @@ define(function (require, exports) {
         // Number of actual radial bonds (may be smaller than the length of the property arrays).
         N_radialBonds = 0,
 
+        // Flag indicating if some radial bonds were added or removed during the integration step.
+        radialBondsChanged = false,
+
         // ####################################################################
         //                      Restraint Properties
 
@@ -2902,6 +2905,8 @@ define(function (require, exports) {
         radialBondResults[N_radialBonds - 1] = {idx: N_radialBonds - 1};
         // Set new radial bond properties.
         engine.setRadialBondProperties(N_radialBonds - 1, props);
+
+        radialBondsChanged = true;
       },
 
       removeRadialBond: function(idx) {
@@ -2953,6 +2958,8 @@ define(function (require, exports) {
 
         // Recalculate radial bond matrix.
         calculateRadialBondMatrix();
+
+        radialBondsChanged = true;
       },
 
       /**
@@ -3505,6 +3512,10 @@ define(function (require, exports) {
 
         dt = _dt;        // dt is a closure variable that helpers need access to
         dt_sq = dt * dt; // the squared time step is also needed by some helpers.
+
+        // Clear flag indicating if some radial bonds were added or removed during the integration
+        // step.
+        radialBondsChanged = false;
 
         // Prepare optimization structures to ensure that they are valid during integration.
         // Note that when user adds or removes various objects (like atoms, bonds), such structures
@@ -4151,6 +4162,14 @@ define(function (require, exports) {
 
       get ljCalculator() {
         return ljCalculator;
+      },
+
+      /**
+        Indicates whether some radial bonds were added or removed during the last integration step.
+        This flag is cleared at the beginning of the integration.
+       */
+      get radialBondsChanged() {
+        return radialBondsChanged;
       },
 
       // ######################################################################

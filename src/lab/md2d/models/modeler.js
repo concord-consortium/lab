@@ -1709,11 +1709,7 @@ define(function(require) {
 
     model.tick = function() {
       var timeStep = model.get('timeStep'),
-          // Save number of radial bonds in engine before integration,
-          // as integration can create new disulfide bonds. This is the
-          // only type of objects which can be created by the engine autmatically.
-          prevNumOfRadialBonds = engine.getNumberOfRadialBonds(),
-          currentNumOfRadialBonds, t, sampleTime;
+          t, sampleTime;
 
       if (unitsTranslation) {
         timeStep = unitsTranslation.translateToModelUnits(timeStep, 'time');
@@ -1752,12 +1748,9 @@ define(function(require) {
 
       newStep = true;
 
-      currentNumOfRadialBonds = engine.getNumberOfRadialBonds();
-      if (prevNumOfRadialBonds < currentNumOfRadialBonds) {
-        dispatch.addRadialBond();
-      } else if (prevNumOfRadialBonds > currentNumOfRadialBonds) {
-        dispatch.removeRadialBond();
-      }
+      // TODO: we should just dispatch "radialBondsChanged" event, as there is no code interested
+      // whether we really added or removed radial bond.
+      if (engine.radialBondsChanged) dispatch.addRadialBond();
 
       dispatch.tick();
     };
