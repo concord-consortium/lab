@@ -102,10 +102,19 @@ define(function() {
 
       updateUnits: function(units) {
         sensorReadingView.updateUnits(units);
+        if (model.properties.sensorReading == null) {
+          sensorReadingView.hideUnits();
+        }
       },
 
       update: function() {
-        sensorReadingView.update(format(model.properties.sensorReading));
+        if (model.properties.sensorReading == null) {
+          sensorReadingView.update("");
+          sensorReadingView.hideUnits();
+        } else {
+          sensorReadingView.update(format(model.properties.sensorReading));
+          sensorReadingView.showUnits();
+        }
       }
     };
   };
