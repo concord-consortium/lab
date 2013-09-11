@@ -34,6 +34,13 @@ define(function (require) {
           controller.updateView();
         }
       });
+
+      model.addPropertyDescriptionObserver('sensorReading', function() {
+        var description = model.getPropertyDescription('sensorReading');
+        var view = controller.modelContainer;
+
+        view.updateUnits(description.getUnitAbbreviation());
+      });
     }
 
     setupModelObservers();

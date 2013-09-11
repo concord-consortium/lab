@@ -101,6 +101,10 @@ define(function() {
 
       resize: function() {},
 
+      updateUnits: function(units) {
+        sensorReadingView.updateUnits(units);
+      },
+
       update: function() {
         sensorReadingView.update(format(model.properties.sensorReading));
       }
