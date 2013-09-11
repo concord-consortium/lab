@@ -320,7 +320,10 @@ define(function(require) {
             throw e;
           }
         }
-        isStopped = false;
+
+        makeInvalidatingChange(function() {
+          isStopped = false;
+        });
         dispatch.play();
       },
 
