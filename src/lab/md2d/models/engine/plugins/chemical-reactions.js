@@ -52,6 +52,44 @@ define(function(require) {
       return !(v === 1 && s === 1) && (v + s < 8);
     }
 
+    function destroyBonds() {
+      var i, len,
+          a1, a2, el1, el2, dpot,
+          xij, yij, ijsq, bondLen, chemEnergy;
+
+      for (i = 0, len = engine.getNumberOfRadialBonds(); i < len; ++i) {
+        a1 = radialBonds.atom1[i];
+        a2 = radialBonds.atom2[i];
+        bondLen = radialBonds.length[i];
+
+        xij = atoms.x[a1] - atoms.x[a2];
+        yij = atoms.y[a1] - atoms.y[a2];
+        ijsq = xij * xij + yij * yij;
+
+        dpot = Math.sqrt(ijsq) - bondLen;
+
+        if (dpot > 0) {
+          // Bond is longer than its basic length, there is potential energy.
+          dpot = 0.5 * radialBonds.strength[i] * dpot * dpot;
+          // Bond chemical energy.
+          el1 = atoms.element[a1];
+          el2 = atoms.element[a2];
+          chemEnergy = bondEnergy[el1][el2];
+          if (dpot > chemEnergy) {
+            // Potential energy is larger than chemical energy, destroy bond.
+            dpot -= chemEnergy;
+            // LJ potential will now be calculated, take it into account.
+            dpot += engine.ljCalculator[el1][el2].potentialFromSquaredDistance(ijsq);
+            conserveEnergy(dpot, a1, a2);
+            engine.removeRadialBond(i);
+            // Update shared electrons count.
+            atoms.sharedElectrons[a1] -= 1;
+            atoms.sharedElectrons[a2] -= 1;
+          }
+        }
+      }
+    }
+
     function createBonds(neighborList) {
       var N     = engine.getNumberOfAtoms(),
           nlist = neighborList.getList(),
@@ -179,6 +217,7 @@ define(function(require) {
       },
 
       performActionWithinIntegrationLoop: function (neighborList) {
+        destroyBonds();
         createBonds(neighborList);
       },
 
