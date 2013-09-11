@@ -243,11 +243,33 @@
       ]
     },
     {
+      "component": "angle-graph",
+      "text": [
+        "A graph of the angle of the pendulum over time for an experiment run.",
+        "",
+        "You can adjust the scales of the X and Y axes by dragging on them.",
+        "You can also drag the canvas of the graph to move it and click the",
+        "autocale button in the upper right to rescale the graph to show all the data."
+      ]
+    },
+    {
       "component": "length-slider",
       "text": [
         "Adjust the length of the pendulum rod.",
         "",
         ""
+      ]
+    },
+    {
+      "component": "period-display",
+      "text": [
+        "Displays period of the pendulum by measuring zero-crossing times."
+      ]
+    },
+    {
+      "component": "experiment-table",
+      "text": [
+        "A table where **Rod length** and **Period** from each experiment run can be saved."
       ]
     },
     {
@@ -284,23 +306,7 @@
     {
       "component": "clear-all",
       "text": [
-        "Clear **all** the data, including data in the **Experiment Table** and **Parameter Graph**."
-      ]
-    },
-    {
-      "component": "angle-graph",
-      "text": [
-        "A graph of the angle of the pendulum over time for an experiment run.",
-        "",
-        "You can adjust the scales of the X and Y axes by dragging on them.",
-        "You can also drag the canvas of the graph to move it and click the",
-        "autocale button in the upper right to rescale the graph to show all the data."
-      ]
-    },
-    {
-      "component": "experiment-table",
-      "text": [
-        "A table where **Rod length** and period from each experiment run can be saved."
+        "Clear **all** the data, including data in the **Experiment Table**."
       ]
     }
   ],
