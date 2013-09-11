@@ -1713,7 +1713,7 @@ define(function(require) {
           // as integration can create new disulfide bonds. This is the
           // only type of objects which can be created by the engine autmatically.
           prevNumOfRadialBonds = engine.getNumberOfRadialBonds(),
-          t, sampleTime;
+          currentNumOfRadialBonds, t, sampleTime;
 
       if (unitsTranslation) {
         timeStep = unitsTranslation.translateToModelUnits(timeStep, 'time');
@@ -1752,8 +1752,11 @@ define(function(require) {
 
       newStep = true;
 
-      if (prevNumOfRadialBonds < engine.getNumberOfRadialBonds()) {
+      currentNumOfRadialBonds = engine.getNumberOfRadialBonds();
+      if (prevNumOfRadialBonds < currentNumOfRadialBonds) {
         dispatch.addRadialBond();
+      } else if (prevNumOfRadialBonds > currentNumOfRadialBonds) {
+        dispatch.removeRadialBond();
       }
 
       dispatch.tick();
