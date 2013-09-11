@@ -174,7 +174,7 @@ parseMML = (mmlString) ->
       fillColor = getNode fillNode.children("object")
       if fillColor and fillColor.length
         if fillColor.is ".org-concord-modeler-draw-FillMode-ColorFill"
-          return getColorProperty fillColor, alpha
+          return getColorProperty (getNode fillColor.find "[property=color]>object"), alpha
         else if fillColor.is ".org-concord-modeler-draw-FillMode-GradientFill"
           color1  = getColorProperty (getNode fillColor.find "[property=color1]>object"), alpha
           color2  = getColorProperty (getNode fillColor.find "[property=color2]>object"), alpha
