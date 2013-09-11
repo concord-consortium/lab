@@ -59,18 +59,15 @@ define(function() {
         });
 
         var $selectBox = sensorTypeView.render(this.$el),
-            $disconnectButton = $("<div><button>Disconnect</button></div>"),
             $zeroButton = $("<div><button>Zero</button></div>"),
             $sensorReading = sensorReadingView.render();
 
         $selectBox.addClass('interactive-pulldown component component-spacing');
-        $disconnectButton.addClass('interactive-button component component-spacing');
         $zeroButton.addClass('interactive-button component component-spacing');
         $sensorReading.addClass('numeric-output component horizontal component-spacing');
 
         this.$el.css('zIndex', 4);
         this.$el.append($selectBox);
-        this.$el.append($disconnectButton);
         this.$el.append($sensorReading);
         this.$el.append($zeroButton);
       },
