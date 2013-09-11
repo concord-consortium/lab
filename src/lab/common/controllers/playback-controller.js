@@ -43,7 +43,7 @@ define(function (require) {
       } else {
         that._scriptingAPI.stop();
       }
-    }
+    };
   };
 
   PlaybackController.prototype._bindClickHandlers = function () {
@@ -103,9 +103,6 @@ define(function (require) {
       this._$reset.attr("title", "Reset the simulation");
       this._$stepBackward.attr("title", "Step back");
       this._$stepForward.attr("title", "Step forward");
-
-      // this._bindClickHandlers();
-
     },
 
     text: function () {
@@ -118,9 +115,6 @@ define(function (require) {
       this._$start.attr("title", "Start the simulation or data collection");
       this._$stop.attr("title",  "Stop the simulation or data collection");
       this._$reset.attr("title", "Reset the simulation or data collection");
-
-      this._bindClickHandlers();
-
     }
   };
 
@@ -303,6 +297,9 @@ define(function (require) {
     this._showClockChanged();
 
     // update click handler bindings for new model and scriptingAPI
+    // Stephen: TODO when we remove the binding between model instance and scripting api, only bind
+    // and unbind click handlers in _controlButtonStyleChanged; there should be no need to do so
+    // when a model loads
     this._bindClickHandlers();
 
   };
