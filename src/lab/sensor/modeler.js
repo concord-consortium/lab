@@ -258,6 +258,7 @@ define(function(require) {
         return;
       }
       sensorType = _sensorType;
+      sensorReading = undefined;
 
       if (applet) {
         removeApplet();
