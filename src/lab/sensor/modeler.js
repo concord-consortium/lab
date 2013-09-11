@@ -338,10 +338,13 @@ define(function(require) {
       },
 
       stop: function() {
-        isStopped = true;
+
         if (applet) {
           applet.stop();
         }
+        makeInvalidatingChange(function() {
+          isStopped = true;
+        });
         dispatch.stop();
       },
 
@@ -511,17 +514,29 @@ define(function(require) {
       return sensorDefinitions[sensorType].deviceName;
     });
 
+    model.defineOutput('isStopped', {
+      label: "Stopped?"
+    }, function() {
+      return isStopped;
+    });
+
     // TODO. We need a way to make "model-writable" read only properties.
     model.defineOutput('isPlayable', {
-      label: "Playable?"
+      label: "Startable?"
     }, function() {
       return isSensorReady && !didCollectData;
+    });
+
+    model.defineOutput('hasPlayed', {
+      label: "Has successfully collected data?"
+    }, function() {
+      return didCollectData;
     });
 
     model.defineOutput('shouldPollSensor', {
       label: "Polling Sensor?"
     }, function() {
-      return model.properties.isPlayable && model.isStopped();
+      return model.properties.isPlayable && isStopped;
     });
 
     model.defineOutput('isSensorInitializing', {

@@ -11,7 +11,18 @@
       "viewOptions": {
         "controlButtons": "",
         "showClock": true
-      }
+      },
+      "onLoad": [
+        "function setButtonState() {",
+        "  setComponentDisabled('start-button', !get('isPlayable'));",
+        "  setComponentDisabled('stop-button', get('isStopped'));",
+        "  setComponentDisabled('new-run-button', !get('hasPlayed'));",
+        "}",
+        "onPropertyChange('isPlayable', setButtonState);",
+        "onPropertyChange('isStopped', setButtonState);",
+        "onPropertyChange('hasPlayed', setButtonState);",
+        "setButtonState();"
+      ]
     }
   ],
   "components": [
