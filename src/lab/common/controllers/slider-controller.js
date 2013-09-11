@@ -8,7 +8,7 @@ define(function () {
 
   return function SliderController(component, scriptingAPI, interactivesController) {
     var min, max, steps, propertyName,
-        action, initialValue,
+        actionFunc, initialValue,
         title, labels, displayValue, displayFunc,
         i, label,
         // View elements.
@@ -36,12 +36,12 @@ define(function () {
 
     function bindTargets() {
       // Bind action or/and property, process other options.
-      if (action) {
+      if (component.action) {
         // The 'action' property is a source of a function which assumes we pass it a parameter
         // called 'value'.
-        action = scriptingAPI.makeFunctionInScriptContext('value', action);
+        actionFunc = scriptingAPI.makeFunctionInScriptContext('value', component.action);
         $slider.bind('slide', function(event, ui) {
-          action(ui.value);
+          actionFunc(ui.value);
           if (displayValue) {
             $sliderHandle.text(displayFunc(ui.value));
           }
@@ -59,12 +59,12 @@ define(function () {
           }
         });
       }
-      
+
       if (displayValue) {
         displayFunc = scriptingAPI.makeFunctionInScriptContext('value', displayValue);
       }
     }
-    
+
     function initialize() {
       //
       // Initialize.
@@ -74,7 +74,6 @@ define(function () {
       min = component.min;
       max = component.max;
       steps = component.steps;
-      action = component.action;
       propertyName = component.property;
       initialValue = component.initialValue;
       title = component.title;
@@ -151,15 +150,15 @@ define(function () {
         if (propertyName) {
           model.addPropertiesListener([propertyName], updateSlider);
         }
-        
+
         bindTargets();
 
         if (initialValue !== undefined && initialValue !== null) {
           // Make sure to call the action with the startup value of slider. (The script action may
           // manipulate the model, so we have to make sure it runs after the model loads.)
-          if (action) {
+          if (actionFunc) {
             $slider.slider('value', initialValue);
-            action(initialValue);
+            actionFunc(initialValue);
             if (displayValue) {
               $sliderHandle.text(displayValue(initialValue));
             }
