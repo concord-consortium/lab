@@ -218,6 +218,8 @@ define(function (require) {
         Called by the interactives controller when the model finishes loading.
       */
       modelLoadedCallback: function() {
+        model = interactivesController.getModel();
+
         if (grapher) {
           resetGrapher();
         } else {

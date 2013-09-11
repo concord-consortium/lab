@@ -21,10 +21,6 @@ helpers.withIsolatedRequireJS (requirejs) ->
   GraphController = requirejs 'common/controllers/graph-controller'
   Model           = requirejs 'md2d/models/modeler'
 
-  interactivesController =
-    getNextTabIndex: ->
-      1
-
   scriptingAPI = ->
 
   getComponentSpec = ->
@@ -36,9 +32,15 @@ helpers.withIsolatedRequireJS (requirejs) ->
   describe "GraphController", ->
     model = null
 
+    interactivesController =
+      getNextTabIndex: ->
+        1
+      getModel: ->
+        model
+
     beforeEach ->
       model = new Model simpleModel
-    
+
     it "should exist", ->
       should.exist GraphController
 
