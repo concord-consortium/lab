@@ -5,6 +5,9 @@ define(function() {
     goMotion: {
       appletClass: 'goio',
 
+      // Name of the measurement being made, for display in UI
+      measurementName: "Distance",
+
       // measurement type, as accepted by applet's getSensorRequest method
       measurementType: 'distance',
 
@@ -25,6 +28,7 @@ define(function() {
 
     goLinkTemperature: {
       appletClass: 'goio',
+      measurementName: "Temperature",
       measurementType: 'temperature',
       // QUANTITY_TEMPERATURE
       typeConstantName: 'temperature',
@@ -36,6 +40,7 @@ define(function() {
 
     goLinkLight: {
       appletClass: 'goio',
+      measurementName: "Light Intensity",
       measurementType: 'light',
       // QUANTITY_LIGHT
       typeConstantName: 'light',
@@ -47,6 +52,7 @@ define(function() {
 
     goLinkForce: {
       appletClass: 'goio',
+      measurementName: "Force",
       measurementType: 'force',
       // QUANTITY_FORCE
       typeConstantName: 'force',
@@ -58,6 +64,7 @@ define(function() {
 
     goLinkPH: {
       appletClass: 'goio',
+      measurementName: "Acidity",
       measurementType: 'ph',
       // QUANTITY_PH
       typeConstantName: 'ph',
@@ -69,6 +76,7 @@ define(function() {
 
     goLinkCO2: {
       appletClass: 'goio',
+      measurementName: "CO₂ Concentration",
       measurementType: 'co2',
       // QUANTITY_CO2_GAS
       typeConstantName: 'co2_gas',
@@ -80,6 +88,7 @@ define(function() {
 
     goLinkO2: {
       appletClass: 'goio',
+      measurementName: "O₂ Concentration",
       measurementType: 'o2',
       // QUANTITY_OXYGEN_GAS
       typeConstantName: 'oxygen_gas',
@@ -91,6 +100,7 @@ define(function() {
 
     labQuestMotion: {
       appletClass: 'labquest',
+      measurementName: "Distance",
       measurementType: 'distance',
       // QUANTITY_DISTANCE
       typeConstantName: 'distance',
@@ -102,6 +112,7 @@ define(function() {
 
     labQuestTemperature: {
       appletClass: 'labquest',
+      measurementName: "Temperature",
       measurementType: 'temperature',
       // QUANTITY_TEMPERATURE
       typeConstantName: 'temperature',
@@ -113,6 +124,7 @@ define(function() {
 
     labQuestLight: {
       appletClass: 'labquest',
+      measurementName: "Light Intensity",
       measurementType: 'light',
       // QUANTITY_LIGHT
       typeConstantName: 'light',
@@ -124,6 +136,7 @@ define(function() {
 
     labQuestForce: {
       appletClass: 'labquest',
+      measurementName: "Force",
       measurementType: 'force',
       // QUANTITY_FORCE
       typeConstantName: 'force',
@@ -135,6 +148,7 @@ define(function() {
 
     labQuestPH: {
       appletClass: 'labquest',
+      measurementName: "Acidity",
       measurementType: 'ph',
       // QUANTITY_PH
       typeConstantName: 'ph',
@@ -146,6 +160,7 @@ define(function() {
 
     labQuestCO2: {
       appletClass: 'labquest',
+      measurementName: "CO₂ Concentration",
       measurementType: 'co2',
       // QUANTITY_CO2_GAS
       typeConstantName: 'co2_gas',
@@ -157,6 +172,7 @@ define(function() {
 
     labQuestO2: {
       appletClass: 'labquest',
+      measurementName: "O₂ Concentration",
       measurementType: 'o2',
       // QUANTITY_OXYGEN_GAS
       typeConstantName: 'oxygen_gas',
