@@ -216,9 +216,12 @@ define(function(require) {
         updateAtomsTable();
       },
 
-      performActionWithinIntegrationLoop: function (neighborList) {
-        destroyBonds();
-        createBonds(neighborList);
+      performActionWithinIntegrationLoop: function (neighborList, dt, time) {
+        if ((time / dt) % 50 === 0) {
+          // Perform action every 50 timesteps.
+          destroyBonds();
+          createBonds(neighborList);
+        }
       },
 
       // This function is required by the MD2D engine, so return empty array as
