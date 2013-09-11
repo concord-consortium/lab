@@ -296,12 +296,12 @@
     </void> 
     <void property="viewSize"> 
      <object class="java.awt.Dimension"> 
-      <int>400</int> 
+      <int>350</int> 
       <int>250</int> 
      </object> 
     </void> 
     <void property="width"> 
-     <double>400.0</double> 
+     <double>350.0</double> 
     </void> 
    </object> 
   </void> 
@@ -319,7 +319,7 @@
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1378719451000</long> 
+     <long>1378720046000</long> 
     </object> 
    </void> 
    <void method="put"> 
