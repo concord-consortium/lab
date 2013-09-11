@@ -4149,6 +4149,10 @@ define(function (require, exports) {
         viscosity = v;
       },
 
+      get ljCalculator() {
+        return ljCalculator;
+      },
+
       // ######################################################################
       //                State definition of the engine
 

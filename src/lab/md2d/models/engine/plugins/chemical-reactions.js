@@ -124,10 +124,15 @@ define(function(require) {
       atoms.sharedElectrons[a1] += 1;
       atoms.sharedElectrons[a2] += 1;
 
-      // Energy conservation.
+      // Energy conservation:
+      // 1. Radial bond potential energy.
       dpot = Math.sqrt(ijsq) - length;
       dpot = -0.5 * strength * dpot * dpot;
+      // 2. Bond chemical energy.
       dpot += en;
+      // 3. LJ potential between particles (it will disappear as engine doesn't calculate LJ
+      //    interaction between bonded particles) .
+      dpot -= engine.ljCalculator[el1][el2].potentialFromSquaredDistance(ijsq);
 
       conserveEnergy(dpot, a1, a2);
     }
