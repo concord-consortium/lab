@@ -239,7 +239,7 @@ define(function(require) {
               xij = xi - atoms.x[a2];
               yij = yi - atoms.y[a2];
               ijsq = xij * xij + yij * yij;
-              avrSigma = 0.5 * (elements.sigma[el1] + elements.sigma[el2]);
+              avrSigma = 0.55 * (elements.sigma[el1] + elements.sigma[el2]);
               avrSigmaSq = avrSigma * avrSigma;
 
               if (ijsq >= avrSigmaSq) {
