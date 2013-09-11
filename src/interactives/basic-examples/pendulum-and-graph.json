@@ -150,6 +150,13 @@
       "property": "rodLength"
     },
     {
+      "type": "numericOutput",
+      "id": "period-display",
+      "property": "period",
+      "displayValue": "return format('.3r')(value)"
+    },
+    
+    {
       "type": "button",
       "id": "start-run",
       "text": "Start",
@@ -299,7 +306,7 @@
   ],
   "layout": {
     "bottom-left": [
-      [ "length-slider" ],
+      [ "length-slider", "period-display" ],
       [ "start-run", "stop-run", "save-run", "next-run", "clear-all" ]
     ],
     "top-right": [
