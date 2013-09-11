@@ -130,11 +130,14 @@ define(function(require) {
     }
 
     function removeApplet() {
-      applet.removeListeners('data');
-      applet.removeListeners('deviceUnplugged');
-      applet.removeListeners('sensorUnplugged');
+      if (applet) {
+        applet.removeListeners('data');
+        applet.removeListeners('deviceUnplugged');
+        applet.removeListeners('sensorUnplugged');
 
-      applet.remove();
+        applet.remove();
+      }
+
       makeInvalidatingChange(function() {
         isSensorReady = false;
         isSensorInitializing = false;

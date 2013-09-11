@@ -101,6 +101,8 @@ define(function() {
 
       resize: function() {},
 
+      repaint: function() {},
+
       updateUnits: function(units) {
         sensorReadingView.updateUnits(units);
       },
