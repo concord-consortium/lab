@@ -28,6 +28,12 @@ define(function(require) {
     dialog.open();
   }
 
+  var defaultSensorReadingDescriptionHash = {
+      label: "Sensor Reading",
+      unitAbbreviation: "-",
+      format: '.2f'
+    };
+
   return function Model(initialProperties) {
     var propertySupport = new PropertySupport({
           types: ['mainProperty', 'viewOption', 'parameter', 'output']
@@ -343,8 +349,20 @@ define(function(require) {
       },
 
       reset: function() {
+        var defaultSensorReadingDescription = new PropertyDescription(unitsDefinition, defaultSensorReadingDescriptionHash);
+
+        model.stop();
+        removeApplet();
+
+        stepCounter = 0;
+        time = 0;
+        sensorReading = undefined;
+        didCollectData = false;
+
+        model.properties.sensorType = null;
+        propertySupport.setPropertyDescription('sensorReading', defaultSensorReadingDescription);
+
         dispatch.reset();
-        // TODO
       },
 
       isStopped: function() {
@@ -471,11 +489,7 @@ define(function(require) {
       return time;
     });
 
-    model.defineOutput('sensorReading', {
-      label: "Sensor Reading",
-      unitAbbreviation: "-",
-      format: '.2f'
-    }, function() {
+    model.defineOutput('sensorReading', defaultSensorReadingDescriptionHash, function() {
       return sensorReading;
     });
 
