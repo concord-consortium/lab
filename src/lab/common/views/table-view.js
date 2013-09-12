@@ -93,7 +93,9 @@ define(function() {
         $tr.append($td);
       }
       $tbody.append($tr);
-      alignColumnWidths();
+      if (tableData.length < 2) {
+        alignColumnWidths();
+      }
       $tr[0].scrollIntoView();
     }
 
