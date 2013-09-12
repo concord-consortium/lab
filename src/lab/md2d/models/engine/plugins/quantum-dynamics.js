@@ -596,7 +596,8 @@ define(function(require) {
         thermallyExciteAndDeexciteAtoms(neighborList);
         spontaneouslyEmitPhotons(dt);
         // Temporary hard-wired light source, for demo purposes
-        if (isLightSourceOn && Math.floor(time % 1000) === 0) {
+
+        if (isLightSourceOn && time % 1000 < dt) {
           emitLightSourcePhotons();
         }
       },
