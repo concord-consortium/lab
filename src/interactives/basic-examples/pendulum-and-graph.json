@@ -215,6 +215,8 @@
       "clearDataOnReset": false,
       "streamDataFromModel": false,
       "visibleRows": 4,
+      "height": "12em",
+      "width": "auto",
       "indexColumn": true,
       "propertyColumns": [
         "rodLength",
