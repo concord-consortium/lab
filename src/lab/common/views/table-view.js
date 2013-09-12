@@ -16,9 +16,11 @@ define(function() {
         $el,
         $tableWrapper,
         $table,
+        $thead,
         $titlerow,
         $tbody,
-        $thead;
+        $bodyrows,
+        selected = [];
 
     function renderColumnTitles() {
       var i, $th;
@@ -51,7 +53,8 @@ define(function() {
         sortOrder = descending;
       }
       $title.siblings().removeClass("sorted");
-      $tbody.find("tr").tsort('td:eq('+$title.index()+')',
+      $bodyrows = $tbody.find("tr");
+      $bodyrows.tsort('td:eq('+$title.index()+')',
         {
           sortFunction:function(a, b) {
             var anum = Math.abs(parseFloat(a.s)),
@@ -78,6 +81,61 @@ define(function() {
       });
     }
 
+    function getRowByIndex(rowIndex) {
+      return $($tbody.find('tr')).filter(function() {
+        return $(this).data("index") === rowIndex;
+      });
+    }
+
+    function getRowIndexFromRow($tr) {
+      return $tr.data('index');
+    }
+
+    function removeSelection(rowIndex) {
+      var i = selected.indexOf(rowIndex);
+      if (i !== -1) {
+        selected.splice(i, 1);
+        return getRowByIndex(rowIndex).removeClass('selected');
+      }
+    }
+
+    function addSelection(rowIndex) {
+      if (selected.indexOf(rowIndex) === -1) {
+        selected.push(rowIndex);
+        return getRowByIndex(rowIndex).addClass('selected');
+      }
+    }
+
+    function getRowOrderIndices() {
+      var i, j, indices = [];
+      for (i = 0; i < selected.length; i++) {
+        j = selected[i];
+        indices.push([j, getRowByIndex(j).index()]);
+      }
+      return indices.sort(function(a, b) {
+        return a[1] - b[1];
+      });
+    }
+
+    function fillSelection() {
+      var i, rowOrderIndices, start, end;
+      rowOrderIndices = getRowOrderIndices();
+      start = rowOrderIndices[0];
+      end = rowOrderIndices[rowOrderIndices.length-1];
+      $bodyrows = $tbody.find("tr");
+      for (i = start[1]; i <= end[1]; i++) {
+        addSelection($($bodyrows[i]).data('index'));
+      }
+    }
+
+    function clearSelection() {
+      var i;
+      for (i = 0; i < selected.length; i++) {
+        getRowByIndex(selected[i]).removeClass('selected');
+      }
+      selected = [];
+    }
+
     function appendDataRow(rowData, index) {
       var i, datum, $tr, $td;
       $tr = $('<tr class="data">');
@@ -97,6 +155,8 @@ define(function() {
         alignColumnWidths();
       }
       $tr[0].scrollIntoView();
+      clearSelection();
+      addSelection(index);
     }
 
     function removeDataRow(index) {
@@ -165,6 +225,16 @@ define(function() {
         if (height) {
           $el.css("height", height);
         }
+        $tbody.delegate("tr", "click", function(e) {
+          var ri = getRowIndexFromRow($(e.currentTarget));
+          if (!e.shiftKey) {
+            clearSelection();
+          }
+          addSelection(ri);
+          if (e.shiftKey) {
+            fillSelection();
+          }
+        });
         return $el;
       },
 
@@ -181,6 +251,10 @@ define(function() {
       removeDataRow: removeDataRow,
 
       replaceDataRow: replaceDataRow,
+      
+      removeSelection: removeSelection,
+      addSelection: addSelection,
+      clearSelection: clearSelection,
 
       updateTable: function(opts) {
         columns     = opts.columns || columns;
