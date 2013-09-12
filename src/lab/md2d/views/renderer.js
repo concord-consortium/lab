@@ -2115,8 +2115,8 @@ define(function(require) {
         .attr({
           "class": "photon",
           "d": photonPath,
-          "stroke-width": 1,
-          "stroke": "black",
+          "stroke-width": 0.5,
+          "stroke": "rgba(0,0,0,0.8)",
           "fill-opacity": 0
         });
 
