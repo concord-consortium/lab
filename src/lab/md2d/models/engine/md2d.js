@@ -44,12 +44,8 @@ define(function (require, exports) {
           T: K
       */
       convertKEtoT = function(totalKEinMWUnits, N) {
-        // In 2 dimensions, kT = (2/N_df) * KE
-
-        var N_df = 2 * N,
-            averageKEinMWUnits = (2 / N_df) * totalKEinMWUnits,
+        var averageKEinMWUnits = totalKEinMWUnits / N,
             averageKEinJoules = constants.convert(averageKEinMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.JOULE });
-
         return averageKEinJoules / BOLTZMANN_CONSTANT_IN_JOULES;
       },
 
@@ -62,10 +58,9 @@ define(function (require, exports) {
           KE: "MW Energy Units" (Dalton * nm^2 / fs^2)
       */
       convertTtoKE = function(T, N) {
-        var N_df = 2 * N,
-            averageKEinJoules  = T * BOLTZMANN_CONSTANT_IN_JOULES,
+        var averageKEinJoules  = T * BOLTZMANN_CONSTANT_IN_JOULES,
             averageKEinMWUnits = constants.convert(averageKEinJoules, { from: unit.JOULE, to: unit.MW_ENERGY_UNIT }),
-            totalKEinMWUnits = averageKEinMWUnits * N_df / 2;
+            totalKEinMWUnits = averageKEinMWUnits * N;
 
         return totalKEinMWUnits;
       },
