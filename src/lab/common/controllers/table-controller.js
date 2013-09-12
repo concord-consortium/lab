@@ -140,6 +140,7 @@ define(function (require) {
       if (component.clearDataOnReset) {
         tableData = $.extend(true, [], component.tableData);
         headerData = $.extend(true, [], component.headerData);
+        rowIndex = 0;
         updateTable();
       }
     }
