@@ -227,7 +227,7 @@ define(function() {
         }
         $tbody.delegate("tr", "click", function(e) {
           var ri = getRowIndexFromRow($(e.currentTarget));
-          if (!e.shiftKey) {
+          if (!e.shiftKey && !e.metaKey) {
             clearSelection();
           }
           addSelection(ri);
@@ -251,7 +251,7 @@ define(function() {
       removeDataRow: removeDataRow,
 
       replaceDataRow: replaceDataRow,
-      
+
       removeSelection: removeSelection,
       addSelection: addSelection,
       clearSelection: clearSelection,
