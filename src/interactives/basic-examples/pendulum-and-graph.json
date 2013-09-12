@@ -349,7 +349,7 @@
     },
     {
       "id": "top-right",
-      "left": "bottom-left.right",
+      "left": "model.right",
       "right": "bottom-right.right",
       "height": "model.height",
       "padding-top": "0.2em",
