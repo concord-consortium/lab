@@ -37,18 +37,14 @@ define(function (require) {
         columns: columns,
         tableData: tableData,
         formatters: formatters,
-        visibleRows: component.visibleRows
+        visibleRows: component.visibleRows,
+        width: component.width,
+        height: component.height,
+        tooltip: component.tooltip,
+        klasses: [ "interactive-table", "component" ]
       });
 
       $element = view.render(parent);
-
-      $element
-        .addClass("interactive-table")
-        .addClass("component");
-
-      if (component.tooltip) {
-        $element.attr("title", component.tooltip);
-      }
     }
 
     function generateColumnTitlesAndFormatters() {
@@ -144,6 +140,10 @@ define(function (require) {
         if (component.streamDataFromModel) {
           registerModelListeners();
         }
+      },
+
+      resize: function () {
+        if (view) view.resize();
       },
 
       getData: function(propArray) {

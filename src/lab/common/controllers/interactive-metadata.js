@@ -702,7 +702,7 @@ define(function() {
         defaultValue: []
       },
       width: {
-        defaultValue: "100%"
+        defaultValue: "auto"
       },
       height: {
         defaultValue: "100%"

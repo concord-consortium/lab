@@ -8,11 +8,17 @@ define(function() {
         visibleRows = opts.visibleRows,
         tableData   = opts.tableData,
         title       = opts.title,
+        width       = opts.width,
+        height      = opts.height,
+        tooltip     = opts.tooltip,
+        klasses     = opts.klasses || [],
+        headerWidths,
         $el,
         $tableWrapper,
         $table,
         $titlerow,
-        $tbody;
+        $tbody,
+        $thead;
 
     function renderColumnTitles() {
       var i, $th;
@@ -62,6 +68,16 @@ define(function() {
       e.preventDefault();
     }
 
+    function alignColumnWidths() {
+      headerWidths = $thead.find('tr:first th').map(function() {
+        return $(this).width();
+      });
+
+      $tbody.find('tr:first td').each(function(i) {
+        $(this).width(headerWidths[i]);
+      });
+    }
+
     function appendDataRow(rowData, index) {
       var i, datum;
       $tr = $('<tr class="data">');
@@ -77,6 +93,8 @@ define(function() {
         $tr.append($td);
       }
       $tbody.append($tr);
+      alignColumnWidths();
+      $tr[0].scrollIntoView();
     }
 
     function removeDataRow(index) {
@@ -109,10 +127,11 @@ define(function() {
         var i, j, rowData, $title, $tr, $th, $td;
         $el = $('<div>');
         $table = $('<table>');
-        $titlerow  = $('<tr class="header">');
         $tbody = $('<tbody>');
+        $titlerow  = $('<tr class="header">');
+        $thead = $('<thead>').append($titlerow);
         $table
-          .append($('<thead>').append($titlerow))
+          .append($thead)
           .append($tbody);
         renderColumnTitles();
         renderTableData();
@@ -127,7 +146,26 @@ define(function() {
           $el.append($title);
         }
         $el.append($tableWrapper);
+        for (i = 0; i < klasses.length; i++) {
+          $el.addClass(klasses[i])
+        }
+        if (tooltip) {
+          $el.attr("title", tooltip);
+        }
+        if (width) {
+          $el.css("width", width);
+        }
+        if (height) {
+          $el.css("height", height);
+        }
         return $el;
+      },
+
+      resize: function () {
+        var remainingHeight, emSize, headerWidths, i;
+        remainingHeight = $el.height() - ($thead.outerHeight(true) * 2);
+        $tbody.height(remainingHeight);
+        alignColumnWidths();
       },
 
       appendDataRow: appendDataRow,
