@@ -170,7 +170,7 @@ define(function() {
         var remainingHeight;
         $table.height($tableWrapper.height());
         remainingHeight = $table.height() - ($thead.outerHeight(true));
-        $tbody.height(remainingHeight - 8);
+        $tbody.height(remainingHeight - 6);
         alignColumnWidths();
       },
 
