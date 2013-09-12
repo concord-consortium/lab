@@ -201,7 +201,7 @@
       "visibleRows": 4,
       "height": "24em",
       "width": "auto",
-      "indexColumn": true,
+      "indexColumn": false,
       "propertyColumns": [
         "displayTime",
         "currentAngle"
