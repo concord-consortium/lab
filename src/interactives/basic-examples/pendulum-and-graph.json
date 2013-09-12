@@ -352,6 +352,7 @@
       "left": "model.right",
       "right": "bottom-right.right",
       "height": "model.height",
+      "min-width": "24em",
       "padding-top": "0.2em",
       "padding-left": "1em",
       "padding-right": "1.5em"
