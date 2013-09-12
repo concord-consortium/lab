@@ -79,7 +79,7 @@ define(function() {
     }
 
     function appendDataRow(rowData, index) {
-      var i, datum;
+      var i, datum, $tr, $td;
       $tr = $('<tr class="data">');
       $($tr).data('index', index);
       for(i = 0; i < rowData.length; i++) {
@@ -98,22 +98,27 @@ define(function() {
     }
 
     function removeDataRow(index) {
-      var $tr = $($tbody.find('tr')).filter(function() { return $(this).data("index") == index; });
+      var $tr = $($tbody.find('tr')).filter(function() { return $(this).data("index") === index; });
       $tr.remove();
     }
 
     function replaceDataRow(rowData, index) {
-      var $tr = $($tbody.find('tr')).filter(function() { return $(this).data("index") == index; });
-      $tr.find('td').remove();
-      for(i = 0; i < rowData.length; i++) {
-        $td = $('<td>');
-        $td.text(formatters[i](rowData[i]));
-        $tr.append($td);
+      var $tr = $($tbody.find('tr')).filter(function() {
+            return $(this).data("index") === index;
+          }),
+          $dataElements = $($tr).find('td'),
+          dataElementCount = $dataElements.length,
+          i;
+
+      for (i = 0; i < rowData.length; i++) {
+        if (i < dataElementCount) {
+          $($dataElements[i]).text(formatters[i](rowData[i]));
+        }
       }
     }
 
     function renderTableData() {
-      var i, j, rowData, $tr, $td;
+      var i, rowData, $tr, $td;
       $tbody.find('.data').remove();
       if (!tableData) { return; }
       for(i = 0; i < tableData.length; i++) {
@@ -147,7 +152,7 @@ define(function() {
         }
         $el.append($tableWrapper);
         for (i = 0; i < klasses.length; i++) {
-          $el.addClass(klasses[i])
+          $el.addClass(klasses[i]);
         }
         if (tooltip) {
           $el.attr("title", tooltip);
@@ -162,9 +167,10 @@ define(function() {
       },
 
       resize: function () {
-        var remainingHeight, emSize, headerWidths, i;
-        remainingHeight = $el.height() - ($thead.outerHeight(true) * 2);
-        $tbody.height(remainingHeight);
+        var remainingHeight;
+        $table.height($tableWrapper.height());
+        remainingHeight = $table.height() - ($thead.outerHeight(true));
+        $tbody.height(remainingHeight - 8);
         alignColumnWidths();
       },
 

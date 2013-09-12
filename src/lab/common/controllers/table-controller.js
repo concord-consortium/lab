@@ -93,29 +93,45 @@ define(function (require) {
 
     function appendPropertyRow() {
       var i, rowData = [];
-      if (component.addNewRows) {
-        rowIndex++;
-      }
+      rowIndex++;
       if (component.indexColumn) {
         rowData.push(rowIndex);
       }
       for(i = 0; i < component.propertyColumns.length; i++) {
         rowData.push(model.get(component.propertyColumns[i]));
       }
-      if (component.addNewRows) {
+      tableData.push(rowData);
+      view.appendDataRow(rowData, rowIndex);
+    }
+
+    function replacePropertyRow() {
+      var i, rowData = [];
+      if (component.indexColumn) {
+        rowData.push(rowIndex);
+      }
+      for(i = 0; i < component.propertyColumns.length; i++) {
+        rowData.push(model.get(component.propertyColumns[i]));
+      }
+      if (tableData.length === 0) {
         tableData.push(rowData);
         view.appendDataRow(rowData, rowIndex);
       } else {
         tableData[tableData.length-1] = rowData;
-        view.replaceDataRow(rowData, 1);
+        view.replaceDataRow(rowData, rowIndex);
       }
     }
 
     function registerModelListeners() {
       // Namespace listeners to '.tableController' so we can eventually remove them all at once
-      model.on('tick.'+namespace, appendPropertyRow);
+      model.on('tick.'+namespace, function () {
+        if (component.addNewRows) {
+          appendPropertyRow();
+        } else {
+          replacePropertyRow();
+        }
+      });
       model.on('invalidation.'+namespace, function() {
-        appendPropertyRow();
+        replacePropertyRow();
       });
       model.on('reset.'+namespace, modelResetHandler);
     }
