@@ -11,7 +11,7 @@
     "",
     "After closing this window click the **?** help icon in the upper left to find out more."
   ],
-  "aspectRatio": 1.15,
+  "aspectRatio": 1.3,
   "fontScale": 0.8,
   "models": [
     {
@@ -361,15 +361,13 @@
       "streamDataFromModel": true,
       "addNewRows": false,
       "visibleRows": 1,
+      "width": "26em",
       "indexColumn": false,
       "propertyColumns": [
         "rodLength",
         "ballMass",
         "startingAngle",
         "period"
-      ],
-      "tableData": [
-        [ "", " ", " ", " ", " " ]
       ]
     },
     {
@@ -380,6 +378,7 @@
       "streamDataFromModel": false,
       "visibleRows": 4,
       "indexColumn": true,
+      "height": "8em",
       "propertyColumns": [
         "rodLength",
         "ballMass",
@@ -401,7 +400,7 @@
       "xmin": 0,
       "xmax": 200,
       "ylabel": "Period (s)",
-      "ymin": -0.5,
+      "ymin": 0,
       "ymax": 10,
       "lines": false,
       "lineWidth": 2,
@@ -598,8 +597,8 @@
       "bottom": "experiment-controls.bottom",
       "left": "bottom-left.right",
       "padding-top": "0.5em",
-      "padding-left": "0.5em",
-      "padding-right": "0.4em",
+      "padding-left": "0em",
+      "padding-right": "0.5em",
       "align": "center"
     },
     {
@@ -622,7 +621,7 @@
       "top": "model.bottom",
       "left": "interactive.left",
       "width": "experiment-controls.width",
-      "height": "16em",
+      "height": "14em",
       "padding-top": "0.3em",
       "padding-left": "0em"
     },
@@ -630,8 +629,8 @@
       "id": "bottom-right",
       "bottom": "interactive.bottom",
       "left": "bottom-left.right",
-      "height": "model.height*0.9",
-      "width": "model.width*1.3",
+      "height": "bottom-left.height",
+      "width": "last-run-data.width",
       "padding-top": "0.2em",
       "padding-left": "0em",
       "padding-right": "1.5em",
@@ -642,7 +641,7 @@
       "top": "last-run-data.bottom",
       "left": "bottom-left.right",
       "bottom": "bottom-right.top",
-      "width": "model.width*1.3",
+      "width": "last-run-data.width",
       "padding-top": "0.2em",
       "padding-left": "0em",
       "padding-right": "1.5em"
