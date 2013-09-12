@@ -52,6 +52,22 @@ define(function(require) {
       return !(v === 1 && s === 1) && (v + s < 8);
     }
 
+    // TODO: we shouldn't have to do it explicitely at each step. Perhaps we should just modify add
+    // and remove radial bond operations to make sure that sharedElectron count is always correct
+    // (e.g. listen on approprieate events, but it's impossible at the moment).
+    function validateSharedElectronsCount() {
+      var a1, a2, i, len;
+      for (i = 0, len = engine.getNumberOfAtoms(); i < len; i++) {
+        atoms.sharedElectrons[i] = 0;
+      }
+      for (i = 0, len = engine.getNumberOfRadialBonds(); i < len; i++) {
+        a1 = radialBonds.atom1[i];
+        a2 = radialBonds.atom2[i];
+        atoms.sharedElectrons[a1] += 1;
+        atoms.sharedElectrons[a2] += 1;
+      }
+    }
+
     function destroyBonds() {
       var i, len,
           a1, a2, el1, el2, dpot,
@@ -219,6 +235,7 @@ define(function(require) {
       performActionWithinIntegrationLoop: function (neighborList, dt, time) {
         if ((time / dt) % 50 === 0) {
           // Perform action every 50 timesteps.
+          validateSharedElectronsCount();
           destroyBonds();
           createBonds(neighborList);
         }
