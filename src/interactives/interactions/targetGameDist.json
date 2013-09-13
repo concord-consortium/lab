@@ -6,9 +6,52 @@
   "models": [
     {
       "type": "md2d",
-      "id": "targetGameDist$0",
+      "id": "level1",
       "url": "imports/legacy-mw-content/converted/interactions/target-game-distance/targetGameDist-noLabels$0.json",
       "importedFrom": "imports/legacy-mw-content/interactions/target-game-distance/targetGameDist$0.mml",
+      "viewOptions": {
+        "controlButtons": "",
+        "electricFieldDensity": 24
+      },
+      "onLoad": [
+        "setAtomProperties(0,{draggable: true});",
+        "setAtomProperties(1,{draggable: true});",
+        "setShapeProperties(3, {lineColor: 'rgb(255,0,0)', lineWeight: 7});",
+        "set('atomTraceColor','yellow');",
+        "onDrag('atom', function (x, y, d, i) {",
+        "  if (i === 0) {",
+        "    y = Math.max(2.5, Math.min(3.5, y));",
+        "    x = 2.312;",
+        "  } else if (i === 1) {",
+        "    x = Math.max(4, Math.min(5, x));",
+        "    y = 3.3595;",
+        "  }",
+        "  setAtomProperties(i, {x: x, y: y});",
+        "});",
+        "var timePerTick = get('timePerTick'),",
+        "    collisionPadding = 0.075;",
+        "callEvery(timePerTick, function() {",
+        "  var target = getShapeProperties(2);",
+        "  if (atomsWithinRect(target.x, target.y, target.width, target.height).length > 0) {",
+        "    alert('you won!');",
+        "    stop();",
+        "  }",
+        "  for (var i = 0; i < 6; i++) {",
+        "    target = getObstacleProperties(i);",
+        "    if (atomsWithinRect(target.x - collisionPadding, target.y - collisionPadding, target.width + 2*collisionPadding, target.height + 2*collisionPadding).length > 0) {",
+        "      alert('you lose!');",
+        "      stop();",
+        "    }",
+        "  }",
+        "});",
+        "start();"
+      ]
+    },
+    {
+      "type": "md2d",
+      "id": "level2",
+      "url": "imports/legacy-mw-content/converted/interactions/target-game-distance/level2-noLabels$0.json",
+      "importedFrom": "imports/legacy-mw-content/interactions/target-game-distance/level2$0.mml",
       "viewOptions": {
         "controlButtons": "",
         "electricFieldDensity": 24
@@ -76,11 +119,27 @@
       "id": "select-show-electric-field",
       "text": "Show electric field",
       "property": "showElectricField"
+    },
+    {
+      "type": "radio",
+      "id": "select-level",
+      "orientation": "horizontal",
+      "options": [
+        {
+          "text": "Level 1",
+          "action": "loadModel('level1')",
+          "selected": true
+        },
+        {
+          "text": "Level 2",
+          "action": "loadModel('level2')"
+        }
+      ]
     }
   ],
   "layout": {
     "bottom": [
-      ["add-atom", "reset"],
+      ["add-atom", "reset", "select-level"],
       ["select-show-electric-field", "select-show-force-vectors"]
     ]
   }
