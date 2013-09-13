@@ -2286,8 +2286,9 @@ define(function (require) {
       updateOrRescale:      updateOrRescale,
 
       xDomain: function(_) {
-        if (!arguments.length) return xScale.domain();
-        xScale.domain(_);
+        if (!arguments.length) return [options.xmin, options.xmax];
+        options.xmin = _[0];
+        options.xmax = _[1];
         if (updateXScale) {
           updateXScale();
           redraw();
@@ -2296,8 +2297,9 @@ define(function (require) {
       },
 
       yDomain: function(_) {
-        if (!arguments.length) return yScale.domain();
-        yScale.domain(_);
+        if (!arguments.length) return [options.ymin, options.ymax];
+        options.ymin = _[0];
+        options.ymax = _[1];
         if (updateYScale) {
           updateYScale();
           redraw();
