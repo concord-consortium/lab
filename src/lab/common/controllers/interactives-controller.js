@@ -1034,6 +1034,10 @@ define(function (require) {
         return model;
       },
 
+      getScriptingAPI: function() {
+        return scriptingAPI;
+      },
+
       getModelController: function () {
         return modelController;
       },
