@@ -12,7 +12,7 @@
       "id": "pendulum1$0",
       "url": "models/md2d/basic-examples/pendulum.json",
       "viewOptions": {
-        "controlButtons": "",
+        "controlButtons": "play_reset_step",
         "gridLines": false,
         "xunits": false,
         "yunits": false,
@@ -155,7 +155,7 @@
       "property": "period",
       "displayValue": "return format('.3r')(value)"
     },
-    
+
     {
       "type": "button",
       "id": "start-run",
