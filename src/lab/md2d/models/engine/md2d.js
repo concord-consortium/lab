@@ -3542,6 +3542,10 @@ define(function (require, exports) {
           // Update r(t + dt) using v(t + 0.5 * dt).
           updateParticlesPosition();
 
+          // It's important call plugins here, right before accelerations calculation, as they can
+          // modify atoms positions, add radial bonds etc., what can affect forces significantly.
+          pluginController.callPluginFunction('performActionWithinIntegrationLoop', [neighborList, dt, time]);
+
           // Accumulate accelerations into a(t + dt) from all possible interactions, fields
           // and forces connected with atoms.
           updateParticlesAccelerations();
@@ -3570,9 +3574,6 @@ define(function (require, exports) {
           if (solventForceType !== 0 && !dnaTranslationInProgress) {
             zeroTotalMomentumOfMolecules();
           }
-
-          pluginController.callPluginFunction('performActionWithinIntegrationLoop', [neighborList, dt, time]);
-
         } // end of integration loop
 
         // Collisions between particles and obstacles are collected during
