@@ -524,12 +524,12 @@ define(function (require) {
 
     // Since this first-draft iteration of the scripting api has no real support for multiple
     // models, we can freely stash the single model locally.
-    function getModel() {
+    function cacheModel() {
       model = interactivesController.getModel();
     }
 
-    getModel();
-    interactivesController.on('modelLoaded', getModel);
+    cacheModel();
+    interactivesController.on('modelLoaded', cacheModel);
 
     return controller;
   };
