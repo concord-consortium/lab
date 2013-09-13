@@ -24,7 +24,9 @@ define(function(require) {
 
       // plugins
       QuantumDynamics      = require('md2d/models/engine/plugins/quantum-dynamics'),
-      ChemicalReactions    = require('md2d/models/engine/plugins/chemical-reactions');
+      ChemicalReactions    = require('md2d/models/engine/plugins/chemical-reactions'),
+
+      md2dModelCount = 0;
 
   return function Model(initialProperties, initializationOptions) {
 
@@ -34,6 +36,7 @@ define(function(require) {
     initializationOptions = initializationOptions || {};
 
     var model = {},
+        namespace = "md2dModel" + (++md2dModelCount),
 
         customSetters = {
           targetTemperature: function (value) {
@@ -2271,6 +2274,8 @@ define(function(require) {
     }
 
     model.performanceOptimizer = new PerformanceOptimizer(model);
+
+    model.namespace = namespace;
 
     return model;
   };
