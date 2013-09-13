@@ -15,9 +15,9 @@ define(function (require) {
    * @param {} controller
    * @param {} model
    */
-  function PlaybackController(component, scriptingAPI, controller, model) {
+  function PlaybackController(component, scriptingAPI, controller) {
     // Call super constructor.
-    InteractiveComponent.call(this, "playback", component, scriptingAPI, controller, model);
+    InteractiveComponent.call(this, "playback", component, scriptingAPI, controller);
 
     this.$element.addClass("interactive-playback");
 
@@ -38,10 +38,10 @@ define(function (require) {
     this._playPauseClickHandler = function() {
       if (that._modelStopped) {
         if (that._modelPlayable) {
-          that._scriptingAPI.start();
+          that._scriptingAPI.api.start();
         }
       } else {
-        that._scriptingAPI.stop();
+        that._scriptingAPI.api.stop();
       }
     };
   };
@@ -51,15 +51,15 @@ define(function (require) {
       // Bind video-playback style click handlers.
       if (this.controlButtonStyle === 'video') {
         this._createPlayPauseClickHandler();
-        this._$reset.on("click", this._scriptingAPI.reload);
+        this._$reset.on("click", this._scriptingAPI.api.reload);
         this._$playPause.on("click", this._playPauseClickHandler);
-        this._$stepBackward.on("click", this._scriptingAPI.stepBack);
-        this._$stepForward.on("click", this._scriptingAPI.stepForward);
+        this._$stepBackward.on("click", this._scriptingAPI.api.stepBack);
+        this._$stepForward.on("click", this._scriptingAPI.api.stepForward);
       } else {
         // Bind text style click handlers
-        this._$reset.on("click", this._scriptingAPI.reload);
-        this._$start.on('click', this._scriptingAPI.start);
-        this._$stop.on('click', this._scriptingAPI.stop);
+        this._$reset.on("click", this._scriptingAPI.api.reload);
+        this._$start.on('click', this._scriptingAPI.api.start);
+        this._$stop.on('click', this._scriptingAPI.api.stop);
       }
     }
   };
@@ -68,15 +68,15 @@ define(function (require) {
     if (this.controlButtonStyle) {
       // Unbind video-playback style click handlers.
       if (this.controlButtonStyle === 'video') {
-        this._$reset.off("click", this._scriptingAPI.reload);
-        this._$stepBackward.off("click", this._scriptingAPI.stepBack);
-        this._$stepForward.off("click", this._scriptingAPI.stepForward);
+        this._$reset.off("click", this._scriptingAPI.api.reload);
+        this._$stepBackward.off("click", this._scriptingAPI.api.stepBack);
+        this._$stepForward.off("click", this._scriptingAPI.api.stepForward);
         this._$playPause.off("click", this._playPauseClickHandler);
       } else {
         // Unbind text style click handlers
-        this._$reset.off("click", this._scriptingAPI.reload);
-        this._$start.off('click', this._scriptingAPI.start);
-        this._$stop.off('click', this._scriptingAPI.stop);
+        this._$reset.off("click", this._scriptingAPI.api.reload);
+        this._$start.off('click', this._scriptingAPI.api.start);
+        this._$stop.off('click', this._scriptingAPI.api.stop);
       }
     }
   };
