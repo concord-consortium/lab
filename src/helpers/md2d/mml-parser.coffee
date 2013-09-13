@@ -1253,30 +1253,24 @@ parseMML = (mmlString) ->
          VBAC
     ###
 
-    A2_B2__2AB_reactionParameters = $mml(".org-concord-mw2d-models-Reaction-A2_B2__2AB [method=put]")
-    O2_2H2__2H2O_reactionParameters = $mml(".org-concord-mw2d-models-Reaction-O2_2H2__2H2O [method=put]")
+    $reactionObj = $mml('[class*="org-concord-mw2d-models-Reaction"]')
 
-    useChemicalReactions = A2_B2__2AB_reactionParameters.length > 0 | O2_2H2__2H2O_reactionParameters.length > 0
+    useChemicalReactions = $reactionObj.length > 0
 
     if useChemicalReactions
+      parameters = $reactionObj.find("[method=put]")
       reaction = {}
-      reactionParameters = {}
-      if A2_B2__2AB_reactionParameters.length > 0
-        parameters = A2_B2__2AB_reactionParameters
-      else
-        parameters = O2_2H2__2H2O_reactionParameters
-      for prop in parameters
-        $node = cheerio(prop)
-        key = $node.find('string').text()
-        value = parseFloat($node.find('double').text())
-        reactionParameters[key] = value
 
-      if A2_B2__2AB_reactionParameters.length > 0
-        reaction.type = "A2_B2__2AB"
-        reaction.parameters = reactionParameters
-      else
-        reaction.type = "O2_2H2__2H2O"
-        reaction.parameters = reactionParameters
+      # Do not convert reaction parameters now. Default values from metadata will be used. We will
+      # have to implement conversion from Classic to NextGen format.
+      # reactionParameters = {}
+      # for prop in parameters
+      #   $node = cheerio(prop)
+      #   key = $node.find('string').text()
+      #   value = parseFloat($node.find('double').text())
+      #   reactionParameters[key] = value
+      #
+      # reaction.parameters = reactionParameters
 
       reaction = validator.validateCompleteness metadata.chemicalReactions, reaction
 

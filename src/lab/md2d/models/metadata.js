@@ -736,54 +736,6 @@ define(function() {
           [6, 6, 4, 6],
           [6, 6, 6, 4]
         ]
-      },
-      // unused for now:
-      type: {},
-      parameters: {
-        VA2B: {
-        },
-        VAA: {
-        },
-        VAB: {
-        },
-        VAB2: {
-        },
-        VABC: {
-        },
-        VAC: {
-        },
-        VAD: {
-        },
-        VBA2: {
-        },
-        VBAC: {
-        },
-        VBB: {
-        },
-        VBC: {
-        },
-        VBD: {
-        },
-        VCA2: {
-        },
-        VCB2: {
-        },
-        VCC: {
-        },
-        VCD: {
-        },
-        VDD: {
-        },
-        VHH: {
-        },
-        VHO: {
-        },
-        VHO2: {
-        },
-        VOH2: {
-        },
-        VOO: {
-        }
       }
     },
 
