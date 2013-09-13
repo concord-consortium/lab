@@ -135,6 +135,26 @@ define(function(require) {
       });
     }
 
+    function updatePropertyRange(property, min, max) {
+      var descriptionHash;
+      var description;
+
+      descriptionHash = model.getPropertyDescription(property).getHash();
+      descriptionHash.min = min;
+      descriptionHash.max = max;
+
+      description = new PropertyDescription(unitsDefinition, descriptionHash);
+      propertySupport.setPropertyDescription(property, description);
+    }
+
+    // Updates min, max of displayTime to be [0..collectionTime]
+    function updateDisplayTimeRange() {
+      if (model.properties.collectionTime == null) {
+        return;
+      }
+      updatePropertyRange('displayTime', 0, model.properties.collectionTime);
+    }
+
     function removeApplet() {
       if (applet) {
         applet.removeListeners('data');
@@ -286,6 +306,11 @@ define(function(require) {
         });
 
         propertySupport.setPropertyDescription('sensorReading', description);
+
+        // Override collectionTime  only if it wasn't set on the model definition
+        if (model.properties.collectionTime == null) {
+          model.properties.collectionTime = sensorDefinition.maxSeconds;
+        }
       }
     }
 
@@ -545,9 +570,6 @@ define(function(require) {
       return isSensorInitializing;
     });
 
-    // Kick things off by doing this explicitly:
-    setSensorType(model.properties.sensorType);
-
     // Clean up state before we go -- failing to remove the applet from the page before switching
     // between 2 sensor types that use the same interface causes an applet exception.
     model.on('willReset.model', removeApplet);
@@ -559,6 +581,12 @@ define(function(require) {
         stopPollingSensor();
       }
     });
+
+    model.addObserver('collectionTime', updateDisplayTimeRange);
+    updateDisplayTimeRange();
+
+    // Kick things off by doing this explicitly:
+    setSensorType(model.properties.sensorType);
 
     return model;
   };

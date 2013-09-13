@@ -13,6 +13,9 @@ define(function() {
       },
       samplesPerSecond: {
         readOnly: true
+      },
+      collectionTime: {
+        defaultValue: null
       }
     },
     viewOptions: {
