@@ -1,23 +1,205 @@
 {
-  "title": "targetFreePlay",
+  "title": "Target Game (Free Play)",
   "publicationStatus": "draft",
   "subtitle": "",
   "about": "",
+  "fontScale": 0.8,
   "models": [
     {
       "type": "md2d",
-      "id": "targetFreePlay$0",
+      "id": "level1",
       "url": "imports/legacy-mw-content/converted/interactions/target-game-free-play/targetFreePlay$0.json",
       "importedFrom": "imports/legacy-mw-content/interactions/target-game-free-play/targetFreePlay$0.mml",
       "viewOptions": {
-        "controlButtons": "play_reset"
-      }
+        "controlButtons": "",
+        "electricFieldDensity": 24
+      },
+      "onLoad": [
+        "setShapeProperties(3, {lineColor: 'rgb(255,0,0)', lineWeight: 7});",
+        "set('atomTraceColor','yellow');",
+        "var timePerTick = get('timePerTick'),",
+        "    collisionPadding = 0.075;",
+        "onClick('plot', function(x, y, d, i) {",
+        "  addAtom({x: x, y: y, charge: get('chargeSign')*get('chargeMagnitude'), pinned: true});",
+        "});",
+        "callEvery(timePerTick, function() {",
+        "  var target = getShapeProperties(2);",
+        "  if (atomsWithinRect(target.x, target.y, target.width, target.height).length > 0) {",
+        "    alert('you won!');",
+        "    stop();",
+        "  }",
+        "  for (var i = 0; i < 7; i++) {",
+        "    target = getObstacleProperties(i);",
+        "    if (atomsWithinRect(target.x - collisionPadding, target.y - collisionPadding, target.width + 2*collisionPadding, target.height + 2*collisionPadding).length > 0) {",
+        "      alert('you lose!');",
+        "      stop();",
+        "    }",
+        "  }",
+        "});",
+        "start();"
+      ]
+    },
+    {
+      "type": "md2d",
+      "id": "level2",
+      "url": "imports/legacy-mw-content/converted/interactions/target-game-free-play/level2FreePlay$0.json",
+      "importedFrom": "imports/legacy-mw-content/interactions/target-game-free-play/level2FreePlay$0.mml",
+      "viewOptions": {
+        "controlButtons": "",
+        "electricFieldDensity": 24
+      },
+      "onLoad": [
+        "setShapeProperties(3, {lineColor: 'rgb(255,0,0)', lineWeight: 7});",
+        "set('atomTraceColor','yellow');",
+        "var timePerTick = get('timePerTick'),",
+        "    collisionPadding = 0.075;",
+        "onClick('plot', function(x, y, d, i) {",
+        "  addAtom({x: x, y: y, charge: get('chargeSign')*get('chargeMagnitude'), pinned: true});",
+        "});",
+        "callEvery(timePerTick, function() {",
+        "  var target = getShapeProperties(2);",
+        "  if (atomsWithinRect(target.x, target.y, target.width, target.height).length > 0) {",
+        "    alert('you won!');",
+        "    stop();",
+        "  }",
+        "  for (var i = 0; i < 8; i++) {",
+        "    target = getObstacleProperties(i);",
+        "    if (atomsWithinRect(target.x - collisionPadding, target.y - collisionPadding, target.width + 2*collisionPadding, target.height + 2*collisionPadding).length > 0) {",
+        "      alert('you lose!');",
+        "      stop();",
+        "    }",
+        "  }",
+        "});",
+        "start();"
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "chargeSign",
+      "initialValue": 1
+    },
+    {
+      "name": "chargeMagnitude",
+      "initialValue": 1,
+      "onChange": [
+        "batch( function() {",
+        "  var prop;",
+        "  for( var i = 0; i < getNumberOfAtoms(); i++ ) {",
+        "    prop = getAtomProperties(i);",
+        "    setAtomProperties(i, {charge: prop.charge / Math.abs(prop.charge) * get('chargeMagnitude')});",
+        "  }",
+        "});"
+      ]
     }
   ],
   "components": [
+    {
+      "type": "button",
+      "id": "add-atom",
+      "text": "Launch a positive particle",
+      "action": [
+        "var idx = atomsWithinRect(0,0,get('width'),get('height'),1);",
+        "if (idx.length > 0) {",
+        "  untraceAtom(idx[0]);",
+        "  removeAtom(idx[0]);",
+        "}",
+        "addAtom( {x: 0.62, y: 2, element: 1, vx: 0.0025, vy: 0, charge: 1});",
+        "idx = atomsWithinRect(0,0,get('width'),get('height'),1);",
+        "start();",
+        "traceAtom(idx[0]);"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "reset",
+      "text": "Reset",
+      "action": "reload();"
+    },
+    {
+      "type": "checkbox",
+      "id": "select-show-force-vectors",
+      "text": "Show force on objects",
+      "property": "showForceVectors"
+    },
+    {
+      "type": "checkbox",
+      "id": "select-show-electric-field",
+      "text": "Show electric field",
+      "property": "showElectricField"
+    },
+    {
+      "type": "radio",
+      "id": "select-add-atom-type",
+      "orientation": "horizontal",
+      "property": "chargeSign",
+      "options": [
+        {
+          "text": "Negative",
+          "value": -1
+        },
+        {
+          "text": "Positive",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "type": "radio",
+      "id": "select-level",
+      "orientation": "horizontal",
+      "options": [
+        {
+          "text": "Level 1",
+          "action": "loadModel('level1')",
+          "selected": true
+        },
+        {
+          "text": "Level 2",
+          "action": "loadModel('level2')"
+        }
+      ]
+    },
+    {
+      "type": "slider",
+      "id": "select-charge-magnitude",
+      "property": "chargeMagnitude",
+      "min": 0,
+      "max": 5,
+      "steps": 10,
+      "displayValue": "return format('0.1f')(value)",
+      "labels": [
+        {
+          "value": 1,
+          "label": "-/+ 1"
+        },
+        {
+          "value": 5,
+          "label": "-/+ 5"
+        },
+        {
+          "value": 3,
+          "label": "-/+ 3"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "label-charge-place-toggle",
+      "text": "**Set charge of object to place:**"
+    },
+    {
+      "type": "text",
+      "id": "label-select-placed-object-charge",
+      "text": "**Set charge amount on placed objects:**"
+    }
   ],
   "layout": {
     "bottom": [
+      ["add-atom", "reset", "select-level"],
+      ["label-charge-place-toggle", "select-add-atom-type"],
+      ["label-select-placed-object-charge", "select-charge-magnitude"],
+      ["select-show-electric-field", "select-show-force-vectors"]
     ]
   }
 }
