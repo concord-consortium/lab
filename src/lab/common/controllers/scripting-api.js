@@ -14,7 +14,8 @@ define(function (require) {
   // script context; and scripts are run in strict mode so they don't
   // accidentally expose or read globals.
   //
-  return function ScriptingAPI (interactivesController, model) {
+  return function ScriptingAPI (interactivesController) {
+    var model;
 
     var controller = {
 
@@ -520,6 +521,16 @@ define(function (require) {
         };
       }
     };
+
+    // Since this first-draft iteration of the scripting api has no real support for multiple
+    // models, we can freely stash the single model locally.
+    function getModel() {
+      model = interactivesController.getModel();
+    }
+
+    getModel();
+    interactivesController.on('modelLoaded', getModel);
+
     return controller;
   };
 });
