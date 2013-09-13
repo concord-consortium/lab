@@ -727,15 +727,38 @@ define(function() {
 
     chemicalReactions: {
       valenceElectrons: {
-        defaultValue: [1, 1, 8, 8]
+        defaultValue: [1, 1, 8, 8],
+        immutable: true
       },
       bondEnergy: {
-        defaultValue: [
-          [4, 6, 6, 6],
-          [6, 4, 6, 6],
-          [6, 6, 4, 6],
-          [6, 6, 6, 4]
-        ]
+        defaultValue: {
+          // This configuration means that default bond chemical energy is 6eV, however bonds
+          // between the same elements (like bond between 1 and 1) have a bit smaller chemical
+          // energy equal to 4eV. You can freely modify this configuration. Note that you should
+          // define "default" key if you don't specify all possible configurations.
+          "default": 6,
+          "00": 4,
+          "11": 4,
+          "22": 4,
+          "33": 4
+        },
+        immutable: true
+      },
+      activationEnergy: {
+        defaultValue: {
+          // This configuration means that default activation energy need to bonds exchange is
+          // 0.2eV. If you need custom parameters for various combinations, you can add e.g.:
+          // "1+22": 0.5,
+          // "2+11": 5
+          // It means that when element 1 collides with two bonded elements 2, activation
+          // energy that causes bonds exchange is 5 eV. Similarly, when element 2 collides with two
+          // bonded elements 1, activation energy that causes bonds exchange is 5 eV.
+          // Note that format is important! Single element is first, then "+" sign, then pair
+          // description.
+          "default": 0.2
+
+        },
+        immutable: true
       }
     },
 

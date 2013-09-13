@@ -52,6 +52,10 @@ define(function(require) {
       return !(v === 1 && s === 1) && (v + s < 8);
     }
 
+    function getBondEnergy(i, j) {
+      return bondEnergy[i + "" + j] || bondEnergy[j + "" + i] || bondEnergy["default"];
+    }
+
     // TODO: we shouldn't have to do it explicitely at each step. Perhaps we should just modify add
     // and remove radial bond operations to make sure that sharedElectron count is always correct
     // (e.g. listen on approprieate events, but it's impossible at the moment).
@@ -90,7 +94,7 @@ define(function(require) {
           // Bond chemical energy.
           el1 = atoms.element[a1];
           el2 = atoms.element[a2];
-          chemEnergy = bondEnergy[el1][el2];
+          chemEnergy = getBondEnergy(el1, el2);
           if (dpot > chemEnergy) {
             // Potential energy is larger than chemical energy, destroy bond.
             dpot -= chemEnergy;
@@ -155,7 +159,7 @@ define(function(require) {
     function makeBond(a1, a2, ijsq) {
       var el1 = atoms.element[a1],
           el2 = atoms.element[a2],
-          en  = bondEnergy[el1][el2],
+          en  = getBondEnergy(el1, el2),
           length, strength, dpot;
 
       if (en <= 0) return; // Fast path when bond energy is less than 0.
@@ -217,7 +221,7 @@ define(function(require) {
       for (i = 0, len = engine.getNumberOfRadialBonds(); i < len; ++i) {
         el1 = atoms.element[radialBonds.atom1[i]];
         el2 = atoms.element[radialBonds.atom2[i]];
-        PE -= bondEnergy[el1][el2];
+        PE -= getBondEnergy(el1, el2);
       }
 
       return PE;
