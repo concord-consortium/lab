@@ -3561,9 +3561,6 @@ define(function (require, exports) {
           // Move obstacles using very simple integration.
           updateObstaclesPosition();
 
-          // Adjust temperature, e.g. when heat bath is enabled.
-          adjustTemperature();
-
           // If solvent is different from vacuum (water or oil), ensure that
           // the total momentum of each molecule is equal to zero. This
           // prevents amino acids chains from drifting towards one boundary of
@@ -3575,6 +3572,8 @@ define(function (require, exports) {
 
           pluginController.callPluginFunction('performActionWithinIntegrationLoop', [neighborList, dt, time]);
 
+          // Adjust temperature, e.g. when heat bath is enabled.
+          adjustTemperature();
         } // end of integration loop
 
         // Collisions between particles and obstacles are collected during
@@ -4167,6 +4166,13 @@ define(function (require, exports) {
        */
       get radialBondsChanged() {
         return radialBondsChanged;
+      },
+
+      /**
+       * Returns true when atoms i and j are "radially bonded", false otherwise.
+       */
+      atomsBonded: function(i, j) {
+        return !!(radialBondMatrix && radialBondMatrix[i] && radialBondMatrix[i][j]);
       },
 
       // ######################################################################
