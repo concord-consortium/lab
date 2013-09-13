@@ -23,7 +23,10 @@ define(function() {
       deviceName: "GoMotion",
 
       samplesPerSecond: 20,
-      tareable: true
+      tareable: true,
+      minReading: -1,
+      maxReading: 4,
+      maxSeconds: 20
     },
 
     goLinkTemperature: {
@@ -35,7 +38,10 @@ define(function() {
       sensorName: "GoIO Temperature Sensor",
       deviceName: "GoIO",
       samplesPerSecond: 10,
-      tareable: false
+      tareable: false,
+      minReading: 0,
+      maxReading: 40,
+      maxSeconds: 20
     },
 
     goLinkLight: {
@@ -47,7 +53,10 @@ define(function() {
       sensorName: "GoIO Light Sensor",
       deviceName: "GoIO",
       samplesPerSecond: 10,
-      tareable: false
+      tareable: false,
+      minReading: 0,
+      maxReading: 2000,
+      maxSeconds: 20
     },
 
     goLinkForce: {
@@ -59,7 +68,10 @@ define(function() {
       sensorName: "GoIO Force Sensor",
       deviceName: "GoIO",
       samplesPerSecond: 20,
-      tareable: true
+      tareable: true,
+      minReading: -50,
+      maxReading: 50,
+      maxSeconds: 10
     },
 
     goLinkPH: {
@@ -71,7 +83,10 @@ define(function() {
       sensorName: "GoIO pH Sensor",
       deviceName: "GoIO",
       samplesPerSecond: 10,
-      tareable: false
+      tareable: false,
+      minReading: 0,
+      maxReading: 14,
+      maxSeconds: 60
     },
 
     goLinkCO2: {
@@ -83,7 +98,10 @@ define(function() {
       sensorName: "GoIO CO₂ sensor",
       deviceName: "GoIO",
       samplesPerSecond: 1,
-      tareable: false
+      tareable: false,
+      minReading: 0,
+      maxReading: 5000,
+      maxSeconds: 60
     },
 
     goLinkO2: {
@@ -95,7 +113,10 @@ define(function() {
       sensorName: "GoIO O₂ sensor",
       deviceName: "GoIO",
       samplesPerSecond: 1,
-      tareable: false
+      tareable: false,
+      minReading: 0,
+      maxReading: 100,
+      maxSeconds: 60
     },
 
     labQuestMotion: {
@@ -107,7 +128,10 @@ define(function() {
       sensorName: "LabQuest Motion Sensor",
       deviceName: "LabQuest",
       samplesPerSecond: 20,
-      tareable: true
+      tareable: true,
+      minReading: -1,
+      maxReading: 4,
+      maxSeconds: 20
     },
 
     labQuestTemperature: {
@@ -119,7 +143,10 @@ define(function() {
       sensorName: "LabQuest Temperature Sensor",
       deviceName: "LabQuest",
       samplesPerSecond: 10,
-      tareable: false
+      tareable: false,
+      minReading: 0,
+      maxReading: 40,
+      maxSeconds: 20
     },
 
     labQuestLight: {
@@ -131,7 +158,10 @@ define(function() {
       sensorName: "LabQuest Light Sensor",
       deviceName: "LabQuest",
       samplesPerSecond: 10,
-      tareable: false
+      tareable: false,
+      minReading: 0,
+      maxReading: 2000,
+      maxSeconds: 20
     },
 
     labQuestForce: {
@@ -143,7 +173,10 @@ define(function() {
       sensorName: "LabQuest Force Sensor",
       deviceName: "LabQuest",
       samplesPerSecond: 20,
-      tareable: true
+      tareable: true,
+      minReading: -50,
+      maxReading: 50,
+      maxSecond: 10
     },
 
     labQuestPH: {
@@ -155,7 +188,10 @@ define(function() {
       sensorName: "LabQuest pH Sensor",
       deviceName: "LabQuest",
       samplesPerSecond: 10,
-      tareable: false
+      tareable: false,
+      minReading: 0,
+      maxReading: 14,
+      maxSeconds: 60
     },
 
     labQuestCO2: {
@@ -167,7 +203,10 @@ define(function() {
       sensorName: "LabQuest CO₂ sensor",
       deviceName: "LabQuest",
       samplesPerSecond: 1,
-      tareable: false
+      tareable: false,
+      minReading: 0,
+      maxReading: 5000,
+      maxSeconds: 60
     },
 
     labQuestO2: {
@@ -179,7 +218,10 @@ define(function() {
       sensorName: "LabQuest O₂ sensor",
       deviceName: "LabQuest",
       samplesPerSecond: 1,
-      tareable: false
+      tareable: false,
+      minReading: 0,
+      maxReading: 100,
+      maxSeconds: 60
     }
   };
 });
