@@ -1,0 +1,17 @@
+{
+  "title": "Bonds Exchange",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "simplest-reaction$0",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/chemical-reactions/bonds-exchange$0.json",
+      "importedFrom": "imports/legacy-mw-content/conversion-and-physics-examples/chemical-reactions/bonds-exchange$0.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ]
+}
