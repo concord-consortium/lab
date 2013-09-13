@@ -59,20 +59,9 @@ define(function(require) {
          'MAYSCRIPT="true" ',
        '>',
           '<param name="MAYSCRIPT" value="true" />',
+          '<param name="evalOnInit" value="' + this.listenerPath + '.appletIsReadyCallback()" />',
         '</applet>'
       ].join('');
-    },
-
-    testAppletReady: function() {
-      try {
-        // We only care to see if this throws or not. (In some versions of IE, it's not possible
-        // to 'probe' for the mere existence of this.appletInstance.getSensorRequest by testing
-        // it for truthiness, because Java methods can be invoked but not included in expressions.)
-        this.appletInstance.getSensorRequest(this.measurementType);
-      } catch(e) {
-        return false;
-      }
-      return true;
     },
 
     /**

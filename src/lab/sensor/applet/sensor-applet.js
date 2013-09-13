@@ -9,22 +9,40 @@ define(function(require) {
       labConfig = require('lab.config'),
       SensorApplet;
 
-  function waitForTestFunction(test, intervalLength, maxAttempts, done, fail) {
-    var attempts = 0,
-        timer;
+  function AppletWaiter(){
+    var _timer = null,
+        _opts = null;
 
-    timer = window.setInterval(function() {
-      attempts++;
-      if (test()) {
-        window.clearInterval(timer);
-        done();
-      } else {
-        if (attempts > maxAttempts) {
-          window.clearInterval(timer);
-          fail();
+    this.handleCallback = function (){
+      // this is asynchronous because it will be called by Java
+      setTimeout(function (){
+        if (_timer === null) {
+          console.log("applet called callback after timer expired");
+          return;
         }
-      }
-    }, intervalLength);
+        window.clearInterval(_timer);
+        _timer = null;
+        _opts.success();
+      }, 5);
+    };
+
+    this.wait = function(options){
+      var attempts = 0,
+          maxAttempts = options.times;
+
+      _opts = options;
+
+      _timer = window.setInterval(function() {
+        attempts++;
+
+        if (attempts > maxAttempts) {
+          // failure
+          window.clearInterval(_timer);
+          _timer = null;
+          options.fail();
+        }
+      }, options.interval);
+    };
   }
 
   /**
@@ -67,6 +85,7 @@ define(function(require) {
          'MAYSCRIPT="true" ',
        '>',
           '<param name="MAYSCRIPT" value="true" />',
+          '<param name="evalOnInit" value="' + this.listenerPath + '.testAppletIsReadyCallback()" />',
         '</applet>'
       ].join('');
     },
@@ -135,55 +154,54 @@ define(function(require) {
       $('body').append( this.getTestAppletHTML() );
       this.testAppletInstance = $('#'+this.appletId + "-test-applet")[0];
       this._state = 'test applet appended';
-      this._waitForTestAppletReady();
+      this._waitForTestApplet();
     },
 
-    _waitForTestAppletReady: function() {
-      // TODO: require Function.prototype.bind shim? Or ignore b/c we require Safari >= 5.1?
-      var self = this;
-
-      function testFunction() {
-        try {
-          return self.testAppletInstance.areYouLoaded();
-        } catch(e) {
-          return false;
-        }
-      }
-
-      function done() {
-        self._appendHTML( self.getHTML() );
-        self._state = 'appended';
-        self._waitForAppletReady();
-      }
-
-      function fail() {
-        self._appendCallback(new errors.JavaLoadError("Timed out waiting for test applet to respond."));
-      }
-
-      waitForTestFunction(testFunction, this.testAppletReadyInterval, 10, done, fail);
+    _testAppletWaiter: new AppletWaiter(),
+    // this will be called by the test applet once it is initialized
+    testAppletIsReadyCallback: function () {
+      this._testAppletWaiter.handleCallback();
     },
 
-    _waitForAppletReady: function() {
+    _waitForTestApplet: function() {
       var self = this;
-
-      function testFunction() {
-        return self.testAppletReady();
-      }
-
-      function done() {
-        $(self.testAppletInstance).remove();
-        if (self.getState() === 'appended') {
-          self._state = 'applet ready';
+      this._testAppletWaiter.wait({
+        times: 30,
+        interval: 1000,
+        success: function() {
+          self._appendHTML( self.getHTML() );
+          self._state = 'appended';
+          self._waitForApplet();
+        },
+        fail: function () {
+          self._appendCallback(new errors.JavaLoadError("Timed out waiting for test applet to initialize."));
         }
+      });
+    },
 
-        self.initializeSensor();
-      }
+    _appletWaiter: new AppletWaiter(),
+    // this will be called by the applet once it is initialized
+    appletIsReadyCallback: function () {
+      this._appletWaiter.handleCallback();
+    },
 
-      function fail() {
-        self._appendCallback(new errors.AppletInitializationError("Timed out waiting for sensor applet to be ready."));
-      }
+    _waitForApplet: function() {
+      var self = this;
+      this._appletWaiter.wait({
+        times: 30,
+        interval: 1000,
+        success: function() {
+          $(self.testAppletInstance).remove();
+          if (self.getState() === 'appended') {
+            self._state = 'applet ready';
+          }
 
-      waitForTestFunction(testFunction, this.testAppletReadyInterval, 10, done, fail);
+          self.initializeSensor();
+        },
+        fail: function () {
+          self._appendCallback(new errors.AppletInitializationError("Timed out waiting for sensor applet to initialize."));
+        }
+      });
     },
 
     readSensor: function() {
