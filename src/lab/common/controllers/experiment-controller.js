@@ -32,8 +32,8 @@ define(function (require) {
       // Validate component definition, use validated copy of the properties.
       experimentDefinition = validator.validateCompleteness(metadata.experiment, experimentDefinition);
       timeSeries    = experimentDefinition.timeSeries;
-      inputs        = experimentDefinition.inputs;
-      outputs       = experimentDefinition.outputs;
+      inputs        = experimentDefinition.parameters.inputs;
+      outputs       = experimentDefinition.parameters.outputs;
       destinations  = experimentDefinition.destinations;
       stateButtons  = experimentDefinition.stateButtons;
       onResetScript = experimentDefinition.onReset;
