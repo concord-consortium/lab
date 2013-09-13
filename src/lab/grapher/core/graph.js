@@ -674,10 +674,28 @@ define(function (require) {
       return formatter(array[index]);
     }
 
-
+    // Setup xScale, yScale, making sure that options.xmax/xmin/ymax/ymin always reflect changes to
+    // the relevant domains.
     function setupScales() {
-      xScale = d3.scale[options.xscale]();
-      yScale = d3.scale[options.yscale]();
+      function domainObservingScale(scale, callback) {
+        var domain = scale.domain;
+        scale.domain = function(_) {
+          if (arguments.length) {
+            callback(_);
+          }
+          return domain.apply(scale, arguments);
+        };
+        return scale;
+      }
+
+      xScale = domainObservingScale(d3.scale[options.xscale](), function(_) {
+        options.xmin = _[0];
+        options.xmax = _[1];
+      });
+      yScale = domainObservingScale(d3.scale[options.yscale](), function(_) {
+        options.ymin = _[0];
+        options.ymax = _[1];
+      });
       updateScales();
     }
 
@@ -696,15 +714,6 @@ define(function (require) {
     function updateYScale() {
       yScale.domain([options.ymin, options.ymax])
             .range([size.height, 0]);
-    }
-
-    function persistScaleChangesToOptions() {
-      var xdomain = xScale.domain(),
-          ydomain = yScale.domain();
-      options.xmax = xdomain[1];
-      options.xmin = xdomain[0];
-      options.ymax = ydomain[1];
-      options.ymin = ydomain[0];
     }
 
     function fakeDataPoints() {
@@ -1232,11 +1241,9 @@ define(function (require) {
         factor = shift * cubicEase(index);
         if (direction > 0) {
           xScale.domain([d0 + factor, d1 + factor]);
-          persistScaleChangesToOptions();
           return xScale.domain()[0] < (d0 + shift);
         } else {
           xScale.domain([d0 - factor, d1 - factor]);
-          persistScaleChangesToOptions();
           return xScale.domain()[0] > (d0 - shift);
         }
       };
@@ -1500,7 +1507,6 @@ define(function (require) {
             }
           }
         }
-        persistScaleChangesToOptions();
         update();
       }
 
@@ -1512,7 +1518,6 @@ define(function (require) {
         } else {
           xScale.domain(axis.axisProcessDrag(downx, xScale.invert(p[0]), xScale.domain()));
         }
-        persistScaleChangesToOptions();
         updateMarkerRadius();
         redraw();
         d3.event.stopPropagation();
@@ -1522,7 +1527,6 @@ define(function (require) {
         d3.select('body').style("cursor", "row-resize");
         plot.style("cursor", "row-resize");
         yScale.domain(axis.axisProcessDrag(downy, yScale.invert(p[1]), yScale.domain()));
-        persistScaleChangesToOptions();
         redraw();
         d3.event.stopPropagation();
       }
@@ -1611,7 +1615,6 @@ define(function (require) {
 
       xScale.domain([xmin, xmax]).nice();
       yScale.domain([transform(ymin - 0.15*(ymax-ymin)), transform(ymax + 0.15*(ymax-ymin))]).nice();
-      persistScaleChangesToOptions();
       redraw();
     }
 
