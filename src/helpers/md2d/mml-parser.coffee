@@ -228,6 +228,7 @@ parseMML = (mmlString) ->
         height     = getFloatProperty $node, 'height'
         width      = getFloatProperty $node, 'width'
         x          = getFloatProperty $node, 'x'
+        # in mml, y is left unspecified if y = 0 in the model
         y          = getFloatProperty( $node, 'y' ) || 0
         vx         = getFloatProperty $node, 'vx'
         vy         = getFloatProperty $node, 'vy'
