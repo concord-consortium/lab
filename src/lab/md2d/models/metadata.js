@@ -727,7 +727,7 @@ define(function() {
 
     chemicalReactions: {
       valenceElectrons: {
-        defaultValue: [1, 1, 8, 8],
+        defaultValue: [1, 1, 7, 7],
         immutable: true
       },
       bondEnergy: {
