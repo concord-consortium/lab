@@ -21,7 +21,40 @@ helpers.withIsolatedRequireJS (requirejs) ->
   GraphController = requirejs 'common/controllers/graph-controller'
   Model           = requirejs 'md2d/models/modeler'
 
-  scriptingAPI = ->
+  class MockInteractivesController
+    constructor: () ->
+      @modelResetCallbacks = []
+      @modelLoadedCallbacks = []
+
+    on: (event, callback) ->
+      if event is 'modelReset' then @modelResetCallbacks.push(callback)
+      if event is 'modelLoaded' then @modelLoadedCallbacks.push(callback)
+
+    loadModel: ->
+      @model = loadModel()
+      @modelLoadedCallbacks.forEach (cb) -> cb('initialLoad')
+
+    getModel: ->
+      @model
+
+    getScriptingAPI: ->
+      @scriptingAPI
+
+    getNextTabIndex: ->
+
+    reloadModel: (opts) ->
+      @model.willReset()
+      @model = loadModel()
+      @modelLoadedCallbacks.forEach (cb) -> cb('reload')
+
+    resetModel: (opts) ->
+      opts ||= { cause: 'reset' }
+      @model.willReset()
+      @model.reset()
+      @modelResetCallbacks.forEach (cb) -> cb(opts.cause)
+
+  loadModel = ->
+    model = new Model simpleModel
 
   getComponentSpec = ->
     id: 'graphContainerId'
@@ -30,29 +63,27 @@ helpers.withIsolatedRequireJS (requirejs) ->
 
   # actual tests
   describe "GraphController", ->
+    graphController = null
+    interactivesController = null
     model = null
 
-    interactivesController =
-      getNextTabIndex: ->
-        1
-      getModel: ->
-        model
-
     beforeEach ->
-      model = new Model simpleModel
+      interactivesController = new MockInteractivesController()
+      interactivesController.loadModel()
+      model = interactivesController.model
 
     it "should exist", ->
       should.exist GraphController
 
     it "should act as a constructor that accepts the component spec as its argument", ->
-      controller = new GraphController getComponentSpec(), scriptingAPI, interactivesController, model
+      controller = new GraphController getComponentSpec(), interactivesController
       should.exist controller
 
     describe "A GraphController instance", ->
       controller = null
 
       beforeEach ->
-        controller = new GraphController getComponentSpec(), scriptingAPI, interactivesController, model
+        controller = new GraphController getComponentSpec(), interactivesController
 
       it "should have a getViewContainer method", ->
         controller.should.have.property 'getViewContainer'
@@ -275,7 +306,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
 
     describe "handling of graph configuration options in component spec", ->
       grapherOptionsForComponentSpec = (componentSpec) ->
-        controller = new GraphController componentSpec, scriptingAPI, interactivesController, model
+        controller = new GraphController componentSpec, interactivesController
         sinon.spy mock, 'Graph'
         controller.modelLoadedCallback()
         options = mock.Graph.getCall(0).args[1]
