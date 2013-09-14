@@ -129,7 +129,7 @@ define(function () {
     controller = {
       // This callback should be trigger when model is loaded.
       modelLoadedCallback: function (model, scriptingAPI) {
-        if (model) {
+        if (model && propertyName !== undefined) {
           model.removeObserver(propertyName, updateCheckbox);
         }
         model = interactivesController.getModel();

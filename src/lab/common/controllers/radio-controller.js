@@ -162,7 +162,7 @@ define(function () {
     // Public API.
     controller = {
       modelLoadedCallback: function () {
-        if (model) {
+        if (model && component.property !== undefined) {
           model.removeObserver(component.property, updateRadio);
         }
         model = interactivesController.getModel();
