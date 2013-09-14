@@ -76,6 +76,7 @@ define(function(require) {
          'id="',       this.appletId,         '-test-applet" ',
          'class="applet test-sensor-applet" ',
          'code="org.concord.sensor.applet.DetectionApplet" ',
+         'archive="org/concord/sensor/sensor-applets/sensor-applets.jar"',
          'codebase="', this.getCodebase(), '" ',
          'width="150px" ',
          'height="150px" ',
