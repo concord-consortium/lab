@@ -15,7 +15,7 @@ define(function (require) {
    * @param {ScriptingAPI} scriptingAPI
    * @param {InteractivesController} interactivesController
    */
-  function InteractiveComponent(type, component, scriptingAPI, interactivesController) {
+  function InteractiveComponent(type, component, interactivesController) {
     this._interactivesController = interactivesController;
     this._scriptingAPI = this._interactivesController.getScriptingAPI();
     this._model = this._interactivesController.getModel();
@@ -61,7 +61,7 @@ define(function (require) {
   /**
    * Called when the Interactive Controller reloads the model ... creating a new model and scriptingAPI
    */
-  InteractiveComponent.prototype._modelLoadedCallback = function (model, scriptingAPI) {
+  InteractiveComponent.prototype._modelLoadedCallback = function () {
     this._scriptingAPI = this._interactivesController.getScriptingAPI();
     this._model = this._interactivesController.getModel();
     this._optionallyAddOnClickHandlers();

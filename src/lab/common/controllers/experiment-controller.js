@@ -5,9 +5,11 @@ define(function (require) {
       validator = require('common/validator'),
       experimentControllerCount = 0;
 
-  return function ExperimentController(experimentDefinition, scriptingAPI, onLoadScripts, interactivesController, model) {
+  return function ExperimentController(experimentDefinition, interactivesController, onLoadScripts) {
         // Public API.
     var controller,
+        model,
+        scriptingAPI,
         timeSeries,
         inputs,
         outputs,
@@ -29,6 +31,8 @@ define(function (require) {
         namespace = "experimentController" + (++experimentControllerCount);
 
     function initialize() {
+      scriptingAPI = interactivesController.getScriptingAPI();
+      model = interactivesController.getModel();
       // Validate component definition, use validated copy of the properties.
       experimentDefinition = validator.validateCompleteness(metadata.experiment, experimentDefinition);
       timeSeries    = experimentDefinition.timeSeries;
@@ -175,8 +179,9 @@ define(function (require) {
       /**
         Called by the interactives controller when the model finishes loading.
       */
-      modelLoadedCallback: function(newModel) {
-        model = newModel;
+      modelLoadedCallback: function() {
+        scriptingAPI = interactivesController.getScriptingAPI();
+        model = interactivesController.getModel();
         registerModelListeners();
         setup();
       },

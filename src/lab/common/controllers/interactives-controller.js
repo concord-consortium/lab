@@ -48,8 +48,6 @@ define(function (require) {
 
       ExperimentController = require('common/controllers/experiment-controller'),
 
-      ModelController = require('common/controllers/model-controller'),
-
       // Set of available components.
       // - Key defines 'type', which is used in the interactive JSON.
       // - Value is a constructor function of the given component.
@@ -302,7 +300,7 @@ define(function (require) {
       // 1. component definition (exact object from interactive JSON),
       // 2. scripting API object,
       // 3. public API of the InteractiveController.
-      comp = new ComponentConstructor[type](component, scriptingAPI, controller, model);
+      comp = new ComponentConstructor[type](component, controller);
 
       if (!comp.getViewContainer().hasClass("component")) {
         throw new Error("Invalid Interactive Component implementation. Each component has to have 'component' class.");
@@ -446,7 +444,7 @@ define(function (require) {
 
     function createScriptingAPI() {
       // Only create scripting API after model is loaded.
-      scriptingAPI = new ScriptingAPI(controller, model);
+      scriptingAPI = new ScriptingAPI(controller);
       // Expose API to global namespace (prototyping / testing using the browser console).
       scriptingAPI.exposeScriptingAPI();
 
@@ -681,6 +679,7 @@ define(function (require) {
 
         setupModelPlayerKeyboardHandler();
 
+
         finishLoadingInteractive();
       }
 
@@ -797,7 +796,7 @@ define(function (require) {
 
       // Setup experimentController, if defined...
       if (interactive.experiment) {
-        experimentController = new ExperimentController(interactive.experiment, scriptingAPI, onLoadScripts, controller, model);
+        experimentController = new ExperimentController(interactive.experiment, controller, onLoadScripts);
         modelLoadedCallbacks.push(experimentController.modelLoadedCallback);
       }
 

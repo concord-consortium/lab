@@ -18,12 +18,13 @@ define(function (require) {
     dialog.open();
   }
 
-  var ExportController = function exportController(spec, interactivesController, model) {
+  var ExportController = function exportController(spec, interactivesController) {
     var perRun  = (spec.perRun || []).slice(),
         perTick = ['displayTime'].concat(spec.perTick.slice()),
         runNumber = 1,
         perTickValues,
         controller,
+        model,
 
         // Data that is saved just before an about-to-be-reset model is reset. This data is what
         // will be logged, so that we don't lose information about the state the user put the model
@@ -238,11 +239,15 @@ define(function (require) {
     }
 
     // Initialization.
+
+    model = interactivesController.getModel();
+
     registerInteractiveListeners();
 
     return controller = {
 
-      modelLoadedCallback: function(model) {
+      modelLoadedCallback: function() {
+        model = interactivesController.getModel();
         resetData();
         registerModelListeners();
       },

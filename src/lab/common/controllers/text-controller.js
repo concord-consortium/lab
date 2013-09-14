@@ -16,15 +16,19 @@ define(function (require) {
    * @param {ScriptingAPI} scriptingAPI
    * @param {InteracitveController} interacitveController
    */
-  function TextController(component, scriptingAPI, interacitveController) {
+  function TextController(component, interactivesController) {
     // Call super constructor.
-    InteractiveComponent.call(this, "text", component, scriptingAPI, interacitveController);
+    InteractiveComponent.call(this, "text", component, interactivesController);
     // Setup custom class.
     this.$element.addClass("interactive-text");
     // Use markdown to parse the 'text' content.
     this.$element.append(markdownToHTML(this.component.text));
   }
   inherit(TextController, InteractiveComponent);
+
+  TextController.prototype.modelLoadedCallback = function () {
+    TextController.superClass._modelLoadedCallback.call(this);
+  };
 
   return TextController;
 });

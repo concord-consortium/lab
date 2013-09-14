@@ -6,22 +6,23 @@ define(function (require) {
       TableView = require('common/views/table-view'),
       tableControllerCount = 0;
 
-  return function TableController(component, scriptingAPI, interactivesController, model) {
+  return function TableController(component, interactivesController) {
         // Public API.
     var controller,
-        // Options definitions from component JSON definition.
-        options,
+        model,
         view,
         $element,
         rowIndex,
         columns,
         formatters,
         tableData,
+        headerData,
         namespace = "tableController" + (++tableControllerCount);
 
     function initialize() {
-      var parent = interactivesController.interactiveContainer,
-          i, len,propertyName, propertyDescription, propertyTitle;
+      var parent = interactivesController.interactiveContainer;
+
+      model = interactivesController.getModel();
 
       // Validate component definition, use validated copy of the properties.
       component = validator.validateCompleteness(metadata.table, component);
@@ -48,7 +49,7 @@ define(function (require) {
     }
 
     function generateColumnTitlesAndFormatters() {
-      var i, len, propertyName, propertyDescription, propertyTitle, unitAbrev;
+      var i, propertyName, propertyDescription, propertyTitle, unitAbrev;
 
       columns = [];
       formatters = [];
@@ -150,7 +151,8 @@ define(function (require) {
       /**
         Called by the interactives controller when the model finishes loading.
       */
-      modelLoadedCallback: function(model) {
+      modelLoadedCallback: function() {
+        model = interactivesController.getModel();
         tableData = $.extend(true, [], component.tableData);
         headerData = $.extend(true, [], component.headerData);
         updateTable();

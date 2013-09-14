@@ -35,17 +35,40 @@ define(function (require) {
 
       graphControllerCount = 0;
 
-  return function graphController(component, scriptingAPI, interactivesController, model) {
+  return function graphController(component, interactivesController) {
     var // HTML element containing view
         $container,
         grapher,
         controller,
+        model,
+        scriptingAPI,
         properties,
         data = [],
         namespace = "graphController" + (++graphControllerCount);
 
     // Name of the model property whose description sets the current yLabel.
-   var yLabelProperty;
+    var yLabelProperty;
+
+    function initialize() {
+      scriptingAPI = interactivesController.getScriptingAPI();
+      model = interactivesController.getModel();
+
+      // Validate component definition, use validated copy of the properties.
+      component = validator.validateCompleteness(metadata.graph, component);
+      // The list of properties we are being asked to graph.
+      properties = component.properties.slice();
+      $container = $('<div>').attr('id', component.id).addClass('graph');
+      // Each interactive component has to have class "component".
+      $container.addClass("component");
+      // Apply custom width and height settings.
+      $container.css({
+        width: component.width,
+        height: component.height
+      });
+      if (component.tooltip) {
+        $container.attr("title", component.tooltip);
+      }
+    }
 
     /**
       Returns an array containing two-element arrays each containing the current model
@@ -193,32 +216,13 @@ define(function (require) {
       updateYLabelHandler();
     }
 
-    //
-    // Initialization.
-    //
-
-    // Validate component definition, use validated copy of the properties.
-    component = validator.validateCompleteness(metadata.graph, component);
-    // The list of properties we are being asked to graph.
-    properties = component.properties.slice();
-    $container = $('<div>').attr('id', component.id).addClass('graph');
-    // Each interactive component has to have class "component".
-    $container.addClass("component");
-    // Apply custom width and height settings.
-    $container.css({
-      width: component.width,
-      height: component.height
-    });
-    if (component.tooltip) {
-      $container.attr("title", component.tooltip);
-    }
-
-    return controller = {
+    controller = {
       /**
         Called by the interactives controller when the model finishes loading.
       */
       modelLoadedCallback: function() {
         model = interactivesController.getModel();
+        scriptingAPI = interactivesController.getScriptingAPI();
 
         if (grapher) {
           resetGrapher();
@@ -300,6 +304,9 @@ define(function (require) {
         return result;
       }
     };
-  };
 
+    initialize()
+    return controller;
+
+  };
 });

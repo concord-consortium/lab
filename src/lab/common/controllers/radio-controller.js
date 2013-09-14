@@ -1,4 +1,5 @@
 /*global define, $ */
+/*jshint loopfunc: true */
 
 define(function () {
 
@@ -6,7 +7,7 @@ define(function () {
       validator  = require('common/validator'),
       disablable = require('common/controllers/disablable');
 
-  return function RadioController(component, scriptingAPI, interactivesController, model) {
+  return function RadioController(component, interactivesController) {
         // Public API.
     var controller,
         // DOM elements.
@@ -16,7 +17,9 @@ define(function () {
         // List of jQuery objects wrapping <input type="radio"> elements.
         $options = [],
         // List of jQuery objects wrapping <div> used for radio styling.
-        $fakeCheckables = [];
+        $fakeCheckables = [],
+        model,
+        scriptingAPI;
 
     // Updates radio using model property. Used in modelLoadedCallback.
     // Make sure that this function is only called when:
@@ -70,6 +73,9 @@ define(function () {
     function initialize() {
       var $option, $fakeCheckable, $label,
           option, i, len;
+
+      model = interactivesController.getModel();
+      scriptingAPI = interactivesController.getScriptingAPI();
 
       // Validate component definition, use validated copy of the properties.
       component = validator.validateCompleteness(metadata.radio, component);
@@ -155,7 +161,12 @@ define(function () {
 
     // Public API.
     controller = {
-      modelLoadedCallback: function (model) {
+      modelLoadedCallback: function () {
+        if (model) {
+          model.removeObserver(component.property, updateRadio);
+        }
+        model = interactivesController.getModel();
+        scriptingAPI = interactivesController.getScriptingAPI();
         // Connect radio with model's property if its name is defined.
         if (component.property !== undefined) {
           // Register listener for property.

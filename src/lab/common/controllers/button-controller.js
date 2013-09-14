@@ -6,11 +6,11 @@ define(function () {
 
       buttonControllerCount = 0;
 
-  function ButtonController(component, scriptingAPI, interactivesController) {
+  function ButtonController(component, interactivesController) {
     this._actionClickFunction = function () { };
     this._nameSpace = "button" + (++buttonControllerCount);
     // Call super constructor.
-    InteractiveComponent.call(this, "button", component, scriptingAPI, interactivesController);
+    InteractiveComponent.call(this, "button", component, interactivesController);
     this.$element.addClass("interactive-button");
     this.button = $('<button>')
         .html(component.text)
@@ -19,8 +19,8 @@ define(function () {
 
   inherit(ButtonController, InteractiveComponent);
 
-  ButtonController.prototype.modelLoadedCallback = function (model, scriptingAPI) {
-    ButtonController.superClass._modelLoadedCallback.call(this, model, scriptingAPI);
+  ButtonController.prototype.modelLoadedCallback = function () {
+    ButtonController.superClass._modelLoadedCallback.call(this);
   };
 
   return ButtonController;

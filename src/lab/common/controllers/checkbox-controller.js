@@ -6,7 +6,7 @@ define(function () {
       disablable = require('common/controllers/disablable'),
       validator  = require('common/validator');
 
-  return function CheckboxController(component, scriptingAPI, interactivesController, model) {
+  return function CheckboxController(component, interactivesController) {
     var propertyName,
         onClickScript,
         initialValue,
@@ -14,7 +14,9 @@ define(function () {
         $fakeCheckable,
         $label,
         $element,
-        controller;
+        controller,
+        model,
+        scriptingAPI;
 
     // Updates checkbox using model property. Used in modelLoadedCallback.
     // Make sure that this function is only called when:
@@ -45,6 +47,9 @@ define(function () {
       // Trigger change event!
       $checkbox.trigger('change');
     }
+
+    model = interactivesController.getModel();
+    scriptingAPI = interactivesController.getScriptingAPI();
 
     // Validate component definition, use validated copy of the properties.
     component = validator.validateCompleteness(metadata.checkbox, component);
@@ -124,6 +129,11 @@ define(function () {
     controller = {
       // This callback should be trigger when model is loaded.
       modelLoadedCallback: function (model, scriptingAPI) {
+        if (model) {
+          model.removeObserver(propertyName, updateCheckbox);
+        }
+        model = interactivesController.getModel();
+        scriptingAPI = interactivesController.getScriptingAPI();
         // Connect checkbox with model's property if its name is defined.
         if (propertyName !== undefined) {
           // Register listener for 'propertyName'.
