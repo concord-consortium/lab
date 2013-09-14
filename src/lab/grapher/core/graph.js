@@ -1201,7 +1201,11 @@ define(function (require) {
           currentExtent;
 
       setCurrentSample(samplePoint);
-      currentExtent = points[currentSample-1][0];
+      if (currentSample > 0) {
+        currentExtent = points[currentSample-1][0];
+      } else {
+        currentExtent = points[currentSample][0];
+      }
       if (shiftingX) {
         shiftingX = domainShift();
         if (shiftingX) {
