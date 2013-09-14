@@ -31,7 +31,9 @@ define(function(require) {
   var defaultSensorReadingDescriptionHash = {
       label: "Sensor Reading",
       unitAbbreviation: "-",
-      format: '.2f'
+      format: '.2f',
+      min: 0,
+      max: 1
     };
 
   return function Model(initialProperties) {
@@ -302,7 +304,9 @@ define(function(require) {
         // Update the description of the main 'sensorReading' output
         description = new PropertyDescription(unitsDefinition, {
           label: sensorDefinition.measurementName,
-          unitType: measurementType
+          unitType: measurementType,
+          min: sensorDefinition.minReading,
+          max: sensorDefinition.maxReading
         });
 
         propertySupport.setPropertyDescription('sensorReading', description);
