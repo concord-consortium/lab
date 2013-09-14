@@ -601,6 +601,9 @@ define(function() {
       type: {
         required: true
       },
+      property: {
+        required: true
+      },
       label: {
         defaultValue: ""
       },
@@ -616,7 +619,6 @@ define(function() {
       height: {
         defaultValue: "auto"
       },
-      property: {},
       displayValue: {},
       tooltip: {
         defaultValue: ""
