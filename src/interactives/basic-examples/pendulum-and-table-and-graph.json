@@ -1,22 +1,22 @@
 {
-  "title": "Pendulum: rod length and graph",
+  "title": "Pendulum: rod length table, and graph",
   "publicationStatus": "public",
   "subtitle": "Explore how rod length affects the period of a pendulum.",
   "about": [
   ],
-  "aspectRatio": 1.8,
-  "fontScale": 0.8,
+  "aspectRatio": 1.5,
+  "fontScale": 0.6,
   "models": [
     {
       "type": "md2d",
       "id": "pendulum1$0",
       "url": "models/md2d/basic-examples/pendulum.json",
       "viewOptions": {
-        "controlButtons": "",
+        "controlButtons": "play_reset_step",
         "gridLines": false,
         "xunits": false,
         "yunits": false,
-        "showClock": false,
+        "showClock": true,
         "velocityVectors": {
           "length": 10
         }
@@ -93,6 +93,15 @@
       ]
     },
     "destinations": [
+      {
+        "type": "timeSeries",
+        "componentIds": [
+          "angle-graph"
+        ],
+        "properties": [
+          "currentAngle"
+        ]
+      },
       {
         "type": "timeSeries",
         "componentIds": [
@@ -193,13 +202,30 @@
       "action": ""
     },
     {
+      "type": "graph",
+      "id": "angle-graph",
+      "title": "Time Series Graph",
+      "xlabel": "Time  (s)",
+      "ylabel": "Pendulum Angle (°)",
+      "ymin": -100,
+      "ymax": 100,
+      "xmax": 10,
+      "xTickCount": 5,
+      "yTickCount": 6,
+      "xFormatter": ".2r",
+      "yFormatter": ".2s",
+      "properties": [
+        "currentAngle"
+      ]
+    },
+    {
       "type": "table",
       "id": "time-series-table",
       "title": "Time Series Table",
       "clearDataOnReset": true,
       "streamDataFromModel": true,
       "visibleRows": 4,
-      "height": "24em",
+      "height": "32em",
       "width": "auto",
       "indexColumn": true,
       "propertyColumns": [
@@ -214,8 +240,8 @@
       "clearDataOnReset": false,
       "streamDataFromModel": false,
       "visibleRows": 4,
-      "height": "10em",
-      "width": "20em",
+      "height": "12em",
+      "width": "auto",
       "indexColumn": true,
       "propertyColumns": [
         "rodLength",
@@ -244,10 +270,13 @@
       ]
     },
     {
-      "component": "ime-series-table",
+      "component": "angle-graph",
       "text": [
-        "A table of the time and angle of the pendulum over time for an experiment run.",
-        ""
+        "A graph of the angle of the pendulum over time for an experiment run.",
+        "",
+        "You can adjust the scales of the X and Y axes by dragging on them.",
+        "You can also drag the canvas of the graph to move it and click the",
+        "autocale button in the upper right to rescale the graph to show all the data."
       ]
     },
     {
@@ -309,49 +338,65 @@
     }
   ],
   "layout": {
-    "experiment-controls": [
-      [ "start-run", "stop-run", "save-run", "next-run", "clear-all" ]
+    "above-model": [
+      "length-slider", "period-display"
     ],
-    "bottom-left": [
-      [ "experiment-table" ]
+    "below-model": [
+      "start-run", "stop-run", "save-run", "next-run", "clear-all"
     ],
     "top-right": [
-      [ "length-slider" ],
-      [ "period-display" ],
-      [ "time-series-table" ]
+      [ "angle-graph" ]
+    ],
+    "bottom-right": [
+      [ "experiment-table" ]
+    ],
+    "right-side": [
+      "time-series-table"
     ]
   },
   "template": [
     {
-      "id": "experiment-controls",
-      "fontScale": "0.9",
-      "top": "model.bottom",
+      "id": "above-model",
       "left": "model.left",
-      "width": "model.width",
-      "align": "center",
+      "bottom": "model.top",
       "padding-top": "0.5em",
-      "padding-left": "0em"
+      "padding-left": "0.5em"
     },
     {
-      "id": "bottom-left",
-      "fontScale": "0.9",
-      "top": "experiment-controls.bottom",
+      "id": "below-model",
+      "fontScale": 0.9,
+      "top": "model.bottom",
       "left": "model.left",
-      "width": "model.width",
-      "align": "center",
+      "width": "32em",
       "padding-top": "0.5em",
-      "padding-bottom": "0.5em",
       "padding-left": "0em"
     },
     {
       "id": "top-right",
-      "fontScale": "0.9",
+      "fontScale": 1.1,
       "left": "model.right",
-      "height": "24em",
+      "height": "model.height*1.2",
+      "min-width": "24em",
       "padding-top": "0.2em",
-      "padding-bottom": "0.5em",
-      "padding-left": "1em",
+      "padding-left": "1.0em",
       "padding-right": "0.5em"
+    },
+    {
+      "id": "bottom-right",
+      "top": "top-right.bottom",
+      "left": "model.right",
+      "width": "24em",
+      "height": "20em",
+      "align": "center",
+      "padding-top": "0.5em",
+      "padding-bottom": "0.5em"
+    },
+    {
+      "id": "right-side",
+      "left": "top-right.right",
+      "width": "12em",
+      "padding-top": "0.5em",
+      "padding-left": "1.0em"
     }
   ]
 }

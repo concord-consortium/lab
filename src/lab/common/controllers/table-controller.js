@@ -122,6 +122,29 @@ define(function (require) {
       }
     }
 
+    /**
+      Removes all data from the table that correspond to steps following
+      the current step pointer.
+      This is used when a change is made that invalidates the future data.
+    */
+    function removeDataAfterStepPointer() {
+      var ptr = model.stepCounter();
+      if (tableData.length > ptr-1) {
+        tableData.length = ptr;
+        rowIndex = ptr;
+        updateTable();
+      }
+    }
+
+    /**
+      Causes the table to move the "current" pointer to the current model step.
+      This desaturates the table region corresponding to times after the current point.
+    */
+    function redrawCurrentStepPointer() {
+      view.clearSelection();
+      view.addSelection(model.stepCounter()+1);
+    }
+
     function registerModelListeners() {
       // Namespace listeners to '.tableController' so we can eventually remove them all at once
       model.on('tick.'+namespace, function () {
@@ -129,6 +152,15 @@ define(function (require) {
           appendPropertyRow();
         } else {
           replacePropertyRow();
+        }
+      });
+
+      model.on('stepBack.'+namespace, redrawCurrentStepPointer);
+      model.on('stepForward.'+namespace, redrawCurrentStepPointer);
+      model.on('seek.'+namespace, redrawCurrentStepPointer);
+      model.on('play.'+namespace, function() {
+        if (model.stepCounter() < tableData.length) {
+          removeDataAfterStepPointer();
         }
       });
       model.on('invalidation.'+namespace, function() {
@@ -155,6 +187,7 @@ define(function (require) {
         model = interactivesController.getModel();
         tableData = $.extend(true, [], component.tableData);
         headerData = $.extend(true, [], component.headerData);
+        rowIndex = 0;
         updateTable();
         if (component.streamDataFromModel) {
           registerModelListeners();

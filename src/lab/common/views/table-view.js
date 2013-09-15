@@ -20,6 +20,8 @@ define(function() {
         $titlerow,
         $tbody,
         $bodyrows,
+        tbodyPos,
+        tbodyHeight,
         selected = [];
 
     function renderColumnTitles() {
@@ -91,6 +93,13 @@ define(function() {
       return $tr.data('index');
     }
 
+    function getRowVisiblity($tr) {
+      var p = $tr.position();
+      if (p.top < tbodyPos.top) return -1;
+      if (p.top > tbodyHeight) return 1;
+      return 0;
+    }
+
     function removeSelection(rowIndex) {
       var i = selected.indexOf(rowIndex);
       if (i !== -1) {
@@ -100,9 +109,15 @@ define(function() {
     }
 
     function addSelection(rowIndex) {
+      var $tr;
       if (selected.indexOf(rowIndex) === -1) {
         selected.push(rowIndex);
-        return getRowByIndex(rowIndex).addClass('selected');
+        $tr = getRowByIndex(rowIndex);
+        $tr.addClass('selected');
+        var v = getRowVisiblity($tr);
+        if (v === -1) $tr[0].scrollIntoView(true);
+        if (v === 1) $tr[0].scrollIntoView();
+        return $tr;
       }
     }
 
@@ -184,12 +199,16 @@ define(function() {
       $tbody.find('.data').remove();
       if (!tableData) { return; }
       for(i = 0; i < tableData.length; i++) {
-        appendDataRow(tableData[i], i+1);
+        appendDataRow(tableData[i], i);
       }
     }
 
-    return {
+    function calculateSizeAndPosition() {
+      tbodyPos = $tbody.position();
+      tbodyHeight = $tbody.height();
+    }
 
+    return {
       render: function() {
         var i, j, rowData, $title, $tr, $th, $td;
         $el = $('<div>');
@@ -235,6 +254,7 @@ define(function() {
             fillSelection();
           }
         });
+        calculateSizeAndPosition();
         return $el;
       },
 
@@ -244,6 +264,7 @@ define(function() {
         remainingHeight = $table.height() - ($thead.outerHeight(true));
         $tbody.height(remainingHeight - 6);
         alignColumnWidths();
+        calculateSizeAndPosition();
       },
 
       appendDataRow: appendDataRow,
@@ -262,6 +283,8 @@ define(function() {
         tableData   = opts.tableData || tableData;
         renderColumnTitles();
         renderTableData();
+        alignColumnWidths();
+        calculateSizeAndPosition();
       }
 
     };
