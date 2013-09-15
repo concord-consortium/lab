@@ -23,12 +23,18 @@ define(function (require) {
       $status_wrapper,
       $status,
 
+      // second argument replicates part of an new CheckboxController( to generates
+      // the necessary API a checkbox controller component needs
       webgl_checkbox = new CheckboxController({
         "type": "checkbox",
         "id": "webgl-status-checkbox",
         "text": "WebGL-accelerated physics engine",
         "property": "use_WebGL"
-      }, null, null, model),
+      }, {
+        getModel: function () { return model; },
+        getScriptingAPI: function () { return function () { }; },
+        getNextTabIndex: function () { return function () { }; }
+      }),
       $checkbox = webgl_checkbox.getViewContainer(),
 
       // Energy2D modeler.
