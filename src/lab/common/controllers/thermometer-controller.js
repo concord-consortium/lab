@@ -141,7 +141,7 @@ define(function (require) {
     // Public API.
     controller = {
       // No modelLoadeCallback is defined. In case of need:
-      modelLoadedCallback: function (model) {
+      modelLoadedCallback: function () {
         if (model) {
           model.removeObserver('targetTemperature', updateThermometer);
         }

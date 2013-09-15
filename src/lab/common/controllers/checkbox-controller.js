@@ -125,10 +125,10 @@ define(function () {
       $element.attr("title", component.tooltip);
     }
 
-    // Public API.
+    // Public API
     controller = {
       // This callback should be trigger when model is loaded.
-      modelLoadedCallback: function (model, scriptingAPI) {
+      modelLoadedCallback: function () {
         if (model && propertyName !== undefined) {
           model.removeObserver(propertyName, updateCheckbox);
         }
