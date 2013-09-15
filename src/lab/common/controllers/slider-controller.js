@@ -167,7 +167,7 @@ define(function () {
             $slider.slider('value', initialValue);
             actionFunc(initialValue);
             if (displayValue) {
-              $sliderHandle.text(displayValue(initialValue));
+              $sliderHandle.text(displayFunc(initialValue));
             }
           }
         } else if (propertyName) {
