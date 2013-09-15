@@ -44,6 +44,8 @@ define(function(require) {
       modelHeight,
       aspectRatio,
 
+      firstRepaint,
+
       // Basic scaling functions for position, it transforms model units to "pixels".
       // Use it for positions of objects rendered inside the view.
       model2px,
@@ -2189,7 +2191,9 @@ define(function(require) {
 
       setupFirefoxWarning();
 
+      firstRepaint = true;
       repaint();
+      firstRepaint = false;
     }
 
     // Call when model is reset or reloaded.
@@ -2221,7 +2225,9 @@ define(function(require) {
       setupDynamicGradients();
       setupObstacles();
       setupVdwPairs();
-      setupParticles();
+      if (!firstRepaint) {
+        setupParticles();
+      }
       // Always setup radial bonds *after* particles to use correct atoms
       // color table.
       setupShapes();
