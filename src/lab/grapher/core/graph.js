@@ -2102,9 +2102,7 @@ define(function (require) {
       if (!datapoints || datapoints.length === 0) {
         points = [];
         pointArray = [points];
-        return;
-      }
-      if (Object.prototype.toString.call(datapoints[0]) === "[object Array]") {
+      } else if (Object.prototype.toString.call(datapoints[0]) === "[object Array]") {
         for (var i = 0; i < datapoints.length; i++) {
           pointArray.push(copy(datapoints[i]));
         }
@@ -2113,6 +2111,8 @@ define(function (require) {
         points = datapoints;
         pointArray = [copy(points)];
       }
+
+      setCurrentSample(points.length - 1);
     }
 
     function resetDataSamples(datasamples, interval, start) {
@@ -2130,10 +2130,6 @@ define(function (require) {
       dataSampleStart = start;
     }
 
-
-    function resetPoints(datapoints) {
-      resetDataPoints(datapoints);
-    }
 
     function resetSamples(datasamples) {
       resetDataSamples(datasamples, sampleInterval, dataSampleStart);
@@ -2409,7 +2405,7 @@ define(function (require) {
       // Point data consist of an array (or arrays) of [x,y] arrays.
       addPoints:       addPoints,
       addPoint:        addPoint,
-      resetPoints:      resetPoints,
+      resetPoints:     resetDataPoints,
 
       // Sample data consists of an array (or an array or arrays) of samples.
       // The interval between samples is assumed to have already been set
