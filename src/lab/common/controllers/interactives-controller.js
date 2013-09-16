@@ -867,13 +867,10 @@ define(function (require) {
       isModelLoaded = true;
     }
 
-    /**
-      Notify observers that a model was reset, passing along the cause of the reset event.
-    */
     function modelResetHandler(cause) {
-      modelResetCallbacks.forEach(function(cb) {
-        cb(cause);
-      });
+      if ( !ignoreModelResetEvent ) {
+        notifyModelResetCallbacks(cause);
+      }
     }
 
     /**
