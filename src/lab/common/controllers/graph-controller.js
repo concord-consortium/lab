@@ -258,6 +258,41 @@ define(function (require) {
       },
 
       /**
+        Adjusts axis ranges to match those of the properties the graph is reading from, without
+        clearing data.
+
+        Does nothing to the x-axis if the description of the xProperty has no min or max property.
+        For the y-axis properties, finds the (min, max) pair that contains all property ranges,
+        ignoring missing values for min or max, as long as at least one property has a min and one
+        property has a max.
+      */
+      syncAxisRangesToPropertyRanges: function() {
+        var xDescription = model.getPropertyDescription(component.xProperty);
+        var yDescriptions = properties.map(function(property) {
+          return model.getPropertyDescription(property);
+        });
+        var ymin;
+        var ymax;
+
+        if (xDescription && xDescription.getMin() != null && xDescription.getMax() != null) {
+          grapher.xDomain([xDescription.getMin(), xDescription.getMax()]);
+        }
+
+        ymin = Infinity;
+        ymax = -Infinity;
+        yDescriptions.forEach(function(description) {
+          if (description) {
+            if (description.getMin() < ymin) ymin = description.getMin();
+            if (description.getMax() > ymax) ymax = description.getMax();
+          }
+        });
+
+        if (isFinite(ymin) && isFinite(ymax)) {
+          grapher.yDomain([ymin, ymax]);
+        }
+      },
+
+      /**
         Returns the grapher object itself.
       */
       getView: function() {
@@ -305,7 +340,7 @@ define(function (require) {
       }
     };
 
-    initialize()
+    initialize();
     return controller;
 
   };

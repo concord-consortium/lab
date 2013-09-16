@@ -292,12 +292,27 @@ define(function (require) {
             }
           },
 
-
           getComponentData: function getComponentData(compID, propArray) {
             var comp = interactivesController.getComponent(compID);
             if (comp !== undefined && comp.getData) {
               return comp.getData(propArray);
             }
+          },
+
+          /**
+            Set the ranges of graph component to match the ranges of the properties it is graphing.
+          */
+          syncAxisRangesToPropertyRanges: function syncAxisRangesToPropertyRanges(componentID) {
+            var component = interactivesController.getComponent(componentID);
+
+            if (!component) {
+              throw new Error("Component " + componentID + " not found.");
+            }
+            if (!component.syncAxisRangesToPropertyRanges) {
+              throw new Error("Component " + componentID + " does not support syncAxisRangesToPropertyRanges.");
+            }
+
+            component.syncAxisRangesToPropertyRanges();
           },
 
           start: function start() {
