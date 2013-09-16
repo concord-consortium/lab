@@ -39,7 +39,7 @@ define(function(require) {
         // Helper array used only during bonds exchange process. When atom has radial bonds (one or
         // more), one of them (random) will be stored in this array. It will be exchanged with
         // free radical in case of collision.
-        anyBond          = [],
+        bondToExchange   = [],
 
         atoms,
         elements,
@@ -110,7 +110,6 @@ define(function(require) {
       for (i = 0, len = engine.getNumberOfAtoms(); i < len; i++) {
         atoms.sharedElectrons[i] = 0;
       }
-      anyBond.length = 0;
       for (i = 0, len = engine.getNumberOfRadialBonds(); i < len; i++) {
         a1 = radialBonds.atom1[i];
         a2 = radialBonds.atom2[i];
@@ -119,12 +118,13 @@ define(function(require) {
       }
     }
 
-    function updateArrayOfRandomBonds() {
+    function updateBondToExchangeArray() {
       var i, len;
+      bondToExchange.length = 0;
       for (i = 0, len = engine.getNumberOfRadialBonds(); i < len; i++) {
         // Of course when a1 or a2 has more than one radial bond, only one will be saved.
         // However that's perfectly fine, as it's enough for bonds exchange mechanism.
-        anyBond[radialBonds.atom1[i]] = anyBond[radialBonds.atom2[i]] = i;
+        bondToExchange[radialBonds.atom1[i]] = bondToExchange[radialBonds.atom2[i]] = i;
       }
     }
 
@@ -220,10 +220,10 @@ define(function(require) {
         if (a1Radical && a2Radical) {
           // Simple case, two radicals, just create a new bond.
           makeBond(a1, a2, ijsq);
-        } else if (a1Radical && anyBond[a2] !== undefined) {
-          tryToExchangeBond(a1, a2, anyBond[a2], xij, yij, ijsq);
-        } else if (a2Radical && anyBond[a1] !== undefined) {
-          tryToExchangeBond(a2, a1, anyBond[a1], xij, yij, ijsq);
+        } else if (a1Radical && bondToExchange[a2] !== undefined) {
+          tryToExchangeBond(a1, a2, bondToExchange[a2], xij, yij, ijsq);
+        } else if (a2Radical && bondToExchange[a1] !== undefined) {
+          tryToExchangeBond(a2, a1, bondToExchange[a1], xij, yij, ijsq);
         }
       }
     }
@@ -263,9 +263,10 @@ define(function(require) {
         atoms.sharedElectrons[a1] += 1;
         atoms.sharedElectrons[a2] += 1;
 
-        // In theory we should update anyBond also. However if we don't do it, we won't exchange bond
-        // in the same step we created it. It makes sense - things will be clearer when e.g. user
-        // observes simulation in slow motion and tries to analyze single step of chemical reaction.
+        // In theory we can update bondToExchange with the newly created bond. However if we don't
+        // do it, we won't exchange the bond in the same step we created it. It makes sense - things
+        // will be clearer when e.g. user observes simulation in slow motion and tries to analyze
+        // single step of chemical reaction.
       }
     }
 
@@ -326,20 +327,25 @@ define(function(require) {
         dpot += engine.ljCalculator[el2][el3].potentialFromSquaredDistance(ijsq);
 
         if (conserveEnergy(dpot, a1, a2, a3)) {
-          // Remove a2-a3 bond.
-          engine.removeRadialBond(bondIdx);
-          // Add a1-a2 bond.
-          engine.addRadialBond({
+          // Update bond, change it from a2-d3 to a1-a2.
+          engine.setRadialBondProperties(bondIdx, {
             atom1: a1,
             atom2: a2,
             length: newLength,
-            strength: newStrength,
-            // Default type. Should we use metadata to provide default values?
-            type: 101
+            strength: newStrength
           });
 
           atoms.sharedElectrons[a1] += 1;
           atoms.sharedElectrons[a3] -= 1;
+
+          // a3 is no longer connected to bond with ID = bondIdx.
+          if (bondToExchange[a3] === bondIdx) bondToExchange[a3] = undefined;
+          // a2 is still connected to bond with ID = bondIdx, however if we set bondToExchange[a2]
+          // to undefined, the same bond won't be transfered again during this step. It's not
+          // necessary, but it will limit number of reactions during single step, making things
+          // easier to observe and follow (otherwise the bond can exchanged multiple times during
+          // one step, what can be confusing for users that will see only the final result).
+          bondToExchange[a2] = undefined;
         }
       }
     }
@@ -408,9 +414,9 @@ define(function(require) {
           // Perform action every 50 timesteps.
           validateSharedElectronsCount();
           destroyBonds();
-          // Update anyBond array after .destroyBonds() call! anyBond array is used only
-          // by .createBonds() function anyway.
-          updateArrayOfRandomBonds();
+          // Update bondToExchange array after .destroyBonds() call! bondToExchange array is used
+          // only by .createBonds() function anyway.
+          updateBondToExchangeArray();
           createBonds(neighborList);
         }
       },
