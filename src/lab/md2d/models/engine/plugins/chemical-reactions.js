@@ -126,11 +126,11 @@ define(function(require) {
 
     // Returns energy needed to exchange bond between element i and j-k pair. So when collision
     // has bigger energy than returned value, bond should transform from j-k to i-j.
-    function getEnergyForBondExchange(i, j, k) {
-      var jkEn = getBondEnergy(j, k),
-          ijEn = getBondEnergy(i, j);
+    function getEnergyForBondExchange(i, j, k, oldType, newType) {
+      var oldEnergy = getBondEnergy(j, k, oldType),
+          newEnergy = getBondEnergy(i, j, newType);
 
-      if (ijEn > jkEn) {
+      if (newEnergy > oldEnergy) {
         // The final state is more stable, i-j bond (new) has more chemical energy than j-k (old).
         // Such transition should be easy, return just activation energy.
         return getActivationEnergy(i, j, k);
@@ -138,7 +138,7 @@ define(function(require) {
         // The final state is less stable, i-j bond (new) is has less chemical energy than j-k (old).
         // Such transition should be harder, return activation energy and chemical energies
         // difference.
-        return getActivationEnergy(i, j, k) + jkEn - ijEn;
+        return getActivationEnergy(i, j, k) + oldEnergy - newEnergy;
       }
     }
 
@@ -146,15 +146,14 @@ define(function(require) {
     // and remove radial bond operations to make sure that sharedElectron count is always correct
     // (e.g. listen on approprieate events, but it's impossible at the moment).
     function validateSharedElectronsCount() {
-      var a1, a2, i, len;
+      var type, i, len;
       for (i = 0, len = engine.getNumberOfAtoms(); i < len; i++) {
         atoms.sharedElectrons[i] = 0;
       }
       for (i = 0, len = engine.getNumberOfRadialBonds(); i < len; i++) {
-        a1 = radialBonds.atom1[i];
-        a2 = radialBonds.atom2[i];
-        atoms.sharedElectrons[a1] += 1;
-        atoms.sharedElectrons[a2] += 1;
+        type = getBondType(i);
+        atoms.sharedElectrons[radialBonds.atom1[i]] += type;
+        atoms.sharedElectrons[radialBonds.atom2[i]] += type;
       }
     }
 
@@ -318,7 +317,11 @@ define(function(require) {
           el2 = atoms.element[a2],
           el3 = atoms.element[a3],
 
-          minCollisionEnergy = getEnergyForBondExchange(el1, el2, el3),
+          oldType = getBondType(bondIdx),
+          // Take into account that a2 shared electron count is now affected by old bond.
+          newType = Math.min(getUnpairedElectrons(a1), getUnpairedElectrons(a2) + oldType),
+
+          minCollisionEnergy = getEnergyForBondExchange(el1, el2, el3, oldType, newType),
 
           // Calculate the line-of-centers energy.
           ijsr = 1.0 / Math.sqrt(ijsq),
@@ -345,17 +348,17 @@ define(function(require) {
         oldStrength = radialBonds.strength[bondIdx];
 
         // Conserve energy.
-        // Bond that has been just added:
+        // New bond configuration.
         // 1. Radial bond potential energy.
         lenDiff = Math.sqrt(ijsq) - newLength;
         dpot = -0.5 * newStrength * lenDiff * lenDiff;
         // 2. Bond chemical energy.
-        dpot += getBondEnergy(el1, el2);
+        dpot += getBondEnergy(el1, el2, newType);
         // 3. LJ potential between particles (it will disappear as engine doesn't calculate LJ
         //    interaction between bonded particles) .
         dpot -= engine.ljCalculator[el1][el2].potentialFromSquaredDistance(ijsq);
 
-        // Bond that has been just removed:
+        // Old bond configuration.
         xij = atoms.x[a2] - atoms.x[a3];
         yij = atoms.y[a2] - atoms.y[a3];
         ijsq = xij * xij + yij * yij;
@@ -363,7 +366,7 @@ define(function(require) {
         lenDiff = Math.sqrt(ijsq) - oldLength;
         dpot -= -0.5 * oldStrength * lenDiff * lenDiff;
         // 2. Bond chemical energy.
-        dpot -= getBondEnergy(el2, el3);
+        dpot -= getBondEnergy(el2, el3, oldType);
         // 3. LJ potential between particles.
         dpot += engine.ljCalculator[el2][el3].potentialFromSquaredDistance(ijsq);
 
@@ -373,11 +376,13 @@ define(function(require) {
             atom1: a1,
             atom2: a2,
             length: newLength,
-            strength: newStrength
+            strength: newStrength,
+            type: BOND_TYPE[newType]
           });
 
-          atoms.sharedElectrons[a1] += 1;
-          atoms.sharedElectrons[a3] -= 1;
+          atoms.sharedElectrons[a1] += newType;
+          atoms.sharedElectrons[a1] += newType - oldType;
+          atoms.sharedElectrons[a3] -= oldType;
 
           // a3 is no longer connected to bond with ID = bondIdx.
           if (bondToExchange[a3] === bondIdx) bondToExchange[a3] = undefined;
