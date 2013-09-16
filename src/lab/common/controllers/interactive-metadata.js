@@ -724,6 +724,9 @@ define(function() {
       clearDataOnReset: {
         defaultValue: true
       },
+      resetAxesOnReset: {
+        defaultValue: true
+      },
       streamDataFromModel: {
         defaultValue: true
       },

@@ -120,6 +120,7 @@ define(function (require) {
         }
         grapher.resetPoints();
       }
+      grapher.repaint();
     }
 
     /**
@@ -208,7 +209,9 @@ define(function (require) {
       if (grapher) {
         if (component.clearDataOnReset) {
           resetData();
-          resetGrapher();
+          if (component.resetAxesOnReset) {
+            resetGrapher();
+          }
         }
       } else {
         grapher = new Graph($container[0], getOptions(), undefined, interactivesController.getNextTabIndex());

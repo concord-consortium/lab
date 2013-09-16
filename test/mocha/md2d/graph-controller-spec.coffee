@@ -12,6 +12,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
       resetPoints:     sinon.spy()
       updateOrRescale: sinon.spy()
       reset:           sinon.spy()
+      repaint:         sinon.spy()
 
   requirejs.define 'grapher/core/graph', [], ->
     # Just a function that calls through to mock.Graph, while allowing mock.Graph to
