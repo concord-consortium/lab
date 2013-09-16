@@ -1,9 +1,14 @@
 {
   "title": "Target Game (Free Play)",
   "publicationStatus": "draft",
-  "subtitle": "",
-  "about": "",
+  "subtitle": "Can you steer a charged particle to a target by using charged objects?",
+  "about": [
+    "Use the *Launch a positive particle* button to shoot a positive particle across the game board.",
+    "Place any number of charged objects in any location to steer the positive particle to the target.",
+    "Can you get the charged particle into the target?"
+  ],
   "fontScale": 0.8,
+  "helpOnLoad": true,
   "models": [
     {
       "type": "md2d",
@@ -71,6 +76,41 @@
         "  }",
         "});",
         "start();"
+      ]
+    }
+  ],
+  "helpTips": [
+    {
+      "component": "",
+      "text": [
+        "Welcome to the Target Game!",
+        "- - -",
+        "Use the *Launch a positive particle* button to shoot a positive particle across the game board.",
+        "Place any number of charged objects in any location to steer the positive particle to the target.",
+        "Can you get the charged particle into the target?",
+        "- - -",
+        "*Hint*: Do not reset the board if you lose.",
+        "Objects that have been placed on the board can be dragged around to adjust how they affect the movement of the charged particle.",
+        "If you miss the target, try adjusting the position of the existing objects and/or add more objects and then launch another particle.",
+        "You can also adjust how strong the charge is on the already placed objects using the slider."
+      ]
+    },
+    {
+      "component": "select-add-atom-type",
+      "text": [
+        "Set the polarity of object(s) to be added.",
+        "- - -",
+        "Add objects to the game object by clicking anywhere outside of an obstacle.",
+        "The object added will have polarity (*Positive* or *Negative*) selected here."
+      ]
+    },
+    {
+      "component": "select-charge-magnitude",
+      "text": [
+        "Set the magnitude of the charge on placed objects.",
+        "- - -",
+        "Set the magnitude of the charge on the objects that have been placed using this control.",
+        "The objects will have same charge polarity (*Positive* or *Negative*), the but with the magnitude selected here."
       ]
     }
   ],

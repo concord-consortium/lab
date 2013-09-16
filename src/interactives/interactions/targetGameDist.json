@@ -1,8 +1,12 @@
 {
   "title": "Target Game (Distance/Force Relationship)",
   "publicationStatus": "draft",
-  "subtitle": "",
-  "about": "",
+  "subtitle": "Can you manipulate the position of charged particle to steer another object to a target?",
+  "about": [
+    "Use the *Launch a positive particle* button to shoot a positive particle across the game board.",
+    "Adjust the position of the negatively and positively charged objects to steer the moving particle to the target.",
+    "Can you get the charged particle into the target?"
+  ],
   "models": [
     {
       "type": "md2d",

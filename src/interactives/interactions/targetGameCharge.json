@@ -1,8 +1,12 @@
 {
   "title": "Target Game (Charge Magnitude / Force Relationship)",
   "publicationStatus": "draft",
-  "subtitle": "",
-  "about": "",
+  "subtitle": "Can you manipulate the amount of charge on charged objects to steer a charged particle to a target?",
+  "about": [
+    "Use the *Launch a positive particle* button to shoot a positive particle across the game board.",
+    "Adjust the amount of charge on objects **A** and **B** to steer the moving particle to the target.",
+    "Can you get the charged particle into the target?"
+  ],
   "models": [
     {
       "type": "md2d",
