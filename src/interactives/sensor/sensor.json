@@ -21,8 +21,19 @@
         "onPropertyChange('isPlayable', setButtonState);",
         "onPropertyChange('isStopped', setButtonState);",
         "onPropertyChange('hasPlayed', setButtonState);",
-        "setButtonState();"
+        "setButtonState();",
+        "onPropertyChange('sensorType', function() {",
+        "  if (get('sensorType') && !get('isNewRunInProgress')) {",
+        "    syncAxisRangesToPropertyRanges('propertiesGraph');",
+        "  }",
+        "});"
       ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "isNewRunInProgress",
+      "initialValue": false
     }
   ],
   "components": [
@@ -39,25 +50,22 @@
       "yFormatter": ".2s",
       "properties": [
         "sensorReading"
-      ]
+      ],
+      "resetAxesOnReset": false
     },
     {
       "type": "button",
       "id": "start-button",
       "text": "Start",
       "tooltip": "Start the experiment run.",
-      "action": [
-        "start();"
-      ]
+      "action": "start();"
     },
     {
       "type": "button",
       "id": "stop-button",
       "text": "Stop",
       "tooltip": "Stop the experiment run.",
-      "action": [
-        "stop();"
-      ]
+      "action": "stop();"
     },
     {
       "type": "button",
@@ -65,10 +73,13 @@
       "text": "New Run",
       "tooltip": "Set up a new experiment run.",
       "action": [
+        "set('isNewRunInProgress', true);",
         "reset({",
         "  retainParameters: ['sensorType'],",
         "  cause: 'new-run'",
-        "});"
+        "});",
+        "scrollXAxisToZero('propertiesGraph');",
+        "set('isNewRunInProgress', false);"
       ]
     },
     {
@@ -76,10 +87,7 @@
       "id": "reset-button",
       "text": "Reset",
       "tooltip": "Reset the sensor.",
-      "action": [
-        "reload();"
-      ]
-    }
+      "action": "reload();"    }
   ],
   "layout": {
     "below-model": [
