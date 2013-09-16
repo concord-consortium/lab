@@ -154,7 +154,8 @@ define(function(require) {
 
     _appendTestAppletHTML: function() {
       console.log("appending test applet");
-      $('body').append( this.getTestAppletHTML() );
+      this.$testAppletContainer = this._findOrCreateDiv(this.appletId + " -test-applet-container");
+      this.$testAppletContainer.append( this.getTestAppletHTML() );
       this._state = 'test applet appended';
       this._waitForTestApplet();
     },
@@ -193,8 +194,7 @@ define(function(require) {
         times: 30,
         interval: 1000,
         success: function() {
-          var appletElem = document.getElementById(self.appletId + "-test-applet");
-          appletElem.parentNode.removeChild(appletElem);
+          self.$testAppletContainer.html("");
           if (self.getState() === 'appended') {
             self._state = 'applet ready';
           }
@@ -258,13 +258,21 @@ define(function(require) {
       }
     },
 
+    _findOrCreateDiv: function(id) {
+      var $element = $('#' + id );
+      if(!$element.length){
+        $element = $("<div id='" + id + "'/>").appendTo('body');
+      }
+      return $element;
+    },
+
     _appendHTML: function(html) {
-      $('body').append(html);
+      this.$appletContainer = this._findOrCreateDiv(this.appletId + "-container");
+      this.$appletContainer.append(html);
     },
 
     _removeApplet: function() {
-      var appletElem = document.getElementById(this.appletId);
-      appletElem.parentNode.removeChild(appletElem);
+      this.$appletContainer.html("");
     },
 
     getHTML: function() {
