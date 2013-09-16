@@ -293,6 +293,20 @@ define(function (require) {
       },
 
       /**
+        If the x=0 is not visible in the current x axis range, move the x-axis so that x=0 is
+        present at the left of the graph, while keeping the current x axis scale and the y axis
+        range.
+      */
+      scrollXAxisToZero: function() {
+        var xmin = grapher.xmin();
+        var xmax = grapher.xmax();
+
+        if (0 < xmin || xmax < 0) {
+          grapher.xDomain([0, xmax - xmin]);
+        }
+      },
+
+      /**
         Returns the grapher object itself.
       */
       getView: function() {

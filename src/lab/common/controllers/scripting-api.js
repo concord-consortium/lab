@@ -315,6 +315,19 @@ define(function (require) {
             component.syncAxisRangesToPropertyRanges();
           },
 
+          scrollXAxisToZero: function scrollXAxisToZero(componentID) {
+            var component = interactivesController.getComponent(componentID);
+
+            if (!component) {
+              throw new Error("Component " + componentID + " not found.");
+            }
+            if (!component.syncAxisRangesToPropertyRanges) {
+              throw new Error("Component " + componentID + " does not support scrollXAxisToZero.");
+            }
+
+            component.scrollXAxisToZero();
+          },
+
           start: function start() {
             model.start();
             trackEvent('Interactive', "Start", "Starting interactive: " + interactivesController.get('title') );
