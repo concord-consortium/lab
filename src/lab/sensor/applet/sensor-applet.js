@@ -14,6 +14,7 @@ define(function(require) {
         _opts = null;
 
     this.handleCallback = function (){
+      console.log("handling callback from applet");
       // this is asynchronous because it will be called by Java
       setTimeout(function (){
         if (_timer === null) {
@@ -152,8 +153,8 @@ define(function(require) {
     },
 
     _appendTestAppletHTML: function() {
+      console.log("appending test applet");
       $('body').append( this.getTestAppletHTML() );
-      this.testAppletInstance = $('#'+this.appletId + "-test-applet")[0];
       this._state = 'test applet appended';
       this._waitForTestApplet();
     },
@@ -192,11 +193,13 @@ define(function(require) {
         times: 30,
         interval: 1000,
         success: function() {
-          $(self.testAppletInstance).remove();
+          var appletElem = document.getElementById(self.appletId + "-test-applet");
+          appletElem.parentNode.removeChild(appletElem);
           if (self.getState() === 'appended') {
             self._state = 'applet ready';
           }
 
+          self.appletInstance = $('#'+self.appletId)[0];
           self.initializeSensor();
         },
         fail: function () {
@@ -257,11 +260,11 @@ define(function(require) {
 
     _appendHTML: function(html) {
       $('body').append(html);
-      this.appletInstance = $('#'+this.appletId)[0];
     },
 
     _removeApplet: function() {
-      $('#'+this.appletId).remove();
+      var appletElem = document.getElementById(this.appletId);
+      appletElem.parentNode.removeChild(appletElem);
     },
 
     getHTML: function() {
