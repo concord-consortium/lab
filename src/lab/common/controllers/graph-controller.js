@@ -235,6 +235,7 @@ define(function (require) {
         resetData();
         registerModelListeners();
         updateYLabelHandler();
+        grapher.repaint();
       },
 
       /**
