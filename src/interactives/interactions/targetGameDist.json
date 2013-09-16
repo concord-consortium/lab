@@ -97,12 +97,13 @@
       "id": "add-atom",
       "text": "Launch a positive particle",
       "action": [
-        "if (getNumberOfAtoms() > 2) removeAtom(getNumberOfAtoms()-1);",
-        "if (addAtom( {x: getShapeProperties(0).x + getShapeProperties(0).width, y: get('height')/2, element: 1, vx: 0.0025, vy: 0, charge: 1})){",
-        "  traceAtom( getNumberOfAtoms() - 1 );",
-        "} else {",
-        "  alert('unable to launch atom');",
-        "}"
+        "if (getNumberOfAtoms() > 2) {",
+        "  untraceAtom(getNumberOfAtoms()-1);",
+        "  removeAtom(getNumberOfAtoms()-1);",
+        "}",
+        "addAtom( {x: getShapeProperties(0).x + getShapeProperties(0).width, y: get('height')/2, element: 1, vx: 0.0025, vy: 0, charge: 1});",
+        "start();",
+        "traceAtom( getNumberOfAtoms() - 1 );"
       ]
     },
     {
@@ -145,5 +146,14 @@
       ["add-atom", "reset", "select-level"],
       ["select-show-electric-field", "select-show-force-vectors"]
     ]
-  }
+  },
+  "template": [
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "width": "model.width",
+      "left": "model.left",
+      "align": "center"
+    }
+  ]
 }

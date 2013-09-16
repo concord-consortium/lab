@@ -186,7 +186,7 @@
     {
       "type": "text",
       "id": "label-charge-place-toggle",
-      "text": "**Set charge of object to place:**"
+      "text": "**Add object with that with charge:**"
     },
     {
       "type": "text",
@@ -196,10 +196,19 @@
   ],
   "layout": {
     "bottom": [
-      ["add-atom", "reset", "select-level"],
       ["label-charge-place-toggle", "select-add-atom-type"],
+      ["add-atom", "reset", "select-level"],
       ["label-select-placed-object-charge", "select-charge-magnitude"],
       ["select-show-electric-field", "select-show-force-vectors"]
     ]
-  }
+  },
+  "template": [
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "width": "model.width",
+      "left": "model.left",
+      "align": "center"
+    }
+  ]
 }
