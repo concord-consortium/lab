@@ -33,11 +33,15 @@ define(function (require) {
             symbol: "m/s"
           }
         }
-      };
+      },
+
+      energy2dModelCount = 0;
+
 
   return function Modeler(initialProperties) {
     var model,
         coreModel,
+        namespace = "energy2dModel" + (++energy2dModelCount),
 
         labModelerMixin = new LabModelerMixin({
           metadata: metadata,
@@ -268,6 +272,8 @@ define(function (require) {
     }
 
     model = {
+      namespace: namespace,
+
       tick: function () {
         var i, len, diverged;
         for (i = 0, len = model.properties.timeStepsPerTick; i < len; i++) {
@@ -350,7 +356,7 @@ define(function (require) {
       reset: function() {
         dispatch.willReset();
         propertySupport.invalidatingChangePreHook();
-        
+
         model.stop();
         coreModel.reset();
 
