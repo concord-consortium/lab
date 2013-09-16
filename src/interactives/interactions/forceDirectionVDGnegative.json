@@ -1,8 +1,12 @@
 {
   "title": "Direction of Force Around a VDG (Negatively Charged)",
   "publicationStatus": "draft",
-  "subtitle": "",
-  "about": "",
+  "subtitle": "How is the direction of force oriented between charged objects?",
+  "about": [
+    "The colored arrow indicates the direction of force between the charged object and the VDG.",
+    "How does the orientation of the arrow change as the charged object is moved around?",
+    "Use the *trace force vectors* checkbox to help characterize the direction of force arrow when the charged object is in different positions"
+  ],
   "models": [
     {
       "type": "md2d",
