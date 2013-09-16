@@ -24,7 +24,7 @@ define(function() {
 
       samplesPerSecond: 20,
       tareable: true,
-      minReading: -1,
+      minReading: 0,
       maxReading: 4,
       maxSeconds: 20
     },
@@ -129,7 +129,7 @@ define(function() {
       deviceName: "LabQuest",
       samplesPerSecond: 20,
       tareable: true,
-      minReading: -1,
+      minReading: 0,
       maxReading: 4,
       maxSeconds: 20
     },
