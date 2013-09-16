@@ -38,6 +38,8 @@ define(function(require) {
     this._min = descriptionHash.min;
     this._max = descriptionHash.max;
 
+    this._frozen = descriptionHash.frozen;
+
     this.setFormat(descriptionHash.format);
   }
 
@@ -77,6 +79,14 @@ define(function(require) {
 
   PropertyDescription.prototype.getMax = function() {
     return this._max;
+  };
+
+  PropertyDescription.prototype.getFrozen = function() {
+    return this._frozen;
+  };
+
+  PropertyDescription.prototype.setFrozen = function(b) {
+    this._frozen = b;
   };
 
   PropertyDescription.prototype.setFormat = function(s) {

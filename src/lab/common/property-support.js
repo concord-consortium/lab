@@ -620,6 +620,20 @@ define(function() {
           return target.properties[key];
         };
 
+        // This is the publicly-accessible setter for 'freezing' the property.
+        target.freeze = function(key) {
+          var description = target.getPropertyDescription(key);
+          description.setFrozen(true);
+          setPropertyDescription(key, description);
+        };
+
+        // This is the publicly-accessible setter for 'un-freezing' the property.
+        target.unfreeze = function(key) {
+          var description = target.getPropertyDescription(key);
+          description.setFrozen(false);
+          setPropertyDescription(key, description);
+        };
+
         /**
           The 'addObserver' method mixed into 'target' adds 'callback' to the end of the list of
           property observers of the property specified by 'key'. Note that adding a callback more
