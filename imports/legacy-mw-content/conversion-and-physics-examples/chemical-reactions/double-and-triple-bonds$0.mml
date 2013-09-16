@@ -309,7 +309,7 @@
    <object class="org.concord.mw2d.models.LightSource"/> 
   </void> 
   <void property="numberOfParticles"> 
-   <int>6</int> 
+   <int>9</int> 
   </void> 
   <void property="properties"> 
    <void method="put"> 
@@ -319,7 +319,7 @@
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1379353893000</long> 
+     <long>1379357030000</long> 
     </object> 
    </void> 
    <void method="put"> 
@@ -328,7 +328,7 @@
    </void> 
    <void method="put"> 
     <string>size</string> 
-    <long>11718</long> 
+    <long>11747</long> 
    </void> 
    <void method="put"> 
     <string>codebase</string> 
@@ -381,10 +381,10 @@
    <double>40.0</double> 
   </void> 
   <void property="ry"> 
-   <double>50.0</double> 
+   <double>30.0</double> 
   </void> 
   <void property="vx"> 
-   <double>0.05</double> 
+   <double>0.052440442408507586</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.Atom"> 
@@ -395,7 +395,7 @@
    <double>100.0</double> 
   </void> 
   <void property="ry"> 
-   <double>50.0</double> 
+   <double>30.0</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.Atom"> 
@@ -406,10 +406,10 @@
    <double>40.0</double> 
   </void> 
   <void property="ry"> 
-   <double>120.0</double> 
+   <double>90.0</double> 
   </void> 
   <void property="vx"> 
-   <double>0.05</double> 
+   <double>0.052440442408507586</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.Atom"> 
@@ -420,7 +420,7 @@
    <double>160.0</double> 
   </void> 
   <void property="ry"> 
-   <double>120.0</double> 
+   <double>90.0</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.Atom"> 
@@ -431,10 +431,10 @@
    <double>40.0</double> 
   </void> 
   <void property="ry"> 
-   <double>190.0</double> 
+   <double>160.0</double> 
   </void> 
   <void property="vx"> 
-   <double>0.05</double> 
+   <double>0.052440442408507586</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.Atom"> 
@@ -445,7 +445,46 @@
    <double>240.0</double> 
   </void> 
   <void property="ry"> 
-   <double>190.0</double> 
+   <double>160.0</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="ID"> 
+   <int>2</int> 
+  </void> 
+  <void property="rx"> 
+   <double>40.0</double> 
+  </void> 
+  <void property="ry"> 
+   <double>220.0</double> 
+  </void> 
+  <void property="vx"> 
+   <double>0.05</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="ID"> 
+   <int>2</int> 
+  </void> 
+  <void property="rx"> 
+   <double>80.0</double> 
+  </void> 
+  <void property="ry"> 
+   <double>220.0</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="ID"> 
+   <int>1</int> 
+  </void> 
+  <void property="rx"> 
+   <double>330.0</double> 
+  </void> 
+  <void property="ry"> 
+   <double>220.0</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-0.030000000000000002</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.MolecularModel$State"/> 
