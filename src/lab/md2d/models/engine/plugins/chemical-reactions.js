@@ -12,7 +12,13 @@
 
 define(function(require) {
 
-  var BOND_LEN_RATIO = 0.6; // follows Classic MW constant.
+  var BOND_LEN_RATIO = 0.6, // follows Classic MW constant.
+      // Based on the Classic MW constants defining bond style.
+      BOND_TYPE = {
+        1: 101, // single bond
+        2: 107, // double bond
+        3: 108  // tripe bond
+      };
 
   // Dot product of [x1, y1] and [x2, y2] vectors.
   function dot(x1, y1, x2, y2) {
@@ -60,6 +66,17 @@ define(function(require) {
       return !(v === 1 && s === 1) && (v + s < 8);
     }
 
+    function getUnpairedElectrons(i) {
+      var v = valenceElectrons[atoms.element[i]];
+      if (v === 1) {
+        return 1 - atoms.sharedElectrons[i]; // = 2 - 1 valence electron - sharedElectrons
+      } else {
+        // Don't support quadruple bonds, as they are unrealistic and can cause problems
+        // (e.g. there is :C=C:, but not C==C).
+        return Math.min(3, 8 - v - atoms.sharedElectrons[i]);
+      }
+    }
+
     // Returns length of bond between elements i and j.
     function getBondLength(i, j) {
       return BOND_LEN_RATIO * (elements.sigma[i] + elements.sigma[j]);
@@ -72,15 +89,38 @@ define(function(require) {
       return 2e4 * Math.sqrt(elements.epsilon[i] * elements.epsilon[j]);
     }
 
-    // Returns bond chemical energy between elements i and j.
-    function getBondEnergy(i, j) {
-      return bondEnergy[i + "" + j] || bondEnergy[j + "" + i] || bondEnergy["default"];
+    // Returns a number indicating whether a bond between atoms atom1 and atom2 would be
+    // a single (1), double (2) or triple (3) bond.
+    function getPossibleBondType(atom1, atom2) {
+      return Math.min(getUnpairedElectrons(atom1), getUnpairedElectrons(atom2));
+    }
+
+    // Returns a number indicating type of existing radial bond.
+    function getBondType(bondIdx) {
+      // Convert 101, 107, 108 into 1, 2, 3.
+      var type = radialBonds.type[bondIdx] - 105;
+      // We will get -4 for 101 and 2, 3 for 107, 108.
+      return type < 0 ? 1 : type;
+    }
+
+    // Returns bond chemical energy between elements i and j. Type indicates whether it's a single
+    // (1 or undefined), double (2) or triple (3) bond.
+    function getBondEnergy(i, j, type) {
+      if (type === undefined) type = 1;
+      switch(type) {
+        case 1:
+        return bondEnergy[i + "-" + j] || bondEnergy[j + "-" + i] || bondEnergy["default"];
+        case 2:
+        return bondEnergy[i + "=" + j] || bondEnergy[j + "=" + i] || getBondEnergy(i, j, 1) * 2;
+        case 3:
+        return bondEnergy[i + "=-" + j] || bondEnergy[j + "=-" + i] || getBondEnergy(i, j, 1) * 3;
+      }
     }
 
     // Returns activation energy when element i collides with j-k pair.
     function getActivationEnergy(i, j, k) {
-      return activationEnergy[i + "+" + j + "" + k] ||
-             activationEnergy[j + "+" + k + "" + j] || // order of j-k pair doesn't matter.
+      return activationEnergy[i + "+" + j + "-" + k] ||
+             activationEnergy[j + "+" + k + "-" + j] || // order of j-k pair doesn't matter.
              activationEnergy["default"];
     }
 
@@ -131,7 +171,7 @@ define(function(require) {
     function destroyBonds() {
       var i, len,
           a1, a2, el1, el2, dpot,
-          xij, yij, ijsq, bondLen, chemEnergy;
+          xij, yij, ijsq, bondLen, bondType, chemEnergy;
 
       for (i = 0, len = engine.getNumberOfRadialBonds(); i < len; ++i) {
         a1 = radialBonds.atom1[i];
@@ -150,7 +190,8 @@ define(function(require) {
           // Bond chemical energy.
           el1 = atoms.element[a1];
           el2 = atoms.element[a2];
-          chemEnergy = getBondEnergy(el1, el2);
+          bondType = getBondType(i);
+          chemEnergy = getBondEnergy(el1, el2, bondType);
           if (dpot > chemEnergy) {
             // Potential energy is larger than chemical energy, destroy bond.
             dpot -= chemEnergy;
@@ -159,8 +200,8 @@ define(function(require) {
             if (conserveEnergy(dpot, a1, a2)) {
               engine.removeRadialBond(i);
               // Update shared electrons count.
-              atoms.sharedElectrons[a1] -= 1;
-              atoms.sharedElectrons[a2] -= 1;
+              atoms.sharedElectrons[a1] -= bondType;
+              atoms.sharedElectrons[a2] -= bondType;
             }
           }
         }
@@ -231,7 +272,8 @@ define(function(require) {
     function makeBond(a1, a2, ijsq) {
       var el1 = atoms.element[a1],
           el2 = atoms.element[a2],
-          en  = getBondEnergy(el1, el2),
+          bondType = getPossibleBondType(a1, a2),
+          en  = getBondEnergy(el1, el2, bondType),
           length, strength, dpot;
 
       if (en <= 0) return; // Fast path when bond energy is less than 0.
@@ -255,13 +297,12 @@ define(function(require) {
           atom2: a2,
           length: length,
           strength: strength,
-          // Default type. Should we use metadata to provide default values?
-          type: 101
+          type: BOND_TYPE[bondType]
         });
 
         // Update shared electrons count.
-        atoms.sharedElectrons[a1] += 1;
-        atoms.sharedElectrons[a2] += 1;
+        atoms.sharedElectrons[a1] += bondType;
+        atoms.sharedElectrons[a2] += bondType;
 
         // In theory we can update bondToExchange with the newly created bond. However if we don't
         // do it, we won't exchange the bond in the same step we created it. It makes sense - things
@@ -388,13 +429,12 @@ define(function(require) {
     // Gets chemical potential energy stored in radial bonds.
     function getBondsChemicalPE() {
       var PE = 0,
-          el1, el2,
           i, len;
 
       for (i = 0, len = engine.getNumberOfRadialBonds(); i < len; ++i) {
-        el1 = atoms.element[radialBonds.atom1[i]];
-        el2 = atoms.element[radialBonds.atom2[i]];
-        PE -= getBondEnergy(el1, el2);
+        PE -= getBondEnergy(atoms.element[radialBonds.atom1[i]],
+                            atoms.element[radialBonds.atom2[i]],
+                            getBondType(i));
       }
 
       return PE;
