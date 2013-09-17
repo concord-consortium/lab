@@ -106,6 +106,14 @@ define(function (require) {
             return model.set.apply(model, arguments);
           },
 
+          freeze: function freeze() {
+            return model.freeze.apply(model, arguments);
+          },
+
+          unfreeze: function unfreeze() {
+            return model.unfreeze.apply(model, arguments);
+          },
+
           loadModel: function loadModel(modelId) {
             model.stop();
             interactivesController.loadModel(modelId, null);
