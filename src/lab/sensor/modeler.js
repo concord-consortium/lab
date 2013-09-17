@@ -54,9 +54,13 @@ define(function(require) {
         sensorPollingIntervalID,
         samplesPerSecond,
         time,
-        sensorReading,
+        rawSensorValue,
         stepCounter,
         didCollectData,
+        isTaring,
+        hasTareValue,
+        tareValue,
+        isSensorTareable,
         invalidatingChangeNestingLevel = 0,
         filteredOutputs = [],
         customSetters,
@@ -258,7 +262,11 @@ define(function(require) {
 
       sensorPollingIntervalID = setInterval(function() {
         makeInvalidatingChange(function() {
-          sensorReading = applet.readSensor();
+          rawSensorValue = applet.readSensor();
+          if (isTaring) {
+            setTareValue(rawSensorValue);
+            isTaring = false;
+          }
         });
       }, 1000/sensorPollsPerSecond);
     }
@@ -273,8 +281,12 @@ define(function(require) {
     function initializeStateVariables() {
       stepCounter = 0;
       time = 0;
-      sensorReading = undefined;
+      rawSensorValue = undefined;
       didCollectData = false;
+      isSensorTareable = false;
+      isTaring = false;
+      hasTareValue = false;
+      tareValue = 0;
     }
 
     function setSensorType(_sensorType) {
@@ -287,7 +299,7 @@ define(function(require) {
         return;
       }
       sensorType = _sensorType;
-      sensorReading = undefined;
+      rawSensorValue = undefined;
 
       if (applet) {
         removeApplet();
@@ -298,6 +310,7 @@ define(function(require) {
         samplesPerSecond = sensorDefinition.samplesPerSecond;
         measurementType = sensorDefinition.measurementType;
         AppletClass = appletClasses[sensorDefinition.appletClass];
+        isSensorTareable = sensorDefinition.tareable;
 
         applet = window.Lab.sensor[sensorType] = new AppletClass({
           listenerPath: 'Lab.sensor.' + sensorType,
@@ -325,6 +338,13 @@ define(function(require) {
       }
     }
 
+    function setTareValue(_) {
+      makeInvalidatingChange(function() {
+        tareValue = _;
+        hasTareValue = true;
+      });
+    }
+
     function appletDataCallback(d) {
       stepCounter++;
 
@@ -335,7 +355,7 @@ define(function(require) {
       // the problem go away!
       window.__bizarreSafariFix = 1;
 
-      sensorReading = d;
+      rawSensorValue = d;
       didCollectData = true;
 
       propertySupport.deleteComputedPropertyCachedValues();
@@ -382,6 +402,19 @@ define(function(require) {
           isStopped = true;
         });
         dispatch.stop();
+      },
+
+      tare: function() {
+        if (!isStopped) {
+          throw new Error("Sensor model: tare() called on a non-stopped model.");
+        }
+        if (sensorPollingIntervalID != null && rawSensorValue != null) {
+          setTareValue(rawSensorValue);
+        } else {
+          makeInvalidatingChange(function() {
+            isTaring = true;
+          });
+        }
       },
 
       willReset: function() {
@@ -528,7 +561,10 @@ define(function(require) {
     });
 
     model.defineOutput('sensorReading', defaultSensorReadingDescriptionHash, function() {
-      return sensorReading;
+      if (rawSensorValue == null) {
+        return rawSensorValue;
+      }
+      return rawSensorValue - tareValue;
     });
 
     // TODO. Need a better way for the model to be able to have a property which it can set the
@@ -577,6 +613,24 @@ define(function(require) {
       label: "Loading Sensor?"
     }, function() {
       return isSensorInitializing;
+    });
+
+    model.defineOutput('isTaring', {
+      label: "Waiting for a tare value?"
+    }, function() {
+      return isTaring;
+    });
+
+    model.defineOutput('canTare', {
+      label: "Can set a tare value?"
+    }, function() {
+      return isStopped && isSensorTareable && !isTaring;
+    });
+
+    model.defineOutput('tareValue', {
+      label: "Tare value",
+    }, function() {
+      return tareValue;
     });
 
     // Clean up state before we go -- failing to remove the applet from the page before switching
