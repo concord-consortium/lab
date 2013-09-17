@@ -229,8 +229,8 @@ define(function(require) {
         throw new errors.SensorConnectionError("Device reported the requested sensor type was not attached.");
       }
 
-     this._startSensor();
-     this._state = 'started';
+      this._startSensor();
+      this._state = 'started';
     },
 
     stop: function() {
