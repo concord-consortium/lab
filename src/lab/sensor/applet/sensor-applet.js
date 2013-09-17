@@ -209,16 +209,48 @@ define(function(require) {
     },
 
     readSensor: function() {
+      var values;
       if (this.getState() !== 'stopped') {
         throw new Error("Tried to read the sensor value from non-stopped state '" + this.getState() + '"');
       }
-      return this._readSensor();
+
+      // because of IE multi threading applet behavior we need to track our state before calling
+      // the applet
+      this._state = 'reading sensor';
+      if (this.isSensorConnected()) {
+        values = this.appletInstance.getConfiguredSensorsValues(this.deviceType);
+        this._state = 'stopped';
+        if (!values || values.length === 0) {
+          throw new Error("readSensor: no sensor values to report");
+        }
+      } else {
+        this._state = 'stopped';
+        throw new errors.SensorConnectionError("readSensor: sensor is not connected");
+      }
+      return values[0];
     },
 
     start: function() {
+      var self = this;
+      if (this.getState() === 'reading sensor') {
+        console.log("start called while waiting for a sensor reading");
+
+        // because of IE multi threading we might we waiting for a reading from the sensor still
+        // so we try waiting for little while before giving up
+
+        // this will cause a infinite loop of the applet blocks forever
+        // however that is what happens in normal browsers anyhow
+        setTimeout(function(){
+          self.start();
+        }, 100);
+      }
+
       if (this.getState() !== 'stopped') {
         throw new Error("Tried to start the applet from non-stopped state '" + this.getState() + '"');
       }
+      // in IE a slow call to an applet will result in other javascript being executed while waiting
+      // for the applet. So we need to keep track of our state before calling Java.
+      this._state = 'starting';
 
       // Remain in state 'stopped' if sensor is not connected. This is because we want the user to
       // be able to click 'start' again after plugging in the sensor. Changing to a different state

@@ -109,19 +109,6 @@ define(function(require) {
       this.appletInstance.initSensorInterface(this.listenerPath, this.deviceType, [req]);
     },
 
-    _readSensor: function() {
-      var values;
-      if (this.isSensorConnected()) {
-        values = this.appletInstance.getConfiguredSensorsValues(this.deviceType);
-        if (!values || values.length === 0) {
-          throw new Error("_readSensor: no sensor values to report");
-        }
-      } else {
-        throw new errors.SensorConnectionError("_readSensor: sensor is not connected");
-      }
-      return values[0];
-    },
-
     // In some browsers, calling an applet method from within a callback triggered by
     // an applet seems to cause problems (lock up the browser). Therefore, make sure
     // not to call the applet's stopCollecting, startCollecting methods within an applet
