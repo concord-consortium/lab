@@ -2,7 +2,8 @@ define(function() {
 
   var SelectBoxView = require('common/views/select-box-view'),
       NumericOutputView = require('common/views/numeric-output-view'),
-      sensorDefinitions = require('sensor/applet/sensor-definitions');
+      sensorDefinitions = require('sensor/applet/sensor-definitions'),
+      viewState = require('common/views/view-state');
 
   return function(model, modelUrl) {
 
@@ -31,13 +32,40 @@ define(function() {
     var format = d3.format('.2f');
     var sensorReadingView;
     var lastHeight = null;
+    var view;
 
-    return  {
+    function setIsTaringState() {
+      if (model.properties.isTaring) {
+        view.$zeroButton.find('button').html("Zeroing...");
+      } else {
+        view.$zeroButton.find('button').html("Zero");
+      }
+    }
+
+    function setCanTareState() {
+      if (model.properties.canTare) {
+        viewState.enableView(view.$zeroButton);
+      } else {
+        viewState.disableView(view.$zeroButton);
+      }
+    }
+
+    function setupModelObservers() {
+      model.addObserver('isTaring', setIsTaringState);
+      setIsTaringState();
+
+      model.addObserver('canTare', setCanTareState);
+      setCanTareState();
+    }
+
+    return view = {
       $el: $("<div id='model-container' class='container' style='font-size: 0.7em'/>"),
 
       bindModel: function(newModel, newModelUrl) {
         modelUrl = newModelUrl || modelUrl;
         model = newModel || model;
+
+        this._setupModelObservers();
       },
 
       getHeightForWidth: function(width, fontSizeChanged) {
@@ -70,6 +98,14 @@ define(function() {
         this.$el.append($selectBox);
         this.$el.append($sensorReading);
         this.$el.append($zeroButton);
+
+        this.$zeroButton = $zeroButton;
+
+        setupModelObservers();
+
+        $zeroButton.on('click', function() {
+          model.tare();
+        });
       },
 
       showInitializationProgress: function() {
