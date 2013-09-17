@@ -354,6 +354,12 @@ define(function (require) {
         }
       },
 
+      update: function () {
+        if (grapher) {
+          grapher.update();
+        }
+      },
+
       /**
         Returns serialized component definition.
       */
