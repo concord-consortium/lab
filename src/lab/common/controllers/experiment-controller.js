@@ -89,9 +89,9 @@ define(function (require) {
         });
         model.defineParameter('experimentRunning', { initialValue: false }, function () {
           if (model.get('experimentRunning')) {
-            goToStartRun();
+            goToRunStarted();
           } else {
-            goToStopRun();
+            goToRunStopped();
           }
         });
       }
@@ -118,30 +118,45 @@ define(function (require) {
       setupDestinationComponents();
       setupModelParameters();
       setupStateButtonActions();
-      goToReload();
+      goToReloadedState();
       if (onResetScript) {
         onResetFunc = scriptingAPI.makeFunctionInScriptContext(onResetScript);
       }
     }
 
-    function goToReload() {
+    function unfreezeInputParameters() {
+      for (var i = 0; i < inputs.length; i++) {
+        model.unfreeze(inputs[i]);
+      }
+    }
+
+    function freezeInputParameters() {
+      for (var i = 0; i < inputs.length; i++) {
+        model.freeze(inputs[i]);
+      }
+    }
+
+    // transition to reloaded state
+    function goToReloadedState() {
       startRun.setDisabled(false);
       stopRun.setDisabled(true);
       saveRun.setDisabled(true);
       nextRun.setDisabled(true);
       clearAll.setDisabled(true);
+      unfreezeInputParameters();
     }
 
-    function goToStartRun() {
+    function goToRunStarted() {
       startRun.setDisabled(true);
       stopRun.setDisabled(false);
       saveRun.setDisabled(true);
       nextRun.setDisabled(true);
       clearAll.setDisabled(false);
+      freezeInputParameters();
       scriptingAPI.api.start();
     }
 
-    function goToStopRun() {
+    function goToRunStopped() {
       startRun.setDisabled(true);
       stopRun.setDisabled(true);
       saveRun.setDisabled(false);
@@ -156,6 +171,7 @@ define(function (require) {
       nextRun.setDisabled(true);
       model.set('experimentCleared', false);
       interactivesController.resetModel({retainParameters: inputs});
+      unfreezeInputParameters();
       if (onResetFunc) {
         onLoadFunc.apply(onResetFunc, null);
       }
