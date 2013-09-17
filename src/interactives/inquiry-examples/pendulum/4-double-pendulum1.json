@@ -159,7 +159,7 @@
   ],
   "experiment": {
     "timeSeries": {
-      "time": "displayTime",
+      "xProperty": "displayTime",
       "properties": [
         "currentAngle1",
         "currentAngle2"
@@ -167,7 +167,12 @@
     },
     "parameters": {
       "inputs": [
-        "rodLength"
+        "rodLength1",
+        "rodLength2",
+        "ballMass1",
+        "ballMass2",
+        "startingAngle1",
+        "startingAngle2"
       ],
       "outputs": [
         "period"

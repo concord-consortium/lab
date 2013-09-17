@@ -162,7 +162,7 @@
   },
   "experiment": {
     "timeSeries": {
-      "time": "displayTime",
+      "xProperty": "displayTime",
       "properties": [
         "currentAngle"
       ]
