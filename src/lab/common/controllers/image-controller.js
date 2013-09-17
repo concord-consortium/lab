@@ -19,11 +19,11 @@ define(function (require) {
    * @param {ScriptingAPI} scriptingAPI
    * @param {InteractiveController} controller
    */
-  function ImageController(component, scriptingAPI, controller) {
+  function ImageController(component, controller) {
     var root = typeof Lab !== "undefined" ? Lab.config.actualRoot : "";
 
     // Call super constructor.
-    InteractiveComponent.call(this, "image", component, scriptingAPI, controller);
+    InteractiveComponent.call(this, "image", component, controller);
 
     /** @private */
     this._controller = controller;
