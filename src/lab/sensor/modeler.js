@@ -50,13 +50,13 @@ define(function(require) {
         applet,
         isSensorReady = false,
         isSensorInitializing = false,
-        didCollectData = false,
         sensorPollsPerSecond = 1,
         sensorPollingIntervalID,
         samplesPerSecond,
-        time = 0,
+        time,
         sensorReading,
-        stepCounter = 0,
+        stepCounter,
+        didCollectData,
         invalidatingChangeNestingLevel = 0,
         filteredOutputs = [],
         customSetters,
@@ -270,6 +270,13 @@ define(function(require) {
       }
     }
 
+    function initializeStateVariables() {
+      stepCounter = 0;
+      time = 0;
+      sensorReading = undefined;
+      didCollectData = false;
+    }
+
     function setSensorType(_sensorType) {
       var AppletClass;
       var sensorDefinition;
@@ -387,11 +394,7 @@ define(function(require) {
         model.stop();
         removeApplet();
 
-        stepCounter = 0;
-        time = 0;
-        sensorReading = undefined;
-        didCollectData = false;
-
+        initializeStateVariables();
         model.properties.sensorType = null;
         propertySupport.setPropertyDescription('sensorReading', defaultSensorReadingDescription);
 
@@ -481,6 +484,8 @@ define(function(require) {
         });
       }
     };
+
+    initializeStateVariables();
 
     // Need to define a globally-accessible 'listenerPath' for the sensor to evaluate
     if (window.Lab === undefined) {
