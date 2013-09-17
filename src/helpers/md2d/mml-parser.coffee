@@ -104,6 +104,10 @@ parseMML = (mmlString) ->
         else if typeof props[prop] == 'object'
           removeNaNProperties props[prop]
 
+    removeNullProperties = (props) ->
+      for own prop of props
+        delete props[prop] if !props[prop]?
+
     ### Convert a cheerio node whose text is a number, to an actual number ###
     toNumber = ($node, {defaultValue}) ->
       val = $node.text()
@@ -1375,9 +1379,24 @@ parseMML = (mmlString) ->
           if key is 11
             radiationlessEmissionProbability = val
 
+      lightSource = {}
+      $lightSource = $mml("void[property=lightSource]")
+      if $lightSource.length > 0
+        lightSource = {}
+        lightSource.on               = getBooleanProperty( $lightSource, "on"  ) || false
+        lightSource.frequency        = getFloatProperty    $lightSource, "frequency"
+        lightSource.radiationPeriod  = getIntProperty      $lightSource, "radiationPeriod"
+        lightSource.numberOfBeams    = getIntProperty      $lightSource, "numberOfBeams"
+        lightSource.angleOfIncidence = getFloatProperty    $lightSource, "angleOfIncidence"
+
+      removeNullProperties lightSource
+
+      lightSource = undefined if !lightSource.frequency?
+
       quantumDynamics = validator.validateCompleteness metadata.quantumDynamics, {
         elementEnergyLevels
         radiationlessEmissionProbability
+        lightSource
       }
 
 

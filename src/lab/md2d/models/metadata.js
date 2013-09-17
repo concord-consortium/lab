@@ -771,6 +771,8 @@ define(function() {
       },
       radiationlessEmissionProbability: {
         defaultValue: 1
+      },
+      lightSource: {
       }
     },
 

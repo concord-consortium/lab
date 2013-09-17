@@ -53,13 +53,13 @@ define(function(require) {
 
         properties           = validator.validateCompleteness(metadata.quantumDynamics, _properties),
 
-        isLightSourceOn      = false,
-
         api,
 
         elementEnergyLevels  = properties.elementEnergyLevels,
         pRadiationless       = properties.radiationlessEmissionProbability,
         pStimulatedEmission  = 0,
+
+        lightSource          = properties.lightSource,
 
         dimensions           = engine.getDimensions(),
 
@@ -689,6 +689,11 @@ define(function(require) {
 
       getRadiationlessEmissionProbability: function() {
         return pRadiationless;
+      },
+
+      getLightSource: function() {
+        if (!lightSource) return undefined;
+        return lightSource;
       },
 
       getState: function() {

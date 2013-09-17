@@ -177,6 +177,11 @@
       ]
     ],
     "photons": {},
-    "radiationlessEmissionProbability": 0.7896236
+    "radiationlessEmissionProbability": 0.7896236,
+    "lightSource": {
+      "on": false,
+      "frequency": 3.3000002,
+      "radiationPeriod": 500
+    }
   }
 }

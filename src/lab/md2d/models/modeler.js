@@ -1879,13 +1879,17 @@ define(function(require) {
     }
 
     function serializeQuantumDynamics() {
-      var photons = model.getPhotons();
+      var photons = model.getPhotons(),
+          data = {
+            photons: serialize(metadata.photon, unroll(photons), photons.length),
+            elementEnergyLevels: engine.callPluginAccessor('getElementEnergyLevels'),
+            radiationlessEmissionProbability: engine.callPluginAccessor('getRadiationlessEmissionProbability'),
+            lightSource: engine.callPluginAccessor('getLightSource')
+          };
 
-      return {
-        photons: serialize(metadata.photon, unroll(photons), photons.length),
-        elementEnergyLevels: engine.callPluginAccessor('getElementEnergyLevels'),
-        radiationlessEmissionProbability: engine.callPluginAccessor('getRadiationlessEmissionProbability')
-      };
+      if (!data.lightSource) delete data.lightSource
+
+      return data;
     }
 
     function serializeChemicalReactions() {
