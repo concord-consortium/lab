@@ -42,9 +42,16 @@ define(function () {
     dataset = {
 
       getData: function(propArray) {
+        function copy(array) {
+          var ret = [];
+          array.forEach(function(element) {
+            ret.push(element);
+          });
+          return ret;
+        }
         var i, row, index, j, result = [], rowResult;
         if (propArray === undefined) {
-          return tableData;
+          return copy(tableData);
         } else {
           for(i = 0; i < tableData.length; i++) {
             row = tableData[i];
