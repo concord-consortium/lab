@@ -7,6 +7,7 @@ define(function(require) {
       EventEmitter = require('./mini-event-emitter'),
       errors = require('./errors'),
       labConfig = require('lab.config'),
+      console = require('common/console'),
       SensorApplet;
 
   function AppletWaiter(){
@@ -61,14 +62,60 @@ define(function(require) {
       started
   */
   SensorApplet = miniClass.defineClass({
+    // Before appending the applet, set this value with the path to an object that will receive applet callbacks.
+    listenerPath: '',
 
-    _state: 'not appended',
-    _isInAppletCallback: false,
+    // Before appending the applet, set this to the sensor type
+    // supported values are:
+    //   "temperature"
+    //   "light"
+    //   "force"
+    //   "co2"
+    //   "o2"
+    //   "ph"
+    //   "distance"
+    measurementType: '',
+
+    // supported values are:
+    //  "labquest"
+    //  "golink"
+    deviceType: '',
+
+    // Packet of information about the sensor type. See
+    // src/lab/senosr/applet/sensor-definitions.js
+    sensorDefinition: null,
+
+    appletId:     'sensor-applet',
+    classNames:   'applet sensor-applet',
+
+    jarUrls:     ['com/sun/jna/jna.jar',
+                  'org/concord/sensor/sensor.jar',
+                  'org/concord/sensor/sensor-applets/sensor-applets.jar'],
+
+    deviceSpecificJarUrls: [],
+
+    code:         'org.concord.sensor.applet.SensorApplet',
 
     testAppletReadyInterval: 100,
 
-    getCodebase: function() {
-      return labConfig.actualRoot + "jnlp";
+    getHTML: function() {
+      var allJarUrls = this.jarUrls.concat(this.deviceSpecificJarUrls);
+
+      return [
+       '<applet ',
+         'id="',       this.appletId,         '" ',
+         'class="',    this.classNames,       '" ',
+         'archive="',  allJarUrls.join(', '), '" ',
+         'code="',     this.code,             '" ',
+         'codebase="', this.getCodebase(), '" ',
+         'width="1px" ',
+         'height="1px" ',
+         'MAYSCRIPT="true" ',
+       '>',
+          '<param name="MAYSCRIPT" value="true" />',
+          '<param name="evalOnInit" value="' + this.listenerPath + '.appletIsReadyCallback()" />',
+        '</applet>'
+      ].join('');
     },
 
     getTestAppletHTML: function() {
@@ -92,26 +139,46 @@ define(function(require) {
       ].join('');
     },
 
+    /**
+      Returns true if the correct device type is connected.
+
+      NOTE: This will throw if the applet hasn't been initialized yet (which occurs asynchronously
+      after the <applet> tag is appended to the DOM).
+    */
+    isSensorConnected: function() {
+      var attachedSensors;
+      var i;
+
+      // Note this appears only to return a meaningful result when first called. After that, it
+      // returns the same value for a given deviceType, even if the device has been unplugged from
+      // the USB port.
+      if (!this.appletInstance.isInterfaceConnected(this.deviceType)) {
+        return false;
+      }
+
+      try {
+        attachedSensors = this.appletInstance.getAttachedSensors(this.deviceType) || [];
+      } catch (e) {
+        // isInterfaceConnected is not a wholly reliable check, and calling getAttachedSensors with
+        // the wrong deviceType may throw (?).
+        return false;
+      }
+      for (i = 0; i < attachedSensors.length; i++) {
+        if (this.appletInstance.getTypeConstantName(attachedSensors[i].getType()) === this.sensorDefinition.typeConstantName) {
+          return true;
+        }
+      }
+      return false;
+    },
+
+    _state: 'not appended',
+
+    getCodebase: function() {
+      return labConfig.actualRoot + "jnlp";
+    },
+
     getState: function() {
       return this._state;
-    },
-
-    getIsInAppletCallback: function() {
-      return this._isInAppletCallback;
-    },
-
-    startAppletCallback: function() {
-      if (this.getIsInAppletCallback()) {
-        throw new Error("SensorApplet.startAppletCallback was called without previous endAppletCallback call");
-      }
-      this._isInAppletCallback = true;
-    },
-
-    endAppletCallback: function() {
-      if (!this.getIsInAppletCallback()) {
-        throw new Error("SensorApplet.endAppletCallback was called without previous startAppletCallback call");
-      }
-      this._isInAppletCallback = false;
     },
 
     /**
@@ -132,32 +199,36 @@ define(function(require) {
             our test applet). In this case, application code may want to remove the applet and try
             calling 'append' again later.
 
-          * The sensor applet was appended, but never initializes (we time out waiting for its
-            methods to become callable from Javascript).  In this case, application code may want to
-            remove the applet and try calling 'append' again later.
+          * The sensor applet was appended, but never initializes (we time out waiting for a callback
+            from the sensor applet).  In this case, application code may want to remove the applet
+            and try calling 'append' again later.
 
           * The sensor applet reports that the wrong sensor type is attached. In this case,
             the applet is known to be loaded, and the application code may want to notify the user,
             and call 'initializeSensor' when the user indicates the sensor is plugged in. If
-            initializeSensor returns true, the applet is ready to collect data.
-
-        We don't yet handle the case that the test applet initializes correctly but never calls the
-        'sensorsReady' callback. If that happens, 'callback' will never be invoked.
+            If the callback is called with a null argument, the applet is ready to collect data.
     */
     append: function(callback) {
       if (this.getState() !== 'not appended') {
         throw new Error("Can't call append() when sensor applet has left 'not appended' state");
       }
-      this._appendTestAppletHTML();
+      console.log("appending test applet");
+      this.$testAppletContainer =
+        this._appendHTML(this.appletId + " -test-applet-container", this.getTestAppletHTML());
+      this._state = 'test applet appended';
+      this._waitForTestApplet();
       this._appendCallback = callback;
     },
 
-    _appendTestAppletHTML: function() {
-      console.log("appending test applet");
-      this.$testAppletContainer = this._findOrCreateDiv(this.appletId + " -test-applet-container");
-      this.$testAppletContainer.append( this.getTestAppletHTML() );
-      this._state = 'test applet appended';
-      this._waitForTestApplet();
+    _appendHTML: function(containerId, html) {
+      var appletContainer = $('#' + containerId );
+
+      if(!appletContainer.length){
+        appletContainer = $("<div id='" + containerId + "'/>").appendTo('body');
+      }
+
+      appletContainer.append(html);
+      return appletContainer;
     },
 
     _testAppletWaiter: new AppletWaiter(),
@@ -172,7 +243,7 @@ define(function(require) {
         times: 30,
         interval: 1000,
         success: function() {
-          self._appendHTML( self.getHTML() );
+          self.$appletContainer = self._appendHTML(this.appletId + "-container", self.getHTML());
           self._state = 'appended';
           self._waitForApplet();
         },
@@ -194,13 +265,20 @@ define(function(require) {
         times: 30,
         interval: 1000,
         success: function() {
+          var req;
+          // remove test applet
           self.$testAppletContainer.html("");
           if (self.getState() === 'appended') {
             self._state = 'applet ready';
           }
 
           self.appletInstance = $('#'+self.appletId)[0];
-          self.initializeSensor();
+
+          // Get a SensorRequest object for this measurement type
+          req = self.appletInstance.getSensorRequest(self.measurementType);
+          // Try to initialize the sensor for the correct device and measurement type (e.g., goio,
+          // distance). Java will callback to initSensorInterfaceComplete on success or error.
+          self.appletInstance.initSensorInterface(self.listenerPath, self.deviceType, [req]);
         },
         fail: function () {
           self._appendCallback(new errors.AppletInitializationError("Timed out waiting for sensor applet to initialize."));
@@ -258,71 +336,73 @@ define(function(require) {
       // automatically detect that the sensor has been plugged in, and we don't want to force the
       // user to tell us.
       if (!this.isSensorConnected()) {
+        this._state = 'stopped';
         throw new errors.SensorConnectionError("Device reported the requested sensor type was not attached.");
       }
 
-      this._startSensor();
+      this.appletInstance.startCollecting();
       this._state = 'started';
     },
 
     stop: function() {
       if (this.getState() === 'started') {
         this._state = 'stopped';
-        this._stopSensor();
+        this.appletInstance.stopCollecting();
       }
     },
 
     remove: function() {
+      if (this.getState() !== 'not appended') {
+        this.$appletContainer.html("");
+        this._state = 'not appended';
+      }
+    },
+
+    // applet callbacks
+    // we don't want to block the applet and we don't want to execute any code
+    // in the callback thread because things can break if javascript calls back to Java in
+    // a callback
+    initSensorInterfaceComplete: function(success) {
       var self = this;
-
-      function remove() {
-        if (self.getState() !== 'not appended') {
-          self._removeApplet();
-          self._state = 'not appended';
+      setTimeout(function() {
+        if(success){
+          self._state = 'stopped';
+          self._appendCallback(null);
+          self._appendCallback = null;
+        } else {
+          // state should remain 'applet ready'
+          self._appendCallback(new errors.SensorConnectionError("Device reported the requested sensor type was not attached."));
         }
-      }
-
-      if (this.getIsInAppletCallback()) {
-        window.setTimeout(function() { remove(); }, 10);
-      }
-      else {
-        remove();
-      }
+      }, 5);
     },
 
-    _findOrCreateDiv: function(id) {
-      var $element = $('#' + id );
-      if(!$element.length){
-        $element = $("<div id='" + id + "'/>").appendTo('body');
-      }
-      return $element;
+    dataReceived: function(type, count, data) {
+      var self = this;
+      setTimeout(function () {
+        data = data || [];
+        for (var i = 0, len = data.length; i < len; i++) {
+          self.emit('data', data[i]);
+        }
+      }, 5);
     },
 
-    _appendHTML: function(html) {
-      this.$appletContainer = this._findOrCreateDiv(this.appletId + "-container");
-      this.$appletContainer.append(html);
+    deviceUnplugged: function() {
+      var self = this;
+      window.setTimeout(function() {
+        self.emit('deviceUnplugged');
+      }, 5);
     },
 
-    _removeApplet: function() {
-      this.$appletContainer.html("");
-    },
+    sensorUnplugged: function() {
+      var self = this;
+      console.log("received sensorUnplugged message; deviceType = " + this.deviceType);
+      // the model code is not currently handle this callback correctly
+      return;
 
-    getHTML: function() {
-      throw new Error("Override this method!");
-    },
-
-    testAppletReady: function() {
-      throw new Error("Override this method!");
-    },
-
-    _startSensor: function() {
-      throw new Error("Override this method!");
-    },
-
-    _stopSensor: function () {
-      throw new Error("Override this method!");
+      window.setTimeout(function() {
+        self.emit('sensorUnplugged');
+      }, 10);
     }
-
   });
 
   miniClass.mixin(SensorApplet.prototype, EventEmitter);
