@@ -142,13 +142,13 @@ define(function (require) {
     }
 
     function addOlderRunsToGraph() {
-      // var i;
-      // if (timeSeriesGraph) {
-      //   for (i = 0; i < timeSeriesDatasets.length; i++) {
-      //     timeSeriesGraph.addDataSet(timeSeriesDatasets[i].getData());
-      //   }
-      //   timeSeriesGraph.reset();
-      // }
+      var i;
+      if (timeSeriesGraph) {
+        for (i = 0; i < timeSeriesDatasets.length; i++) {
+          timeSeriesGraph.addDataSet(timeSeriesDatasets[i].getData());
+        }
+        timeSeriesGraph.update();
+      }
     }
 
     function unfreezeInputParameters() {
@@ -156,6 +156,7 @@ define(function (require) {
         model.unfreeze(inputs[i]);
       }
     }
+
 
     function freezeInputParameters() {
       for (var i = 0; i < inputs.length; i++) {
