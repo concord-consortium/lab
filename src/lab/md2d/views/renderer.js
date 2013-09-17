@@ -854,7 +854,7 @@ define(function(require) {
         // The following code is intended to use a thicker stroke-width when
         // the spring constant is larger ... but to work properly in models with
         // both MD2D and MKS units schemes the model would need to supply
-        // an apprpriately scaled default spring constant.
+        // an appropriately scaled default spring constant.
         // For example in the Spring and Mass Interactive which uses an MKS unit
         // scheme the spring constant is varied between 0.001 and 0.003 ... while in
         // the Comparing Dipole atom-pulling Interactive that uses an MD2D unit
@@ -862,12 +862,12 @@ define(function(require) {
         // return (1 + Math.log(1+d.strength*1000)) * 0.25;;
       }
       var result = model2px(Math.min(modelAtoms[d.atom1].radius, modelAtoms[d.atom2].radius));
-      if (d.type === RADIAL_BOND_TYPES.STANDARD_STICK) {
-        return result * 0.75;
-      } else if (d.type === RADIAL_BOND_TYPES.DOUBLE_BOND) {
+      if (d.type === RADIAL_BOND_TYPES.DOUBLE_BOND) {
         return result * 0.50;
       } else if (d.type === RADIAL_BOND_TYPES.TRIPLE_BOND) {
         return result * 0.35;
+      } else { // STANDARD_STICK and other types that are not yet implemented.
+        return result * 0.75;
       }
     }
 
@@ -933,12 +933,6 @@ define(function(require) {
           path += " L " + pointX + "," + pointY;
         }
         return path += " L " + x2 + "," + y2;
-      } else if (d.type === RADIAL_BOND_TYPES.STANDARD_STICK) {
-        if (num === 1) {
-          return "M " + x1 + "," + y1 + " L " + ((x2 + x1 + radiusFactorX) / 2) + " , " + ((y2 + y1 + radiusFactorY) / 2);
-        } else {
-          return "M " + ((x2 + x1 + radiusFactorX) / 2) + " , " + ((y2 + y1 + radiusFactorY) / 2) + " L " + x2 + "," + y2;
-        }
       } else if (d.type === RADIAL_BOND_TYPES.DOUBLE_BOND) {
         bondShift = model2px(Math.min(modelAtoms[d.atom1].radius, modelAtoms[d.atom2].radius)) * 0.4;
         bondAngle = Math.atan2(dy, dx);
@@ -964,6 +958,12 @@ define(function(require) {
           return "M " + ((x2 + x1 + radiusFactorX) / 2) + " , " + ((y2 + y1 + radiusFactorY) / 2) + " L " + x2 + "," + y2 + " " +
                  "M " + ((x2 + x1 + radiusFactorX) / 2 + xs) + " , " + ((y2 + y1 + radiusFactorY) / 2 + ys) + " L " + (x2 + xs) + "," + (y2 + ys) + " " +
                  "M " + ((x2 + x1 + radiusFactorX) / 2 - xs) + " , " + ((y2 + y1 + radiusFactorY) / 2 - ys) + " L " + (x2 - xs) + "," + (y2 - ys);
+        }
+      } else { // STANDARD_STICK and other types that are not yet supported.
+        if (num === 1) {
+          return "M " + x1 + "," + y1 + " L " + ((x2 + x1 + radiusFactorX) / 2) + " , " + ((y2 + y1 + radiusFactorY) / 2);
+        } else {
+          return "M " + ((x2 + x1 + radiusFactorX) / 2) + " , " + ((y2 + y1 + radiusFactorY) / 2) + " L " + x2 + "," + y2;
         }
       }
     }
