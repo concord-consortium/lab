@@ -719,6 +719,7 @@ define(function (require) {
     function updateXScale() {
       xScale.domain([options.xmin, options.xmax])
             .range([0, size.width]);
+      cancelDomainShift();
     }
 
     // Update the y-scale.
@@ -1261,6 +1262,12 @@ define(function (require) {
           return xScale.domain()[0] > (d0 - shift);
         }
       };
+    }
+
+    function cancelDomainShift() {
+      shiftingX = false;
+      // effectively asserts that we don't call domainShift until a new domain shift is required
+      domainShift = null;
     }
 
     function cancelAxisRescale() {
@@ -2156,6 +2163,7 @@ define(function (require) {
       }
 
       setCurrentSample(points.length - 1);
+      cancelDomainShift();
     }
 
     function resetDataSamples(datasamples, interval, start) {
