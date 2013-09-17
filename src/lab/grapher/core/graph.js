@@ -2018,7 +2018,7 @@ define(function (require) {
     }
 
     function setStrokeColor(i, afterSamplePoint) {
-      var opacity = afterSamplePoint ? 0.4 : 1.0;
+      var opacity = afterSamplePoint ? 0.5 : 1.0;
       switch(i) {
         case 0:
           gctx.strokeStyle = "rgba(160,00,0," + opacity + ")";
