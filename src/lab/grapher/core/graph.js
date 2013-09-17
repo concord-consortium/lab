@@ -2426,6 +2426,13 @@ define(function (require) {
         return api;
       },
 
+      elem: function(_) {
+        if (!arguments.length) return elem;
+        elem = d3.select(_);
+        graph(elem);
+        return api;
+      },
+
       numberOfPoints: function() {
         if (points) {
           return points.length;
