@@ -65,7 +65,7 @@ define(function() {
         modelUrl = newModelUrl || modelUrl;
         model = newModel || model;
 
-        this._setupModelObservers();
+        setupModelObservers();
       },
 
       getHeightForWidth: function(width, fontSizeChanged) {
