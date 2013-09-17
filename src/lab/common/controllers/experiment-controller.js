@@ -3,6 +3,7 @@
 define(function (require) {
   var metadata  = require('common/controllers/interactive-metadata'),
       validator = require('common/validator'),
+      Dataset   = require('common/models/dataset'),
       experimentControllerCount = 0;
 
   return function ExperimentController(experimentDefinition, interactivesController, onLoadScripts) {
@@ -10,6 +11,8 @@ define(function (require) {
     var controller,
         model,
         scriptingAPI,
+        timeSeriesDatasets,
+        currentDataset,
         timeSeries,
         inputs,
         outputs,
@@ -27,6 +30,7 @@ define(function (require) {
         // arrays of components (graphs or tables) that data are sent to ...
         timeSeriesDestinations,
         parameterSeriesDestinations,
+        timeSeriesGraph,
 
         namespace = "experimentController" + (++experimentControllerCount);
 
@@ -44,6 +48,7 @@ define(function (require) {
       if (onLoadScripts.length > 0) {
         onLoadFunc  = onLoadScripts[0];
       }
+      timeSeriesDatasets = [];
     }
 
     function setup() {
@@ -58,7 +63,7 @@ define(function (require) {
       }
 
       function setupDestinationComponents() {
-        var i, j, destination;
+        var i, j, destination, component;
         timeSeriesDestinations = [];
         parameterSeriesDestinations = [];
         for (i = 0; i < destinations.length; i++) {
@@ -76,6 +81,17 @@ define(function (require) {
             break;
           default:
             throw new Error("Experiment destination: invalid destination type: " + destination.type);
+          }
+        }
+        timeSeriesGraph = undefined;
+        for (i = 0; i < timeSeriesDestinations.length; i++) {
+          destination = timeSeriesDestinations[i];
+          for (j = 0; j < destination.components.length; j++) {
+            component = destination.components[j];
+            if (component.type !== undefined && component.type === "graph") {
+              timeSeriesGraph = component;
+              return;
+            }
           }
         }
       }
@@ -101,6 +117,7 @@ define(function (require) {
         stopRun.setAction("set('experimentRunning', false);");
         saveRun.setAction(function () {
           var i, j, parameterSeriesDestination;
+          timeSeriesDatasets.push(currentDataset);
           for (i = 0; i < parameterSeriesDestinations.length; i++) {
             parameterSeriesDestination = parameterSeriesDestinations[i];
             for (j = 0; j < parameterSeriesDestination.components.length; j++) {
@@ -124,6 +141,16 @@ define(function (require) {
       }
     }
 
+    function addOlderRunsToGraph() {
+      // var i;
+      // if (timeSeriesGraph) {
+      //   for (i = 0; i < timeSeriesDatasets.length; i++) {
+      //     timeSeriesGraph.addDataSet(timeSeriesDatasets[i].getData());
+      //   }
+      //   timeSeriesGraph.reset();
+      // }
+    }
+
     function unfreezeInputParameters() {
       for (var i = 0; i < inputs.length; i++) {
         model.unfreeze(inputs[i]);
@@ -143,6 +170,10 @@ define(function (require) {
       saveRun.setDisabled(true);
       nextRun.setDisabled(true);
       clearAll.setDisabled(true);
+      timeSeriesDatasets = [];
+      if (timeSeriesGraph) {
+        timeSeriesGraph.clearDataSets();
+      }
       unfreezeInputParameters();
     }
 
@@ -153,6 +184,7 @@ define(function (require) {
       nextRun.setDisabled(true);
       clearAll.setDisabled(false);
       freezeInputParameters();
+      currentDataset = new Dataset({ timeSeries: timeSeries }, model);
       scriptingAPI.api.start();
     }
 
@@ -175,6 +207,7 @@ define(function (require) {
       if (onResetFunc) {
         onLoadFunc.apply(onResetFunc, null);
       }
+      addOlderRunsToGraph();
     }
 
     function registerModelListeners() {

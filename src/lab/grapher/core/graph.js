@@ -1,4 +1,4 @@
-/*global define, d3, $ self */
+/*global define, d3 */
 
 define(function (require) {
   // Dependencies.
@@ -92,7 +92,6 @@ define(function (require) {
         gcanvas,
         gctx,
         canvasFillStyle = "rgba(255,255,255, 0.0)",
-        cplot = {},
 
         // Function dynamically created when X axis domain shift is in progress
         domainShift,
@@ -124,7 +123,7 @@ define(function (require) {
 
         // Array objects containing width and height of X and Y axis labels
         xlabelMetrics,
-        yLabelMetrics,
+        ylabelMetrics,
 
         // Width of widest numeric labels on X and Y axes
         xAxisNumberWidth,
@@ -207,6 +206,14 @@ define(function (require) {
         // An array containing 1 or more points arrays to be plotted.
         pointArray,
 
+        // When additional dataseries are added to the graph via addPoints(datapoints)
+        // newDataSeries contains the number of series in dataPoints
+        // Each series is a separate stream of data consisting of [x, y] pairs.
+        // Additional static dataseries can be graphed along with the new series that
+        // are streaming in as samples by pushing extra series into the array of data
+        // setup with resetPoints().
+        newDataSeries,
+
         // Index into points array for current sample/point.
         // Normally references data point last added.
         // Current sample can refer to earlier points. This is
@@ -217,6 +224,10 @@ define(function (require) {
         // When graphing data samples as opposed to [x, y] data pairs contains
         // the fixed time interval between subsequent samples.
         sampleInterval,
+
+        // Normally data sent to graph as samples starts at an X value of 0
+        // A different starting x value can be set
+        dataSampleStart,
 
         // The default options for a graph
         default_options = {
@@ -1191,8 +1202,7 @@ define(function (require) {
 
     // samplePoint is optional argument
     function updateOrRescalePoints(samplePoint) {
-      var i,
-          domain = xScale.domain(),
+      var domain = xScale.domain(),
           xAxisStart = Math.round(domain[0]),
           xAxisEnd = Math.round(domain[1]),
           start = Math.max(0, xAxisStart),
@@ -1263,7 +1273,7 @@ define(function (require) {
     }
 
     function circleClasses(d) {
-      cs = [];
+      var cs = [];
       if (d === selected) {
         cs.push("selected");
       }
@@ -1289,7 +1299,7 @@ define(function (require) {
         markedPoints = points;
       } else if (options.markNearbyDataPoints && sizeType.value > 1) {
         markedPoints = selectable.slice(0);
-        if (selected !== null && markedPoints.indexOf(selected) == -1) {
+        if (selected !== null && markedPoints.indexOf(selected) === -1) {
           markedPoints.push(selected);
         }
       }
@@ -1354,7 +1364,8 @@ define(function (require) {
         var mousePoint = d3.mouse(vis.node()),
             translatedMousePointX = xScale.invert(Math.max(0, Math.min(size.width, mousePoint[0]))),
             p,
-            idx, pMin, pMax;
+            idx, pMin, pMax,
+            i;
         // highlight the central point, and also points to the left and right
         // TODO Handle multiple data sets/lines
         selectable = [];
@@ -1375,7 +1386,7 @@ define(function (require) {
     }
 
     function findClosestPointByX(x, line) {
-      if (typeof(line) == "undefined" || line === null) { line = 0; }
+      if (typeof(line) === "undefined" || line === null) { line = 0; }
       // binary search through points.
       // This assumes points is sorted ascending by x value, which for realTime graphs is true.
       points = pointArray[line];
@@ -1852,10 +1863,11 @@ define(function (require) {
           lines = options.lines,
           bars = options.bars,
           twopi = 2 * Math.PI,
-          pointsLength = pointArray[0].length,
+          pointsLength,
           numberOfLines = pointArray.length,
           xAxisStart,
           xAxisEnd,
+          pointStop,
           start,
           lengthX;
 
@@ -1865,13 +1877,15 @@ define(function (require) {
       setCurrentSample(samplePoint);
       clearCanvas();
       gctx.fillRect(0, 0, gcanvas.width, gcanvas.height);
-      if (pointsLength === 0) { return; }
+      gctx.lineWidth = lineWidth;
       xAxisStart = xScale.domain()[0];
       xAxisEnd =   xScale.domain()[1];
       start = Math.max(0, xAxisStart);
       if (lines) {
         for (i = 0; i < numberOfLines; i++) {
           points = pointArray[i];
+          pointsLength = points.length;
+          if (pointsLength === 0) { break; }
           index = 0;
           // find first point >= xAxisStart
           for (j = 0; j < pointsLength; j++) {
@@ -1887,21 +1901,37 @@ define(function (require) {
           gctx.moveTo(px, py);
           dx = points[index][0];
           index++;
-          // plot all ... or until one point past xAxisEnd
-          // or until we reach currentSample
-          for (; index < samplePoint; index++) {
-            dx = points[index][0];
-            px = xScale(dx);
-            py = yScale(points[index][1]);
-            gctx.lineTo(px, py);
-            if (dx >= xAxisEnd) { break; }
-          }
-          gctx.stroke();
-          // now plot in a desaturated style all the rest of the points
-          // ... or until one point past xAxisEnd
-          if (index < pointsLength && dx < xAxisEnd) {
+          if (i < newDataSeries) {
+            // plot all ... or until one point past xAxisEnd
+            // or until we reach currentSample
+            for (; index < samplePoint; index++) {
+              dx = points[index][0];
+              px = xScale(dx);
+              py = yScale(points[index][1]);
+              gctx.lineTo(px, py);
+              if (dx >= xAxisEnd) { break; }
+            }
+            gctx.stroke();
+            // now plot in a desaturated style all the rest of the points
+            // ... or until one point past xAxisEnd
+            if (index < pointsLength && dx < xAxisEnd) {
+              setStrokeColor(i, true);
+              gctx.lineWidth = lineWidth/2;
+              for (;index < pointsLength; index++) {
+                dx = points[index][0];
+                px = xScale(dx);
+                py = yScale(points[index][1]);
+                gctx.lineTo(px, py);
+                if (dx >= xAxisEnd) { break; }
+              }
+              gctx.stroke();
+            }
+          } else {
+            // else we are plotting older complete datasets
+            // plot all ... or until one point past xAxisEnd
             setStrokeColor(i, true);
-            for (;index < pointsLength; index++) {
+            gctx.lineWidth = lineWidth/2;
+            for (; index < pointsLength-1; index++) {
               dx = points[index][0];
               px = xScale(dx);
               py = yScale(points[index][1]);
@@ -1914,6 +1944,7 @@ define(function (require) {
       } else if (bars) {
         for (i = 0; i < numberOfLines; i++) {
           points = pointArray[i];
+          pointsLength = points.length;
           setStrokeColor(i);
           pointStop = samplePoint - 1;
           for (index=start; index < pointStop; index++) {
@@ -1943,6 +1974,7 @@ define(function (require) {
       } else {
         for (i = 0; i < numberOfLines; i++) {
           points = pointArray[i];
+          pointsLength = points.length;
           index = 0;
           // find first point >= xAxisStart
           for (j = 0; j < pointsLength; j++) {
@@ -1993,6 +2025,9 @@ define(function (require) {
         case 2:
           gctx.strokeStyle = "rgba(44,0,160," + opacity + ")";
           break;
+        default:
+          gctx.strokeStyle = "rgba(44,0,160," + opacity + ")";
+          break;
       }
     }
 
@@ -2008,6 +2043,9 @@ define(function (require) {
         case 2:
           gctx.fillStyle = "rgba(44,0,160," + opacity + ")";
           break;
+        default:
+          gctx.fillStyle = "rgba(44,0,160," + opacity + ")";
+          break;
       }
     }
 
@@ -2019,6 +2057,7 @@ define(function (require) {
 
     // Add an array of points then update the graph.
     function addPoints(datapoints) {
+      newDataSeries = datapoints.length;
       addDataPoints(datapoints);
       setCurrentSample(points.length);
       updateOrRescale();
@@ -2153,7 +2192,7 @@ define(function (require) {
     function registerKeyboardHandler() {
       svg.node().addEventListener("keydown", function (evt) {
         if (!selected) return false;
-        if (evt.type == "keydown") {
+        if (evt.type === "keydown") {
           switch (evt.keyCode) {
             case 8:   // backspace
             case 46:  // delete
@@ -2384,13 +2423,6 @@ define(function (require) {
       height: function(_) {
         if (!arguments.length) return size.height;
         size.height = _;
-        return api;
-      },
-
-      elem: function(_) {
-        if (!arguments.length) return elem;
-        elem = d3.select(_);
-        graph(elem);
         return api;
       },
 

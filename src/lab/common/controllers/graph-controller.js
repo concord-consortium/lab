@@ -43,7 +43,7 @@ define(function (require) {
         model,
         scriptingAPI,
         properties,
-        data = [],
+        dataPointsArrays = [],
         namespace = "graphController" + (++graphControllerCount);
 
     // Name of the model property whose description sets the current yLabel.
@@ -111,12 +111,12 @@ define(function (require) {
 
       if (component.streamDataFromModel) {
         for (i = 0; i < dataPoint.length; i++) {
-          data[i] = [dataPoint[i]];
+          dataPointsArrays[i] = [dataPoint[i]];
         }
-        grapher.resetPoints(data);
+        grapher.resetPoints(dataPointsArrays);
       } else {
         for (i = 0; i < dataPoint.length; i++) {
-          data[i] = [];
+          dataPointsArrays[i] = [];
         }
         grapher.resetPoints();
       }
@@ -132,7 +132,7 @@ define(function (require) {
           i;
 
       for (i = 0; i < dataPoint.length; i++) {
-        data[i].push(dataPoint[i]);
+        dataPointsArrays[i].push(dataPoint[i]);
       }
       // The grapher considers each individual (property, time) pair to be a "point", and therefore
       // considers the set of properties at any 1 time (what we consider a "point") to be "points".
@@ -148,9 +148,9 @@ define(function (require) {
 
       for (i = 0; i < properties.length; i++) {
         // Account for initial data, which corresponds to stepCounter == 0
-        data[i].length = model.stepCounter() + 1;
+        dataPointsArrays[i].length = model.stepCounter()+1;
       }
-      grapher.resetPoints(data);
+      grapher.resetPoints(dataPointsArrays);
     }
 
     /**
@@ -220,6 +220,8 @@ define(function (require) {
     }
 
     controller = {
+      type: "graph",
+
       /**
         Called by the interactives controller when the model finishes loading.
       */
@@ -243,6 +245,21 @@ define(function (require) {
       */
       appendDataPropertiesToComponent: appendDataPoint,
 
+
+      /**
+        Add non-realtime dataset to the graph.
+      */
+      addDataSet: function (dataset) {
+        dataPointsArrays.push(dataset);
+      },
+
+      /**
+        Remove all non-realtime datasets
+      */
+      clearDataSets: function () {
+        dataPointsArrays.length = properties.length;
+      },
+
       /**
         Modifies the current list of graph options with new values and resets the graph.the
         Note: does not support changes to the 'properties' list.
@@ -252,7 +269,7 @@ define(function (require) {
           $.extend(component, opts);
           resetData();
           if (opts.dataPoints) {
-            data = opts.dataPoints;
+            dataPointsArrays = opts.dataPoints;
           }
           resetGrapher();
         }
@@ -328,6 +345,12 @@ define(function (require) {
         // For now only "fit to parent" behavior is supported.
         if (grapher) {
           grapher.resize();
+        }
+      },
+
+      reset: function () {
+        if (grapher) {
+          resetGrapher();
         }
       },
 
