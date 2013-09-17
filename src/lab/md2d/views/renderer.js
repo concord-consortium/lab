@@ -824,13 +824,7 @@ define(function(require) {
           "d": function(d) {
             return findPoints(d, 1);
           },
-          "stroke-width": function(d) {
-            if (isSpringBond(d)) {
-              return springStrokeWidth(d);
-            } else {
-              return model2px(Math.min(modelAtoms[d.atom1].radius, modelAtoms[d.atom2].radius)) * 0.75;
-            }
-          },
+          "stroke-width": radialBondWidth,
           "stroke": getBondAtom1Color,
           "fill": "none"
         })
@@ -844,13 +838,7 @@ define(function(require) {
           "d": function(d) {
             return findPoints(d, 2);
           },
-          "stroke-width": function(d) {
-            if (isSpringBond(d)) {
-              return springStrokeWidth(d);
-            } else {
-              return model2px(Math.min(modelAtoms[d.atom1].radius, modelAtoms[d.atom2].radius)) * 0.75;
-            }
-          },
+          "stroke-width": radialBondWidth,
           "stroke": getBondAtom2Color,
           "fill": "none"
         })
@@ -858,7 +846,29 @@ define(function(require) {
         .classed("disulphideBond", function(d) {
           return d.type === RADIAL_BOND_TYPES.DISULPHIDE_BOND;
         });
+    }
 
+    function radialBondWidth(d) {
+      if (isSpringBond(d)) {
+        return 1.25;
+        // The following code is intended to use a thicker stroke-width when
+        // the spring constant is larger ... but to work properly in models with
+        // both MD2D and MKS units schemes the model would need to supply
+        // an apprpriately scaled default spring constant.
+        // For example in the Spring and Mass Interactive which uses an MKS unit
+        // scheme the spring constant is varied between 0.001 and 0.003 ... while in
+        // the Comparing Dipole atom-pulling Interactive that uses an MD2D unit
+        // scheme the spring constant is 10.
+        // return (1 + Math.log(1+d.strength*1000)) * 0.25;;
+      }
+      var result = model2px(Math.min(modelAtoms[d.atom1].radius, modelAtoms[d.atom2].radius));
+      if (d.type === RADIAL_BOND_TYPES.STANDARD_STICK) {
+        return result * 0.75;
+      } else if (d.type === RADIAL_BOND_TYPES.DOUBLE_BOND) {
+        return result * 0.50;
+      } else if (d.type === RADIAL_BOND_TYPES.TRIPLE_BOND) {
+        return result * 0.35;
+      }
     }
 
     function findPoints(d, num) {
@@ -879,7 +889,9 @@ define(function(require) {
         cosThetaDiameter,
         sinThetaDiameter,
         cosThetaSpikes,
-        sinThetaSpikes;
+        sinThetaSpikes,
+        bondAngle, bondShift,
+        xs, ys;
 
       x1 = model2px(d.x1);
       y1 = model2pxInv(d.y1);
@@ -921,30 +933,43 @@ define(function(require) {
           path += " L " + pointX + "," + pointY;
         }
         return path += " L " + x2 + "," + y2;
-      } else {
+      } else if (d.type === RADIAL_BOND_TYPES.STANDARD_STICK) {
         if (num === 1) {
           return "M " + x1 + "," + y1 + " L " + ((x2 + x1 + radiusFactorX) / 2) + " , " + ((y2 + y1 + radiusFactorY) / 2);
         } else {
           return "M " + ((x2 + x1 + radiusFactorX) / 2) + " , " + ((y2 + y1 + radiusFactorY) / 2) + " L " + x2 + "," + y2;
+        }
+      } else if (d.type === RADIAL_BOND_TYPES.DOUBLE_BOND) {
+        bondShift = model2px(Math.min(modelAtoms[d.atom1].radius, modelAtoms[d.atom2].radius)) * 0.4;
+        bondAngle = Math.atan2(dy, dx);
+        xs = Math.sin(bondAngle) * bondShift;
+        ys = -Math.cos(bondAngle) * bondShift;
+        if (num === 1) {
+          return "M " + (x1 + xs) + "," + (y1 + ys) + " L " + ((x2 + x1 + radiusFactorX) / 2 + xs) + " , " + ((y2 + y1 + radiusFactorY) / 2 + ys) + " " +
+                 "M " + (x1 - xs) + "," + (y1 - ys) + " L " + ((x2 + x1 + radiusFactorX) / 2 - xs) + " , " + ((y2 + y1 + radiusFactorY) / 2 - ys);
+        } else {
+          return "M " + ((x2 + x1 + radiusFactorX) / 2 + xs) + " , " + ((y2 + y1 + radiusFactorY) / 2 + ys) + " L " + (x2 + xs) + "," + (y2 + ys) + " " +
+                 "M " + ((x2 + x1 + radiusFactorX) / 2 - xs) + " , " + ((y2 + y1 + radiusFactorY) / 2 - ys) + " L " + (x2 - xs) + "," + (y2 - ys);
+        }
+      } else if (d.type === RADIAL_BOND_TYPES.TRIPLE_BOND) {
+        bondShift = model2px(Math.min(modelAtoms[d.atom1].radius, modelAtoms[d.atom2].radius)) * 0.52;
+        bondAngle = Math.atan2(dy, dx);
+        xs = Math.sin(bondAngle) * bondShift;
+        ys = -Math.cos(bondAngle) * bondShift;
+        if (num === 1) {
+          return "M " + x1 + "," + y1 + " L " + ((x2 + x1 + radiusFactorX) / 2) + " , " + ((y2 + y1 + radiusFactorY) / 2) + " " +
+                 "M " + (x1 + xs) + "," + (y1 + ys) + " L " + ((x2 + x1 + radiusFactorX) / 2 + xs) + " , " + ((y2 + y1 + radiusFactorY) / 2 + ys) + " " +
+                 "M " + (x1 - xs) + "," + (y1 - ys) + " L " + ((x2 + x1 + radiusFactorX) / 2 - xs) + " , " + ((y2 + y1 + radiusFactorY) / 2 - ys);
+        } else {
+          return "M " + ((x2 + x1 + radiusFactorX) / 2) + " , " + ((y2 + y1 + radiusFactorY) / 2) + " L " + x2 + "," + y2 + " " +
+                 "M " + ((x2 + x1 + radiusFactorX) / 2 + xs) + " , " + ((y2 + y1 + radiusFactorY) / 2 + ys) + " L " + (x2 + xs) + "," + (y2 + ys) + " " +
+                 "M " + ((x2 + x1 + radiusFactorX) / 2 - xs) + " , " + ((y2 + y1 + radiusFactorY) / 2 - ys) + " L " + (x2 - xs) + "," + (y2 - ys);
         }
       }
     }
 
     function isSpringBond(d) {
       return d.type === RADIAL_BOND_TYPES.SHORT_SPRING;
-    }
-
-    function springStrokeWidth() {
-      return 1.25;
-      // The following code is intended to use a thicker stroke-width when
-      // the spring constant is larger ... but to work properly in models with
-      // both MD2D and MKS units schemes the model would need to supply
-      // an apprpriately scaled default spring constant.
-      // For example in the Spring and Mass Interactive which uses an MKS unit
-      // scheme the spring constant is varied between 0.001 and 0.003 ... while in
-      // the Comparing Dipole atom-pulling Interactive that uses an MD2D unit
-      // scheme the spring constant is 10.
-      // return (1 + Math.log(1+d.strength*1000)) * 0.25;
     }
 
     function vdwLinesEnter() {
