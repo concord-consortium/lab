@@ -1929,11 +1929,15 @@ define(function (require) {
           } else {
             // else we are plotting older complete datasets
             // plot all ... or until one point past xAxisEnd
-            setStrokeColor(i, true);
+            setStrokeColor(0, true);
             gctx.lineWidth = lineWidth/2;
+            // temporary hack ...
+            var previousPx = 0;
             for (; index < pointsLength-1; index++) {
               dx = points[index][0];
               px = xScale(dx);
+              if (px < previousPx) { break; }
+              previousPx = px;
               py = yScale(points[index][1]);
               gctx.lineTo(px, py);
               if (dx >= xAxisEnd) { break; }
