@@ -40,6 +40,12 @@ define(function () {
       }
     }
 
+    function updateRadioDisabledState() {
+      var description = model.getPropertyDescription(component.property);
+      controller.setDisabled(description.getFrozen());
+    }
+
+
     function customClickEvent (e) {
       var $clickedParent = $(this).closest('span'),
           $input = $clickedParent.find('input'),
@@ -164,6 +170,7 @@ define(function () {
       modelLoadedCallback: function () {
         if (model && component.property !== undefined) {
           model.removeObserver(component.property, updateRadio);
+          model.removePropertyDescriptionObserver(component.property, updateRadioDisabledState);
         }
         model = interactivesController.getModel();
         scriptingAPI = interactivesController.getScriptingAPI();
@@ -171,6 +178,7 @@ define(function () {
         if (component.property !== undefined) {
           // Register listener for property.
           model.addPropertiesListener([component.property], updateRadio);
+          model.addPropertyDescriptionObserver(component.property, updateRadioDisabledState);
           // Perform initial radio setup.
           updateRadio();
         }

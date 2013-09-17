@@ -39,6 +39,11 @@ define(function () {
       }
     }
 
+    function updatePulldownDisabledState() {
+      var description = model.getPropertyDescription(component.property);
+      controller.setDisabled(description.getFrozen());
+    }
+
     function initialize() {
       var parent = interactivesController.interactiveContainer,
           i, len;
@@ -91,10 +96,12 @@ define(function () {
         if (component.property !== undefined) {
           if (model) {
             model.removeObserver(component.property, updatePulldown);
+            model.removePropertyDescriptionObserver(component.property, updatePulldownDisabledState);
           }
           model = interactivesController.getModel();
           // Register listener for property.
           model.addObserver(component.property, updatePulldown);
+          model.addPropertyDescriptionObserver(component.property, updatePulldownDisabledState);
           // Perform initial pulldown setup.
         } else {
           model = interactivesController.getModel();

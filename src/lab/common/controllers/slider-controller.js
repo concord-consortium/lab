@@ -33,6 +33,10 @@ define(function () {
           if (displayValue) {
             $sliderHandle.text(displayFunc(value));
           }
+        },
+        updateSliderDisabledState = function () {
+          var description = model.getPropertyDescription(propertyName);
+          controller.setDisabled(description.getFrozen());
         };
 
     function bindTargets() {
@@ -151,11 +155,13 @@ define(function () {
       modelLoadedCallback: function () {
         if (model && propertyName) {
           model.removeObserver(propertyName, updateSlider);
+          model.removePropertyDescriptionObserver(propertyName, updateSliderDisabledState);
         }
         scriptingAPI = interactivesController.getScriptingAPI();
         model = interactivesController.getModel();
         if (propertyName) {
           model.addPropertiesListener([propertyName], updateSlider);
+          model.addPropertyDescriptionObserver(propertyName, updateSliderDisabledState);
         }
 
         bindTargets();

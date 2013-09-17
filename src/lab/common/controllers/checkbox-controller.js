@@ -26,6 +26,11 @@ define(function () {
       setCheckbox(model.get(propertyName));
     }
 
+    function updateCheckboxDisabledState() {
+      var description = model.getPropertyDescription(propertyName);
+      controller.setDisabled(description.getFrozen());
+    }
+
     function setCheckbox(value) {
       if (value) {
         $checkbox.prop('checked', true);
@@ -131,6 +136,7 @@ define(function () {
       modelLoadedCallback: function () {
         if (model && propertyName !== undefined) {
           model.removeObserver(propertyName, updateCheckbox);
+          model.removePropertyDescriptionObserver(propertyName, updateCheckboxDisabledState);
         }
         model = interactivesController.getModel();
         scriptingAPI = interactivesController.getScriptingAPI();
@@ -138,6 +144,7 @@ define(function () {
         if (propertyName !== undefined) {
           // Register listener for 'propertyName'.
           model.addPropertiesListener([propertyName], updateCheckbox);
+          model.addPropertyDescriptionObserver(propertyName, updateCheckboxDisabledState);
           // Perform initial checkbox setup.
           updateCheckbox();
         }
