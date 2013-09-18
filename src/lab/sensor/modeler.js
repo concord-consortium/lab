@@ -357,6 +357,11 @@ define(function(require) {
       window.__bizarreSafariFix = 1;
 
       rawSensorValue = d;
+      // Once we collect data for a given sensor, don't allow changingn the sensor typea
+      if (!didCollectData) {
+        model.freeze('sensorType');
+      }
+
       didCollectData = true;
 
       propertySupport.deleteComputedPropertyCachedValues();
@@ -428,6 +433,7 @@ define(function(require) {
 
         initializeStateVariables();
         model.properties.tareValue = initialTareValue;
+        model.unfreeze('sensorType');
         model.properties.sensorType = initialSensorType;
 
         dispatch.reset();

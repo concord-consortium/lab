@@ -50,12 +50,24 @@ define(function() {
       }
     }
 
+    function setSensorTypeDisabledState() {
+      var description = model.getPropertyDescription('sensorType');
+      if (description.getFrozen()) {
+        viewState.disableView(view.$selectBox);
+      } else {
+        viewState.enableView(view.$selectBox);
+      }
+    }
+
     function setupModelObservers() {
       model.addObserver('isTaring', setIsTaringState);
       setIsTaringState();
 
       model.addObserver('canTare', setCanTareState);
       setCanTareState();
+
+      model.addPropertyDescriptionObserver('sensorType', setSensorTypeDisabledState);
+      setSensorTypeDisabledState();
     }
 
     return view = {
@@ -100,6 +112,7 @@ define(function() {
         this.$el.append($zeroButton);
 
         this.$zeroButton = $zeroButton;
+        this.$selectBox = $selectBox;
 
         setupModelObservers();
 
