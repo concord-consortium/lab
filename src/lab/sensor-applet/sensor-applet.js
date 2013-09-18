@@ -73,16 +73,10 @@ define(function(require) {
     // Before appending the applet, set this value with the path to an object that will receive applet callbacks.
     listenerPath: '',
 
-    // Before appending the applet, set this to the sensor type
-    // supported values are:
-    //   "temperature"
-    //   "light"
-    //   "force"
-    //   "co2"
-    //   "o2"
-    //   "ph"
-    //   "distance"
-    measurementType: '',
+    // Before appending the applet this should be set to a definition from
+    // senor-applet/sensor-definitions.js
+    // FIXME: these should be updated to be device independent
+    sensorDefinition: null,
 
     // Before appending the applet, set this to the path or URL where jars can be found
     codebase: '',
@@ -91,10 +85,6 @@ define(function(require) {
     //  "labquest"
     //  "golink"
     deviceType: '',
-
-    // Packet of information about the sensor type. See
-    // src/lab/senosr/applet/sensor-definitions.js
-    sensorDefinition: null,
 
     appletId:     'sensor-applet',
     classNames:   'applet sensor-applet',
@@ -175,7 +165,8 @@ define(function(require) {
         return false;
       }
       for (i = 0; i < attachedSensors.length; i++) {
-        if (this.appletInstance.getTypeConstantName(attachedSensors[i].getType()) === this.sensorDefinition.typeConstantName) {
+        if (this.appletInstance.getTypeConstantName(attachedSensors[i].getType()) ===
+              this.sensorDefinition.typeConstantName) {
           return true;
         }
       }
@@ -282,7 +273,7 @@ define(function(require) {
           self.appletInstance = $('#'+self.appletId)[0];
 
           // Get a SensorRequest object for this measurement type
-          req = self.appletInstance.getSensorRequest(self.measurementType);
+          req = self.appletInstance.getSensorRequest(self.sensorDefinition.measurementType);
           // Try to initialize the sensor for the correct device and measurement type (e.g., goio,
           // distance). Java will callback to initSensorInterfaceComplete on success or error.
           self.appletInstance.initSensorInterface(self.listenerPath, self.deviceType, [req]);

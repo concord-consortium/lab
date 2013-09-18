@@ -319,7 +319,6 @@ define(function(require) {
 
         applet = window.Lab.sensor[sensorType] = new AppletClass({
           listenerPath: 'Lab.sensor.' + sensorType,
-          measurementType: measurementType,
           sensorDefinition: sensorDefinition,
           appletId: sensorType+'-sensor',
           codebase: labConfig.actualRoot + "jnlp"
