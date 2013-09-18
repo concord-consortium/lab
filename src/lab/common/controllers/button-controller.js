@@ -15,6 +15,7 @@ define(function () {
     this.button = $('<button>')
         .html(component.text)
         .appendTo(this.$element);
+    this._clickTargetSelector = 'button';
   }
 
   inherit(ButtonController, InteractiveComponent);
