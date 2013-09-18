@@ -11,6 +11,7 @@ define(function(require) {
       appletClasses        = require('sensor-applet/applet-classes'),
       appletErrors         = require('sensor-applet/errors'),
       sensorDefinitions    = require('sensor-applet/sensor-definitions'),
+      labConfig            = require('lab.config'),
       BasicDialog          = require('common/controllers/basic-dialog'),
       ExportController     = require('common/controllers/export-controller');
 
@@ -320,7 +321,8 @@ define(function(require) {
           listenerPath: 'Lab.sensor.' + sensorType,
           measurementType: measurementType,
           sensorDefinition: sensorDefinition,
-          appletId: sensorType+'-sensor'
+          appletId: sensorType+'-sensor',
+          codebase: labConfig.actualRoot + "jnlp"
         });
 
         appendApplet();

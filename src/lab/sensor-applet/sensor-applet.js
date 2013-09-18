@@ -6,7 +6,6 @@ define(function(require) {
   var miniClass = require('common/mini-class'),
       EventEmitter = require('./mini-event-emitter'),
       errors = require('./errors'),
-      labConfig = require('lab.config'),
       console = require('common/console'),
       SensorApplet;
 
@@ -85,6 +84,9 @@ define(function(require) {
     //   "distance"
     measurementType: '',
 
+    // Before appending the applet, set this to the path or URL where jars can be found
+    codebase: '',
+
     // supported values are:
     //  "labquest"
     //  "golink"
@@ -116,7 +118,7 @@ define(function(require) {
          'class="',    this.classNames,       '" ',
          'archive="',  allJarUrls.join(', '), '" ',
          'code="',     this.code,             '" ',
-         'codebase="', this.getCodebase(), '" ',
+         'codebase="', this.codebase, '" ',
          'width="1px" ',
          'height="1px" ',
          'MAYSCRIPT="true" ',
@@ -134,7 +136,7 @@ define(function(require) {
          'class="applet test-sensor-applet" ',
          'code="org.concord.sensor.applet.DetectionApplet" ',
          'archive="org/concord/sensor/sensor-applets/sensor-applets.jar"',
-         'codebase="', this.getCodebase(), '" ',
+         'codebase="', this.codebase, '" ',
          'width="150px" ',
          'height="150px" ',
          'style="position: absolute; ',
@@ -181,10 +183,6 @@ define(function(require) {
     },
 
     _state: 'not appended',
-
-    getCodebase: function() {
-      return labConfig.actualRoot + "jnlp";
-    },
 
     getState: function() {
       return this._state;
