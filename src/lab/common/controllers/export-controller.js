@@ -84,23 +84,19 @@ define(function (require) {
       ExportController.logAction(logString);
     }
 
-    // Called every time a model is reset or reloaded, but not on inital load
-    function handlePossibleDataDiscard() {
+    function shouldHandleDataDiscard() {
+      // If there's no unexported data, or we're not in the DG environment, never mind.
+      return ExportController.canExportData() && isUnexportedDataPresent;
+    }
+
+    // Called when a model is about to be reset or reloaded, and there is unexported data in a DG
+    // environment.
+    function handleDataDiscard(resetRequest) {
       var $textarea;
-
-      // If there's no unexported data, never mind
-      if ( ! isUnexportedDataPresent ) {
-        return;
-      }
-
-      // If we're not in the DG environment, never mind
-      if ( ! ExportController.canExportData() ) {
-        return;
-      }
 
       // Yuck, but here we go.
       modalAlert(
-        "<p>You've set up a new run without saving your data. Please indicate why:</p>" +
+        "<p>You're setting up a new run without saving your data. Please indicate why:</p>" +
         "<form id='export-alert-form'>" +
         "  <p><input type='radio' name='reason' value='trying-things-out'>I'm just trying things out.</input></p>" +
         "  <p><input type='radio' name='reason' value='strange-data'>The data looks strange.</input></p>" +
@@ -115,6 +111,11 @@ define(function (require) {
             reasonText: $(this).find('textarea').val()
           });
           $(this).dialog('close');
+          resetRequest.proceed();
+        },
+        Cancel: function() {
+          $(this).dialog('close');
+          resetRequest.cancel();
         }
       });
 
@@ -169,6 +170,23 @@ define(function (require) {
       });
     }
 
+    function willResetModelHandler(modelToBeReset, resetRequest) {
+
+      if (modelToBeReset !== model || !shouldHandleDataDiscard()) {
+        // false lets interactives controller know it should not wait for a response from us
+        return false;
+      }
+
+      // There's unexported data and we're supposed to ask the user about it.
+
+      // put up the message and aynchronously wait for a response indicating whether or not to
+      // continue with the reset.
+      handleDataDiscard(resetRequest);
+
+      // Let interactives controller know it should await our response
+      return true;
+    }
+
     function registerInteractiveListeners() {
       // Currently there is no need to namespace these particular listeners, because interactive
       // controller uses a *special* on() method that doesn't just delegate to d3.dispatch; in fact
@@ -180,19 +198,19 @@ define(function (require) {
       interactivesController.on('modelReset', function(cause) {
         handleModelInitialization('modelReset', cause);
       });
+
+      interactivesController.on('willResetModel', willResetModelHandler);
     }
 
     function handleModelInitialization(eventName, cause) {
 
       if (eventName === 'modelLoaded') {
         if (cause === 'reload') {
-          handlePossibleDataDiscard();
           logAction("reloaded the model", savedPerRunData);
         } else {
           logAction("loaded a model");
         }
       } else if (eventName === 'modelReset') {
-        handlePossibleDataDiscard();
         if (cause === 'new-run') {
           logAction("set up a new run", savedPerRunData);
         } else {
