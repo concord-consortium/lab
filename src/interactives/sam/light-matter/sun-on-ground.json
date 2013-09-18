@@ -49,7 +49,7 @@
         "  turnOffLightSource();",
         "}"
       ],
-      "initialValue": false
+      "initialValue": true
     }
   ],
   "filteredOutputs": [
