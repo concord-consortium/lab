@@ -412,10 +412,11 @@ define(function (require) {
           },
 
           exportData: function exportData() {
-            var dgExport = interactivesController.getDGExportController();
-            if (!dgExport)
+            var exportController = interactivesController.getDGExportController();
+            if (!exportController || !exportController.canExportData()) {
               throw new Error("No exports have been specified.");
-            dgExport.exportData();
+            }
+            exportController.exportData();
           },
 
           Math: Math,

@@ -30,7 +30,7 @@ define(function(require) {
     },
 
     // Synonym...
-    isExportAvailable: function() {
+    canExportData: function() {
       return this.isDgGameControllerDefined();
     },
 

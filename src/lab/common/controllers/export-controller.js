@@ -94,7 +94,7 @@ define(function (require) {
       }
 
       // If we're not in the DG environment, never mind
-      if ( ! ExportController.isExportAvailable() ) {
+      if ( ! ExportController.canExportData() ) {
         return;
       }
 
@@ -295,8 +295,8 @@ define(function (require) {
 
   // "Class method" (want to be able to call this before instantiating)
   // Do we have a
-  ExportController.isExportAvailable = function() {
-    return dgExporter.isExportAvailable();
+  ExportController.canExportData = function() {
+    return dgExporter.canExportData();
   };
 
   ExportController.logAction = function() {
