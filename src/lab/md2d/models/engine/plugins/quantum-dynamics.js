@@ -37,7 +37,7 @@ define(function(require) {
       TWO_PI = 2 * Math.PI,
 
       // expected value of lifetime of excited energy state, in fs
-      LIFETIME = 1000,
+      LIFETIME = 50,
       EMISSION_PROBABILITY_PER_FS = 1/LIFETIME,
 
       // dispatch events from handlePhotonAtomCollision
