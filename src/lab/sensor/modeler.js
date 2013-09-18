@@ -8,9 +8,9 @@ define(function(require) {
       validator            = require('common/validator'),
       metadata             = require('./metadata'),
       unitsDefinition      = require('./units-definition'),
-      appletClasses        = require('./applet/applet-classes'),
-      appletErrors         = require('./applet/errors'),
-      sensorDefinitions    = require('./applet/sensor-definitions'),
+      appletClasses        = require('sensor-applet/applet-classes'),
+      appletErrors         = require('sensor-applet/errors'),
+      sensorDefinitions    = require('sensor-applet/sensor-definitions'),
       BasicDialog          = require('common/controllers/basic-dialog'),
       ExportController     = require('common/controllers/export-controller');
 
