@@ -16,6 +16,9 @@ define(function() {
       },
       collectionTime: {
         defaultValue: null
+      },
+      tareValue: {
+        defaultValue: 0
       }
     },
     viewOptions: {

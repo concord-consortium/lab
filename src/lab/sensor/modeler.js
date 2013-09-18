@@ -46,6 +46,7 @@ define(function(require) {
         isStopped = true,
         dispatch = d3.dispatch('play', 'stop', 'tick', 'willReset', 'reset', 'stepForward',
                                'stepBack', 'seek', 'invalidation'),
+        initialSensorType,
         sensorType,
         applet,
         isSensorReady = false,
@@ -58,9 +59,8 @@ define(function(require) {
         stepCounter,
         didCollectData,
         isTaring,
-        hasTareValue,
-        tareValue,
         isSensorTareable,
+        initialTareValue,
         invalidatingChangeNestingLevel = 0,
         filteredOutputs = [],
         customSetters,
@@ -264,7 +264,7 @@ define(function(require) {
         makeInvalidatingChange(function() {
           rawSensorValue = applet.readSensor();
           if (isTaring) {
-            setTareValue(rawSensorValue);
+            model.properties.tareValue = rawSensorValue;
             isTaring = false;
           }
         });
@@ -285,8 +285,6 @@ define(function(require) {
       didCollectData = false;
       isSensorTareable = false;
       isTaring = false;
-      hasTareValue = false;
-      tareValue = 0;
     }
 
     function setSensorType(_sensorType) {
@@ -298,6 +296,12 @@ define(function(require) {
       if (sensorType === _sensorType) {
         return;
       }
+
+      if (sensorType) {
+        // drop the tare value if we're changing from one sensor type to another!
+        model.properties.tareValue = 0;
+      }
+
       sensorType = _sensorType;
       rawSensorValue = undefined;
 
@@ -335,14 +339,11 @@ define(function(require) {
         if (model.properties.collectionTime == null) {
           model.properties.collectionTime = sensorDefinition.maxSeconds;
         }
+      } else if (model.properties.hasOwnProperty('sensorReading')) {
+        // no sensor type
+        description = new PropertyDescription(unitsDefinition, defaultSensorReadingDescriptionHash);
+        propertySupport.setPropertyDescription('sensorReading', description);
       }
-    }
-
-    function setTareValue(_) {
-      makeInvalidatingChange(function() {
-        tareValue = _;
-        hasTareValue = true;
-      });
     }
 
     function appletDataCallback(d) {
@@ -409,7 +410,7 @@ define(function(require) {
           throw new Error("Sensor model: tare() called on a non-stopped model.");
         }
         if (sensorPollingIntervalID != null && rawSensorValue != null) {
-          setTareValue(rawSensorValue);
+          model.properties.tareValue = rawSensorValue;
         } else {
           makeInvalidatingChange(function() {
             isTaring = true;
@@ -422,14 +423,12 @@ define(function(require) {
       },
 
       reset: function() {
-        var defaultSensorReadingDescription = new PropertyDescription(unitsDefinition, defaultSensorReadingDescriptionHash);
-
         model.stop();
         removeApplet();
 
         initializeStateVariables();
-        model.properties.sensorType = null;
-        propertySupport.setPropertyDescription('sensorReading', defaultSensorReadingDescription);
+        model.properties.tareValue = initialTareValue;
+        model.properties.sensorType = initialSensorType;
 
         dispatch.reset();
       },
@@ -538,6 +537,10 @@ define(function(require) {
     });
     propertySupport.setRawValues(mainProperties);
 
+    // Remember thse values so that the model can be reset properly
+    initialSensorType = model.properties.sensorType;
+    initialTareValue = model.properties.tareValue;
+
     viewOptions = validator.validateCompleteness(metadata.viewOptions, initialProperties.viewOptions || {});
     Object.keys(viewOptions).forEach(function(key) {
       defineBuiltinProperty(key, 'viewOption');
@@ -564,7 +567,7 @@ define(function(require) {
       if (rawSensorValue == null) {
         return rawSensorValue;
       }
-      return rawSensorValue - tareValue;
+      return rawSensorValue - model.properties.tareValue;
     });
 
     // TODO. Need a better way for the model to be able to have a property which it can set the
@@ -627,11 +630,6 @@ define(function(require) {
       return isStopped && isSensorTareable && !isTaring;
     });
 
-    model.defineOutput('tareValue', {
-      label: "Tare value",
-    }, function() {
-      return tareValue;
-    });
 
     // Clean up state before we go -- failing to remove the applet from the page before switching
     // between 2 sensor types that use the same interface causes an applet exception.
