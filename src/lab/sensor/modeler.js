@@ -627,7 +627,7 @@ define(function(require) {
     model.defineOutput('canTare', {
       label: "Can set a tare value?"
     }, function() {
-      return isStopped && isSensorTareable && !isTaring;
+      return isStopped && !didCollectData && isSensorTareable && !isTaring;
     });
 
 
