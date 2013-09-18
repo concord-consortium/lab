@@ -31,7 +31,6 @@ define(function() {
     // units to the returned string (which we don't want here).
     var format = d3.format('.2f');
     var sensorReadingView;
-    var lastHeight = null;
     var view;
 
     function setIsTaringState() {
@@ -80,11 +79,8 @@ define(function() {
         setupModelObservers();
       },
 
-      getHeightForWidth: function(width, fontSizeChanged) {
-        if (fontSizeChanged || lastHeight == null) {
-          lastHeight = 2 * parseInt(this.$el.parent().css('font-size'), 10);
-        }
-        return lastHeight;
+      getHeightForWidth: function() {
+        return "2.6em";
       },
 
       // called once we're in the DOM
