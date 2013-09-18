@@ -110,6 +110,7 @@ define(function (require) {
         resizeCallbacks = [],
         modelLoadedCallbacks = [],
         modelResetCallbacks = [],
+        willResetModelCallbacks = [],
         ignoreModelResetEvent = false,
         isModelLoaded = false,
         interactiveRenderedCallbacks = [],
@@ -883,6 +884,81 @@ define(function (require) {
     }
 
     /**
+      Notify observers that a reset event is pending for a given model, passing them the model that
+      will be reset and a reset-request object that is unique for each observer.
+
+      If any observers return true, the reset operation will be paused. They can cache the reset
+      request object and asynchronously indicate that it is ok to proceed with the reset by calling
+      the cached object's 'proceed' or 'cancel' method.
+
+      Once the a reset request's 'proceed' method has been called, calling its 'cancel' method has
+      no effect, and vice versa.
+
+      If any observers that returned true fail to later call either method of the reset request,
+      then the reset will be put off indefinitely.
+
+      (Note that, for the time being, there is no practical difference between canceling a reset and
+      putting it off indefintely. However, almost surely we will want to keep track of whether
+      reset has been canceled or not, so that we can block subsequent requests to reset the model,
+      give UI feedback, etc.)
+
+      If no observers return a truthy value--and also do not call their reset request's 'cancel'
+      method during their execution--then the reset will take place synchronously.
+
+      Note that observers that do not return a truthy value are treated like observers that call the
+      'proceed' method: subsequently calling the 'cancel' method of their reset request will have no
+      effect.
+    */
+    function notifyWillResetModelAnd(closure) {
+
+      var numberOfResponsesRequired = willResetModelCallbacks.length;
+      var numberOfProceedResponses = 0;
+      var resetWasCanceled = false;
+
+      function proceedIfReady() {
+        if (!resetWasCanceled && numberOfProceedResponses === numberOfResponsesRequired) {
+          closure();
+        }
+      }
+
+      // Returns a new "use once" object that the willResetModel callback can use to asynchronously
+      // allow the reset to proceed or cancel.
+      function makeResetRequest() {
+        var wasUsed = false;
+
+        return {
+          proceed: function() {
+            if (wasUsed) {
+              return;
+            }
+            wasUsed = true;
+            numberOfProceedResponses++;
+            proceedIfReady();
+          },
+
+          cancel: function() {
+            if (wasUsed) {
+              return;
+            }
+            wasUsed = true;
+            resetWasCanceled = true;
+          }
+        };
+      }
+
+      willResetModelCallbacks.forEach(function(willResetModelCallback) {
+        var resetRequest = makeResetRequest();
+
+        // willResetModel callbacks that don't return a value (or return a falsy value) without
+        // having invoked resetRequest.cancel() should be treated as having requested to proceed.
+        if (!willResetModelCallback(model, resetRequest)) {
+          // remember this has no effect if the callback already called resetRequest.cancel():
+          resetRequest.proceed();
+        }
+      });
+    }
+
+    /**
       After a model loads, this method sets up the custom output properties specified in the "model"
       section of the interactive and in the interactive.
 
@@ -1047,7 +1123,9 @@ define(function (require) {
       getNextTabIndex: getNextTabIndex,
 
       reloadModel: function() {
-        modelController.reload();
+        notifyWillResetModelAnd(function() {
+          modelController.reload();
+        });
       },
 
       /**
@@ -1068,65 +1146,67 @@ define(function (require) {
             optional string giving the cause of the reset, e.g., "new-run"
       */
       resetModel: function(options) {
-        options = options || {};
+        notifyWillResetModelAnd(function() {
+          options = options || {};
 
-        var parameters;
+          var parameters;
 
-        // Option processing.
-        var parametersToRetain = options.retainParameters;
-        var parametersToReset = options.resetParameters;
+          // Option processing.
+          var parametersToRetain = options.retainParameters;
+          var parametersToReset = options.resetParameters;
 
-        if (parametersToReset && parametersToRetain) {
-          throw new Error("resetModel: resetParameters and retainParameters are mutually exclusive");
-        }
+          if (parametersToReset && parametersToRetain) {
+            throw new Error("resetModel: resetParameters and retainParameters are mutually exclusive");
+          }
 
-        // default behavior is to reset all parameters
-        if (!parametersToRetain && !parametersToReset) {
-          parametersToReset = 'all';
-        }
+          // default behavior is to reset all parameters
+          if (!parametersToRetain && !parametersToReset) {
+            parametersToReset = 'all';
+          }
 
-        if (parametersToRetain === 'all') {
-          parametersToRetain = undefined;
-          parametersToReset = [];
-        }
+          if (parametersToRetain === 'all') {
+            parametersToRetain = undefined;
+            parametersToReset = [];
+          }
 
-        if (parametersToReset === 'all') {
-          parametersToRetain = [];
-          parametersToReset = undefined;
-        }
+          if (parametersToReset === 'all') {
+            parametersToRetain = [];
+            parametersToReset = undefined;
+          }
 
-        // Invariants (assuming correct input):
-        // 1. exactly one of (parametersToReset, parametersToRetain) is defined
-        // 2. for each x in (parametersToReset, parametersToRetain), x is defined => x is an array
+          // Invariants (assuming correct input):
+          // 1. exactly one of (parametersToReset, parametersToRetain) is defined
+          // 2. for each x in (parametersToReset, parametersToRetain), x is defined => x is an array
 
-        // identify the complete list of parametersToRetain (whose values need to be saved)
-        if (parametersToReset) {
-          parametersToRetain = allParametersExcept(parametersToReset);
-        }
+          // identify the complete list of parametersToRetain (whose values need to be saved)
+          if (parametersToReset) {
+            parametersToRetain = allParametersExcept(parametersToReset);
+          }
 
-        parameters = getProperties(parametersToRetain);
+          parameters = getProperties(parametersToRetain);
 
-        // Consumers of the model's events will see a reset event followed by the invalidation event
-        // emitted when we set the model's parameters to their desired initial state. That's because
-        // the model semantics don't include reset-with-saving-of-parameters, just reset-to-initial-
-        // state. However, consumers of the interactive controller's modelReset event would expect
-        // reset-to-initial-state and restoration-of-saved-parameter-values to be a single,
-        // atomic event, given that they are triggered by the single
-        // interactiveController.resetModel() method. (This is similar to the reason that the
-        // interactive controller decorates its modelReset with a "cause" -- the model itself has no
-        // notion of *why* it's reset, and doesn't distinguish "setting up an experimental run" from
-        // "starting over"; those are interactive-level concepts.)
-        //
-        // Therefore, make sure to supress the modelReset event that would be automatically
-        // emitted by our listener to the modelController's modelReset event, and emit modelReset
-        // only after parameter values have been reset/restored.
-        ignoreModelResetEvent = true;
+          // Consumers of the model's events will see a reset event followed by the invalidation event
+          // emitted when we set the model's parameters to their desired initial state. That's because
+          // the model semantics don't include reset-with-saving-of-parameters, just reset-to-initial-
+          // state. However, consumers of the interactive controller's modelReset event would expect
+          // reset-to-initial-state and restoration-of-saved-parameter-values to be a single,
+          // atomic event, given that they are triggered by the single
+          // interactiveController.resetModel() method. (This is similar to the reason that the
+          // interactive controller decorates its modelReset with a "cause" -- the model itself has no
+          // notion of *why* it's reset, and doesn't distinguish "setting up an experimental run" from
+          // "starting over"; those are interactive-level concepts.)
+          //
+          // Therefore, make sure to supress the modelReset event that would be automatically
+          // emitted by our listener to the modelController's modelReset event, and emit modelReset
+          // only after parameter values have been reset/restored.
+          ignoreModelResetEvent = true;
 
-        modelController.reset(options.cause);
-        model.set(parameters);
-        notifyModelResetCallbacks(options.cause);
+          modelController.reset(options.cause);
+          model.set(parameters);
+          notifyModelResetCallbacks(options.cause);
 
-        ignoreModelResetEvent = false;
+          ignoreModelResetEvent = false;
+        });
       },
 
       updateModelView: function() {
@@ -1190,6 +1270,9 @@ define(function (require) {
             break;
           case "modelReset":
             modelResetCallbacks = modelResetCallbacks.concat(callbacks);
+            break;
+          case "willResetModel":
+            willResetModelCallbacks = willResetModelCallbacks.concat(callbacks);
             break;
           case "interactiveRendered":
             interactiveRenderedCallbacks = interactiveRenderedCallbacks.concat(callbacks);
