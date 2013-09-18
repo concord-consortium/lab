@@ -17,6 +17,7 @@
         "  setComponentDisabled('start-button', !get('isPlayable'));",
         "  setComponentDisabled('stop-button', get('isStopped'));",
         "  setComponentDisabled('new-run-button', !get('hasPlayed'));",
+        "  setComponentDisabled('analyze-data-button', !(get('hasPlayed') && get('isStopped') && canExportData()))",
         "}",
         "onPropertyChange('isPlayable', setButtonState);",
         "onPropertyChange('isStopped', setButtonState);",
@@ -87,7 +88,15 @@
       "id": "reset-button",
       "text": "Reset",
       "tooltip": "Reset the sensor.",
-      "action": "reload();"    }
+      "action": "reload();"
+    },
+    {
+      "type": "button",
+      "id": "analyze-data-button",
+      "text": "Analyze Data",
+      "tooltip": "Put data from the experiment run into DataGames.",
+      "action": "exportData();"
+    }
   ],
   "layout": {
     "below-model": [
@@ -97,7 +106,8 @@
       "start-button",
       "stop-button",
       "new-run-button",
-      "reset-button"
+      "reset-button",
+      "analyze-data-button"
     ]
   },
   "exports": {
