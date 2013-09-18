@@ -898,6 +898,10 @@ AUTHORING = false;
       var modelController,
           benchmarksTable = document.getElementById("model-benchmark-results");
 
+      if (!$showBenchmarks.prop("checked")) {
+        $("#show-benchmarks").prop("checked", true).change();
+      }
+
       if(isFullPage()) {
         modelController = controller.modelController;
         // Run interactive benchmarks + model benchmarks.
