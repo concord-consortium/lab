@@ -7,8 +7,10 @@ define(function () {
 
   return {
     disableView: function($element) {
-      $element.addClass("lab-disabled");
-      $element.append('<div class="lab-disabled-overlay"/>');
+      if (!$element.hasClass("lab-disabled")) {
+        $element.addClass("lab-disabled");
+        $element.append('<div class="lab-disabled-overlay"/>');
+      }
     },
 
     enableView: function($element) {
