@@ -7,7 +7,7 @@ define(function(require) {
       RunningAverageFilter = require('cs!common/filters/running-average-filter'),
       validator            = require('common/validator'),
       metadata             = require('./metadata'),
-      unitsDefinition      = require('./units-definition'),
+      unitsDefinition      = require('sensor-applet/units-definition'),
       appletClasses        = require('sensor-applet/applet-classes'),
       appletErrors         = require('sensor-applet/errors'),
       sensorDefinitions    = require('sensor-applet/sensor-definitions'),
