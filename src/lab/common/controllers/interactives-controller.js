@@ -911,6 +911,11 @@ define(function (require) {
     */
     function notifyWillResetModelAnd(closure) {
 
+      // Fast path; also required because no callbacks => we never call resetRequest.proceed()
+      if (willResetModelCallbacks.length === 0) {
+        closure();
+      }
+
       var numberOfResponsesRequired = willResetModelCallbacks.length;
       var numberOfProceedResponses = 0;
       var resetWasCanceled = false;
