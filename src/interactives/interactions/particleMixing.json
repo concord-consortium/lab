@@ -3,6 +3,7 @@
   "publicationStatus": "draft",
   "subtitle": "Explore how liquids mix at the molecular level.",
   "about": "",
+  "aspectRatio": 1,
   "models": [
     {
       "type": "md2d",
@@ -104,7 +105,7 @@
         "      atomIndices = getAtomsWithinShape(2);",
         "  batch(function(){",
         "    setShapeProperties([2,3],{visible: false});",
-        "    setShapeProperties([7,8],{y: 3.09});",
+        "    setShapeProperties([7,8],{y: 3.29});",
         "    setShapeProperties([6,7,8],{visible: true});",
         "    for (var i = 0, ii = atomIndices[0]; i < atomIndices.length; ii = atomIndices[++i]) {",
         "      setAtomProperties(ii, {x: getAtomProperties(ii).x + dx} );",
@@ -128,7 +129,7 @@
         "      atomIndices = getAtomsWithinShape(1);",
         "  batch(function(){",
         "    setShapeProperties([0,1],{visible: false});",
-        "    setShapeProperties([7,8],{y: 3.09});",
+        "    setShapeProperties([7,8],{y: 3.29});",
         "    setShapeProperties([6,7,8],{visible: true});",
         "    for (var i = 0, ii = atomIndices[0]; i < atomIndices.length; ii = atomIndices[++i]) {",
         "      setAtomProperties(ii, {x: getAtomProperties(ii).x + dx} );",
