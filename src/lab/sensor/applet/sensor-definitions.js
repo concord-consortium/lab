@@ -38,7 +38,7 @@ define(function() {
       sensorName: "GoIO Temperature Sensor",
       deviceName: "GoIO",
       samplesPerSecond: 10,
-      tareable: true,
+      tareable: false,
       minReading: 0,
       maxReading: 40,
       maxSeconds: 20
@@ -53,7 +53,7 @@ define(function() {
       sensorName: "GoIO Light Sensor",
       deviceName: "GoIO",
       samplesPerSecond: 10,
-      tareable: true,
+      tareable: false,
       minReading: 0,
       maxReading: 2000,
       maxSeconds: 20
@@ -143,7 +143,7 @@ define(function() {
       sensorName: "LabQuest Temperature Sensor",
       deviceName: "LabQuest",
       samplesPerSecond: 10,
-      tareable: true,
+      tareable: false,
       minReading: 0,
       maxReading: 40,
       maxSeconds: 20
@@ -158,7 +158,7 @@ define(function() {
       sensorName: "LabQuest Light Sensor",
       deviceName: "LabQuest",
       samplesPerSecond: 10,
-      tareable: true,
+      tareable: false,
       minReading: 0,
       maxReading: 2000,
       maxSeconds: 20
