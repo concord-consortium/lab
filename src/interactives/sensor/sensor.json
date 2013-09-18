@@ -121,12 +121,15 @@
       "id": "below-model",
       "top": "model.bottom",
       "width": "model.width",
-      "height": "0.7 * model.width"
+      "padding-right": "1em",
+      "padding-top": "0.5em",
+      "padding-bottom": "0.5em",
+      "height": "0.8 * interactive.height"
     },
     {
       "id": "container-bottom",
       "top": "below-model.bottom",
-      "width": "model.width"
+      "width": "below-model.width"
     }
   ]
 }
