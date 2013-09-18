@@ -120,16 +120,17 @@
     {
       "id": "below-model",
       "top": "model.bottom",
-      "width": "model.width",
-      "padding-right": "1em",
-      "padding-top": "0.5em",
-      "padding-bottom": "0.5em",
-      "height": "0.8 * interactive.height"
+      "padding-top": "0.3em",
+      "bottom": "container-bottom.top",
+      "padding-bottom": "2.5em",
+      "width": "interactive.width",
+      "padding-right": "1em"
     },
     {
       "id": "container-bottom",
-      "top": "below-model.bottom",
-      "width": "below-model.width"
+      "width": "below-model.width",
+      "height": "2.5em",
+      "bottom": "interactive.bottom"
     }
   ]
 }
