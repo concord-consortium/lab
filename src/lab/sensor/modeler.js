@@ -191,7 +191,7 @@ define(function(require) {
         applet.on('deviceUnplugged', function() { handleUnplugged('device'); });
         applet.on('sensorUnplugged', function() { handleUnplugged('sensor'); });
 
-        applet.append(function(error) {
+        applet.append($('body'),function(error) {
 
           if (error) {
             if (error instanceof appletErrors.JavaLoadError) {

@@ -206,23 +206,24 @@ define(function(require) {
             and call 'initializeSensor' when the user indicates the sensor is plugged in. If
             If the callback is called with a null argument, the applet is ready to collect data.
     */
-    append: function(callback) {
+    append: function($loadingParent, callback) {
       if (this.getState() !== 'not appended') {
         throw new Error("Can't call append() when sensor applet has left 'not appended' state");
       }
       console.log("appending test applet");
-      this.$testAppletContainer =
-        this._appendHTML(this.appletId + " -test-applet-container", this.getTestAppletHTML());
+      this.$testAppletContainer = this._appendHTML(this.appletId + " -test-applet-container",
+                                                   this.getTestAppletHTML(),
+                                                   $loadingParent);
       this._state = 'test applet appended';
       this._waitForTestApplet();
       this._appendCallback = callback;
     },
 
-    _appendHTML: function(containerId, html) {
+    _appendHTML: function(containerId, html, $parent) {
       var appletContainer = $('#' + containerId );
 
       if(!appletContainer.length){
-        appletContainer = $("<div id='" + containerId + "'/>").appendTo('body');
+        appletContainer = $("<div id='" + containerId + "'/>").appendTo($parent);
       }
 
       appletContainer.append(html);
@@ -241,7 +242,9 @@ define(function(require) {
         times: 30,
         interval: 1000,
         success: function() {
-          self.$appletContainer = self._appendHTML(this.appletId + "-container", self.getHTML());
+          self.$appletContainer = self._appendHTML(this.appletId + "-container",
+                                                   self.getHTML(),
+                                                   $('body'));
           self._state = 'appended';
           self._waitForApplet();
         },
