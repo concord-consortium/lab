@@ -60,6 +60,15 @@ define(function(require) {
       applet ready
       stopped
       started
+
+    api methods:
+      getState          useful for tracking initialization
+      append(callback)  initialize applet, checking for Java with test applet
+      readSensor        read a single value
+      start             start a collection
+      stop              stop collection
+      remove            remove applet
+
   */
   SensorApplet = miniClass.defineClass({
     // Before appending the applet, set this value with the path to an object that will receive applet callbacks.
