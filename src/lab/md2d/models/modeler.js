@@ -248,6 +248,10 @@ define(function(require) {
         // speedy computation by the engine.
         viewAtoms = [],
 
+        // An array of objects consisting of radial bond index numbers and radial bond property
+        // values, for easy consumption by the view.
+        viewRadialBonds = [],
+
         // An array of objects consisting of photon index numbers and property values, for easy
         // consumption by the view. Only defined if the quantum dynamics plugin is used.
         viewPhotons,
@@ -372,6 +376,7 @@ define(function(require) {
       // representation provided by modelState.photons
       viewPhotons = engine.callPluginAccessor('getViewPhotons');
       updateViewAtoms(modelState.atoms);
+      updateViewRadialBonds(modelState.radialBonds, modelState.atoms);
       updateViewElectricField();
     }
 
@@ -423,6 +428,32 @@ define(function(require) {
         }
       };
     }());
+
+    function updateViewRadialBonds(radialBonds, atoms) {
+      var n = engine.getNumberOfRadialBonds(),
+          viewBond, prop, i;
+
+      viewRadialBonds.length = n;
+
+      for (i = 0; i < n; i++) {
+        if (!viewRadialBonds[i]) {
+          viewRadialBonds[i] = {
+            idx: i
+          };
+        }
+        viewBond = viewRadialBonds[i];
+
+        for (prop in radialBonds) {
+          viewBond[prop] = radialBonds[prop][i];
+        }
+
+        // Additionally calculate x1, y1, x2, y2 properties that are useful for view.
+        viewBond.x1 = atoms.x[viewBond.atom1];
+        viewBond.y1 = atoms.y[viewBond.atom1];
+        viewBond.x2 = atoms.x[viewBond.atom2];
+        viewBond.y2 = atoms.y[viewBond.atom2];
+      }
+    }
 
     function updateViewElectricField() {
       // It may seem strange that model reads "viewOption"
@@ -1098,7 +1129,7 @@ define(function(require) {
     model.removeRadialBond = function(idx) {
       propertySupport.invalidatingChangePreHook();
       engine.removeRadialBond(idx);
-      propertySupport.invalidatingChangePreHook();
+      propertySupport.invalidatingChangePostHook();
       dispatch.removeRadialBond();
     };
 
@@ -1587,6 +1618,10 @@ define(function(require) {
       return viewAtoms;
     };
 
+    model.getRadialBonds = function() {
+      return viewRadialBonds;
+    };
+
     model.getElectricField = function() {
       return electricField;
     };
@@ -1604,10 +1639,6 @@ define(function(require) {
 
     model.turnOffLightSource = function() {
       engine.callPluginAccessor('turnOffLightSource');
-    };
-
-    model.get_radial_bond_results = function() {
-      return radialBondResults;
     };
 
     /**
@@ -1683,10 +1714,6 @@ define(function(require) {
 
     model.getNumberOfTextBoxes = function () {
       return  model.get('textBoxes').length;
-    };
-
-    model.get_radial_bonds = function() {
-      return radialBonds;
     };
 
     model.get_restraints = function() {

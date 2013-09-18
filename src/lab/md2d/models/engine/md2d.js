@@ -214,11 +214,6 @@ define(function (require, exports) {
         // Left undefined if there are no radial bonds.
         radialBonds,
 
-        // An array of individual radial bond index values and properties.
-        // Each object contains all radial bond properties (atom1, atom2, length, strength, style)
-        // and additionally (x,y) coordinates of bonded atoms defined as x1, y1, x2, y2 properties.
-        radialBondResults,
-
         // radialBondMatrix[i][j] === true when atoms i and j are "radially bonded"
         // radialBondMatrix[i][j] === undefined otherwise
         radialBondMatrix,
@@ -469,14 +464,6 @@ define(function (require, exports) {
           pairwiseLJProperties = new PairwiseLJProperties(engine);
 
           radialBondMatrix = [];
-
-          // Initialize radialBondResults[] array consisting of hashes of radial bond
-          // index numbers and transposed radial bond properties.
-
-          // FIXME. Why is the engine computing this? The modeler exists to insulate the engine
-          // code from view concerns such as this "results" array.
-          // See https://www.pivotaltracker.com/story/show/50086303
-          radialBondResults = engine.radialBondResults = [];
         },
 
         // Throws an informative error if a developer tries to use the setCoefficients method of an
@@ -2600,9 +2587,7 @@ define(function (require, exports) {
         // Set all properties from props hash.
         for (key in props) {
           if (props.hasOwnProperty(key)) {
-            radialBonds[key][i]       = props[key];
-            // Update radial bond results also.
-            radialBondResults[i][key] = props[key];
+            radialBonds[key][i] = props[key];
           }
         }
 
@@ -2833,15 +2818,6 @@ define(function (require, exports) {
           }
         }
 
-        // Also in radial bonds results...
-        // TODO: they should be recalculated while computing output state.
-        for (i = 0, len = radialBondResults.length; i < len; i++) {
-          if (radialBondResults[i].atom1 > idx)
-            radialBondResults[i].atom1--;
-          if (radialBondResults[i].atom2 > idx)
-            radialBondResults[i].atom2--;
-        }
-
         // Recalculate radial bond matrix, as indices have changed.
         calculateRadialBondMatrix();
 
@@ -2898,8 +2874,6 @@ define(function (require, exports) {
 
         N_radialBonds++;
 
-        // Add results object.
-        radialBondResults[N_radialBonds - 1] = {idx: N_radialBonds - 1};
         // Set new radial bond properties.
         engine.setRadialBondProperties(N_radialBonds - 1, props);
 
@@ -2950,8 +2924,6 @@ define(function (require, exports) {
         }
 
         N_radialBonds--;
-
-        arrays.remove(radialBondResults, idx);
 
         // Recalculate radial bond matrix.
         calculateRadialBondMatrix();
@@ -3828,13 +3800,6 @@ define(function (require, exports) {
           if (useCoulombInteraction && charge[i1] && charge[i2]) {
             PE -= coulomb.potential(Math.sqrt(r_sq), charge[i1], charge[i2], dielectricConst, realisticDielectricEffect);
           }
-
-          // Also save the updated position of the two bonded atoms
-          // in a row in the radialBondResults array.
-          radialBondResults[i].x1 = x[i1];
-          radialBondResults[i].y1 = y[i1];
-          radialBondResults[i].x2 = x[i2];
-          radialBondResults[i].y2 = y[i2];
         }
 
         // Angular bonds.
@@ -3912,7 +3877,10 @@ define(function (require, exports) {
         state.omega_CM       = omega_CM;
 
         // "micro" state. TODO: put radial bonds, etc here.
+        // TODO2: do we really need to put all objects here? Can't modeler ask about interesting
+        // arrays using just some getter or property, e.g.: engine.getAtoms() or engine.atoms?
         state.atoms = atoms;
+        state.radialBonds = radialBonds;
 
         // Let plugins modify output state, e.g. PE, KE etc.
         pluginController.callPluginFunction('processOutputState', [state]);

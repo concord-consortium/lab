@@ -106,8 +106,7 @@ define(function(require) {
       timePrefix = "",
       timeSuffix = "",
 
-      radialBonds,
-      radialBondResults,
+      modelRadialBonds,
       obstacle,
       obstacles,
       mockObstaclesArray = [],
@@ -1605,11 +1604,10 @@ define(function(require) {
     function setupRadialBonds() {
       radialBondsContainer.selectAll("path.radialbond1").remove();
       radialBondsContainer.selectAll("path.radialbond2").remove();
-      radialBonds = model.get_radial_bonds();
-      radialBondResults = model.get_radial_bond_results();
-      if (radialBondResults) {
-        radialBond1 = radialBondsContainer.selectAll("path.radialbond1").data(radialBondResults);
-        radialBond2 = radialBondsContainer.selectAll("path.radialbond2").data(radialBondResults);
+      modelRadialBonds = model.getRadialBonds();
+      if (modelRadialBonds) {
+        radialBond1 = radialBondsContainer.selectAll("path.radialbond1").data(modelRadialBonds);
+        radialBond2 = radialBondsContainer.selectAll("path.radialbond2").data(modelRadialBonds);
         radialBondEnter();
       }
     }
@@ -2302,7 +2300,7 @@ define(function(require) {
 
       updateParticles();
 
-      if (radialBondResults) {
+      if (modelRadialBonds) {
         // Always update radial bonds *after* particles, as particles can
         // change their color and radial bonds should reflect that too (=> use
         // updated colors array).
