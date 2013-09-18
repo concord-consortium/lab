@@ -1,5 +1,5 @@
 {
-  "title": "Simplest Hydrogen-Oxygen Reaction",
+  "title": "Hydrogen-Oxygen Reaction",
   "publicationStatus": "draft",
   "subtitle": "",
   "about": "",
@@ -7,8 +7,8 @@
     {
       "type": "md2d",
       "id": "simplest-reaction$0",
-      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/chemical-reactions/simplest-hydrogen-oxygen-reaction$0.json",
-      "importedFrom": "imports/legacy-mw-content/conversion-and-physics-examples/chemical-reactions/simplest-hydrogen-oxygen-reaction$0.mml",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/chemical-reactions/hydrogen-oxygen-reaction$0.json",
+      "importedFrom": "imports/legacy-mw-content/conversion-and-physics-examples/chemical-reactions/hydrogen-oxygen-reaction$0.mml",
       "viewOptions": {
         "controlButtons": "play_reset",
         "atomNumbers": true

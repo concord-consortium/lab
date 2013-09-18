@@ -38,8 +38,8 @@ The chain-termination step in this reaction worths some thinking, as you may hav
 </paragraph>
 <paragraph start="130" end="133">
 <LeftIndent>75.0</LeftIndent>
-<Alignment>1</Alignment>
 <RightIndent>75.0</RightIndent>
+<Alignment>1</Alignment>
 <content start="130" end="131">
 </content>
 
@@ -111,8 +111,8 @@ The chain-termination step in this reaction worths some thinking, as you may hav
 </paragraph>
 <paragraph start="984" end="987">
 <LeftIndent>75.0</LeftIndent>
-<Alignment>1</Alignment>
 <RightIndent>75.0</RightIndent>
+<Alignment>1</Alignment>
 <content start="984" end="985">
 <component><class>org.concord.modeler.PageComboBox</class>
 <modelclass>org.concord.mw2d.models.ReactionModel</modelclass>
@@ -146,11 +146,11 @@ show selectionhalo on;</script2>
 </paragraph>
 <paragraph start="987" end="992">
 <LeftIndent>75.0</LeftIndent>
-<Alignment>1</Alignment>
 <RightIndent>75.0</RightIndent>
+<Alignment>1</Alignment>
 <content start="987" end="988">
 <component><class>org.concord.mw2d.activity.ChemContainer</class>
-<resource>simplest-hydrogen-oxygen-reaction$0.mml</resource><button>Select Object</button><button>What's This?</button><button>Draw Lines</button><button>Draw Rectangle</button><button>Draw Ellipse</button><button>Draw Triangle</button><button>Mark Object</button><button>Count Objects</button><button>Measure Distance</button><button>Toggle Trajectory</button><button>Toggle Average Position</button><button>Add Nt</button><button>Add Pl</button><button>Add Ws</button><button>Add Ck</button><button>Add Obstacle</button><button>Heat Selected Objects</button><button>Cool Selected Objects</button><button>Add Positive Charge</button><button>Add Negative Charge</button><button>Increase Restraint</button><button>Decrease Restraint</button><button>Duplicate Object</button><button>Delete Objects</button><button>Rotate Object</button><button>Change Velocity</button><button>Build Radial Bond</button><button>Create Radial Bond</button><button>Build Angular Bond</button></component></content>
+<resource>hydrogen-oxygen-reaction$0.mml</resource><button>Select Object</button><button>What's This?</button><button>Draw Lines</button><button>Draw Rectangle</button><button>Draw Ellipse</button><button>Draw Triangle</button><button>Mark Object</button><button>Count Objects</button><button>Measure Distance</button><button>Toggle Trajectory</button><button>Toggle Average Position</button><button>Add Nt</button><button>Add Pl</button><button>Add Ws</button><button>Add Ck</button><button>Add Obstacle</button><button>Heat Selected Objects</button><button>Cool Selected Objects</button><button>Add Positive Charge</button><button>Add Negative Charge</button><button>Increase Restraint</button><button>Decrease Restraint</button><button>Duplicate Object</button><button>Delete Objects</button><button>Rotate Object</button><button>Change Velocity</button><button>Build Radial Bond</button><button>Create Radial Bond</button><button>Build Angular Bond</button></component></content>
 
 <content start="988" end="989">
 <component><class>org.concord.modeler.PageSlider</class>
@@ -176,8 +176,8 @@ show selectionhalo on;</script2>
 </paragraph>
 <paragraph start="992" end="1077">
 <LeftIndent>75.0</LeftIndent>
-<Alignment>1</Alignment>
 <RightIndent>75.0</RightIndent>
+<Alignment>1</Alignment>
 <content start="992" end="1032">
 </content>
 
@@ -236,8 +236,6 @@ show selectionhalo on;</script2>
 
 </paragraph>
 <paragraph start="1847" end="2706">
-<LeftIndent>75.0</LeftIndent>
-<RightIndent>75.0</RightIndent>
 <content start="1847" end="2047">
 </content>
 
@@ -262,10 +260,7 @@ show selectionhalo on;</script2>
 <content start="2123" end="2124">
 <subscript>true</subscript></content>
 
-<content start="2124" end="2705">
-</content>
-
-<content start="2705" end="2706">
+<content start="2124" end="2706">
 </content>
 
 </paragraph>

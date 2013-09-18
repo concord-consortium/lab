@@ -324,21 +324,21 @@
   <void property="properties"> 
    <void method="put"> 
     <string>filename</string> 
-    <string>simplest-hydrogen-oxygen-reaction$0.mml</string> 
+    <string>hydrogen-oxygen-reaction$0.mml</string> 
    </void> 
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1379494397000</long> 
+     <long>1379498914000</long> 
     </object> 
    </void> 
    <void method="put"> 
     <string>url</string> 
-    <string>/home/piotr/Concord/lab/imports/legacy-mw-content/conversion-and-physics-examples/chemical-reactions/simplest-hydrogen-oxygen-reaction$0.mml</string> 
+    <string>/home/piotr/Concord/lab/imports/legacy-mw-content/conversion-and-physics-examples/chemical-reactions/hydrogen-oxygen-reaction$0.mml</string> 
    </void> 
    <void method="put"> 
     <string>size</string> 
-    <long>31819</long> 
+    <long>31978</long> 
    </void> 
    <void method="put"> 
     <string>codebase</string> 
