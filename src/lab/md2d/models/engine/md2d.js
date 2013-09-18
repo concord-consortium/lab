@@ -4207,9 +4207,10 @@ define(function (require, exports) {
       // FIXME. Not a sustainable pattern. This is just a temporary pass-through of modeler-level
       // methods that are implemented in the quantumDynamics plugin, because for now the plugin is
       // only callable from the engine.
-      callPluginAccessor: function(accessorMethodName) {
+      callPluginAccessor: function(accessorMethodName, args) {
         var returnValue;
-        pluginController.callPluginFunction(accessorMethodName, [], function(_) {
+            args = args || [];
+        pluginController.callPluginFunction(accessorMethodName, args, function(_) {
           returnValue = _;
         });
         return returnValue;
