@@ -411,6 +411,11 @@ define(function (require) {
             interactivesController.repaintModelView();
           },
 
+          canExportData: function() {
+            var exportController = interactivesController.getDGExportController();
+            return exportController.canExportData();
+          },
+
           exportData: function exportData() {
             var exportController = interactivesController.getDGExportController();
             if (!exportController || !exportController.canExportData()) {

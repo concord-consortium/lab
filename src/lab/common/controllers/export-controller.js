@@ -252,6 +252,10 @@ define(function (require) {
         registerModelListeners();
       },
 
+      canExportData: function() {
+        return ExportController.canExportData();
+      },
+
       exportData: function() {
         var perRunPropertyLabels = [],
             perRunPropertyValues = [],
