@@ -260,11 +260,6 @@ define(function(require) {
         // (e.g. [{ x: 1, y: 2, fx: 0.1, fy: 0.3 }, ...]).
         electricField = [],
 
-        // A two dimensional array consisting of radial bond index numbers, radial bond
-        // properties, and the postions of the two bonded atoms.
-        // FIXME. Engine should not be calculating this.
-        radialBondResults,
-
         // The index of the "spring force" used to implement dragging of atoms in a running model
         liveDragSpringForceIndex = null,
 
@@ -650,7 +645,6 @@ define(function(require) {
       // FIXME. This should go away. https://www.pivotaltracker.com/story/show/50086079
       elements          = engine.elements;
       radialBonds       = engine.radialBonds;
-      radialBondResults = engine.radialBondResults;
       angularBonds      = engine.angularBonds;
       restraints        = engine.restraints;
       obstacles         = engine.obstacles;
