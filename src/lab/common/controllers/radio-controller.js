@@ -27,10 +27,12 @@ define(function () {
     // b) radio is bound to some property.
     function updateRadio() {
       var value = model.get(component.property),
+          modelId = interactivesController.getLoadedModelId(),
           i, len;
 
       for (i = 0, len = options.length; i < len; i++) {
-        if (options[i].value === value) {
+        if (options[i].value === undefined && !options[i].loadModel) return;
+        if ((options[i].value !== undefined && options[i].value === value) || options[i].loadModel === modelId) {
           $options[i].attr("checked", true);
           $fakeCheckables[i].addClass('checked');
         } else {
@@ -179,9 +181,10 @@ define(function () {
           // Register listener for property.
           model.addPropertiesListener([component.property], updateRadio);
           model.addPropertyDescriptionObserver(component.property, updateRadioDisabledState);
-          // Perform initial radio setup.
-          updateRadio();
         }
+
+        // Perform initial radio setup.
+        updateRadio();
       },
 
       // Returns view container.
