@@ -274,7 +274,6 @@
       "id": "propertiesGraph",
       "title": "Pendulum Angle",
       "xlabel": "Time  (s)",
-      "ylabel": "Angle (°)",
       "ymin": -100,
       "ymax": 100,
       "xmax": 10,
@@ -284,7 +283,8 @@
       "yFormatter": ".2s",
       "properties": [
         "currentAngle"
-      ]
+      ],
+      "resetAxesOnReset": false
     }
   ],
   "layout": {
