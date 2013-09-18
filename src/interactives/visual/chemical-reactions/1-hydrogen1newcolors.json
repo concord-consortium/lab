@@ -9,10 +9,34 @@
       "id": "hydrogen1newcolors$0",
       "url": "imports/legacy-mw-content/converted/visual/ChemicalReactions/hydrogen1newcolors$0.json",
       "viewOptions": {
-        "controlButtons": "play_reset_step",
-        "gridLines": true,
-        "xunits": true,
-        "yunits": true
+        "controlButtons": "play_reset",
+        "gridLines": false,
+        "xunits": false,
+        "yunits": false
+      },
+      "modelOptions": {
+        "chemicalReactions": {
+          "valenceElectrons": [
+            1,
+            1,
+            6,
+            7
+          ],
+          "bondEnergy": {
+            "default": 6,
+            "1-2": 5.2,
+            "1-1": 4.52,
+            "2-2": 0.1,
+            "2=2": 5.16
+          },
+          "activationEnergy": {
+            "default": 0.2,
+            "1+2-2": 0.01,
+            "2+1-2": 0.01,
+            "2+1-1": 0.01,
+            "1+2-1": 0.01
+          }
+        }
       }
     }
   ],
@@ -37,10 +61,23 @@
   "components": [
     {
       "type": "button",
+      "id": "start-button",
+      "text": "Start model",
+      "action": [
+        "if (isStopped()) {",
+        "  start();",
+        "}"
+      ]
+    },
+    {
+      "type": "button",
       "id": "spark-button",
       "text": "Spark",
       "action": [
         "var atoms, index, atom1, atom2, rbonds, atom1props, atom2props;",
+        "if (isStopped()) {",
+        "  start();",
+        "}",
         "atoms = atomsWithinRect(0.5, 0.5, 2, 2)",
         "if (atoms.length === 0) return;",
         "atoms = atoms.filter(function(i) { return getAtomProperties(i).element === 1; });",
@@ -67,7 +104,7 @@
       "type": "checkbox",
       "id": "slow_motion",
       "text": "Slow Motion",
-      "onClick": "if (value) { set({timeStep: 0.1}) } else { set({timeStep: 1})};"
+      "onClick": "if (value) { set({timeStep: 0.025}) } else { set({timeStep: 1})};"
     },
     {
       "type": "barGraph",
@@ -88,7 +125,7 @@
   ],
   "layout": {
     "bottom": [
-      "spark-button"
+      "start-button", "spark-button"
     ],
     "right": [
       "bar-graph"
