@@ -1580,6 +1580,8 @@ define(function(require) {
         radialBond2 = radialBondsContainer.selectAll("path.radialbond2").data(modelRadialBonds);
         radialBond1.enter().append("path").classed("radialbond1", true);
         radialBond2.enter().append("path").classed("radialbond2", true);
+
+        updateRadialBonds();
       }
     }
 
