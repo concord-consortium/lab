@@ -738,7 +738,7 @@ define(function (require) {
 
         // If there is an enclosing container we can export data to (e.g., we're iframed into
         // DataGames) then add an "Analyze Data" button the bottom position of the interactive
-        if (ExportController.isExportAvailable()) {
+        if (ExportController.isExportAvailable() && !interactive.hideExportDataControl) {
           createComponent({
             "type": "button",
             "text": "Analyze Data",
@@ -1260,15 +1260,18 @@ define(function (require) {
         };
 
         // add optional attributes to result if defined
-        if (typeof interactive.importedFrom !== 'undefined') {
+        if (interactive.importedFrom !== undefined) {
           result.importedFrom = interactive.importedFrom;
         }
 
-        if (typeof interactive.exports !== 'undefined') {
+        if (interactive.hideExportDataControl !== undefined) {
+          result.hideExportDataControl = interactive.hideExportDataControl;
+        }
+        if (interactive.exports !== undefined) {
           result.exports = $.extend(true, {}, interactive.exports);
         }
 
-        if (typeof interactive.experiment !== 'undefined') {
+        if (interactive.experiment !== undefined) {
           result.experiment = $.extend(true, {}, interactive.experiment);
         }
 
