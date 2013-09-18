@@ -6,6 +6,8 @@ $header-background-color1: rgba(58, 135, 139, 1.0)
 $header-background-color2: rgba(140, 187, 184, 1.0)
 $header-font-color: #f8f8f8
 
+$logo-color-light: rgba(248, 212, 136, 1.0)
+
 @import 'sass/bourbon/bourbon'
 @import url('molecules-view.css')
 @import 'sass/neat/neat'
@@ -106,6 +108,10 @@ $header-font-color: #f8f8f8
       background-color: lighten($header-background-color2, 20%)
       &:hover
         background-color: lighten($header-background-color2, 10%)
+      &#run-benchmarks-button
+        background-color: lighten($logo-color-light, 10%)
+        &:hover
+          background-color: $logo-color-light
     .disabled
       background-color: lighten($header-background-color2, 30%)
       &:hover

@@ -78,6 +78,7 @@
 
     #interactive-header
       #interactive-forward-back
+        %span#run-benchmarks-button.arrow Run Benchmarks
         %span#previous-interactive.arrow previous
         %span#next-interactive.arrow next
       #interactive-title
@@ -143,7 +144,6 @@
             %label{:for => "show-benchmarks"} Benchmarks
           #benchmarks-content.extras-item-content
             .extras-item-controls
-              %button#run-benchmarks-button.extras-item-controls Run Benchmarks
               .extras-item-description
                 Collect performance data by running 100 steps: first just the graphics, then
                 just the model, and finally the model and graphics together.
