@@ -817,36 +817,6 @@ define(function(require) {
       });
     }
 
-    function radialBondEnter() {
-      radialBond1.enter().append("path")
-        .attr({
-          "d": function(d) {
-            return findPoints(d, 1);
-          },
-          "stroke-width": radialBondWidth,
-          "stroke": getBondAtom1Color,
-          "fill": "none"
-        })
-        .classed("radialbond1", true)
-        .classed("disulphideBond", function(d) {
-          return d.type === RADIAL_BOND_TYPES.DISULPHIDE_BOND;
-        });
-
-      radialBond2.enter().append("path")
-        .attr({
-          "d": function(d) {
-            return findPoints(d, 2);
-          },
-          "stroke-width": radialBondWidth,
-          "stroke": getBondAtom2Color,
-          "fill": "none"
-        })
-        .classed("radialbond2", true)
-        .classed("disulphideBond", function(d) {
-          return d.type === RADIAL_BOND_TYPES.DISULPHIDE_BOND;
-        });
-    }
-
     function radialBondWidth(d) {
       if (isSpringBond(d)) {
         return 1.25;
@@ -1608,7 +1578,8 @@ define(function(require) {
       if (modelRadialBonds) {
         radialBond1 = radialBondsContainer.selectAll("path.radialbond1").data(modelRadialBonds);
         radialBond2 = radialBondsContainer.selectAll("path.radialbond2").data(modelRadialBonds);
-        radialBondEnter();
+        radialBond1.enter().append("path").classed("radialbond1", true);
+        radialBond2.enter().append("path").classed("radialbond2", true);
       }
     }
 
@@ -1888,18 +1859,26 @@ define(function(require) {
     }
 
     function updateRadialBonds() {
-      radialBond1.attr("d", function(d) {
-        return findPoints(d, 1);
-      });
-      radialBond2.attr("d", function(d) {
-        return findPoints(d, 2);
-      });
-
-      if (keShadingMode || chargeShadingMode) {
-        // Update also radial bonds color when keShading or chargeShading is on.
-        radialBond1.attr("stroke", getBondAtom1Color);
-        radialBond2.attr("stroke", getBondAtom2Color);
-      }
+      // "atom1", "atom2" or "type" properties can be changed during "tick", so we have to update
+      // visual properties that depend on them (e.g. width, color).
+      radialBond1
+          .attr("d", function(d) {
+            return findPoints(d, 1);
+          })
+          .classed("disulphideBond", function(d) {
+            return d.type === RADIAL_BOND_TYPES.DISULPHIDE_BOND;
+          })
+          .attr("stroke-width", radialBondWidth)
+          .attr("stroke", getBondAtom1Color);
+      radialBond2
+          .attr("d", function(d) {
+            return findPoints(d, 2);
+          })
+          .classed("disulphideBond", function(d) {
+            return d.type === RADIAL_BOND_TYPES.DISULPHIDE_BOND;
+          })
+          .attr("stroke-width", radialBondWidth)
+          .attr("stroke", getBondAtom2Color);
     }
 
     function getImageCoords(i) {
