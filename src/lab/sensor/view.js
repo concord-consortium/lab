@@ -112,7 +112,7 @@ define(function() {
 
         setupModelObservers();
 
-        $zeroButton.find('button').on('click', function() {
+        $zeroButton.on('click', 'button', function() {
           model.tare();
         });
       },
