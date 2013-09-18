@@ -44,9 +44,9 @@
       "name": "lightSourceEnabled",
       "onChange": [
         "if (value) {",
-        "  turnOnLightSource(0);",
+        "  turnOnLightSource();",
         "} else {",
-        "  turnOffLightSource(0);",
+        "  turnOffLightSource();",
         "}"
       ],
       "initialValue": false

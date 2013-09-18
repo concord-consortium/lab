@@ -147,15 +147,33 @@ define(function (require) {
         return api.choose(n, numAtoms);
       },
 
+      /**
+        Quantum Dynamics
+      */
 
-      /** Turn on quantum dynamics light source. TODO: sort out whether it's possible to expose
-          lightSource[index].enabled */
-      turnOnLightSource: function turnOnLightSource(index) {
-        model.turnOnLightSource(index);
+      /** Turn on quantum dynamics light source. */
+      turnOnLightSource: function turnOnLightSource() {
+        model.turnOnLightSource();
       },
 
-      turnOffLightSource: function turnOffLightSource(index) {
-        model.turnOffLightSource(index);
+      turnOffLightSource: function turnOffLightSource() {
+        model.turnOffLightSource();
+      },
+
+      setLightSourceAngle: function setLightSourceAngle(angle) {
+        model.setLightSourceAngle(angle);
+      },
+
+      setLightSourceFrequency: function setLightSourceFrequency(freq) {
+        model.setLightSourceFrequency(freq);
+      },
+
+      setLightSourcePeriod: function setLightSourcePeriod(period) {
+        model.setLightSourcePeriod(period);
+      },
+
+      setLightSourceNumber: function setLightSourceNumber(number) {
+        model.setLightSourceNumber(number);
       },
 
       /**

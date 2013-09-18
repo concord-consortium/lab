@@ -613,13 +613,28 @@ define(function(require) {
         }
       },
 
-      // Presumably, we will need to be able to say *which* light source to turn on
       turnOnLightSource: function() {
         isLightSourceOn = true;
       },
 
       turnOffLightSource: function() {
         isLightSourceOn = false;
+      },
+
+      setLightSourceAngle: function(angle) {
+        lightSource.angleOfIncidence = angle;
+      },
+
+      setLightSourceFrequency: function(freq) {
+        lightSource.frequency = freq;
+      },
+
+      setLightSourcePeriod: function(period) {
+        lightSource.radiationPeriod = period;
+      },
+
+      setLightSourceNumber: function(number) {
+        lightSource.numberOfBeams = number;
       },
 
       getPhotons: function() {

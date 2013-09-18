@@ -1635,6 +1635,22 @@ define(function(require) {
       engine.callPluginAccessor('turnOffLightSource');
     };
 
+    model.setLightSourceAngle = function(angle) {
+      engine.callPluginAccessor('setLightSourceAngle', [angle]);
+    };
+
+    model.setLightSourceFrequency = function(freq) {
+      engine.callPluginAccessor('setLightSourceFrequency', [freq]);
+    };
+
+    model.setLightSourcePeriod = function(period) {
+      engine.callPluginAccessor('setLightSourcePeriod', [period]);
+    };
+
+    model.setLightSourceNumber = function(number) {
+      engine.callPluginAccessor('setLightSourceNumber', [number]);
+    };
+
     /**
       Returns the total number of atoms, or else the number of atoms matching some criterion.
 
