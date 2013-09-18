@@ -19,7 +19,26 @@ define(function (require) {
 
     var dnaEditDialog = new DNAEditDialog(),
         // whether we are currently processing a batch command, suppresses repaint
-        inBatch = false;
+        batchDepth = 0;
+
+    var setProperty = function () {
+      var setter = arguments[0],
+          i      = arguments[1],
+          args;
+
+      if (Array.isArray(i)) {
+        args = Array.prototype.slice.call(arguments, 2, arguments.length);
+        api.batch( function() {
+          for (var j = 0, jj = i[0]; j < i.length; jj = i[++j]) {
+            setter.apply(null,Array.prototype.concat(jj, args));
+          }
+        });
+      } else {
+        args = Array.prototype.slice.call(arguments, 1, arguments.length);
+        setter.apply(null,args);
+      }
+      api.repaintIfReady();
+    };
 
     return {
 
@@ -332,8 +351,7 @@ define(function (require) {
         e.g. setAtomProperties(5, {x: 1, y: 0.5, charge: 1})
       */
       setAtomProperties: function setAtomProperties(i, props, checkLocation, moveMolecule, options) {
-        model.setAtomProperties(i, props, checkLocation, moveMolecule);
-        api.repaintIfReady(options);
+        setProperty(model.setAtomProperties, i, props, checkLocation, moveMolecule, options);
       },
 
       /**
@@ -394,8 +412,7 @@ define(function (require) {
       },
 
       setElementProperties: function setElementProperties(i, props) {
-        model.setElementProperties(i, props);
-        api.repaintIfReady();
+        setProperty(model.setElementProperties, i, props);
       },
 
       /**
@@ -432,8 +449,7 @@ define(function (require) {
         e.g. setObstacleProperties(0, {x: 1, y: 0.5, externalAx: 0.00001})
       */
       setObstacleProperties: function setObstacleProperties(i, props) {
-        model.setObstacleProperties(i, props);
-        api.repaintIfReady();
+        setProperty(model.setObstacleProperties, i, props);
       },
 
       /**
@@ -459,8 +475,7 @@ define(function (require) {
       },
 
       setShapeProperties: function setShapeProperties(i, props) {
-        model.setShapeProperties(i, props);
-        api.repaintIfReady();
+        setProperty( model.setShapeProperties, i, props );
       },
 
       getShapeProperties: function getShapeProperties(i) {
@@ -468,8 +483,7 @@ define(function (require) {
       },
 
       setLineProperties: function setLineProperties(i, props) {
-        model.setLineProperties(i, props);
-        api.repaintIfReady();
+        setProperty(model.setLineProperties, i, props);
       },
 
       getLineProperties: function getLineProperties(i) {
@@ -734,7 +748,7 @@ define(function (require) {
       },
 
       setTextBoxProperties: function(i, props) {
-        model.setTextBoxProperties(i, props);
+        setProperty(model.setTextBoxProperties, i, props);
       },
 
       getTextBoxProperties: function(i) {
@@ -750,19 +764,19 @@ define(function (require) {
       },
 
       repaintIfReady: function(options) {
-        if (!(inBatch || options && options.suppressRepaint)) {
+        if (!(batchDepth > 0 || options && options.suppressRepaint)) {
           api.repaint();
         }
       },
 
       batch: function(func) {
-        inBatch = true;
+        ++batchDepth;
 
         model.startBatch();
         func();
         model.endBatch();
 
-        inBatch = false;
+        --batchDepth;
 
         // call repaint manually
         api.repaintIfReady();
