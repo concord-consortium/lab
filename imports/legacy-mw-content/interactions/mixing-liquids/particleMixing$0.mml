@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?> 
-<java version="1.6.0_41" class="java.beans.XMLDecoder"> 
+<java version="1.6.0_51" class="java.beans.XMLDecoder"> 
  <object id="Element0" class="org.concord.mw2d.models.Element"> 
   <void property="epsilon"> 
    <double>0.009999999776482582</double> 
@@ -339,7 +339,7 @@
       <double>12.0</double> 
      </void> 
      <void property="x"> 
-      <double>419.0</double> 
+      <double>418.0</double> 
      </void> 
      <void property="y"> 
       <double>4.0</double> 
@@ -358,7 +358,7 @@
       <double>13.0</double> 
      </void> 
      <void property="x"> 
-      <double>508.0</double> 
+      <double>509.0</double> 
      </void> 
      <void property="y"> 
       <double>5.0</double> 
@@ -393,20 +393,20 @@
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1362688570000</long> 
+     <long>1379448396000</long> 
     </object> 
    </void> 
    <void method="put"> 
     <string>url</string> 
-    <string>/Users/ddamelin/Documents/CC Stuff/Interactions/MWActiviites/particleMixing/particleMixing$0.mml</string> 
+    <string>/Users/wsd/cc/lab/imports/legacy-mw-content/interactions/mixing-liquids/particleMixing$0.mml</string> 
    </void> 
    <void method="put"> 
     <string>size</string> 
-    <long>97274</long> 
+    <long>97215</long> 
    </void> 
    <void method="put"> 
     <string>codebase</string> 
-    <string>/Users/ddamelin/Documents/CC Stuff/Interactions/MWActiviites/particleMixing</string> 
+    <string>/Users/wsd/cc/lab/imports/legacy-mw-content/interactions/mixing-liquids</string> 
    </void> 
   </void> 
   <void property="quantumRule"> 
@@ -1352,10 +1352,10 @@ are made from tiny particles.</string>
    <float>0.05</float> 
   </void> 
   <void property="rx"> 
-   <double>125.22052045249224</double> 
+   <double>126.22052045249224</double> 
   </void> 
   <void property="ry"> 
-   <double>345.0382256815557</double> 
+   <double>340.0382256815557</double> 
   </void> 
   <void property="vx"> 
    <double>0.001454510658560007</double> 
@@ -1372,10 +1372,10 @@ are made from tiny particles.</string>
    <float>0.05</float> 
   </void> 
   <void property="rx"> 
-   <double>126.15089049293476</double> 
+   <double>127.0</double> 
   </void> 
   <void property="ry"> 
-   <double>261.62539075886565</double> 
+   <double>254.0</double> 
   </void> 
   <void property="vx"> 
    <double>0.0037359429327230346</double> 
@@ -1395,7 +1395,7 @@ are made from tiny particles.</string>
    <double>124.60782182262193</double> 
   </void> 
   <void property="ry"> 
-   <double>309.625641349147</double> 
+   <double>305.625641349147</double> 
   </void> 
   <void property="vx"> 
    <double>-0.006852519324373618</double> 
@@ -1412,10 +1412,10 @@ are made from tiny particles.</string>
    <float>0.05</float> 
   </void> 
   <void property="rx"> 
-   <double>169.17115061178674</double> 
+   <double>167.0</double> 
   </void> 
   <void property="ry"> 
-   <double>268.4248364211142</double> 
+   <double>262.0</double> 
   </void> 
   <void property="vx"> 
    <double>7.255109700429904E-4</double> 
@@ -1432,10 +1432,10 @@ are made from tiny particles.</string>
    <float>0.05</float> 
   </void> 
   <void property="rx"> 
-   <double>172.85837528585392</double> 
+   <double>169.85837528585392</double> 
   </void> 
   <void property="ry"> 
-   <double>346.2406718102168</double> 
+   <double>341.2406718102168</double> 
   </void> 
   <void property="vx"> 
    <double>-0.011714393444579902</double> 
@@ -1452,10 +1452,10 @@ are made from tiny particles.</string>
    <float>0.05</float> 
   </void> 
   <void property="rx"> 
-   <double>169.64155384064802</double> 
+   <double>167.64155384064802</double> 
   </void> 
   <void property="ry"> 
-   <double>307.90707956466724</double> 
+   <double>303.90707956466724</double> 
   </void> 
   <void property="vx"> 
    <double>0.003999874071282991</double> 
@@ -1472,10 +1472,10 @@ are made from tiny particles.</string>
    <float>0.05</float> 
   </void> 
   <void property="rx"> 
-   <double>157.3672234094099</double> 
+   <double>154.3672234094099</double> 
   </void> 
   <void property="ry"> 
-   <double>289.55694284571535</double> 
+   <double>283.55694284571535</double> 
   </void> 
   <void property="vx"> 
    <double>0.01859180964520827</double> 
@@ -1492,10 +1492,10 @@ are made from tiny particles.</string>
    <float>0.05</float> 
   </void> 
   <void property="rx"> 
-   <double>180.39575477599962</double> 
+   <double>176.39575477599962</double> 
   </void> 
   <void property="ry"> 
-   <double>288.8715868734415</double> 
+   <double>283.8715868734415</double> 
   </void> 
   <void property="vx"> 
    <double>-0.010178638555722666</double> 
@@ -1515,7 +1515,7 @@ are made from tiny particles.</string>
    <double>132.70643008054478</double> 
   </void> 
   <void property="ry"> 
-   <double>288.88457039844127</double> 
+   <double>284.88457039844127</double> 
   </void> 
   <void property="vx"> 
    <double>-0.0070613646286439465</double> 
@@ -1535,7 +1535,7 @@ are made from tiny particles.</string>
    <double>158.74802403681545</double> 
   </void> 
   <void property="ry"> 
-   <double>326.9061092184322</double> 
+   <double>322.9061092184322</double> 
   </void> 
   <void property="vx"> 
    <double>-0.013029300999314437</double> 
@@ -1552,10 +1552,10 @@ are made from tiny particles.</string>
    <float>0.05</float> 
   </void> 
   <void property="rx"> 
-   <double>182.0402823835148</double> 
+   <double>178.0402823835148</double> 
   </void> 
   <void property="ry"> 
-   <double>326.0887695626575</double> 
+   <double>322.0887695626575</double> 
   </void> 
   <void property="vx"> 
    <double>-1.2635970867951268E-4</double> 
@@ -1575,7 +1575,7 @@ are made from tiny particles.</string>
    <double>136.57382702609686</double> 
   </void> 
   <void property="ry"> 
-   <double>327.852965346473</double> 
+   <double>321.852965346473</double> 
   </void> 
   <void property="vx"> 
    <double>-0.008329431565637677</double> 
@@ -1595,7 +1595,7 @@ are made from tiny particles.</string>
    <double>146.63138216824626</double> 
   </void> 
   <void property="ry"> 
-   <double>307.78979356843854</double> 
+   <double>303.78979356843854</double> 
   </void> 
   <void property="vx"> 
    <double>0.006071102820983831</double> 
@@ -1612,10 +1612,10 @@ are made from tiny particles.</string>
    <float>0.05</float> 
   </void> 
   <void property="rx"> 
-   <double>148.5111565482239</double> 
+   <double>147.5111565482239</double> 
   </void> 
   <void property="ry"> 
-   <double>346.13067204278684</double> 
+   <double>340.13067204278684</double> 
   </void> 
   <void property="vx"> 
    <double>-0.0024264462362300707</double> 
@@ -1635,7 +1635,7 @@ are made from tiny particles.</string>
    <double>146.48052622144104</double> 
   </void> 
   <void property="ry"> 
-   <double>268.5751638124291</double> 
+   <double>264.5751638124291</double> 
   </void> 
   <void property="vx"> 
    <double>0.0120761643485892</double> 
@@ -3077,7 +3077,7 @@ are made from tiny particles.</string>
    <float>0.05</float> 
   </void> 
   <void property="rx"> 
-   <double>312.2937062409986</double> 
+   <double>311.2937062409986</double> 
   </void> 
   <void property="ry"> 
    <double>289.62800474334705</double> 

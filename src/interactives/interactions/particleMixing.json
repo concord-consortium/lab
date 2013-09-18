@@ -1,7 +1,7 @@
 {
-  "title": "particleMixing",
+  "title": "Mixing Liquids",
   "publicationStatus": "draft",
-  "subtitle": "",
+  "subtitle": "Explore how liquids mix at the molecular level.",
   "about": "",
   "models": [
     {
@@ -10,11 +10,165 @@
       "url": "imports/legacy-mw-content/converted/interactions/mixing-liquids/particleMixing$0.json",
       "importedFrom": "imports/legacy-mw-content/interactions/mixing-liquids/particleMixing$0.mml",
       "viewOptions": {
-        "controlButtons": "play_reset"
-      }
+        "controlButtons": ""
+      },
+      "onLoad": [
+        "setTextBoxProperties(3, {x: 1.05} );",
+        "setTextBoxProperties(4, {x: 2.39} );",
+        "setTextBoxProperties(1, {x: 3.4, y: 2.6});",
+        "setTextBoxProperties(0, {x: 0.35, y: 1.64});",
+        "setLineProperties([0,1,2,3],{lineColor: 'red'});",
+        "start();",
+        "var timeStepsPerTick = get('timeStepsPerTick'),",
+        "    waterIndices     = getAtomsWithinShape(2),",
+        "    ethanolIndices   = getAtomsWithinShape(1);",
+        "callEvery(timeStepsPerTick,function(){",
+        "  var _waterIndices   = waterIndices,",
+        "      _ethanolIndices = ethanolIndices;",
+        "  if (get('applyHeatBathToWater')) setTemperatureOfAtoms(_waterIndices,get('waterTemp'));",
+        "  if (get('applyHeatBathToEthanol')) setTemperatureOfAtoms(_ethanolIndices,get('ethanolTemp'));",
+        "  var nToDrop = getAtomsWithinShape(6).length;",
+        "  if (get('isWaterDropping')) {",
+        "    if (nToDrop > 0) {",
+        "      set('applyHeatBathToWater',false);",
+        "    } else {",
+        "      set('applyHeatBathToWater',true);",
+        "      set('isWaterDropping',false);",
+        "      set('isWaterDropped',true);",
+        "      setShapeProperties([6,7,8],{visible: false});",
+        "      setShapeProperties([7,8],{y: -10});",
+        "      setShapeProperties([2,3],{visible: true});",
+        "    }",
+        "  }",
+        "  if (get('isEthanolDropping')) {",
+        "    if (nToDrop > 0) {",
+        "      set('applyHeatBathToEthanol',false);",
+        "    } else {",
+        "      set('applyHeatBathToEthanol',true);",
+        "      set('isEthanolDropping',false);",
+        "      set('isEthanolDropped',true);",
+        "      setShapeProperties([6,7,8],{visible: false});",
+        "      setShapeProperties([7,8],{y: -10});",
+        "      setShapeProperties([0,1],{visible: true});",
+        "    }",
+        "  }",
+        "});"
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "applyHeatBathToWater",
+      "initialValue": true
+    },
+    {
+      "name": "applyHeatBathToEthanol",
+      "initialValue": true
+    },
+    {
+      "name": "isWaterDropped",
+      "initialValue": false
+    },
+    {
+      "name": "isWaterDropping",
+      "initialValue": false
+    },
+    {
+      "name": "isEthanolDropping",
+      "initialValue": false
+    },
+    {
+      "name": "isEthanolDropped",
+      "initialValue": false
+    },
+    {
+      "name": "waterTemp",
+      "initialValue": 50
+    },
+    {
+      "name": "ethanolTemp",
+      "initialValue": 50
     }
   ],
   "components": [
+    {
+      "type": "button",
+      "id": "add-water",
+      "text": "Add water",
+      "action": [
+        "if ( !(get('isWaterDropped') || get('isWaterDropping') || get('isEthanolDropping')) ) {",
+        "  stop();",
+        "  set('isWaterDropping',true);",
+        "  var dx = getShapeProperties(4).x - getShapeProperties(2).x,",
+        "      dy = getShapeProperties(6).y - getShapeProperties(2).y,",
+        "      atomIndices = getAtomsWithinShape(2);",
+        "  batch(function(){",
+        "    setShapeProperties([2,3],{visible: false});",
+        "    setShapeProperties([7,8],{y: 3.09});",
+        "    setShapeProperties([6,7,8],{visible: true});",
+        "    for (var i = 0, ii = atomIndices[0]; i < atomIndices.length; ii = atomIndices[++i]) {",
+        "      setAtomProperties(ii, {x: getAtomProperties(ii).x + dx} );",
+        "      setAtomProperties(ii, {y: getAtomProperties(ii).y + dy} );",
+        "    }",
+        "  });",
+        "  start();",
+        "}"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "add-ethanol",
+      "text": "Add ethanol",
+      "action": [
+        "if ( !(get('isEthanolDropped') || get('isEthanolDropping') || get('isWaterDropping')) ) {",
+        "  stop();",
+        "  set('isEthanolDropping',true);",
+        "  var dx = getShapeProperties(4).x - getShapeProperties(1).x,",
+        "      dy = getShapeProperties(6).y - getShapeProperties(2).y,",
+        "      atomIndices = getAtomsWithinShape(1);",
+        "  batch(function(){",
+        "    setShapeProperties([0,1],{visible: false});",
+        "    setShapeProperties([7,8],{y: 3.09});",
+        "    setShapeProperties([6,7,8],{visible: true});",
+        "    for (var i = 0, ii = atomIndices[0]; i < atomIndices.length; ii = atomIndices[++i]) {",
+        "      setAtomProperties(ii, {x: getAtomProperties(ii).x + dx} );",
+        "      setAtomProperties(ii, {y: getAtomProperties(ii).y + dy} );",
+        "    }",
+        "  });",
+        "  start();",
+        "}"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "cap-and-shake",
+      "text": "Cap and shake",
+      "action": [
+        "var p0     = getShapeProperties(4),",
+        "    nAbove = atomsWithinRect(p0.x, p0.y + p0.height, p0.width, p0.height).length;",
+        "if ( get('isWaterDropped') && get('isEthanolDropped') && nAbove === 0 ) {",
+        "  setShapeProperties(9, {y: getShapeProperties(4).y + getShapeProperties(4).height});",
+        "  set('waterTemp',5000);",
+        "  set('ethanolTemp',5000);",
+        "}"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "stop-shaking",
+      "text": "Stop shaking",
+      "action": [
+        "setShapeProperties(9, {y: -10});",
+        "set('waterTemp',50);",
+        "set('ethanolTemp',50);"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "reset",
+      "text": "reset",
+      "action": "reset();"
+    }
   ],
   "layout": {
     "bottom": [
