@@ -1388,6 +1388,8 @@ parseMML = (mmlString) ->
         lightSource.radiationPeriod  = getIntProperty      $lightSource, "radiationPeriod"
         lightSource.numberOfBeams    = getIntProperty      $lightSource, "numberOfBeams"
         lightSource.angleOfIncidence = getFloatProperty    $lightSource, "angleOfIncidence"
+        lightSource.radiationPeriod  = lightSource.radiationPeriod / 2 if lightSource.radiationPeriod
+        lightSource.angleOfIncidence = -lightSource.angleOfIncidence if lightSource.angleOfIncidence
 
       removeNullProperties lightSource
 

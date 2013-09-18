@@ -181,7 +181,7 @@
     "lightSource": {
       "on": false,
       "frequency": 3.3000002,
-      "radiationPeriod": 500
+      "radiationPeriod": 250
     }
   }
 }
