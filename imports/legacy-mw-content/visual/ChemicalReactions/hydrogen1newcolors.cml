@@ -13,62 +13,62 @@ This model shows how hydrogen and oxygen burn to form water. The equation for th
 </text>
 <section start="0" end="206">
 <paragraph start="0" end="26">
-<LeftIndent>8.0</LeftIndent>
 <Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
 <SpaceAbove>4.0</SpaceAbove>
 <content start="0" end="25">
-<bold>true</bold><size>16</size></content>
+<size>16</size><bold>true</bold></content>
 
 <content start="25" end="26">
 <bold>true</bold><size>14</size></content>
 
 </paragraph>
 <paragraph start="26" end="122">
-<LeftIndent>8.0</LeftIndent>
 <Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
 <SpaceAbove>4.0</SpaceAbove>
 <content start="26" end="121">
 <size>14</size></content>
 
 <content start="121" end="122">
-<bold>true</bold><size>17</size></content>
+<size>17</size><bold>true</bold></content>
 
 </paragraph>
 <paragraph start="122" end="138">
-<LeftIndent>8.0</LeftIndent>
 <Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
 <content start="122" end="124">
-<bold>true</bold><size>17</size></content>
+<size>17</size><bold>true</bold></content>
 
 <content start="124" end="125">
-<bold>true</bold><size>11</size></content>
+<size>11</size><bold>true</bold></content>
 
 <content start="125" end="129">
-<bold>true</bold><size>17</size></content>
+<size>17</size><bold>true</bold></content>
 
 <content start="129" end="130">
-<bold>true</bold><size>11</size></content>
+<size>11</size><bold>true</bold></content>
 
 <content start="130" end="135">
-<bold>true</bold><size>17</size></content>
+<size>17</size><bold>true</bold></content>
 
 <content start="135" end="136">
-<bold>true</bold><size>11</size></content>
+<size>11</size><bold>true</bold></content>
 
 <content start="136" end="138">
-<bold>true</bold><size>17</size></content>
+<size>17</size><bold>true</bold></content>
 
 </paragraph>
 <paragraph start="138" end="139">
-<LeftIndent>8.0</LeftIndent>
 <Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
 <content start="138" end="139">
-<bold>true</bold><size>17</size></content>
+<size>17</size><bold>true</bold></content>
 
 </paragraph>
 <paragraph start="139" end="144">
-<LeftIndent>8.0</LeftIndent>
 <Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
 <content start="139" end="140">
 <component><class>org.concord.modeler.PageTextBox</class>
 <width>270.0</width>
@@ -138,9 +138,9 @@ This model shows how hydrogen and oxygen burn to form water. The equation for th
 
 </paragraph>
 <paragraph start="144" end="202">
-<LeftIndent>8.0</LeftIndent>
 <SpaceBelow>15.0</SpaceBelow>
 <Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
 <content start="144" end="194">
 </content>
 
@@ -232,8 +232,8 @@ run;</script>
 
 </paragraph>
 <paragraph start="202" end="204">
-<LeftIndent>8.0</LeftIndent>
 <Alignment>1</Alignment>
+<LeftIndent>8.0</LeftIndent>
 <content start="202" end="203">
 <component><class>org.concord.modeler.PageTextBox</class>
 <width>760.0</width>
