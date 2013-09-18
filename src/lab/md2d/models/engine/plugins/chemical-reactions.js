@@ -381,7 +381,7 @@ define(function(require) {
           });
 
           atoms.sharedElectrons[a1] += newType;
-          atoms.sharedElectrons[a1] += newType - oldType;
+          atoms.sharedElectrons[a2] += newType - oldType;
           atoms.sharedElectrons[a3] -= oldType;
 
           // a3 is no longer connected to bond with ID = bondIdx.
