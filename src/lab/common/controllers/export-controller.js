@@ -93,6 +93,7 @@ define(function (require) {
     // environment.
     function handleDataDiscard(resetRequest) {
       var $textarea;
+      var $label;
 
       // Yuck, but here we go.
       modalAlert(
@@ -102,27 +103,38 @@ define(function (require) {
         "  <p><input type='radio' name='reason' value='strange-data'>The data looks strange.</input></p>" +
         "  <p><input type='radio' name='reason' value='making-adjustments'>I'm making adjustments before collecting data.</input></p>" +
         "  <p><input type='radio' name='reason' value='other'>Other</input></p>" +
-        "  <label for ='export-alert-explanation'><em>Please explain &quot;other&quot; responses below</em></label>"+
-        "  <textarea id='export-alert-explanation' rows='4' cols='60'/>" +
+        "  <label class='lab-disabled'><em>Please explain &quot;other&quot; responses below</em></label>"+
+        "  <textarea disabled class='lab-disabled' rows='4' style='width:100%'></textarea>" +
         "</form>", {
         OK: function() {
           logAction('discarded data', getCurrentPerRunData(), {
-            reasonCode: $(this).find('input:radio:checked').val(),
+            reasonCode: $(this).find('input[name=reason]:checked').val(),
             reasonText: $(this).find('textarea').val()
           });
-          $(this).dialog('close');
+          $(this).remove();
           resetRequest.proceed();
         },
         Cancel: function() {
-          $(this).dialog('close');
+          $(this).remove();
           resetRequest.cancel();
         }
       });
 
-      $textarea = $('#export-alert-form textarea').attr('disabled', true);
+      $label = $('#export-alert-form label');
+      $textarea = $('#export-alert-form textarea');
 
-      $('#export-alert-form input:radio').on('change', function() {
-        $textarea.attr('disabled', $('#export-alert-form input:radio:checked').val() !== 'other');
+      $('#export-alert-form input[name=reason]').on('change', function() {
+        var isOtherChecked = $('#export-alert-form input[name=reason]:checked').val() === 'other';
+
+        $label
+          .toggleClass('lab-disabled', !isOtherChecked);
+        $textarea
+          .toggleClass('lab-disabled', !isOtherChecked)
+          .prop('disabled', !isOtherChecked);
+
+        if (isOtherChecked) {
+          $textarea.focus();
+        }
       });
     }
 
