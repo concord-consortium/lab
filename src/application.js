@@ -882,6 +882,10 @@ AUTHORING = false;
     var $showBenchmarks = $("#show-benchmarks"),
         $benchmarksContent = $("#benchmarks-content"),
         $runBenchmarksButton = $("#run-benchmarks-button"),
+        $submitBenchmarksButton = $("#submit-benchmarks-button"),
+        $submissionInfo = $("#browser-submission-info"),
+        $showSubmissionInfo = $("#show-browser-submission-info"),
+        $browserFingerprint = $("#browser-fingerprint"),
         fingerprint = new Fingerprint().get();               // semi-unique browser id
 
     $showBenchmarks.change(function() {
@@ -921,6 +925,13 @@ AUTHORING = false;
       if (Lab.config.benchmarkAPIurl) {
         $submitBenchmarksButton.removeAttr("disabled");
       }
+    });
+
+    $browserFingerprint.text(fingerprint);
+
+    $showSubmissionInfo.on('click', function() {
+      $submissionInfo.toggle();
+      return false;
     });
 
     $submitBenchmarksButton.on('click', function() {

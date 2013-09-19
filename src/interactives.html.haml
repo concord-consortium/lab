@@ -150,6 +150,30 @@
                 First row contains averaged values from all runs.
             %button#submit-benchmarks-button{:disabled => "disabled"} Submit Data
             %span#submit-success
+            .small
+              Note: Some identifying information will be sent along with your benchmark data. To see more
+              %a#show-browser-submission-info{:href => "#"} click here.
+            #browser-submission-info
+              %p
+                In order to measure performance over time, we save a semi-unique "fingerprint" of
+                each browser that runs the benchmarks. This allows us to look at performance over
+                time of models running in a single user's browser.
+              %p
+                To do this, we log a number of identifying pieces on information about your
+                browser, such as the browser's userAgent, language settings, colorDepth, etc. This
+                information is then hashed into a single number.
+              %p
+                The unique fingerprint for your browser is
+                %span#browser-fingerprint
+              %p
+                It may be possible to use this information to uniquely identify your browser
+                elsewhere on the web. If you prefer that this information is not submitted, please
+                do not hit the Submit button.
+              %p
+                This funationality uses the
+                %a{:href => "https://github.com/Valve/fingerprintjs"} fingerprintjs
+                library.
+
             .model-benchmark-results
               %table#model-benchmark-results.model-benchmark-results
 
