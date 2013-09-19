@@ -1135,7 +1135,12 @@ define(function (require) {
 
       /**
         Reset the model to its initial state, restoring or retaining model parameters according to
-        these options. The model will issue a 'reset' event and reset its tick history.
+        these options. The interactives controller will emit a 'willResetModel'.  The willResetModel
+        observers can ask to wait for asynchronous confirmation before the model is actually reset;
+        see the notifyWillResetModelAnd function.
+
+        Once the reset is confirmed, model will issue a 'willReset' event, reset its tick history,
+        and emit a 'reset' event.
 
         Options:
           parametersToRetain:
