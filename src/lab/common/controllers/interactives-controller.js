@@ -1128,6 +1128,7 @@ define(function (require) {
       getNextTabIndex: getNextTabIndex,
 
       reloadModel: function() {
+        model.stop();
         notifyWillResetModelAnd(function() {
           modelController.reload();
         });
@@ -1156,6 +1157,7 @@ define(function (require) {
             optional string giving the cause of the reset, e.g., "new-run"
       */
       resetModel: function(options) {
+        model.stop();
         notifyWillResetModelAnd(function() {
           options = options || {};
 
