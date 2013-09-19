@@ -45,12 +45,12 @@ define(function (require) {
         run: function(done) {
           var elapsed, start, i;
           model.stop();
-          start = +Date.now();
+          start = +performance.now();
           i = 0;
           while (i++ < 100) {
             controller.modelContainer.update();
           }
-          elapsed = Date.now() - start;
+          elapsed = performance.now() - start;
           done(100/elapsed*1000);
         }
       },
@@ -61,14 +61,14 @@ define(function (require) {
         run: function(done) {
           var start, elapsed;
           model.stop();
-          start = +Date.now();
+          start = +performance.now();
           model.suppressEvents(function () {
             var i = 0;
             while (i++ < 100) {
               model.tick();
             }
           });
-          elapsed = Date.now() - start;
+          elapsed = performance.now() - start;
           done(100/elapsed*1000);
         }
       },
@@ -79,12 +79,12 @@ define(function (require) {
         run: function(done) {
           var start, elapsed, i;
           model.stop();
-          start = +Date.now();
+          start = +performance.now();
           i = 0;
           while (i++ < 100) {
             model.tick();
           }
-          elapsed = Date.now() - start;
+          elapsed = performance.now() - start;
           done(100/elapsed*1000);
         }
       },

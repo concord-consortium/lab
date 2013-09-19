@@ -2,6 +2,8 @@
 
 define(function () {
 
+  var performance = require("common/performance");
+
   return function Benchmarks(controller) {
     var model = controller.model;
 
@@ -25,12 +27,12 @@ define(function () {
           var elapsed, start, i;
           model.stop();
           model.properties.use_WebGL = false;
-          start = +Date.now();
+          start = +performance.now();
           i = 0;
           while (i++ < 100) {
             controller.modelContainer.update();
           }
-          elapsed = Date.now() - start;
+          elapsed = performance.now() - start;
           done(100/elapsed*1000);
         }
       },
@@ -41,14 +43,14 @@ define(function () {
         run: function(done) {
           var start, elapsed;
           model.stop();
-          start = +Date.now();
+          start = +performance.now();
           model.suppressEvents(function () {
             var i = 0;
             while (i++ < 50) {
               model.tick();
             }
           });
-          elapsed = Date.now() - start;
+          elapsed = performance.now() - start;
           done(50/elapsed*1000);
         }
       },
@@ -60,12 +62,12 @@ define(function () {
           var start, elapsed, i;
           model.stop();
           model.properties.use_WebGL = false;
-          start = +Date.now();
+          start = +performance.now();
           i = 0;
           while (i++ < 50) {
             model.tick();
           }
-          elapsed = Date.now() - start;
+          elapsed = performance.now() - start;
           done(50/elapsed*1000);
         }
       },
@@ -77,12 +79,12 @@ define(function () {
           var start, elapsed, i;
           model.stop();
           model.properties.use_WebGL = true;
-          start = +Date.now();
+          start = +performance.now();
           i = 0;
           while (i++ < 50) {
             model.tick();
           }
-          elapsed = Date.now() - start;
+          elapsed = performance.now() - start;
           done(50/elapsed*1000);
         }
       },

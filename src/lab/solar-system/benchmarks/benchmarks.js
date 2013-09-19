@@ -2,6 +2,8 @@
 
 define(function (require) {
 
+  var performance = require("common/performance");
+
   return function Benchmarks(controller) {
 
     var benchmarks = [
@@ -31,12 +33,12 @@ define(function (require) {
           var elapsed, start, i;
 
           model.stop();
-          start = +Date.now();
+          start = +performance.now();
           i = -1;
           while (i++ < 100) {
             controller.modelContainer.update();
           }
-          elapsed = Date.now() - start;
+          elapsed = performance.now() - start;
           done(100/elapsed*1000);
         }
       },
@@ -48,13 +50,13 @@ define(function (require) {
           var elapsed, start, i;
 
           model.stop();
-          start = +Date.now();
+          start = +performance.now();
           i = -1;
           while (i++ < 100) {
             // advance model 1 tick, but don't paint the display
             model.tick(1, { dontDispatchTickEvent: true });
           }
-          elapsed = Date.now() - start;
+          elapsed = performance.now() - start;
           done(100/elapsed*1000);
         }
       },
@@ -66,12 +68,12 @@ define(function (require) {
           var start, elapsed, i;
 
           model.stop();
-          start = +Date.now();
+          start = +performance.now();
           i = -1;
           while (i++ < 100) {
             model.tick();
           }
-          elapsed = Date.now() - start;
+          elapsed = performance.now() - start;
           done(100/elapsed*1000);
         }
       },
