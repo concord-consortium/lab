@@ -226,7 +226,7 @@ define(function(require) {
           appendApplet();
         },
         Cancel: function() {
-          $(this).dialog("close");
+          $(this).remove();
         }
       });
     }
@@ -235,7 +235,7 @@ define(function(require) {
       removeApplet();
       simpleAlert(message, {
         OK: function() {
-          $(this).dialog("close");
+          $(this).remove();
         }
       });
     }
