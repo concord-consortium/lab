@@ -5,7 +5,11 @@ define(function () {
   var performance = require("common/performance");
 
   return function Benchmarks(controller) {
-    var model = controller.model;
+    var model = controller.model,
+
+        gapsSum = 0,
+        count = 0,
+        lTime = null;
 
     var benchmarks = [
       {
@@ -93,6 +97,19 @@ define(function () {
         numeric: true,
         formatter: d3.format("5.1f"),
         run: function(done) {
+          gapsSum = 0;
+          count = 0;
+          lTime = null;
+          model.on("tickEnd", function () {
+            lTime = performance.now();
+          });
+          model.on("tickStart", function () {
+            if (lTime) {
+              gapsSum += performance.now() - lTime;
+              count += 1;
+            }
+          });
+
           // warmup
           model.properties.use_WebGL = false;
           model.start();
@@ -112,10 +129,24 @@ define(function () {
         }
       },
       {
+        name: "gap b/w frames (ms)",
+        numeric: true,
+        formatter: d3.format("5.1f"),
+        run: function(done) {
+          // Data is collected during FPS calculations. We don't have to run model for next X
+          // seconds, making the whole process much longer.
+          done(gapsSum / count);
+        }
+      },
+      {
         name: "fps-webgl",
         numeric: true,
         formatter: d3.format("5.1f"),
         run: function(done) {
+          gapsSum = 0;
+          count = 0;
+          lTime = null;
+
           // warmup
           model.properties.use_WebGL = true;
           model.start();
@@ -132,6 +163,16 @@ define(function () {
               }, 2000);
             }, 100);
           }, 1000);
+        }
+      },
+      {
+        name: "gap b/w frames-webgl (ms)",
+        numeric: true,
+        formatter: d3.format("5.1f"),
+        run: function(done) {
+          // Data is collected during FPS calculations. We don't have to run model for next X
+          // seconds, making the whole process much longer.
+          done(gapsSum / count);
         }
       },
       {

@@ -1,10 +1,13 @@
-/*global define model */
+/*global define, model, Lab */
 
 define(function (require) {
 
   var performance = require("common/performance");
 
   return function Benchmarks(controller) {
+    var gapsSum = 0,
+        count = 0,
+        lTime = null;
 
     var benchmarks = [
       {
@@ -82,6 +85,19 @@ define(function (require) {
         numeric: true,
         formatter: d3.format("5.1f"),
         run: function(done) {
+          gapsSum = 0;
+          count = 0;
+          lTime = null;
+          model.on("tickEnd", function () {
+            lTime = performance.now();
+          });
+          model.on("tickStart", function () {
+            if (lTime) {
+              gapsSum += performance.now() - lTime;
+              count += 1;
+            }
+          });
+
           // warmup
           model.start();
           setTimeout(function() {
@@ -100,6 +116,16 @@ define(function (require) {
         }
       },
       {
+        name: "gap b/w frames (ms)",
+        numeric: true,
+        formatter: d3.format("5.1f"),
+        run: function(done) {
+          // Data is collected during FPS calculations. We don't have to run model for next X
+          // seconds, making the whole process much longer.
+          done(gapsSum / count);
+        }
+      },
+      {
         name: "interactive",
         numeric: false,
         run: function(done) {
@@ -109,7 +135,6 @@ define(function (require) {
     ];
 
     return benchmarks;
-
-  }
+  };
 
 });
