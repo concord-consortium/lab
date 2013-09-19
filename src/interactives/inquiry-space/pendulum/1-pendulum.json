@@ -36,7 +36,8 @@
         "function setButtonState() {",
         "  setComponentDisabled('start-button', !get('isPlayable'));",
         "  setComponentDisabled('stop-button', get('isPlayable'));",
-        "  setComponentDisabled('new-run-button', !get('hasPlayed'));",
+        "  setComponentDisabled('new-run-button', ! (get('hasPlayed') && get('isPlayable')));",
+        "  setComponentDisabled('analyze-data-button', ! (get('hasPlayed') && get('isPlayable')));",
         "}",
         "function resetAngle() {",
         "  set({startingAngle: get('startingAngle')});",
@@ -117,24 +118,21 @@
       "currentAngle"
     ]
   },
+  "hideExportDataControl": true,
   "components": [
     {
       "type": "button",
       "id": "start-button",
       "text": "Start",
       "tooltip": "Start the experiment run.",
-      "action": [
-        "start();"
-      ]
+      "action": "start();"
     },
     {
       "type": "button",
       "id": "stop-button",
       "text": "Stop",
       "tooltip": "Stop the experiment run.",
-      "action": [
-        "stop();"
-      ]
+      "action": "stop();"
     },
     {
       "type": "button",
@@ -153,9 +151,14 @@
       "id": "reset-button",
       "text": "Reset",
       "tooltip": "Reset the experiment parameters to the original settings.",
-      "action": [
-        "reload();"
-      ]
+      "action": "reload()"
+    },
+    {
+      "type": "button",
+      "id": "analyze-data-button",
+      "text": "Analyze Data",
+      "tooltip": "Put data from the experiment run into DataGames.",
+      "action": "exportData();"
     },
     {
       "type": "slider",
@@ -274,7 +277,6 @@
       "id": "propertiesGraph",
       "title": "Pendulum Angle",
       "xlabel": "Time  (s)",
-      "ylabel": "Angle (°)",
       "ymin": -100,
       "ymax": 100,
       "xmax": 10,
@@ -284,7 +286,8 @@
       "yFormatter": ".2s",
       "properties": [
         "currentAngle"
-      ]
+      ],
+      "resetAxesOnReset": false
     }
   ],
   "layout": {
@@ -296,7 +299,8 @@
         "start-button",
         "stop-button",
         "new-run-button",
-        "reset-button"
+        "reset-button",
+        "analyze-data-button"
       ],
       [
         "gravity-slider",

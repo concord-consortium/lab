@@ -77,7 +77,7 @@ define(function (require) {
       this._actionClickFunction = script;
     }
     var that = this;
-    this.$element.on("click."+this._nameSpace, function() {
+    this.$element.on("click."+this._nameSpace, this._clickTargetSelector || null, function() {
       that._actionClickFunction();
     });
     // Also add a special class indicating that this text node is a clickable.
