@@ -263,7 +263,17 @@ define(function(require) {
 
       sensorPollingIntervalID = setInterval(function() {
         makeInvalidatingChange(function() {
-          rawSensorValue = applet.readSensor();
+          try{
+            rawSensorValue = applet.readSensor();
+          } catch(error) {
+            clearInterval(sensorPollingIntervalID);
+            if(error instanceof appletErrors.SensorConnectionError){
+              handleSensorConnectionError();
+            } else {
+              throw error;
+            }
+            return;
+          }
           if (isTaring) {
             model.properties.tareValue = rawSensorValue;
             isTaring = false;
