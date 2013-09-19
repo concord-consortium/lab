@@ -1,9 +1,15 @@
 /*global define, Lab, d3 */
 
-define(function () {
+define(function (require) {
+
+  var performance = require("common/performance");
 
   return function Benchmarks(controller) {
-    var model = controller.model;
+    var model = controller.model,
+
+        gapsSum = 0,
+        count = 0,
+        lTime = null;
 
     var benchmarks = [
       {
@@ -39,12 +45,12 @@ define(function () {
         run: function(done) {
           var elapsed, start, i;
           model.stop();
-          start = +Date.now();
+          start = +performance.now();
           i = 0;
           while (i++ < 100) {
             controller.modelContainer.update();
           }
-          elapsed = Date.now() - start;
+          elapsed = performance.now() - start;
           done(100/elapsed*1000);
         }
       },
@@ -55,14 +61,14 @@ define(function () {
         run: function(done) {
           var start, elapsed;
           model.stop();
-          start = +Date.now();
+          start = +performance.now();
           model.suppressEvents(function () {
             var i = 0;
             while (i++ < 100) {
               model.tick();
             }
           });
-          elapsed = Date.now() - start;
+          elapsed = performance.now() - start;
           done(100/elapsed*1000);
         }
       },
@@ -73,12 +79,12 @@ define(function () {
         run: function(done) {
           var start, elapsed, i;
           model.stop();
-          start = +Date.now();
+          start = +performance.now();
           i = 0;
           while (i++ < 100) {
             model.tick();
           }
-          elapsed = Date.now() - start;
+          elapsed = performance.now() - start;
           done(100/elapsed*1000);
         }
       },
@@ -87,6 +93,20 @@ define(function () {
         numeric: true,
         formatter: d3.format("5.1f"),
         run: function(done) {
+          // Collect data for the next benchmark - "gap b/w frames".
+          gapsSum = 0;
+          count = 0;
+          lTime = null;
+          model.on("tickEnd", function () {
+            lTime = performance.now();
+          });
+          model.on("tickStart", function () {
+            if (lTime) {
+              gapsSum += performance.now() - lTime;
+              count += 1;
+            }
+          });
+
           // warmup
           model.start();
           setTimeout(function() {
@@ -101,6 +121,16 @@ define(function () {
               }, 2000);
             }, 100);
           }, 1000);
+        }
+      },
+      {
+        name: "gap b/w frames (ms)",
+        numeric: true,
+        formatter: d3.format("5.1f"),
+        run: function(done) {
+          // Data is collected during FPS calculations. We don't have to run model for next X
+          // seconds, making the whole process much longer.
+          done(gapsSum / count);
         }
       },
       {

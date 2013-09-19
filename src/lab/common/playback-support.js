@@ -17,7 +17,7 @@ define(function (require) {
           // module.
           if (dispatch) {
             if (dispatch.on && dispatch.addEventTypes) {
-              dispatch.addEventTypes("play", "stop");
+              dispatch.addEventTypes("play", "stop", "tickStart", "tickEnd");
               return true;
             } else {
               throw new Error("[PlaybackSupport] Provided Dispatch object doesn't implement required interface!");
@@ -83,6 +83,7 @@ define(function (require) {
           stopped = false;
 
           timer(function timerTick(elapsedTime) {
+            if (eventsSupported) dispatch.tickStart();
             console.timeEnd('gap between frames');
             // Cancel the timer and refuse to to step the model, if the model is stopped.
             // This is necessary because there is no direct way to cancel a d3 timer.
@@ -101,6 +102,7 @@ define(function (require) {
             target.tick(elapsedTime);
 
             console.time('gap between frames');
+            if (eventsSupported) dispatch.tickEnd();
             return false;
           });
 
