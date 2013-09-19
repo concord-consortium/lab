@@ -37,6 +37,7 @@
       "initialValue": false
     }
   ],
+  "hideExportDataControl": true,
   "components": [
     {
       "type": "graph",
