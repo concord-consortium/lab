@@ -882,7 +882,7 @@ AUTHORING = false;
     var $showBenchmarks = $("#show-benchmarks"),
         $benchmarksContent = $("#benchmarks-content"),
         $runBenchmarksButton = $("#run-benchmarks-button"),
-        $submitBenchmarksButton = $("#submit-benchmarks-button");
+        fingerprint = new Fingerprint().get();               // semi-unique browser id
 
     $showBenchmarks.change(function() {
       if (this.checked) {
@@ -931,6 +931,8 @@ AUTHORING = false;
       headers.each(function(i) {
         data[this.innerHTML] = $('#model-benchmark-results tr.average td:nth-child('+(i+1)+')').text()
       });
+
+      data["browser id"] = fingerprint;
 
       $.ajax({
         type: "POST",
