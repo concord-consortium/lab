@@ -881,7 +881,8 @@ AUTHORING = false;
   function setupBenchmarks() {
     var $showBenchmarks = $("#show-benchmarks"),
         $benchmarksContent = $("#benchmarks-content"),
-        $runBenchmarksButton = $("#run-benchmarks-button");
+        $runBenchmarksButton = $("#run-benchmarks-button"),
+        $submitBenchmarksButton = $("#submit-benchmarks-button");
 
     $showBenchmarks.change(function() {
       if (this.checked) {
@@ -916,6 +917,27 @@ AUTHORING = false;
           Lab.benchmark.renderToTable(benchmarksTable, message.benchmarks, message.results);
         });
       }
+
+      if (Lab.config.benchmarkAPIurl) {
+        $submitBenchmarksButton.removeAttr("disabled");
+      }
+    });
+
+    $submitBenchmarksButton.on('click', function() {
+      var data = {},
+          headers = headers = $('#model-benchmark-results th');
+
+      // create data object directly from the table element
+      headers.each(function(i) {
+        data[this.innerHTML] = $('#model-benchmark-results tr.average td:nth-child('+(i+1)+')').text()
+      });
+
+      $.ajax({
+        type: "POST",
+        url: Lab.config.benchmarkAPIurl,
+        data: data,
+        complete: function() { $('#submit-success').text("Sent!"); }
+      });
     });
   }
 
