@@ -443,6 +443,7 @@ public/vendor: \
 	public/vendor/requirejs \
 	public/vendor/text \
 	public/vendor/domReady \
+	public/vendor/fingerprintjs \
 	public/favicon.ico
 
 public/vendor/dsp.js:
@@ -583,6 +584,11 @@ public/vendor/codemirror:
 	rm -rf public/vendor/codemirror/mode/go
 	rm -rf public/vendor/codemirror/mode/rst
 	rm -rf public/vendor/codemirror/mode/verilog
+
+public/vendor/fingerprintjs:
+	mkdir -p public/vendor/fingerprintjs
+	cp vendor/fingerprintjs/fingerprint.min.js public/vendor/fingerprintjs
+	cp vendor/fingerprintjs/README.md public/vendor/fingerprintjs
 
 public/favicon.ico:
 	cp -f src/favicon.ico public/favicon.ico
