@@ -108,9 +108,9 @@
     "container-bottom": [
       "start-button",
       "stop-button",
+      "analyze-data-button",
       "new-run-button",
-      "reset-button",
-      "analyze-data-button"
+      "reset-button"
     ]
   },
   "exports": {
