@@ -1,6 +1,8 @@
 /*global define: false */
-
 define(function () {
+  // example userAgent strings:
+  // chrome mobile: Mozilla/5.0 (Linux; Android 4.2.2; Galaxy Nexus Build/JDQ39) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.72 Mobile Safari/537.36
+
   var windows_platform_token = {
         "Windows NT 6.2": "Windows 8",
         "Windows NT 6.1": "Windows 7",
@@ -48,6 +50,14 @@ define(function () {
           androidmatch = /.+?(Android) ([0123456789ab.]+).*?; (.+?)\)/,
           match;
 
+      match = navigator.userAgent.match(androidchromematch);
+      if (match && match[1]) {
+        return {
+          browser: "Chrome",
+          version: match[4],
+          oscpu: match[1] + "/" + match[2] + "/" + match[3]
+        };
+      }
       match = navigator.userAgent.match(chromematch);
       if (match && match[1]) {
         return {
@@ -67,14 +77,6 @@ define(function () {
           browser: match[1],
           version: match[2] + ' ' + buildDate,
           oscpu: os_platform()
-        };
-      }
-      match = navigator.userAgent.match(androidchromematch);
-      if (match && match[1]) {
-        return {
-          browser: "Chrome",
-          version: match[4],
-          oscpu: match[1] + "/" + match[2] + "/" + match[3]
         };
       }
       match = navigator.userAgent.match(androidfirefoxmatch);
