@@ -1404,7 +1404,7 @@ define(function (require) {
           }
         },
         {
-          name: "layout (time in ms)",
+          name: "layout (ms)",
           numeric: true,
           formatter: d3.format("5.1f"),
           run: function(done) {
