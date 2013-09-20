@@ -276,12 +276,14 @@ define(function (require) {
       namespace: namespace,
 
       tick: function () {
-        performance.enterScope("model");
-
         var i, len, diverged;
+
+        performance.enterScope("engine");
         for (i = 0, len = model.properties.timeStepsPerTick; i < len; i++) {
           coreModel.nextStep();
         }
+        performance.leaveScope("engine");
+
         if (coreModel.isWebGLActive()) {
           if (ticksToGPUSync > 0) {
             ticksToGPUSync--;
@@ -294,9 +296,6 @@ define(function (require) {
           diverged = hasDiverged();
         }
         updateAnemometers();
-
-        performance.leaveScope("model");
-
         model.updateAllOutputProperties();
         dispatch.tick();
 

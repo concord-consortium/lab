@@ -1748,8 +1748,6 @@ define(function(require) {
     };
 
     model.tick = function() {
-      performance.enterScope("model");
-
       var timeStep = model.get('timeStep'),
           t, sampleTime;
 
@@ -1773,20 +1771,16 @@ define(function(require) {
         }
       }
 
+      performance.enterScope("engine");
       // timeStepsPerTick is defined in Classic MW as the number of timesteps per view update.
       // However, in MD2D we prefer the more physical notion of integrating for a particular
       // length of time.
-      console.time('integration');
       engine.integrate(model.get('timeStepsPerTick') * timeStep, timeStep);
-      console.timeEnd('integration');
-      console.time('reading model state');
+      performance.leaveScope("engine");
+
       readModelState();
       model.updateAllOutputProperties();
-      console.timeEnd('reading model state');
-
-      console.time('tick history push');
       tickHistory.push();
-      console.timeEnd('tick history push');
 
       newStep = true;
 
@@ -1794,9 +1788,6 @@ define(function(require) {
       // whether we really added or removed radial bond.
       if (engine.radialBondsChanged) dispatch.addRadialBond();
 
-      performance.leaveScope("model");
-      // Tick is out of the "model" scope, as we don't know anything about the code that will be
-      // immediately executed. Probably this will be rendering and / or some user scripts.
       dispatch.tick();
     };
 

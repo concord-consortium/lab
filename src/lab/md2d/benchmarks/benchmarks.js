@@ -39,7 +39,7 @@ define(function (require) {
         }
       },
       {
-        name: "model (ms)",
+        name: "engine (ms)",
         numeric: true,
         formatter: d3.format("5.1f"),
         run: function(done) {
@@ -58,7 +58,7 @@ define(function (require) {
                 model.stop();
 
                 performance.collectData(false);
-                done(performance.getAvgTime("model"));
+                done(performance.getAvgTime("engine"));
 
               }, TEST_TIME);
             }, 100);
