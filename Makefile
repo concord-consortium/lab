@@ -63,7 +63,8 @@ all: \
 	vendor/d3/d3.js \
 	node_modules \
 	bin \
-	public
+	public \
+	./script/generate-js-version.rb
 
 # install Ruby Gem development dependencies
 .PHONY: bin
