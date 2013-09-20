@@ -245,17 +245,28 @@ define(function (require) {
       }
     }
 
-    function positionContainers() {
-      var container, $container,
-          left, top, right, bottom, height, i, ii, id;
+    function setSizeAndFontSizeOfModelContainer() {
+      var canonicalWidth = layoutConfig.canonicalWidth,
+          containerScale,
+          modelFontScale;
+
+      containerScale = $interactiveContainer.width() / canonicalWidth;
+      modelFontScale = layoutConfig.canonicalFontSize * fontScale * containerScale;
 
       $modelContainer.css({
         width:  modelWidth,
         height: modelController.getHeightForWidth(modelWidth, fontSizeChanged),
         left:   modelLeft,
         top:    modelTop,
-        "font-size": 1/calculatedFontScale + "em"
+        "font-size": modelFontScale * modelWidth/$interactiveContainer.width() + "em"
       });
+    }
+
+    function positionContainers() {
+      var container, $container,
+          left, top, right, bottom, height, i, ii, id;
+
+      setSizeAndFontSizeOfModelContainer();
 
       fontSizeChanged = false;
 
