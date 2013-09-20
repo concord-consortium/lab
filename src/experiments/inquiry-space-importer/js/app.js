@@ -78,7 +78,7 @@ for (key in Lab.sensorApplet.sensorDefinitions) {
     ISImporter.sensors[key] = {
       applet: new appletClass({
         listenerPath: 'ISImporter.sensors.' + key + '.applet',
-        sensorDefinition: sensorDef,
+        sensorDefinitions: [sensorDef],
         appletId: sensorDef.measurementType + '-sensor'
       }),
       menuGroup: sensorMenuGroup,
@@ -266,6 +266,7 @@ ISImporter.appController = new ISImporter.Object({
   init: function() {
     var self = this;
     this.appletDataListener = function(y) {
+      y = y[0];
       if (self.sensor.tareable) {
         y -= (self.sensor.tareValue || 0);
       }
@@ -641,22 +642,20 @@ ISImporter.appController = new ISImporter.Object({
   singleValueTimerId: null,
   readSingleValue: function() {
     try {
-      var values = this.currentApplet.appletInstance.getConfiguredSensorsValues(this.currentApplet.deviceType);
-      if (values != null) {
-        var val = values[0];
+      var values = this.currentApplet.readSensor();
+      var val = values[0];
 
-        if (this.sensor.tareable) {
-          val -= (this.sensor.tareValue || 0);
-        }
-
-        var precision = this.sensor.precision;
-        if (typeof(precision) === 'undefined' || precision === null) {
-          precision = 1;
-        }
-
-        this.$realtimeDisplayValue.text(ISImporter.fixed(val, precision));
-        this.$realtimeDisplayUnits.show();
+      if (this.sensor.tareable) {
+        val -= (this.sensor.tareValue || 0);
       }
+
+      var precision = this.sensor.precision;
+      if (typeof(precision) === 'undefined' || precision === null) {
+        precision = 1;
+      }
+
+      this.$realtimeDisplayValue.text(ISImporter.fixed(val, precision));
+      this.$realtimeDisplayUnits.show();
     } catch(e) {
       // console.log("problem enumeratingSensors " + e);
     }

@@ -73,10 +73,10 @@ define(function(require) {
     // Before appending the applet, set this value with the path to an object that will receive applet callbacks.
     listenerPath: '',
 
-    // Before appending the applet this should be set to a definition from
+    // Before appending the applet this should be set to a array of definitions from
     // senor-applet/sensor-definitions.js
     // FIXME: these should be updated to be device independent
-    sensorDefinition: null,
+    sensorDefinitions: null,
 
     // Before appending the applet, set this to the path or URL where jars can be found
     codebase: '',
@@ -164,11 +164,18 @@ define(function(require) {
         // the wrong deviceType may throw (?).
         return false;
       }
-      for (i = 0; i < attachedSensors.length; i++) {
-        if (this.appletInstance.getTypeConstantName(attachedSensors[i].getType()) ===
-              this.sensorDefinition.typeConstantName) {
-          return true;
+      // FIXME we should use the applet configure method to check if the right sensors are attached
+      // instead of doing this comparison here
+      // For now this is skipped if there is more than one sensorDefinition
+      if(this.sensorDefinitions.length === 1) {
+        for (i = 0; i < attachedSensors.length; i++) {
+          if (this.appletInstance.getTypeConstantName(attachedSensors[i].getType()) ===
+                this.sensorDefinitions[0].typeConstantName) {
+            return true;
+          }
         }
+      } else {
+        return true;
       }
       return false;
     },
@@ -266,7 +273,7 @@ define(function(require) {
         times: 30,
         interval: 1000,
         success: function() {
-          var req;
+          var requests = [];
           // remove test applet
           self.$testAppletContainer.html("");
           if (self.getState() === 'appended') {
@@ -275,11 +282,15 @@ define(function(require) {
 
           self.appletInstance = $('#'+self.appletId)[0];
 
-          // Get a SensorRequest object for this measurement type
-          req = self.appletInstance.getSensorRequest(self.sensorDefinition.measurementType);
+          for(var i=0; i<self.sensorDefinitions.length; i++){
+            // Get a SensorRequest object for this measurement type
+            requests[i] =
+              self.appletInstance.getSensorRequest(self.sensorDefinitions[i].measurementType);
+          }
+
           // Try to initialize the sensor for the correct device and measurement type (e.g., goio,
           // distance). Java will callback to initSensorInterfaceComplete on success or error.
-          self.appletInstance.initSensorInterface(self.listenerPath, self.deviceType, [req]);
+          self.appletInstance.initSensorInterface(self.listenerPath, self.deviceType, requests);
         },
         fail: function () {
           self._appendCallback(new errors.AppletInitializationError("Timed out waiting for sensor applet to initialize."));
@@ -306,7 +317,7 @@ define(function(require) {
         this._state = 'stopped';
         throw new errors.SensorConnectionError("readSensor: sensor is not connected");
       }
-      return values[0];
+      return values;
     },
 
     start: function() {
@@ -378,11 +389,17 @@ define(function(require) {
     },
 
     dataReceived: function(type, count, data) {
-      var self = this;
+      var self = this,
+          // FIXME this is inefficient to make a new object each time
+          dataSample = [],
+          numberOfSensors = this.sensorDefinitions.length;
       setTimeout(function () {
         data = data || [];
-        for (var i = 0, len = data.length; i < len; i++) {
-          self.emit('data', data[i]);
+        for (var sampleIndex = 0; sampleIndex < count; sampleIndex++) {
+          for (var i = 0; i < numberOfSensors; i++) {
+            dataSample[i] = data[sampleIndex*numberOfSensors + i];
+            self.emit('data', dataSample);
+          }
         }
       }, 5);
     },

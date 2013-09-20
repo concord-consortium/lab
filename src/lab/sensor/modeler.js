@@ -264,7 +264,7 @@ define(function(require) {
       sensorPollingIntervalID = setInterval(function() {
         makeInvalidatingChange(function() {
           try{
-            rawSensorValue = applet.readSensor();
+            rawSensorValue = applet.readSensor()[0];
           } catch(error) {
             clearInterval(sensorPollingIntervalID);
             if(error instanceof appletErrors.SensorConnectionError){
@@ -329,7 +329,7 @@ define(function(require) {
 
         applet = window.Lab.sensor[sensorType] = new AppletClass({
           listenerPath: 'Lab.sensor.' + sensorType,
-          sensorDefinition: sensorDefinition,
+          sensorDefinitions: [sensorDefinition],
           appletId: sensorType+'-sensor',
           codebase: labConfig.actualRoot + "jnlp"
         });
@@ -367,7 +367,7 @@ define(function(require) {
       // the problem go away!
       window.__bizarreSafariFix = 1;
 
-      rawSensorValue = d;
+      rawSensorValue = d[0];
       // Once we collect data for a given sensor, don't allow changingn the sensor typea
       if (!didCollectData) {
         model.freeze('sensorType');

@@ -133,18 +133,18 @@
 
         if(sensorDef.appletClass === 'goio'){
           appletClass = Lab.sensorApplet.GoIO;
-        } else if (sensorDef.appletClass === 'goio'){
+        } else if (sensorDef.appletClass === 'labquest'){
           appletClass = Lab.sensorApplet.LabQuest;
         } else {
           throw "unknown appletClass: " + sensorDef.appletClass;
         }
         applet = new appletClass({
-          sensorDefinition: sensorDef,
+          sensorDefinitions: [sensorDef],
           codebase: '/jnlp',
           listenerPath: 'applet'
         });
         applet.on('data', function(data){
-          graph.addSamples([data]);
+          graph.addSamples([data[0]]);
         });
         applet.append($('body'), function(error){
           if(error){
