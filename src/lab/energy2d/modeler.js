@@ -6,6 +6,7 @@ define(function (require) {
       console         = require('common/console'),
       validator       = require('common/validator'),
       serialize       = require('common/serialize'),
+      performance     = require('common/performance'),
       LabModelerMixin = require('common/lab-modeler-mixin'),
       metadata        = require('energy2d/metadata'),
       coremodel       = require('energy2d/models/core-model'),
@@ -275,6 +276,8 @@ define(function (require) {
       namespace: namespace,
 
       tick: function () {
+        performance.enterScope("model");
+
         var i, len, diverged;
         for (i = 0, len = model.properties.timeStepsPerTick; i < len; i++) {
           coreModel.nextStep();
@@ -291,6 +294,9 @@ define(function (require) {
           diverged = hasDiverged();
         }
         updateAnemometers();
+
+        performance.leaveScope("model");
+
         model.updateAllOutputProperties();
         dispatch.tick();
 
@@ -456,10 +462,6 @@ define(function (require) {
 
       getSensorsArray: function () {
         return viewModel.sensors;
-      },
-
-      setPerformanceTools: function () {
-        return coreModel.setPerformanceTools();
       },
 
       serialize: function () {
