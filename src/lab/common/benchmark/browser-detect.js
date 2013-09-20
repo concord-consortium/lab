@@ -53,7 +53,7 @@ define(function () {
       match = navigator.userAgent.match(androidchromematch);
       if (match && match[1]) {
         return {
-          browser: "Mobile Chrome",
+          browser: "Chrome for Android",
           version: match[4],
           oscpu: match[1] + "/" + match[2] + "/" + match[3]
         };
