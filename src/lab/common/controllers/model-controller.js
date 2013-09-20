@@ -2,7 +2,8 @@
 
 define(function (require) {
 
-  var labConfig = require('lab.config');
+  var labConfig   = require('lab.config'),
+      performance = require('common/performance');
   var global = (function() { return this; }());
 
   function ModelController(modelUrl, modelOptions, interactivesController,
@@ -27,7 +28,9 @@ define(function (require) {
     //
     // ------------------------------------------------------------
     function tickHandler() {
+      performance.enterScope("js-rendering");
       controller.modelContainer.update();
+      performance.leaveScope("js-rendering");
     }
 
     // ------------------------------------------------------------
@@ -93,7 +96,7 @@ define(function (require) {
     // ------------------------------------------------------------
 
     controller = {
-      
+
       get type() {
         return Model.type;
       },
@@ -109,7 +112,7 @@ define(function (require) {
       get modelContainer() {
         return modelContainer;
       },
-      
+
       on: function(type, listener) {
         dispatch.on(type, listener);
       },

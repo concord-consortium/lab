@@ -1748,6 +1748,8 @@ define(function(require) {
     };
 
     model.tick = function() {
+      performance.enterScope("model");
+
       var timeStep = model.get('timeStep'),
           t, sampleTime;
 
@@ -1792,6 +1794,9 @@ define(function(require) {
       // whether we really added or removed radial bond.
       if (engine.radialBondsChanged) dispatch.addRadialBond();
 
+      performance.leaveScope("model");
+      // Tick is out of the "model" scope, as we don't know anything about the code that will be
+      // immediately executed. Probably this will be rendering and / or some user scripts.
       dispatch.tick();
     };
 
