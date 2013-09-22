@@ -395,6 +395,15 @@ src/lab/lab.version.js: \
 	src/lab/git-branch-name
 	./script/generate-js-version.rb
 
+src/lab/git-commit:
+	./script/update-git-commit-and-branch.rb
+
+src/lab/git-branch-name:
+	./script/update-git-commit-and-branch.rb
+
+src/lab/git-dirty:
+	./script/update-git-commit-and-branch.rb
+
 ifdef STATIC
 src/lab/lab.config.js:
 	LAB_STATIC=true ./script/generate-js-config.rb
