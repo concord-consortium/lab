@@ -395,6 +395,18 @@ Copy the sample project configuration file to `config/config.yml` (you can exami
 
     cp config/config.sample.yml config/config.yml
 
+Create a git `post-commit` hook by creating the file `.git/hooks/post-commit` and adding this content:
+
+    #!/bin/sh
+    (cd ../.. && ./script/update-git-commit-and-branch.rb)
+
+Make the file `.git/hooks/post-commit` executable:
+
+    chmod u+x .git/hooks/post-commit
+
+Now run a make task that will download and install all the dependencies and build the whole project
+for the first time.
+
     make everything
 
 When `make everything` is run on a freshly cloned repository it performs the following tasks:
