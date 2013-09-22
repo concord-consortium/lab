@@ -391,9 +391,13 @@ If you do end up having to install a new version of Ruby with RVM change out of 
     cd ..
     cd lab
 
+#### Initial configuration
+
 Copy the sample project configuration file to `config/config.yml` (you can examine it and edit if you want).
 
     cp config/config.sample.yml config/config.yml
+
+#### Create a git post-commit hook
 
 Create a git `post-commit` hook by creating the file `.git/hooks/post-commit` and adding this content:
 
