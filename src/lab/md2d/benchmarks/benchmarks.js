@@ -13,17 +13,6 @@ define(function (require) {
 
     return [
       {
-        name: "commit",
-        numeric: false,
-        run: function(done) {
-          var link = "<a href='"+Lab.version.repo.commit.url+"' class='opens-in-new-window' target='_blank'>"+Lab.version.repo.commit.short_sha+"</a>";
-          if (Lab.version.repo.dirty) {
-            link += " <i>dirty</i>";
-          }
-          done(link);
-        }
-      },
-      {
         name: "atoms",
         numeric: true,
         run: function(done) {

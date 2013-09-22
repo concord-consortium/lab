@@ -1,4 +1,4 @@
-/*global define: false, d3: false */
+/*global Lab, define: false, d3: false */
 /*jshint loopfunc: true*/
 
 /*
@@ -224,6 +224,8 @@ define(function (require) {
       add_column("version");
       add_column("cpu/os");
       add_column("date");
+      add_column("commit");
+      add_column("branch");
       for (i = 0; i < benchmarksThatWereRun.length; i++) {
         add_column(benchmarksThatWereRun[i].name);
       }
@@ -240,13 +242,13 @@ define(function (require) {
     results_row = add_row(col_number);
     results_row.className = 'sample';
 
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < 6; i++) {
       result = results[i];
       add_result(result[0], result[1]);
       add_result(result[0], result[1], average_row);
     }
 
-    for(i = 4; i < results.length; i++) {
+    for(i = 6; i < results.length; i++) {
       result = results[i];
       add_result(result[0], result[1]);
     }
@@ -257,12 +259,20 @@ define(function (require) {
     var bencharks_queue = benchmarks_to_run.slice(),
         results = [],
         browser_info = what_browser(),
-        formatter = d3.time.format("%Y-%m-%d %H:%M");
+        formatter = d3.time.format("%Y-%m-%d %H:%M"),
+        commit_link;
 
     results.push([ "browser", browser_info.browser]);
     results.push([ "version", browser_info.version]);
     results.push([ "cpu/os", browser_info.oscpu]);
     results.push([ "date", formatter(new Date())]);
+
+    commit_link = "<a href='"+Lab.version.repo.commit.url+"' class='opens-in-new-window' target='_blank'>"+Lab.version.repo.commit.short_sha+"</a>";
+    if (Lab.version.repo.dirty) {
+      commit_link += " <i>dirty</i>";
+    }
+    results.push([ "commit", commit_link]);
+    results.push([ "branch", Lab.version.repo.branch]);
 
     if (start_callback) start_callback();
 
