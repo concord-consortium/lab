@@ -63,8 +63,7 @@ all: \
 	vendor/d3/d3.js \
 	node_modules \
 	bin \
-	public \
-	./script/generate-js-version.rb
+	public
 
 # install Ruby Gem development dependencies
 .PHONY: bin
@@ -298,6 +297,7 @@ public: \
 	public/experiments \
 	public/imports \
 	public/jnlp
+	script/update-git-commit-and-branch.rb
 	$(MAKE) src
 
 # copy everything (including symbolic links) except files that are
@@ -388,7 +388,11 @@ public/lab/lab.js: \
 	src/lab/lab.config.js
 	$(R_OPTIMIZER) -o src/lab/lab.build.js
 
-src/lab/lab.version.js: script/generate-js-version.rb
+src/lab/lab.version.js: \
+	script/generate-js-version.rb \
+	src/lab/git-commit \
+	src/lab/git-dirty \
+	src/lab/git-branch-name
 	./script/generate-js-version.rb
 
 ifdef STATIC

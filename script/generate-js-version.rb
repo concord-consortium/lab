@@ -30,6 +30,8 @@ head = repo.head
 head_commit_sha = `git log -1 --pretty="%H"`.strip
 commit = repo.commit(head_commit_sha)
 
+branch_name = head.name if head != nil
+
 short_message = ERB::Util.html_escape(commit.short_message.gsub("\n", "\\n"))
 message = ERB::Util.html_escape(commit.message.gsub("\n", "\\n"))
 
@@ -38,7 +40,7 @@ version = <<HEREDOC
 define(function (require) {
   return {
     "repo": {
-      "branch": "#{head.name if head != nil}",
+      "branch": branch_name,
       "commit": {
         "sha":           "#{commit.id}",
         "short_sha":      "#{commit.id[0..7]}",
