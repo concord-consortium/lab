@@ -40,7 +40,7 @@ version = <<HEREDOC
 define(function (require) {
   return {
     "repo": {
-      "branch": branch_name,
+      "branch": "#{branch_name}",
       "commit": {
         "sha":           "#{commit.id}",
         "short_sha":      "#{commit.id[0..7]}",
