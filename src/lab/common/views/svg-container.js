@@ -8,7 +8,8 @@ define(function (require) {
   // Dependencies.
   var performance           = require('common/performance'),
       getNextTabIndex       = require('common/views/tab-index'),
-      console               = require('common/console');
+      console               = require('common/console'),
+      PIXI                  = require('pixi');
 
   return function SVGContainer(model, modelUrl, Renderer, opt) {
         // Public API object to be returned.
@@ -24,6 +25,8 @@ define(function (require) {
         vis1, vis, plot, viewportG,
         cx, cy,
         padding, size, modelSize, viewport,
+
+        pixiRenderer, pixiStage,
 
         // Basic scaling functions for positio, it transforms model units to "pixels".
         // Use it for positions of objects rendered inside the view.
@@ -326,6 +329,14 @@ define(function (require) {
         viewportG = vis.append("svg").attr("class", "viewport");
         brushContainer = vis.append("g").attr("class", "brush-container");
 
+        // PIXI renderer. Constructor arguments:
+        // cx, cy - dimensions,
+        // null   - optional canvas object,
+        // true   - transparent,
+        // true   - anti-aliasing.
+        pixiRenderer = PIXI.autoDetectRenderer(cx, cy, null, true, true);
+        pixiStage = new PIXI.Stage();
+        $el.append(pixiRenderer.view);
       } else {
         // TODO: ?? what g, why is it here?
         vis.selectAll("g.x").remove();
@@ -343,6 +354,8 @@ define(function (require) {
           width: cx + "px",
           height: cy + "px"
         });
+
+      pixiRenderer.resize(cx, cy);
 
       viewBox = model2px(viewport.x) + " " +
                 model2pxInv(viewport.y) + " " +
@@ -506,6 +519,9 @@ define(function (require) {
       get viewport() {
         return viewportG;
       },
+      get pixiStage() {
+        return pixiStage;
+      },
       get model2px() {
         return model2px;
       },
@@ -530,6 +546,8 @@ define(function (require) {
         api.updateClickHandlers();
 
         if (renderer.repaint) renderer.repaint();
+
+        pixiRenderer.render(pixiStage);
       },
       resize: function() {
         renderContainer();
@@ -540,14 +558,20 @@ define(function (require) {
         }
 
         if (renderer.resize) renderer.resize();
+
+        pixiRenderer.render(pixiStage);
       },
 
       setup: function() {
         if (renderer.setup) renderer.setup(model);
+
+        pixiRenderer.render(pixiStage);
       },
 
       update: function() {
         if (renderer.update) renderer.update();
+
+        pixiRenderer.render(pixiStage);
       },
 
       getHeightForWidth: function (width) {

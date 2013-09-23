@@ -7,6 +7,13 @@
   &.draggable:hover
     cursor: move
   @include user-select(none)
+
+  & > canvas
+    // Canvas is a next layer.
+    position: absolute
+    top: 0
+    left: 0
+
   // Radial bonds.
   .radialbond1, .radialbond2
     fill: none
