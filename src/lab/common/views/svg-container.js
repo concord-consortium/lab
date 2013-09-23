@@ -346,7 +346,7 @@ define(function (require) {
         // null   - optional canvas object,
         // true   - transparent.
         pixiRenderer = PIXI.autoDetectRenderer(cx * CANVAS_OVERSAMPLING, cy * CANVAS_OVERSAMPLING, null, true);
-        pixiStage = new PIXI.Stage();
+        pixiStage = new PIXI.Stage(null, true);
         $el.append(pixiRenderer.view);
       } else {
         // TODO: ?? what g, why is it here?

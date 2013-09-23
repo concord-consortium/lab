@@ -102,6 +102,60 @@ define(function(require) {
       return elementTex[key];
     }
 
+    function mouseDown(data) {
+      if (model.isStopped()) {
+        this.dragging = true;
+        this.originX = modelAtoms[this.i].x;
+        this.originY = modelAtoms[this.i].y;
+      } else if (modelAtoms[this.i].draggable) {
+        this.dragging = true;
+        model.liveDragStart(this.i);
+      }
+    }
+
+    function mouseMove(data) {
+      if(this.dragging) {
+        var newPosition = data.getLocalPosition(this.parent),
+            x = m2px.invert(newPosition.x),
+            y = m2pxInv.invert(newPosition.y);
+
+        if (model.isStopped()) {
+          setAtomPosition(this.i, x, y, false, true);
+          modelView.update();
+        } else {
+          model.liveDrag(x, y);
+        }
+      }
+    }
+
+    function mouseUp(data)
+    {
+      if (this.dragging) {
+        var newPosition = data.getLocalPosition(this.parent),
+            x = m2px.invert(newPosition.x),
+            y = m2pxInv.invert(newPosition.y);
+
+        this.dragging = false;
+
+        if (model.isStopped()) {
+          if (!setAtomPosition(this.i, x, y, true, true)) {
+            alert("You can't drop the atom there"); // should be changed to a nice Lab alert box
+            setAtomPosition(this.i, this.originX, this.originY, false, true);
+            modelView.update();
+          }
+        } else {
+          model.liveDragEnd();
+        }
+      }
+    }
+
+    function setAtomPosition(i, xpos, ypos, checkPosition, moveMolecule) {
+      return model.setAtomProperties(i, {
+        x: xpos,
+        y: ypos
+      }, checkPosition, moveMolecule);
+    }
+
     api = {
       setup: function () {
         var i, len, atom;
@@ -121,6 +175,14 @@ define(function(require) {
           atom = new PIXI.Sprite(getAtomTexture(i));
           atom.anchor.x = 0.5;
           atom.anchor.y = 0.5;
+
+          atom.i = i;
+
+          atom.setInteractive(true);
+          atom.mousedown = atom.touchstart = mouseDown;
+          atom.mouseup = atom.mouseupoutside = atom.touchend = atom.touchendoutside = mouseUp;
+          atom.mousemove = atom.touchmove = mouseMove;
+
           viewAtoms.push(atom);
           container.addChild(atom);
         }
