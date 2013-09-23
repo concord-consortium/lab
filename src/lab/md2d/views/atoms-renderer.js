@@ -80,17 +80,17 @@ define(function(require) {
 
     function getAtomTexture(i) {
       var elID = modelAtoms[i].element,
+          radius = m2px(model.getElementProperties(elID).radius),
           colors = getAtomColors(i, elID),
-          key = elID + "-" + colors.join("");
+          key = elID + "-" + radius + "-" + colors.join("");
 
       if (elementTex[key] === undefined) {
-        var props  = model.getElementProperties(elID),
-            canv = document.createElement("canvas"),
+        var canv = document.createElement("canvas"),
             tplData;
 
         tplData = {
-          width: m2px(2 * props.radius),
-          height: m2pxInv(2 * props.radius),
+          width: 2 * radius,
+          height: 2 * radius,
           lightCol: colors[0],
           medCol: colors[1],
           darkCol: colors[2]
