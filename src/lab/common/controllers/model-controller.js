@@ -125,6 +125,23 @@ define(function (require) {
         return controller.modelContainer.getHeightForWidth(width, fontSizeChanged);
       },
 
+      /**
+        Initializes the model-type-specific renderer within the model container and asks it to
+        render.
+
+        The model will not be rendered to the screen until this method is called. For their part,
+        renderers should ignore render() and repaint() calls before they have been setup by calling
+        this method.
+
+        Call this when the  when the model is ready to be rendered (ie the container has been laid
+        out and resized) and again after a new model has been bound to the container and
+        has been initialized to the point that it is ready to render.
+      */
+      initializeView: function() {
+        controller.modelContainer.setup();
+        controller.modelContainer.repaint();
+      },
+
       resize: function () {
         controller.modelContainer.resize();
       },
@@ -146,10 +163,6 @@ define(function (require) {
         resetCause = cause;
         model.reset();
         resetCause = undefined;
-      },
-
-      modelInDOM: function () {
-        controller.modelContainer.setup();
       },
 
       state: function() {
