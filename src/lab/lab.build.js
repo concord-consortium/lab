@@ -40,6 +40,12 @@
     },
     'markdown': {
       exports: 'markdown'
+    },
+    'pixi':  {
+      exports: 'PIXI'
+    },
+    'canvg': {
+      exports: 'canvg'
     }
   },
 
@@ -50,6 +56,8 @@
     'cs' :'../../vendor/require-cs/cs',
     'coffee-script': '../../vendor/coffee-script/extras/coffee-script',
     'underscore': '../../vendor/underscore/underscore',
+    'pixi': '../../vendor/pixi.js/bin/pixi',
+    'canvg': '../../vendor/canvg-1.3/canvg',
     'backbone': '../../node_modules/backbone/backbone',
     'mustache': '../../node_modules/mustache/mustache',
     'markdown': '../../node_modules/markdown/lib/markdown'
