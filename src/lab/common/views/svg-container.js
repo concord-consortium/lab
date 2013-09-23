@@ -9,7 +9,9 @@ define(function (require) {
   var performance           = require('common/performance'),
       getNextTabIndex       = require('common/views/tab-index'),
       console               = require('common/console'),
-      PIXI                  = require('pixi');
+      PIXI                  = require('pixi'),
+
+      CANVAS_OVERSAMPLING = 1;
 
   return function SVGContainer(model, modelUrl, Renderer, opt) {
         // Public API object to be returned.
@@ -27,6 +29,8 @@ define(function (require) {
         padding, size, modelSize, viewport,
 
         pixiRenderer, pixiStage,
+        model2canvas    = d3.scale.linear(),
+        model2canvasInv = d3.scale.linear(),
 
         // Basic scaling functions for positio, it transforms model units to "pixels".
         // Use it for positions of objects rendered inside the view.
@@ -154,10 +158,18 @@ define(function (require) {
         .domain([0, viewport.width])
         .range([0, size.width]);
 
+      model2canvas
+        .domain([0, viewport.width])
+        .range([0, size.width * CANVAS_OVERSAMPLING]);
+
       // Inverted model2px scaling function for position (for y-coordinates, domain can be inverted).
       model2pxInv
         .domain([viewport.height, 0])
         .range(origin === 'bottom-left' ? [0, size.height] : [size.height, 0]);
+
+      model2canvasInv
+        .domain([viewport.height, 0])
+        .range(origin === 'bottom-left' ? [0, size.height * CANVAS_OVERSAMPLING] : [size.height * CANVAS_OVERSAMPLING, 0]);
 
       if (selectBrush) {
         // Update brush to use new scaling functions.
@@ -332,9 +344,8 @@ define(function (require) {
         // PIXI renderer. Constructor arguments:
         // cx, cy - dimensions,
         // null   - optional canvas object,
-        // true   - transparent,
-        // true   - anti-aliasing.
-        pixiRenderer = PIXI.autoDetectRenderer(cx, cy, null, true, true);
+        // true   - transparent.
+        pixiRenderer = PIXI.autoDetectRenderer(cx * CANVAS_OVERSAMPLING, cy * CANVAS_OVERSAMPLING, null, true);
         pixiStage = new PIXI.Stage();
         $el.append(pixiRenderer.view);
       } else {
@@ -355,7 +366,11 @@ define(function (require) {
           height: cy + "px"
         });
 
-      pixiRenderer.resize(cx, cy);
+      pixiRenderer.resize(cx * CANVAS_OVERSAMPLING, cy * CANVAS_OVERSAMPLING);
+      $(pixiRenderer.view).css({
+        width: cx,
+        height: cy
+      });
 
       viewBox = model2px(viewport.x) + " " +
                 model2pxInv(viewport.y) + " " +
@@ -525,8 +540,14 @@ define(function (require) {
       get model2px() {
         return model2px;
       },
+      get model2canvas() {
+        return model2canvas;
+      },
       get model2pxInv() {
         return model2pxInv;
+      },
+      get model2canvasInv() {
+        return model2canvasInv;
       },
       get setFocus() {
         return setFocus;
