@@ -8,15 +8,16 @@
 // ------------------------------------------------------------
 define(function(require) {
   // Dependencies.
-  var labConfig = require('lab.config'),
-    alert = require('common/alert'),
-    console = require('common/console'),
-    benchmark = require('common/benchmark/benchmark'),
+  var labConfig         = require('lab.config'),
+    alert               = require('common/alert'),
+    console             = require('common/console'),
+    benchmark           = require('common/benchmark/benchmark'),
     amniacidContextMenu = require('cs!md2d/views/aminoacid-context-menu'),
-    GeneticRenderer = require('md2d/views/genetic-renderer'),
-    wrapSVGText = require('cs!common/layout/wrap-svg-text'),
-    gradients = require('common/views/gradients'),
-    color = require('common/views/color'),
+    AtomsRenderer       = require('md2d/views/atoms-renderer'),
+    GeneticRenderer     = require('md2d/views/genetic-renderer'),
+    wrapSVGText         = require('cs!common/layout/wrap-svg-text'),
+    gradients           = require('common/views/gradients'),
+    color               = require('common/views/color'),
 
     RADIAL_BOND_TYPES = {
       STANDARD_STICK: 101,
@@ -72,8 +73,8 @@ define(function(require) {
       dragOrigin,
 
       // Renderers specific for MD2D
-      // TODO: for now only DNA is rendered in a separate class, try to create
-      // new renderers in separate files for clarity and easier testing.
+      // TODO: try to create new renderers in separate files for clarity and easier testing.
+      atomsRenderer = new AtomsRenderer(modelView, model),
       geneticRenderer,
 
       gradientNameForElement = [
@@ -1425,6 +1426,10 @@ define(function(require) {
     }
 
     function setupParticles() {
+      atomsRenderer.setup();
+
+      return;
+
       var showChargeSymbols = model.get("showChargeSymbols"),
         useThreeLetterCode = model.get("useThreeLetterCode");
 
@@ -1758,6 +1763,10 @@ define(function(require) {
     // its content.
 
     function updateParticles() {
+      atomsRenderer.update();
+
+      return;
+
       particle.attr({
         "cx": function(d) {
           return model2px(d.x);
@@ -2204,6 +2213,7 @@ define(function(require) {
 
     function bindModel(newModel) {
       model = newModel;
+      atomsRenderer.bindModel(newModel);
       init();
     }
 
