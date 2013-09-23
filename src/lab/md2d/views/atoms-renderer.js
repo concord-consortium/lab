@@ -19,7 +19,16 @@ define(function(require) {
            </radialGradient> \
          </defs> \
          <circle fill="url(#grad)" cx="16" cy="16" r="15"/> \
-       </svg>';
+       </svg>',
+
+      // Scale used for Kinetic Energy Shading gradients.
+      KE_SHADING_STEPS = 25,
+      keMedColor = d3.scale.linear()
+        .interpolate(d3.interpolateRgb)
+        .range(["#F2F2F2", "#FF8080"]),
+      keDarkColor = d3.scale.linear()
+        .interpolate(d3.interpolateRgb)
+        .range(["#A4A4A4", "#FF2020"]);
 
   return function AtomsRenderer(modelView, model) {
     // Public API object to be returned.
@@ -33,30 +42,64 @@ define(function(require) {
         modelAtoms,
         viewAtoms,
 
-        elementTex = {};
+        elementTex = {},
 
-    function getElementTexture(elID) {
-      if (elementTex[elID] === undefined) {
-        var props  = model.getElementProperties(elID),
-            colorStr = (props.color + Math.pow(2, 24)).toString(16),
-            canv = document.createElement("canvas"),
-            color, tplData;
+        keShading;
 
+    function init() {
+      keShading = model.get("keShading");
+      model.addPropertiesListener(["keShading"], function () {
+        keShading = model.get("keShading");
+        api.update();
+        modelView.renderCanvas();
+      });
+    }
+
+    function getAtomColors(i) {
+      var elID = modelAtoms[i].element,
+          props = model.getElementProperties(elID),
+          colorStr, color,
+          ke, keIndex;
+
+
+      if (keShading) {
+        ke = model.getAtomKineticEnergy(i);
+        // Convert Kinetic Energy to [0, 1] range
+        // using empirically tested transformations.
+        // K.E. shading should be similar to the classic MW K.E. shading.
+        keIndex = Math.round(Math.min(5 * ke, 1) * KE_SHADING_STEPS);
+        keIndex /= KE_SHADING_STEPS;
+        return ["#ffffff", keMedColor(keIndex), keDarkColor(keIndex)];
+      } else {
+        colorStr = (props.color + Math.pow(2, 24)).toString(16);
         colorStr = "000000".substr(0, 6 - colorStr.length) + colorStr;
         color = d3.rgb("#" + colorStr);
+        return [color.brighter(1).toString(), color.toString(), color.darker(1).toString()];
+      }
+    }
+
+    function getAtomTexture(i) {
+      var elID = modelAtoms[i].element,
+          colors = getAtomColors(i, elID),
+          key = elID + "-" + colors.join("");
+
+      if (elementTex[key] === undefined) {
+        var props  = model.getElementProperties(elID),
+            canv = document.createElement("canvas"),
+            tplData;
 
         tplData = {
           width: m2px(2 * props.radius),
           height: m2pxInv(2 * props.radius),
-          medCol: color.toString(),
-          lightCol: color.brighter(1).toString(),
-          darkCol: color.darker(1).toString()
+          lightCol: colors[0],
+          medCol: colors[1],
+          darkCol: colors[2]
         };
 
         canvg(canv, mustache.render(atomSVG, tplData));
-        elementTex[elID] = new PIXI.Texture.fromCanvas(canv);
+        elementTex[key] = new PIXI.Texture.fromCanvas(canv);
       }
-      return elementTex[elID];
+      return elementTex[key];
     }
 
     api = {
@@ -75,7 +118,7 @@ define(function(require) {
         modelAtoms = model.getAtoms();
 
         for (i = 0, len = modelAtoms.length; i < len; ++i) {
-          atom = new PIXI.Sprite(getElementTexture(modelAtoms[i].element));
+          atom = new PIXI.Sprite(getAtomTexture(i));
           atom.anchor.x = 0.5;
           atom.anchor.y = 0.5;
           viewAtoms.push(atom);
@@ -87,16 +130,24 @@ define(function(require) {
 
       bindModel: function (newModel) {
         model = newModel;
+        init();
       },
 
       update: function () {
         var i, len;
+
         for (i = 0, len = viewAtoms.length; i < len; ++i) {
           viewAtoms[i].position.x = m2px(modelAtoms[i].x);
           viewAtoms[i].position.y = m2pxInv(modelAtoms[i].y);
+
+          if (keShading) {
+            viewAtoms[i].setTexture(getAtomTexture(i));
+          }
         }
       }
     };
+
+    init();
 
     return api;
   };

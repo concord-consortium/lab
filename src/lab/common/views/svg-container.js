@@ -568,7 +568,7 @@ define(function (require) {
 
         if (renderer.repaint) renderer.repaint();
 
-        pixiRenderer.render(pixiStage);
+        api.renderCanvas();
       },
       resize: function() {
         renderContainer();
@@ -580,18 +580,22 @@ define(function (require) {
 
         if (renderer.resize) renderer.resize();
 
-        pixiRenderer.render(pixiStage);
+        api.renderCanvas();
       },
 
       setup: function() {
         if (renderer.setup) renderer.setup(model);
 
-        pixiRenderer.render(pixiStage);
+        api.renderCanvas();
       },
 
       update: function() {
         if (renderer.update) renderer.update();
 
+        api.renderCanvas();
+      },
+
+      renderCanvas: function() {
         pixiRenderer.render(pixiStage);
       },
 

@@ -2183,7 +2183,7 @@ define(function(require) {
 
       // Redraw container each time when some visual-related property is changed.
       model.addPropertiesListener([
-          "keShading", "chargeShading", "showChargeSymbols", "useThreeLetterCode",
+          "chargeShading", "showChargeSymbols", "useThreeLetterCode",
           "showVDWLines", "VDWLinesCutoff",
           "showVelocityVectors", "showForceVectors",
           "showAtomTrace", "atomTraceId", "aminoAcidColorScheme",
