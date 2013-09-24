@@ -11,7 +11,7 @@ define(function (require) {
       console               = require('common/console'),
       PIXI                  = require('pixi'),
 
-      CANVAS_OVERSAMPLING = 1;
+      CANVAS_OVERSAMPLING = 1.5;
 
   return function SVGContainer(model, modelUrl, Renderer, opt) {
         // Public API object to be returned.
