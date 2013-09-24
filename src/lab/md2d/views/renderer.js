@@ -77,7 +77,7 @@ define(function(require) {
       imageContainerTop  = aboveAtomsViewport.append("g").attr("class", "image-container-top"),
       textContainerTop   = aboveAtomsViewport.append("g").attr("class", "text-container-top"),
 
-      iconContainer = modelView.mainContainer.append("g").attr("class", "icon-container"),
+      iconContainer = modelView.foregroundContainer.append("g").attr("class", "icon-container"),
 
       dragOrigin,
 

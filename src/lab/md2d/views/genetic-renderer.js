@@ -24,10 +24,10 @@ define(function (require) {
 
   function GeneticRenderer(modelView, model) {
     var api,
-        svg = modelView.svg,
+        node = modelView.node,
         model2px = modelView.model2px,
         model2pxInv = modelView.model2pxInv,
-        viewportG = svg.select(".viewport"),
+        viewportG = d3.select(node).select(".viewport.below-atoms"),
 
         g = null,
         currentTrans = null,
@@ -39,7 +39,7 @@ define(function (require) {
         animStateInProgress = null,
 
         stateMgr = new GeneticAnimStates(model),
-        objectRenderer = new GeneticElementsRenderer(svg, model2px, model2pxInv, model),
+        objectRenderer = new GeneticElementsRenderer(node, model2px, model2pxInv, model),
 
         transitionFunction;
 
@@ -223,14 +223,15 @@ define(function (require) {
     }
 
     function cancelTransitions() {
-      var g = svg.select("g.genetics");
+      var d3node = d3.select(node);
+      var g = d3node.select("g.genetics");
       if (!g.empty() && g.node().__transition__) {
        // Note that some transitions can be applied to elements that live
        // outside g.genetics element, e.g. viewport and background. So, it
        // isn't enough to use d3.selectAll("g.genetics *").
-        svg.selectAll("g.genetics, g.genetics *").interrupt();
-        svg.select(".container-background").interrupt(); // background changes
-        viewportG.interrupt();           // viewport scrolling
+        d3node.selectAll("g.genetics, g.genetics *").interrupt();
+        d3node.select(".container-background").interrupt(); // background changes
+        d3node.select(".viewport").interrupt();           // viewport scrolling
         currentTrans = null;
         animStateInProgress = null;
       }

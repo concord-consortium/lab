@@ -21,7 +21,11 @@ define(function (require) {
         node,
         emsize,
         fontSizeInPixels,
-        svgElement, mainContainer, containerBackground,
+
+        backgroundContainer, viewportContainer, foregroundContainer,
+
+        containerBackground, gridContainer, brushContainer,
+
         cx, cy,
         padding, size, modelSize, viewport,
 
@@ -42,9 +46,6 @@ define(function (require) {
         // function.
         model2pxInv = d3.scale.linear(),
 
-        gridContainer,
-        brushContainer,
-
         clickHandler,
         dragHandler,
         // d3.svg.brush object used to implement select action. It should be
@@ -53,9 +54,7 @@ define(function (require) {
 
         dispatch = d3.dispatch("viewportDrag"),
 
-        renderer,
-
-        offsetLeft, offsetTop;
+        renderer;
 
     function getFontSizeInPixels() {
       return parseFloat($el.css('font-size')) || 18;
@@ -143,9 +142,6 @@ define(function (require) {
         "height": height
       };
 
-      offsetTop  = node.offsetTop + padding.top;
-      offsetLeft = node.offsetLeft + padding.left;
-
       // Basic model2px scaling function for position.
       model2px
         .domain([0, viewport.width])
@@ -216,7 +212,7 @@ define(function (require) {
       gx.exit().remove();
 
       // x-axis label
-      xlabel = mainContainer.selectAll("text.xlabel").data(model.get("xlabel") ? [lengthUnits.pluralName] : []);
+      xlabel = backgroundContainer.selectAll("text.xlabel").data(model.get("xlabel") ? [lengthUnits.pluralName] : []);
       xlabel.enter().append("text")
           .attr("class", "axis")
           .attr("class", "xlabel")
@@ -265,7 +261,7 @@ define(function (require) {
       gy.exit().remove();
 
       // y-axis label
-      ylabel = mainContainer.selectAll("text.ylabel").data(model.get("ylabel") ? [lengthUnits.pluralName] : []);
+      ylabel = backgroundContainer.selectAll("text.ylabel").data(model.get("ylabel") ? [lengthUnits.pluralName] : []);
       ylabel.enter().append("text")
           .attr("class", "axis")
           .attr("class", "ylabel")
@@ -291,43 +287,71 @@ define(function (require) {
       }
     }
 
+    // TODO confirm this is required?
+    function xlinkable() {
+      return this.attr({
+        'xmlns': 'http://www.w3.org/2000/svg',
+        'xmlns:xmlns:xlink': 'http://www.w3.org/1999/xlink' // hack: doubling xmlns: so it doesn't disappear once in the DOM
+      });
+    }
+
+    function layeredOnTop() {
+      return this.style({
+        position: "absolute",
+        top: 0,
+        left: 0
+      });
+    }
+
     function renderContainer() {
       var viewBox;
+      var svgs;
 
       // Update cx, cy, size, viewport and modelSize variables.
       scale();
 
       // Create container, or update properties if it already exists.
-      if (mainContainer === undefined) {
-        svgElement = d3.select(node).append("svg")
-          .attr({
-            'xmlns': 'http://www.w3.org/2000/svg',
-            'xmlns:xmlns:xlink': 'http://www.w3.org/1999/xlink', // hack: doubling xmlns: so it doesn't disappear once in the DOM
-            overflow: 'hidden'
-          });
+      if (backgroundContainer === undefined) {
 
-        mainContainer = svgElement.append("g").attr("class", "main-container");
+        backgroundContainer = d3.select(node).append("svg")
+          .attr("class", "container background-container")
+          .call(layeredOnTop)
+          .call(xlinkable);
 
-        containerBackground = mainContainer.append("rect")
-            .attr("class", "container-background");
+        containerBackground = backgroundContainer.append("rect")
+          .attr("class", "container-background");
+
+        gridContainer = backgroundContainer.append("g")
+          .attr("class", "grid-container");
+
+        viewportContainer = d3.select(node).append("div")
+          .attr("class", "container viewport-container")
+          .call(layeredOnTop);
+
+        foregroundContainer = d3.select(node).append("svg")
+          .attr("class", "container foreground-container")
+          .call(layeredOnTop)
+          .call(xlinkable);
+
+        brushContainer = foregroundContainer.append("g")
+          .attr("class", "brush-container");
 
         if (model.get("enableKeyboardHandlers")) {
           d3.select(node)
             .attr("tabindex", 0)
             .on("mousedown", mousedown);
         }
-
-        gridContainer = mainContainer.append("g").attr("class", "grid-container");
-        brushContainer = mainContainer.append("g").attr("class", "brush-container");
-
-      } else {
-        // TODO: ?? what g, why is it here?
-        mainContainer.selectAll("g.x").remove();
-        mainContainer.selectAll("g.y").remove();
       }
 
-      // Set new dimensions of the top-level SVG container.
-      svgElement
+      viewportContainer.style({
+        width: cx + "px",
+        height: cy + "px"
+      });
+
+      // Set new dimensions of SVG containers
+      svgs = d3.select(node).selectAll('.background-container, .foreground-container, .viewport');
+
+      svgs
         .attr({
           width: cx,
           height: cy
@@ -344,7 +368,7 @@ define(function (require) {
                 model2px(viewport.scaledHeight);
 
       // Apply the viewbox to all "viewport" layers we have created
-      mainContainer.selectAll(".viewport").attr({
+      viewportContainer.selectAll(".viewport").attr({
         viewBox: viewBox,
         x: 0,
         y: 0,
@@ -353,11 +377,10 @@ define(function (require) {
       });
 
       // Update padding, as it can be changed after rescaling.
-      mainContainer
-        .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
+      svgs.attr("transform", "translate(" + padding.left + "," + padding.top + ")");
 
       // Rescale main plot.
-      mainContainer.select("rect.container-background")
+      backgroundContainer.select("rect.container-background")
         .attr({
           width: model2px(viewport.width),
           height: model2px(viewport.height),
@@ -463,7 +486,7 @@ define(function (require) {
       var selector;
       for (selector in clickHandler) {
         if (clickHandler.hasOwnProperty(selector)) {
-          mainContainer.selectAll(selector).on("click.custom", null);
+          backgroundContainer.selectAll(selector).on("click.custom", null);
         }
       }
     }
@@ -493,11 +516,8 @@ define(function (require) {
       get node() {
         return node;
       },
-      get svg() {
-        return svgElement;
-      },
-      get mainContainer() {
-        return mainContainer;
+      get foregroundContainer() {
+        return foregroundContainer;
       },
       get model2px() {
         return model2px;
@@ -526,7 +546,10 @@ define(function (require) {
       },
 
       appendViewport: function() {
-        return mainContainer.append("svg").attr("class", "viewport");
+        return viewportContainer.append("svg")
+          .attr("class", "viewport")
+          .call(layeredOnTop)
+          .call(xlinkable);
       },
 
       resize: function() {
@@ -634,7 +657,7 @@ define(function (require) {
           if (clickHandler.hasOwnProperty(selector)) {
             // Use 'custom' namespace to don't overwrite other click handlers which
             // can be added by default.
-            mainContainer.selectAll(selector).on("click.custom", getClickHandler(clickHandler[selector]));
+            backgroundContainer.selectAll(selector).on("click.custom", getClickHandler(clickHandler[selector]));
           }
         }
       },
