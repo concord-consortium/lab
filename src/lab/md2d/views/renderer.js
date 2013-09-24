@@ -63,7 +63,7 @@ define(function(require) {
       textContainerBelow   = modelView.viewport.append("g").attr("class", "text-container-below"),
       radialBondsContainer = modelView.viewport.append("g").attr("class", "radial-bonds-container"),
       VDWLinesContainer    = modelView.viewport.append("g").attr("class", "vdw-lines-container"),
-      mainContainer        = modelView.viewport.append("g").attr("class", "main-container"),
+      atomsContainer       = modelView.viewport.append("g").attr("class", "atoms-container"),
       shapeContainerTop    = modelView.viewport.append("g").attr("class", "shape-container-top"),
       lineContainerTop     = modelView.viewport.append("g").attr("class", "line-container-top"),
       imageContainerTop    = modelView.viewport.append("g").attr("class", "image-container-top"),
@@ -208,7 +208,7 @@ define(function(require) {
 
       for (i = 0; i < 4; i++) {
         // Use names defined in gradientNameForElement array!
-        createElementColorGradient("elem" + i + "-grad", modelElements.color[i], mainContainer);
+        createElementColorGradient("elem" + i + "-grad", modelElements.color[i], atomsContainer);
       }
 
       // "Marked" particle gradient.
@@ -217,7 +217,7 @@ define(function(require) {
       color = d3.rgb(medColor);
       lightColor = color.brighter(1).toString();
       darkColor = color.darker(1).toString();
-      gradients.createRadialGradient("mark-grad", lightColor, medColor, darkColor, mainContainer);
+      gradients.createRadialGradient("mark-grad", lightColor, medColor, darkColor, atomsContainer);
     }
 
     /**
@@ -245,14 +245,14 @@ define(function(require) {
         gradientName = "ke-shading-" + i;
         KELevel = i / KE_SHADING_STEPS;
         gradientUrl = gradients.createRadialGradient(gradientName, "#FFFFFF", medColorScale(KELevel),
-          darkColorScale(KELevel), mainContainer);
+          darkColorScale(KELevel), atomsContainer);
         gradientNameForKELevel[i] = gradientUrl;
       }
 
       // Scales used for Charge Shading gradients.
       // Originally Positive:(ffefff,9abeff,767fbf) and Negative:(dfffff,fdadad,e95e5e)
 
-      gradients.createRadialGradient("neutral-grad", "#FFFFFF", "#f2f2f2", "#A4A4A4", mainContainer);
+      gradients.createRadialGradient("neutral-grad", "#FFFFFF", "#f2f2f2", "#A4A4A4", atomsContainer);
 
       var posLightColorScale = d3.scale.linear()
         .interpolate(d3.interpolateRgb)
@@ -281,7 +281,7 @@ define(function(require) {
         gradientUrl = gradients.createRadialGradient(gradientName,
           posLightColorScale(ChargeLevel),
           posMedColorScale(ChargeLevel),
-          posDarkColorScale(ChargeLevel), mainContainer);
+          posDarkColorScale(ChargeLevel), atomsContainer);
         gradientNameForPositiveChargeLevel[i] = gradientUrl;
 
         gradientName = "neg-charge-shading-" + i;
@@ -289,13 +289,13 @@ define(function(require) {
         gradientUrl = gradients.createRadialGradient(gradientName,
           negLightColorScale(ChargeLevel),
           negMedColorScale(ChargeLevel),
-          negDarkColorScale(ChargeLevel), mainContainer);
+          negDarkColorScale(ChargeLevel), atomsContainer);
         gradientNameForNegativeChargeLevel[i] = gradientUrl;
       }
 
       // Colored gradients, used for amino acids.
-      gradients.createRadialGradient("green-grad", "#dfffef", "#75a643", "#2a7216", mainContainer);
-      gradients.createRadialGradient("orange-grad", "#F0E6D1", "#E0A21B", "#AD7F1C", mainContainer);
+      gradients.createRadialGradient("green-grad", "#dfffef", "#75a643", "#2a7216", atomsContainer);
+      gradients.createRadialGradient("orange-grad", "#F0E6D1", "#E0A21B", "#AD7F1C", atomsContainer);
     }
 
     function createCustomArrowHead(i, path, start) {
@@ -306,9 +306,9 @@ define(function(require) {
       var defs,
         id = "Arrowhead-path" + i + '-' + path.toLowerCase().replace(/[^a-z0-9]/g,'') + (start ? "-start" : ""),
         arrowHead;
-      defs = mainContainer.select("defs");
+      defs = atomsContainer.select("defs");
       if (defs.empty()) {
-        defs = mainContainer.append("defs");
+        defs = atomsContainer.append("defs");
       }
       arrowHead = defs.select("#" + id);
       // Must rerender markers to account for changes in line properties (e.g. visibility, color)
@@ -333,9 +333,9 @@ define(function(require) {
       var defs,
         id = "Triangle-" + name,
         arrowHead;
-      defs = mainContainer.select("defs");
+      defs = atomsContainer.select("defs");
       if (defs.empty()) {
-        defs = mainContainer.append("defs");
+        defs = atomsContainer.append("defs");
       }
       arrowHead = defs.select("#" + id).remove();
       arrowHead = defs.append("marker")
@@ -357,9 +357,9 @@ define(function(require) {
       var defs,
         glow;
 
-      defs = mainContainer.select("defs");
+      defs = atomsContainer.select("defs");
       if (defs.empty()) {
-        defs = mainContainer.append("defs");
+        defs = atomsContainer.append("defs");
       }
       glow = defs.select("#glow");
       if (glow.empty()) {
@@ -544,7 +544,7 @@ define(function(require) {
     }
 
     function updateParticleRadius() {
-      mainContainer.selectAll("circle").data(modelAtoms).attr("r", function(d) {
+      atomsContainer.selectAll("circle").data(modelAtoms).attr("r", function(d) {
         return model2px(d.radius);
       });
     }
@@ -639,13 +639,13 @@ define(function(require) {
             return model2px(obstacles.height[i]);
           },
           "fill": function(d, i) {
-            return obstacles.visible[i] ? gradients.toSVG(gradients.parse(obstacles.color[i]), mainContainer) : "transparent";
+            return obstacles.visible[i] ? gradients.toSVG(gradients.parse(obstacles.color[i]), atomsContainer) : "transparent";
           },
           "stroke-width": function(d, i) {
             return obstacles.visible[i] ? 0.2 : 0.0;
           },
           "stroke": function(d, i) {
-            return obstacles.visible[i] ? gradients.toSVG(gradients.parse(obstacles.color[i]), mainContainer) : "transparent";
+            return obstacles.visible[i] ? gradients.toSVG(gradients.parse(obstacles.color[i]), atomsContainer) : "transparent";
           }
         });
 
@@ -743,7 +743,7 @@ define(function(require) {
             return model2px(shapes.height[d.index]);
           },
           "fill": function(d) {
-            return shapes.visible[d.index] && shapes.type[d.index] == 'rectangle' ? gradients.toSVG(gradients.parse(shapes.color[d.index]), mainContainer) : "transparent";
+            return shapes.visible[d.index] && shapes.type[d.index] == 'rectangle' ? gradients.toSVG(gradients.parse(shapes.color[d.index]), atomsContainer) : "transparent";
           },
           "stroke-width": function(d) {
             return shapes.lineWeight[d.index];
@@ -770,7 +770,7 @@ define(function(require) {
             return model2px(shapes.height[d.index]) / 2;
           },
           "fill": function(d) {
-            return shapes.visible[d.index] && shapes.type[d.index] == 'ellipse' ? gradients.toSVG(gradients.parse(shapes.color[d.index]), mainContainer) : "transparent";
+            return shapes.visible[d.index] && shapes.type[d.index] == 'ellipse' ? gradients.toSVG(gradients.parse(shapes.color[d.index]), atomsContainer) : "transparent";
           },
           "stroke-width": function(d) {
             return shapes.lineWeight[d.index];
@@ -1431,15 +1431,15 @@ define(function(require) {
 
       setupColorsOfParticles();
 
-      mainContainer.selectAll("circle").remove();
-      mainContainer.selectAll("g.label").remove();
+      atomsContainer.selectAll("circle").remove();
+      atomsContainer.selectAll("g.label").remove();
 
-      particle = mainContainer.selectAll("circle").data(modelAtoms);
+      particle = atomsContainer.selectAll("circle").data(modelAtoms);
       updateParticleRadius();
 
       particleEnterExit();
 
-      label = mainContainer.selectAll("g.label")
+      label = atomsContainer.selectAll("g.label")
         .data(modelAtoms);
 
       labelEnter = label.enter().append("g")
@@ -1522,10 +1522,10 @@ define(function(require) {
 
     function setupObstacles() {
       obstacles = model.get_obstacles();
-      mainContainer.selectAll("g.obstacle").remove();
+      atomsContainer.selectAll("g.obstacle").remove();
       if (obstacles) {
         mockObstaclesArray.length = obstacles.x.length;
-        obstacle = mainContainer.selectAll("g.obstacle").data(mockObstaclesArray);
+        obstacle = atomsContainer.selectAll("g.obstacle").data(mockObstaclesArray);
         obstacleEnter();
       }
     }
@@ -1610,17 +1610,17 @@ define(function(require) {
     }
 
     function setupVectors() {
-      mainContainer.selectAll("path.vector-" + VELOCITY_STR).remove();
-      mainContainer.selectAll("path.vector-" + FORCE_STR).remove();
+      atomsContainer.selectAll("path.vector-" + VELOCITY_STR).remove();
+      atomsContainer.selectAll("path.vector-" + FORCE_STR).remove();
 
       drawVelocityVectors = model.get("showVelocityVectors");
       drawForceVectors = model.get("showForceVectors");
       if (drawVelocityVectors) {
-        velVector = mainContainer.selectAll("path.vector-" + VELOCITY_STR).data(modelAtoms);
+        velVector = atomsContainer.selectAll("path.vector-" + VELOCITY_STR).data(modelAtoms);
         vectorEnter(velVector, getVelVectorPath, getVelVectorWidth, velocityVectorColor, VELOCITY_STR);
       }
       if (drawForceVectors) {
-        forceVector = mainContainer.selectAll("path.vector-" + FORCE_STR).data(modelAtoms);
+        forceVector = atomsContainer.selectAll("path.vector-" + FORCE_STR).data(modelAtoms);
         vectorEnter(forceVector, getForceVectorPath, getForceVectorWidth, forceVectorColor, FORCE_STR);
       }
     }
@@ -1681,13 +1681,13 @@ define(function(require) {
     }
 
     function setupAtomTrace() {
-      mainContainer.selectAll("path.atomTrace").remove();
+      atomsContainer.selectAll("path.atomTrace").remove();
       atomTracePath = "";
 
       drawAtomTrace = model.get("showAtomTrace");
       atomTraceId = model.get("atomTraceId");
       if (drawAtomTrace) {
-        atomTrace = mainContainer.selectAll("path.atomTrace").data([modelAtoms[atomTraceId]]);
+        atomTrace = atomsContainer.selectAll("path.atomTrace").data([modelAtoms[atomTraceId]]);
         atomTraceEnter();
       }
     }
@@ -2112,7 +2112,7 @@ define(function(require) {
     }
 
     function enterAndUpdatePhotons() {
-      var photons = mainContainer
+      var photons = atomsContainer
         .selectAll(".photon")
         .data(model.getPhotons(), function(d) {
           return d.id;
