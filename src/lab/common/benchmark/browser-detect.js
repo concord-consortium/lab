@@ -28,6 +28,8 @@ define(function () {
       var arch  = windows_feature_token[match[2]] || "32",
           token = navigator.userAgent.match(/\(.*?(Windows NT.+?)[;)]/);
       return windows_platform_token[token[1]] + "/" + arch;
+    } else if (match[1].match(/^X11/)) {
+      return match[2];
     }
   }
 
