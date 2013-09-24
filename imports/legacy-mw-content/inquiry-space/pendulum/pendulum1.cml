@@ -46,7 +46,7 @@ Instruction: Pull the slider to change the mass of the suspended ball. Observe t
 <Alignment>1</Alignment>
 <content start="176" end="177">
 <component><class>org.concord.mw2d.activity.AtomContainer</class>
-<resource>pendulum1$0.mml</resource><menubar>false</menubar></component></content>
+<resource>pendulum1$0.mml</resource></component></content>
 
 <content start="177" end="178">
 </content>
