@@ -21,7 +21,7 @@ define(function (require) {
         node,
         emsize,
         fontSizeInPixels,
-        vis1, vis, plot, viewportG,
+        svgElement, mainContainer, containerBackground, viewportG,
         cx, cy,
         padding, size, modelSize, viewport,
 
@@ -216,7 +216,7 @@ define(function (require) {
       gx.exit().remove();
 
       // x-axis label
-      xlabel = vis.selectAll("text.xlabel").data(model.get("xlabel") ? [lengthUnits.pluralName] : []);
+      xlabel = mainContainer.selectAll("text.xlabel").data(model.get("xlabel") ? [lengthUnits.pluralName] : []);
       xlabel.enter().append("text")
           .attr("class", "axis")
           .attr("class", "xlabel")
@@ -265,7 +265,7 @@ define(function (require) {
       gy.exit().remove();
 
       // y-axis label
-      ylabel = vis.selectAll("text.ylabel").data(model.get("ylabel") ? [lengthUnits.pluralName] : []);
+      ylabel = mainContainer.selectAll("text.ylabel").data(model.get("ylabel") ? [lengthUnits.pluralName] : []);
       ylabel.enter().append("text")
           .attr("class", "axis")
           .attr("class", "ylabel")
@@ -278,7 +278,7 @@ define(function (require) {
     // Setup background.
     function setupBackground() {
       // Just set the color.
-      plot.attr("fill", model.get("backgroundColor") || "rgba(0, 0, 0, 0)");
+      containerBackground.attr("fill", model.get("backgroundColor") || "rgba(0, 0, 0, 0)");
     }
 
     function mousedown() {
@@ -298,18 +298,18 @@ define(function (require) {
       scale();
 
       // Create container, or update properties if it already exists.
-      if (vis === undefined) {
-        vis1 = d3.select(node).append("svg")
+      if (mainContainer === undefined) {
+        svgElement = d3.select(node).append("svg")
           .attr({
             'xmlns': 'http://www.w3.org/2000/svg',
             'xmlns:xmlns:xlink': 'http://www.w3.org/1999/xlink', // hack: doubling xmlns: so it doesn't disappear once in the DOM
             overflow: 'hidden'
           });
 
-        vis = vis1.append("g").attr("class", "particle-container-vis");
+        mainContainer = svgElement.append("g").attr("class", "main-container");
 
-        plot = vis.append("rect")
-            .attr("class", "plot");
+        containerBackground = mainContainer.append("rect")
+            .attr("class", "container-background");
 
         if (model.get("enableKeyboardHandlers")) {
           d3.select(node)
@@ -317,23 +317,23 @@ define(function (require) {
             .on("mousedown", mousedown);
         }
 
-        gridContainer = vis.append("g").attr("class", "grid-container");
+        gridContainer = mainContainer.append("g").attr("class", "grid-container");
         // Create and arrange "layers" of the final image (g elements). Note
         // that order of their creation is significant.
         // TODO: containers should be initialized by renderers. It's weird
         // that top-level view defines containers for elements that it's
         // unaware of.
-        viewportG = vis.append("svg").attr("class", "viewport");
-        brushContainer = vis.append("g").attr("class", "brush-container");
+        viewportG = mainContainer.append("svg").attr("class", "viewport");
+        brushContainer = mainContainer.append("g").attr("class", "brush-container");
 
       } else {
         // TODO: ?? what g, why is it here?
-        vis.selectAll("g.x").remove();
-        vis.selectAll("g.y").remove();
+        mainContainer.selectAll("g.x").remove();
+        mainContainer.selectAll("g.y").remove();
       }
 
       // Set new dimensions of the top-level SVG container.
-      vis1
+      svgElement
         .attr({
           width: cx,
           height: cy
@@ -357,11 +357,11 @@ define(function (require) {
       });
 
       // Update padding, as it can be changed after rescaling.
-      vis
+      mainContainer
         .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
 
       // Rescale main plot.
-      vis.select("rect.plot")
+      mainContainer.select("rect.container-background")
         .attr({
           width: model2px(viewport.width),
           height: model2px(viewport.height),
@@ -388,7 +388,7 @@ define(function (require) {
         // other nodes will work again. It's based on the d3 implementation,
         // please see drag() function here:
         // https://github.com/mbostock/d3/blob/master/src/behavior/drag.js
-        vis1.on("mousedown.drag", null)
+        svgElement.on("mousedown.drag", null)
             .on("touchstart.drag", null)
             .classed("draggable", false);
         return;
@@ -425,7 +425,7 @@ define(function (require) {
         d3.timer(step);
       });
 
-      vis1.call(dragBehavior).classed("draggable", true);
+      svgElement.call(dragBehavior).classed("draggable", true);
 
       function updateArrays() {
         xs.push(model.properties.viewPortX);
@@ -467,7 +467,7 @@ define(function (require) {
       var selector;
       for (selector in clickHandler) {
         if (clickHandler.hasOwnProperty(selector)) {
-          vis.selectAll(selector).on("click.custom", null);
+          mainContainer.selectAll(selector).on("click.custom", null);
         }
       }
     }
@@ -498,10 +498,10 @@ define(function (require) {
         return node;
       },
       get svg() {
-        return vis1;
+        return svgElement;
       },
-      get vis() {
-        return vis;
+      get mainContainer() {
+        return mainContainer;
       },
       get viewport() {
         return viewportG;
@@ -624,7 +624,7 @@ define(function (require) {
           return function (d, i) {
             if (d3.event.defaultPrevented) return;
             // Get current coordinates relative to the plot area!
-            var coords = d3.mouse(plot.node()),
+            var coords = d3.mouse(containerBackground.node()),
                 x = model2px.invert(coords[0]),
                 y = model2pxInv.invert(coords[1]);
             console.log("[view] click at (" + x.toFixed(3) + ", " + y.toFixed(3) + ")");
@@ -636,7 +636,7 @@ define(function (require) {
           if (clickHandler.hasOwnProperty(selector)) {
             // Use 'custom' namespace to don't overwrite other click handlers which
             // can be added by default.
-            vis.selectAll(selector).on("click.custom", getClickHandler(clickHandler[selector]));
+            mainContainer.selectAll(selector).on("click.custom", getClickHandler(clickHandler[selector]));
           }
         }
       },

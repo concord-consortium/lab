@@ -532,7 +532,7 @@ define(function (require) {
 
       background: function (parent, data) {
         appendTranscriptionBg(parent);
-        d3.transition(svg.select(".plot")).attr("fill", data.background[0].color);
+        d3.transition(svg.select(".container-background")).attr("fill", data.background[0].color);
       }
     };
   }

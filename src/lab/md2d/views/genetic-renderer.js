@@ -229,7 +229,7 @@ define(function (require) {
        // outside g.genetics element, e.g. viewport and background. So, it
        // isn't enough to use d3.selectAll("g.genetics *").
         svg.selectAll("g.genetics, g.genetics *").interrupt();
-        svg.select(".plot").interrupt(); // background changes
+        svg.select(".container-background").interrupt(); // background changes
         viewportG.interrupt();           // viewport scrolling
         currentTrans = null;
         animStateInProgress = null;
@@ -312,7 +312,7 @@ define(function (require) {
         renderState(t, "dna", function (t) {
           // Make some transitions almost immediate.
           t.selectAll(".nucleotide").duration(5);
-          t.selectAll(".plot").duration(5);
+          t.selectAll(".container-background").duration(5);
         });
       },
 
@@ -348,7 +348,7 @@ define(function (require) {
       "before-translation": function beforeTranslation() {
         var t = nextTrans().ease("cubic-in-out").duration(1000);
         renderState(t, "before-translation-s0", function (t) {
-          t.selectAll(".plot").duration(1);
+          t.selectAll(".container-background").duration(1);
         });
 
         t = nextTrans().ease("cubic-in-out").duration(1500);
@@ -360,7 +360,7 @@ define(function (require) {
         t = nextTrans().ease("cubic").duration(1000);
         renderState(t, "before-translation-s3", function (t) {
           t.selectAll(".bonds").duration(250);
-          t.selectAll(".plot").duration(1);
+          t.selectAll(".container-background").duration(1);
         });
 
         t = nextTrans().ease("cubic-out").duration(1000);

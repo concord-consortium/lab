@@ -68,7 +68,7 @@ define(function(require) {
       lineContainerTop     = modelView.viewport.append("g").attr("class", "line-container-top"),
       imageContainerTop    = modelView.viewport.append("g").attr("class", "image-container-top"),
       textContainerTop     = modelView.viewport.append("g").attr("class", "text-container-top"),
-      iconContainer        = modelView.vis.append("g").attr("class", "icon-container"),
+      iconContainer        = modelView.mainContainer.append("g").attr("class", "icon-container"),
 
       dragOrigin,
 
