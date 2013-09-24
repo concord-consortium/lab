@@ -1,6 +1,6 @@
 {
   "title": "Electrostatics: Maze Game",
-  "publicationStatus": "draft",
+  "publicationStatus": "public",
   "subtitle": "Guide a charged object through a maze.",
   "about": "Control the charge of the gray ball by using the -, 0, and + buttons below the game. Use the attractive and repulsive forces between charged objects to navigate through the maze. Can you get it to the target before time runs out?",
   "aspectRatio": 2.04,
@@ -68,13 +68,13 @@
         "  height: props.y + props.height,",
         "  y: 0",
         "});",
-        "var renderUpdateTimeStep = get('timeStep') * get('timeStepsPerTick');",
+        "var renderUpdateTimeStep = get('timeStep') * get('timeStepsPerTick') * 10;",
         "callEvery(renderUpdateTimeStep, function(t) {",
         "  var countdown = get('countdown');",
         "  setTextBoxProperties(0,{text: format('0.0f')(countdown)});",
         "  if (countdown <= 0) { ",
         "    stop();",
-        "    alert('game over!');",
+        "    alert('Game over!');",
         "  } else {",
         "    var target = getShapeProperties(0);",
         "    if (atomsWithinRect(target.x, target.y, target.width, target.height).length > 0) {",
@@ -82,7 +82,7 @@
         "      if(get('max-countdown-time') - countdown <= 15) {",
         "        alert('Did you cheat?');",
         "      } else {",
-        "        alert('you won!');",
+        "        alert('You won!');",
         "      }",
         "    }",
         "  }",
@@ -96,7 +96,7 @@
       "text": [
         "Welcome to the Maze Game!",
         "- - -",
-        "Your goal is to get the gray ball to the target before time runs out?"
+        "Your goal is to get the gray ball to the target before time runs out."
       ]
     },
     {

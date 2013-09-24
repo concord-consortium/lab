@@ -35,6 +35,9 @@ define(function(require) {
     // Public API object to be returned.
     var api = {},
 
+      // Allows us to defer running actual renderer setup until layout system has determined oursize.
+      isSetup = false,
+
       // The model function getAtoms() returns a 2 dimensional array
       // of particle indices and properties that is updated every model tick.
       // This array is not garbage-collected so the view can be assured that
@@ -44,8 +47,6 @@ define(function(require) {
       modelWidth,
       modelHeight,
       aspectRatio,
-
-      firstRepaint,
 
       // Basic scaling functions for position, it transforms model units to "pixels".
       // Use it for positions of objects rendered inside the view.
@@ -2149,10 +2150,10 @@ define(function(require) {
     //
 
     //
-    // MD2D Renderer: init
+    // MD2D Renderer: setup
     //
 
-    function init() {
+    function setup() {
       timeSuffix = " (" + model.getPropertyDescription('displayTime').getUnitAbbreviation() + ")";
 
       model2px = modelView.model2px;
@@ -2204,9 +2205,7 @@ define(function(require) {
 
       setupFirefoxWarning();
 
-      firstRepaint = true;
-      repaint();
-      firstRepaint = false;
+      isSetup = true;
     }
 
     // Call when model is reset or reloaded.
@@ -2214,7 +2213,7 @@ define(function(require) {
     function bindModel(newModel) {
       model = newModel;
       atomsRenderer.bindModel(newModel);
-      init();
+      setup();
     }
 
     //
@@ -2239,9 +2238,8 @@ define(function(require) {
       setupDynamicGradients();
       setupObstacles();
       setupVdwPairs();
-      if (!firstRepaint) {
-        setupParticles();
-      }
+      setupParticles();
+
       // Always setup radial bonds *after* particles to use correct atoms
       // color table.
       setupShapes();
@@ -2326,14 +2324,28 @@ define(function(require) {
     //
     api = {
       // Expose private methods.
-      update: update,
-      repaint: repaint,
+      setup: function() {
+        if (!isSetup) {
+          setup();
+        }
+      },
+
+      update: function() {
+        if (isSetup) {
+          update();
+        }
+      },
+
+      repaint: function() {
+        if (isSetup) {
+          repaint();
+        }
+      },
+
       bindModel: bindModel,
       model2px: modelView.model2px,
       model2pxInv: modelView.model2pxInv
     };
-
-    init();
 
     return api;
   };
