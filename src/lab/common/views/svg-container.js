@@ -21,7 +21,7 @@ define(function (require) {
         node,
         emsize,
         fontSizeInPixels,
-        svgElement, mainContainer, containerBackground, viewportG,
+        svgElement, mainContainer, containerBackground,
         cx, cy,
         padding, size, modelSize, viewport,
 
@@ -318,12 +318,6 @@ define(function (require) {
         }
 
         gridContainer = mainContainer.append("g").attr("class", "grid-container");
-        // Create and arrange "layers" of the final image (g elements). Note
-        // that order of their creation is significant.
-        // TODO: containers should be initialized by renderers. It's weird
-        // that top-level view defines containers for elements that it's
-        // unaware of.
-        viewportG = mainContainer.append("svg").attr("class", "viewport");
         brushContainer = mainContainer.append("g").attr("class", "brush-container");
 
       } else {
@@ -348,7 +342,9 @@ define(function (require) {
                 model2pxInv(viewport.y) + " " +
                 model2px(viewport.scaledWidth) + " " +
                 model2px(viewport.scaledHeight);
-      viewportG.attr({
+
+      // Apply the viewbox to all "viewport" layers we have created
+      mainContainer.selectAll(".viewport").attr({
         viewBox: viewBox,
         x: 0,
         y: 0,
@@ -503,9 +499,6 @@ define(function (require) {
       get mainContainer() {
         return mainContainer;
       },
-      get viewport() {
-        return viewportG;
-      },
       get model2px() {
         return model2px;
       },
@@ -531,6 +524,11 @@ define(function (require) {
 
         if (renderer.repaint) renderer.repaint();
       },
+
+      appendViewport: function() {
+        return mainContainer.append("svg").attr("class", "viewport");
+      },
+
       resize: function() {
         renderContainer();
         api.repaint();
@@ -731,6 +729,7 @@ define(function (require) {
       });
     // DOM element.
     node = $el[0];
+
 
     init();
     renderer = new Renderer(api, model);

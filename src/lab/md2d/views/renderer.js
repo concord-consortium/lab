@@ -56,19 +56,28 @@ define(function(require) {
       // from bottom to top, while but SVG has increases from top to bottom
       model2pxInv,
 
-      // "Containers" - SVG g elements used to position layers of the final visualization.
-      fieldVisualization   = modelView.viewport.append("g").attr("class", "field-visualization"),
-      shapeContainerBelow  = modelView.viewport.append("g").attr("class", "shape-container-below"),
-      imageContainerBelow  = modelView.viewport.append("g").attr("class", "image-container-below"),
-      textContainerBelow   = modelView.viewport.append("g").attr("class", "text-container-below"),
-      radialBondsContainer = modelView.viewport.append("g").attr("class", "radial-bonds-container"),
-      VDWLinesContainer    = modelView.viewport.append("g").attr("class", "vdw-lines-container"),
-      atomsContainer       = modelView.viewport.append("g").attr("class", "atoms-container"),
-      shapeContainerTop    = modelView.viewport.append("g").attr("class", "shape-container-top"),
-      lineContainerTop     = modelView.viewport.append("g").attr("class", "line-container-top"),
-      imageContainerTop    = modelView.viewport.append("g").attr("class", "image-container-top"),
-      textContainerTop     = modelView.viewport.append("g").attr("class", "text-container-top"),
-      iconContainer        = modelView.mainContainer.append("g").attr("class", "icon-container"),
+      // "Viewports" - SVG elements whose viewbox is automatically adjusted appropriately by the
+      // container (called modelView here although it's a generic container, *not* the modelView)
+      belowAtomsViewport = modelView.appendViewport().classed("below-atoms", true),
+
+      // "Containers" - G elements used to position layers of the final visualization.
+      fieldVisualization   = belowAtomsViewport.append("g").attr("class", "field-visualization"),
+      shapeContainerBelow  = belowAtomsViewport.append("g").attr("class", "shape-container-below"),
+      imageContainerBelow  = belowAtomsViewport.append("g").attr("class", "image-container-below"),
+      textContainerBelow   = belowAtomsViewport.append("g").attr("class", "text-container-below"),
+      radialBondsContainer = belowAtomsViewport.append("g").attr("class", "radial-bonds-container"),
+      VDWLinesContainer    = belowAtomsViewport.append("g").attr("class", "vdw-lines-container"),
+
+      atomsViewport  = modelView.appendViewport().classed("atoms", true),
+      atomsContainer = atomsViewport.append("g").attr("class", "atoms-container"),
+
+      aboveAtomsViewport = modelView.appendViewport().classed("above-atoms", true),
+      shapeContainerTop  = aboveAtomsViewport.append("g").attr("class", "shape-container-top"),
+      lineContainerTop   = aboveAtomsViewport.append("g").attr("class", "line-container-top"),
+      imageContainerTop  = aboveAtomsViewport.append("g").attr("class", "image-container-top"),
+      textContainerTop   = aboveAtomsViewport.append("g").attr("class", "text-container-top"),
+
+      iconContainer = modelView.mainContainer.append("g").attr("class", "icon-container"),
 
       dragOrigin,
 
