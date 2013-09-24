@@ -292,8 +292,13 @@ define(function (require) {
 
     // Setup background.
     function setupBackground() {
-      // Just set the color.
-      plot.attr("fill", model.get("backgroundColor") || "rgba(0, 0, 0, 0)");
+      var color = model.get("backgroundColor") || "rgba(0, 0, 0, 0)";
+      plot.attr("fill", color);
+      // Set color of PIXI.Stage to fix an issue with outlines around the objects that are visible
+      // when WebGL renderer is being used. It only happens when PIXI.Stage background is different
+      // from model container background. It's necessary to convert color into number, as PIXI
+      // accepts only numbers. D3 helps us handle color names like "red", "green" etc.
+      pixiStage.setBackgroundColor(parseInt(d3.rgb(color).toString().substr(1), 16));
     }
 
     function mousedown() {
