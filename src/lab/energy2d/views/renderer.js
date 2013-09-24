@@ -24,7 +24,7 @@ define(function(require) {
         $canvasCont = $("<div id='e2d-canvas-views'>"),
         canvasCount = 0,
 
-        beforeSetup = true;
+        isSetup = false;
 
     function setAsNextLayer(view) {
       var $layer = view.getHTMLElement();
@@ -111,7 +111,7 @@ define(function(require) {
       },
 
       setup: function (model) {
-        beforeSetup = false;
+        isSetup = true;
         setupCanvasViews();
 
         parts_view.bindPartsArray(model.getPartsArray());
@@ -145,7 +145,7 @@ define(function(require) {
       },
 
       update: function () {
-        if (beforeSetup) return;
+        if (!isSetup) return;
         heatmap_view.renderHeatmap();
         velocity_view.renderVectormap();
         photons_view.renderPhotons();
@@ -154,7 +154,7 @@ define(function(require) {
 
       resize: function () {
         // Ignore all resize() callbacks if view isn't already set up.
-        if (beforeSetup) return;
+        if (!isSetup) return;
         heatmap_view.resize();
         velocity_view.resize();
         photons_view.resize();
