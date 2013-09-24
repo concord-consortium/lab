@@ -44,7 +44,13 @@
     'pixi':  {
       exports: 'PIXI'
     },
+    'rgbcolor': {
+      exports: 'rgbcolor'
+    },
     'canvg': {
+      deps: [
+        'rgbcolor'
+      ],
       exports: 'canvg'
     }
   },
@@ -58,6 +64,7 @@
     'underscore': '../../vendor/underscore/underscore',
     'pixi': '../../vendor/pixi.js/bin/pixi',
     'canvg': '../../vendor/canvg-1.3/canvg',
+    'rgbcolor': '../../vendor/canvg-1.3/rgbcolor',
     'backbone': '../../node_modules/backbone/backbone',
     'mustache': '../../node_modules/mustache/mustache',
     'markdown': '../../node_modules/markdown/lib/markdown'
