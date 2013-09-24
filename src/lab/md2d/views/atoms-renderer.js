@@ -1,4 +1,4 @@
-/*global define: false, d3: false */
+/*global define: false, d3: false, alert */
 /*jshint multistr: true */
 
 define(function(require) {
@@ -28,7 +28,11 @@ define(function(require) {
         .range(["#F2F2F2", "#FF8080"]),
       keDarkColor = d3.scale.linear()
         .interpolate(d3.interpolateRgb)
-        .range(["#A4A4A4", "#FF2020"]);
+        .range(["#A4A4A4", "#FF2020"]),
+
+      FONT_FAMILY = " Lato",
+
+      RENDERING_OPTIONS = ["keShading", "atomNumbers", "showChargeSymbols", "useThreeLetterCode"];
 
   return function AtomsRenderer(modelView, model) {
     // Public API object to be returned.
@@ -44,14 +48,22 @@ define(function(require) {
 
         elementTex = {},
 
-        keShading;
+        // Rendering options:
+        renderMode = {};
 
     function init() {
-      keShading = model.get("keShading");
-      model.addPropertiesListener(["keShading"], function () {
-        keShading = model.get("keShading");
-        api.update();
+      readRenderingOptions();
+      // Modes require .setup() call:
+      model.addPropertiesListener(RENDERING_OPTIONS, function () {
+        readRenderingOptions();
+        api.setup();
         modelView.renderCanvas();
+      });
+    }
+
+    function readRenderingOptions() {
+      RENDERING_OPTIONS.forEach(function (name) {
+        renderMode[name] = model.get(name);
       });
     }
 
@@ -62,7 +74,7 @@ define(function(require) {
           ke, keIndex;
 
 
-      if (keShading) {
+      if (renderMode.keShading) {
         ke = model.getAtomKineticEnergy(i);
         // Convert Kinetic Energy to [0, 1] range
         // using empirically tested transformations.
@@ -100,6 +112,51 @@ define(function(require) {
         elementTex[key] = new PIXI.Texture.fromCanvas(canv);
       }
       return elementTex[key];
+    }
+
+    function getAtomLabel(i) {
+      var text, textShadow,
+          textVal,
+          sizeRatio;
+
+      if (renderMode.atomNumbers) {
+        textVal = i;
+        sizeRatio = 1.3;
+      } else if (renderMode.useThreeLetterCode && modelAtoms[i].label) {
+        textVal = modelAtoms[i].label;
+        sizeRatio = 1;
+      } else if (!renderMode.useThreeLetterCode && modelAtoms[i].symbol) {
+        textVal = modelAtoms[i].symbol;
+        sizeRatio = 1.4;
+      } else if (renderMode.showChargeSymbols) {
+        if (modelAtoms[i].charge > 0) {
+          textVal = "+";
+        } else if (modelAtoms[i].charge < 0) {
+          textVal = "-";
+        } else {
+          return null;
+        }
+        sizeRatio = 1.6;
+      } else {
+        return null;
+      }
+
+      textShadow = new PIXI.Text(textVal, {
+        font: "bold " + m2px(sizeRatio * modelAtoms[i].radius) + "px " + FONT_FAMILY,
+        fill: "#fff"
+      });
+      textShadow.anchor.x = 0.5;
+      textShadow.anchor.y = 0.5;
+
+      text = new PIXI.Text(textVal, {
+        font: "bold " + m2px(sizeRatio * modelAtoms[i].radius) + "px " + FONT_FAMILY,
+        fill: "#444"
+      });
+      text.anchor.x = 0.52;
+      text.anchor.y = 0.52;
+
+      textShadow.addChild(text);
+      return textShadow;
     }
 
     function mouseDown(data) {
@@ -158,7 +215,7 @@ define(function(require) {
 
     api = {
       setup: function () {
-        var i, len, atom;
+        var i, len, atom, text;
 
         if (container) {
           modelView.pixiStage.removeChild(container);
@@ -183,6 +240,11 @@ define(function(require) {
           atom.mouseup = atom.mouseupoutside = atom.touchend = atom.touchendoutside = mouseUp;
           atom.mousemove = atom.touchmove = mouseMove;
 
+          text = getAtomLabel(i);
+          if (text) {
+            atom.addChild(text);
+          }
+
           viewAtoms.push(atom);
           container.addChild(atom);
         }
@@ -202,7 +264,7 @@ define(function(require) {
           viewAtoms[i].position.x = m2px(modelAtoms[i].x);
           viewAtoms[i].position.y = m2pxInv(modelAtoms[i].y);
 
-          if (keShading) {
+          if (renderMode.keShading) {
             viewAtoms[i].setTexture(getAtomTexture(i));
           }
         }
