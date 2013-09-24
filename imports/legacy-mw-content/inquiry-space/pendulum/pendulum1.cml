@@ -11,9 +11,9 @@ The pendulum model can be used to learn a couple of important concepts in classi
 Instruction: Pull the slider to change the mass of the suspended ball. Observe the simulation carefully. At the first time the ball returns to the original position, click the &quot;Stop&quot; button immediately (be quick). Take a look at the number on the knob of the frame slider. Press the &quot;Reset&quot; button again. Pull the slider to a different value. Repeat the above procedure. Are the numbers you got different?</text>
 <section start="0" end="588">
 <paragraph start="0" end="11">
-<Alignment>1</Alignment>
 <LeftIndent>10.0</LeftIndent>
 <SpaceAbove>6.0</SpaceAbove>
+<Alignment>1</Alignment>
 <content start="0" end="10">
 <bold>true</bold><size>15</size></content>
 
@@ -104,7 +104,7 @@ Instruction: Pull the slider to change the mass of the suspended ball. Observe t
 <paragraph start="182" end="588">
 <LeftIndent>6.0</LeftIndent>
 <content start="182" end="193">
-<bold>true</bold><size>11</size></content>
+<size>11</size><bold>true</bold></content>
 
 <content start="193" end="587">
 <size>11</size></content>
