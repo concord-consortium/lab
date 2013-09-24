@@ -73,6 +73,7 @@ ISImporter.SensorApplet = defineClass({
               },
               "Cancel": function() {
                 $(this).dialog("close");
+                ISImporter.appController.setSensorSelection('none');
               }
             }
           });
@@ -112,6 +113,7 @@ ISImporter.SensorApplet = defineClass({
               },
               "Cancel": function() {
                 $(this).dialog("close");
+                ISImporter.appController.setSensorSelection('none');
               }
             }
           });
@@ -312,6 +314,7 @@ ISImporter.VernierSensorApplet = extendClass(ISImporter.SensorApplet, {
           },
           "Cancel": function() {
             $(this).dialog("close");
+            ISImporter.appController.setSensorSelection('none');
           }
         }
       });
