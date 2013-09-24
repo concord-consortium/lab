@@ -18,7 +18,7 @@ define(function(require) {
            <stop stop-color="{{ medCol }}" offset="100%"></stop> \
            </radialGradient> \
          </defs> \
-         <circle fill="url(#grad)" cx="16" cy="16" r="15"/> \
+         <circle fill="url(#grad)" cx="16" cy="16" r="15" fill-opacity="{{ opacity }}"/> \
        </svg>',
 
       // Scale used for Kinetic Energy Shading gradients.
@@ -94,7 +94,8 @@ define(function(require) {
       var elID = modelAtoms[i].element,
           radius = m2px(model.getElementProperties(elID).radius),
           colors = getAtomColors(i, elID),
-          key = elID + "-" + radius + "-" + colors.join("");
+          visible = modelAtoms[i].visible,
+          key = visible ? (elID + "-" + radius + "-" + colors.join("")) : (radius + "-invisible");
 
       if (elementTex[key] === undefined) {
         var canv = document.createElement("canvas"),
@@ -105,7 +106,8 @@ define(function(require) {
           height: 2 * radius,
           lightCol: colors[0],
           medCol: colors[1],
-          darkCol: colors[2]
+          darkCol: colors[2],
+          opacity: visible
         };
 
         canvg(canv, mustache.render(atomSVG, tplData));
