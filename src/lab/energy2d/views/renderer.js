@@ -22,7 +22,7 @@ define(function(require) {
         webgl_status = new WebGLStatusView(null, model),
         $status = webgl_status.getHTMLElement(),
         $canvasCont = $("<div id='e2d-canvas-views'>"),
-        cavasCount = 0,
+        canvasCount = 0,
 
         beforeSetup = true;
 
@@ -34,8 +34,8 @@ define(function(require) {
       $layer.css('position', 'absolute');
       $layer.css('top', 0);
       $layer.css('left', 0);
-      $layer.css('z-index', cavasCount);
-      cavasCount += 1;
+      $layer.css('z-index', canvasCount);
+      canvasCount += 1;
 
       $canvasCont.append($layer);
 
@@ -57,11 +57,11 @@ define(function(require) {
       // TODO: check if new version (30+?) fixes that.
     }
 
-    function setupCavnasViews() {
+    function setupCanvasViews() {
       var props = model.properties;
 
       $canvasCont.empty();
-      cavasCount = 0;
+      canvasCount = 0;
       // Use isWebGLActive() method, not use_WebGL property. The fact that
       // use_WebGL option is set to true doesn't mean that WebGL can be
       // initialized. It's only a preference.
@@ -112,7 +112,7 @@ define(function(require) {
 
       setup: function (model) {
         beforeSetup = false;
-        setupCavnasViews();
+        setupCanvasViews();
 
         parts_view.bindPartsArray(model.getPartsArray());
         sensors_view.bindSensorsArray(model.getSensorsArray());
@@ -125,7 +125,7 @@ define(function(require) {
         api.update();
 
         model.addPropertiesListener("use_WebGL", function() {
-          setupCavnasViews();
+          setupCanvasViews();
           setVisOptions();
           webgl_status.render();
           api.update();
