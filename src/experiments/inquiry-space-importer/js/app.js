@@ -47,6 +47,21 @@ var MENU_GROUPS = {
 
 ISImporter.sensors = {
 
+  none: {
+    applet: null,
+    menuGroup: MENU_GROUPS.NONE,
+    menuText: "select type of sensor...",
+    menuDisabled: true,
+    menuSelected: true,
+    title: "Sensor",
+    tareable: false,
+    minReading: 0,
+    maxReading: 2,
+    readingUnits: "",
+    precision: 1,
+    maxSeconds: 20
+  },
+
   goMotion: {
     applet: new ISImporter.GoIOApplet({
       listenerPath: 'ISImporter.sensors.goMotion.applet',
@@ -594,7 +609,9 @@ ISImporter.appController = new ISImporter.Object({
       }
     }
 
-    $el.append('<option value="' + sensorKey + '">' + sensor.menuText + '</option>');
+    disabled = sensor.menuDisabled ? " disabled" : "";
+    selected = sensor.menuSelected ? " selected" : "";
+    $el.append('<option value="' + sensorKey + '"' + disabled + selected + '>' + sensor.menuText + '</option>');
   },
 
   setupGraph: function(title, yLabel, yMax, dataset) {},
@@ -658,12 +675,12 @@ ISImporter.appController = new ISImporter.Object({
 
   // events
   sensorChanged: function() {
-    var val        = this.getSensorSelection(),
+    var val        = (this.getSensorSelection() || "none"),
         self       = this;
 
     this.sensor = ISImporter.sensors[val];
 
-    if (this.currentApplet === this.sensor.applet && this.currentApplet.getState() !== "not appended") {
+    if (this.currentApplet === this.sensor.applet && (this.currentApplet === null || this.currentApplet.getState() !== "not appended")) {
       return;
     }
 
@@ -676,57 +693,62 @@ ISImporter.appController = new ISImporter.Object({
 
     this.currentApplet = this.sensor.applet;
     this.currentAppletReady = false;
-    this.currentApplet.on('sensorReady', function() {
-      self.sensorAppletReady();
-    });
-    this.currentApplet.on('deviceUnplugged', function() {
-      self.stopInterface(self);
-      self.logAction('deviceUnplugged');
-      $('#dialog-confirm-content').text("No sensor device is connected! Please connect your device and click OK to try again, or Cancel to stop trying.");
-      $('#dialog-confirm').attr('title', "No sensor device found!");
-      $('#dialog-confirm').dialog({
-        resizable: false,
-        height: 300,
-        width: 400,
-        modal: true,
-        buttons: {
-          "OK": function() {
-            $(this).dialog("close");
-            if (self.singleValueTimerId === null) {
-              self.singleValueTimerId = setInterval(function() {self.readSingleValue();}, 1000);
-            }
-          },
-          "Cancel": function() {
-            $(this).dialog("close");
-            self.sensorDisconnect();
-          }
-        }
+    if (this.currentApplet === null) {
+      $(".sensor-applet").remove();
+      $(".test-sensor-applet").remove();
+    } else {
+      this.currentApplet.on('sensorReady', function() {
+        self.sensorAppletReady();
       });
-    });
-    this.currentApplet.on('sensorUnplugged', function() {
-      self.stopInterface(self);
-      self.logAction('sensorUnplugged');
-      $('#dialog-confirm-content').text("No sensor (or the wrong sensor) is connected! Please connect your sensor and click OK to try again, or Cancel to stop trying.");
-      $('#dialog-confirm').attr('title', "No sensor found!");
-      $('#dialog-confirm').dialog({
-        resizable: false,
-        height: 300,
-        width: 400,
-        modal: true,
-        buttons: {
-          "OK": function() {
-            $(this).dialog("close");
-            if (self.singleValueTimerId === null) {
-              self.singleValueTimerId = setInterval(function() {self.readSingleValue();}, 1000);
+      this.currentApplet.on('deviceUnplugged', function() {
+        self.stopInterface(self);
+        self.logAction('deviceUnplugged');
+        $('#dialog-confirm-content').text("No sensor device is connected! Please connect your device and click OK to try again, or Cancel to stop trying.");
+        $('#dialog-confirm').attr('title', "No sensor device found!");
+        $('#dialog-confirm').dialog({
+          resizable: false,
+          height: 300,
+          width: 400,
+          modal: true,
+          buttons: {
+            "OK": function() {
+              $(this).dialog("close");
+              if (self.singleValueTimerId === null) {
+                self.singleValueTimerId = setInterval(function() {self.readSingleValue();}, 1000);
+              }
+            },
+            "Cancel": function() {
+              $(this).dialog("close");
+              self.sensorDisconnect();
             }
-          },
-          "Cancel": function() {
-            $(this).dialog("close");
-            self.sensorDisconnect();
           }
-        }
+        });
       });
-    });
+      this.currentApplet.on('sensorUnplugged', function() {
+        self.stopInterface(self);
+        self.logAction('sensorUnplugged');
+        $('#dialog-confirm-content').text("No sensor (or the wrong sensor) is connected! Please connect your sensor and click OK to try again, or Cancel to stop trying.");
+        $('#dialog-confirm').attr('title', "No sensor found!");
+        $('#dialog-confirm').dialog({
+          resizable: false,
+          height: 300,
+          width: 400,
+          modal: true,
+          buttons: {
+            "OK": function() {
+              $(this).dialog("close");
+              if (self.singleValueTimerId === null) {
+                self.singleValueTimerId = setInterval(function() {self.readSingleValue();}, 1000);
+              }
+            },
+            "Cancel": function() {
+              $(this).dialog("close");
+              self.sensorDisconnect();
+            }
+          }
+        });
+      });
+    }
 
     this.dataset = new ISImporter.Dataset();
     this.rawDataset = this.getNewRawDataset();
@@ -740,7 +762,9 @@ ISImporter.appController = new ISImporter.Object({
     ISImporter.graphController.setYMax( this.sensor.maxReading );
     ISImporter.graphController.setTitle( this.sensor.title + " Graph");
 
-    this.currentApplet.append();
+    if (this.currentApplet) {
+      this.currentApplet.append();
+    }
 
     // we'll skip explicit state management... for now.
     this.disableControlButtons();
@@ -753,8 +777,13 @@ ISImporter.appController = new ISImporter.Object({
       this.hide(this.$tareButton);
     }
 
-    this.enable(this.$sensorDisconnect);
-    this.show(this.$realtimeDisplay);
+    if (this.currentApplet) {
+      this.enable(this.$sensorDisconnect);
+      this.show(this.$realtimeDisplay);
+    } else {
+      this.disable(this.$sensorDisconnect);
+      this.hide(this.$realtimeDisplay);
+    }
 
     ISImporter.graphController.removeNotification();
   },
@@ -1007,6 +1036,11 @@ ISImporter.appController = new ISImporter.Object({
   // accessors
   getSensorSelection: function() {
     return this.$sensorSelector.val();
+  },
+
+  setSensorSelection: function(id) {
+    this.$sensorSelector.val(id);
+    this.sensorChanged();
   },
 
   getMetadataItemCount: function() {
