@@ -140,6 +140,12 @@ define(function () {
         }
         model = interactivesController.getModel();
         scriptingAPI = interactivesController.getScriptingAPI();
+
+        onClickScript = component.onClick;
+        if (onClickScript) {
+          onClickScript = scriptingAPI.makeFunctionInScriptContext('value', onClickScript);
+        }
+
         // Connect checkbox with model's property if its name is defined.
         if (propertyName !== undefined) {
           // Register listener for 'propertyName'.

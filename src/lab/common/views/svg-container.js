@@ -564,8 +564,6 @@ define(function (require) {
         init();
 
         if (renderer.bindModel) renderer.bindModel(newModel, newModelUrl);
-
-        api.repaint();
       },
 
       pos: function() {

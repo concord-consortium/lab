@@ -1,0 +1,17 @@
+{
+  "title": "200 Atoms with KE Shading",
+  "publicationStatus": "public",
+  "subtitle": "200 unbonded atoms: benchmarking KE shading.",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "200-atoms",
+      "url": "imports/legacy-mw-content/converted/benchmarks/200-atoms/200-atoms$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "keShading": true
+      },
+      "onLoad": "set({ showClock: true})"
+    }
+  ]
+}

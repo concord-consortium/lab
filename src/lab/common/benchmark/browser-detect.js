@@ -12,23 +12,32 @@ define(function () {
         "Windows NT 5.01": "Windows 2000, Service Pack 1 (SP1)",
         "Windows NT 5.0": "Windows 2000",
         "Windows NT 4.0": "Microsoft Windows NT 4.0"
-      },
-      windows_feature_token = {
-        "WOW64":       "64/32",
-        "Win64; IA64": "64",
-        "Win64; x64":  "64"
       };
 
   function os_platform() {
-    var match = navigator.userAgent.match(/\((.+?)[;)] (.+?)[;)].*/);
+    var match = navigator.userAgent.match(/\(([^)]+)\).*/);
     if (!match) { return "na"; }
-    if (match[1] === "Macintosh") {
-      return match[2];
-    } else if (match[1].match(/^Windows/)) {
-      var arch  = windows_feature_token[match[2]] || "32",
-          token = navigator.userAgent.match(/\(.*?(Windows NT.+?)[;)]/);
+    var systemInfo = match[1];
+    var systemInfoArray = systemInfo.split("; ");
+
+    if (systemInfoArray[0] === "Macintosh") {
+      return systemInfoArray[1];
+    } else if (systemInfoArray[0].match(/^Windows/)) {
+      var token = navigator.userAgent.match(/\(.*?(Windows NT.+?)[;)]/),
+          arch = "";
+      if(systemInfo.match(/WOW64/)){
+        arch = "64/32";
+      } else if(systemInfo.match(/Win64; IA64/)){
+        arch = "64";
+      } else if(systemInfo.match(/Win64; x64/)){
+        arch = "64";
+      }
       return windows_platform_token[token[1]] + "/" + arch;
+    } else if (systemInfoArray[0].match(/^X11/)) {
+      return systemInfoArray.shift().join('/');
     }
+
+    return "na";
   }
 
   return {

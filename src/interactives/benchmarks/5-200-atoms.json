@@ -1,0 +1,16 @@
+{
+  "title": "200 Atoms",
+  "publicationStatus": "public",
+  "subtitle": "200 unbonded atoms: benchmarking simple rendering.",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "200-atoms",
+      "url": "imports/legacy-mw-content/converted/benchmarks/200-atoms/200-atoms$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      },
+      "onLoad": "set({ showClock: true})"
+    }
+  ]
+}
