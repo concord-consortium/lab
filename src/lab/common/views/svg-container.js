@@ -176,6 +176,8 @@ define(function (require) {
         d3.event.transform(model2px, model2pxInv);
       }
 
+      gridContainer.selectAll("g.x, g.y").remove();
+
       // Regenerate x-ticks…
       var gx = gridContainer.selectAll("g.x")
           .data(model2px.ticks(5), String)
