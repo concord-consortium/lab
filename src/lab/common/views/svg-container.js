@@ -476,10 +476,8 @@ define(function (require) {
     */
     function setupHitTesting() {
 
-      // Ignore mousemove on the assumption that we only ever listen to mousemove to implement
-      // dragging, and then we listen for it on document.body. Also assume that we're not doing
-      // mouseover, mouseout, dblclick...?
-      var EVENT_TYPES = ['mousedown', 'mouseup', 'click'];
+      // Pixi listens to mousemove on the canvas element.
+      var EVENT_TYPES = ['mousedown', 'mouseup', 'click', 'mousemove'];
 
       // TODO: touch events (touchstart, touchmove, touchend).
       //
