@@ -21,7 +21,7 @@ define(function(require) {
          <circle fill="url(#grad)" cx="16" cy="16" r="15" fill-opacity="{{ opacity }}"/> \
        </svg>',
 
-      // Scale used for Kinetic Energy Shading gradients.
+      // Scales used for Kinetic Energy Shading gradients.
       KE_SHADING_STEPS = 25,
       keMedColor = d3.scale.linear()
         .interpolate(d3.interpolateRgb)
@@ -30,9 +30,33 @@ define(function(require) {
         .interpolate(d3.interpolateRgb)
         .range(["#A4A4A4", "#FF2020"]),
 
+      // Scales used for Charge Shading gradients.
+      CHARGE_SHADING_STEPS = 25,
+      NEUTRAL_COLORS = ["#FFFFFF", "#f2f2f2", "#A4A4A4"],
+      posLightColor = d3.scale.linear()
+        .interpolate(d3.interpolateRgb)
+        .range(["#FFFFFF", "#ffefff"]),
+      posMedColor = d3.scale.linear()
+        .interpolate(d3.interpolateRgb)
+        .range(["#f2f2f2", "#9090FF"]),
+      posDarkColor = d3.scale.linear()
+        .interpolate(d3.interpolateRgb)
+        .range(["#A4A4A4", "#3030FF"]),
+      negLightColor = d3.scale.linear()
+        .interpolate(d3.interpolateRgb)
+        .range(["#FFFFFF", "#dfffff"]),
+      negMedColor = d3.scale.linear()
+        .interpolate(d3.interpolateRgb)
+        .range(["#f2f2f2", "#FF8080"]),
+      negDarkColor = d3.scale.linear()
+        .interpolate(d3.interpolateRgb)
+        .range(["#A4A4A4", "#FF2020"]),
+
+
       FONT_FAMILY = " Lato",
 
-      RENDERING_OPTIONS = ["keShading", "atomNumbers", "showChargeSymbols", "useThreeLetterCode"];
+      RENDERING_OPTIONS = ["keShading", "chargeShading", "atomNumbers", "showChargeSymbols",
+                           "useThreeLetterCode"];
 
   return function AtomsRenderer(modelView, model) {
     // Public API object to be returned.
@@ -71,7 +95,7 @@ define(function(require) {
       var elID = modelAtoms[i].element,
           props = model.getElementProperties(elID),
           colorStr, color,
-          ke, keIndex;
+          ke, keIndex, charge, chargeIndex;
 
 
       if (renderMode.keShading) {
@@ -82,6 +106,16 @@ define(function(require) {
         keIndex = Math.round(Math.min(5 * ke, 1) * KE_SHADING_STEPS);
         keIndex /= KE_SHADING_STEPS;
         return ["#ffffff", keMedColor(keIndex), keDarkColor(keIndex)];
+      } else if (renderMode.chargeShading) {
+        charge = modelAtoms[i].charge;
+        chargeIndex = Math.round(Math.min(Math.abs(charge) / 3, 1) * CHARGE_SHADING_STEPS);
+        chargeIndex /= CHARGE_SHADING_STEPS;
+        if (charge > 0) {
+          return [posLightColor(chargeIndex), posMedColor(chargeIndex), posDarkColor(chargeIndex)];
+        } else if (charge < 0) {
+          return [negLightColor(chargeIndex), negMedColor(chargeIndex), negDarkColor(chargeIndex)];
+        }
+        return NEUTRAL_COLORS;
       } else {
         colorStr = (props.color + Math.pow(2, 24)).toString(16);
         colorStr = "000000".substr(0, 6 - colorStr.length) + colorStr;
@@ -161,7 +195,7 @@ define(function(require) {
       return textShadow;
     }
 
-    function mouseDown(data) {
+    function mouseDown() {
       if (model.isStopped()) {
         this.dragging = true;
         this.originX = modelAtoms[this.i].x;
@@ -187,8 +221,7 @@ define(function(require) {
       }
     }
 
-    function mouseUp(data)
-    {
+    function mouseUp(data) {
       if (this.dragging) {
         var newPosition = data.getLocalPosition(this.parent),
             x = m2px.invert(newPosition.x),
