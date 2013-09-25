@@ -2,6 +2,7 @@
   "title": "Charge Intensity and Electric Field Force Magnitude",
   "publicationStatus": "draft",
   "subtitle": "Manipulate the charge on objects to explore the relationship between the electric field around objects and the forces on objects.",
+  "aspectRatio": 1.31,
   "about": [
     "Control the amount of chrage on two objects an observe how it affects ",
     "(1) the electric fields around the charged objects and ",
@@ -15,7 +16,12 @@
       "url": "imports/legacy-mw-content/converted/interactions/charge-intensity-and-force/amount-charge$0.json",
       "importedFrom": "imports/legacy-mw-content/interactions/charge-intensity-and-force/amount-charge$0.mml",
       "viewOptions": {
-        "controlButtons": ""
+        "controlButtons": "",
+        "electricFieldDensity": 24,
+        "electricFieldColor": "rgb(0,255,0)",
+        "forceVectors": {
+          "length": 15
+        }
       },
       "onLoad": [
         "set('showElectricField',false);",
