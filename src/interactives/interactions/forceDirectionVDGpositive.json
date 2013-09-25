@@ -2,6 +2,7 @@
   "title": "Direction of Force Around a VDG (Positively Charged)",
   "publicationStatus": "draft",
   "subtitle": "How is the direction of force oriented between charged objects?",
+  "aspectRatio": 1.6,
   "about": [
     "The colored arrow indicates the direction of force between the charged object and the VDG.",
     "How does the orientation of the arrow change as the charged object is moved around?",
@@ -35,14 +36,14 @@
           "      var tNow = getCurrentComputerTime();",
           "      if( tNow - get('last-trace-time') > 250 ) {",
           "        var traceidx = get('trace-idx');",
-          "        setLineProperties(2 + traceidx, {x1: dragAtomProps.x, y1: dragAtomProps.y, x2: targetX, y2: targetY, visible: true});",
+          "        setLineProperties(1 + traceidx, {x1: dragAtomProps.x, y1: dragAtomProps.y, x2: targetX, y2: targetY, visible: true});",
           "        set('trace-idx', (traceidx+1)%96);",
           "        set('last-trace-time', tNow);",
           "      }",
           "    }",
           "    targetX = targetAtomProps.x + 0.4/L*dx;",
           "    targetY = targetAtomProps.y + 0.4/L*dy;",
-          "    setLineProperties(1, {x1: targetAtomProps.x, y1: targetAtomProps.y, x2: targetX, y2: targetY});",
+          "    setLineProperties(97, {x1: targetAtomProps.x, y1: targetAtomProps.y, x2: targetX, y2: targetY});",
           "  }",
           "});"
         ]
@@ -67,7 +68,7 @@
     {
       "name": "show-force-on-VDG",
       "initialValue": false,
-      "onChange": "setLineProperties(1, {visible: value});"
+      "onChange": "setLineProperties(97, {visible: value});"
     },
     {
       "name": "trace-force-vectors",
@@ -110,7 +111,7 @@
       "text": "Clear",
       "action": [
         "batch( function() { ",
-        "  for( var i = 2; i < 98; setLineProperties(i++, {visible: false})); // clear traces",
+        "  for( var i = 1; i < 97; setLineProperties(i++, {visible: false})); // clear traces",
         "});"
       ]
     }
