@@ -65,6 +65,7 @@
       "viewOptions": {
         "controlButtons": "",
         "electricFieldDensity": 24,
+        "electricFieldColor": "rgb(0,255,0)",
         "forceVectors": {
           "length": 30
         }
