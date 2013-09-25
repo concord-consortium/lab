@@ -45,6 +45,7 @@ define(function(require) {
         viewOptions,
         mainProperties,
         isStopped = true,
+        needsReload = false,
         dispatch = d3.dispatch('play', 'stop', 'tick', 'willReset', 'reset', 'stepForward',
                                'stepBack', 'seek', 'invalidation'),
         initialSensorType,
@@ -228,6 +229,7 @@ define(function(require) {
         },
         Cancel: function() {
           $(this).remove();
+          model.reload();
         }
       });
     }
@@ -237,6 +239,7 @@ define(function(require) {
       simpleAlert(message, {
         OK: function() {
           $(this).remove();
+          model.reload();
         }
       });
     }
@@ -450,6 +453,13 @@ define(function(require) {
         dispatch.reset();
       },
 
+      reload: function() {
+        model.stop();
+        makeInvalidatingChange(function() {
+          needsReload = true;
+        });
+      },
+
       isStopped: function() {
         return isStopped;
       },
@@ -647,6 +657,11 @@ define(function(require) {
       return isStopped && !didCollectData && isSensorTareable && !isTaring;
     });
 
+    model.defineOutput('needsReload', {
+      label: "Needs Reload?"
+    }, function() {
+      return needsReload;
+    });
 
     // Clean up state before we go -- failing to remove the applet from the page before switching
     // between 2 sensor types that use the same interface causes an applet exception.
