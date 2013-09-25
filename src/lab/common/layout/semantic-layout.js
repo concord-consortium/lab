@@ -246,7 +246,9 @@ define(function (require) {
     }
 
     function setSizeAndFontSizeOfModelContainer() {
-      var modelFontScale = modelWidth/$interactiveContainer.width();
+      var actualAspectRatio = $interactiveContainer.width()/$interactiveContainer.height(),
+          aspectRatioScaleCorrection = Math.max(actualAspectRatio/aspectRatio, 1.1),
+          modelFontScale = (modelWidth*1.1/$interactiveContainer.width())*aspectRatioScaleCorrection;
 
       $modelContainer.css({
         width:  modelWidth,
