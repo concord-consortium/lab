@@ -2,6 +2,8 @@
   "title": "Target Game (Charge Magnitude / Force Relationship)",
   "publicationStatus": "draft",
   "subtitle": "Can you manipulate the amount of charge on charged objects to steer a charged particle to a target?",
+  "aspectRatio": 1.175,
+  "fontScale": 0.95,
   "about": [
     "Use the *Launch a positive particle* button to shoot a positive particle across the game board.",
     "Adjust the amount of charge on objects **A** and **B** to steer the moving particle to the target.",
@@ -15,7 +17,11 @@
       "importedFrom": "imports/legacy-mw-content/interactions/target-game-charge-magnitude/targetGameCharge$0.mml",
       "viewOptions": {
         "controlButtons": "",
-        "electricFieldDensity": 24
+        "electricFieldDensity": 24,
+        "electricFieldColor": "rgb(0,255,0)",
+        "forceVectors": {
+          "length": 30
+        }
       },
       "onLoad": [
         "setAtomProperties(0,{draggable: true});",
@@ -58,7 +64,10 @@
       "importedFrom": "imports/legacy-mw-content/interactions/target-game-charge-magnitude/level2Charge$0.mml",
       "viewOptions": {
         "controlButtons": "",
-        "electricFieldDensity": 24
+        "electricFieldDensity": 24,
+        "forceVectors": {
+          "length": 30
+        }
       },
       "onLoad": [
         "setAtomProperties(0,{draggable: true});",
@@ -114,7 +123,11 @@
       "type": "button",
       "id": "reset",
       "text": "Reset",
-      "action": "reload();"
+      "action": [
+        "reset({",
+        "  retainParameters: ['showElectricField', 'showForceVectors']",
+        "});"
+      ]
     },
     {
       "type": "checkbox",
@@ -135,12 +148,12 @@
       "options": [
         {
           "text": "Level 1",
-          "action": "loadModel('level1')",
+          "loadModel": "level1",
           "selected": true
         },
         {
           "text": "Level 2",
-          "action": "loadModel('level2')"
+          "loadModel": "level2"
         }
       ]
     },
