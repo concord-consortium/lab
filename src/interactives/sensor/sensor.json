@@ -9,7 +9,8 @@
       "id": "signal1",
       "url": "models/sensor/sensor.json",
       "viewOptions": {
-        "controlButtons": "",
+        "controlButtons": "reset",
+        "controlButtonStyle": "text",
         "showClock": true
       },
       "onLoad": [
@@ -26,7 +27,15 @@
         "onPropertyChange('sensorType', function() {",
         "  if (get('sensorType') && !get('isNewRunInProgress')) {",
         "    syncAxisRangesToPropertyRanges('propertiesGraph');",
+        "    setComponentDisabled('start-button', false);",
         "  }",
+        "});",
+        "callEvery(1, function() {",
+        "   var experimentTime = getTime() - get('experimentStartTime');",
+        "   if (experimentTime > get('experimentDuration')) {",
+        "     stop();",
+        "     setComponentDisabled('start-button',true);",
+        "   }",
         "});"
       ]
     }
@@ -35,8 +44,16 @@
     {
       "name": "isNewRunInProgress",
       "initialValue": false
+    },
+    {
+      "name": "experimentStartTime",
+      "initialValue": 0
+    },
+    {
+      "name": "experimentDuration",
+      "initialValue": 5
     }
-  ],
+ ],
   "hideExportDataControl": true,
   "components": [
     {
@@ -54,6 +71,27 @@
         "sensorReading"
       ],
       "resetAxesOnReset": false
+    },
+    {
+      "type": "slider",
+      "id": "duration-slider",
+      "min": 1,
+      "max": 10,
+      "displayValue": "return format('.1f')(value)",
+      "labels": [
+        {
+          "value": 1,
+          "label": "1"
+        },
+        {
+          "value": 10,
+          "label": "10"
+        }
+      ],
+      "steps": 9,
+      "width": "10em",
+      "title": "Duration of Exp. (s)",
+      "property": "experimentDuration"
     },
     {
       "type": "button",
@@ -78,20 +116,13 @@
         "var tareValue = get('tareValue');",
         "set('isNewRunInProgress', true);",
         "reset({",
-        "  retainParameters: ['sensorType'],",
+        "  retainParameters: ['sensorType','experimentDuration'],",
         "  cause: 'new-run'",
         "});",
         "set('tareValue', tareValue);",
         "scrollXAxisToZero('propertiesGraph');",
         "set('isNewRunInProgress', false);"
       ]
-    },
-    {
-      "type": "button",
-      "id": "reset-button",
-      "text": "Reset",
-      "tooltip": "Reset the sensor.",
-      "action": "reload();"
     },
     {
       "type": "button",
@@ -110,7 +141,7 @@
       "stop-button",
       "analyze-data-button",
       "new-run-button",
-      "reset-button"
+      "duration-slider"
     ]
   },
   "exports": {
@@ -123,14 +154,19 @@
       "top": "model.bottom",
       "padding-top": "0.3em",
       "bottom": "container-bottom.top",
-      "padding-bottom": "2.5em",
+      "padding-bottom": "2em",
       "width": "interactive.width",
       "padding-right": "1em"
     },
     {
+      "id": "model-left",
+      "top": "model.top",
+      "right": "model.left",
+      "padding-right": "0.5em"
+    },
+    {
       "id": "container-bottom",
       "width": "below-model.width",
-      "height": "2.5em",
       "bottom": "interactive.bottom"
     }
   ]
