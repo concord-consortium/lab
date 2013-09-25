@@ -8,15 +8,16 @@
 // ------------------------------------------------------------
 define(function(require) {
   // Dependencies.
-  var labConfig = require('lab.config'),
-    alert = require('common/alert'),
-    console = require('common/console'),
-    benchmark = require('common/benchmark/benchmark'),
+  var labConfig         = require('lab.config'),
+    alert               = require('common/alert'),
+    console             = require('common/console'),
+    benchmark           = require('common/benchmark/benchmark'),
     amniacidContextMenu = require('cs!md2d/views/aminoacid-context-menu'),
-    GeneticRenderer = require('md2d/views/genetic-renderer'),
-    wrapSVGText = require('cs!common/layout/wrap-svg-text'),
-    gradients = require('common/views/gradients'),
-    color = require('common/views/color'),
+    AtomsRenderer       = require('md2d/views/atoms-renderer'),
+    GeneticRenderer     = require('md2d/views/genetic-renderer'),
+    wrapSVGText         = require('cs!common/layout/wrap-svg-text'),
+    gradients           = require('common/views/gradients'),
+    color               = require('common/views/color'),
 
     RADIAL_BOND_TYPES = {
       STANDARD_STICK: 101,
@@ -68,8 +69,11 @@ define(function(require) {
       radialBondsContainer = belowAtomsViewport.append("g").attr("class", "radial-bonds-container"),
       VDWLinesContainer    = belowAtomsViewport.append("g").attr("class", "vdw-lines-container"),
 
+      // TODO: remove it, as well as legacy code responsible for SVG atoms rendering.
       atomsViewport  = modelView.appendViewport().classed("atoms", true),
       atomsContainer = atomsViewport.append("g").attr("class", "atoms-container"),
+
+      atomsStage = modelView.appendPixiViewport(),
 
       aboveAtomsViewport = modelView.appendViewport().classed("above-atoms", true),
       shapeContainerTop  = aboveAtomsViewport.append("g").attr("class", "shape-container-top"),
@@ -82,8 +86,8 @@ define(function(require) {
       dragOrigin,
 
       // Renderers specific for MD2D
-      // TODO: for now only DNA is rendered in a separate class, try to create
-      // new renderers in separate files for clarity and easier testing.
+      // TODO: try to create new renderers in separate files for clarity and easier testing.
+      atomsRenderer = new AtomsRenderer(modelView, model, atomsStage),
       geneticRenderer,
 
       gradientNameForElement = [
@@ -1435,6 +1439,10 @@ define(function(require) {
     }
 
     function setupParticles() {
+      atomsRenderer.setup();
+
+      return;
+
       var showChargeSymbols = model.get("showChargeSymbols"),
         useThreeLetterCode = model.get("useThreeLetterCode");
 
@@ -1768,6 +1776,10 @@ define(function(require) {
     // its content.
 
     function updateParticles() {
+      atomsRenderer.update();
+
+      return;
+
       particle.attr({
         "cx": function(d) {
           return model2px(d.x);
@@ -2184,7 +2196,7 @@ define(function(require) {
 
       // Redraw container each time when some visual-related property is changed.
       model.addPropertiesListener([
-          "keShading", "chargeShading", "showChargeSymbols", "useThreeLetterCode",
+          "chargeShading", "showChargeSymbols", "useThreeLetterCode",
           "showVDWLines", "VDWLinesCutoff",
           "showVelocityVectors", "showForceVectors",
           "showAtomTrace", "atomTraceId", "aminoAcidColorScheme",
@@ -2212,6 +2224,7 @@ define(function(require) {
 
     function bindModel(newModel) {
       model = newModel;
+      atomsRenderer.bindModel(newModel);
       setup();
     }
 

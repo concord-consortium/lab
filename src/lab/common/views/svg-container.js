@@ -8,7 +8,10 @@ define(function (require) {
   // Dependencies.
   var performance           = require('common/performance'),
       getNextTabIndex       = require('common/views/tab-index'),
-      console               = require('common/console');
+      console               = require('common/console'),
+      PIXI                  = require('pixi'),
+
+      CANVAS_OVERSAMPLING = 1.5;
 
   return function SVGContainer(model, modelUrl, Renderer, opt) {
         // Public API object to be returned.
@@ -26,6 +29,8 @@ define(function (require) {
 
         containerBackground, gridContainer, brushContainer,
 
+        pixiRenderers, pixiStages,
+
         // A list of all outermost svg/canvas/div containers which may have clickable or touchable
         // child elements, ordered from topmost to bottom-most. Because the layers are siblings, not
         // ancestors, the upper layers prevent mouse and touch events from reaching the lower layers
@@ -34,6 +39,9 @@ define(function (require) {
 
         cx, cy,
         padding, size, modelSize, viewport,
+
+        model2canvas    = d3.scale.linear(),
+        model2canvasInv = d3.scale.linear(),
 
         // Basic scaling functions for positio, it transforms model units to "pixels".
         // Use it for positions of objects rendered inside the view.
@@ -153,10 +161,18 @@ define(function (require) {
         .domain([0, viewport.width])
         .range([0, size.width]);
 
+      model2canvas
+        .domain([0, viewport.width])
+        .range([0, size.width * CANVAS_OVERSAMPLING]);
+
       // Inverted model2px scaling function for position (for y-coordinates, domain can be inverted).
       model2pxInv
         .domain([viewport.height, 0])
         .range(origin === 'bottom-left' ? [0, size.height] : [size.height, 0]);
+
+      model2canvasInv
+        .domain([viewport.height, 0])
+        .range(origin === 'bottom-left' ? [0, size.height * CANVAS_OVERSAMPLING] : [size.height * CANVAS_OVERSAMPLING, 0]);
 
       if (selectBrush) {
         // Update brush to use new scaling functions.
@@ -281,8 +297,16 @@ define(function (require) {
 
     // Setup background.
     function setupBackground() {
-      // Just set the color.
-      containerBackground.attr("fill", model.get("backgroundColor") || "rgba(0, 0, 0, 0)");
+      var color = model.get("backgroundColor") || "rgba(0, 0, 0, 0)";
+      containerBackground.attr("fill", color);
+      // Set color of PIXI.Stage to fix an issue with outlines around the objects that are visible
+      // when WebGL renderer is being used. It only happens when PIXI.Stage background is different
+      // from model container background. It's necessary to convert color into number, as PIXI
+      // accepts only numbers. D3 helps us handle color names like "red", "green" etc. It doesn't
+      // support rgba values, so ingore alpha channel.
+      pixiStages.forEach(function (pixiStage) {
+        pixiStage.setBackgroundColor(parseInt(d3.rgb(color.replace("rgba", "rgb")).toString().substr(1), 16));
+      });
     }
 
     function mousedown() {
@@ -350,6 +374,9 @@ define(function (require) {
             .on("mousedown", mousedown);
         }
 
+        pixiRenderers = [];
+        pixiStages = [];
+
         setupHitTesting();
       }
 
@@ -359,7 +386,7 @@ define(function (require) {
       });
 
       // Set new dimensions of SVG containers
-      svgs = d3.select(node).selectAll('.background-container, .foreground-container, .viewport');
+      svgs = d3.select(node).selectAll('.background-container, .foreground-container, .svg-viewport');
 
       svgs
         .attr({
@@ -372,19 +399,29 @@ define(function (require) {
           height: cy + "px"
         });
 
+      pixiRenderers.forEach(function (pixiRenderer) {
+        pixiRenderer.resize(cx * CANVAS_OVERSAMPLING, cy * CANVAS_OVERSAMPLING);
+        $(pixiRenderer.view).css({
+          width: cx,
+          height: cy
+        });
+      });
+
       viewBox = model2px(viewport.x) + " " +
                 model2pxInv(viewport.y) + " " +
                 model2px(viewport.scaledWidth) + " " +
                 model2px(viewport.scaledHeight);
 
       // Apply the viewbox to all "viewport" layers we have created
-      viewportContainer.selectAll(".viewport").attr({
+      viewportContainer.selectAll(".svg-viewport").attr({
         viewBox: viewBox,
         x: 0,
         y: 0,
         width: model2px(viewport.width),
         height: model2px(viewport.height)
       });
+
+      // TODO: implement viewport support for canvas.
 
       // Update padding, as it can be changed after rescaling.
       svgs.attr("transform", "translate(" + padding.left + "," + padding.top + ")");
@@ -651,8 +688,14 @@ define(function (require) {
       get model2px() {
         return model2px;
       },
+      get model2canvas() {
+        return model2canvas;
+      },
       get model2pxInv() {
         return model2pxInv;
+      },
+      get model2canvasInv() {
+        return model2canvasInv;
       },
       get setFocus() {
         return setFocus;
@@ -672,6 +715,8 @@ define(function (require) {
         api.updateClickHandlers();
 
         if (renderer.repaint) renderer.repaint();
+
+        api.renderCanvas();
       },
 
       /**
@@ -692,7 +737,7 @@ define(function (require) {
       */
       appendViewport: function() {
         var viewport = viewportContainer.append("svg")
-          .attr("class", "viewport")
+          .attr("class", "svg-viewport")
           .call(layeredOnTop)
           .call(xlinkable);
 
@@ -700,6 +745,29 @@ define(function (require) {
         layersToHitTest.splice(1, 0, viewport.node());
 
         return viewport;
+      },
+
+      /**
+        Please see .appendViewport() docs.
+        The main difference is that it returns new PIXI.Stage object instead of SVG element.
+       */
+      appendPixiViewport: function() {
+        var pixiRenderer = PIXI.autoDetectRenderer(cx * CANVAS_OVERSAMPLING,
+                                                   cy * CANVAS_OVERSAMPLING, null, true),
+            pixiStage = new PIXI.Stage(null, true);
+
+        viewportContainer.node().appendChild(pixiRenderer.view);
+        d3.select(pixiRenderer.view)
+          .attr("class", "pixi-viewport")
+          .call(layeredOnTop);
+
+        // Cascade events into this viewport
+        layersToHitTest.splice(1, 0, pixiRenderer.view);
+
+        pixiRenderers.push(pixiRenderer);
+        pixiStages.push(pixiStage);
+
+        return pixiStage;
       },
 
       resize: function() {
@@ -711,14 +779,28 @@ define(function (require) {
         }
 
         if (renderer.resize) renderer.resize();
+
+        api.renderCanvas();
       },
 
       setup: function() {
         if (renderer.setup) renderer.setup(model);
+
+        api.renderCanvas();
       },
 
       update: function() {
         if (renderer.update) renderer.update();
+
+        api.renderCanvas();
+      },
+
+      renderCanvas: function() {
+        var i, len;
+        // For now we follow that each Pixi viewport has just one PIXI.Stage.
+        for (i = 0, len = pixiRenderers.length; i < len; i++) {
+          pixiRenderers[i].render(pixiStages[i]);
+        }
       },
 
       getHeightForWidth: function (width) {
