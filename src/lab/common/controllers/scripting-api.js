@@ -1,5 +1,5 @@
 /*global d3, $, define */
-/*jshint loopfunc: true, evil: true */
+/*jshint loopfunc: true */
 
 define(function (require) {
 
