@@ -26,6 +26,12 @@ define(function (require) {
 
         containerBackground, gridContainer, brushContainer,
 
+        // A list of all outermost svg/canvas/div containers which may have clickable or touchable
+        // child elements, ordered from topmost to bottom-most. Because the layers are siblings, not
+        // ancestors, the upper layers prevent mouse and touch events from reaching the lower layers
+        // even when no element within the upper layers is actually being clicked/touched.
+        layersToHitTest,
+
         cx, cy,
         padding, size, modelSize, viewport,
 
@@ -343,6 +349,8 @@ define(function (require) {
             .attr("tabindex", 0)
             .on("mousedown", mousedown);
         }
+
+        setupHitTesting();
       }
 
       viewportContainer.style({
@@ -391,6 +399,125 @@ define(function (require) {
         });
 
       redrawGridLinesAndLabels();
+    }
+
+    /**
+      setupHitTesting:
+
+      Forward mouse/touch events to the view's stack of overlaid visual layers to simulate
+      the "hit testing" that would occur natively if the visual layers were all implemented as
+      descendants of a single, common svg element.
+
+      In that scenario, native hit-testing is used: a mouse click or touch event at any point is
+      forwarded to the topmost visible element at that point; the layers above it are effectively
+      transparent to the event. This is subject to control by the 'pointer-events' property. See
+      http://www.w3.org/TR/SVG/interact.html#pointer-processing
+
+      However, in order to allow some layers to be implemented as <canvas> elements (or perhaps
+      <divs> or rootmost <svg> elements, to which hardware-accelerated css transforms apply), and to
+      allow those layers to be above some layers and below others, our layers cannot in fact be
+      children of a common svg element.
+
+      This means that the topmost layer always becomes the target of any mouse or click event on the
+      view, regardless of whether it has an element at that point, and it hides the event from the
+      layers below.
+
+      What we need, therefore, is to simulate svg's hit testing. This can be achieved by listening
+      to events that bubble to the topmost layer and successively hiding the layers below, applying
+      document.elementFromPoint to determine whether there is an element within that layer at that
+      event's coordinates. (Where the layer in question is a <canvas> with its own hit testing
+      implemented in Javascript, we must defer to the layer's own hit-testing algorithm instead
+      of using elementFromPoint.)
+
+      CSS pointer-events (as distinct from SVG pointer events) cannot completely capture the
+      semantics we need because they simply turn pointer "transparency" on or off rather than
+      responding to the presence or absence of an element inside the layer at the event coordinates;
+      and besides they do not work in IE9 or IE10.
+
+      Note that to the extent we do use CSS pointer-events, document.elementFromPoint correctly
+      respects the "none" value.
+    */
+    function setupHitTesting() {
+
+      // Ignore mousemove on the assumption that we only ever listen to mousemove to implement
+      // dragging, and then we listen for it on document.body. Also assume that we're not doing
+      // mouseover, mouseout, dblclick...?
+      var EVENT_TYPES = ['mousedown', 'mouseup', 'click'];
+
+      // TODO: touch events (touchstart, touchmove, touchend).
+      //
+      // These are a little tricker than mouse events because once a hit test for touchstart
+      // succeeds, we have to remember the found target and send all subsequent touchmove and
+      // touchend events for that particular touch to the same target element that received the
+      // touchstart -- NOT to the element beneath the touch's updated coordinates. (That's how touch
+      // events work, and is what Pixi expects.)
+      // see https://developer.apple.com/library/safari/documentation/UserExperience/Reference/TouchEventClassReference/TouchEvent/TouchEvent.html#//apple_ref/javascript/instm/TouchEvent/initTouchEvent
+
+      var foregroundNode = foregroundContainer.node();
+
+      // Elements added to the viewportContainer will go in the middle. The viewportContainer itself
+      // is just a holder -- it shouldn't receive mouse/touch events itself.
+      layersToHitTest = [foregroundNode, backgroundContainer.node()];
+
+      function retargetMouseEvent(e, target) {
+        var clonedEvent = document.createEvent("MouseEvent");
+        clonedEvent.initMouseEvent(e.type, e.canBubble, e.cancelable, e.view, e.detail, e.screenX, e.screenY, e.clientX, e.clientY, e.ctrlKey, e.altKey, e.shiftKey, e.metaKey, e.button, e.relatedTarget);
+        clonedEvent.target = target;
+        return clonedEvent;
+      }
+
+      // make layers 0 to n visible
+      function unhideLayers(n) {
+        for (var i = 0; i <= n; i++) {
+          layersToHitTest[i].style.visibility = "visible";
+        }
+      }
+
+      function hitTest(e) {
+        // Event bubbled to the foregroundNode; if the target was a descendant of the
+        // foregroundNode, then we have already completed the hit test (the foreground already
+        // received the event.) Otherwise, continue.
+        if (e.target !== foregroundNode) {
+          return;
+        }
+
+        var layer;
+        var target;
+
+        for (var i = 1, len = layersToHitTest.length; i < len; i++) {
+          layer = layersToHitTest[i];
+
+          // Assumption: layers are normally visible (we don't have to push/pop visibility)
+          layersToHitTest[i-1].style.visibility = "hidden";
+
+          // clientX and clientY report the event coords in CSS pixels relative to the viewport
+          // (ie they aubtract the x, y the page is scrolled to). This is what elementFromPoint
+          // requires in Chrome, Safari 5+, IE 8+, and Firefox 3+.
+          // http://www.quirksmode.org/dom/tests/elementfrompoint.html
+          // http://www.quirksmode.org/blog/archives/2010/06/new_webkit_test.html
+          // http://www.quirksmode.org/mobile/tableViewport_desktop.html
+          target = document.elementFromPoint(e.clientX, e.clientY);
+
+          if (target !== layer) {
+            unhideLayers(i-1);
+            target.dispatchEvent(retargetMouseEvent(e, target));
+            // There was an element in the layer at the event target. This hides the event from all
+            // layers below, so we're done.
+            break;
+          }
+
+          // TODO;
+          // if target is a <canvas> with its own hit testing to (say, a Pixi view...):
+          //   clear hit-test flag on target's view
+          //   dispatch event to canvas
+          //   (if view responds to event (hit test was true), it should set the hit-test flag)
+          //   check the view's hit-test flag-- if true, break
+        }
+      }
+
+      EVENT_TYPES.forEach(function(eventType) {
+        foregroundNode.addEventListener(eventType, hitTest);
+      });
     }
 
     // Support viewport dragging behavior.
@@ -547,11 +674,32 @@ define(function (require) {
         if (renderer.repaint) renderer.repaint();
       },
 
+      /**
+        Renderers call this method to append a "viewport" svg element on behalf of a renderer.
+
+        Viewport svgs are drawn to the exact same dimensions at the exact same screen coordinates
+        (they overlap each other exactly.) Viewports added later are drawn above viewports added
+        earlier, but are transparent.
+
+        Viewports can contain layering <g> elements;
+
+        What makes the viewports special is that their viewBox attribute is automatically adjusted
+        when the model viewport (visible part of the model) is adjusted. Renderers can just draw to
+        the viewport element without needing to think about
+
+        Viewports are added in front of all viewports previously added. At the moment, they cannot
+        be reordered.
+      */
       appendViewport: function() {
-        return viewportContainer.append("svg")
+        var viewport = viewportContainer.append("svg")
           .attr("class", "viewport")
           .call(layeredOnTop)
           .call(xlinkable);
+
+        // Cascade events into this viewport
+        layersToHitTest.splice(1, 0, viewport.node());
+
+        return viewport;
       },
 
       resize: function() {
