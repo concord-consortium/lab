@@ -678,7 +678,7 @@ define(function() {
           var observers = propertyInformation[key].observers,
               index = observers.indexOf(callback);
 
-          if (index > 0) {
+          if (index >= 0) {
             observers.splice(index, 1);
           }
         };
@@ -708,7 +708,7 @@ define(function() {
           var observers = propertyInformation[key].propertyDescriptionObservers,
               index = observers.indexOf(callback);
 
-          if (index > 0) {
+          if (index >= 0) {
             observers.splice(index, 1);
           }
         };
