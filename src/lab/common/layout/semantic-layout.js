@@ -246,19 +246,14 @@ define(function (require) {
     }
 
     function setSizeAndFontSizeOfModelContainer() {
-      var canonicalWidth = layoutConfig.canonicalWidth,
-          containerScale,
-          modelFontScale;
-
-      containerScale = $interactiveContainer.width() / canonicalWidth;
-      modelFontScale = layoutConfig.canonicalFontSize * fontScale * containerScale;
+      var modelFontScale = modelWidth/$interactiveContainer.width();
 
       $modelContainer.css({
         width:  modelWidth,
         height: modelController.getHeightForWidth(modelWidth, fontSizeChanged),
         left:   modelLeft,
         top:    modelTop,
-        "font-size": modelFontScale * modelWidth/$interactiveContainer.width() + "em"
+        "font-size": modelFontScale + "em"
       });
     }
 
