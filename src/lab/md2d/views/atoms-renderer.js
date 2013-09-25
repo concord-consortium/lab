@@ -21,23 +21,8 @@ define(function(require) {
          <circle fill="url(#grad)" cx="16" cy="16" r="15" fill-opacity="{{ opacity }}"/> \
        </svg>',
 
-      // Scales used for Kinetic Energy Shading gradients.
-      KE_SHADING_STEPS = 25,
-      keMedColor = d3.scale.linear()
-        .interpolate(d3.interpolateRgb)
-        .range(["#F2F2F2", "#FF8080"]),
-      keDarkColor = d3.scale.linear()
-        .interpolate(d3.interpolateRgb)
-        .range(["#A4A4A4", "#FF2020"]),
-
-      getKEShadingColors = function (ke) {
-        // Convert Kinetic Energy to [0, 1] range
-        // using empirically tested transformations.
-        // K.E. shading should be similar to the classic MW KE shading.
-        var keIndex = Math.round(Math.min(5 * ke, 1) * KE_SHADING_STEPS);
-        keIndex /= KE_SHADING_STEPS;
-        return ["#ffffff", keMedColor(keIndex), keDarkColor(keIndex)];
-      },
+      KE_SHADING_MIN_COLORS = ["#FFFFFF", "#F2F2F2", "#A4A4A4"],
+      KE_SHADING_MAX_COLORS = ["#FFFFFF", "#FF8080", "#FF2020"],
 
       // Scales used for Charge Shading gradients.
       CHARGE_SHADING_STEPS = 25,
@@ -136,7 +121,7 @@ define(function(require) {
       }
 
       if (renderMode.keShading) {
-        return getKEShadingColors(model.getAtomKineticEnergy(i));
+        return KE_SHADING_MIN_COLORS;
       } else if (renderMode.chargeShading) {
         return getChargeShadingColors(modelAtoms[i].charge);
       } else {
@@ -149,12 +134,14 @@ define(function(require) {
       }
     }
 
-    function getAtomTexture(i) {
+    function getAtomTexture(i, colors) {
       var elID = modelAtoms[i].element,
           radius = m2px(model.getElementProperties(elID).radius),
-          colors = getAtomColors(i, elID),
           visible = modelAtoms[i].visible,
-          key = visible ? (elID + "-" + radius + "-" + colors.join("")) : (radius + "-invisible");
+          key;
+
+      colors = colors || getAtomColors(i, elID);
+      key = visible ? (elID + "-" + radius + "-" + colors.join("")) : (radius + "-invisible");
 
       if (elementTex[key] === undefined) {
         var canv = document.createElement("canvas"),
@@ -275,7 +262,7 @@ define(function(require) {
 
     api = {
       setup: function () {
-        var i, len, atom, text;
+        var i, len, atom, keSprite, text;
 
         if (container) {
           modelView.pixiStage.removeChild(container);
@@ -285,6 +272,7 @@ define(function(require) {
 
         m2px = modelView.model2canvas;
         m2pxInv = modelView.model2canvasInv;
+
         viewAtoms = [];
         modelAtoms = model.getAtoms();
 
@@ -305,6 +293,14 @@ define(function(require) {
             atom.addChild(text);
           }
 
+          if (renderMode.keShading) {
+            keSprite = new PIXI.Sprite(getAtomTexture(i, KE_SHADING_MAX_COLORS));
+            keSprite.anchor.x = 0.5;
+            keSprite.anchor.y = 0.5;
+            atom.keSprite = keSprite;
+            atom.addChild(keSprite);
+          }
+
           viewAtoms.push(atom);
           container.addChild(atom);
         }
@@ -318,14 +314,18 @@ define(function(require) {
       },
 
       update: function () {
-        var i, len;
+        var i, len, viewAtom, x, y;
 
         for (i = 0, len = viewAtoms.length; i < len; ++i) {
-          viewAtoms[i].position.x = m2px(modelAtoms[i].x);
-          viewAtoms[i].position.y = m2pxInv(modelAtoms[i].y);
+          viewAtom = viewAtoms[i];
+          x = m2px(modelAtoms[i].x);
+          y = m2pxInv(modelAtoms[i].y);
+
+          viewAtom.position.x = x;
+          viewAtom.position.y = y;
 
           if (renderMode.keShading) {
-            viewAtoms[i].setTexture(getAtomTexture(i));
+            viewAtom.keSprite.alpha = Math.min(5 * model.getAtomKineticEnergy(i), 1);
           }
         }
       }
