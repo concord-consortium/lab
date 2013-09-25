@@ -334,7 +334,9 @@ define(function(require) {
             viewAtom.keSprite.alpha = Math.min(5 * model.getAtomKineticEnergy(i), 1);
           }
         }
-      }
+      },
+
+      getAtomColors: getAtomColors
     };
 
     init();

@@ -453,7 +453,7 @@ define(function(require) {
       if (isSpringBond(d)) {
         return "#888";
       } else {
-        return gradients.mainColorOfGradient[gradientNameForParticle[d.atom1]];
+        return atomsRenderer.getAtomColors(d.atom1)[2];
       }
     }
 
@@ -464,7 +464,7 @@ define(function(require) {
       if (isSpringBond(d)) {
         return "#888";
       } else {
-        return gradients.mainColorOfGradient[gradientNameForParticle[d.atom2]];
+        return atomsRenderer.getAtomColors(d.atom2)[2];
       }
     }
 
