@@ -208,6 +208,8 @@ define(function(require) {
     }
 
     function mouseDown() {
+      modelView.hitTestFlag = true;
+
       if (model.isStopped()) {
         this.dragging = true;
         this.originX = modelAtoms[this.i].x;
@@ -219,7 +221,9 @@ define(function(require) {
     }
 
     function mouseMove(data) {
-      if(this.dragging) {
+      modelView.hitTestFlag = true;
+
+      if (this.dragging) {
         var newPosition = data.getLocalPosition(this.parent),
             x = m2px.invert(newPosition.x),
             y = m2pxInv.invert(newPosition.y);
@@ -234,6 +238,8 @@ define(function(require) {
     }
 
     function mouseUp(data) {
+      modelView.hitTestFlag = true;
+
       if (this.dragging) {
         var newPosition = data.getLocalPosition(this.parent),
             x = m2px.invert(newPosition.x),

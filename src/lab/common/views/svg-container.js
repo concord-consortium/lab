@@ -527,6 +527,20 @@ define(function (require) {
           // Assumption: layers are normally visible (we don't have to push/pop visibility)
           layersToHitTest[i-1].style.visibility = "hidden";
 
+          // if target is a <canvas> with its own hit testing to (say, a Pixi view...):
+          //   clear hit-test flag on target's view
+          //   dispatch event to canvas
+          //   (if view responds to event (hit test was true), it should set the hit-test flag)
+          //   check the view's hit-test flag-- if true, break
+          if (layer.tagName.toLowerCase() === "canvas") {
+            api.hitTestFlag = false;
+            layer.dispatchEvent(retargetMouseEvent(e, layer));
+            if (api.hitTestFlag) {
+              unhideLayers(i-1);
+              break;
+            }
+          }
+
           // clientX and clientY report the event coords in CSS pixels relative to the viewport
           // (ie they aubtract the x, y the page is scrolled to). This is what elementFromPoint
           // requires in Chrome, Safari 5+, IE 8+, and Firefox 3+.
@@ -542,13 +556,6 @@ define(function (require) {
             // layers below, so we're done.
             break;
           }
-
-          // TODO;
-          // if target is a <canvas> with its own hit testing to (say, a Pixi view...):
-          //   clear hit-test flag on target's view
-          //   dispatch event to canvas
-          //   (if view responds to event (hit test was true), it should set the hit-test flag)
-          //   check the view's hit-test flag-- if true, break
         }
       }
 
@@ -769,6 +776,8 @@ define(function (require) {
 
         return pixiStage;
       },
+
+      hitTestFlag: false,
 
       resize: function() {
         renderContainer();
