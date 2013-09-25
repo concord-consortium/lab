@@ -30,6 +30,15 @@ define(function(require) {
         .interpolate(d3.interpolateRgb)
         .range(["#A4A4A4", "#FF2020"]),
 
+      getKEShadingColors = function (ke) {
+        // Convert Kinetic Energy to [0, 1] range
+        // using empirically tested transformations.
+        // K.E. shading should be similar to the classic MW KE shading.
+        var keIndex = Math.round(Math.min(5 * ke, 1) * KE_SHADING_STEPS);
+        keIndex /= KE_SHADING_STEPS;
+        return ["#ffffff", keMedColor(keIndex), keDarkColor(keIndex)];
+      },
+
       // Scales used for Charge Shading gradients.
       CHARGE_SHADING_STEPS = 25,
       NEUTRAL_COLORS = ["#FFFFFF", "#f2f2f2", "#A4A4A4"],
@@ -52,11 +61,25 @@ define(function(require) {
         .interpolate(d3.interpolateRgb)
         .range(["#A4A4A4", "#FF2020"]),
 
+      getChargeShadingColors = function (charge) {
+        var chargeIndex = Math.round(Math.min(Math.abs(charge) / 3, 1) * CHARGE_SHADING_STEPS);
+        chargeIndex /= CHARGE_SHADING_STEPS;
+        if (charge > 0) {
+          return [posLightColor(chargeIndex), posMedColor(chargeIndex), posDarkColor(chargeIndex)];
+        } else if (charge < 0) {
+          return [negLightColor(chargeIndex), negMedColor(chargeIndex), negDarkColor(chargeIndex)];
+        }
+        return NEUTRAL_COLORS;
+      },
+
+      getHydrophobicityColors = function (h) {
+        return h > 0 ?  ["#F0E6D1", "#E0A21B", "#AD7F1C"] : ["#dfffef", "#75a643", "#2a7216"];
+      },
 
       FONT_FAMILY = " Lato",
 
       RENDERING_OPTIONS = ["keShading", "chargeShading", "atomNumbers", "showChargeSymbols",
-                           "useThreeLetterCode"];
+                           "aminoAcidColorScheme", "useThreeLetterCode"];
 
   return function AtomsRenderer(modelView, model) {
     // Public API object to be returned.
@@ -94,29 +117,31 @@ define(function(require) {
     function getAtomColors(i) {
       var elID = modelAtoms[i].element,
           props = model.getElementProperties(elID),
-          colorStr, color,
-          ke, keIndex, charge, chargeIndex;
+          colorStr, color;
 
+      if (modelAtoms[i].aminoAcid) {
+        switch(renderMode.aminoAcidColorScheme) {
+          case "charge":
+            return getChargeShadingColors(modelAtoms[i].charge);
+          case "hydrophobicity":
+            return getHydrophobicityColors(modelAtoms[i].hydrophobicity);
+          case "chargeAndHydro":
+            if (modelAtoms[i].charge !== 0) {
+              return getChargeShadingColors(modelAtoms[i].charge);
+            }
+            return getHydrophobicityColors(modelAtoms[i].hydrophobicity);
+          // case "none":
+          // Do nothing, default rendering will be used.
+        }
+      }
 
       if (renderMode.keShading) {
-        ke = model.getAtomKineticEnergy(i);
-        // Convert Kinetic Energy to [0, 1] range
-        // using empirically tested transformations.
-        // K.E. shading should be similar to the classic MW K.E. shading.
-        keIndex = Math.round(Math.min(5 * ke, 1) * KE_SHADING_STEPS);
-        keIndex /= KE_SHADING_STEPS;
-        return ["#ffffff", keMedColor(keIndex), keDarkColor(keIndex)];
+        return getKEShadingColors(model.getAtomKineticEnergy(i));
       } else if (renderMode.chargeShading) {
-        charge = modelAtoms[i].charge;
-        chargeIndex = Math.round(Math.min(Math.abs(charge) / 3, 1) * CHARGE_SHADING_STEPS);
-        chargeIndex /= CHARGE_SHADING_STEPS;
-        if (charge > 0) {
-          return [posLightColor(chargeIndex), posMedColor(chargeIndex), posDarkColor(chargeIndex)];
-        } else if (charge < 0) {
-          return [negLightColor(chargeIndex), negMedColor(chargeIndex), negDarkColor(chargeIndex)];
-        }
-        return NEUTRAL_COLORS;
+        return getChargeShadingColors(modelAtoms[i].charge);
       } else {
+        // Weird conversion, as we use color values literally imported from Classic MW. Perhaps we
+        // should do that in MML -> JSON converter.
         colorStr = (props.color + Math.pow(2, 24)).toString(16);
         colorStr = "000000".substr(0, 6 - colorStr.length) + colorStr;
         color = d3.rgb("#" + colorStr);
