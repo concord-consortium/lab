@@ -700,6 +700,9 @@ define(function() {
       layer: {
         defaultValue: 1
       },
+      layerPosition: {
+        defaultValue: 1
+      },
       width: {},
       height: {},
       frame: {},

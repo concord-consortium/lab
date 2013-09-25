@@ -58,16 +58,11 @@ define(function(require) {
 
       // "Containers" - SVG g elements used to position layers of the final visualization.
       fieldVisualization   = modelView.viewport.append("g").attr("class", "field-visualization"),
-      shapeContainerBelow  = modelView.viewport.append("g").attr("class", "shape-container-below"),
-      imageContainerBelow  = modelView.viewport.append("g").attr("class", "image-container-below"),
-      textContainerBelow   = modelView.viewport.append("g").attr("class", "text-container-below"),
       radialBondsContainer = modelView.viewport.append("g").attr("class", "radial-bonds-container"),
       VDWLinesContainer    = modelView.viewport.append("g").attr("class", "vdw-lines-container"),
+      containerLayerBelow  = modelView.viewport.append("g").attr("class", "container-layer-below"),
       mainContainer        = modelView.viewport.append("g").attr("class", "main-container"),
-      shapeContainerTop    = modelView.viewport.append("g").attr("class", "shape-container-top"),
-      lineContainerTop     = modelView.viewport.append("g").attr("class", "line-container-top"),
-      imageContainerTop    = modelView.viewport.append("g").attr("class", "image-container-top"),
-      textContainerTop     = modelView.viewport.append("g").attr("class", "text-container-top"),
+      containerLayerAbove  = modelView.viewport.append("g").attr("class", "container-layer-above"),
       iconContainer        = modelView.vis.append("g").attr("class", "icon-container"),
 
       dragOrigin,
@@ -118,7 +113,9 @@ define(function(require) {
       mockShapesBelow = [],
       lines,
       lineTop,
+      lineBelow,
       mockLinesTop = [],
+      mockLinesBelow = [],
       radialBond1, radialBond2,
       vdwPairs = [],
       vdwLines,
@@ -729,9 +726,12 @@ define(function(require) {
         i;
       for (i = 0; i < layers.length; i++) {
         var shapeGroup = layers[i].enter().append("g");
-        shapeGroup.attr("class", "shape").attr("transform", function(d) {
-          return "translate(" + model2px(shapes.x[d.index]) + " " + model2pxInv(shapes.y[d.index] + shapes.height[d.index]) + ")";
-        });
+        shapeGroup.attr("class", "shape")
+          .attr("transform", function(d) {
+            return "translate(" + model2px(shapes.x[d.index]) + " " + model2pxInv(shapes.y[d.index] + shapes.height[d.index]) + ")";
+          })
+          .attr("data-layer-position", function(d) { return shapes.layerPosition[d.index] });
+
         shapeGroup.append("rect").attr({
           "class": "shape-rectangle",
           "x": 0,
@@ -786,36 +786,41 @@ define(function(require) {
     }
 
     function lineEnter() {
-      lineTop.enter().append("line").attr({
-        "class": "line",
-        "x1": function(d, i) {
-          return model2px(lines.x1[i]);
-        },
-        "y1": function(d, i) {
-          return model2pxInv(lines.y1[i]);
-        },
-        "x2": function(d, i) {
-          return model2px(lines.x2[i]);
-        },
-        "y2": function(d, i) {
-          return model2pxInv(lines.y2[i]);
-        },
-        "stroke-width": function(d, i) {
-          return lines.lineWeight[i];
-        },
-        "stroke-dasharray": function(d, i) {
-          return lines.lineDashes[i];
-        },
-        "stroke": function(d, i) {
-          return lines.visible[i] ? lines.lineColor[i] : "transparent";
-        },
-        "marker-start": function(d,i){
-          return createCustomArrowHead(i, lines.beginStyle[i], true);
-        },
-        "marker-end": function(d,i){
-          return createCustomArrowHead(i, lines.endStyle[i]);
-        }
-      });
+      var layers = [lineTop, lineBelow],
+          i;
+      for (i = 0; i < layers.length; i++) {
+        layers[i].enter().append("line").attr({
+          "class": "line",
+          "data-layer-position": function(d) { return lines.layerPosition[d.index] },
+          "x1": function(d) {
+            return model2px(lines.x1[d.index]);
+          },
+          "y1": function(d) {
+            return model2pxInv(lines.y1[d.index]);
+          },
+          "x2": function(d) {
+            return model2px(lines.x2[d.index]);
+          },
+          "y2": function(d) {
+            return model2pxInv(lines.y2[d.index]);
+          },
+          "stroke-width": function(d) {
+            return lines.lineWeight[d.index];
+          },
+          "stroke-dasharray": function(d) {
+            return lines.lineDashes[d.index];
+          },
+          "stroke": function(d) {
+            return lines.visible[d.index] ? lines.lineColor[d.index] : "transparent";
+          },
+          "marker-start": function(d){
+            return createCustomArrowHead(d.index, lines.beginStyle[d.index], true);
+          },
+          "marker-end": function(d){
+            return createCustomArrowHead(d.index, lines.endStyle[d.index]);
+          }
+        });
+      }
     }
 
     function radialBondWidth(d) {
@@ -1000,8 +1005,8 @@ define(function(require) {
         positionOrderTop = [],
         positionOrderBelow = [];
 
-      imageContainerTop.selectAll("image").remove();
-      imageContainerBelow.selectAll("image").remove();
+      containerLayerAbove.selectAll("image").remove();
+      containerLayerBelow.selectAll("image").remove();
 
       if (!imageProp) return;
 
@@ -1024,13 +1029,16 @@ define(function(require) {
             // to images. We can assume that their pixel dimensions are
             // in 0.1A also. So convert them to nm (* 0.01).
             imageSizes[i] = [0.01 * img[i].width, 0.01 * img[i].height];
-            container = imglayer === 1 ? imageContainerTop : imageContainerBelow;
+            container = imglayer === 1 ? containerLayerAbove : containerLayerBelow;
             container.selectAll("image").remove();
             container.selectAll("image")
               .data(positionOrder, function(d) {
                 return d["i"];
               })
               .enter().append("image")
+              .attr("data-layer-position", function (d) {
+                return imageProp[d["i"]].imageLayerPosition;
+              })
               .attr("x", function(d) {
                 return getImageCoords(d["i"])[0];
               })
@@ -1050,6 +1058,7 @@ define(function(require) {
                 return model2px(imageSizes[d["i"]][1]);
               })
               .attr("pointer-events", "none");
+            sortContainerElements(container);
           };
         })(i);
       }
@@ -1118,7 +1127,7 @@ define(function(require) {
     }
 
     function updateTextBoxes() {
-      var layers = [textContainerTop, textContainerBelow],
+      var layers = [containerLayerAbove, containerLayerBelow],
         updateText;
 
       updateText = function(layerNum) {
@@ -1194,7 +1203,7 @@ define(function(require) {
 
       size = [model.get('width'), model.get('height')];
 
-      layers = [textContainerTop, textContainerBelow];
+      layers = [containerLayerAbove, containerLayerBelow];
 
       // Append to either top or bottom layer depending on item's layer #.
       appendTextBoxes = function(layerNum) {
@@ -1210,7 +1219,8 @@ define(function(require) {
         selection = layer.selectAll("g.textBoxWrapper")
           .data(layerTextBoxes);
         text = selection.enter().append("svg:g")
-          .attr("class", "textBoxWrapper");
+          .attr("class", "textBoxWrapper")
+          .attr("data-layer-position",function(d){return d.layerPosition});
 
         text.filter(function(d) {
           return d.calloutPoint;
@@ -1532,8 +1542,8 @@ define(function(require) {
 
     function setupShapes() {
       shapes = model.get_shapes();
-      shapeContainerTop.selectAll(".shape").remove();
-      shapeContainerBelow.selectAll(".shape").remove();
+      containerLayerAbove.selectAll(".shape").remove();
+      containerLayerBelow.selectAll(".shape").remove();
       if (shapes) {
         mockShapesTop = [];
         mockShapesBelow = [];
@@ -1556,18 +1566,40 @@ define(function(require) {
         mockShapesBelow.sort(function(a, b) {
           return a.layerPosition - b.layerPosition;
         });
-        shapeTop = shapeContainerTop.selectAll(".shape").data(mockShapesTop);
-        shapeBelow = shapeContainerBelow.selectAll(".shape").data(mockShapesBelow);
+        shapeTop = containerLayerAbove.selectAll(".shape").data(mockShapesTop);
+        shapeBelow = containerLayerBelow.selectAll(".shape").data(mockShapesBelow);
         shapeEnter();
       }
     }
 
     function setupLines() {
       lines = model.get_lines();
-      lineContainerTop.selectAll(".line").remove();
+      containerLayerAbove.selectAll(".line").remove();
+      containerLayerBelow.selectAll(".line").remove();
       if (lines) {
-        mockLinesTop.length = lines.x1.length;
-        lineTop = lineContainerTop.selectAll(".line").data(mockLinesTop);
+        mockLinesTop = [];
+        mockLinesBelow = [];
+        for (var i = 0; i < lines.x1.length; i++) {
+          if (lines.layer[i] === 1) {
+            mockLinesTop.push({
+              index: i,
+              layerPosition: lines.layerPosition[i]
+            });
+          } else {
+            mockLinesBelow.push({
+              index: i,
+              layerPosition: lines.layerPosition[i]
+            });
+          }
+        }
+        mockLinesTop.sort(function(a, b) {
+          return a.layerPosition - b.layerPosition;
+        });
+        mockLinesBelow.sort(function(a, b) {
+          return a.layerPosition - b.layerPosition;
+        });
+        lineTop = containerLayerAbove.selectAll(".line").data(mockLinesTop);
+        lineBelow = containerLayerBelow.selectAll(".line").data(mockLinesBelow);
         lineEnter();
       }
     }
@@ -1913,7 +1945,7 @@ define(function(require) {
         if (!imageSizes || !imageSizes[i]) continue;
         coords = getImageCoords(i);
         imglayer = imageProp[i].imageLayer;
-        container = imglayer === 1 ? imageContainerTop : imageContainerBelow;
+        container = imglayer === 1 ? containerLayerAbove : containerLayerBelow;
         container.selectAll("image.image_attach" + i)
           .attr("x", coords[0])
           .attr("y", coords[1]);
@@ -2206,6 +2238,38 @@ define(function(require) {
       setup();
     }
 
+    // this is not nested in sortContainerLayoutObjects so images can re-order nodes onload!!
+    function sortContainerElements(selection) {
+      var z = [],
+          nodes,
+          $container = $(selection.node()),
+          $children = $container.children();
+
+      $children.each( function(i, el) {
+        z.push({
+          index: i,
+          layerPosition: $(el).data().layerPosition
+        });
+      });
+
+      z.sort(function(a, b) {
+        return a.layerPosition - b.layerPosition;
+      });
+
+      nodes = $children.detach();
+
+      for (var i = 0; i < z.length; i++) {
+        $(nodes[z[i].index]).appendTo($container);
+      }
+    }
+
+    // convenience function to make init easier, will be incompletely sorted until
+    // images are loaded asynchronously (see drawImageAttachments).
+    function sortContainerLayerObjects () {
+      sortContainerElements(containerLayerAbove);
+      sortContainerElements(containerLayerBelow);
+    }
+
     //
     // MD2D Renderer: repaint
     //
@@ -2247,6 +2311,7 @@ define(function(require) {
       if (useQuantumDynamics) {
         enterAndUpdatePhotons();
       }
+      sortContainerLayerObjects();
     }
 
     //

@@ -764,6 +764,7 @@ parseMML = (mmlString) ->
       $x = parseFloat $textBoxNode.find("[property=x]>double").text() || 0.001
       $y = parseFloat $textBoxNode.find("[property=y]>double").text() || 0
       layer = parseInt($textBoxNode.find("[property=layer]>int").text()) || 1
+      layerPosition = getIntProperty $textBoxNode, 'layerPosition'
       textHostIndex = parseInt $textBoxNode.find("[property=hostIndex]>int").text()
       if (isNaN(textHostIndex))
         textHostIndex = 0
@@ -797,7 +798,7 @@ parseMML = (mmlString) ->
 
       [x, y] = toNextgenCoordinates $x, $y
 
-      textBox = { text, x, y, layer }
+      textBox = { text, x, y, layer, layerPosition }
       textBox.frame = frame if frame
       textBox.color = fontColor if fontColor
       if calloutPoint

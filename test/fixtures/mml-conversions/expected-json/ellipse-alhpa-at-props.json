@@ -91,6 +91,7 @@
         "x": 3.835,
         "y": 2.98,
         "layer": 1,
+        "layerPosition": 1,
         "fontScale": 3,
         "anchor": "upper-left"
       },
@@ -99,6 +100,7 @@
         "x": 3.41,
         "y": 2.91,
         "layer": 1,
+        "layerPosition": 2,
         "anchor": "upper-left"
       },
       {
@@ -106,6 +108,7 @@
         "x": 3.37,
         "y": 2.66,
         "layer": 1,
+        "layerPosition": 3,
         "anchor": "upper-left"
       },
       {
@@ -113,6 +116,7 @@
         "x": 0.64,
         "y": 3.15,
         "layer": 1,
+        "layerPosition": 4,
         "color": "rgb(102,102,102)",
         "fontScale": 1.5,
         "anchor": "upper-left"
@@ -122,6 +126,7 @@
         "x": 4.055,
         "y": 2.45,
         "layer": 1,
+        "layerPosition": 5,
         "anchor": "upper-left"
       },
       {
@@ -129,8 +134,9 @@
         "x": 4.13,
         "y": 1.96,
         "layer": 1,
-        "fontScale": 1,
+        "layerPosition": 7,
         "frame": "rectangle",
+        "fontScale": 1,
         "anchor": "upper-left"
       },
       {
@@ -138,6 +144,7 @@
         "x": 0.25,
         "y": 2.88,
         "layer": 1,
+        "layerPosition": 12,
         "color": "rgb(0,0,255)",
         "fontScale": 1.1666666666666667,
         "anchor": "upper-left"
@@ -147,6 +154,7 @@
         "x": 1.68,
         "y": 2.88,
         "layer": 1,
+        "layerPosition": 13,
         "fontScale": 1.1666666666666667,
         "anchor": "upper-left"
       }

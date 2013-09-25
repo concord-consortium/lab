@@ -1,0 +1,17 @@
+{
+  "title": "Layered Object Order",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "many-layered-objects",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/many-layered-objects.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "modelTimeLabel": true
+      }
+    }
+  ]
+}
