@@ -86,7 +86,7 @@ define(function (require) {
 
       this.$element.removeClass('video').addClass('text');
 
-      this._$start = $('<button class-="start">Start</button>').appendTo(this.$element);
+      this._$start = $('<button class="start">Start</button>').appendTo(this.$element);
       this._$stop = $('<button class="stop">Stop</button>').appendTo(this.$element);
       this._$reset = $('<button class="reset">Reset</button>').appendTo(this.$element);
 
