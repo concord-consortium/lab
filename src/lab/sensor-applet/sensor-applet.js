@@ -273,24 +273,26 @@ define(function(require) {
         times: 30,
         interval: 1000,
         success: function() {
-          var requests = [];
-          // remove test applet
-          self.$testAppletContainer.html("");
-          if (self.getState() === 'appended') {
-            self._state = 'applet ready';
-          }
+          setTimeout(function() {
+            var requests = [];
+            // remove test applet
+            self.$testAppletContainer.html("");
+            if (self.getState() === 'appended') {
+              self._state = 'applet ready';
+            }
 
-          self.appletInstance = $('#'+self.appletId)[0];
+            self.appletInstance = $('#'+self.appletId)[0];
 
-          for(var i=0; i<self.sensorDefinitions.length; i++){
-            // Get a SensorRequest object for this measurement type
-            requests[i] =
-              self.appletInstance.getSensorRequest(self.sensorDefinitions[i].measurementType);
-          }
+            for(var i=0; i<self.sensorDefinitions.length; i++){
+              // Get a SensorRequest object for this measurement type
+              requests[i] =
+                self.appletInstance.getSensorRequest(self.sensorDefinitions[i].measurementType);
+            }
 
-          // Try to initialize the sensor for the correct device and measurement type (e.g., goio,
-          // distance). Java will callback to initSensorInterfaceComplete on success or error.
-          self.appletInstance.initSensorInterface(self.listenerPath, self.deviceType, requests);
+            // Try to initialize the sensor for the correct device and measurement type (e.g., goio,
+            // distance). Java will callback to initSensorInterfaceComplete on success or error.
+            self.appletInstance.initSensorInterface(self.listenerPath, self.deviceType, requests);
+          }, 2000);
         },
         fail: function () {
           self._appendCallback(new errors.AppletInitializationError("Timed out waiting for sensor applet to initialize."));
