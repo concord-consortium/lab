@@ -64,9 +64,9 @@ define(function(require) {
       FONT_FAMILY = " Lato",
 
       RENDERING_OPTIONS = ["keShading", "chargeShading", "atomNumbers", "showChargeSymbols",
-                           "aminoAcidColorScheme", "useThreeLetterCode"];
+                           "aminoAcidColorScheme", "useThreeLetterCode", "viewPortZoom"];
 
-  return function AtomsRenderer(modelView, model, pixiStage) {
+  return function AtomsRenderer(modelView, model, pixiContainer) {
     // Public API object to be returned.
     var api,
 
@@ -271,10 +271,10 @@ define(function(require) {
         var i, len, atom, keSprite, text;
 
         if (container) {
-          pixiStage.removeChild(container);
+          pixiContainer.removeChild(container);
         }
         container = new PIXI.DisplayObjectContainer();
-        pixiStage.addChild(container);
+        pixiContainer.addChild(container);
 
         m2px = modelView.model2canvas;
         m2pxInv = modelView.model2canvasInv;

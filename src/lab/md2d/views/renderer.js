@@ -73,7 +73,7 @@ define(function(require) {
       atomsViewport  = modelView.appendViewport().classed("atoms", true),
       atomsContainer = atomsViewport.append("g").attr("class", "atoms-container"),
 
-      atomsStage = modelView.appendPixiViewport(),
+      atomsPixiContainer = modelView.appendPixiViewport(),
 
       aboveAtomsViewport = modelView.appendViewport().classed("above-atoms", true),
       shapeContainerTop  = aboveAtomsViewport.append("g").attr("class", "shape-container-top"),
@@ -87,7 +87,7 @@ define(function(require) {
 
       // Renderers specific for MD2D
       // TODO: try to create new renderers in separate files for clarity and easier testing.
-      atomsRenderer = new AtomsRenderer(modelView, model, atomsStage),
+      atomsRenderer = new AtomsRenderer(modelView, model, atomsPixiContainer),
       geneticRenderer,
 
       gradientNameForElement = [

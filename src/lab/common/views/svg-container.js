@@ -29,7 +29,7 @@ define(function (require) {
 
         containerBackground, gridContainer, brushContainer,
 
-        pixiRenderers, pixiStages,
+        pixiRenderers, pixiStages, pixiContainers,
 
         // A list of all outermost svg/canvas/div containers which may have clickable or touchable
         // child elements, ordered from topmost to bottom-most. Because the layers are siblings, not
@@ -38,7 +38,7 @@ define(function (require) {
         layersToHitTest,
 
         cx, cy,
-        padding, size, modelSize, viewport,
+        padding, size, modelSize, viewport, viewPortZoom,
 
         model2canvas    = d3.scale.linear(),
         model2canvasInv = d3.scale.linear(),
@@ -106,11 +106,12 @@ define(function (require) {
     function scale() {
       var viewPortWidth = model.get("viewPortWidth"),
           viewPortHeight = model.get("viewPortHeight"),
-          viewPortZoom = model.get("viewPortZoom") || 1,
           viewPortX = model.get("viewPortX"),
           viewPortY = model.get("viewPortY"),
           aspectRatio,
           width, height;
+
+      viewPortZoom = model.get("viewPortZoom") || 1;
 
       // Model size in model units.
       modelSize = {
@@ -162,7 +163,7 @@ define(function (require) {
         .range([0, size.width]);
 
       model2canvas
-        .domain([0, viewport.width])
+        .domain([0, viewport.scaledWidth])
         .range([0, size.width * CANVAS_OVERSAMPLING]);
 
       // Inverted model2px scaling function for position (for y-coordinates, domain can be inverted).
@@ -171,8 +172,9 @@ define(function (require) {
         .range(origin === 'bottom-left' ? [0, size.height] : [size.height, 0]);
 
       model2canvasInv
-        .domain([viewport.height, 0])
-        .range(origin === 'bottom-left' ? [0, size.height * CANVAS_OVERSAMPLING] : [size.height * CANVAS_OVERSAMPLING, 0]);
+        .domain([viewport.scaledHeight, 0])
+        .range(origin === 'bottom-left' ? [0, size.height * CANVAS_OVERSAMPLING] :
+                                          [size.height * CANVAS_OVERSAMPLING, 0]);
 
       if (selectBrush) {
         // Update brush to use new scaling functions.
@@ -376,6 +378,7 @@ define(function (require) {
 
         pixiRenderers = [];
         pixiStages = [];
+        pixiContainers = [];
 
         setupHitTesting();
       }
@@ -421,7 +424,17 @@ define(function (require) {
         height: model2px(viewport.height)
       });
 
-      // TODO: implement viewport support for canvas.
+      pixiContainers.forEach(function (pixiContainer) {
+        // It would be nice to set position of PIXI.Stage object, but it doesn't work. We have
+        // to use nested PIXI.DisplayObjectContainer:
+        pixiContainer.pivot.x = model2canvas(viewport.x);
+        pixiContainer.pivot.y = model2canvasInv(viewport.y);
+        // This would also work:
+        // pixiContainer.scale.x = pixiContainer.scale.y = (modelSize.maxX - modelSize.minX) /
+        //                                                  viewport.scaledWidth;
+        // and would be pretty fast, however sprites will be pixelated. To ensure that quality isn't
+        // affected it's better to modify .model2canvas() functions.
+      });
 
       // Update padding, as it can be changed after rescaling.
       svgs.attr("transform", "translate(" + padding.left + "," + padding.top + ")");
@@ -436,6 +449,7 @@ define(function (require) {
         });
 
       redrawGridLinesAndLabels();
+      api.renderCanvas();
     }
 
     /**
@@ -754,12 +768,16 @@ define(function (require) {
 
       /**
         Please see .appendViewport() docs.
-        The main difference is that it returns new PIXI.Stage object instead of SVG element.
+        The main difference is that it returns new PIXI.DisplayObjectContainer object
+        instead of SVG element.
        */
       appendPixiViewport: function() {
-        var pixiRenderer = PIXI.autoDetectRenderer(cx * CANVAS_OVERSAMPLING,
-                                                   cy * CANVAS_OVERSAMPLING, null, true),
-            pixiStage = new PIXI.Stage(null, true);
+        var pixiRenderer  = PIXI.autoDetectRenderer(cx * CANVAS_OVERSAMPLING,
+                                                    cy * CANVAS_OVERSAMPLING, null, true),
+            pixiStage     = new PIXI.Stage(null, true),
+            pixiContainer = new PIXI.DisplayObjectContainer();
+
+        pixiStage.addChild(pixiContainer);
 
         viewportContainer.node().appendChild(pixiRenderer.view);
         d3.select(pixiRenderer.view)
@@ -771,8 +789,11 @@ define(function (require) {
 
         pixiRenderers.push(pixiRenderer);
         pixiStages.push(pixiStage);
+        pixiContainers.push(pixiContainer);
 
-        return pixiStage;
+        // We return container instead of stage, as we can apply view port transformations to it.
+        // Stage transformations seem to be ignored by the PIXI renderer.
+        return pixiContainer;
       },
 
       hitTestFlag: false,
