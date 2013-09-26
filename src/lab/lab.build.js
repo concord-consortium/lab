@@ -62,7 +62,7 @@
     'cs' :'../../vendor/require-cs/cs',
     'coffee-script': '../../vendor/coffee-script/extras/coffee-script',
     'underscore': '../../vendor/underscore/underscore',
-    'pixi': '../../vendor/pixi.js/bin/pixi',
+    'pixi': '../../vendor/pixi.js/bin/pixi.dev',
     'canvg': '../../vendor/canvg-1.3/canvg',
     'rgbcolor': '../../vendor/canvg-1.3/rgbcolor',
     'backbone': '../../node_modules/backbone/backbone',
