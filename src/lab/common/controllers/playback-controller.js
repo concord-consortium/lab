@@ -1,4 +1,4 @@
-/*global define, $ */
+/*global define, $, model */
 
 define(function (require) {
 
@@ -12,12 +12,10 @@ define(function (require) {
    * @extends InteractiveComponent
    * @param {Object} component Component JSON definition.
    * @param {ScriptingAPI} scriptingAPI
-   * @param {} controller
-   * @param {} model
    */
-  function PlaybackController(component, scriptingAPI, controller) {
+  function PlaybackController(component, scriptingAPI) {
     // Call super constructor.
-    InteractiveComponent.call(this, "playback", component, scriptingAPI, controller);
+    InteractiveComponent.call(this, "playback", component, scriptingAPI);
 
     this.$element.addClass("interactive-playback");
 
@@ -30,74 +28,48 @@ define(function (require) {
     /** @private */
     this._timeDesc = null;
 
+    this._scriptingAPI = scriptingAPI.api;
   }
   inherit(PlaybackController, InteractiveComponent);
-
-  PlaybackController.prototype._createPlayPauseClickHandler = function () {
-    var that = this;
-    this._playPauseClickHandler = function() {
-      if (that._modelStopped) {
-        if (that._modelPlayable) {
-          that._scriptingAPI.api.start();
-        }
-      } else {
-        that._scriptingAPI.api.stop();
-      }
-    };
-  };
-
-  PlaybackController.prototype._bindClickHandlers = function () {
-    if (this.controlButtonStyle) {
-      // Bind video-playback style click handlers.
-      if (this.controlButtonStyle === 'video') {
-        this._createPlayPauseClickHandler();
-        this._$reset.on("click", this._scriptingAPI.api.reload);
-        this._$playPause.on("click", this._playPauseClickHandler);
-        this._$stepBackward.on("click", this._scriptingAPI.api.stepBack);
-        this._$stepForward.on("click", this._scriptingAPI.api.stepForward);
-      } else {
-        // Bind text style click handlers
-        this._$reset.on("click", this._scriptingAPI.api.reload);
-        this._$start.on('click', this._scriptingAPI.api.start);
-        this._$stop.on('click', this._scriptingAPI.api.stop);
-      }
-    }
-  };
-
-  PlaybackController.prototype._unBindClickHandlers = function () {
-    if (this.controlButtonStyle) {
-      // Unbind video-playback style click handlers.
-      if (this.controlButtonStyle === 'video') {
-        this._$reset.off("click", this._scriptingAPI.api.reload);
-        this._$stepBackward.off("click", this._scriptingAPI.api.stepBack);
-        this._$stepForward.off("click", this._scriptingAPI.api.stepForward);
-        this._$playPause.off("click", this._playPauseClickHandler);
-      } else {
-        // Unbind text style click handlers
-        this._$reset.off("click", this._scriptingAPI.api.reload);
-        this._$start.off('click', this._scriptingAPI.api.start);
-        this._$stop.off('click', this._scriptingAPI.api.stop);
-      }
-    }
-  };
 
   // TODO: make 2 delegate classes instead of using this pattern!
   PlaybackController.prototype._createControlsFor = {
     video: function () {
+      var scriptingAPI = this._scriptingAPI;
+
       this.$element.removeClass('text').addClass('video');
 
+      /** @private */
       this._$reset = $('<a class="reset"><i class="icon-step-backward"></i></a>').appendTo(this.$element);
+      /** @private */
       this._$playPause = $('<a class="play-pause"><i class="icon-play"></i><i class="icon-pause"></i></a>').appendTo(this.$element);
-
       /** @private */
       this._$timeDisplay = $('<span class="time-display">').appendTo(this._$playPause);
 
+      /** @private */
       this._$stepBackward = $('<a class="step"><i class="icon-backward"></i></a>').insertBefore(this._$playPause);
+      /** @private */
       this._$stepForward = $('<a class="step"><i class="icon-forward"></i></a>').insertAfter(this._$playPause);
 
       this._$reset.after('<div class="spacer reset">');
       this._$stepBackward.after('<div class="spacer step">');
       this._$stepForward.before('<div class="spacer step">');
+
+      // Bind click handlers.
+      this._$reset.on("click", scriptingAPI.reload);
+
+      this._$playPause.on("click", $.proxy(function () {
+        if (this._modelStopped) {
+          if (this._modelPlayable) {
+            scriptingAPI.start();
+          }
+        } else {
+          scriptingAPI.stop();
+        }
+      }, this));
+
+      this._$stepBackward.on("click", scriptingAPI.stepBack);
+      this._$stepForward.on("click", scriptingAPI.stepForward);
 
       this._$playPause.attr("title", "Start / pause the simulation");
       this._$reset.attr("title", "Reset the simulation");
@@ -106,11 +78,18 @@ define(function (require) {
     },
 
     text: function () {
+      var scriptingAPI = this._scriptingAPI;
+
       this.$element.removeClass('video').addClass('text');
 
       this._$start = $('<button class-="start">Start</button>').appendTo(this.$element);
       this._$stop = $('<button class="stop">Stop</button>').appendTo(this.$element);
       this._$reset = $('<button class="reset">Reset</button>').appendTo(this.$element);
+
+      // Bind click handlers
+      this._$reset.on('click', scriptingAPI.reload);
+      this._$start.on('click', scriptingAPI.start);
+      this._$stop.on('click', scriptingAPI.stop);
 
       this._$start.attr("title", "Start the simulation or data collection");
       this._$stop.attr("title",  "Stop the simulation or data collection");
@@ -156,9 +135,9 @@ define(function (require) {
    * @private
    */
   PlaybackController.prototype._simulationStateChanged = function () {
-    this._modelStopped = this._model.isStopped();
+    this._modelStopped = model.isStopped();
     // Coerce undefined to *true* for models that don't have isPlayable property
-    this._modelPlayable = this._model.properties.isPlayable === false ? false : true;
+    this._modelPlayable = model.properties.isPlayable === false ? false : true;
 
     this._updateButtonStatesFor[this.controlButtonStyle].call(this);
   };
@@ -172,11 +151,11 @@ define(function (require) {
       return;
     }
 
-    this._showClock = this._model.get("showClock");
+    this._showClock = model.get("showClock");
     if (this._showClock) {
       this._$playPause.addClass("with-clock");
       // Update 'displayTime' description (used for formatting).
-      this._timeDesc =  this._model.getPropertyDescription("displayTime");
+      this._timeDesc =  model.getPropertyDescription("displayTime");
       // Update clock immediately.
       this._timeChanged();
     } else {
@@ -192,7 +171,7 @@ define(function (require) {
     if (!this._showClock || this.controlButtonStyle !== 'video') {
       return;
     }
-    this._$timeDisplay.html(this._timeDesc.format(this._model.get("displayTime")));
+    this._$timeDisplay.html(this._timeDesc.format(model.get("displayTime")));
   };
 
 
@@ -246,7 +225,7 @@ define(function (require) {
    * @private
    */
   PlaybackController.prototype._controlButtonChoicesChanged = function () {
-    var mode = this._model.properties.controlButtons;
+    var mode = model.properties.controlButtons;
     this._updateControlButtonChoicesFor[this.controlButtonStyle].call(this, mode);
   };
 
@@ -256,7 +235,7 @@ define(function (require) {
    */
   PlaybackController.prototype._controlButtonStyleChanged = function () {
     // To handle model types whose metadata don't define controlButtonStyle, default to 'video' here
-    var style = this._model.properties.controlButtonStyle || 'video';
+    var style = model.properties.controlButtonStyle || 'video';
     if (this.controlButtonStyle === style) {
       return;
     }
@@ -272,36 +251,24 @@ define(function (require) {
   /**
    * Implements optional callback supported by Interactive Controller.
    */
-  PlaybackController.prototype.modelLoadedCallback = function (model, scriptingAPI) {
-    // unbind click handler from old model and scriptingAPI
-    this._unBindClickHandlers();
-
-    PlaybackController.superClass._modelLoadedCallback.call(this, model, scriptingAPI);
-
+  PlaybackController.prototype.modelLoadedCallback = function () {
     // Update play / pause button.
     // Use event namespace to let multiple playbacks work fine with one model.
-    this._model.on('play.' + this.component.id, $.proxy(this._simulationStateChanged, this));
-    this._model.on('stop.' + this.component.id, $.proxy(this._simulationStateChanged, this));
-    this._model.addObserver('isPlayable', $.proxy(this._simulationStateChanged, this));
+    model.on('play.' + this.component.id, $.proxy(this._simulationStateChanged, this));
+    model.on('stop.' + this.component.id, $.proxy(this._simulationStateChanged, this));
+    model.addObserver('isPlayable', $.proxy(this._simulationStateChanged, this));
 
-    this._model.addObserver('showClock', $.proxy(this._showClockChanged, this));
-    this._model.addObserver('displayTime', $.proxy(this._timeChanged, this));
+    model.addObserver('showClock', $.proxy(this._showClockChanged, this));
+    model.addObserver('displayTime', $.proxy(this._timeChanged, this));
 
     // Update display mode (=> buttons are hidden or visible).
-    this._model.addObserver('controlButtons', $.proxy(this._controlButtonChoicesChanged, this));
-    this._model.addObserver('controlButtonStyle', $.proxy(this._controlButtonStyleChanged, this));
+    model.addObserver('controlButtons', $.proxy(this._controlButtonChoicesChanged, this));
+    model.addObserver('controlButtonStyle', $.proxy(this._controlButtonStyleChanged, this));
 
     this._controlButtonStyleChanged();
     this._controlButtonChoicesChanged();
     this._simulationStateChanged();
     this._showClockChanged();
-
-    // update click handler bindings for new model and scriptingAPI
-    // Stephen: TODO when we remove the binding between model instance and scripting api, only bind
-    // and unbind click handlers in _controlButtonStyleChanged; there should be no need to do so
-    // when a model loads
-    this._bindClickHandlers();
-
   };
 
   return PlaybackController;
