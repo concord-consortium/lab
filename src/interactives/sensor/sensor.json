@@ -14,6 +14,10 @@
         "showClock": true
       },
       "onLoad": [
+        "function setGraphRange() {",
+        "  syncAxisRangesToPropertyRanges('propertiesGraph');",
+        "  setComponentAttributes('propertiesGraph', { xmax: get('experimentDuration') });",
+        "}",
         "function setButtonState() {",
         "  setComponentDisabled('start-button', !get('isPlayable'));",
         "  setComponentDisabled('stop-button', get('isStopped'));",
@@ -26,7 +30,7 @@
         "setButtonState();",
         "onPropertyChange('sensorType', function() {",
         "  if (get('sensorType') && !get('isNewRunInProgress')) {",
-        "    syncAxisRangesToPropertyRanges('propertiesGraph');",
+        "    setGraphRange();",
         "    setComponentDisabled('start-button', false);",
         "  }",
         "});",
@@ -36,7 +40,9 @@
         "     stop();",
         "     setComponentDisabled('start-button',true);",
         "   }",
-        "});"
+        "});",
+        "onPropertyChange('experimentDuration', setGraphRange);",
+        "setGraphRange();"
       ]
     }
   ],
