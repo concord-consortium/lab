@@ -10,6 +10,20 @@ define(function(require) {
       atomSVG =
       '<svg x="0px" y="0px" width="{{ width }}px" height="{{ height }}px" \
        viewBox="0 0 32 32" xml:space="preserve"> \
+        <style type="text/css"> \
+        <![CDATA[ \
+          text { \
+            font-family: Lato, OpenSans, helvetica, sans-serif; \
+            font-size: {{ fontSize }}px; \
+            font-weight: bold; \
+            fill: #222; \
+          } \
+          .shadow { \
+            stroke: rgba(255, 255, 255, 0.7); \
+            stroke-width: 2px; \
+          } \
+        ]]> \
+        </style> \
          <defs> \
            <radialGradient id="grad" cx="50%" cy="47%" r="53%" fx="35%" fy="30%"> \
            <stop stop-color="{{ lightCol }}" offset="0%"></stop> \
@@ -19,6 +33,8 @@ define(function(require) {
            </radialGradient> \
          </defs> \
          <circle fill="url(#grad)" cx="16" cy="16" r="15" fill-opacity="{{ opacity }}"/> \
+         <text class="shadow" text-anchor="middle" x="16" y="16" dy="0.31em">{{ label }}</text> \
+         <text text-anchor="middle" x="16" y="16" dy="0.31em">{{ label }}</text> \
        </svg>',
 
       KE_SHADING_MIN_COLORS = ["#FFFFFF", "#F2F2F2", "#A4A4A4"],
@@ -60,8 +76,6 @@ define(function(require) {
       getHydrophobicityColors = function (h) {
         return h > 0 ?  ["#F0E6D1", "#E0A21B", "#AD7F1C"] : ["#dfffef", "#75a643", "#2a7216"];
       },
-
-      FONT_FAMILY = " Lato",
 
       RENDERING_OPTIONS = ["keShading", "chargeShading", "atomNumbers", "showChargeSymbols",
                            "aminoAcidColorScheme", "useThreeLetterCode", "viewPortZoom"];
@@ -145,10 +159,12 @@ define(function(require) {
       var elID = modelAtoms[i].element,
           radius = m2px(model.getElementProperties(elID).radius),
           visible = modelAtoms[i].visible,
+          label = getAtomLabel(i),
           key;
 
       colors = colors || getAtomColors(i);
-      key = visible ? (elID + "-" + radius + "-" + colors.join("")) : (radius + "-invisible");
+      key = visible ? (elID + "-" + radius + "-" + colors.join("") + "-" + label.text + "-" + label.fontSize) :
+                      (radius + "-invisible");
 
       if (elementTex[key] === undefined) {
         var canv = document.createElement("canvas"),
@@ -160,7 +176,9 @@ define(function(require) {
           lightCol: colors[0],
           medCol: colors[1],
           darkCol: colors[2],
-          opacity: visible
+          opacity: visible,
+          label: label.text,
+          fontSize: label.fontSize
         };
 
         canvg(canv, mustache.render(atomSVG, tplData));
@@ -170,13 +188,12 @@ define(function(require) {
     }
 
     function getAtomLabel(i) {
-      var text, textShadow,
-          textVal,
-          sizeRatio;
+      var textVal = "",
+          sizeRatio = 0;
 
       if (renderMode.atomNumbers) {
         textVal = i;
-        sizeRatio = 1.3;
+        sizeRatio = 1.2;
       } else if (renderMode.useThreeLetterCode && modelAtoms[i].label) {
         textVal = modelAtoms[i].label;
         sizeRatio = 1;
@@ -188,30 +205,15 @@ define(function(require) {
           textVal = "+";
         } else if (modelAtoms[i].charge < 0) {
           textVal = "-";
-        } else {
-          return null;
         }
         sizeRatio = 1.6;
-      } else {
-        return null;
       }
 
-      textShadow = new PIXI.Text(textVal, {
-        font: "bold " + m2px(sizeRatio * modelAtoms[i].radius) + "px " + FONT_FAMILY,
-        fill: "#fff"
-      });
-      textShadow.anchor.x = 0.5;
-      textShadow.anchor.y = 0.5;
-
-      text = new PIXI.Text(textVal, {
-        font: "bold " + m2px(sizeRatio * modelAtoms[i].radius) + "px " + FONT_FAMILY,
-        fill: "#444"
-      });
-      text.anchor.x = 0.52;
-      text.anchor.y = 0.52;
-
-      textShadow.addChild(text);
-      return textShadow;
+      return {
+        text: textVal,
+        fontSize: sizeRatio * 16 // In fact: sizeRatio * atom radius. The value 16 is based on the
+                                 // current SVG viewBox and <circle> "r" property.
+      };
     }
 
     function mouseDown() {
@@ -275,7 +277,7 @@ define(function(require) {
 
     api = {
       setup: function () {
-        var i, len, atom, keSprite, text;
+        var i, len, atom, keSprite;
 
         if (container) {
           pixiContainer.removeChild(container);
@@ -300,11 +302,6 @@ define(function(require) {
           atom.mousedown = atom.touchstart = mouseDown;
           atom.mouseup = atom.mouseupoutside = atom.touchend = atom.touchendoutside = mouseUp;
           atom.mousemove = atom.touchmove = mouseMove;
-
-          text = getAtomLabel(i);
-          if (text) {
-            atom.addChild(text);
-          }
 
           if (renderMode.keShading) {
             keSprite = new PIXI.Sprite(getAtomTexture(i, KE_SHADING_MAX_COLORS));
