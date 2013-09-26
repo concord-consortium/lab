@@ -100,21 +100,28 @@ define(function(require) {
     }
 
     function getAtomColors(i) {
-      var elID = modelAtoms[i].element,
+      var atom = modelAtoms[i],
+          elID = atom.element,
           props = model.getElementProperties(elID),
           colorStr, color;
 
-      if (modelAtoms[i].aminoAcid) {
+      if (atom.marked) {
+        colorStr = model.get("markColor");
+        color = d3.rgb(colorStr);
+        return [color.brighter(1).toString(), color.toString(), color.darker(1).toString()];
+      }
+
+      if (atom.aminoAcid) {
         switch(renderMode.aminoAcidColorScheme) {
           case "charge":
-            return getChargeShadingColors(modelAtoms[i].charge);
+            return getChargeShadingColors(atom.charge);
           case "hydrophobicity":
-            return getHydrophobicityColors(modelAtoms[i].hydrophobicity);
+            return getHydrophobicityColors(atom.hydrophobicity);
           case "chargeAndHydro":
-            if (modelAtoms[i].charge !== 0) {
-              return getChargeShadingColors(modelAtoms[i].charge);
+            if (atom.charge !== 0) {
+              return getChargeShadingColors(atom.charge);
             }
-            return getHydrophobicityColors(modelAtoms[i].hydrophobicity);
+            return getHydrophobicityColors(atom.hydrophobicity);
           // case "none":
           // Do nothing, default rendering will be used.
         }
@@ -123,7 +130,7 @@ define(function(require) {
       if (renderMode.keShading) {
         return KE_SHADING_MIN_COLORS;
       } else if (renderMode.chargeShading) {
-        return getChargeShadingColors(modelAtoms[i].charge);
+        return getChargeShadingColors(atom.charge);
       } else {
         // Weird conversion, as we use color values literally imported from Classic MW. Perhaps we
         // should do that in MML -> JSON converter.
@@ -140,7 +147,7 @@ define(function(require) {
           visible = modelAtoms[i].visible,
           key;
 
-      colors = colors || getAtomColors(i, elID);
+      colors = colors || getAtomColors(i);
       key = visible ? (elID + "-" + radius + "-" + colors.join("")) : (radius + "-invisible");
 
       if (elementTex[key] === undefined) {
