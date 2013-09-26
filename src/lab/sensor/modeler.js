@@ -7,10 +7,11 @@ define(function(require) {
       RunningAverageFilter = require('cs!common/filters/running-average-filter'),
       validator            = require('common/validator'),
       metadata             = require('./metadata'),
-      unitsDefinition      = require('./units-definition'),
-      appletClasses        = require('./applet/applet-classes'),
-      appletErrors         = require('./applet/errors'),
-      sensorDefinitions    = require('./applet/sensor-definitions'),
+      unitsDefinition      = require('sensor-applet/units-definition'),
+      appletClasses        = require('sensor-applet/applet-classes'),
+      appletErrors         = require('sensor-applet/errors'),
+      sensorDefinitions    = require('sensor-applet/sensor-definitions'),
+      labConfig            = require('lab.config'),
       BasicDialog          = require('common/controllers/basic-dialog'),
       ExportController     = require('common/controllers/export-controller');
 
@@ -190,7 +191,7 @@ define(function(require) {
         applet.on('deviceUnplugged', function() { handleUnplugged('device'); });
         applet.on('sensorUnplugged', function() { handleUnplugged('sensor'); });
 
-        applet.append(function(error) {
+        applet.append($('body'),function(error) {
 
           if (error) {
             if (error instanceof appletErrors.JavaLoadError) {
@@ -262,7 +263,17 @@ define(function(require) {
 
       sensorPollingIntervalID = setInterval(function() {
         makeInvalidatingChange(function() {
-          rawSensorValue = applet.readSensor();
+          try{
+            rawSensorValue = applet.readSensor()[0];
+          } catch(error) {
+            clearInterval(sensorPollingIntervalID);
+            if(error instanceof appletErrors.SensorConnectionError){
+              handleSensorConnectionError();
+            } else {
+              throw error;
+            }
+            return;
+          }
           if (isTaring) {
             model.properties.tareValue = rawSensorValue;
             isTaring = false;
@@ -318,9 +329,9 @@ define(function(require) {
 
         applet = window.Lab.sensor[sensorType] = new AppletClass({
           listenerPath: 'Lab.sensor.' + sensorType,
-          measurementType: measurementType,
-          sensorDefinition: sensorDefinition,
-          appletId: sensorType+'-sensor'
+          sensorDefinitions: [sensorDefinition],
+          appletId: sensorType+'-sensor',
+          codebase: labConfig.actualRoot + "jnlp"
         });
 
         appendApplet();
@@ -356,7 +367,7 @@ define(function(require) {
       // the problem go away!
       window.__bizarreSafariFix = 1;
 
-      rawSensorValue = d;
+      rawSensorValue = d[0];
       // Once we collect data for a given sensor, don't allow changingn the sensor typea
       if (!didCollectData) {
         model.freeze('sensorType');

@@ -26,6 +26,7 @@ define(function() {
       tareable: true,
       minReading: 0,
       maxReading: 4,
+      precision: 2,
       maxSeconds: 20
     },
 
@@ -71,6 +72,7 @@ define(function() {
       tareable: true,
       minReading: -50,
       maxReading: 50,
+      precision: 2,
       maxSeconds: 10
     },
 
@@ -131,6 +133,7 @@ define(function() {
       tareable: true,
       minReading: 0,
       maxReading: 4,
+      precision: 2,
       maxSeconds: 20
     },
 
@@ -176,7 +179,8 @@ define(function() {
       tareable: true,
       minReading: -50,
       maxReading: 50,
-      maxSecond: 10
+      precision: 2,
+      maxSeconds: 10
     },
 
     labQuestPH: {
