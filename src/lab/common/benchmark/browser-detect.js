@@ -34,7 +34,7 @@ define(function () {
       }
       return windows_platform_token[token[1]] + "/" + arch;
     } else if (systemInfoArray[0].match(/^X11/)) {
-      return systemInfoArray.shift().join('/');
+      return systemInfoArray.join('/');
     }
 
     return "na";
