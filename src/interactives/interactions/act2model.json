@@ -2,6 +2,7 @@
   "title": "Distance and Force Magnitude",
   "publicationStatus": "draft",
   "subtitle": "Explore the relationship between the electric field around an object and the forces on charged objects.",
+  "aspectRatio": 1.18,
   "about": [
     "Control the polarity of the stationary charged object and observe how it affects the electric field around the charged object.",
     "Add a second charged object and move it around the stationary object.",
@@ -15,7 +16,12 @@
       "url": "imports/legacy-mw-content/converted/interactions/distance-and-force/act2model$0.json",
       "importedFrom": "imports/legacy-mw-content/interactions/distance-and-force/act2model$0.mml",
       "viewOptions": {
-        "controlButtons": ""
+        "controlButtons": "",
+        "electricFieldDensity": 24,
+        "electricFieldColor": "rgb(0,255,0)",
+        "forceVectors": {
+          "length": 1.5
+        }
       },
       "onLoad": [
         "setAtomProperties(0,{charge: 3});",

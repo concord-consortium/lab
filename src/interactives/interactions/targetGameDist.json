@@ -1,12 +1,12 @@
 {
   "title": "Target Game (Distance/Force Relationship)",
-  "publicationStatus": "draft",
-  "subtitle": "Can you manipulate the position of charged particle to steer another object to a target?",
+  "publicationStatus": "broken",
+  "subtitle": "Can you manipulate the position of charged particles to steer another object to a target?",
   "about": [
     "Use the *Launch a positive particle* button to shoot a positive particle across the game board.",
-    "Adjust the position of the negatively and positively charged objects to steer the moving particle to the target.",
-    "Can you get the charged particle into the target?"
+    "Adjust the position of the negatively and positively charged objects to steer the moving particle to the target."
   ],
+  "helpOnLoad": true,
   "models": [
     {
       "type": "md2d",
@@ -15,7 +15,8 @@
       "importedFrom": "imports/legacy-mw-content/interactions/target-game-distance/targetGameDist$0.mml",
       "viewOptions": {
         "controlButtons": "",
-        "electricFieldDensity": 24
+        "electricFieldDensity": 24,
+        "electricFieldColor": "rgb(0,255,0)"
       },
       "onLoad": [
         "setAtomProperties(0,{draggable: true});",
@@ -37,13 +38,13 @@
         "callEvery(timePerTick, function() {",
         "  var target = getShapeProperties(2);",
         "  if (atomsWithinRect(target.x, target.y, target.width, target.height).length > 0) {",
-        "    alert('you won!');",
+        "    alert('You won!');",
         "    stop();",
         "  }",
         "  for (var i = 0; i < 6; i++) {",
         "    target = getObstacleProperties(i);",
         "    if (atomsWithinRect(target.x - collisionPadding, target.y - collisionPadding, target.width + 2*collisionPadding, target.height + 2*collisionPadding).length > 0) {",
-        "      alert('you lose!');",
+        "      alert('You lose!');",
         "      stop();",
         "    }",
         "  }",
@@ -80,19 +81,42 @@
         "callEvery(timePerTick, function() {",
         "  var target = getShapeProperties(2);",
         "  if (atomsWithinRect(target.x, target.y, target.width, target.height).length > 0) {",
-        "    alert('you won!');",
+        "    alert('You won!');",
         "    stop();",
         "  }",
         "  for (var i = 0; i < 6; i++) {",
         "    target = getObstacleProperties(i);",
         "    if (atomsWithinRect(target.x - collisionPadding, target.y - collisionPadding, target.width + 2*collisionPadding, target.height + 2*collisionPadding).length > 0) {",
-        "      alert('you lose!');",
+        "      alert('You lose!');",
         "      stop();",
         "    }",
         "  }",
         "});",
         "start();"
       ]
+    }
+  ],
+  "helpTips": [
+    {
+      "component": "",
+      "text": [
+        "Your goal is to shoot a positive particle so that it hits the target.",
+        "Drag the positive and negative balls into position and, then launch your particle and try to win."
+      ]
+    }
+  ],
+  "parameters":[
+    {
+      "name":"electric-field",
+      "label": "electridField",
+      "onChange": "set('showElectricField', value);",
+      "initialValue": false
+    },
+    {
+      "name":"force-vectors",
+      "label": "forceVectors",
+      "onChange": "set('showForceVectors', value);",
+      "initialValue": false
     }
   ],
   "components": [
@@ -114,19 +138,24 @@
       "type": "button",
       "id": "reset",
       "text": "Reset",
-      "action": "reload();"
+      "action": [
+        "reset({",
+        "  retainParameters: ['electric-field','force-vectors'],",
+        "  cause: 'new-run'",
+        "});"
+      ]
     },
     {
       "type": "checkbox",
       "id": "select-show-force-vectors",
       "text": "Show force on objects",
-      "property": "showForceVectors"
+      "property": "force-vectors"
     },
     {
       "type": "checkbox",
       "id": "select-show-electric-field",
       "text": "Show electric field",
-      "property": "showElectricField"
+      "property": "electric-field"
     },
     {
       "type": "radio",
@@ -135,12 +164,12 @@
       "options": [
         {
           "text": "Level 1",
-          "action": "loadModel('level1')",
+          "loadModel": "level1",
           "selected": true
         },
         {
           "text": "Level 2",
-          "action": "loadModel('level2')"
+          "loadModel": "level2"
         }
       ]
     }

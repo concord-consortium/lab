@@ -299,6 +299,7 @@ public: \
 	public/experiments \
 	public/imports \
 	public/jnlp
+	script/update-git-commit-and-branch.rb
 	$(MAKE) src
 
 # copy everything (including symbolic links) except files that are
@@ -389,8 +390,21 @@ public/lab/lab.js: \
 	src/lab/lab.config.js
 	$(R_OPTIMIZER) -o src/lab/lab.build.js
 
-src/lab/lab.version.js: script/generate-js-version.rb
+src/lab/lab.version.js: \
+	script/generate-js-version.rb \
+	src/lab/git-commit \
+	src/lab/git-dirty \
+	src/lab/git-branch-name
 	./script/generate-js-version.rb
+
+src/lab/git-commit:
+	./script/update-git-commit-and-branch.rb
+
+src/lab/git-branch-name:
+	./script/update-git-commit-and-branch.rb
+
+src/lab/git-dirty:
+	./script/update-git-commit-and-branch.rb
 
 ifdef STATIC
 src/lab/lab.config.js:
@@ -449,6 +463,7 @@ public/vendor: \
 	public/vendor/requirejs \
 	public/vendor/text \
 	public/vendor/domReady \
+	public/vendor/fingerprintjs \
 	public/favicon.ico
 
 public/vendor/dsp.js:
@@ -589,6 +604,11 @@ public/vendor/codemirror:
 	rm -rf public/vendor/codemirror/mode/go
 	rm -rf public/vendor/codemirror/mode/rst
 	rm -rf public/vendor/codemirror/mode/verilog
+
+public/vendor/fingerprintjs:
+	mkdir -p public/vendor/fingerprintjs
+	cp vendor/fingerprintjs/fingerprint.min.js public/vendor/fingerprintjs
+	cp vendor/fingerprintjs/README.md public/vendor/fingerprintjs
 
 public/favicon.ico:
 	cp -f src/favicon.ico public/favicon.ico

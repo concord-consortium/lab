@@ -6,6 +6,7 @@ define(function (require) {
       console         = require('common/console'),
       validator       = require('common/validator'),
       serialize       = require('common/serialize'),
+      performance     = require('common/performance'),
       LabModelerMixin = require('common/lab-modeler-mixin'),
       metadata        = require('energy2d/metadata'),
       coremodel       = require('energy2d/models/core-model'),
@@ -276,9 +277,13 @@ define(function (require) {
 
       tick: function () {
         var i, len, diverged;
+
+        performance.enterScope("engine");
         for (i = 0, len = model.properties.timeStepsPerTick; i < len; i++) {
           coreModel.nextStep();
         }
+        performance.leaveScope("engine");
+
         if (coreModel.isWebGLActive()) {
           if (ticksToGPUSync > 0) {
             ticksToGPUSync--;
@@ -456,10 +461,6 @@ define(function (require) {
 
       getSensorsArray: function () {
         return viewModel.sensors;
-      },
-
-      setPerformanceTools: function () {
-        return coreModel.setPerformanceTools();
       },
 
       serialize: function () {

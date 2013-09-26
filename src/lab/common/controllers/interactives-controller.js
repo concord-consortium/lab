@@ -779,8 +779,6 @@ define(function (require) {
       // This will attach model container to DOM.
       semanticLayout.setupModel(modelController);
 
-      modelController.modelInDOM();
-
       // Call component callbacks *when* the layout is created.
       // Some callbacks require that their views are already attached to the DOM, e.g. (bar graph uses
       //getBBox() which in Firefox works only when element is visible and rendered).
@@ -814,6 +812,8 @@ define(function (require) {
 
       layoutInteractive();
 
+      modelController.initializeView();
+
       // notify observers that interactive is rendered.
       interactiveRendered();
 
@@ -839,7 +839,8 @@ define(function (require) {
 
       initializeModelOutputsAndParameters();
 
-      modelController.modelInDOM();
+      modelController.modelSetupComplete();
+      modelController.initializeView();
 
       onLoadScripts = [];
       if (controller.currentModel.onLoad) {
@@ -859,8 +860,6 @@ define(function (require) {
       for(i = 0; i < onLoadScripts.length; i++) {
         onLoadScripts[i]();
       }
-
-      modelController.modelSetupComplete();
 
       for(i = 0; i < modelLoadedCallbacks.length; i++) {
         modelLoadedCallbacks[i](model, cause);
@@ -1404,7 +1403,7 @@ define(function (require) {
           }
         },
         {
-          name: "layout (time in ms)",
+          name: "layout (ms)",
           numeric: true,
           formatter: d3.format("5.1f"),
           run: function(done) {

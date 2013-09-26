@@ -1,7 +1,8 @@
 /*global define: false, d3: false */
 
 define(function (require) {
-  var console = require('common/console');
+  var console     = require('common/console'),
+      performance = require('common/performance');
 
   return function PlaybackSupport(args) {
         // DispatchSupport instance or compatible module.
@@ -84,7 +85,7 @@ define(function (require) {
 
           timer(function timerTick(elapsedTime) {
             if (eventsSupported) dispatch.tickStart();
-            console.timeEnd('gap between frames');
+            performance.leaveScope("gap");
             // Cancel the timer and refuse to to step the model, if the model is stopped.
             // This is necessary because there is no direct way to cancel a d3 timer.
             // See: https://github.com/mbostock/d3/wiki/Transitions#wiki-d3_timer)
@@ -99,16 +100,17 @@ define(function (require) {
               return true;
             }
 
+            performance.enterScope("tick");
             target.tick(elapsedTime);
+            performance.leaveScope("tick");
 
-            console.time('gap between frames');
-            if (eventsSupported) dispatch.tickEnd();
+            performance.enterScope("gap");
             return false;
           });
 
           if (eventsSupported) dispatch.play();
 
-          console.time('gap between frames');
+          performance.enterScope("gap");
           return target;
         };
 

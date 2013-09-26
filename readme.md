@@ -376,14 +376,41 @@ Make sure you have already installed the prerequistes: [Ruby 2.0](http://www.rub
 the RubyGem [bundler](http://gembundler.com/), and [nodejs](http://nodejs.org/) (which now includes
 [npm](http://npmjs.org/) the Node Package Manager.
 
-Open a shell and change to the `lab/` directory. The first time you `cd` into the `lab/` directory RVM will
-switch to using `ruby-2.0.0-p247` based on the `.ruby-version` file in the repository. If you don't have
-this version of ruby installed rvm will tell you the command to install it.
-
-Additionally the `.ruby-gemset` tells RVM to install the gems in a gemset named `lab`. So together these
-files tell RVM to store and load gems from the `ruby-2.0.0-p247@lab` gemset.
+Open a shell and change to the `lab/` directory. The first time you `cd` into the `lab/` directory
+RVM will switch to using `ruby-2.0.0-p247` based on the `.ruby-version` file in the repository.
+Additionally the `.ruby-gemset` tells RVM to install the gems in a gemset named `lab`. So together
+these files tell RVM to store and load gems from the `ruby-2.0.0-p247@lab` gemset.
 
     cd lab
+
+If you don't have `ruby-2.0.0-p247` already installed rvm will display the command you need to
+run to install it. Run this command if required.
+
+If you do end up having to install a new version of Ruby with RVM change out of and back into the lab directory after the RVM install of Ruby is complete:
+
+    cd ..
+    cd lab
+
+#### Initial configuration
+
+Copy the sample project configuration file to `config/config.yml` (you can examine it and edit if you want).
+
+    cp config/config.sample.yml config/config.yml
+
+#### Create a git post-commit hook
+
+Create a git `post-commit` hook by creating the file `.git/hooks/post-commit` and adding this content:
+
+    #!/bin/sh
+    (cd ../.. && ./script/update-git-commit-and-branch.rb)
+
+Make the file `.git/hooks/post-commit` executable:
+
+    chmod u+x .git/hooks/post-commit
+
+Now run a make task that will download and install all the dependencies and build the whole project
+for the first time.
+
     make everything
 
 When `make everything` is run on a freshly cloned repository it performs the following tasks:

@@ -2,27 +2,16 @@
 
 define(function (require) {
 
-  var performance = require("common/performance");
+  var performance = require("common/performance"),
+
+      TEST_TIME = 5000,
+      WARMUP_TIME = 1000;
 
   return function Benchmarks(controller) {
     var model = controller.model,
+        startCounter;
 
-        gapsSum = 0,
-        count = 0,
-        lTime = null;
-
-    var benchmarks = [
-      {
-        name: "commit",
-        numeric: false,
-        run: function(done) {
-          var link = "<a href='"+Lab.version.repo.commit.url+"' class='opens-in-new-window' target='_blank'>"+Lab.version.repo.commit.short_sha+"</a>";
-          if (Lab.version.repo.dirty) {
-            link += " <i>dirty</i>";
-          }
-          done(link);
-        }
-      },
+    return [
       {
         name: "atoms",
         numeric: true,
@@ -39,88 +28,46 @@ define(function (require) {
         }
       },
       {
-        name: "just graphics (steps/s)",
+        name: "engine (ms)",
         numeric: true,
         formatter: d3.format("5.1f"),
         run: function(done) {
-          var elapsed, start, i;
-          model.stop();
-          start = +performance.now();
-          i = 0;
-          while (i++ < 100) {
-            controller.modelContainer.update();
-          }
-          elapsed = performance.now() - start;
-          done(100/elapsed*1000);
-        }
-      },
-      {
-        name: "model (steps/s)",
-        numeric: true,
-        formatter: d3.format("5.1f"),
-        run: function(done) {
-          var start, elapsed;
-          model.stop();
-          start = +performance.now();
-          model.suppressEvents(function () {
-            var i = 0;
-            while (i++ < 100) {
-              model.tick();
-            }
-          });
-          elapsed = performance.now() - start;
-          done(100/elapsed*1000);
-        }
-      },
-      {
-        name: "model+graphics (steps/s)",
-        numeric: true,
-        formatter: d3.format("5.1f"),
-        run: function(done) {
-          var start, elapsed, i;
-          model.stop();
-          start = +performance.now();
-          i = 0;
-          while (i++ < 100) {
-            model.tick();
-          }
-          elapsed = performance.now() - start;
-          done(100/elapsed*1000);
-        }
-      },
-      {
-        name: "fps",
-        numeric: true,
-        formatter: d3.format("5.1f"),
-        run: function(done) {
-          // Collect data for the next benchmark - "gap b/w frames".
-          gapsSum = 0;
-          count = 0;
-          lTime = null;
-          model.on("tickEnd", function () {
-            lTime = performance.now();
-          });
-          model.on("tickStart", function () {
-            if (lTime) {
-              gapsSum += performance.now() - lTime;
-              count += 1;
-            }
-          });
-
           // warmup
           model.start();
           setTimeout(function() {
             model.stop();
-            var startCounter = model.stepCounter();
+
+            performance.collectData(true);
+            startCounter = model.stepCounter();
+
             setTimeout(function() {
               // actual fps calculation
               model.start();
               setTimeout(function() {
                 model.stop();
-                done( (model.stepCounter() - startCounter) / 2 );
-              }, 2000);
+
+                performance.collectData(false);
+                done(performance.getAvgTime("engine"));
+
+              }, TEST_TIME);
             }, 100);
-          }, 1000);
+          }, WARMUP_TIME);
+        }
+      },
+      {
+        name: "JS rendering (ms)",
+        numeric: true,
+        formatter: d3.format("5.1f"),
+        run: function(done) {
+          done(performance.getAvgTime("js-rendering"));
+        }
+      },
+      {
+        name: "tick (ms)",
+        numeric: true,
+        formatter: d3.format("5.1f"),
+        run: function(done) {
+          done(performance.getAvgTime("tick"));
         }
       },
       {
@@ -128,9 +75,15 @@ define(function (require) {
         numeric: true,
         formatter: d3.format("5.1f"),
         run: function(done) {
-          // Data is collected during FPS calculations. We don't have to run model for next X
-          // seconds, making the whole process much longer.
-          done(gapsSum / count);
+          done(performance.getAvgTime("gap"));
+        }
+      },
+      {
+        name: "fps",
+        numeric: true,
+        formatter: d3.format("5.1f"),
+        run: function(done) {
+          done((model.stepCounter() - startCounter) * 1000 / TEST_TIME);
         }
       },
       {
@@ -141,8 +94,5 @@ define(function (require) {
         }
       }
     ];
-
-    return benchmarks;
-
   };
 });

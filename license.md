@@ -86,6 +86,7 @@ Here is a list of projects and resources included in the in the `vendor/` direct
 25. [jQuery selectBoxIt](https://github.com/gfranko/jQuery.selectBoxIt.js): [MIT](http://www.opensource.org/licenses/MIT)
 26. [mustache](https://github.com/janl/mustache.js): [MIT](http://www.opensource.org/licenses/MIT)
 27. [markdown-js](https://github.com/evilstreak/markdown-js): [MIT](http://www.opensource.org/licenses/MIT)
+28. [fingerprintjs](https://github.com/Valve/fingerprintjs): [MIT](http://www.opensource.org/licenses/MIT)
 
 In addition there are three fontface directories in `vendor/fonts` that are distributed
 under compatible open source licenses:

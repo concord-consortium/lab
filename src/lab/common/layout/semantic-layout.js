@@ -26,6 +26,7 @@ define(function (require) {
         modelController,
         aspectRatio,
         fontScale,
+        calculatedFontScale,
 
         // Container specifications by ID.
         containerSpecByID,
@@ -85,25 +86,25 @@ define(function (require) {
     function setFontSize() {
       var canonicalWidth = layoutConfig.canonicalWidth,
           canonicalHeight = canonicalWidth / aspectRatio,
-          containerScale, font;
+          containerScale;
 
       containerScale = Math.min($interactiveContainer.width() / canonicalWidth,
                                 $interactiveContainer.height() / canonicalHeight);
 
       padding = containerScale * 10;
 
-      font = layoutConfig.canonicalFontSize * fontScale * containerScale;
+      calculatedFontScale = layoutConfig.canonicalFontSize * fontScale * containerScale;
 
       // Ensure min font size (in 'em').
-      if (font < layoutConfig.minFontSize) {
-        font = layoutConfig.minFontSize;
+      if (calculatedFontScale < layoutConfig.minFontSize) {
+        calculatedFontScale = layoutConfig.minFontSize;
       }
 
       // Set font-size of #responsive-content element. So, if application author
       // wants to avoid rescaling of font-size for some elements, they should not
       // be included in #responsive-content DIV.
       // TODO: #responsive-content ID is hardcoded, change it?
-      $("#responsive-content").css("font-size", font + "em");
+      $("#responsive-content").css("font-size", calculatedFontScale + "em");
       fontSizeChanged = true;
     }
 
@@ -244,16 +245,25 @@ define(function (require) {
       }
     }
 
-    function positionContainers() {
-      var container, $container,
-          left, top, right, bottom, height, i, ii, id;
+    function setSizeAndFontSizeOfModelContainer() {
+      var actualAspectRatio = $interactiveContainer.width()/$interactiveContainer.height(),
+          aspectRatioScaleCorrection = Math.max(actualAspectRatio/aspectRatio, 1.1),
+          modelFontScale = (modelWidth*1.1/$interactiveContainer.width())*aspectRatioScaleCorrection;
 
       $modelContainer.css({
         width:  modelWidth,
         height: modelController.getHeightForWidth(modelWidth, fontSizeChanged),
         left:   modelLeft,
-        top:    modelTop
+        top:    modelTop,
+        "font-size": modelFontScale + "em"
       });
+    }
+
+    function positionContainers() {
+      var container, $container,
+          left, top, right, bottom, height, i, ii, id;
+
+      setSizeAndFontSizeOfModelContainer();
 
       fontSizeChanged = false;
 

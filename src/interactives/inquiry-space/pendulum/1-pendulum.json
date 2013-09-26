@@ -17,7 +17,8 @@
       "id": "pendulum1$0",
       "url": "imports/legacy-mw-content/converted/inquiry-space/pendulum/pendulum1$0.json",
       "viewOptions": {
-        "controlButtons": "",
+        "controlButtons": "reset",
+        "controlButtonStyle": "text",
         "gridLines": true,
         "showClock": true,
         "velocityVectors": {
@@ -34,7 +35,7 @@
         "setComponentDisabled('start-button', false);",
         "setComponentDisabled('stop-button', true);",
         "function setButtonState() {",
-        "  setComponentDisabled('start-button', !get('isPlayable'));",
+        "//  setComponentDisabled('start-button', !get('isPlayable'));",
         "  setComponentDisabled('stop-button', get('isPlayable'));",
         "  setComponentDisabled('new-run-button', ! (get('hasPlayed') && get('isPlayable')));",
         "  setComponentDisabled('analyze-data-button', ! (get('hasPlayed') && get('isPlayable')));",
@@ -52,7 +53,12 @@
         "onPropertyChange('damping', resetAngle);",
         "onPropertyChange('startingAngle', stopMotion);",
         "onPropertyChange('isPlayable', setButtonState);",
-        "onPropertyChange('hasPlayed', setButtonState);"
+        "onPropertyChange('hasPlayed', setButtonState);",
+        "callEvery(1, function() {",
+        "   var experimentTime = getTime() - get('experimentStartTime');",
+        "console.log(getTime()); console.log(experimentTime); console.log(get('experimentDuration'));",
+        "   if (experimentTime > get('experimentDuration')) stop();",
+        "});"
       ]
     }
   ],
@@ -70,6 +76,14 @@
     }
   ],
   "parameters": [
+     {
+      "name": "experimentStartTime",
+      "initialValue": 0
+    },
+    {
+      "name": "experimentDuration",
+     "initialValue": 5
+    },
     {
       "name": "gravity",
       "label": "Gravity",
@@ -125,7 +139,11 @@
       "id": "start-button",
       "text": "Start",
       "tooltip": "Start the experiment run.",
-      "action": "start();"
+      "action": [
+        "start();",
+        "set('experimentStartTime', getTime());",
+        "setComponentDisabled('start-button', true);"
+      ]
     },
     {
       "type": "button",
@@ -140,25 +158,43 @@
       "text": "New Run",
       "tooltip": "Set up a new experiment run.",
       "action": [
+        "setComponentDisabled('start-button', false);",
         "reset({",
-        "  retainParameters: ['gravity', 'rodLength', 'startingAngle', 'ballMass', 'damping'],",
+        "  retainParameters: ['gravity', 'rodLength', 'startingAngle', 'ballMass', 'damping','experimentDuration'],",
         "  cause: 'new-run'",
         "});"
       ]
     },
     {
       "type": "button",
-      "id": "reset-button",
-      "text": "Reset",
-      "tooltip": "Reset the experiment parameters to the original settings.",
-      "action": "reload()"
-    },
-    {
-      "type": "button",
       "id": "analyze-data-button",
       "text": "Analyze Data",
       "tooltip": "Put data from the experiment run into DataGames.",
-      "action": "exportData();"
+      "action": [
+        "setComponentDisabled('start-button', false);",
+        "exportData();"
+      ]
+    },
+    {
+      "type": "slider",
+      "id": "duration-slider",
+      "min": 1,
+      "max": 10,
+      "displayValue": "return format('.1f')(value)",
+      "labels": [
+        {
+          "value": 1,
+          "label": "1"
+        },
+        {
+          "value": 10,
+          "label": "10"
+        }
+      ],
+      "steps": 9,
+      "width": "12em",
+      "title": "Duration of Experiment (s)",
+      "property": "experimentDuration"
     },
     {
       "type": "slider",
@@ -261,12 +297,6 @@
       "property": "damping"
     },
     {
-      "type": "checkbox",
-      "id": "velocity-vectors",
-      "text": "Show velocity vector",
-      "property": "showVelocityVectors"
-    },
-    {
       "type": "numericOutput",
       "id": "current-angle-display",
       "property": "currentAngle",
@@ -298,9 +328,9 @@
       [
         "start-button",
         "stop-button",
+        "analyze-data-button",
         "new-run-button",
-        "reset-button",
-        "analyze-data-button"
+        "duration-slider"
       ],
       [
         "gravity-slider",
@@ -310,9 +340,6 @@
       [
         "mass-slider",
         "damping-slider",
-        "velocity-vectors"
-      ],
-      [
         "current-angle-display"
       ]
     ]

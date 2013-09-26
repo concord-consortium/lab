@@ -1,0 +1,25 @@
+{
+  "title": "Extra Heavy Script",
+  "publicationStatus": "public",
+  "subtitle": "Simple model and rendering, but the script is extremely time consuming.",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "simple-gas$0",
+      "url": "imports/legacy-mw-content/converted/benchmarks/simple-gas/simple-gas$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "showClock": true
+      },
+      "onLoad": [
+        "function calc() {",
+        "  var i, temp; ",
+        "  for(i = 0; i < 100000; i++) { temp = Math.pow(2, 24); }",
+        "}",
+        "onPropertyChange('time', calc);",
+        "callEvery(50, calc);"
+      ]
+    }
+  ]
+}
