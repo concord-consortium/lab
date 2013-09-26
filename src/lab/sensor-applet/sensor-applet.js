@@ -218,7 +218,7 @@ define(function(require) {
         throw new Error("Can't call append() when sensor applet has left 'not appended' state");
       }
       console.log("appending test applet");
-      this.$testAppletContainer = this._appendHTML(this.appletId + " -test-applet-container",
+      this.$testAppletContainer = this._appendHTML(this.appletId + "-test-applet-container",
                                                    this.getTestAppletHTML(),
                                                    $loadingParent);
       this._state = 'test applet appended';
@@ -249,7 +249,7 @@ define(function(require) {
         times: 30,
         interval: 1000,
         success: function() {
-          self.$appletContainer = self._appendHTML(this.appletId + "-container",
+          self.$appletContainer = self._appendHTML(self.appletId + "-container",
                                                    self.getHTML(),
                                                    $('body'));
           self._state = 'appended';
@@ -365,7 +365,12 @@ define(function(require) {
 
     remove: function() {
       if (this.getState() !== 'not appended') {
-        this.$appletContainer.html("");
+        if (this.$appletContainer) {
+          this.$appletContainer.html("");
+        }
+        if (this.$testAppletContainer) {
+          this.$testAppletContainer.html("");
+        }
         this._state = 'not appended';
       }
     },
