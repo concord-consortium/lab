@@ -70,7 +70,7 @@ define(function() {
     }
 
     return view = {
-      $el: $("<div id='model-container' class='container' />"),
+      $el: $("<div id='model-container' class='container sensor-model-container' />"),
 
       bindModel: function(newModel, newModelUrl) {
         modelUrl = newModelUrl || modelUrl;
