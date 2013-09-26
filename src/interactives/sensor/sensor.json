@@ -16,7 +16,6 @@
       "onLoad": [
         "function setGraphRange() {",
         "  syncAxisRangesToPropertyRanges('propertiesGraph');",
-        "  setComponentAttributes('propertiesGraph', { xmax: get('experimentDuration') });",
         "}",
         "function setButtonState() {",
         "  setComponentDisabled('start-button', !get('isPlayable'));",
@@ -36,12 +35,12 @@
         "});",
         "callEvery(1, function() {",
         "   var experimentTime = getTime() - get('experimentStartTime');",
-        "   if (experimentTime > get('experimentDuration')) {",
+        "   if (experimentTime > get('collectionTime')) {",
         "     stop();",
         "     setComponentDisabled('start-button',true);",
         "   }",
         "});",
-        "onPropertyChange('experimentDuration', setGraphRange);",
+        "onPropertyChange('collectionTime', setGraphRange);",
         "setGraphRange();"
       ]
     }
@@ -57,7 +56,8 @@
     },
     {
       "name": "experimentDuration",
-      "initialValue": 5
+      "initialValue": 5,
+      "onChange": "set('collectionTime', value);"
     }
  ],
   "hideExportDataControl": true,
