@@ -32,7 +32,7 @@ define(function(require) {
            <stop stop-color="{{ medCol }}" offset="100%"></stop> \
            </radialGradient> \
          </defs> \
-         <circle fill="url(#grad)" cx="16" cy="16" r="15" fill-opacity="{{ opacity }}"/> \
+         <circle fill="url(#grad)" cx="16" cy="16" r="16" fill-opacity="{{ opacity }}"/> \
          <text class="shadow" text-anchor="middle" x="16" y="16" dy="0.31em">{{ label }}</text> \
          <text text-anchor="middle" x="16" y="16" dy="0.31em">{{ label }}</text> \
        </svg>',
