@@ -233,7 +233,9 @@ define(function(require) {
         appletContainer = $("<div id='" + containerId + "'/>").appendTo($parent);
       }
 
-      appletContainer.append(html);
+      // using .append() actually creates some sort of internal reference to the applet,
+      // which can cause problems calling applet methods later. Using .html() seems to avoid this.
+      appletContainer.html(html);
       return appletContainer;
     },
 
