@@ -81,7 +81,7 @@
         "hostIndex": 0,
         "backgroundColor": "rgb(255,100,100)",
         "anchor": "upper-left",
-        "fontScale": 1.1666666666666667,
+        "fontSize": 0.14,
         "calloutPoint": [
           0.24,
           1.73

@@ -56,7 +56,7 @@
         "layer": 1,
         "frame": "rounded rectangle",
         "backgroundColor": "rgb(255,255,128)",
-        "fontScale": 1,
+        "fontSize": 0.12,
         "anchor": "upper-left"
       }
     ],

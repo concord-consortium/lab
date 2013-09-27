@@ -60,7 +60,7 @@
           0.51
         ],
         "backgroundColor": "rgb(0,255,0)",
-        "fontScale": 1,
+        "fontSize": 0.12,
         "anchor": "upper-left"
       },
       {
@@ -68,7 +68,7 @@
         "x": 5.93,
         "y": 1.09,
         "layer": 1,
-        "fontScale": 3.3333333333333335,
+        "fontSize": 0.4,
         "anchor": "upper-left"
       }
     ],
