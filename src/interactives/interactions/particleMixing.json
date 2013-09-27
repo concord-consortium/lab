@@ -15,10 +15,6 @@
         "controlButtons": ""
       },
       "onLoad": [
-        "setTextBoxProperties(3, {x: 1.05} );",
-        "setTextBoxProperties(4, {x: 2.39} );",
-        "setTextBoxProperties(1, {x: 3.4, y: 2.78});",
-        "setTextBoxProperties(0, {x: 0.35, y: 1.825});",
         "setLineProperties([0,1,2,3],{lineColor: 'red'});",
         "start();",
         "var timeStepsPerTick = get('timeStepsPerTick'),",
