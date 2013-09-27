@@ -3,11 +3,16 @@
 define(function (require) {
   var metadata  = require('common/controllers/interactive-metadata'),
       validator = require('common/validator'),
+      Dataset   = require('common/models/dataset'),
       experimentControllerCount = 0;
 
-  return function ExperimentController(experimentDefinition, scriptingAPI, onLoadScripts, interactivesController, model) {
+  return function ExperimentController(experimentDefinition, interactivesController, onLoadScripts) {
         // Public API.
     var controller,
+        model,
+        scriptingAPI,
+        timeSeriesDatasets,
+        currentDataset,
         timeSeries,
         inputs,
         outputs,
@@ -25,21 +30,25 @@ define(function (require) {
         // arrays of components (graphs or tables) that data are sent to ...
         timeSeriesDestinations,
         parameterSeriesDestinations,
+        timeSeriesGraph,
 
         namespace = "experimentController" + (++experimentControllerCount);
 
     function initialize() {
+      scriptingAPI = interactivesController.getScriptingAPI();
+      model = interactivesController.getModel();
       // Validate component definition, use validated copy of the properties.
       experimentDefinition = validator.validateCompleteness(metadata.experiment, experimentDefinition);
       timeSeries    = experimentDefinition.timeSeries;
-      inputs        = experimentDefinition.inputs;
-      outputs       = experimentDefinition.outputs;
+      inputs        = experimentDefinition.parameters.inputs;
+      outputs       = experimentDefinition.parameters.outputs;
       destinations  = experimentDefinition.destinations;
       stateButtons  = experimentDefinition.stateButtons;
       onResetScript = experimentDefinition.onReset;
       if (onLoadScripts.length > 0) {
         onLoadFunc  = onLoadScripts[0];
       }
+      timeSeriesDatasets = [];
     }
 
     function setup() {
@@ -54,7 +63,7 @@ define(function (require) {
       }
 
       function setupDestinationComponents() {
-        var i, j, destination;
+        var i, j, destination, component;
         timeSeriesDestinations = [];
         parameterSeriesDestinations = [];
         for (i = 0; i < destinations.length; i++) {
@@ -74,6 +83,17 @@ define(function (require) {
             throw new Error("Experiment destination: invalid destination type: " + destination.type);
           }
         }
+        timeSeriesGraph = undefined;
+        for (i = 0; i < timeSeriesDestinations.length; i++) {
+          destination = timeSeriesDestinations[i];
+          for (j = 0; j < destination.components.length; j++) {
+            component = destination.components[j];
+            if (component.type !== undefined && component.type === "graph") {
+              timeSeriesGraph = component;
+              return;
+            }
+          }
+        }
       }
 
       function setupModelParameters() {
@@ -85,9 +105,9 @@ define(function (require) {
         });
         model.defineParameter('experimentRunning', { initialValue: false }, function () {
           if (model.get('experimentRunning')) {
-            goToStartRun();
+            goToRunStarted();
           } else {
-            goToStopRun();
+            goToRunStopped();
           }
         });
       }
@@ -97,6 +117,7 @@ define(function (require) {
         stopRun.setAction("set('experimentRunning', false);");
         saveRun.setAction(function () {
           var i, j, parameterSeriesDestination;
+          timeSeriesDatasets.push(currentDataset);
           for (i = 0; i < parameterSeriesDestinations.length; i++) {
             parameterSeriesDestination = parameterSeriesDestinations[i];
             for (j = 0; j < parameterSeriesDestination.components.length; j++) {
@@ -114,30 +135,61 @@ define(function (require) {
       setupDestinationComponents();
       setupModelParameters();
       setupStateButtonActions();
-      goToReload();
+      goToReloadedState();
       if (onResetScript) {
         onResetFunc = scriptingAPI.makeFunctionInScriptContext(onResetScript);
       }
     }
 
-    function goToReload() {
+    function addOlderRunsToGraph() {
+      var i;
+      if (timeSeriesGraph) {
+        for (i = 0; i < timeSeriesDatasets.length; i++) {
+          timeSeriesGraph.addDataSet(timeSeriesDatasets[i].getData());
+        }
+        timeSeriesGraph.update();
+      }
+    }
+
+    function unfreezeInputParameters() {
+      for (var i = 0; i < inputs.length; i++) {
+        model.unfreeze(inputs[i]);
+      }
+    }
+
+
+    function freezeInputParameters() {
+      for (var i = 0; i < inputs.length; i++) {
+        model.freeze(inputs[i]);
+      }
+    }
+
+    // transition to reloaded state
+    function goToReloadedState() {
       startRun.setDisabled(false);
       stopRun.setDisabled(true);
       saveRun.setDisabled(true);
       nextRun.setDisabled(true);
       clearAll.setDisabled(true);
+      timeSeriesDatasets = [];
+      if (timeSeriesGraph) {
+        timeSeriesGraph.clearDataSets();
+      }
+      unfreezeInputParameters();
     }
 
-    function goToStartRun() {
+    function goToRunStarted() {
       startRun.setDisabled(true);
       stopRun.setDisabled(false);
       saveRun.setDisabled(true);
       nextRun.setDisabled(true);
       clearAll.setDisabled(false);
+      freezeInputParameters();
+      currentDataset = new Dataset({ timeSeries: timeSeries }, model);
       scriptingAPI.api.start();
     }
 
-    function goToStopRun() {
+    function goToRunStopped() {
       startRun.setDisabled(true);
       stopRun.setDisabled(true);
       saveRun.setDisabled(false);
@@ -152,9 +204,11 @@ define(function (require) {
       nextRun.setDisabled(true);
       model.set('experimentCleared', false);
       interactivesController.resetModel({retainParameters: inputs});
+      unfreezeInputParameters();
       if (onResetFunc) {
         onLoadFunc.apply(onResetFunc, null);
       }
+      addOlderRunsToGraph();
     }
 
     function registerModelListeners() {
@@ -175,8 +229,9 @@ define(function (require) {
       /**
         Called by the interactives controller when the model finishes loading.
       */
-      modelLoadedCallback: function(newModel) {
-        model = newModel;
+      modelLoadedCallback: function() {
+        scriptingAPI = interactivesController.getScriptingAPI();
+        model = interactivesController.getModel();
         registerModelListeners();
         setup();
       },

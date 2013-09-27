@@ -24,7 +24,9 @@ define(function(require) {
 
       // plugins
       QuantumDynamics      = require('md2d/models/engine/plugins/quantum-dynamics'),
-      ChemicalReactions    = require('md2d/models/engine/plugins/chemical-reactions');
+      ChemicalReactions    = require('md2d/models/engine/plugins/chemical-reactions'),
+
+      md2dModelCount = 0;
 
   return function Model(initialProperties, initializationOptions) {
 
@@ -34,6 +36,7 @@ define(function(require) {
     initializationOptions = initializationOptions || {};
 
     var model = {},
+        namespace = "md2dModel" + (++md2dModelCount),
 
         customSetters = {
           targetTemperature: function (value) {
@@ -245,6 +248,10 @@ define(function(require) {
         // speedy computation by the engine.
         viewAtoms = [],
 
+        // An array of objects consisting of radial bond index numbers and radial bond property
+        // values, for easy consumption by the view.
+        viewRadialBonds = [],
+
         // An array of objects consisting of photon index numbers and property values, for easy
         // consumption by the view. Only defined if the quantum dynamics plugin is used.
         viewPhotons,
@@ -252,11 +259,6 @@ define(function(require) {
         // An array of objects consisting of point coordinates and electric field force at that point
         // (e.g. [{ x: 1, y: 2, fx: 0.1, fy: 0.3 }, ...]).
         electricField = [],
-
-        // A two dimensional array consisting of radial bond index numbers, radial bond
-        // properties, and the postions of the two bonded atoms.
-        // FIXME. Engine should not be calculating this.
-        radialBondResults,
 
         // The index of the "spring force" used to implement dragging of atoms in a running model
         liveDragSpringForceIndex = null,
@@ -369,6 +371,7 @@ define(function(require) {
       // representation provided by modelState.photons
       viewPhotons = engine.callPluginAccessor('getViewPhotons');
       updateViewAtoms(modelState.atoms);
+      updateViewRadialBonds(modelState.radialBonds, modelState.atoms);
       updateViewElectricField();
     }
 
@@ -420,6 +423,32 @@ define(function(require) {
         }
       };
     }());
+
+    function updateViewRadialBonds(radialBonds, atoms) {
+      var n = engine.getNumberOfRadialBonds(),
+          viewBond, prop, i;
+
+      viewRadialBonds.length = n;
+
+      for (i = 0; i < n; i++) {
+        if (!viewRadialBonds[i]) {
+          viewRadialBonds[i] = {
+            idx: i
+          };
+        }
+        viewBond = viewRadialBonds[i];
+
+        for (prop in radialBonds) {
+          viewBond[prop] = radialBonds[prop][i];
+        }
+
+        // Additionally calculate x1, y1, x2, y2 properties that are useful for view.
+        viewBond.x1 = atoms.x[viewBond.atom1];
+        viewBond.y1 = atoms.y[viewBond.atom1];
+        viewBond.x2 = atoms.x[viewBond.atom2];
+        viewBond.y2 = atoms.y[viewBond.atom2];
+      }
+    }
 
     function updateViewElectricField() {
       // It may seem strange that model reads "viewOption"
@@ -616,7 +645,6 @@ define(function(require) {
       // FIXME. This should go away. https://www.pivotaltracker.com/story/show/50086079
       elements          = engine.elements;
       radialBonds       = engine.radialBonds;
-      radialBondResults = engine.radialBondResults;
       angularBonds      = engine.angularBonds;
       restraints        = engine.restraints;
       obstacles         = engine.obstacles;
@@ -1095,7 +1123,7 @@ define(function(require) {
     model.removeRadialBond = function(idx) {
       propertySupport.invalidatingChangePreHook();
       engine.removeRadialBond(idx);
-      propertySupport.invalidatingChangePreHook();
+      propertySupport.invalidatingChangePostHook();
       dispatch.removeRadialBond();
     };
 
@@ -1584,6 +1612,10 @@ define(function(require) {
       return viewAtoms;
     };
 
+    model.getRadialBonds = function() {
+      return viewRadialBonds;
+    };
+
     model.getElectricField = function() {
       return electricField;
     };
@@ -1603,8 +1635,20 @@ define(function(require) {
       engine.callPluginAccessor('turnOffLightSource');
     };
 
-    model.get_radial_bond_results = function() {
-      return radialBondResults;
+    model.setLightSourceAngle = function(angle) {
+      engine.callPluginAccessor('setLightSourceAngle', [angle]);
+    };
+
+    model.setLightSourceFrequency = function(freq) {
+      engine.callPluginAccessor('setLightSourceFrequency', [freq]);
+    };
+
+    model.setLightSourcePeriod = function(period) {
+      engine.callPluginAccessor('setLightSourcePeriod', [period]);
+    };
+
+    model.setLightSourceNumber = function(number) {
+      engine.callPluginAccessor('setLightSourceNumber', [number]);
     };
 
     /**
@@ -1682,10 +1726,6 @@ define(function(require) {
       return  model.get('textBoxes').length;
     };
 
-    model.get_radial_bonds = function() {
-      return radialBonds;
-    };
-
     model.get_restraints = function() {
       return restraints;
     };
@@ -1731,20 +1771,16 @@ define(function(require) {
         }
       }
 
+      performance.enterScope("engine");
       // timeStepsPerTick is defined in Classic MW as the number of timesteps per view update.
       // However, in MD2D we prefer the more physical notion of integrating for a particular
       // length of time.
-      console.time('integration');
       engine.integrate(model.get('timeStepsPerTick') * timeStep, timeStep);
-      console.timeEnd('integration');
-      console.time('reading model state');
+      performance.leaveScope("engine");
+
       readModelState();
       model.updateAllOutputProperties();
-      console.timeEnd('reading model state');
-
-      console.time('tick history push');
       tickHistory.push();
-      console.timeEnd('tick history push');
 
       newStep = true;
 
@@ -1876,13 +1912,17 @@ define(function(require) {
     }
 
     function serializeQuantumDynamics() {
-      var photons = model.getPhotons();
+      var photons = model.getPhotons(),
+          data = {
+            photons: serialize(metadata.photon, unroll(photons), photons.length),
+            elementEnergyLevels: engine.callPluginAccessor('getElementEnergyLevels'),
+            radiationlessEmissionProbability: engine.callPluginAccessor('getRadiationlessEmissionProbability'),
+            lightSource: engine.callPluginAccessor('getLightSource')
+          };
 
-      return {
-        photons: serialize(metadata.photon, unroll(photons), photons.length),
-        elementEnergyLevels: engine.callPluginAccessor('getElementEnergyLevels'),
-        radiationlessEmissionProbability: engine.callPluginAccessor('getRadiationlessEmissionProbability')
-      };
+      if (!data.lightSource) delete data.lightSource
+
+      return data;
     }
 
     function serializeChemicalReactions() {
@@ -2271,6 +2311,8 @@ define(function(require) {
     }
 
     model.performanceOptimizer = new PerformanceOptimizer(model);
+
+    model.namespace = namespace;
 
     return model;
   };

@@ -34,6 +34,9 @@ define(function(require) {
     // Public API object to be returned.
     var api = {},
 
+      // Allows us to defer running actual renderer setup until layout system has determined oursize.
+      isSetup = false,
+
       // The model function getAtoms() returns a 2 dimensional array
       // of particle indices and properties that is updated every model tick.
       // This array is not garbage-collected so the view can be assured that
@@ -104,8 +107,7 @@ define(function(require) {
       timePrefix = "",
       timeSuffix = "",
 
-      radialBonds,
-      radialBondResults,
+      modelRadialBonds,
       obstacle,
       obstacles,
       mockObstaclesArray = [],
@@ -816,47 +818,27 @@ define(function(require) {
       });
     }
 
-    function radialBondEnter() {
-      radialBond1.enter().append("path")
-        .attr({
-          "d": function(d) {
-            return findPoints(d, 1);
-          },
-          "stroke-width": function(d) {
-            if (isSpringBond(d)) {
-              return springStrokeWidth(d);
-            } else {
-              return model2px(Math.min(modelAtoms[d.atom1].radius, modelAtoms[d.atom2].radius)) * 0.75;
-            }
-          },
-          "stroke": getBondAtom1Color,
-          "fill": "none"
-        })
-        .classed("radialbond1", true)
-        .classed("disulphideBond", function(d) {
-          return d.type === RADIAL_BOND_TYPES.DISULPHIDE_BOND;
-        });
-
-      radialBond2.enter().append("path")
-        .attr({
-          "d": function(d) {
-            return findPoints(d, 2);
-          },
-          "stroke-width": function(d) {
-            if (isSpringBond(d)) {
-              return springStrokeWidth(d);
-            } else {
-              return model2px(Math.min(modelAtoms[d.atom1].radius, modelAtoms[d.atom2].radius)) * 0.75;
-            }
-          },
-          "stroke": getBondAtom2Color,
-          "fill": "none"
-        })
-        .classed("radialbond2", true)
-        .classed("disulphideBond", function(d) {
-          return d.type === RADIAL_BOND_TYPES.DISULPHIDE_BOND;
-        });
-
+    function radialBondWidth(d) {
+      if (isSpringBond(d)) {
+        return 1.25;
+        // The following code is intended to use a thicker stroke-width when
+        // the spring constant is larger ... but to work properly in models with
+        // both MD2D and MKS units schemes the model would need to supply
+        // an appropriately scaled default spring constant.
+        // For example in the Spring and Mass Interactive which uses an MKS unit
+        // scheme the spring constant is varied between 0.001 and 0.003 ... while in
+        // the Comparing Dipole atom-pulling Interactive that uses an MD2D unit
+        // scheme the spring constant is 10.
+        // return (1 + Math.log(1+d.strength*1000)) * 0.25;;
+      }
+      var result = model2px(Math.min(modelAtoms[d.atom1].radius, modelAtoms[d.atom2].radius));
+      if (d.type === RADIAL_BOND_TYPES.DOUBLE_BOND) {
+        return result * 0.50;
+      } else if (d.type === RADIAL_BOND_TYPES.TRIPLE_BOND) {
+        return result * 0.35;
+      } else { // STANDARD_STICK and other types that are not yet implemented.
+        return result * 0.75;
+      }
     }
 
     function findPoints(d, num) {
@@ -877,7 +859,9 @@ define(function(require) {
         cosThetaDiameter,
         sinThetaDiameter,
         cosThetaSpikes,
-        sinThetaSpikes;
+        sinThetaSpikes,
+        bondAngle, bondShift,
+        xs, ys;
 
       x1 = model2px(d.x1);
       y1 = model2pxInv(d.y1);
@@ -919,7 +903,33 @@ define(function(require) {
           path += " L " + pointX + "," + pointY;
         }
         return path += " L " + x2 + "," + y2;
-      } else {
+      } else if (d.type === RADIAL_BOND_TYPES.DOUBLE_BOND) {
+        bondShift = model2px(Math.min(modelAtoms[d.atom1].radius, modelAtoms[d.atom2].radius)) * 0.4;
+        bondAngle = Math.atan2(dy, dx);
+        xs = Math.sin(bondAngle) * bondShift;
+        ys = -Math.cos(bondAngle) * bondShift;
+        if (num === 1) {
+          return "M " + (x1 + xs) + "," + (y1 + ys) + " L " + ((x2 + x1 + radiusFactorX) / 2 + xs) + " , " + ((y2 + y1 + radiusFactorY) / 2 + ys) + " " +
+                 "M " + (x1 - xs) + "," + (y1 - ys) + " L " + ((x2 + x1 + radiusFactorX) / 2 - xs) + " , " + ((y2 + y1 + radiusFactorY) / 2 - ys);
+        } else {
+          return "M " + ((x2 + x1 + radiusFactorX) / 2 + xs) + " , " + ((y2 + y1 + radiusFactorY) / 2 + ys) + " L " + (x2 + xs) + "," + (y2 + ys) + " " +
+                 "M " + ((x2 + x1 + radiusFactorX) / 2 - xs) + " , " + ((y2 + y1 + radiusFactorY) / 2 - ys) + " L " + (x2 - xs) + "," + (y2 - ys);
+        }
+      } else if (d.type === RADIAL_BOND_TYPES.TRIPLE_BOND) {
+        bondShift = model2px(Math.min(modelAtoms[d.atom1].radius, modelAtoms[d.atom2].radius)) * 0.52;
+        bondAngle = Math.atan2(dy, dx);
+        xs = Math.sin(bondAngle) * bondShift;
+        ys = -Math.cos(bondAngle) * bondShift;
+        if (num === 1) {
+          return "M " + x1 + "," + y1 + " L " + ((x2 + x1 + radiusFactorX) / 2) + " , " + ((y2 + y1 + radiusFactorY) / 2) + " " +
+                 "M " + (x1 + xs) + "," + (y1 + ys) + " L " + ((x2 + x1 + radiusFactorX) / 2 + xs) + " , " + ((y2 + y1 + radiusFactorY) / 2 + ys) + " " +
+                 "M " + (x1 - xs) + "," + (y1 - ys) + " L " + ((x2 + x1 + radiusFactorX) / 2 - xs) + " , " + ((y2 + y1 + radiusFactorY) / 2 - ys);
+        } else {
+          return "M " + ((x2 + x1 + radiusFactorX) / 2) + " , " + ((y2 + y1 + radiusFactorY) / 2) + " L " + x2 + "," + y2 + " " +
+                 "M " + ((x2 + x1 + radiusFactorX) / 2 + xs) + " , " + ((y2 + y1 + radiusFactorY) / 2 + ys) + " L " + (x2 + xs) + "," + (y2 + ys) + " " +
+                 "M " + ((x2 + x1 + radiusFactorX) / 2 - xs) + " , " + ((y2 + y1 + radiusFactorY) / 2 - ys) + " L " + (x2 - xs) + "," + (y2 - ys);
+        }
+      } else { // STANDARD_STICK and other types that are not yet supported.
         if (num === 1) {
           return "M " + x1 + "," + y1 + " L " + ((x2 + x1 + radiusFactorX) / 2) + " , " + ((y2 + y1 + radiusFactorY) / 2);
         } else {
@@ -930,19 +940,6 @@ define(function(require) {
 
     function isSpringBond(d) {
       return d.type === RADIAL_BOND_TYPES.SHORT_SPRING;
-    }
-
-    function springStrokeWidth() {
-      return 1.25;
-      // The following code is intended to use a thicker stroke-width when
-      // the spring constant is larger ... but to work properly in models with
-      // both MD2D and MKS units schemes the model would need to supply
-      // an apprpriately scaled default spring constant.
-      // For example in the Spring and Mass Interactive which uses an MKS unit
-      // scheme the spring constant is varied between 0.001 and 0.003 ... while in
-      // the Comparing Dipole atom-pulling Interactive that uses an MD2D unit
-      // scheme the spring constant is 10.
-      // return (1 + Math.log(1+d.strength*1000)) * 0.25;
     }
 
     function vdwLinesEnter() {
@@ -1578,12 +1575,14 @@ define(function(require) {
     function setupRadialBonds() {
       radialBondsContainer.selectAll("path.radialbond1").remove();
       radialBondsContainer.selectAll("path.radialbond2").remove();
-      radialBonds = model.get_radial_bonds();
-      radialBondResults = model.get_radial_bond_results();
-      if (radialBondResults) {
-        radialBond1 = radialBondsContainer.selectAll("path.radialbond1").data(radialBondResults);
-        radialBond2 = radialBondsContainer.selectAll("path.radialbond2").data(radialBondResults);
-        radialBondEnter();
+      modelRadialBonds = model.getRadialBonds();
+      if (modelRadialBonds) {
+        radialBond1 = radialBondsContainer.selectAll("path.radialbond1").data(modelRadialBonds);
+        radialBond2 = radialBondsContainer.selectAll("path.radialbond2").data(modelRadialBonds);
+        radialBond1.enter().append("path").classed("radialbond1", true);
+        radialBond2.enter().append("path").classed("radialbond2", true);
+
+        updateRadialBonds();
       }
     }
 
@@ -1863,18 +1862,26 @@ define(function(require) {
     }
 
     function updateRadialBonds() {
-      radialBond1.attr("d", function(d) {
-        return findPoints(d, 1);
-      });
-      radialBond2.attr("d", function(d) {
-        return findPoints(d, 2);
-      });
-
-      if (keShadingMode || chargeShadingMode) {
-        // Update also radial bonds color when keShading or chargeShading is on.
-        radialBond1.attr("stroke", getBondAtom1Color);
-        radialBond2.attr("stroke", getBondAtom2Color);
-      }
+      // "atom1", "atom2" or "type" properties can be changed during "tick", so we have to update
+      // visual properties that depend on them (e.g. width, color).
+      radialBond1
+          .attr("d", function(d) {
+            return findPoints(d, 1);
+          })
+          .classed("disulphideBond", function(d) {
+            return d.type === RADIAL_BOND_TYPES.DISULPHIDE_BOND;
+          })
+          .attr("stroke-width", radialBondWidth)
+          .attr("stroke", getBondAtom1Color);
+      radialBond2
+          .attr("d", function(d) {
+            return findPoints(d, 2);
+          })
+          .classed("disulphideBond", function(d) {
+            return d.type === RADIAL_BOND_TYPES.DISULPHIDE_BOND;
+          })
+          .attr("stroke-width", radialBondWidth)
+          .attr("stroke", getBondAtom2Color);
     }
 
     function getImageCoords(i) {
@@ -2115,8 +2122,8 @@ define(function(require) {
         .attr({
           "class": "photon",
           "d": photonPath,
-          "stroke-width": 1,
-          "stroke": "black",
+          "stroke-width": 0.5,
+          "stroke": "rgba(0,0,0,0.8)",
           "fill-opacity": 0
         });
 
@@ -2134,10 +2141,10 @@ define(function(require) {
     //
 
     //
-    // MD2D Renderer: init
+    // MD2D Renderer: setup
     //
 
-    function init() {
+    function setup() {
       timeSuffix = " (" + model.getPropertyDescription('displayTime').getUnitAbbreviation() + ")";
 
       model2px = modelView.model2px;
@@ -2189,14 +2196,14 @@ define(function(require) {
 
       setupFirefoxWarning();
 
-      repaint();
+      isSetup = true;
     }
 
     // Call when model is reset or reloaded.
 
     function bindModel(newModel) {
       model = newModel;
-      init();
+      setup();
     }
 
     //
@@ -2222,6 +2229,7 @@ define(function(require) {
       setupObstacles();
       setupVdwPairs();
       setupParticles();
+
       // Always setup radial bonds *after* particles to use correct atoms
       // color table.
       setupShapes();
@@ -2271,7 +2279,7 @@ define(function(require) {
 
       updateParticles();
 
-      if (radialBondResults) {
+      if (modelRadialBonds) {
         // Always update radial bonds *after* particles, as particles can
         // change their color and radial bonds should reflect that too (=> use
         // updated colors array).
@@ -2306,14 +2314,28 @@ define(function(require) {
     //
     api = {
       // Expose private methods.
-      update: update,
-      repaint: repaint,
+      setup: function() {
+        if (!isSetup) {
+          setup();
+        }
+      },
+
+      update: function() {
+        if (isSetup) {
+          update();
+        }
+      },
+
+      repaint: function() {
+        if (isSetup) {
+          repaint();
+        }
+      },
+
       bindModel: bindModel,
       model2px: modelView.model2px,
       model2pxInv: modelView.model2pxInv
     };
-
-    init();
 
     return api;
   };

@@ -172,7 +172,7 @@
   ],
   "experiment": {
     "timeSeries": {
-      "time": "displayTime",
+      "xProperty": "displayTime",
       "properties": [
         "currentAngle"
       ]
@@ -385,9 +385,6 @@
         "ballMass",
         "startingAngle",
         "period"
-      ],
-      "tableData": [
-        [ "", " ", " ", " ", " " ]
       ]
     },
     {
@@ -397,6 +394,7 @@
       "clearDataOnReset": false,
       "streamDataFromModel": false,
       "visibleRows": 4,
+      "height": "12em",
       "indexColumn": true,
       "propertyColumns": [
         "rodLength",

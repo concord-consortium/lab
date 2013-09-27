@@ -28,6 +28,7 @@
   :homeForSharing:
   :homeInteractivePath: /interactives.html
   :homeEmbeddablePath: /embeddable.html
+  :benchmarkAPIurl: https://script.google.com/macros/s/AKfycbzosXAVPdVRFUrF6FRI42dzQb2IGLnF9GlIbj9gUpeWpXALKgM/exec
   :actualRoot: ""
   :utmCampaign:
   :fontface: Lato

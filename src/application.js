@@ -881,7 +881,12 @@ AUTHORING = false;
   function setupBenchmarks() {
     var $showBenchmarks = $("#show-benchmarks"),
         $benchmarksContent = $("#benchmarks-content"),
-        $runBenchmarksButton = $("#run-benchmarks-button");
+        $runBenchmarksButton = $("#run-benchmarks-button"),
+        $submitBenchmarksButton = $("#submit-benchmarks-button"),
+        $submissionInfo = $("#browser-submission-info"),
+        $showSubmissionInfo = $("#show-browser-submission-info"),
+        $browserFingerprint = $("#browser-fingerprint"),
+        fingerprint = new Fingerprint().get();               // semi-unique browser id
 
     $showBenchmarks.change(function() {
       if (this.checked) {
@@ -898,6 +903,10 @@ AUTHORING = false;
       var modelController,
           benchmarksTable = document.getElementById("model-benchmark-results");
 
+      if (!$showBenchmarks.prop("checked")) {
+        $("#show-benchmarks").prop("checked", true).change();
+      }
+
       if(isFullPage()) {
         modelController = controller.modelController;
         // Run interactive benchmarks + model benchmarks.
@@ -912,6 +921,36 @@ AUTHORING = false;
           Lab.benchmark.renderToTable(benchmarksTable, message.benchmarks, message.results);
         });
       }
+
+      if (Lab.config.benchmarkAPIurl) {
+        $submitBenchmarksButton.removeAttr("disabled");
+      }
+    });
+
+    $browserFingerprint.text(fingerprint);
+
+    $showSubmissionInfo.on('click', function() {
+      $submissionInfo.toggle();
+      return false;
+    });
+
+    $submitBenchmarksButton.on('click', function() {
+      var data = {},
+          headers = headers = $('#model-benchmark-results th');
+
+      // create data object directly from the table element
+      headers.each(function(i) {
+        data[this.innerHTML] = $('#model-benchmark-results tr.average td:nth-child('+(i+1)+')').text()
+      });
+
+      data["browser id"] = fingerprint;
+
+      $.ajax({
+        type: "POST",
+        url: Lab.config.benchmarkAPIurl,
+        data: data,
+        complete: function() { $('#submit-success').text("Sent!"); }
+      });
     });
   }
 

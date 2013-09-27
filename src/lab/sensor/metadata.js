@@ -13,6 +13,12 @@ define(function() {
       },
       samplesPerSecond: {
         readOnly: true
+      },
+      collectionTime: {
+        defaultValue: null
+      },
+      tareValue: {
+        defaultValue: 0
       }
     },
     viewOptions: {

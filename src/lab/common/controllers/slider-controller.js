@@ -6,7 +6,7 @@ define(function () {
       validator  = require('common/validator'),
       disablable = require('common/controllers/disablable');
 
-  return function SliderController(component, scriptingAPI, interactivesController) {
+  return function SliderController(component, interactivesController) {
     var min, max, steps, propertyName,
         actionFunc, initialValue,
         title, labels, displayValue, displayFunc,
@@ -19,6 +19,7 @@ define(function () {
         $sliderHandle,
         $container,
         model,
+        scriptingAPI,
         // Public API object.
         controller,
 
@@ -32,6 +33,10 @@ define(function () {
           if (displayValue) {
             $sliderHandle.text(displayFunc(value));
           }
+        },
+        updateSliderDisabledState = function () {
+          var description = model.getPropertyDescription(propertyName);
+          controller.setDisabled(description.getFrozen());
         };
 
     function bindTargets() {
@@ -69,6 +74,8 @@ define(function () {
       //
       // Initialize.
       //
+      scriptingAPI = interactivesController.getScriptingAPI();
+      model = interactivesController.getModel();
       // Validate component definition, use validated copy of the properties.
       component = validator.validateCompleteness(metadata.slider, component);
       min = component.min;
@@ -144,11 +151,17 @@ define(function () {
 
     // Public API.
     controller = {
-      // This callback should be trigger when model is loaded.
+      // This callback should be triggered when model is loaded.
       modelLoadedCallback: function () {
+        if (model && propertyName) {
+          model.removeObserver(propertyName, updateSlider);
+          model.removePropertyDescriptionObserver(propertyName, updateSliderDisabledState);
+        }
+        scriptingAPI = interactivesController.getScriptingAPI();
         model = interactivesController.getModel();
         if (propertyName) {
           model.addPropertiesListener([propertyName], updateSlider);
+          model.addPropertyDescriptionObserver(propertyName, updateSliderDisabledState);
         }
 
         bindTargets();
@@ -160,7 +173,7 @@ define(function () {
             $slider.slider('value', initialValue);
             actionFunc(initialValue);
             if (displayValue) {
-              $sliderHandle.text(displayValue(initialValue));
+              $sliderHandle.text(displayFunc(initialValue));
             }
           }
         } else if (propertyName) {

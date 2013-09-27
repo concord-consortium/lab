@@ -6,6 +6,7 @@ define(function (require) {
       console         = require('common/console'),
       validator       = require('common/validator'),
       serialize       = require('common/serialize'),
+      performance     = require('common/performance'),
       LabModelerMixin = require('common/lab-modeler-mixin'),
       metadata        = require('energy2d/metadata'),
       coremodel       = require('energy2d/models/core-model'),
@@ -33,11 +34,15 @@ define(function (require) {
             symbol: "m/s"
           }
         }
-      };
+      },
+
+      energy2dModelCount = 0;
+
 
   return function Modeler(initialProperties) {
     var model,
         coreModel,
+        namespace = "energy2dModel" + (++energy2dModelCount),
 
         labModelerMixin = new LabModelerMixin({
           metadata: metadata,
@@ -268,11 +273,17 @@ define(function (require) {
     }
 
     model = {
+      namespace: namespace,
+
       tick: function () {
         var i, len, diverged;
+
+        performance.enterScope("engine");
         for (i = 0, len = model.properties.timeStepsPerTick; i < len; i++) {
           coreModel.nextStep();
         }
+        performance.leaveScope("engine");
+
         if (coreModel.isWebGLActive()) {
           if (ticksToGPUSync > 0) {
             ticksToGPUSync--;
@@ -350,7 +361,7 @@ define(function (require) {
       reset: function() {
         dispatch.willReset();
         propertySupport.invalidatingChangePreHook();
-        
+
         model.stop();
         coreModel.reset();
 
@@ -450,10 +461,6 @@ define(function (require) {
 
       getSensorsArray: function () {
         return viewModel.sensors;
-      },
-
-      setPerformanceTools: function () {
-        return coreModel.setPerformanceTools();
       },
 
       serialize: function () {

@@ -6,6 +6,8 @@ $header-background-color1: rgba(58, 135, 139, 1.0)
 $header-background-color2: rgba(140, 187, 184, 1.0)
 $header-font-color: #f8f8f8
 
+$logo-color-light: rgba(248, 212, 136, 1.0)
+
 @import 'sass/bourbon/bourbon'
 @import url('molecules-view.css')
 @import 'sass/neat/neat'
@@ -106,6 +108,10 @@ $header-font-color: #f8f8f8
       background-color: lighten($header-background-color2, 20%)
       &:hover
         background-color: lighten($header-background-color2, 10%)
+      &#run-benchmarks-button
+        background-color: lighten($logo-color-light, 10%)
+        &:hover
+          background-color: $logo-color-light
     .disabled
       background-color: lighten($header-background-color2, 30%)
       &:hover
@@ -299,6 +305,24 @@ div.CodeMirror
     padding: 0em 0.5em 0em 0.5em
     text-align: right
     width: 7.0em
+
+#submit-success
+  color: green
+
+.small
+  font-size: 0.6em
+  a
+    font-weight: bold
+
+#browser-submission-info
+  display: none
+  font-size: 0.8em
+  width: 700px
+  border: 1px solid gray
+  padding: 0.5em
+  margin: 1em
+  span
+    color: green
 
 .ke-chart
   display: inline-block

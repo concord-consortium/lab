@@ -104,6 +104,10 @@ parseMML = (mmlString) ->
         else if typeof props[prop] == 'object'
           removeNaNProperties props[prop]
 
+    removeNullProperties = (props) ->
+      for own prop of props
+        delete props[prop] if !props[prop]?
+
     ### Convert a cheerio node whose text is a number, to an actual number ###
     toNumber = ($node, {defaultValue}) ->
       val = $node.text()
@@ -174,7 +178,7 @@ parseMML = (mmlString) ->
       fillColor = getNode fillNode.children("object")
       if fillColor and fillColor.length
         if fillColor.is ".org-concord-modeler-draw-FillMode-ColorFill"
-          return getColorProperty fillColor, alpha
+          return getColorProperty (getNode fillColor.find "[property=color]>object"), alpha
         else if fillColor.is ".org-concord-modeler-draw-FillMode-GradientFill"
           color1  = getColorProperty (getNode fillColor.find "[property=color1]>object"), alpha
           color2  = getColorProperty (getNode fillColor.find "[property=color2]>object"), alpha
@@ -228,7 +232,8 @@ parseMML = (mmlString) ->
         height     = getFloatProperty $node, 'height'
         width      = getFloatProperty $node, 'width'
         x          = getFloatProperty $node, 'x'
-        y          = getFloatProperty $node, 'y'
+        # in mml, y is left unspecified if y = 0 in the model
+        y          = getFloatProperty( $node, 'y' ) || 0
         vx         = getFloatProperty $node, 'vx'
         vy         = getFloatProperty $node, 'vy'
         externalAx = getFloatProperty $node, 'externalFx'
@@ -764,7 +769,9 @@ parseMML = (mmlString) ->
         textHostIndex = 0
       textHostType = $textBoxNode.find("[property=hostType]>string").text()
       textHostType = textHostType.slice(textHostType.lastIndexOf(".")+1)
-      colorDef  = getNode $textBoxNode.find "void[property=foregroundColor] .java-awt-Color>int"
+      # textboxes using referenced colors do not use class .java-awt-color, but still have a child
+      # object to specify the referenced color
+      colorDef = getNode($textBoxNode.find("void[property=foregroundColor]>object")).find(">int")
       if colorDef and colorDef.length > 0
         fontColor    = "rgb("
         fontColor   += parseInt(cheerio(colorDef[0]).text()) + ","
@@ -1250,30 +1257,24 @@ parseMML = (mmlString) ->
          VBAC
     ###
 
-    A2_B2__2AB_reactionParameters = $mml(".org-concord-mw2d-models-Reaction-A2_B2__2AB [method=put]")
-    O2_2H2__2H2O_reactionParameters = $mml(".org-concord-mw2d-models-Reaction-O2_2H2__2H2O [method=put]")
+    $reactionObj = $mml('[class*="org-concord-mw2d-models-Reaction"]')
 
-    useChemicalReactions = A2_B2__2AB_reactionParameters.length > 0 | O2_2H2__2H2O_reactionParameters.length > 0
+    useChemicalReactions = $reactionObj.length > 0
 
     if useChemicalReactions
+      parameters = $reactionObj.find("[method=put]")
       reaction = {}
-      reactionParameters = {}
-      if A2_B2__2AB_reactionParameters.length > 0
-        parameters = A2_B2__2AB_reactionParameters
-      else
-        parameters = O2_2H2__2H2O_reactionParameters
-      for prop in parameters
-        $node = cheerio(prop)
-        key = $node.find('string').text()
-        value = parseFloat($node.find('double').text())
-        reactionParameters[key] = value
 
-      if A2_B2__2AB_reactionParameters.length > 0
-        reaction.type = "A2_B2__2AB"
-        reaction.parameters = reactionParameters
-      else
-        reaction.type = "O2_2H2__2H2O"
-        reaction.parameters = reactionParameters
+      # Do not convert reaction parameters now. Default values from metadata will be used. We will
+      # have to implement conversion from Classic to NextGen format.
+      # reactionParameters = {}
+      # for prop in parameters
+      #   $node = cheerio(prop)
+      #   key = $node.find('string').text()
+      #   value = parseFloat($node.find('double').text())
+      #   reactionParameters[key] = value
+      #
+      # reaction.parameters = reactionParameters
 
       reaction = validator.validateCompleteness metadata.chemicalReactions, reaction
 
@@ -1378,9 +1379,26 @@ parseMML = (mmlString) ->
           if key is 11
             radiationlessEmissionProbability = val
 
+      lightSource = {}
+      $lightSource = $mml("void[property=lightSource]")
+      if $lightSource.length > 0
+        lightSource = {}
+        lightSource.on               = getBooleanProperty( $lightSource, "on"  ) || false
+        lightSource.frequency        = getFloatProperty    $lightSource, "frequency"
+        lightSource.radiationPeriod  = getIntProperty      $lightSource, "radiationPeriod"
+        lightSource.numberOfBeams    = getIntProperty      $lightSource, "numberOfBeams"
+        lightSource.angleOfIncidence = getFloatProperty    $lightSource, "angleOfIncidence"
+        lightSource.radiationPeriod  = lightSource.radiationPeriod / 2 if lightSource.radiationPeriod
+        lightSource.angleOfIncidence = -lightSource.angleOfIncidence if lightSource.angleOfIncidence
+
+      removeNullProperties lightSource
+
+      lightSource = undefined if !lightSource.frequency?
+
       quantumDynamics = validator.validateCompleteness metadata.quantumDynamics, {
         elementEnergyLevels
         radiationlessEmissionProbability
+        lightSource
       }
 
 

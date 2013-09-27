@@ -7,10 +7,11 @@ define(function(require) {
       RunningAverageFilter = require('cs!common/filters/running-average-filter'),
       validator            = require('common/validator'),
       metadata             = require('./metadata'),
-      unitsDefinition      = require('./units-definition'),
-      appletClasses        = require('./applet/applet-classes'),
-      appletErrors         = require('./applet/errors'),
-      sensorDefinitions    = require('./applet/sensor-definitions'),
+      unitsDefinition      = require('sensor-applet/units-definition'),
+      appletClasses        = require('sensor-applet/applet-classes'),
+      appletErrors         = require('sensor-applet/errors'),
+      sensorDefinitions    = require('sensor-applet/sensor-definitions'),
+      labConfig            = require('lab.config'),
       BasicDialog          = require('common/controllers/basic-dialog'),
       ExportController     = require('common/controllers/export-controller');
 
@@ -31,7 +32,9 @@ define(function(require) {
   var defaultSensorReadingDescriptionHash = {
       label: "Sensor Reading",
       unitAbbreviation: "-",
-      format: '.2f'
+      format: '.2f',
+      min: 0,
+      max: 1
     };
 
   return function Model(initialProperties) {
@@ -42,19 +45,24 @@ define(function(require) {
         viewOptions,
         mainProperties,
         isStopped = true,
+        needsReload = false,
         dispatch = d3.dispatch('play', 'stop', 'tick', 'willReset', 'reset', 'stepForward',
                                'stepBack', 'seek', 'invalidation'),
+        initialSensorType,
         sensorType,
         applet,
         isSensorReady = false,
         isSensorInitializing = false,
-        didCollectData = false,
         sensorPollsPerSecond = 1,
         sensorPollingIntervalID,
         samplesPerSecond,
-        time = 0,
-        sensorReading,
-        stepCounter = 0,
+        time,
+        rawSensorValue,
+        stepCounter,
+        didCollectData,
+        isTaring,
+        isSensorTareable,
+        initialTareValue,
         invalidatingChangeNestingLevel = 0,
         filteredOutputs = [],
         customSetters,
@@ -135,6 +143,26 @@ define(function(require) {
       });
     }
 
+    function updatePropertyRange(property, min, max) {
+      var descriptionHash;
+      var description;
+
+      descriptionHash = model.getPropertyDescription(property).getHash();
+      descriptionHash.min = min;
+      descriptionHash.max = max;
+
+      description = new PropertyDescription(unitsDefinition, descriptionHash);
+      propertySupport.setPropertyDescription(property, description);
+    }
+
+    // Updates min, max of displayTime to be [0..collectionTime]
+    function updateDisplayTimeRange() {
+      if (model.properties.collectionTime == null) {
+        return;
+      }
+      updatePropertyRange('displayTime', 0, model.properties.collectionTime);
+    }
+
     function removeApplet() {
       if (applet) {
         applet.removeListeners('data');
@@ -164,7 +192,7 @@ define(function(require) {
         applet.on('deviceUnplugged', function() { handleUnplugged('device'); });
         applet.on('sensorUnplugged', function() { handleUnplugged('sensor'); });
 
-        applet.append(function(error) {
+        applet.append($('body'),function(error) {
 
           if (error) {
             if (error instanceof appletErrors.JavaLoadError) {
@@ -200,7 +228,8 @@ define(function(require) {
           appendApplet();
         },
         Cancel: function() {
-          $(this).dialog("close");
+          $(this).remove();
+          model.reload();
         }
       });
     }
@@ -209,7 +238,8 @@ define(function(require) {
       removeApplet();
       simpleAlert(message, {
         OK: function() {
-          $(this).dialog("close");
+          $(this).remove();
+          model.reload();
         }
       });
     }
@@ -236,7 +266,21 @@ define(function(require) {
 
       sensorPollingIntervalID = setInterval(function() {
         makeInvalidatingChange(function() {
-          sensorReading = applet.readSensor();
+          try{
+            rawSensorValue = applet.readSensor()[0];
+          } catch(error) {
+            clearInterval(sensorPollingIntervalID);
+            if(error instanceof appletErrors.SensorConnectionError){
+              handleSensorConnectionError();
+            } else {
+              throw error;
+            }
+            return;
+          }
+          if (isTaring) {
+            model.properties.tareValue = rawSensorValue;
+            isTaring = false;
+          }
         });
       }, 1000/sensorPollsPerSecond);
     }
@@ -248,6 +292,15 @@ define(function(require) {
       }
     }
 
+    function initializeStateVariables() {
+      stepCounter = 0;
+      time = 0;
+      rawSensorValue = undefined;
+      didCollectData = false;
+      isSensorTareable = false;
+      isTaring = false;
+    }
+
     function setSensorType(_sensorType) {
       var AppletClass;
       var sensorDefinition;
@@ -257,8 +310,14 @@ define(function(require) {
       if (sensorType === _sensorType) {
         return;
       }
+
+      if (sensorType) {
+        // drop the tare value if we're changing from one sensor type to another!
+        model.properties.tareValue = 0;
+      }
+
       sensorType = _sensorType;
-      sensorReading = undefined;
+      rawSensorValue = undefined;
 
       if (applet) {
         removeApplet();
@@ -269,12 +328,13 @@ define(function(require) {
         samplesPerSecond = sensorDefinition.samplesPerSecond;
         measurementType = sensorDefinition.measurementType;
         AppletClass = appletClasses[sensorDefinition.appletClass];
+        isSensorTareable = sensorDefinition.tareable;
 
         applet = window.Lab.sensor[sensorType] = new AppletClass({
           listenerPath: 'Lab.sensor.' + sensorType,
-          measurementType: measurementType,
-          sensorDefinition: sensorDefinition,
-          appletId: sensorType+'-sensor'
+          sensorDefinitions: [sensorDefinition],
+          appletId: sensorType+'-sensor',
+          codebase: labConfig.actualRoot + "jnlp"
         });
 
         appendApplet();
@@ -282,9 +342,20 @@ define(function(require) {
         // Update the description of the main 'sensorReading' output
         description = new PropertyDescription(unitsDefinition, {
           label: sensorDefinition.measurementName,
-          unitType: measurementType
+          unitType: measurementType,
+          min: sensorDefinition.minReading,
+          max: sensorDefinition.maxReading
         });
 
+        propertySupport.setPropertyDescription('sensorReading', description);
+
+        // Override collectionTime  only if it wasn't set on the model definition
+        if (model.properties.collectionTime == null) {
+          model.properties.collectionTime = sensorDefinition.maxSeconds;
+        }
+      } else if (model.properties.hasOwnProperty('sensorReading')) {
+        // no sensor type
+        description = new PropertyDescription(unitsDefinition, defaultSensorReadingDescriptionHash);
         propertySupport.setPropertyDescription('sensorReading', description);
       }
     }
@@ -299,7 +370,12 @@ define(function(require) {
       // the problem go away!
       window.__bizarreSafariFix = 1;
 
-      sensorReading = d;
+      rawSensorValue = d[0];
+      // Once we collect data for a given sensor, don't allow changingn the sensor typea
+      if (!didCollectData) {
+        model.freeze('sensorType');
+      }
+
       didCollectData = true;
 
       propertySupport.deleteComputedPropertyCachedValues();
@@ -348,25 +424,40 @@ define(function(require) {
         dispatch.stop();
       },
 
+      tare: function() {
+        if (!isStopped) {
+          throw new Error("Sensor model: tare() called on a non-stopped model.");
+        }
+        if (sensorPollingIntervalID != null && rawSensorValue != null) {
+          model.properties.tareValue = rawSensorValue;
+        } else {
+          makeInvalidatingChange(function() {
+            isTaring = true;
+          });
+        }
+      },
+
       willReset: function() {
         dispatch.willReset();
       },
 
       reset: function() {
-        var defaultSensorReadingDescription = new PropertyDescription(unitsDefinition, defaultSensorReadingDescriptionHash);
-
         model.stop();
         removeApplet();
 
-        stepCounter = 0;
-        time = 0;
-        sensorReading = undefined;
-        didCollectData = false;
-
-        model.properties.sensorType = null;
-        propertySupport.setPropertyDescription('sensorReading', defaultSensorReadingDescription);
+        initializeStateVariables();
+        model.properties.tareValue = initialTareValue;
+        model.unfreeze('sensorType');
+        model.properties.sensorType = initialSensorType;
 
         dispatch.reset();
+      },
+
+      reload: function() {
+        model.stop();
+        makeInvalidatingChange(function() {
+          needsReload = true;
+        });
       },
 
       isStopped: function() {
@@ -453,6 +544,8 @@ define(function(require) {
       }
     };
 
+    initializeStateVariables();
+
     // Need to define a globally-accessible 'listenerPath' for the sensor to evaluate
     if (window.Lab === undefined) {
       window.Lab = {};
@@ -470,6 +563,10 @@ define(function(require) {
       defineBuiltinProperty(key, 'mainProperty', customSetters[key]);
     });
     propertySupport.setRawValues(mainProperties);
+
+    // Remember thse values so that the model can be reset properly
+    initialSensorType = model.properties.sensorType;
+    initialTareValue = model.properties.tareValue;
 
     viewOptions = validator.validateCompleteness(metadata.viewOptions, initialProperties.viewOptions || {});
     Object.keys(viewOptions).forEach(function(key) {
@@ -494,7 +591,10 @@ define(function(require) {
     });
 
     model.defineOutput('sensorReading', defaultSensorReadingDescriptionHash, function() {
-      return sensorReading;
+      if (rawSensorValue == null) {
+        return rawSensorValue;
+      }
+      return rawSensorValue - model.properties.tareValue;
     });
 
     // TODO. Need a better way for the model to be able to have a property which it can set the
@@ -545,8 +645,23 @@ define(function(require) {
       return isSensorInitializing;
     });
 
-    // Kick things off by doing this explicitly:
-    setSensorType(model.properties.sensorType);
+    model.defineOutput('isTaring', {
+      label: "Waiting for a tare value?"
+    }, function() {
+      return isTaring;
+    });
+
+    model.defineOutput('canTare', {
+      label: "Can set a tare value?"
+    }, function() {
+      return isStopped && !didCollectData && isSensorTareable && !isTaring;
+    });
+
+    model.defineOutput('needsReload', {
+      label: "Needs Reload?"
+    }, function() {
+      return needsReload;
+    });
 
     // Clean up state before we go -- failing to remove the applet from the page before switching
     // between 2 sensor types that use the same interface causes an applet exception.
@@ -559,6 +674,12 @@ define(function(require) {
         stopPollingSensor();
       }
     });
+
+    model.addObserver('collectionTime', updateDisplayTimeRange);
+    updateDisplayTimeRange();
+
+    // Kick things off by doing this explicitly:
+    setSensorType(model.properties.sensorType);
 
     return model;
   };

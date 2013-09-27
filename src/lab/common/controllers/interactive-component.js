@@ -15,11 +15,10 @@ define(function (require) {
    * @param {ScriptingAPI} scriptingAPI
    * @param {InteractivesController} interactivesController
    */
-  function InteractiveComponent(type, component, scriptingAPI, interactivesController, model) {
-    this._scriptingAPI = scriptingAPI.api;
-    this._model = model;
-    
-    var onClickFunction;
+  function InteractiveComponent(type, component, interactivesController) {
+    this._interactivesController = interactivesController;
+    this._scriptingAPI = this._interactivesController.getScriptingAPI();
+    this._model = this._interactivesController.getModel();
 
     /**
      * Validated component definition.
@@ -62,27 +61,53 @@ define(function (require) {
   /**
    * Called when the Interactive Controller reloads the model ... creating a new model and scriptingAPI
    */
-  InteractiveComponent.prototype._modelLoadedCallback = function (model, scriptingAPI) {
-    this._scriptingAPI = scriptingAPI.api;
-    this._model = model;
+  InteractiveComponent.prototype._modelLoadedCallback = function () {
+    this._scriptingAPI = this._interactivesController.getScriptingAPI();
+    this._model = this._interactivesController.getModel();
     this._optionallyAddOnClickHandlers();
   };
 
+  InteractiveComponent.prototype._updateClickHandler = function (script) {
+    // always discard attached click handler
+    this.$element.off("click."+this._nameSpace);
+    // Create a new handler function from action or onClick in string form
+    if (typeof script !== "function") {
+      this._actionClickFunction = this._scriptingAPI.makeFunctionInScriptContext(script);
+    } else {
+      this._actionClickFunction = script;
+    }
+    var that = this;
+    this.$element.on("click."+this._nameSpace, this._clickTargetSelector || null, function() {
+      that._actionClickFunction();
+    });
+    // Also add a special class indicating that this text node is a clickable.
+    this.$element.addClass("clickable");
+  };
 
   InteractiveComponent.prototype._optionallyAddOnClickHandlers = function () {
-    // optionally add onClick handler. If components such as buttons and sliders
-    // start inheriting from InteractiveComponent, we should think further on this.
-    if (this.component.onClick) {
-      if (typeof this.component.onClick !== "function") {
-        // Create function from the string or array of strings.
-        onClickFunction = this._scriptingAPI.makeFunctionInScriptContext(this.component.onClick);
-      } else {
-        // Just assign ready function.
-        onClickFunction = this.component.onClick;
-      }
-      this.$element.on("click", onClickFunction);
-      // Also add a special class indicating that this text node is a clickable.
-      this.$element.addClass("clickable");
+    // Optionally add onClick or action handlers defined with strings in
+    // onClick or action property of component.
+    if (this.component.onClick !== undefined) {
+      this._updateClickHandler(this.component.onClick);
+    }
+    if (this.component.action !== undefined) {
+      this._updateClickHandler(this.component.action);
+    }
+  };
+
+  InteractiveComponent.prototype.setAction = function (newAction) {
+    // If we are passed a string or array of strings as the new action
+    // save them in the action property of the component.
+    if (typeof script !== "function") {
+      this.component.action = newAction;
+    }
+    this._updateClickHandler(newAction);
+  };
+
+  InteractiveComponent.prototype.setOnClick = function (newOnClick) {
+    if (this.component.onClick !== undefined) {
+      this.component.onClick = newOnClick;
+      this._updateClickHandler(this.component.onClick);
     }
   };
 

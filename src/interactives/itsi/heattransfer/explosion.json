@@ -1,0 +1,35 @@
+{
+  "title": "explosion",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "heatflow1$0",
+      "url": "imports/legacy-mw-content/converted/itsi/heattransfer/explosion_model1$0.json",
+      "importedFrom": "imports/legacy-mw-content/itsi/heattransfer/explosion_model1$0.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      },
+      "modelOptions": {
+        "temperatureControl": true
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "checkbox",
+      "id": "ke-shading",
+      "text": "KE shading",
+      "property": "keShading"
+    }
+  ],
+  "layout": {
+    "right": [
+    ],
+    "bottom": [
+      "ke-shading"
+    ]
+  }
+}

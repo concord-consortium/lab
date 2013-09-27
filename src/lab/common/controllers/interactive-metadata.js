@@ -67,6 +67,11 @@ define(function() {
         required: false
       },
 
+      hideExportDataControl: {
+        required: false,
+        defaultValue: false
+      },
+
       components: {
         // List of the interactive components. Their definitions are below ('button', 'checkbox' etc.).
         defaultValue: []
@@ -601,6 +606,9 @@ define(function() {
       type: {
         required: true
       },
+      property: {
+        required: true
+      },
       label: {
         defaultValue: ""
       },
@@ -616,7 +624,6 @@ define(function() {
       height: {
         defaultValue: "auto"
       },
-      property: {},
       displayValue: {},
       tooltip: {
         defaultValue: ""
@@ -702,7 +709,7 @@ define(function() {
         defaultValue: []
       },
       width: {
-        defaultValue: "100%"
+        defaultValue: "auto"
       },
       height: {
         defaultValue: "100%"
@@ -720,6 +727,9 @@ define(function() {
         required: true
       },
       clearDataOnReset: {
+        defaultValue: true
+      },
+      resetAxesOnReset: {
         defaultValue: true
       },
       streamDataFromModel: {

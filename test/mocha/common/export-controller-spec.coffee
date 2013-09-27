@@ -32,6 +32,9 @@ helpers.withIsolatedRequireJS (requirejs) ->
       @model = loadModel()
       @modelLoadedCallbacks.forEach (cb) -> cb('initialLoad')
 
+    getModel: ->
+      @model
+
     reloadModel: (opts) ->
       @model.willReset()
       @model = loadModel()
@@ -88,7 +91,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
       interactivesController.loadModel()
       model = interactivesController.model
 
-      exportController = new ExportController(exportsSpec, interactivesController, model)
+      exportController = new ExportController(exportsSpec, interactivesController)
       exportController.modelLoadedCallback()
 
 

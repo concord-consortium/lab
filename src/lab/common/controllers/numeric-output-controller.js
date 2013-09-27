@@ -6,7 +6,7 @@ define(function () {
       validator = require('common/validator'),
       NumericOutputView = require('common/views/numeric-output-view');
 
-  return function NumericOutputController(component, scriptingAPI, interactivesController, model) {
+  return function NumericOutputController(component, interactivesController) {
     var propertyName,
         label,
         units,
@@ -14,7 +14,9 @@ define(function () {
         view,
         $element,
         propertyDescription,
-        controller;
+        controller,
+        model,
+        scriptingAPI;
 
     function renderValue() {
       var value = model.properties[propertyName];
@@ -28,6 +30,9 @@ define(function () {
     //
     // Initialization.
     //
+    model = interactivesController.getModel();
+    scriptingAPI = interactivesController.getScriptingAPI();
+
     // Validate component definition, use validated copy of the properties.
     component = validator.validateCompleteness(metadata.numericOutput, component);
 
@@ -67,7 +72,12 @@ define(function () {
     // Public API.
     controller = {
       // This callback should be trigger when model is loaded.
-      modelLoadedCallback: function (model) {
+      modelLoadedCallback: function () {
+        if (model) {
+          model.removeObserver(propertyName, renderValue);
+        }
+        model = interactivesController.getModel();
+        scriptingAPI = interactivesController.getScriptingAPI();
         if (propertyName) {
           propertyDescription = model.getPropertyDescription(propertyName);
           if (propertyDescription) {

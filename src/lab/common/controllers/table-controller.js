@@ -6,22 +6,23 @@ define(function (require) {
       TableView = require('common/views/table-view'),
       tableControllerCount = 0;
 
-  return function TableController(component, scriptingAPI, interactivesController, model) {
+  return function TableController(component, interactivesController) {
         // Public API.
     var controller,
-        // Options definitions from component JSON definition.
-        options,
+        model,
         view,
         $element,
         rowIndex,
         columns,
         formatters,
         tableData,
+        headerData,
         namespace = "tableController" + (++tableControllerCount);
 
     function initialize() {
-      var parent = interactivesController.interactiveContainer,
-          i, len,propertyName, propertyDescription, propertyTitle;
+      var parent = interactivesController.interactiveContainer;
+
+      model = interactivesController.getModel();
 
       // Validate component definition, use validated copy of the properties.
       component = validator.validateCompleteness(metadata.table, component);
@@ -37,22 +38,18 @@ define(function (require) {
         columns: columns,
         tableData: tableData,
         formatters: formatters,
-        visibleRows: component.visibleRows
+        visibleRows: component.visibleRows,
+        width: component.width,
+        height: component.height,
+        tooltip: component.tooltip,
+        klasses: [ "interactive-table", "component" ]
       });
 
       $element = view.render(parent);
-
-      $element
-        .addClass("interactive-table")
-        .addClass("component");
-
-      if (component.tooltip) {
-        $element.attr("title", component.tooltip);
-      }
     }
 
     function generateColumnTitlesAndFormatters() {
-      var i, len, propertyName, propertyDescription, propertyTitle, unitAbrev;
+      var i, propertyName, propertyDescription, propertyTitle, unitAbrev;
 
       columns = [];
       formatters = [];
@@ -97,29 +94,77 @@ define(function (require) {
 
     function appendPropertyRow() {
       var i, rowData = [];
-      if (component.addNewRows) {
-        rowIndex++;
-      }
+      rowIndex++;
       if (component.indexColumn) {
         rowData.push(rowIndex);
       }
       for(i = 0; i < component.propertyColumns.length; i++) {
         rowData.push(model.get(component.propertyColumns[i]));
       }
-      if (component.addNewRows) {
+      tableData.push(rowData);
+      view.appendDataRow(rowData, rowIndex);
+    }
+
+    function replacePropertyRow() {
+      var i, rowData = [];
+      if (component.indexColumn) {
+        rowData.push(rowIndex);
+      }
+      for(i = 0; i < component.propertyColumns.length; i++) {
+        rowData.push(model.get(component.propertyColumns[i]));
+      }
+      if (tableData.length === 0) {
         tableData.push(rowData);
         view.appendDataRow(rowData, rowIndex);
       } else {
         tableData[tableData.length-1] = rowData;
-        view.replaceDataRow(rowData, 1);
+        view.replaceDataRow(rowData, rowIndex);
       }
+    }
+
+    /**
+      Removes all data from the table that correspond to steps following
+      the current step pointer.
+      This is used when a change is made that invalidates the future data.
+    */
+    function removeDataAfterStepPointer() {
+      var ptr = model.stepCounter();
+      if (tableData.length > ptr-1) {
+        tableData.length = ptr;
+        rowIndex = ptr;
+        updateTable();
+      }
+    }
+
+    /**
+      Causes the table to move the "current" pointer to the current model step.
+      This desaturates the table region corresponding to times after the current point.
+    */
+    function redrawCurrentStepPointer() {
+      view.clearSelection();
+      view.addSelection(model.stepCounter()+1);
     }
 
     function registerModelListeners() {
       // Namespace listeners to '.tableController' so we can eventually remove them all at once
-      model.on('tick.'+namespace, appendPropertyRow);
+      model.on('tick.'+namespace, function () {
+        if (component.addNewRows) {
+          appendPropertyRow();
+        } else {
+          replacePropertyRow();
+        }
+      });
+
+      model.on('stepBack.'+namespace, redrawCurrentStepPointer);
+      model.on('stepForward.'+namespace, redrawCurrentStepPointer);
+      model.on('seek.'+namespace, redrawCurrentStepPointer);
+      model.on('play.'+namespace, function() {
+        if (model.stepCounter() < tableData.length) {
+          removeDataAfterStepPointer();
+        }
+      });
       model.on('invalidation.'+namespace, function() {
-        appendPropertyRow();
+        replacePropertyRow();
       });
       model.on('reset.'+namespace, modelResetHandler);
     }
@@ -128,6 +173,7 @@ define(function (require) {
       if (component.clearDataOnReset) {
         tableData = $.extend(true, [], component.tableData);
         headerData = $.extend(true, [], component.headerData);
+        rowIndex = 0;
         updateTable();
       }
     }
@@ -137,13 +183,19 @@ define(function (require) {
       /**
         Called by the interactives controller when the model finishes loading.
       */
-      modelLoadedCallback: function(model) {
+      modelLoadedCallback: function() {
+        model = interactivesController.getModel();
         tableData = $.extend(true, [], component.tableData);
         headerData = $.extend(true, [], component.headerData);
+        rowIndex = 0;
         updateTable();
         if (component.streamDataFromModel) {
           registerModelListeners();
         }
+      },
+
+      resize: function () {
+        if (view) view.resize();
       },
 
       getData: function(propArray) {

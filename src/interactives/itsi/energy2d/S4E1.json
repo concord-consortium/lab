@@ -1,0 +1,97 @@
+{
+  "title": "Convection 4E: Blowing wind",
+  "publicationStatus": "public",
+  "subtitle": "Why should you close the windows in a stormy winter day?",
+  "about": [
+    "This model investigates the effect of wind blowing towards a building. The air currents",
+    "are indicated by arrows and can be shown by streamlines.",
+    "",
+    "1.  Run the model and note the convection and heating patterns both inside and outside the house,",
+    "    heated by a heating board on the floor.",
+    "2.  Change the wind condition and open or close the windows to examine how heat flow will change."
+  ],
+  "importedFrom": "imports/energy2d/content-htb/S4E.html",
+  "aspectRatio": 1.0,
+  "models": [
+    {
+      "type": "energy2d",
+      "id": "S4E1",
+      "url": "imports/energy2d/models-json/S4E1.json",
+      "importedFrom": "imports/energy2d/models-xml/S4E1.e2d",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      },
+      "onLoad": [
+        "getPart(8).y = 3.95;",
+        "getPart(9).y = 3.95;"
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "wind-speed",
+      "label": "Wind speed:",
+      "value": "getPart(0).wind_speed;",
+      "onChange": "getPart(0).wind_speed = value;",
+      "initialValue": 0.05
+    },
+    {
+      "name": "window-closed",
+      "label": "Windows",
+      "onChange": [
+        "if (value) {",
+        "  getPart(8).y = 3.95;",
+        "  getPart(9).y = 3.95;",
+        "} else {",
+        "  getPart(8).y = 2.8;",
+        "  getPart(9).y = 2.8;",
+        "};"
+      ],
+      "initialValue": true
+    }
+  ],
+  "components": [
+    {
+      "type": "radio",
+      "id": "pick-wind-speed",
+      "label": "Wind speed:",
+      "labelOn": "left",
+      "orientation": "horizontal",
+      "property": "wind-speed",
+      "options": [
+        {
+          "text": "wind",
+          "value": 0.05
+        },
+        {
+          "text": "No wind",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "type": "radio",
+      "id": "open-close-window",
+      "label": "Windows:",
+      "labelOn": "left",
+      "orientation": "horizontal",
+      "property": "window-closed",
+      "options": [
+        {
+          "text": "Closed",
+          "value": true
+        },
+        {
+          "text": "Open",
+          "value": false
+        }
+      ]
+    }
+  ],
+  "layout": {
+    "bottom": [
+      [ "pick-wind-speed" ],
+      [ "open-close-window" ]
+    ]
+  }
+}

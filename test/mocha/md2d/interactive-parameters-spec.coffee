@@ -24,7 +24,7 @@ describe "Lab interactives: serialization", ->
     setupControllerAndModel = ->
       helpers.withModel simpleModel, ->
         controller = interactivesController interactive, 'body'
-      model = controller.modelController.model
+      model = controller.getModel()
 
     beforeEach ->
       interactive = {
@@ -103,7 +103,7 @@ describe "Lab interactives: serialization", ->
           }
         ]
       }
-    
+
     it "custom parameters should be updated correctly", ->
       setupControllerAndModel()
       validatedInteractive = controller.validateInteractive(interactive)

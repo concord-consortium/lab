@@ -292,23 +292,16 @@
   <void property="boundary"> 
    <object class="org.concord.mw2d.models.RectangularBoundary$Delegate"> 
     <void property="height"> 
-     <double>200.0</double> 
+     <double>250.0</double> 
     </void> 
     <void property="viewSize"> 
      <object class="java.awt.Dimension"> 
-      <int>260</int> 
-      <int>200</int> 
+      <int>350</int> 
+      <int>250</int> 
      </object> 
     </void> 
     <void property="width"> 
-     <double>260.0</double> 
-    </void> 
-   </object> 
-  </void> 
-  <void property="heatBath"> 
-   <object class="org.concord.mw2d.models.HeatBath"> 
-    <void property="expectedTemperature"> 
-     <double>4500.0</double> 
+     <double>350.0</double> 
     </void> 
    </object> 
   </void> 
@@ -316,41 +309,37 @@
    <object class="org.concord.mw2d.models.LightSource"/> 
   </void> 
   <void property="numberOfParticles"> 
-   <int>6</int> 
+   <int>9</int> 
   </void> 
   <void property="properties"> 
    <void method="put"> 
     <string>filename</string> 
-    <string>water21.mml</string> 
+    <string>double-and-triple-bonds$0.mml</string> 
    </void> 
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1372208969000</long> 
+     <long>1379357030000</long> 
     </object> 
    </void> 
    <void method="put"> 
     <string>url</string> 
-    <string>/Users/stephen/dev/concord/lab/imports/legacy-mw-content/conversion-and-physics-examples/chemical-reactions/water21.mml</string> 
+    <string>/home/piotr/Concord/lab/imports/legacy-mw-content/conversion-and-physics-examples/chemical-reactions/double-and-triple-bonds$0.mml</string> 
    </void> 
    <void method="put"> 
     <string>size</string> 
-    <long>14530</long> 
+    <long>11747</long> 
    </void> 
    <void method="put"> 
     <string>codebase</string> 
-    <string>/Users/stephen/dev/concord/lab/imports/legacy-mw-content/conversion-and-physics-examples/chemical-reactions</string> 
+    <string>/home/piotr/Concord/lab/imports/legacy-mw-content/conversion-and-physics-examples/chemical-reactions</string> 
    </void> 
   </void> 
   <void property="quantumRule"> 
    <object class="org.concord.mw2d.models.QuantumRule"/> 
   </void> 
-  <void property="script"> 
-   <string>define %h 2;
-define %o 1;</string> 
-  </void> 
   <void property="timeStep"> 
-   <double>1.0</double> 
+   <double>0.10000000149011612</double> 
   </void> 
   <void property="universe"> 
    <object class="org.concord.mw2d.models.Universe"/> 
@@ -359,6 +348,9 @@ define %o 1;</string>
  <object class="org.concord.mw2d.AtomisticView$State"> 
   <void property="colorCode"> 
    <string>None</string> 
+  </void> 
+  <void property="energizer"> 
+   <boolean>true</boolean> 
   </void> 
   <void property="forceFlavor"> 
    <void property="color"> 
@@ -385,187 +377,122 @@ define %o 1;</string>
   <void property="ID"> 
    <int>1</int> 
   </void> 
-  <void property="radical"> 
-   <boolean>false</boolean> 
-  </void> 
   <void property="rx"> 
-   <double>45.92489762637289</double> 
+   <double>40.0</double> 
   </void> 
   <void property="ry"> 
-   <double>104.27767502509403</double> 
+   <double>30.0</double> 
   </void> 
   <void property="vx"> 
-   <double>0.18020847509394775</double> 
-  </void> 
-  <void property="vy"> 
-   <double>0.04713725414495413</double> 
+   <double>0.052440442408507586</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.Atom"> 
   <void property="ID"> 
    <int>1</int> 
   </void> 
-  <void property="radical"> 
-   <boolean>false</boolean> 
-  </void> 
   <void property="rx"> 
-   <double>54.075102373627104</double> 
+   <double>100.0</double> 
   </void> 
   <void property="ry"> 
-   <double>89.72232497490597</double> 
-  </void> 
-  <void property="vx"> 
-   <double>0.06917245098786197</double> 
-  </void> 
-  <void property="vy"> 
-   <double>-0.020743365921404907</double> 
+   <double>30.0</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.Atom"> 
   <void property="ID"> 
    <int>2</int> 
   </void> 
-  <void property="radical"> 
-   <boolean>false</boolean> 
-  </void> 
   <void property="rx"> 
-   <double>114.0649185622278</double> 
+   <double>40.0</double> 
   </void> 
   <void property="ry"> 
-   <double>91.42809956501017</double> 
+   <double>90.0</double> 
   </void> 
   <void property="vx"> 
-   <double>0.1040698156998557</double> 
-  </void> 
-  <void property="vy"> 
-   <double>-0.04837396463587673</double> 
+   <double>0.052440442408507586</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.Atom"> 
   <void property="ID"> 
    <int>2</int> 
   </void> 
-  <void property="radical"> 
-   <boolean>false</boolean> 
-  </void> 
   <void property="rx"> 
-   <double>123.9350814377722</double> 
+   <double>160.0</double> 
   </void> 
   <void property="ry"> 
-   <double>114.57190043498983</double> 
-  </void> 
-  <void property="vx"> 
-   <double>-0.0800198708190639</double> 
-  </void> 
-  <void property="vy"> 
-   <double>0.04159420534558525</double> 
+   <double>90.0</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.Atom"> 
   <void property="ID"> 
-   <int>1</int> 
-  </void> 
-  <void property="radical"> 
-   <boolean>false</boolean> 
-  </void> 
-  <void property="rx"> 
-   <double>186.92489762637297</double> 
-  </void> 
-  <void property="ry"> 
-   <double>101.27767502509403</double> 
-  </void> 
-  <void property="vx"> 
-   <double>0.18020847509394775</double> 
-  </void> 
-  <void property="vy"> 
-   <double>0.04713725414495413</double> 
-  </void> 
- </object> 
- <object class="org.concord.mw2d.models.Atom"> 
-  <void property="ID"> 
-   <int>1</int> 
-  </void> 
-  <void property="radical"> 
-   <boolean>false</boolean> 
-  </void> 
-  <void property="rx"> 
-   <double>195.07510237362703</double> 
-  </void> 
-  <void property="ry"> 
-   <double>86.72232497490597</double> 
-  </void> 
-  <void property="vx"> 
-   <double>0.06917245098786197</double> 
-  </void> 
-  <void property="vy"> 
-   <double>-0.020743365921404907</double> 
-  </void> 
- </object> 
- <object class="org.concord.mw2d.models.MolecularModel$State"> 
-  <void property="molecularTorque"> 
-   <array class="org.concord.mw2d.models.MolecularTorque" length="3"/> 
-  </void> 
-  <void property="numberOfBonds"> 
    <int>3</int> 
   </void> 
- </object> 
- <object class="org.concord.mw2d.models.RadialBond$Delegate"> 
-  <void property="atom1"> 
-   <int>2</int> 
+  <void property="rx"> 
+   <double>40.0</double> 
   </void> 
-  <void property="atom2"> 
+  <void property="ry"> 
+   <double>160.0</double> 
+  </void> 
+  <void property="vx"> 
+   <double>0.052440442408507586</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="ID"> 
    <int>3</int> 
   </void> 
-  <void property="bondLength"> 
-   <double>25.200001001358032</double> 
+  <void property="rx"> 
+   <double>240.0</double> 
   </void> 
-  <void property="bondStrength"> 
-   <double>0.2</double> 
-  </void> 
-  <void property="chemicalEnergy"> 
-   <double>0.5</double> 
+  <void property="ry"> 
+   <double>160.0</double> 
   </void> 
  </object> 
- <object class="org.concord.mw2d.models.RadialBond$Delegate"> 
-  <void property="atom2"> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="ID"> 
+   <int>2</int> 
+  </void> 
+  <void property="rx"> 
+   <double>40.0</double> 
+  </void> 
+  <void property="ry"> 
+   <double>220.0</double> 
+  </void> 
+  <void property="vx"> 
+   <double>0.05</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="ID"> 
+   <int>2</int> 
+  </void> 
+  <void property="rx"> 
+   <double>80.0</double> 
+  </void> 
+  <void property="ry"> 
+   <double>220.0</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.Atom"> 
+  <void property="ID"> 
    <int>1</int> 
   </void> 
-  <void property="bondLength"> 
-   <double>16.80000066757202</double> 
+  <void property="rx"> 
+   <double>330.0</double> 
   </void> 
-  <void property="bondStrength"> 
-   <double>0.2</double> 
+  <void property="ry"> 
+   <double>220.0</double> 
   </void> 
-  <void property="chemicalEnergy"> 
-   <double>0.5</double> 
-  </void> 
- </object> 
- <object class="org.concord.mw2d.models.RadialBond$Delegate"> 
-  <void property="atom1"> 
-   <int>4</int> 
-  </void> 
-  <void property="atom2"> 
-   <int>5</int> 
-  </void> 
-  <void property="bondLength"> 
-   <double>16.80000066757202</double> 
-  </void> 
-  <void property="bondStrength"> 
-   <double>0.2</double> 
-  </void> 
-  <void property="chemicalEnergy"> 
-   <double>0.5</double> 
+  <void property="vx"> 
+   <double>-0.030000000000000002</double> 
   </void> 
  </object> 
- <object class="org.concord.mw2d.models.Reaction$O2_2H2__2H2O"> 
+ <object class="org.concord.mw2d.models.MolecularModel$State"/> 
+ <object class="org.concord.mw2d.models.Reaction$A2_B2__2AB"> 
   <void property="parameters"> 
    <void method="put"> 
-    <string>VOO</string> 
-    <double>0.5</double> 
-   </void> 
-   <void method="put"> 
-    <string>VHH</string> 
-    <double>0.5</double> 
+    <string>VAB2</string> 
+    <double>0.20512820780277252</double> 
    </void> 
   </void> 
  </object> 

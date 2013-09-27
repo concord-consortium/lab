@@ -727,63 +727,38 @@ define(function() {
 
     chemicalReactions: {
       valenceElectrons: {
-        defaultValue: [1, 1, 8, 8]
+        defaultValue: [1, 1, 7, 7],
+        immutable: true
       },
       bondEnergy: {
-        defaultValue: [
-          [4, 6, 6, 6],
-          [6, 4, 6, 6],
-          [6, 6, 4, 6],
-          [6, 6, 6, 4]
-        ]
+        defaultValue: {
+          // This configuration means that default bond chemical energy is 6eV, however single bonds
+          // between the same elements (like bond between 1 and 1) have a bit smaller chemical
+          // energy equal to 4eV. You can freely modify this configuration. Note that you should
+          // define "default" key if you don't specify all possible configurations.
+          "default": 6,
+          "0-0": 4,
+          "1-1": 4,
+          "2-2": 4,
+          "3-3": 4
+        },
+        immutable: true
       },
-      // unused for now:
-      type: {},
-      parameters: {
-        VA2B: {
+      activationEnergy: {
+        defaultValue: {
+          // This configuration means that default activation energy is equal to 0.2eV.
+          // If you need custom parameters for various combinations, you can add e.g.:
+          // "1+2-2": 0.5,
+          // "2+1-1": 5
+          // what means that when element 1 collides with two bonded elements 2, activation
+          // energy that causes bonds exchange is 0.5 eV. Similarly, when element 2 collides with
+          // two bonded elements 1, activation energy that causes bonds exchange is 5 eV.
+          // Note that format is important! Single element is first, then "+" sign, then pair
+          // description.
+          "default": 0.2
+
         },
-        VAA: {
-        },
-        VAB: {
-        },
-        VAB2: {
-        },
-        VABC: {
-        },
-        VAC: {
-        },
-        VAD: {
-        },
-        VBA2: {
-        },
-        VBAC: {
-        },
-        VBB: {
-        },
-        VBC: {
-        },
-        VBD: {
-        },
-        VCA2: {
-        },
-        VCB2: {
-        },
-        VCC: {
-        },
-        VCD: {
-        },
-        VDD: {
-        },
-        VHH: {
-        },
-        VHO: {
-        },
-        VHO2: {
-        },
-        VOH2: {
-        },
-        VOO: {
-        }
+        immutable: true
       }
     },
 
@@ -796,6 +771,8 @@ define(function() {
       },
       radiationlessEmissionProbability: {
         defaultValue: 1
+      },
+      lightSource: {
       }
     },
 

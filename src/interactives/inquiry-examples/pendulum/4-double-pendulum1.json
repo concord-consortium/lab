@@ -17,7 +17,7 @@
       "id": "doublependulum1$0",
       "url": "models/md2d/inquiry-examples/pendulum/double-pendulum.json",
       "viewOptions": {
-        "controlButtons": "play_reset_step",
+        "controlButtons": "",
         "enableKeyboardHandlers": true
       },
       "modelOptions": {
@@ -157,7 +157,58 @@
       "initialValue": 0
     }
   ],
-  
+  "experiment": {
+    "timeSeries": {
+      "xProperty": "displayTime",
+      "properties": [
+        "currentAngle1",
+        "currentAngle2"
+      ]
+    },
+    "parameters": {
+      "inputs": [
+        "rodLength1",
+        "rodLength2",
+        "ballMass1",
+        "ballMass2",
+        "startingAngle1",
+        "startingAngle2"
+      ],
+      "outputs": [
+        "period"
+      ]
+    },
+    "destinations": [
+      {
+        "type": "timeSeries",
+        "componentIds": [
+          "angle-graph"
+        ],
+        "properties": [
+          "currentAngle"
+        ]
+      },
+      {
+        "type": "timeSeries",
+        "componentIds": [
+          "time-series-table"
+        ],
+        "properties": [
+          "currentAngle1",
+          "currentAngle2",
+          "period1",
+          "period2"
+        ]
+      }
+    ],
+    "stateButtons": {
+      "startRun": "start-run",
+      "stopRun": "stop-run",
+      "saveRun": "save-run",
+      "nextRun": "next-run",
+      "clearAll": "clear-all"
+    }
+  },
   "components": [
     {
       "type": "text",
@@ -364,24 +415,19 @@
     },
     {
       "type": "table",
-      "id": "last-run-table",
+      "id": "time-series-table",
+      "title": "Time Series Table",
       "clearDataOnReset": true,
       "streamDataFromModel": true,
       "addNewRows": false,
-      "visibleRows": 1,
+      "visibleRows": 4,
       "indexColumn": false,
       "propertyColumns": [
-        "rodLength1",
-        "ballMass1",
-        "startingAngle1",
-        "rodLength2",
-        "ballMass2",
-        "startingAngle2",
+        "displayTime",
+        "currentAngle1",
+        "currentAngle2",
         "period1",
         "period2"
-      ],
-      "tableData": [
-        [ "", " ", " ", " ", " ", " ", " ", " ", " " ]
       ]
     }
   ],
@@ -396,8 +442,8 @@
     "experiment-controls": [
       [ "start-run", "stop-run", "save-run", "next-run", "clear-all" ]
     ],
-    "last-run-data": [
-      "last-run-table"
+    "time-series-table": [
+      "time-series-table"
     ]
   },
   "template": [
@@ -410,31 +456,31 @@
       "padding-bottom": "0.4em"
     },
     {
-      "id": "last-run-data",
-      "fontScale": "0.6",
-      "bottom": "experiment-controls.bottom",
-      "left": "experiment-controls.right",
-      "padding-top": "0.5em",
-      "padding-left": "1.5em",
-      "padding-right": "0.4em",
-      "align": "center"
-    },
-    {
       "id": "top",
-      "bottom": "last-run-data.top",
+      "bottom": "experiment-controls.top",
       "fontScale": "0.7",
       "padding-left": "0.5em",
       "padding-bottom": "0em"
     },
     {
       "id": "top-right",
-      "top": "last-run-data.bottom",
+      "top": "experiment-controls.bottom",
       "left": "model.right",
       "height": "model.height",
       "width": "model.width*1.3",
       "padding-top": "0.2em",
       "padding-left": "1em",
       "padding-right": "1.5em"
+    },
+    {
+      "id": "time-series-table",
+      "fontScale": "0.6",
+      "top": "model.bottom",
+      "left": "model.left",
+      "padding-top": "0.5em",
+      "padding-left": "0.5em",
+      "padding-right": "0.4em",
+      "align": "center"
     }
   ]
 }

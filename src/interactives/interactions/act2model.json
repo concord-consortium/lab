@@ -1,8 +1,14 @@
 {
   "title": "Distance and Force Magnitude",
   "publicationStatus": "draft",
-  "subtitle": "",
-  "about": "",
+  "subtitle": "Explore the relationship between the electric field around an object and the forces on charged objects.",
+  "aspectRatio": 1.18,
+  "about": [
+    "Control the polarity of the stationary charged object and observe how it affects the electric field around the charged object.",
+    "Add a second charged object and move it around the stationary object.",
+    "Observe how the strength and direction of the forces depends on the charges and distance between the two objects.",
+    "Turn the force and electric field visualizations on and off to see their interactions."
+  ],
   "models": [
     {
       "type": "md2d",
@@ -10,10 +16,16 @@
       "url": "imports/legacy-mw-content/converted/interactions/distance-and-force/act2model$0.json",
       "importedFrom": "imports/legacy-mw-content/interactions/distance-and-force/act2model$0.mml",
       "viewOptions": {
-        "controlButtons": ""
+        "controlButtons": "",
+        "electricFieldDensity": 24,
+        "electricFieldColor": "rgb(0,255,0)",
+        "forceVectors": {
+          "length": 1.5
+        }
       },
       "onLoad": [
-        "setAtomProperties(0,{charge: 3});"
+        "setAtomProperties(0,{charge: 3});",
+        "set('showElectricField',true);"
       ]
     }
   ],
@@ -47,7 +59,7 @@
       "type": "checkbox",
       "id": "select-show-second-atom",
       "property": "show-second-atom",
-      "text": "Show second atom"
+      "text": "Show second object"
     },
     {
       "type": "text",

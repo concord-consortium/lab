@@ -139,6 +139,10 @@ define(function(require) {
       model.start();
     });
 
+    parentMessageController.addListener('stop', function(message) {
+      model.stop();
+    });
+
     parentMessageController.initialize();
   };
 });

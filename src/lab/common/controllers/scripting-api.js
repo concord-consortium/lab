@@ -1,9 +1,10 @@
 /*global d3, $, define */
-/*jshint loopfunc: true, evil: true */
+/*jshint loopfunc: true */
 
 define(function (require) {
 
   var alert = require('common/alert');
+  var namespaceCount = 0;
 
   //
   // Define the scripting API used by 'action' scripts on interactive elements.
@@ -14,7 +15,20 @@ define(function (require) {
   // script context; and scripts are run in strict mode so they don't
   // accidentally expose or read globals.
   //
-  return function ScriptingAPI (interactivesController, model) {
+  return function ScriptingAPI (interactivesController) {
+    var model;
+
+    // Note. Normally, scripting API methods should not create event listeners to be added to the
+    // interactivesController, because doing so from an onLoad script results in adding a new event
+    // listener per model load or reload. The interactivesController has no mechanism for
+    // associating listeners with a particular model and removing them after load; that semantics is
+    // handled by adding listeners directly to a model.
+
+    // Ensure that we don't overwrite model.reset observers.
+    // MUST. FIX. EVENT. OBSERVING. to get rid of this ridiculous unique id requirement!
+    function onModelReset(callback) {
+      model.on('reset.common-scripting-api-' + (namespaceCount++), callback);
+    }
 
     var controller = {
 
@@ -105,6 +119,14 @@ define(function (require) {
             return model.set.apply(model, arguments);
           },
 
+          freeze: function freeze() {
+            return model.freeze.apply(model, arguments);
+          },
+
+          unfreeze: function unfreeze() {
+            return model.unfreeze.apply(model, arguments);
+          },
+
           loadModel: function loadModel(modelId) {
             model.stop();
             interactivesController.loadModel(modelId, null);
@@ -140,23 +162,24 @@ define(function (require) {
            * @param  {function} action Function containing user-defined script.
            */
           callAt: function callAt(time, action) {
-            var actionTimeout = {
-              time: time,
-              action: action,
-              check: function() {
-                if (model.get("time") >= this.time) {
-                  this.action();
-                  // Optimization - when function was once executed, replace
-                  // check with empty function.
-                  // removePropertiesListener() method could be useful, but it
-                  // isn't available yet.
-                  this.check = function () {};
-                }
+            function checkTime() {
+              if (model.properties.time >= time) {
+                action();
+                stopChecking();
               }
-            };
-            model.addPropertiesListener("time", function () {
-              actionTimeout.check();
-            });
+            }
+
+            function startChecking() {
+              // addObserver(key, callback) is idempotent
+              model.addObserver('time', checkTime);
+            }
+
+            function stopChecking() {
+              model.removeObserver('time', checkTime);
+            }
+
+            onModelReset(startChecking);
+            startChecking();
           },
 
           /**
@@ -179,21 +202,21 @@ define(function (require) {
            * @param {function} action   Function containing user-defined script.
            */
           callEvery: function callEvery(interval, action) {
-            var actionInterval = {
-              lastCall: 0,
-              interval: interval,
-              action: action,
-              execute: function() {
-                var time = model.get("time");
-                while (time - this.lastCall >= this.interval) {
-                  this.action();
-                  this.lastCall += this.interval;
-                }
+            var lastCall = 0;
+
+            function checkTime() {
+              while (model.properties.time - lastCall >= interval) {
+                action();
+                lastCall += interval;
               }
-            };
-            model.addPropertiesListener("time", function () {
-              actionInterval.execute();
-            });
+            }
+
+            function resetState() {
+              lastCall = 0;
+            }
+
+            model.addObserver('time', checkTime);
+            onModelReset(resetState);
           },
 
           /**
@@ -291,12 +314,40 @@ define(function (require) {
             }
           },
 
-
           getComponentData: function getComponentData(compID, propArray) {
             var comp = interactivesController.getComponent(compID);
             if (comp !== undefined && comp.getData) {
               return comp.getData(propArray);
             }
+          },
+
+          /**
+            Set the ranges of graph component to match the ranges of the properties it is graphing.
+          */
+          syncAxisRangesToPropertyRanges: function syncAxisRangesToPropertyRanges(componentID) {
+            var component = interactivesController.getComponent(componentID);
+
+            if (!component) {
+              throw new Error("Component " + componentID + " not found.");
+            }
+            if (!component.syncAxisRangesToPropertyRanges) {
+              throw new Error("Component " + componentID + " does not support syncAxisRangesToPropertyRanges.");
+            }
+
+            component.syncAxisRangesToPropertyRanges();
+          },
+
+          scrollXAxisToZero: function scrollXAxisToZero(componentID) {
+            var component = interactivesController.getComponent(componentID);
+
+            if (!component) {
+              throw new Error("Component " + componentID + " not found.");
+            }
+            if (!component.syncAxisRangesToPropertyRanges) {
+              throw new Error("Component " + componentID + " does not support scrollXAxisToZero.");
+            }
+
+            component.scrollXAxisToZero();
           },
 
           start: function start() {
@@ -374,11 +425,17 @@ define(function (require) {
             interactivesController.repaintModelView();
           },
 
+          canExportData: function() {
+            var exportController = interactivesController.getDGExportController();
+            return exportController.canExportData();
+          },
+
           exportData: function exportData() {
-            var dgExport = interactivesController.getDGExportController();
-            if (!dgExport)
+            var exportController = interactivesController.getDGExportController();
+            if (!exportController || !exportController.canExportData()) {
               throw new Error("No exports have been specified.");
-            dgExport.exportData();
+            }
+            exportController.exportData();
           },
 
           Math: Math,
@@ -520,6 +577,16 @@ define(function (require) {
         };
       }
     };
+
+    // Since this first-draft iteration of the scripting api has no real support for multiple
+    // models, we can freely stash the single model locally.
+    function cacheModel() {
+      model = interactivesController.getModel();
+    }
+
+    cacheModel();
+    interactivesController.on('modelLoaded', cacheModel);
+
     return controller;
   };
 });

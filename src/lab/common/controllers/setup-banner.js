@@ -66,7 +66,7 @@ define(function () {
         Controller = PlaybackController;
       }
 
-      components[element.id] = new Controller(element, controller.scriptingAPI, controller, model);
+      components[element.id] = new Controller(element, controller);
       template.push(container);
       layout[container.id] = [element.id];
     }

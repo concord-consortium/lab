@@ -18,7 +18,7 @@ define(function (require) {
      getViewContainer:     DOM element containing the Thermometer div and the label div.
      getView:              Returns base Thermometer object, with no label.
   */
-  return function ThermometerController(component, scriptingAPI, interactivesController, model) {
+  return function ThermometerController(component, interactivesController) {
     var units,
         digits,
         // Returns scaled value using provided 'scale' and 'offset' component properties.
@@ -35,6 +35,7 @@ define(function (require) {
         $labelsContainer,
 
         controller,
+        model,
 
         updateLabel = function (temperature) {
           temperature = scaleFunc(temperature);
@@ -57,6 +58,8 @@ define(function (require) {
           view, labelText, labels,
           longestLabelIdx, maxLength,
           max, min, i, len;
+
+      model = interactivesController.getModel();
 
       component = validator.validateCompleteness(metadata.thermometer, component);
       reading = component.reading;
@@ -138,11 +141,13 @@ define(function (require) {
     // Public API.
     controller = {
       // No modelLoadeCallback is defined. In case of need:
-      modelLoadedCallback: function (model) {
+      modelLoadedCallback: function () {
+        if (model) {
+          model.removeObserver('targetTemperature', updateThermometer);
+        }
+        model = interactivesController.getModel();
         // TODO: update to observe actual system temperature once output properties are observable
-        model.addPropertiesListener('targetTemperature', function() {
-          updateThermometer();
-        });
+        model.addPropertiesListener('targetTemperature', updateThermometer);
         updateThermometer();
       },
 

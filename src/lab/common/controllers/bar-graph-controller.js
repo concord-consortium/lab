@@ -72,9 +72,10 @@ define(function (require) {
         return options;
       };
 
-  return function BarGraphController(component, scriptingAPI, interactivesController, model) {
+  return function BarGraphController(component, interactivesController) {
     var // Object with Public API.
         controller,
+        model,
         // Model with options and current value.
         barGraphModel,
         // Main view.
@@ -87,31 +88,39 @@ define(function (require) {
         update = function () {
           barGraphModel.set({value: model.get(property)});
         },
+
         updateSecondProperty = function () {
           barGraphModel.set({secondValue: model.get(secondProperty)});
         };
 
-    //
-    // Initialization.
-    //
-    // Validate component definition, use validated copy of the properties.
-    component = validator.validateCompleteness(metadata.barGraph, component);
-    barGraphModel = new BarGraphModel(filterOptions(component));
-    barGraphView  = new BarGraphView({model: barGraphModel, id: component.id});
-    // Each interactive component has to have class "component".
-    barGraphView.$el.addClass("component");
-    property = component.property;
-    secondProperty = component.secondProperty;
+    function initialize() {
+      model = interactivesController.getModel();
 
-    if (component.tooltip) {
-      barGraphView.$el.attr("title", component.tooltip);
+      // Validate component definition, use validated copy of the properties.
+      component = validator.validateCompleteness(metadata.barGraph, component);
+      barGraphModel = new BarGraphModel(filterOptions(component));
+      barGraphView  = new BarGraphView({model: barGraphModel, id: component.id});
+      // Each interactive component has to have class "component".
+      barGraphView.$el.addClass("component");
+      property = component.property;
+      secondProperty = component.secondProperty;
+
+      if (component.tooltip) {
+        barGraphView.$el.attr("title", component.tooltip);
+      }
     }
 
     controller = {
-      // This callback should be trigger when model is loaded.
-      modelLoadedCallback: function (model) {
+      // This callback should be triggered when model is loaded.
+      modelLoadedCallback: function () {
         var units = "";
-
+        if (model) {
+          model.removeObserver(property, update);
+          if (secondProperty) {
+            model.removeObserver(secondProperty, updateSecondProperty);
+          }
+        }
+        model = interactivesController.getModel();
         // Register properties listeners.
         model.addPropertiesListener([property], update);
         if (typeof component.averagePeriod !== 'undefined' && component.averagePeriod !== null) {
@@ -166,6 +175,8 @@ define(function (require) {
         return result;
       }
     };
+
+    initialize();
 
     // Return Public API object.
     return controller;

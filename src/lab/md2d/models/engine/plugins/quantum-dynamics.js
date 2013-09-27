@@ -37,7 +37,7 @@ define(function(require) {
       TWO_PI = 2 * Math.PI,
 
       // expected value of lifetime of excited energy state, in fs
-      LIFETIME = 1000,
+      LIFETIME = 50,
       EMISSION_PROBABILITY_PER_FS = 1/LIFETIME,
 
       // dispatch events from handlePhotonAtomCollision
@@ -53,13 +53,13 @@ define(function(require) {
 
         properties           = validator.validateCompleteness(metadata.quantumDynamics, _properties),
 
-        isLightSourceOn      = false,
-
         api,
 
         elementEnergyLevels  = properties.elementEnergyLevels,
         pRadiationless       = properties.radiationlessEmissionProbability,
         pStimulatedEmission  = 0,
+
+        lightSource          = properties.lightSource,
 
         dimensions           = engine.getDimensions(),
 
@@ -239,7 +239,7 @@ define(function(require) {
               xij = xi - atoms.x[a2];
               yij = yi - atoms.y[a2];
               ijsq = xij * xij + yij * yij;
-              avrSigma = 0.5 * (elements.sigma[el1] + elements.sigma[el2]);
+              avrSigma = 0.55 * (elements.sigma[el1] + elements.sigma[el2]);
               avrSigmaSq = avrSigma * avrSigma;
 
               if (ijsq >= avrSigmaSq) {
@@ -549,11 +549,9 @@ define(function(require) {
               w = dimensions[2] - x,
               h = dimensions[3] - y,
 
-              // hard-wired presets for now
-              // taken from http://lab.dev.concord.org/imports/legacy-mw-content/sam-activities/light-matter/greenhouse-gases/sunOnGround.mml
-              angle = -5 * Math.PI / 6,
-              energy = 13.92 * PLANCK_CONSTANT,
-              nBeams = 5,
+              angle  = lightSource.angleOfIncidence,
+              energy = lightSource.frequency * PLANCK_CONSTANT,
+              nBeams = lightSource.numberOfBeams,
 
               // Lifted from AtomicModel.shootPhotons()
               // https://github.com/concord-consortium/mw/blob/d3f621ba87825888737257a6cb9ac9e4e4f63f77/src/org/concord/mw2d/models/AtomicModel.java#L2534
@@ -569,13 +567,26 @@ define(function(require) {
 
           // Lifted from AtomicModel.shootAtAngle()
           // https://github.com/concord-consortium/mw/blob/d3f621ba87825888737257a6cb9ac9e4e4f63f77/src/org/concord/mw2d/models/AtomicModel.java#L2471
-          // this is the 'angle > -Math.PI && angle < -0.5 * Math.PI' case:
-          for (i = 0; i <= m; i++) {
-            emitPhoton(x + w - dx * i, y + h, angle, energy);
-          }
-
-          for (i = 1; i <= n; i++) {
-            emitPhoton(x + w, y + h - dy * i, angle, energy);
+          if (angle >= 0 && angle < 0.5 * Math.PI) {
+            for (i = 1; i <= m; i++)
+              emitPhoton(x + dx * i, y, angle, energy);
+            for (i = 0; i <= n; i++)
+              emitPhoton(x, y + h - dy * i, angle, energy);
+          } else if (angle < 0 && angle >= -0.5 * Math.PI) {
+            for (i = 1; i <= m; i++)
+              emitPhoton(x + dx * i, y + h, angle, energy);
+            for (i = 0; i <= n; i++)
+              emitPhoton(x, y + dy * i, angle, energy);
+          } else if (angle < Math.PI && angle >= 0.5 * Math.PI) {
+            for (i = 0; i <= m; i++)
+              emitPhoton(x + w - dx * i, y, angle, energy);
+            for (i = 1; i <= n; i++)
+              emitPhoton(x + w, y + h - dy * i, angle, energy);
+          } else if (angle >= -Math.PI && angle < -0.5 * Math.PI) {
+            for (i = 0; i <= m; i++)
+              emitPhoton(x + w - dx * i, y + h, angle, energy);
+            for (i = 1; i <= n; i++)
+              emitPhoton(x + w, y + dy * i, angle, energy);
           }
         };
 
@@ -596,18 +607,34 @@ define(function(require) {
         thermallyExciteAndDeexciteAtoms(neighborList);
         spontaneouslyEmitPhotons(dt);
         // Temporary hard-wired light source, for demo purposes
-        if (isLightSourceOn && Math.floor(time % 1000) === 0) {
+
+        if (isLightSourceOn && time % lightSource.radiationPeriod < dt) {
           emitLightSourcePhotons();
         }
       },
 
-      // Presumably, we will need to be able to say *which* light source to turn on
-      turnOnLightSource: function(index) {
+      turnOnLightSource: function() {
         isLightSourceOn = true;
       },
 
-      turnOffLightSource: function(index) {
+      turnOffLightSource: function() {
         isLightSourceOn = false;
+      },
+
+      setLightSourceAngle: function(angle) {
+        lightSource.angleOfIncidence = angle;
+      },
+
+      setLightSourceFrequency: function(freq) {
+        lightSource.frequency = freq;
+      },
+
+      setLightSourcePeriod: function(period) {
+        lightSource.radiationPeriod = period;
+      },
+
+      setLightSourceNumber: function(number) {
+        lightSource.numberOfBeams = number;
       },
 
       getPhotons: function() {
@@ -688,6 +715,11 @@ define(function(require) {
 
       getRadiationlessEmissionProbability: function() {
         return pRadiationless;
+      },
+
+      getLightSource: function() {
+        if (!lightSource) return undefined;
+        return lightSource;
       },
 
       getState: function() {

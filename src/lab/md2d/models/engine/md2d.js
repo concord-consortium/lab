@@ -44,12 +44,8 @@ define(function (require, exports) {
           T: K
       */
       convertKEtoT = function(totalKEinMWUnits, N) {
-        // In 2 dimensions, kT = (2/N_df) * KE
-
-        var N_df = 2 * N,
-            averageKEinMWUnits = (2 / N_df) * totalKEinMWUnits,
+        var averageKEinMWUnits = totalKEinMWUnits / N,
             averageKEinJoules = constants.convert(averageKEinMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.JOULE });
-
         return averageKEinJoules / BOLTZMANN_CONSTANT_IN_JOULES;
       },
 
@@ -62,10 +58,9 @@ define(function (require, exports) {
           KE: "MW Energy Units" (Dalton * nm^2 / fs^2)
       */
       convertTtoKE = function(T, N) {
-        var N_df = 2 * N,
-            averageKEinJoules  = T * BOLTZMANN_CONSTANT_IN_JOULES,
+        var averageKEinJoules  = T * BOLTZMANN_CONSTANT_IN_JOULES,
             averageKEinMWUnits = constants.convert(averageKEinJoules, { from: unit.JOULE, to: unit.MW_ENERGY_UNIT }),
-            totalKEinMWUnits = averageKEinMWUnits * N_df / 2;
+            totalKEinMWUnits = averageKEinMWUnits * N;
 
         return totalKEinMWUnits;
       },
@@ -218,11 +213,6 @@ define(function (require, exports) {
         // An object that contains references to the above radial-bond-property arrays.
         // Left undefined if there are no radial bonds.
         radialBonds,
-
-        // An array of individual radial bond index values and properties.
-        // Each object contains all radial bond properties (atom1, atom2, length, strength, style)
-        // and additionally (x,y) coordinates of bonded atoms defined as x1, y1, x2, y2 properties.
-        radialBondResults,
 
         // radialBondMatrix[i][j] === true when atoms i and j are "radially bonded"
         // radialBondMatrix[i][j] === undefined otherwise
@@ -474,14 +464,6 @@ define(function (require, exports) {
           pairwiseLJProperties = new PairwiseLJProperties(engine);
 
           radialBondMatrix = [];
-
-          // Initialize radialBondResults[] array consisting of hashes of radial bond
-          // index numbers and transposed radial bond properties.
-
-          // FIXME. Why is the engine computing this? The modeler exists to insulate the engine
-          // code from view concerns such as this "results" array.
-          // See https://www.pivotaltracker.com/story/show/50086303
-          radialBondResults = engine.radialBondResults = [];
         },
 
         // Throws an informative error if a developer tries to use the setCoefficients method of an
@@ -1504,9 +1486,6 @@ define(function (require, exports) {
 
         // Calculate distance and force (if distance < cut-off distance).
         calculateLJInteraction = function(i, j) {
-          // Fast path.
-          if (radialBondMatrix && radialBondMatrix[i] && radialBondMatrix[i][j]) return;
-
           var elI = element[i],
               elJ = element[j],
               dx  = x[j] - x[i],
@@ -1517,6 +1496,11 @@ define(function (require, exports) {
           if (updateNeighborList && rSq < cutoffNeighborListSquared[elI][elJ]) {
             neighborList.markNeighbors(i, j);
           }
+
+          // Don't calculate LJ interaction between bonded atoms. However note that bonded atoms
+          // will be marked as neighbors during list update - it's necessary to avoid divergence
+          // when the bond is removed.
+          if (radialBondMatrix && radialBondMatrix[i] && radialBondMatrix[i][j]) return;
 
           if (rSq < cutoffDistance_LJ_sq[elI][elJ]) {
             fOverR = ljCalculator[elI][elJ].forceOverDistanceFromSquaredDistance(rSq);
@@ -2603,9 +2587,7 @@ define(function (require, exports) {
         // Set all properties from props hash.
         for (key in props) {
           if (props.hasOwnProperty(key)) {
-            radialBonds[key][i]       = props[key];
-            // Update radial bond results also.
-            radialBondResults[i][key] = props[key];
+            radialBonds[key][i] = props[key];
           }
         }
 
@@ -2836,15 +2818,6 @@ define(function (require, exports) {
           }
         }
 
-        // Also in radial bonds results...
-        // TODO: they should be recalculated while computing output state.
-        for (i = 0, len = radialBondResults.length; i < len; i++) {
-          if (radialBondResults[i].atom1 > idx)
-            radialBondResults[i].atom1--;
-          if (radialBondResults[i].atom2 > idx)
-            radialBondResults[i].atom2--;
-        }
-
         // Recalculate radial bond matrix, as indices have changed.
         calculateRadialBondMatrix();
 
@@ -2901,8 +2874,6 @@ define(function (require, exports) {
 
         N_radialBonds++;
 
-        // Add results object.
-        radialBondResults[N_radialBonds - 1] = {idx: N_radialBonds - 1};
         // Set new radial bond properties.
         engine.setRadialBondProperties(N_radialBonds - 1, props);
 
@@ -2953,8 +2924,6 @@ define(function (require, exports) {
         }
 
         N_radialBonds--;
-
-        arrays.remove(radialBondResults, idx);
 
         // Recalculate radial bond matrix.
         calculateRadialBondMatrix();
@@ -3564,9 +3533,6 @@ define(function (require, exports) {
           // Move obstacles using very simple integration.
           updateObstaclesPosition();
 
-          // Adjust temperature, e.g. when heat bath is enabled.
-          adjustTemperature();
-
           // If solvent is different from vacuum (water or oil), ensure that
           // the total momentum of each molecule is equal to zero. This
           // prevents amino acids chains from drifting towards one boundary of
@@ -3578,6 +3544,8 @@ define(function (require, exports) {
 
           pluginController.callPluginFunction('performActionWithinIntegrationLoop', [neighborList, dt, time]);
 
+          // Adjust temperature, e.g. when heat bath is enabled.
+          adjustTemperature();
         } // end of integration loop
 
         // Collisions between particles and obstacles are collected during
@@ -3832,13 +3800,6 @@ define(function (require, exports) {
           if (useCoulombInteraction && charge[i1] && charge[i2]) {
             PE -= coulomb.potential(Math.sqrt(r_sq), charge[i1], charge[i2], dielectricConst, realisticDielectricEffect);
           }
-
-          // Also save the updated position of the two bonded atoms
-          // in a row in the radialBondResults array.
-          radialBondResults[i].x1 = x[i1];
-          radialBondResults[i].y1 = y[i1];
-          radialBondResults[i].x2 = x[i2];
-          radialBondResults[i].y2 = y[i2];
         }
 
         // Angular bonds.
@@ -3916,7 +3877,10 @@ define(function (require, exports) {
         state.omega_CM       = omega_CM;
 
         // "micro" state. TODO: put radial bonds, etc here.
+        // TODO2: do we really need to put all objects here? Can't modeler ask about interesting
+        // arrays using just some getter or property, e.g.: engine.getAtoms() or engine.atoms?
         state.atoms = atoms;
+        state.radialBonds = radialBonds;
 
         // Let plugins modify output state, e.g. PE, KE etc.
         pluginController.callPluginFunction('processOutputState', [state]);
@@ -4172,6 +4136,13 @@ define(function (require, exports) {
         return radialBondsChanged;
       },
 
+      /**
+       * Returns true when atoms i and j are "radially bonded", false otherwise.
+       */
+      atomsBonded: function(i, j) {
+        return !!(radialBondMatrix && radialBondMatrix[i] && radialBondMatrix[i][j]);
+      },
+
       // ######################################################################
       //                State definition of the engine
 
@@ -4236,9 +4207,10 @@ define(function (require, exports) {
       // FIXME. Not a sustainable pattern. This is just a temporary pass-through of modeler-level
       // methods that are implemented in the quantumDynamics plugin, because for now the plugin is
       // only callable from the engine.
-      callPluginAccessor: function(accessorMethodName) {
+      callPluginAccessor: function(accessorMethodName, args) {
         var returnValue;
-        pluginController.callPluginFunction(accessorMethodName, [], function(_) {
+            args = args || [];
+        pluginController.callPluginFunction(accessorMethodName, args, function(_) {
           returnValue = _;
         });
         return returnValue;
