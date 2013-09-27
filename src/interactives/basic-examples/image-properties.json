@@ -1,0 +1,41 @@
+{
+  "title": "Image Property Manipulation",
+  "publicationStatus": "public",
+  "subtitle": "Demonstration of how to get and set image properties",
+  "about": [],
+  "models": [
+    {
+      "type": "md2d",
+      "id": "forceDirectionVDG$0",
+      "url": "imports/legacy-mw-content/converted/interactions/force-direction-VDG-negative/forceDirectionVDG$0.json",
+      "importedFrom": "imports/legacy-mw-content/interactions/force-direction-VDG-negative/forceDirectionVDG$0.mml",
+      "viewOptions": {
+        "controlButtons": "reset",
+        "imageMapping": {
+          "vdg.png": "vdg.svg"
+        }
+      }
+    }
+  ],
+  "parameters": [
+    {
+      "name": "vdg-visible",
+      "initialValue": true,
+      "onChange": [
+        "if (value) {",
+        "  setImageProperties(0,{imageX: 1.29, imageY: 1.36});",
+        "} else {",
+        "  setImageProperties(0,{imageX: 1, imageY: -10});",
+        "}"
+      ]
+    }
+  ],
+  "components": [
+    {
+      "type": "checkbox",
+      "id": "toggle-visibility",
+      "text": "VDG Visible?",
+      "property": "vdg-visible"
+    }
+  ]
+}

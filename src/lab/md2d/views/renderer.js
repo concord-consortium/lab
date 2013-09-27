@@ -2190,6 +2190,7 @@ define(function(require) {
       model.on('addRadialBond', redrawClickableObjects(setupRadialBonds));
       model.on('removeRadialBond', redrawClickableObjects(setupRadialBonds));
       model.on('textBoxesChanged', redrawClickableObjects(drawTextBoxes));
+      model.on('imagesChanged', redrawClickableObjects(drawImageAttachment));
       model.on('addElectricField', setupElectricField);
       model.on('removeElectricField', setupElectricField);
       model.on('changeElectricField', setupElectricField);
