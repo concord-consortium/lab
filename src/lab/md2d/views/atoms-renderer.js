@@ -1,4 +1,4 @@
-/*global define: false, d3: false, alert */
+/*global define: false, d3: false */
 /*jshint multistr: true */
 
 define(function(require) {
@@ -6,6 +6,7 @@ define(function(require) {
   var PIXI     = require('pixi'),
       canvg    = require('canvg'),
       mustache = require('mustache'),
+      alert    = require('common/alert'),
 
       atomSVG =
       '<svg x="0px" y="0px" width="{{ width }}px" height="{{ height }}px" \
@@ -94,10 +95,15 @@ define(function(require) {
 
         elementTex = {},
 
+        modelWidth,
+        modelHeight,
+
         // Rendering options:
         renderMode = {};
 
     function init() {
+      modelWidth = model.get("width");
+      modelHeight = model.get("height");
       readRenderingOptions();
       // Modes require .setup() call:
       model.addPropertiesListener(RENDERING_OPTIONS, function () {
@@ -216,56 +222,66 @@ define(function(require) {
       };
     }
 
-    function mouseDown() {
-      modelView.hitTestFlag = true;
+    function dragBehavior(viewAtom, data) {
+      var i = viewAtom.i,
+          x, y, originX, originY,
+          parentOffset, parentOversampling,
+          dragged = false;
 
-      if (model.isStopped()) {
-        this.dragging = true;
-        this.originX = modelAtoms[this.i].x;
-        this.originY = modelAtoms[this.i].y;
-      } else if (modelAtoms[this.i].draggable) {
-        this.dragging = true;
-        model.liveDragStart(this.i);
-      }
-    }
+      $(window).on("mousemove.drag", function (e) {
+        if (!dragged) {
+          // Lazily initialize drag process when user really drags an atom (not only clicks it).
+          if (model.isStopped()) {
+            originX = modelAtoms[i].x;
+            originY = modelAtoms[i].y;
+          } else if (modelAtoms[i].draggable) {
+            model.liveDragStart(i);
+          }
 
-    function mouseMove(data) {
-      modelView.hitTestFlag = true;
+          var $target = $(data.originalEvent.target);
+          parentOffset = $target.offset();
+          parentOversampling = $target.attr("width") / $target.width();
 
-      if (this.dragging) {
-        var newPosition = data.getLocalPosition(this.parent),
-            x = m2px.invert(newPosition.x),
-            y = m2pxInv.invert(newPosition.y);
+          dragged = true;
+        }
+
+        x = m2px.invert((e.clientX - parentOffset.left) * parentOversampling);
+        y = m2pxInv.invert((e.clientY - parentOffset.top) * parentOversampling);
+
+        var bbox = model.getMoleculeBoundingBox(i);
+        if (bbox.left + x < 0) x = 0 - bbox.left;
+        if (bbox.right + x > modelWidth) x = modelWidth - bbox.right;
+        if (bbox.bottom + y < 0) y = 0 - bbox.bottom;
+        if (bbox.top + y > modelHeight) y = modelHeight - bbox.top;
 
         if (model.isStopped()) {
-          setAtomPosition(this.i, x, y, false, true);
+          setAtomPosition(i, x, y, false, true);
           modelView.update();
         } else {
           model.liveDrag(x, y);
         }
-      }
-    }
+      }).one("mouseup.drag", function () {
+        $(window).off("mousemove.drag");
 
-    function mouseUp(data) {
-      modelView.hitTestFlag = true;
-
-      if (this.dragging) {
-        var newPosition = data.getLocalPosition(this.parent),
-            x = m2px.invert(newPosition.x),
-            y = m2pxInv.invert(newPosition.y);
-
-        this.dragging = false;
+        // If user only clicked an atom (mousedown + mouseup, no mousemove), there is nothing to do.
+        if (!dragged) return;
 
         if (model.isStopped()) {
-          if (!setAtomPosition(this.i, x, y, true, true)) {
-            alert("You can't drop the atom there"); // should be changed to a nice Lab alert box
-            setAtomPosition(this.i, this.originX, this.originY, false, true);
+          if (!setAtomPosition(i, x, y, true, true)) {
+            alert("You can't drop the atom there");
+            setAtomPosition(i, originX, originY, false, true);
             modelView.update();
           }
         } else {
           model.liveDragEnd();
         }
-      }
+      });
+    }
+
+    function mouseDown(data) {
+      modelView.hitTestFlag = true;
+
+      dragBehavior(this, data);
     }
 
     function setAtomPosition(i, xpos, ypos, checkPosition, moveMolecule) {
@@ -300,8 +316,6 @@ define(function(require) {
 
           atom.setInteractive(true);
           atom.mousedown = atom.touchstart = mouseDown;
-          atom.mouseup = atom.mouseupoutside = atom.touchend = atom.touchendoutside = mouseUp;
-          atom.mousemove = atom.touchmove = mouseMove;
 
           if (renderMode.keShading) {
             keSprite = new PIXI.Sprite(getAtomTexture(i, KE_SHADING_MAX_COLORS));
