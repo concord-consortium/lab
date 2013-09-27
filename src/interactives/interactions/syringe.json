@@ -11,13 +11,113 @@
       "importedFrom": "imports/legacy-mw-content/interactions/syringe/syringe$0.mml",
       "viewOptions": {
         "controlButtons": "play_reset"
-      }
+      },
+      "onLoad": [
+        "start();",
+        "var indexPlunger = get('index-plunger'),",
+        "    minX = get('plunger-min'),",
+        "    maxX = get('plunger-max'),",
+        "    timeStepsPerTick = get('timeStepsPerTick');",
+        "setObstacleProperties(indexPlunger,{mass: 9999999999});",
+        "callEvery(timeStepsPerTick,function(){",
+        "  var prop = getObstacleProperties(indexPlunger);",
+        "  if (prop.x < minX) {",
+        "    setObstacleProperties(indexPlunger, {externalAx: 0, vx: 0, x: minX});",
+        "  } else if (prop.x > maxX) {",
+        "    setObstacleProperties(indexPlunger, {externalAx: 0, vx: 0, x: maxX});",
+        "  }",
+        "});"
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "index-plunger",
+      "initialValue": 4
+    },
+    {
+      "name": "plunger-min",
+      "initialValue": 1.67
+    },
+    {
+      "name": "plunger-max",
+      "initialValue": 2.95
+    },
+    {
+      "name": "index-plug",
+      "initialValue": 0
+    },
+    {
+      "name": "notPlugged",
+      "initialValue": false
     }
   ],
   "components": [
+    {
+      "type": "button",
+      "id": "plunger-pull-out",
+      "text": "Plunger ⇥ ",
+      "action": [
+        "setObstacleProperties(get('index-plunger'), {externalAx: 0.0000005, mass: 2500});"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "plunger-push-in",
+      "text": "⇤ Plunger",
+      "action": [
+        "setObstacleProperties(get('index-plunger'), {externalAx: -0.0000005, mass: 2500});"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "plunger-lock",
+      "text": "Lock plunger ⇎",
+      "action": [
+        "setObstacleProperties(get('index-plunger'), {externalAx: 0, vx: 0, mass: 999999999});"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "plunger-release",
+      "text": "Release plunger ⬄",
+      "action": [
+        "setObstacleProperties(get('index-plunger'), {externalAx: 0, vx: 0, mass: 2500});"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "plug-remove",
+      "text": "Remove stopper",
+      "action": [
+        "setShapeProperties(get('index-plug'), {y: -10});",
+        "set('notPlugged',true);"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "plug-add",
+      "text": "Add stopper",
+      "action": [
+        "if (get('notPlugged')) {",
+        "  var moleculesInside = getAtomsWithinShape(1),",
+        "      props,",
+        "      w = get('width'),",
+        "      h = get('height');",
+        "  while (moleculesInside.length > 0) {",
+        "    setAtomProperties(moleculesInside[0], {x: 0.1 + Math.random() * (w-0.2)});",
+        "    moleculesInside = getAtomsWithinShape(1);",
+        "  }",
+        "}",
+        "setShapeProperties(get('index-plug'), {y: 0.78});",
+        "set('notPlugged',true);"
+      ]
+    }
   ],
   "layout": {
     "bottom": [
+      ["plunger-push-in", "plunger-pull-out", "plunger-lock", "plunger-release"],
+      ["plug-remove","plug-add"]
     ]
   }
 }
