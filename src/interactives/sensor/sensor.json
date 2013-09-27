@@ -35,8 +35,7 @@
         "  }",
         "});",
         "callEvery(1, function() {",
-        "   var experimentTime = Math.floor(getTime() - get('experimentStartTime'));",
-        "   if ((experimentTime >= get('experimentDuration')) && get('durationEnabled')) {",
+        "   if ((Math.floor(getTime()) >= get('experimentDuration')) && get('durationEnabled')) {",
         "     stop();",
         "     setComponentDisabled('start-button',true);",
         "   }",
@@ -53,10 +52,6 @@
       "initialValue": false
     },
     {
-      "name": "experimentStartTime",
-      "initialValue": 0
-    },
-    {
       "name": "experimentDuration",
       "initialValue": 5,
       "onChange": "set('collectionTime', value*1.1);"
@@ -65,7 +60,7 @@
       "name": "durationEnabled",
       "initialValue": true
     }
- ],
+  ],
   "hideExportDataControl": true,
   "components": [
     {
