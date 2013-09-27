@@ -330,7 +330,7 @@
    <void method="add"> 
     <object class="org.concord.mw2d.models.RectangularObstacle$Delegate"> 
      <void property="height"> 
-      <double>349.0</double> 
+      <double>428.0</double> 
      </void> 
      <void property="visible"> 
       <boolean>false</boolean> 
@@ -342,14 +342,14 @@
       <double>418.0</double> 
      </void> 
      <void property="y"> 
-      <double>84.0</double> 
+      <double>5.0</double> 
      </void> 
     </object> 
    </void> 
    <void method="add"> 
     <object class="org.concord.mw2d.models.RectangularObstacle$Delegate"> 
      <void property="height"> 
-      <double>349.0</double> 
+      <double>429.0</double> 
      </void> 
      <void property="visible"> 
       <boolean>false</boolean> 
@@ -361,7 +361,7 @@
       <double>509.0</double> 
      </void> 
      <void property="y"> 
-      <double>85.0</double> 
+      <double>5.0</double> 
      </void> 
     </object> 
    </void> 
@@ -393,7 +393,7 @@
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1379520324000</long> 
+     <long>1379536059000</long> 
     </object> 
    </void> 
    <void method="put"> 
@@ -402,7 +402,7 @@
    </void> 
    <void method="put"> 
     <string>size</string> 
-    <long>97215</long> 
+    <long>98076</long> 
    </void> 
    <void method="put"> 
     <string>codebase</string> 
@@ -1187,12 +1187,6 @@ endif;</string>
       <void property="attachmentPosition"> 
        <byte>11</byte> 
       </void> 
-      <void property="callOutPoint"> 
-       <object class="java.awt.Point"> 
-        <int>20</int> 
-        <int>200</int> 
-       </object> 
-      </void> 
       <void property="font"> 
        <object id="Font0" class="java.awt.Font"> 
         <string>Arial-BoldMT</string> 
@@ -1225,12 +1219,6 @@ endif;</string>
       <void property="attachmentPosition"> 
        <byte>11</byte> 
       </void> 
-      <void property="callOutPoint"> 
-       <object class="java.awt.Point"> 
-        <int>20</int> 
-        <int>200</int> 
-       </object> 
-      </void> 
       <void property="font"> 
        <object idref="Font0"/> 
       </void> 
@@ -1261,12 +1249,6 @@ endif;</string>
       </void> 
       <void property="borderType"> 
        <int>2</int> 
-      </void> 
-      <void property="callOutPoint"> 
-       <object class="java.awt.Point"> 
-        <int>20</int> 
-        <int>200</int> 
-       </object> 
       </void> 
       <void property="fillMode"> 
        <object class="org.concord.modeler.draw.FillMode$ColorFill"> 
@@ -1313,12 +1295,6 @@ are made from tiny particles.</string>
       <void property="attachmentPosition"> 
        <byte>11</byte> 
       </void> 
-      <void property="callOutPoint"> 
-       <object class="java.awt.Point"> 
-        <int>20</int> 
-        <int>200</int> 
-       </object> 
-      </void> 
       <void property="font"> 
        <object id="Font1" class="java.awt.Font"> 
         <string>ArialMT</string> 
@@ -1347,12 +1323,6 @@ are made from tiny particles.</string>
      <object class="org.concord.mw2d.models.TextBoxComponent$Delegate"> 
       <void property="attachmentPosition"> 
        <byte>11</byte> 
-      </void> 
-      <void property="callOutPoint"> 
-       <object class="java.awt.Point"> 
-        <int>20</int> 
-        <int>200</int> 
-       </object> 
       </void> 
       <void property="font"> 
        <object idref="Font1"/> 
