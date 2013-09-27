@@ -793,20 +793,21 @@ parseMML = (mmlString) ->
       if callout and calloutPointDef and calloutPointDef.length > 1
         calloutPoint = (parseInt(cheerio(el).text()) for el in calloutPointDef)
       $font = getNode $textBoxNode.find "[property=font] > object"
-      fontScale = $font.children().eq(2).text() / 12
+      fontSize = $font.children().eq(2).text() or 12
 
       [x, y] = toNextgenCoordinates $x, $y
+      [fontSize] = toNextgenLengths fontSize
 
       textBox = { text, x, y, layer }
       textBox.frame = frame if frame
       textBox.color = fontColor if fontColor
+      textBox.fontSize = fontSize
       if calloutPoint
         textBox.calloutPoint = toNextgenCoordinates calloutPoint[0], calloutPoint[1]
       if textHostType
         textBox.hostType = textHostType
         textBox.hostIndex = textHostIndex
       textBox.backgroundColor = backgroundTextColor if backgroundTextColor
-      textBox.fontScale = fontScale if fontScale
 
       # default anchor is upper-left when importing from Java MW
       textBox.anchor = "upper-left"
