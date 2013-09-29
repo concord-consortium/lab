@@ -32,13 +32,15 @@
         "modelSampleRate": 60
       },
       "onLoad": [
+        "function setGraphRange() {",
+        "  setComponentAttributes('propertiesGraph', {'xmax': get('experimentDuration')*1.1});",
+        "}",
         "setComponentDisabled('start-button', false);",
         "setComponentDisabled('stop-button', true);",
         "function setButtonState() {",
-        "//  setComponentDisabled('start-button', !get('isPlayable'));",
-        "  setComponentDisabled('stop-button', get('isPlayable'));",
-        "  setComponentDisabled('new-run-button', ! (get('hasPlayed') && get('isPlayable')));",
-        "  setComponentDisabled('analyze-data-button', ! (get('hasPlayed') && get('isPlayable')));",
+        "  setComponentDisabled('stop-button', isStopped());",
+        "  setComponentDisabled('new-run-button', !get('hasPlayed'));",
+        "  setComponentDisabled('analyze-data-button', !(get('hasPlayed') && get('isStopped') && canExportData() && isUnexportedDataPresent()));",
         "}",
         "function resetAngle() {",
         "  set({startingAngle: get('startingAngle')});",
@@ -53,12 +55,18 @@
         "onPropertyChange('damping', resetAngle);",
         "onPropertyChange('startingAngle', stopMotion);",
         "onPropertyChange('isPlayable', setButtonState);",
+        "//onPropertyChange('isStopped', setButtonState);",
         "onPropertyChange('hasPlayed', setButtonState);",
+        "setButtonState();",
         "callEvery(1, function() {",
-        "   var experimentTime = getTime() - get('experimentStartTime');",
-        "console.log(getTime()); console.log(experimentTime); console.log(get('experimentDuration'));",
-        "   if (experimentTime > get('experimentDuration')) stop();",
-        "});"
+        "   if ((Math.floor(getTime()) >= get('experimentDuration')) && get('durationEnabled')) {",
+        "     stop();",
+        "     setComponentDisabled('start-button',true);",
+        "   }",
+        "});",
+        "onPropertyChange('experimentDuration', setGraphRange);",
+        "onPropertyChange('durationEnabled', function(){ setComponentDisabled('duration-slider', !(get('durationEnabled'))); });",
+        "setGraphRange();"
       ]
     }
   ],
@@ -76,13 +84,13 @@
     }
   ],
   "parameters": [
-     {
-      "name": "experimentStartTime",
-      "initialValue": 0
-    },
     {
       "name": "experimentDuration",
-     "initialValue": 5
+      "initialValue": 5
+    },
+    {
+      "name": "durationEnabled",
+      "initialValue": true
     },
     {
       "name": "gravity",
@@ -160,7 +168,7 @@
       "action": [
         "setComponentDisabled('start-button', false);",
         "reset({",
-        "  retainParameters: ['gravity', 'rodLength', 'startingAngle', 'ballMass', 'damping','experimentDuration'],",
+        "  retainParameters: ['gravity', 'rodLength', 'startingAngle', 'ballMass', 'damping','experimentDuration', 'durationEnabled'],",
         "  cause: 'new-run'",
         "});"
       ]
@@ -179,22 +187,27 @@
       "type": "slider",
       "id": "duration-slider",
       "min": 1,
-      "max": 10,
-      "displayValue": "return format('.1f')(value)",
+      "max": 30,
+      "displayValue": "return format('.0f')(value)",
       "labels": [
         {
           "value": 1,
           "label": "1"
         },
         {
-          "value": 10,
-          "label": "10"
+          "value": 30,
+          "label": "30"
         }
       ],
-      "steps": 9,
-      "width": "12em",
-      "title": "Duration of Experiment (s)",
+      "steps": 29,
+      "width": "8.5em",
+      "title": "Duration of Exp. (s)",
       "property": "experimentDuration"
+    },
+    {
+      "type": "checkbox",
+      "id": "duration-enabled-checkbox",
+      "property": "durationEnabled"
     },
     {
       "type": "slider",
@@ -330,7 +343,8 @@
         "stop-button",
         "analyze-data-button",
         "new-run-button",
-        "duration-slider"
+        "duration-slider",
+        "duration-enabled-checkbox"
       ],
       [
         "gravity-slider",
