@@ -427,6 +427,29 @@ define(function(require) {
       window.setTimeout(function() {
         self.emit('sensorUnplugged');
       }, 10);
+    },
+
+    callbackTable: [],
+    registerCallback: function(callback) {
+      this.callbackTable.push(callback);
+      return this.callbackTable.length-1;
+    },
+
+    handleCallback: function(index, value) {
+      var callback, self = this;
+      if (typeof(index) === "string" && this[index]) {
+        // assume this is meant to call a direct method on this class instance
+        callback = this[index];
+        this[index] = null;
+      } else if (this.callbackTable[index]) {
+        callback = this.callbackTable[index];
+      }
+
+      if (callback) {
+        setTimeout(function() {
+          callback.apply(self, value);
+        }, 5);
+      }
     }
   });
 
