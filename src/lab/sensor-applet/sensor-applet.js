@@ -302,28 +302,32 @@ define(function(require) {
       });
     },
 
-    readSensor: function() {
-      var values;
+    // callback: function(error, values) {}
+    readSensor: function(callback) {
+      var self = this;
       if (this.getState() !== 'stopped') {
-        throw new Error("Tried to read the sensor value from non-stopped state '" + this.getState() + '"');
+        callback.call(this, new Error("Tried to read the sensor value from non-stopped state '" + this.getState() + '"'), null);
       }
 
       // because of IE multi threading applet behavior we need to track our state before calling
       // the applet
       this._state = 'reading sensor';
       this.isSensorConnected(function(connected) {
+        self._state = 'stopped';
         if (connected) {
-          values = this.appletInstance.getConfiguredSensorsValues(this.deviceType);
-          this._state = 'stopped';
-          if (!values || values.length === 0) {
-            throw new Error("readSensor: no sensor values to report");
-          }
+          var valuesCallback = function(values) {
+            if (!values || values.length === 0) {
+              callback.call(self, new Error("readSensor: no sensor values to report"), null);
+            } else {
+              callback.call(self, null, values);
+            }
+          };
+          var callbackIdx = self.registerCallback(valuesCallback);
+          self.appletInstance.getConfiguredSensorsValues(self.deviceType, ""+callbackIdx);
         } else {
-          this._state = 'stopped';
-          throw new errors.SensorConnectionError("readSensor: sensor is not connected");
+          callback.call(self, new errors.SensorConnectionError("readSensor: sensor is not connected"), null);
         }
       });
-      return values;
     },
 
     start: function() {
@@ -437,6 +441,8 @@ define(function(require) {
 
     callbackTable: [],
     registerCallback: function(callback) {
+      // TODO We might want to set up a "reaper" function to error the callback if a certain
+      // amount of time passes and the callback hasn't been called.
       this.callbackTable.push(callback);
       return this.callbackTable.length-1;
     },

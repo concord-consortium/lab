@@ -263,25 +263,26 @@ define(function(require) {
       if (sensorPollingIntervalID) {
         clearInterval(sensorPollingIntervalID);
       }
-
-      sensorPollingIntervalID = setInterval(function() {
-        makeInvalidatingChange(function() {
-          try{
-            rawSensorValue = applet.readSensor()[0];
-          } catch(error) {
-            clearInterval(sensorPollingIntervalID);
-            if(error instanceof appletErrors.SensorConnectionError){
-              handleSensorConnectionError();
-            } else {
-              throw error;
+      var handleSensorValues = function(error, values) {
+        if (error) {
+          clearInterval(sensorPollingIntervalID);
+          if(error instanceof appletErrors.SensorConnectionError){
+            handleSensorConnectionError();
+          } else {
+            throw error;
+          }
+        } else {
+          makeInvalidatingChange(function() {
+            rawSensorValue = values[0];
+            if (isTaring) {
+              model.properties.tareValue = rawSensorValue;
+              isTaring = false;
             }
-            return;
-          }
-          if (isTaring) {
-            model.properties.tareValue = rawSensorValue;
-            isTaring = false;
-          }
-        });
+          });
+        }
+      };
+      sensorPollingIntervalID = setInterval(function() {
+        applet.readSensor(handleSensorValues);
       }, 1000/sensorPollsPerSecond);
     }
 
