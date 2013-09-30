@@ -141,43 +141,45 @@ define(function(require) {
     },
 
     /**
-      Returns true if the correct device type is connected.
-
-      NOTE: This will throw if the applet hasn't been initialized yet (which occurs asynchronously
-      after the <applet> tag is appended to the DOM).
+      Passes true to the callback if the correct device type is connected.
     */
-    isSensorConnected: function() {
-      var attachedSensors;
-      var i;
-
-      // Note this appears only to return a meaningful result when first called. After that, it
-      // returns the same value for a given deviceType, even if the device has been unplugged from
-      // the USB port.
-      if (!this.appletInstance.isInterfaceConnected(this.deviceType)) {
-        return false;
-      }
-
-      try {
-        attachedSensors = this.appletInstance.getAttachedSensors(this.deviceType) || [];
-      } catch (e) {
-        // isInterfaceConnected is not a wholly reliable check, and calling getAttachedSensors with
-        // the wrong deviceType may throw (?).
-        return false;
-      }
-      // FIXME we should use the applet configure method to check if the right sensors are attached
-      // instead of doing this comparison here
-      // For now this is skipped if there is more than one sensorDefinition
-      if(this.sensorDefinitions.length === 1) {
-        for (i = 0; i < attachedSensors.length; i++) {
-          if (this.appletInstance.getTypeConstantName(attachedSensors[i].getType()) ===
-                this.sensorDefinitions[0].typeConstantName) {
-            return true;
+    isSensorConnected: function(callback) {
+      var self = this, nextCallback, nextCallbackIdx;
+      setTimeout(function() {
+        nextCallback = function(connected) {
+          // Note this appears only to return a meaningful result when first called. After that, it
+          // returns the same value for a given deviceType, even if the device has been unplugged from
+          // the USB port.
+          if(!connected) {
+            callback.call(self, false);
+          } else {
+            nextCallback = function() {
+              var attachedSensors = self.appletInstance.getCachedAttachedSensors();
+              if (attachedSensors) {
+                // FIXME we should use the applet configure method to check if the right sensors are attached
+                // instead of doing this comparison here
+                // For now this is skipped if there is more than one sensorDefinition
+                if(self.sensorDefinitions.length === 1) {
+                  for (var i = 0; i < attachedSensors.length; i++) {
+                    if (self.appletInstance.getTypeConstantName(attachedSensors[i].getType()) ===
+                          self.sensorDefinitions[0].typeConstantName) {
+                      callback.call(self, true);
+                    }
+                  }
+                } else {
+                  callback.call(self, true);
+                }
+              } else {
+                callback.call(self, false);
+              }
+            };
+            nextCallbackIdx = self.registerCallback(nextCallback);
+            self.appletInstance.getAttachedSensors(self.deviceType, ""+nextCallbackIdx);
           }
-        }
-      } else {
-        return true;
-      }
-      return false;
+        };
+        nextCallbackIdx = self.registerCallback(nextCallback);
+        self.appletInstance.isInterfaceConnected(self.deviceType, ""+nextCallbackIdx);
+      });
     },
 
     _state: 'not appended',
@@ -309,16 +311,18 @@ define(function(require) {
       // because of IE multi threading applet behavior we need to track our state before calling
       // the applet
       this._state = 'reading sensor';
-      if (this.isSensorConnected()) {
-        values = this.appletInstance.getConfiguredSensorsValues(this.deviceType);
-        this._state = 'stopped';
-        if (!values || values.length === 0) {
-          throw new Error("readSensor: no sensor values to report");
+      this.isSensorConnected(function(connected) {
+        if (connected) {
+          values = this.appletInstance.getConfiguredSensorsValues(this.deviceType);
+          this._state = 'stopped';
+          if (!values || values.length === 0) {
+            throw new Error("readSensor: no sensor values to report");
+          }
+        } else {
+          this._state = 'stopped';
+          throw new errors.SensorConnectionError("readSensor: sensor is not connected");
         }
-      } else {
-        this._state = 'stopped';
-        throw new errors.SensorConnectionError("readSensor: sensor is not connected");
-      }
+      });
       return values;
     },
 
@@ -349,13 +353,15 @@ define(function(require) {
       // would require having some way to detect when to leave that state. We lack a way to
       // automatically detect that the sensor has been plugged in, and we don't want to force the
       // user to tell us.
-      if (!this.isSensorConnected()) {
-        this._state = 'stopped';
-        throw new errors.SensorConnectionError("Device reported the requested sensor type was not attached.");
-      }
-
-      this.appletInstance.startCollecting();
-      this._state = 'started';
+      this.isSensorConnected(function(connected) {
+        if (!connected) {
+          this._state = 'stopped';
+          throw new errors.SensorConnectionError("Device reported the requested sensor type was not attached.");
+        } else {
+          this.appletInstance.startCollecting();
+          this._state = 'started';
+        }
+      });
     },
 
     stop: function() {
