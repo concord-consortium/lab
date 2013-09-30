@@ -343,6 +343,7 @@ define(function(require) {
         setTimeout(function(){
           self.start();
         }, 100);
+        return;
       }
 
       if (this.getState() !== 'stopped') {
