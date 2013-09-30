@@ -2206,8 +2206,14 @@ define(function(require) {
       model.addPropertiesListener(["electricFieldDensity", "showElectricField", "electricFieldColor"],
         setupElectricField);
 
-      model.on('addAtom', redrawClickableObjects(setupParticles));
-      model.on('removeAtom', redrawClickableObjects(repaint));
+      model.on('addAtom', redrawClickableObjects(function () {
+        setupParticles();
+        modelView.renderCanvas();
+      }));
+      model.on('removeAtom', redrawClickableObjects(function () {
+        setupParticles();
+        modelView.renderCanvas();
+      }));
       model.on('addRadialBond', redrawClickableObjects(setupRadialBonds));
       model.on('removeRadialBond', redrawClickableObjects(setupRadialBonds));
       model.on('textBoxesChanged', redrawClickableObjects(drawTextBoxes));
