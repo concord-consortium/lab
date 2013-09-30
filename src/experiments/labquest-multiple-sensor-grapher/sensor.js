@@ -50,6 +50,7 @@ sensor.AppletGrapher = function(applet, container, graphs, sensorConfig, sampleI
   this.AddButtons();
   this.appletInitializationTimer = false;
   this.appletReadyCallback = appletReadyCallback;
+  this.callbackTable = [];
   this.StartAppletInitializationTimer();
 };
 
@@ -82,38 +83,44 @@ sensor.AppletGrapher.prototype.InitSensorInterface = function() {
   } catch (e) {
     // Do nothing--we'll try again in the next timer interval.
   }
-  if(self.applet_ready && self.applet.isInterfaceConnected(self.sensorConfig.deviceType)) {
-    console.log("Applet was ready");
-    var sensor, sensorReq;
-    var sensors = [];
-    for (var i = 0; i < self.sensorConfig.sensors.length; i++) {
-      sensor = self.sensorConfig.sensors[i];
-      sensorReq = self.applet.getSensorRequest(sensor.type);
-      if (sensor.type == 'manual') {
-        sensorReq.setDisplayPrecision(sensor.precision);
-        sensorReq.setRequiredMin(sensor.min);
-        sensorReq.setRequiredMax(sensor.max);
-        sensorReq.setStepSize(sensor.stepSize);
-        sensorReq.setType(sensor.sensorType);
-        sensorReq.setPort(0); // port is ignored for now
+  if(self.applet_ready) {
+    var callback = function(connected) {
+      if (connected) {
+        console.log("Applet was ready");
+        var sensor, sensorReq;
+        var sensors = [];
+        for (var i = 0; i < self.sensorConfig.sensors.length; i++) {
+          sensor = self.sensorConfig.sensors[i];
+          sensorReq = self.applet.getSensorRequest(sensor.type);
+          if (sensor.type === 'manual') {
+            sensorReq.setDisplayPrecision(sensor.precision);
+            sensorReq.setRequiredMin(sensor.min);
+            sensorReq.setRequiredMax(sensor.max);
+            sensorReq.setStepSize(sensor.stepSize);
+            sensorReq.setType(sensor.sensorType);
+            sensorReq.setPort(0); // port is ignored for now
+          }
+          sensors.push(sensorReq);
+        }
+        self.applet.initSensorInterface(self.listener_str, self.sensorConfig.deviceType, sensors);
+        self.startButton.className = "active";
+        if(self.appletInitializationTimer) {
+          clearInterval(self.appletInitializationTimer);
+          self.appletInitializationTimer = false;
+        }
+        if (typeof self.appletReadyCallback === 'function') {
+          self.appletReadyCallback();
+        }
+      } else  {
+        // The applet is ready, but the device is not connected
+        self.startButton.className = "inactive";
+        if(!self.appletInitializationTimer) {
+          self.appletInitializationTimer = window.setInterval(function() { self.InitSensorInterface(); }, 1000);
+        }
       }
-      sensors.push(sensorReq);
-    }
-    self.applet.initSensorInterface(self.listener_str, self.sensorConfig.deviceType, sensors);
-    self.startButton.className = "active";
-    if(self.appletInitializationTimer) {
-      clearInterval(self.appletInitializationTimer);
-      self.appletInitializationTimer = false;
-    }
-    if (typeof this.appletReadyCallback === 'function') {
-      this.appletReadyCallback();
-    }
-  } else if (self.applet_ready) {
-    // The applet is ready, but the device is not connected
-    self.startButton.className = "inactive";
-    if(!self.appletInitializationTimer) {
-      self.appletInitializationTimer = window.setInterval(function() { self.InitSensorInterface(); }, 1000);
-    }
+    };
+    var callbackIdx = self.RegisterCallback(callback);
+    self.applet.isInterfaceConnected(self.sensorConfig.deviceType, ""+callbackIdx);
   } else {
     self.startButton.className = "inactive";
     if(!self.appletInitializationTimer) {
@@ -156,6 +163,22 @@ sensor.AppletGrapher.prototype.JsListener = function() {
     },
     deviceUnplugged: function() {
       console.log("device unplugged");
+    },
+    handleCallback: function(index, value) {
+      var callback;
+      if (typeof(index) === "string" && this[index]) {
+        // assume this is meant to call a direct method on this object instance
+        callback = this[index];
+      } else if (self.callbackTable[index]) {
+        callback = self.callbackTable[index];
+        self.callbackTable[index] = null;
+      }
+
+      if (callback) {
+        setTimeout(function() {
+          callback.apply(self, value);
+        }, 5);
+      }
     }
   };
 };
@@ -240,6 +263,10 @@ sensor.AppletGrapher.prototype.AddButton = function(list, button, name) {
   li.appendChild(button);
   return button;
 };
+
+sensor.AppletGrapher.prototype.RegisterCallback = function(callback) {
+  return this.callbackTable.push(callback)-1;
+}
 
 // export namespace
 if (root !== 'undefined') root.sensor = sensor;

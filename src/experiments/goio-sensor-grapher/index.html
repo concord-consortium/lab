@@ -159,7 +159,7 @@
             }
           } else {
             graph.notify();
-            status.innerHTML = "Device connected! " + enumerateSensors();
+            status.innerHTML = "Device connected!";
           }
         });
       }
@@ -181,29 +181,6 @@
         graph.reset();
       });
 
-      // FIXME: this uses internal APIs
-      function enumerateSensors() {
-        var sensors = applet.appletInstance.getAttachedSensors(applet.deviceType);
-        var text = "";
-        if (sensors !== null && sensors.length > 0) {
-          var values = [];
-          try {
-            values = applet.appletInstance.getAttachedSensorsValues(applet.deviceType);
-          } catch(e) {
-            console.log("problem enumeratingSensors getting values " + e);
-          }
-          text += "(";
-          for (var i = 0; i < sensors.length; i++) {
-            var name = sensors[i].getName();
-            if (name === null) {
-              name = applet.appletInstance.getTypeConstantName(sensors[i].getType());
-            }
-            text += name + " [ " + values[i].toFixed(2) + " ], ";
-          }
-          text = text.substr(0,text.length-2) + ")";
-        }
-        return text;
-      };
     </script>
   </body>
 </html>
