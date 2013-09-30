@@ -463,9 +463,9 @@ define(function(require) {
       if (typeof(index) === "string" && this[index]) {
         // assume this is meant to call a direct method on this class instance
         callback = this[index];
-        this[index] = null;
       } else if (this.callbackTable[index]) {
         callback = this.callbackTable[index];
+        this.callbackTable[index] = null;
       }
 
       if (callback) {
