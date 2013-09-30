@@ -495,7 +495,7 @@ define(function (require) {
         var position = data.viewPort[0].position,
             ease     = data.viewPort[0].ease,
             drag     = data.viewPort[0].drag,
-            viewport = d3.transition(d3.select(node).select(".viewport"));
+            viewport = d3.transition(d3.select(node));
 
         // This is a bit hacky. In fact we use d3 transitions to modify model,
         // not the SVG element! It could be implemented also as a MD2D modeler

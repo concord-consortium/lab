@@ -27,7 +27,7 @@ define(function (require) {
         node = modelView.node,
         model2px = modelView.model2px,
         model2pxInv = modelView.model2pxInv,
-        viewportG = d3.select(node).select(".viewport.below-atoms"),
+        viewportG = d3.select(node).select(".svg-viewport.below-atoms"),
 
         g = null,
         currentTrans = null,
@@ -226,12 +226,10 @@ define(function (require) {
       var d3node = d3.select(node);
       var g = d3node.select("g.genetics");
       if (!g.empty() && g.node().__transition__) {
-       // Note that some transitions can be applied to elements that live
-       // outside g.genetics element, e.g. viewport and background. So, it
-       // isn't enough to use d3.selectAll("g.genetics *").
+       // Note that some transitions can be applied to elements that live outside g.genetics
+       // element, e.g. background. So, it isn't enough to use d3.selectAll("g.genetics *").
         d3node.selectAll("g.genetics, g.genetics *").interrupt();
         d3node.select(".container-background").interrupt(); // background changes
-        d3node.select(".viewport").interrupt();           // viewport scrolling
         currentTrans = null;
         animStateInProgress = null;
       }
