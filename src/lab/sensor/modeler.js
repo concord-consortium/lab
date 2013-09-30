@@ -265,10 +265,13 @@ define(function(require) {
       }
       var handleSensorValues = function(error, values) {
         if (error) {
-          clearInterval(sensorPollingIntervalID);
-          if(error instanceof appletErrors.SensorConnectionError){
+          if (error instanceof appletErrors.AlreadyReadingError) {
+            // Don't worry about it -- we just overlapped another call to readSensor
+          } else if(error instanceof appletErrors.SensorConnectionError){
+            clearInterval(sensorPollingIntervalID);
             handleSensorConnectionError();
           } else {
+            clearInterval(sensorPollingIntervalID);
             throw error;
           }
         } else {

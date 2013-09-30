@@ -164,8 +164,10 @@ define(function(require) {
                     if (self.appletInstance.getTypeConstantName(attachedSensors[i].getType()) ===
                           self.sensorDefinitions[0].typeConstantName) {
                       callback.call(self, true);
+                      return;
                     }
                   }
+                  callback.call(self, false);
                 } else {
                   callback.call(self, true);
                 }
@@ -305,17 +307,24 @@ define(function(require) {
     // callback: function(error, values) {}
     readSensor: function(callback) {
       var self = this;
+      if (this.getState() === 'reading sensor') {
+        console.log("Already reading sensor in another thread...");
+        callback.call(this, new errors.AlreadyReadingError("Already reading sensor in another thread"), null);
+        return;
+      }
+
       if (this.getState() !== 'stopped') {
         callback.call(this, new Error("Tried to read the sensor value from non-stopped state '" + this.getState() + '"'), null);
+        return;
       }
 
       // because of IE multi threading applet behavior we need to track our state before calling
       // the applet
       this._state = 'reading sensor';
       this.isSensorConnected(function(connected) {
-        self._state = 'stopped';
         if (connected) {
           var valuesCallback = function(values) {
+            self._state = 'stopped';
             if (!values || values.length === 0) {
               callback.call(self, new Error("readSensor: no sensor values to report"), null);
             } else {
@@ -325,6 +334,7 @@ define(function(require) {
           var callbackIdx = self.registerCallback(valuesCallback);
           self.appletInstance.getConfiguredSensorsValues(self.deviceType, ""+callbackIdx);
         } else {
+          self._state = 'stopped';
           callback.call(self, new errors.SensorConnectionError("readSensor: sensor is not connected"), null);
         }
       });
