@@ -75,4 +75,4 @@
 	url = https://github.com/Valve/fingerprintjs
 [submodule "vendor/pixi.js"]
 	path = vendor/pixi.js
-	url = https://github.com/GoodBoyDigital/pixi.js/
+	url = https://github.com/concord-consortium/pixi.js.git
