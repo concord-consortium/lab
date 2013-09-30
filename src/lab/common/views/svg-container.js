@@ -353,7 +353,7 @@ define(function (require) {
           .call(xlinkable);
 
         containerBackground = backgroundContainer.append("rect")
-          .attr("class", "container-background");
+          .attr("class", "container-background background");
 
         gridContainer = backgroundContainer.append("g")
           .attr("class", "grid-container");
@@ -502,11 +502,13 @@ define(function (require) {
       // events work, and is what Pixi expects.)
       // see https://developer.apple.com/library/safari/documentation/UserExperience/Reference/TouchEventClassReference/TouchEvent/TouchEvent.html#//apple_ref/javascript/instm/TouchEvent/initTouchEvent
 
-      var foregroundNode = foregroundContainer.node();
+      var foregroundNode = foregroundContainer.node(),
+          backgroundNode = backgroundContainer.node(),
+          viewportNode   = viewportContainer.node();
 
       // Elements added to the viewportContainer will go in the middle. The viewportContainer itself
       // is just a holder -- it shouldn't receive mouse/touch events itself.
-      layersToHitTest = [foregroundNode, backgroundContainer.node()];
+      layersToHitTest = [foregroundNode, backgroundNode];
 
       function retargetMouseEvent(e, target) {
         var clonedEvent = document.createEvent("MouseEvent");
@@ -519,6 +521,10 @@ define(function (require) {
       function unhideLayers(n) {
         for (var i = 0; i <= n; i++) {
           layersToHitTest[i].style.visibility = "visible";
+        }
+        if (n >= layersToHitTest.length - 2) {
+          // Viewport container is treated as a layer between last viewport and background.
+          viewportNode.style.visibility = "visible";
         }
       }
 
@@ -539,7 +545,13 @@ define(function (require) {
           // Assumption: layers are normally visible (we don't have to push/pop visibility)
           layersToHitTest[i-1].style.visibility = "hidden";
 
-          // if target is a <canvas> with its own hit testing to (say, a Pixi view...):
+          if (layer === backgroundNode) {
+            // When we are testing background container, we have to hide also viewportContainer.
+            // Otherwise it will detected in .elementFromPoint() call.
+            viewportNode.style.visibility = "hidden";
+          }
+
+          // If target is a <canvas> with its own hit testing to (say, a Pixi view...):
           //   clear hit-test flag on target's view
           //   dispatch event to canvas
           //   (if view responds to event (hit test was true), it should set the hit-test flag)
@@ -892,12 +904,12 @@ define(function (require) {
         clickHandler[selector] = handler;
         api.updateClickHandlers();
       },
+
       /**
        * Applies all custom click handlers to objects matching selector
        * Note that this function should be called each time when possibly
        * clickable object is added or repainted!
        */
-
       updateClickHandlers: function () {
         var selector;
 
@@ -917,7 +929,7 @@ define(function (require) {
           if (clickHandler.hasOwnProperty(selector)) {
             // Use 'custom' namespace to don't overwrite other click handlers which
             // can be added by default.
-            backgroundContainer.selectAll(selector).on("click.custom", getClickHandler(clickHandler[selector]));
+            d3.selectAll(selector).on("click.custom", getClickHandler(clickHandler[selector]));
           }
         }
       },
