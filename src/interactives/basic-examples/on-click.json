@@ -16,7 +16,7 @@
     {
       "id": "plotLabel",
       "type": "text",
-      "text": "Clicking a plot does:",
+      "text": "Clicking a background does:",
       "width": "13em"
     },
     {
@@ -26,13 +26,13 @@
       "options": [
         {
           "text": "nothing",
-          "action": "onClick('plot', function () {});",
+          "action": "onClick('background', function () {});",
           "selected": true
         },
         {
           "text": "adds an atom",
           "action": [
-            "onClick('plot', function(x, y, d, i) {",
+            "onClick('background', function(x, y, d, i) {",
             "  addAtom({x: x, y: y});",
             "});"
           ]
@@ -40,7 +40,7 @@
         {
           "text": "adds an obstacle",
           "action": [
-            "onClick('plot', function(x, y, d, i) {",
+            "onClick('background', function(x, y, d, i) {",
             "  addObstacle({x: x, y: y, width: 0.2, height: 0.2});",
             "});"
           ]
