@@ -40,7 +40,7 @@
         "function setButtonState() {",
         "  setComponentDisabled('stop-button', isStopped());",
         "  setComponentDisabled('new-run-button', !get('hasPlayed'));",
-        "  setComponentDisabled('analyze-data-button', !(get('hasPlayed') && get('isStopped') && canExportData() && isUnexportedDataPresent()));",
+        "  setComponentDisabled('analyze-data-button', !(get('hasPlayed') && isStopped() && canExportData() && isUnexportedDataPresent()));",
         "}",
         "function resetAngle() {",
         "  set({startingAngle: get('startingAngle')});",
