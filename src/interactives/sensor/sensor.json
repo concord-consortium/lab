@@ -20,9 +20,9 @@
         "}",
         "function setButtonState() {",
         "  setComponentDisabled('start-button', !get('isPlayable'));",
-        "  setComponentDisabled('stop-button', isStopped());",
+        "  setComponentDisabled('stop-button', get('isStopped'));",
         "  setComponentDisabled('new-run-button', !get('hasPlayed'));",
-        "  setComponentDisabled('analyze-data-button', !(get('hasPlayed') && isStopped() && canExportData() && isUnexportedDataPresent()));",
+        "  setComponentDisabled('analyze-data-button', !(get('hasPlayed') && get('isStopped') && canExportData() && isUnexportedDataPresent()));",
         "}",
         "onPropertyChange('isPlayable', setButtonState);",
         "onPropertyChange('isStopped', setButtonState);",
@@ -142,10 +142,7 @@
       "id": "analyze-data-button",
       "text": "Analyze Data",
       "tooltip": "Put data from the experiment run into DataGames.",
-      "action": [
-        "exportData();",
-        "setButtonState();"
-      ]
+      "action": "exportData();"
     }
   ],
   "layout": {

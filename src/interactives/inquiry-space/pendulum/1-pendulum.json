@@ -38,9 +38,9 @@
         "setComponentDisabled('start-button', false);",
         "setComponentDisabled('stop-button', true);",
         "function setButtonState() {",
-        "  setComponentDisabled('stop-button', isStopped());",
+        "  setComponentDisabled('stop-button', get('isStopped'));",
         "  setComponentDisabled('new-run-button', !get('hasPlayed'));",
-        "  setComponentDisabled('analyze-data-button', !(get('hasPlayed') && isStopped() && canExportData() && isUnexportedDataPresent()));",
+        "  setComponentDisabled('analyze-data-button', !(get('hasPlayed') && get('isStopped') && canExportData() && isUnexportedDataPresent()));",
         "}",
         "function resetAngle() {",
         "  set({startingAngle: get('startingAngle')});",
@@ -55,7 +55,7 @@
         "onPropertyChange('damping', resetAngle);",
         "onPropertyChange('startingAngle', stopMotion);",
         "onPropertyChange('isPlayable', setButtonState);",
-        "//onPropertyChange('isStopped', setButtonState);",
+        "onPropertyChange('isStopped', setButtonState);",
         "onPropertyChange('hasPlayed', setButtonState);",
         "setButtonState();",
         "callEvery(1, function() {",
@@ -178,10 +178,7 @@
       "id": "analyze-data-button",
       "text": "Analyze Data",
       "tooltip": "Put data from the experiment run into DataGames.",
-      "action": [
-        "exportData();",
-        "setButtonState();"
-      ]
+      "action": "exportData();"
     },
     {
       "type": "slider",
