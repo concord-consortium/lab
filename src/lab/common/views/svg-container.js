@@ -490,8 +490,7 @@ define(function (require) {
     */
     function setupHitTesting() {
 
-      // Pixi listens to mousemove on the canvas element.
-      var EVENT_TYPES = ['mousedown', 'mouseup', 'click', 'mousemove'];
+      var EVENT_TYPES = ['mousedown', 'mouseup', 'click'];
 
       // TODO: touch events (touchstart, touchmove, touchend).
       //
@@ -780,13 +779,13 @@ define(function (require) {
 
       /**
         Please see .appendViewport() docs.
-        The main difference is that it returns new PIXI.DisplayObjectContainer object
-        instead of SVG element.
+        The main difference is that it returns PIXI.DisplayObjectContainer object and related
+        canvas (where container will be rendered) instead of SVG element.
        */
       appendPixiViewport: function() {
         var pixiRenderer  = PIXI.autoDetectRenderer(cx * CANVAS_OVERSAMPLING,
                                                     cy * CANVAS_OVERSAMPLING, null, true),
-            pixiStage     = new PIXI.Stage(null, true),
+            pixiStage     = new PIXI.Stage(null),
             pixiContainer = new PIXI.DisplayObjectContainer();
 
         pixiStage.addChild(pixiContainer);
@@ -805,7 +804,10 @@ define(function (require) {
 
         // We return container instead of stage, as we can apply view port transformations to it.
         // Stage transformations seem to be ignored by the PIXI renderer.
-        return pixiContainer;
+        return {
+          pixiContainer: pixiContainer,
+          canvas: pixiRenderer.view
+        };
       },
 
       hitTestFlag: false,

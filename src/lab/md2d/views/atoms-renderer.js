@@ -6,7 +6,7 @@ define(function(require) {
   var PIXI     = require('pixi'),
       canvg    = require('canvg'),
       mustache = require('mustache'),
-      alert    = require('common/alert'),
+      AtomsInteractions = require('md2d/views/atoms-interactions'),
 
       atomSVG =
       '<svg x="0px" y="0px" width="{{ width }}px" height="{{ height }}px" \
@@ -81,7 +81,7 @@ define(function(require) {
       RENDERING_OPTIONS = ["keShading", "chargeShading", "atomNumbers", "showChargeSymbols",
                            "aminoAcidColorScheme", "useThreeLetterCode", "viewPortZoom"];
 
-  return function AtomsRenderer(modelView, model, pixiContainer) {
+  return function AtomsRenderer(modelView, model, pixiContainer, canvas) {
     // Public API object to be returned.
     var api,
 
@@ -99,7 +99,9 @@ define(function(require) {
         modelHeight,
 
         // Rendering options:
-        renderMode = {};
+        renderMode = {},
+
+        interactions = new AtomsInteractions(modelView, model, canvas);
 
     function init() {
       modelWidth = model.get("width");
@@ -222,75 +224,6 @@ define(function(require) {
       };
     }
 
-    function dragBehavior(viewAtom, data) {
-      var i = viewAtom.i,
-          x, y, originX, originY,
-          parentOffset, parentOversampling,
-          dragged = false;
-
-      $(window).on("mousemove.drag", function (e) {
-        if (!dragged) {
-          // Lazily initialize drag process when user really drags an atom (not only clicks it).
-          if (model.isStopped()) {
-            originX = modelAtoms[i].x;
-            originY = modelAtoms[i].y;
-          } else if (modelAtoms[i].draggable) {
-            model.liveDragStart(i);
-          }
-
-          var $target = $(data.originalEvent.target);
-          parentOffset = $target.offset();
-          parentOversampling = $target.attr("width") / $target.width();
-
-          dragged = true;
-        }
-
-        x = m2px.invert((e.clientX - parentOffset.left) * parentOversampling);
-        y = m2pxInv.invert((e.clientY - parentOffset.top) * parentOversampling);
-
-        var bbox = model.getMoleculeBoundingBox(i);
-        if (bbox.left + x < 0) x = 0 - bbox.left;
-        if (bbox.right + x > modelWidth) x = modelWidth - bbox.right;
-        if (bbox.bottom + y < 0) y = 0 - bbox.bottom;
-        if (bbox.top + y > modelHeight) y = modelHeight - bbox.top;
-
-        if (model.isStopped()) {
-          setAtomPosition(i, x, y, false, true);
-          modelView.update();
-        } else {
-          model.liveDrag(x, y);
-        }
-      }).one("mouseup.drag", function () {
-        $(window).off("mousemove.drag");
-
-        // If user only clicked an atom (mousedown + mouseup, no mousemove), there is nothing to do.
-        if (!dragged) return;
-
-        if (model.isStopped()) {
-          if (!setAtomPosition(i, x, y, true, true)) {
-            alert("You can't drop the atom there");
-            setAtomPosition(i, originX, originY, false, true);
-            modelView.update();
-          }
-        } else {
-          model.liveDragEnd();
-        }
-      });
-    }
-
-    function mouseDown(data) {
-      modelView.hitTestFlag = true;
-
-      dragBehavior(this, data);
-    }
-
-    function setAtomPosition(i, xpos, ypos, checkPosition, moveMolecule) {
-      return model.setAtomProperties(i, {
-        x: xpos,
-        y: ypos
-      }, checkPosition, moveMolecule);
-    }
-
     api = {
       setup: function () {
         var i, len, atom, keSprite;
@@ -314,9 +247,6 @@ define(function(require) {
 
           atom.i = i;
 
-          atom.setInteractive(true);
-          atom.mousedown = atom.touchstart = mouseDown;
-
           if (renderMode.keShading) {
             keSprite = new PIXI.Sprite(getAtomTexture(i, KE_SHADING_MAX_COLORS));
             keSprite.anchor.x = 0.5;
@@ -335,6 +265,8 @@ define(function(require) {
       bindModel: function (newModel) {
         model = newModel;
         init();
+
+        interactions.bindModel(newModel);
       },
 
       update: function () {
