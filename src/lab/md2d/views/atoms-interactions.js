@@ -20,7 +20,31 @@ define(function(require) {
         targetOffset,
         targetOversampling,
         viewportX,
-        viewportY;
+        viewportY,
+
+        downAtom,
+        dragged;
+
+    // =============================================================================================
+    // Basic handlers:
+    function mouseDownHandler(x, y, atom, i) {
+      modelView.hitTestFlag = true;
+
+      dragBehavior(atom);
+    }
+
+    function mouseUpHandler(x, y, atom, i) {
+      modelView.hitTestFlag = true;
+    }
+
+    function clickHandler(x, y, atom, i) {
+      modelView.hitTestFlag = true;
+
+      if (modelView.clickHandler[".atom"]) {
+        modelView.clickHandler[".atom"](x, y, atom, i);
+      }
+    }
+    // =============================================================================================
 
     function init() {
       m2px = modelView.model2canvas;
@@ -29,10 +53,25 @@ define(function(require) {
       $target = $(target);
 
       $target.on("mousedown.atoms-interactions touchstart.atoms-interactions", function (e) {
-        var p = getClickCoords(e),
-            atom = getAtomUnder(p.x, p.y);
+        var p = getClickCoords(e);
 
-        if (atom) mouseDownHandler(atom);
+        downAtom = getAtomUnder(p.x, p.y);
+        dragged = false;
+
+        if (downAtom) mouseDownHandler(p.x, p.y, downAtom, downAtom.idx);
+      }).on("mouseup.atoms-interactions touchend.atoms-interactions", function (e) {
+        var p = getClickCoords(e),
+            upAtom = getAtomUnder(p.x, p.y);
+
+        if (!dragged && upAtom) {
+          mouseUpHandler(p.x, p.y, upAtom, upAtom.idx);
+          if (downAtom === upAtom) {
+            clickHandler(p.x, p.y, downAtom, downAtom.idx);
+          }
+        }
+
+        downAtom = null;
+        dragged = false;
       });
 
       api.bindModel(model);
@@ -45,6 +84,7 @@ define(function(require) {
         ax = atom.x;
         ay = atom.y;
         ar = atom.radius;
+        // Optimization: hit area is square.
         if (x > ax - ar && x < ax + ar && y > ay - ar && y < ay + ar) {
           return atom;
         }
@@ -67,16 +107,9 @@ define(function(require) {
       return POINT_CACHE;
     }
 
-    function mouseDownHandler(atom) {
-      modelView.hitTestFlag = true;
-
-      dragBehavior(atom);
-    }
-
     function dragBehavior(atom) {
       var i = atom.idx,
-          p, x, y, originX, originY,
-          dragged = false;
+          p, x, y, originX, originY;
 
       $(window).on("mousemove.drag", function (e) {
         if (!dragged) {
@@ -111,7 +144,7 @@ define(function(require) {
       }).one("mouseup.drag", function () {
         $(window).off("mousemove.drag");
 
-        // If user only clicked an atom (mousedown + mouseup, no mousemove), there is nothing to do.
+        // If user only clicked an atom (mousedown + mouseup, no mousemove), nothing to do.
         if (!dragged) return;
 
         if (model.isStopped()) {

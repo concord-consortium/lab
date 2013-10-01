@@ -736,6 +736,9 @@ define(function (require) {
       get url() {
         return modelUrl;
       },
+      get clickHandler() {
+        return clickHandler;
+      },
       get dragHandler() {
         return dragHandler;
       },
