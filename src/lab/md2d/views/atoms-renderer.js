@@ -7,6 +7,7 @@ define(function(require) {
       canvg    = require('canvg'),
       mustache = require('mustache'),
       AtomsInteractions = require('md2d/views/atoms-interactions'),
+      detectFontChange = require('common/layout/detect-font-change'),
 
       atomSVG =
       '<svg x="0px" y="0px" width="{{ width }}px" height="{{ height }}px" \
@@ -14,7 +15,7 @@ define(function(require) {
         <style type="text/css"> \
         <![CDATA[ \
           text { \
-            font-family: Lato, OpenSans, helvetica, sans-serif; \
+            font-family: Lato, "Open Sans", helvetica, sans-serif; \
             font-size: {{ fontSize }}px; \
             font-weight: bold; \
             fill: #222; \
@@ -178,6 +179,12 @@ define(function(require) {
         var canv = document.createElement("canvas"),
             tplData;
 
+        // Would be nice to use same text below as in atomSVG. However, detection doesn't appear to
+        // work if we supply multiple font-families to detectFontChange, so we need to watch changes
+        // to each font family separately.
+        watchFont("bold " + label.fontSize + "px Lato");
+        watchFont("bold " + label.fontSize + "px \"Open Sans\"");
+
         tplData = {
           width: 2 * radius,
           height: 2 * radius,
@@ -193,6 +200,23 @@ define(function(require) {
         elementTex[key] = new PIXI.Texture.fromCanvas(canv);
       }
       return elementTex[key];
+    }
+
+    // TODO rename?
+    function clearTextureCacheAndRedraw() {
+      elementTex = {};
+
+      viewAtoms.forEach(function(atom, i) {
+        atom.setTexture(getAtomTexture(i));
+      });
+      modelView.renderCanvas();
+    }
+
+    function watchFont(font) {
+      detectFontChange({
+        font: font,
+        onchange: clearTextureCacheAndRedraw
+      });
     }
 
     function getAtomLabel(i) {
