@@ -110,7 +110,10 @@
       "id": "start-button",
       "text": "Start",
       "tooltip": "Start the experiment run.",
-      "action": "start();"
+      "action": [
+        "start();",
+        "setComponentDisabled('start-button', true);"
+      ]
     },
     {
       "type": "button",
