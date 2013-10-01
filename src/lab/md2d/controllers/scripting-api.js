@@ -1,4 +1,4 @@
-/*global define, model */
+/*global define */
 
 define(function (require) {
 
@@ -17,7 +17,7 @@ define(function (require) {
   */
   return function MD2DScriptingAPI (api, model) {
 
-    var dnaEditDialog = new DNAEditDialog(),
+    var dnaEditDialog = new DNAEditDialog(model),
         // whether we are currently processing a batch command, suppresses repaint
         batchDepth = 0;
 

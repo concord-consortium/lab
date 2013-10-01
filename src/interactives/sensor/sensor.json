@@ -3,6 +3,7 @@
   "publicationStatus": "draft",
   "subtitle": "Testing the Sensor model type",
   "about": "",
+  "fontscale": 0.9,
   "models": [
     {
       "type": "sensor",
@@ -21,7 +22,7 @@
         "  setComponentDisabled('start-button', !get('isPlayable'));",
         "  setComponentDisabled('stop-button', get('isStopped'));",
         "  setComponentDisabled('new-run-button', !get('hasPlayed'));",
-        "  setComponentDisabled('analyze-data-button', !(get('hasPlayed') && get('isStopped') && canExportData()))",
+        "  setComponentDisabled('analyze-data-button', !(get('hasPlayed') && get('isStopped') && canExportData() && isUnexportedDataPresent()));",
         "}",
         "onPropertyChange('isPlayable', setButtonState);",
         "onPropertyChange('isStopped', setButtonState);",
@@ -34,13 +35,13 @@
         "  }",
         "});",
         "callEvery(1, function() {",
-        "   var experimentTime = getTime() - get('experimentStartTime');",
-        "   if (experimentTime > get('collectionTime')) {",
+        "   if ((Math.floor(getTime()) >= get('experimentDuration')) && get('durationEnabled')) {",
         "     stop();",
         "     setComponentDisabled('start-button',true);",
         "   }",
         "});",
         "onPropertyChange('collectionTime', setGraphRange);",
+        "onPropertyChange('durationEnabled', function(){ setComponentDisabled('duration-slider', !(get('durationEnabled'))); });",
         "setGraphRange();"
       ]
     }
@@ -51,15 +52,15 @@
       "initialValue": false
     },
     {
-      "name": "experimentStartTime",
-      "initialValue": 0
-    },
-    {
       "name": "experimentDuration",
       "initialValue": 5,
-      "onChange": "set('collectionTime', value);"
+      "onChange": "set('collectionTime', value*1.1);"
+    },
+    {
+      "name": "durationEnabled",
+      "initialValue": true
     }
- ],
+  ],
   "hideExportDataControl": true,
   "components": [
     {
@@ -82,29 +83,37 @@
       "type": "slider",
       "id": "duration-slider",
       "min": 1,
-      "max": 10,
-      "displayValue": "return format('.1f')(value)",
+      "max": 30,
+      "displayValue": "return format('.0f')(value)",
       "labels": [
         {
           "value": 1,
           "label": "1"
         },
         {
-          "value": 10,
-          "label": "10"
+          "value": 30,
+          "label": "30"
         }
       ],
-      "steps": 9,
-      "width": "10em",
+      "steps": 29,
+      "width": "8.5em",
       "title": "Duration of Exp. (s)",
       "property": "experimentDuration"
+    },
+    {
+      "type": "checkbox",
+      "id": "duration-enabled-checkbox",
+      "property": "durationEnabled"
     },
     {
       "type": "button",
       "id": "start-button",
       "text": "Start",
       "tooltip": "Start the experiment run.",
-      "action": "start();"
+      "action": [
+        "start();",
+        "setComponentDisabled('start-button', true);"
+      ]
     },
     {
       "type": "button",
@@ -122,7 +131,7 @@
         "var tareValue = get('tareValue');",
         "set('isNewRunInProgress', true);",
         "reset({",
-        "  retainParameters: ['sensorType','experimentDuration'],",
+        "  retainParameters: ['sensorType','experimentDuration', 'durationEnabled'],",
         "  cause: 'new-run'",
         "});",
         "set('tareValue', tareValue);",
@@ -135,7 +144,10 @@
       "id": "analyze-data-button",
       "text": "Analyze Data",
       "tooltip": "Put data from the experiment run into DataGames.",
-      "action": "exportData();"
+      "action": [
+        "exportData();",
+        "setComponentDisabled('analyze-data-button', !isUnexportedDataPresent());"
+      ]
     }
   ],
   "layout": {
@@ -147,7 +159,8 @@
       "stop-button",
       "analyze-data-button",
       "new-run-button",
-      "duration-slider"
+      "duration-slider",
+      "duration-enabled-checkbox"
     ]
   },
   "exports": {
