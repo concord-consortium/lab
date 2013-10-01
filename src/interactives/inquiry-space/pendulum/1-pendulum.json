@@ -178,10 +178,7 @@
       "id": "analyze-data-button",
       "text": "Analyze Data",
       "tooltip": "Put data from the experiment run into DataGames.",
-      "action": [
-        "setComponentDisabled('start-button', false);",
-        "exportData();"
-      ]
+      "action": "exportData();"
     },
     {
       "type": "slider",
