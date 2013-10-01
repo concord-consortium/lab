@@ -149,7 +149,6 @@
       "tooltip": "Start the experiment run.",
       "action": [
         "start();",
-        "set('experimentStartTime', getTime());",
         "setComponentDisabled('start-button', true);"
       ]
     },
