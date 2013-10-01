@@ -165,11 +165,11 @@
       "text": "New Run",
       "tooltip": "Set up a new experiment run.",
       "action": [
-        "setComponentDisabled('start-button', false);",
         "reset({",
         "  retainParameters: ['gravity', 'rodLength', 'startingAngle', 'ballMass', 'damping','experimentDuration', 'durationEnabled'],",
         "  cause: 'new-run'",
-        "});"
+        "});",
+        "setComponentDisabled('start-button', get('hasPlayed'));"
       ]
     },
     {
