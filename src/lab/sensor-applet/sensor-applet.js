@@ -340,7 +340,8 @@ define(function(require) {
       });
     },
 
-    start: function() {
+    // callback: function(error, isStarted) {}
+    start: function(callback) {
       var self = this;
       if (this.getState() === 'reading sensor') {
         console.log("start called while waiting for a sensor reading");
@@ -351,13 +352,16 @@ define(function(require) {
         // this will cause a infinite loop of the applet blocks forever
         // however that is what happens in normal browsers anyhow
         setTimeout(function(){
-          self.start();
+          self.start(callback);
         }, 100);
         return;
       }
 
       if (this.getState() !== 'stopped') {
-        throw new Error("Tried to start the applet from non-stopped state '" + this.getState() + '"');
+        setTimeout(function(){
+          callback.call(this, new Error("Tried to start the applet from non-stopped state '" + this.getState() + '"'), false);
+        }, 5);
+        return;
       }
       // in IE a slow call to an applet will result in other javascript being executed while waiting
       // for the applet. So we need to keep track of our state before calling Java.
@@ -370,11 +374,12 @@ define(function(require) {
       // user to tell us.
       this.isSensorConnected(function(connected) {
         if (!connected) {
-          this._state = 'stopped';
-          throw new errors.SensorConnectionError("Device reported the requested sensor type was not attached.");
+          self._state = 'stopped';
+          callback.call(self, new errors.SensorConnectionError("Device reported the requested sensor type was not attached."), null);
         } else {
-          this.appletInstance.startCollecting();
-          this._state = 'started';
+          self.appletInstance.startCollecting();
+          self._state = 'started';
+          callback.call(self, null, true);
         }
       });
     },

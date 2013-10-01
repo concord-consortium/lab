@@ -400,21 +400,18 @@ define(function(require) {
           return;
         }
 
-        try {
-          applet.start();
-        } catch (e) {
-          if (e instanceof appletErrors.SensorConnectionError) {
-            handleSensorConnectionError();
-            return;
-          } else {
-            throw e;
+        applet.start(function(error, isStarted) {
+          if (error) {
+            if (error instanceof appletErrors.SensorConnectionError) {
+              handleSensorConnectionError();
+            }
+          } else if (isStarted) {
+            makeInvalidatingChange(function() {
+              isStopped = false;
+            });
+            dispatch.play();
           }
-        }
-
-        makeInvalidatingChange(function() {
-          isStopped = false;
-        });
-        dispatch.play();
+        })
       },
 
       stop: function() {
