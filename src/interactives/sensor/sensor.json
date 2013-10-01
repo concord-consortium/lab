@@ -144,7 +144,7 @@
       "tooltip": "Put data from the experiment run into DataGames.",
       "action": [
         "exportData();",
-        "setComponentDisabled('analyze-data-button', true);"
+        "setButtonState();"
       ]
     }
   ],
