@@ -47,47 +47,60 @@ define(function(require) {
     }
     // =============================================================================================
 
+    function mouseDownTest(e) {
+      var p = getClickCoords(e);
+
+      downAtom = getAtomUnder(p.x, p.y);
+      dragged = false;
+
+      if (downAtom) mouseDownHandler(p.x, p.y, downAtom, downAtom.idx);
+    }
+
+    function mouseUpTest(e) {
+      var p = getClickCoords(e),
+          upAtom = getAtomUnder(p.x, p.y);
+
+      if (!dragged && upAtom) {
+        mouseUpHandler(p.x, p.y, upAtom, upAtom.idx);
+        if (downAtom === upAtom) {
+          clickHandler(p.x, p.y, downAtom, downAtom.idx);
+        }
+      }
+
+      if (upAtom) {
+        // Block upcoming click event.
+        preventClick = true;
+      }
+
+      downAtom = null;
+      dragged = false;
+    }
+
+    function clickTest() {
+      // We emulate click events on canvas using "mousedown" and "mouseup" events. In theory
+      // "click" handler shoudn't do anything. However if any atom passed a hit test during
+      // "mouseup" event, we should ensure that "click" event won't be passed to the underlying
+      // layers. modelView.hitTestFlag is used for that.
+      if (preventClick) {
+        modelView.hitTestFlag = true;
+        preventClick = false;
+      }
+    }
+
     function init() {
       m2px = modelView.model2canvas;
       m2pxInv = modelView.model2canvasInv;
 
       $target = $(target);
 
-      $target.on("mousedown.atoms-interactions touchstart.atoms-interactions", function (e) {
-        var p = getClickCoords(e);
-
-        downAtom = getAtomUnder(p.x, p.y);
-        dragged = false;
-
-        if (downAtom) mouseDownHandler(p.x, p.y, downAtom, downAtom.idx);
-      }).on("mouseup.atoms-interactions touchend.atoms-interactions", function (e) {
-        var p = getClickCoords(e),
-            upAtom = getAtomUnder(p.x, p.y);
-
-        if (!dragged && upAtom) {
-          mouseUpHandler(p.x, p.y, upAtom, upAtom.idx);
-          if (downAtom === upAtom) {
-            clickHandler(p.x, p.y, downAtom, downAtom.idx);
-          }
-        }
-
-        if (upAtom) {
-          // Block upcomming click event.
-          preventClick = true;
-        }
-
-        downAtom = null;
-        dragged = false;
-      }).on("click.atoms-interactions", function () {
-        // We emulate click events on canvas using "mousedown" and "mouseup" events. In theory
-        // "click" handler shoudn't do anything. However if any atom passed a hit test during
-        // "mouseup" event, we should ensure that "click" event won't be passed to the underlying
-        // layers. modelView.hitTestFlag is used for that.
-        if (preventClick) {
-          modelView.hitTestFlag = true;
-          preventClick = false;
-        }
-      });
+      // Use native .addEventListener() instead of jQuery's .on() method, because parent of the
+      // target (canvas) can be cleaned up using jQuery .empty() method (during layout) and all
+      // jQuery handlers will be destroyed. Native handles will remain untouched.
+      target.addEventListener("mousedown", mouseDownTest);
+      target.addEventListener("touchstart", mouseDownTest);
+      target.addEventListener("mouseup", mouseUpTest);
+      target.addEventListener("touchend", mouseUpTest);
+      target.addEventListener("click", clickTest);
 
       api.bindModel(model);
     }
