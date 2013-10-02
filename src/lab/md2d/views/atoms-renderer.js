@@ -27,14 +27,20 @@ define(function(require) {
         ]]> \
         </style> \
          <defs> \
-           <radialGradient id="grad" cx="50%" cy="47%" r="53%" fx="35%" fy="30%"> \
-           <stop stop-color="{{ lightCol }}" offset="0%"></stop> \
-           <stop stop-color="{{ medCol }}" offset="40%"></stop> \
-           <stop stop-color="{{ darkCol }}" offset="80%"></stop> \
-           <stop stop-color="{{ medCol }}" offset="100%"></stop> \
-           </radialGradient> \
+            <radialGradient id="grad" cx="50%" cy="47%" r="53%" fx="35%" fy="30%"> \
+              <stop stop-color="{{ lightCol }}" offset="0%"></stop> \
+              <stop stop-color="{{ medCol }}" offset="40%"></stop> \
+              <stop stop-color="{{ darkCol }}" offset="80%"></stop> \
+              <stop stop-color="{{ medCol }}" offset="100%"></stop> \
+            </radialGradient> \
          </defs> \
-         <circle fill="url(#grad)" cx="16" cy="16" r="16" fill-opacity="{{ opacity }}"/> \
+         {{#excited}} \
+          <circle fill="#ffe600" cx="16" cy="16" r="12" fill-opacity="{{ opacity }}"/> \
+          <circle fill="url(#grad)" cx="16" cy="16" r="8" fill-opacity="{{ opacity }}"/> \
+         {{/excited}} \
+         {{^excited}} \
+          <circle fill="url(#grad)" cx="16" cy="16" r="16" fill-opacity="{{ opacity }}"/> \
+         {{/excited}} \
          <text class="shadow" text-anchor="middle" x="16" y="16" dy="0.31em">{{ label }}</text> \
          <text text-anchor="middle" x="16" y="16" dy="0.31em">{{ label }}</text> \
        </svg>',
@@ -168,11 +174,12 @@ define(function(require) {
       var elID = modelAtoms[i].element,
           radius = m2px(model.getElementProperties(elID).radius),
           visible = modelAtoms[i].visible,
+          excitation = modelAtoms[i].excitation,
           label = getAtomLabel(i),
           key;
 
       colors = colors || getAtomColors(i);
-      key = visible ? (elID + "-" + radius + "-" + colors.join("") + "-" + label.text + "-" + label.fontSize) :
+      key = visible ? (elID + "-" + radius + "-" + colors.join("") + "-" + label.text + "-" + excitation + "-" + label.fontSize) :
                       (radius + "-invisible");
 
       if (elementTex[key] === undefined) {
@@ -186,14 +193,15 @@ define(function(require) {
         watchFont("bold " + label.fontSize + "px \"Open Sans\"");
 
         tplData = {
-          width: 2 * radius,
-          height: 2 * radius,
+          width: excitation ? 4 * radius : 2 * radius,
+          height: excitation ? 4 * radius : 2 * radius,
           lightCol: colors[0],
           medCol: colors[1],
           darkCol: colors[2],
           opacity: visible,
           label: label.text,
-          fontSize: label.fontSize
+          fontSize: label.fontSize,
+          excited: excitation
         };
 
         canvg(canv, mustache.render(atomSVG, tplData));
@@ -306,6 +314,10 @@ define(function(require) {
 
           if (renderMode.keShading) {
             viewAtom.keSprite.alpha = Math.min(5 * model.getAtomKineticEnergy(i), 1);
+          }
+
+          if (model.properties.useQuantumDynamics) {
+            viewAtoms[i].setTexture(getAtomTexture(i));
           }
         }
       },
