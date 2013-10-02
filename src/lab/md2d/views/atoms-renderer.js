@@ -22,7 +22,7 @@ define(function(require) {
           } \
           .shadow { \
             stroke: rgba(255, 255, 255, 0.7); \
-            stroke-width: 2px; \
+            stroke-width: 3px; \
           } \
         ]]> \
         </style> \
