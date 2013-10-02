@@ -141,43 +141,47 @@ define(function(require) {
     },
 
     /**
-      Returns true if the correct device type is connected.
-
-      NOTE: This will throw if the applet hasn't been initialized yet (which occurs asynchronously
-      after the <applet> tag is appended to the DOM).
+      Passes true to the callback if the correct device type is connected.
     */
-    isSensorConnected: function() {
-      var attachedSensors;
-      var i;
-
-      // Note this appears only to return a meaningful result when first called. After that, it
-      // returns the same value for a given deviceType, even if the device has been unplugged from
-      // the USB port.
-      if (!this.appletInstance.isInterfaceConnected(this.deviceType)) {
-        return false;
-      }
-
-      try {
-        attachedSensors = this.appletInstance.getAttachedSensors(this.deviceType) || [];
-      } catch (e) {
-        // isInterfaceConnected is not a wholly reliable check, and calling getAttachedSensors with
-        // the wrong deviceType may throw (?).
-        return false;
-      }
-      // FIXME we should use the applet configure method to check if the right sensors are attached
-      // instead of doing this comparison here
-      // For now this is skipped if there is more than one sensorDefinition
-      if(this.sensorDefinitions.length === 1) {
-        for (i = 0; i < attachedSensors.length; i++) {
-          if (this.appletInstance.getTypeConstantName(attachedSensors[i].getType()) ===
-                this.sensorDefinitions[0].typeConstantName) {
-            return true;
+    isSensorConnected: function(callback) {
+      var self = this, nextCallback, nextCallbackIdx;
+      setTimeout(function() {
+        nextCallback = function(connected) {
+          // Note this appears only to return a meaningful result when first called. After that, it
+          // returns the same value for a given deviceType, even if the device has been unplugged from
+          // the USB port.
+          if(!connected) {
+            callback.call(self, false);
+          } else {
+            nextCallback = function() {
+              var attachedSensors = self.appletInstance.getCachedAttachedSensors();
+              if (attachedSensors) {
+                // FIXME we should use the applet configure method to check if the right sensors are attached
+                // instead of doing this comparison here
+                // For now this is skipped if there is more than one sensorDefinition
+                if(self.sensorDefinitions.length === 1) {
+                  for (var i = 0; i < attachedSensors.length; i++) {
+                    if (self.appletInstance.getTypeConstantName(attachedSensors[i].getType()) ===
+                          self.sensorDefinitions[0].typeConstantName) {
+                      callback.call(self, true);
+                      return;
+                    }
+                  }
+                  callback.call(self, false);
+                } else {
+                  callback.call(self, true);
+                }
+              } else {
+                callback.call(self, false);
+              }
+            };
+            nextCallbackIdx = self.registerCallback(nextCallback);
+            self.appletInstance.getAttachedSensors(self.deviceType, ""+nextCallbackIdx);
           }
-        }
-      } else {
-        return true;
-      }
-      return false;
+        };
+        nextCallbackIdx = self.registerCallback(nextCallback);
+        self.appletInstance.isInterfaceConnected(self.deviceType, ""+nextCallbackIdx);
+      });
     },
 
     _state: 'not appended',
@@ -300,29 +304,44 @@ define(function(require) {
       });
     },
 
-    readSensor: function() {
-      var values;
+    // callback: function(error, values) {}
+    readSensor: function(callback) {
+      var self = this;
+      if (this.getState() === 'reading sensor') {
+        console.log("Already reading sensor in another thread...");
+        callback.call(this, new errors.AlreadyReadingError("Already reading sensor in another thread"), null);
+        return;
+      }
+
       if (this.getState() !== 'stopped') {
-        throw new Error("Tried to read the sensor value from non-stopped state '" + this.getState() + '"');
+        callback.call(this, new Error("Tried to read the sensor value from non-stopped state '" + this.getState() + '"'), null);
+        return;
       }
 
       // because of IE multi threading applet behavior we need to track our state before calling
       // the applet
       this._state = 'reading sensor';
-      if (this.isSensorConnected()) {
-        values = this.appletInstance.getConfiguredSensorsValues(this.deviceType);
-        this._state = 'stopped';
-        if (!values || values.length === 0) {
-          throw new Error("readSensor: no sensor values to report");
+      this.isSensorConnected(function(connected) {
+        if (connected) {
+          var valuesCallback = function(values) {
+            self._state = 'stopped';
+            if (!values || values.length === 0) {
+              callback.call(self, new Error("readSensor: no sensor values to report"), null);
+            } else {
+              callback.call(self, null, values);
+            }
+          };
+          var callbackIdx = self.registerCallback(valuesCallback);
+          self.appletInstance.getConfiguredSensorsValues(self.deviceType, ""+callbackIdx);
+        } else {
+          self._state = 'stopped';
+          callback.call(self, new errors.SensorConnectionError("readSensor: sensor is not connected"), null);
         }
-      } else {
-        this._state = 'stopped';
-        throw new errors.SensorConnectionError("readSensor: sensor is not connected");
-      }
-      return values;
+      });
     },
 
-    start: function() {
+    // callback: function(error, isStarted) {}
+    start: function(callback) {
       var self = this;
       if (this.getState() === 'reading sensor') {
         console.log("start called while waiting for a sensor reading");
@@ -333,12 +352,18 @@ define(function(require) {
         // this will cause a infinite loop of the applet blocks forever
         // however that is what happens in normal browsers anyhow
         setTimeout(function(){
-          self.start();
+          self.start(callback);
         }, 100);
+        return;
       }
 
       if (this.getState() !== 'stopped') {
-        throw new Error("Tried to start the applet from non-stopped state '" + this.getState() + '"');
+        if (callback) {
+          setTimeout(function(){
+            callback.call(this, new Error("Tried to start the applet from non-stopped state '" + this.getState() + '"'), false);
+          }, 5);
+        }
+        return;
       }
       // in IE a slow call to an applet will result in other javascript being executed while waiting
       // for the applet. So we need to keep track of our state before calling Java.
@@ -349,13 +374,20 @@ define(function(require) {
       // would require having some way to detect when to leave that state. We lack a way to
       // automatically detect that the sensor has been plugged in, and we don't want to force the
       // user to tell us.
-      if (!this.isSensorConnected()) {
-        this._state = 'stopped';
-        throw new errors.SensorConnectionError("Device reported the requested sensor type was not attached.");
-      }
-
-      this.appletInstance.startCollecting();
-      this._state = 'started';
+      this.isSensorConnected(function(connected) {
+        if (!connected) {
+          self._state = 'stopped';
+          if (callback) {
+            callback.call(self, new errors.SensorConnectionError("Device reported the requested sensor type was not attached."), null);
+          }
+        } else {
+          self.appletInstance.startCollecting();
+          self._state = 'started';
+          if (callback) {
+            callback.call(self, null, true);
+          }
+        }
+      });
     },
 
     stop: function() {
@@ -427,6 +459,31 @@ define(function(require) {
       window.setTimeout(function() {
         self.emit('sensorUnplugged');
       }, 10);
+    },
+
+    callbackTable: [],
+    registerCallback: function(callback) {
+      // TODO We might want to set up a "reaper" function to error the callback if a certain
+      // amount of time passes and the callback hasn't been called.
+      this.callbackTable.push(callback);
+      return this.callbackTable.length-1;
+    },
+
+    handleCallback: function(index, value) {
+      var callback, self = this;
+      if (typeof(index) === "string" && this[index]) {
+        // assume this is meant to call a direct method on this class instance
+        callback = this[index];
+      } else if (this.callbackTable[index]) {
+        callback = this.callbackTable[index];
+        this.callbackTable[index] = null;
+      }
+
+      if (callback) {
+        setTimeout(function() {
+          callback.apply(self, value);
+        }, 5);
+      }
     }
   });
 
