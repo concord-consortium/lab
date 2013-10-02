@@ -22,6 +22,7 @@ define(function(require) {
         viewportX,
         viewportY,
 
+        preventClick,
         downAtom,
         dragged;
 
@@ -35,10 +36,12 @@ define(function(require) {
 
     function mouseUpHandler(x, y, atom, i) {
       modelView.hitTestFlag = true;
+      preventClick = true;
     }
 
     function clickHandler(x, y, atom, i) {
       modelView.hitTestFlag = true;
+      preventClick = true;
 
       if (modelView.clickHandler[".atom"]) {
         modelView.clickHandler[".atom"](x, y, atom, i);
@@ -72,6 +75,15 @@ define(function(require) {
 
         downAtom = null;
         dragged = false;
+      }).on("click.atoms-interactions", function () {
+        // We emulate click events on canvas using "mousedown" and "mouseup" events. In theory
+        // "click" handler shoudn't do anything. However if any atom passed a hit test during
+        // "mouseup" event, we should ensure that "click" event won't be passed to the underlying
+        // layers.
+        if (preventClick) {
+          modelView.hitTestFlag = true;
+          preventClick = false;
+        }
       });
 
       api.bindModel(model);
