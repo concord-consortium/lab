@@ -73,6 +73,7 @@ def checkout_project(project_path, project, options)
   located: #{project_path}
         HEREDOC
         if options[:commit]
+          `git fetch`
           `git checkout #{options[:commit]}`
           print <<-HEREDOC
   commit:  #{options[:commit]}
@@ -107,6 +108,7 @@ def checkout_project(project_path, project, options)
         HEREDOC
         `git clone #{options[:repository]} -b #{options[:branch]} #{project_path}`
         if options[:commit]
+          `git fetch`
           `git checkout #{options[:commit]}`
           print <<-HEREDOC
   commit:  #{options[:commit]}
