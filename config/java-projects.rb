@@ -44,7 +44,7 @@ PROJECT_LIST = {
   'sensor-applets' => { :build_type => :maven,
                         :build => MAVEN_STD_CLEAN_BUILD,
                         :repository => 'git://github.com/concord-consortium/sensor-applets.git',
-                        :branch => 'wip-revise-initialization',
+                        :branch => 'wip-async-api',
                         :path => 'org/concord/sensor/sensor-applets',
                         :has_applet_class => true,
                         :sign => true },

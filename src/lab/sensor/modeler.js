@@ -263,25 +263,29 @@ define(function(require) {
       if (sensorPollingIntervalID) {
         clearInterval(sensorPollingIntervalID);
       }
-
-      sensorPollingIntervalID = setInterval(function() {
-        makeInvalidatingChange(function() {
-          try{
-            rawSensorValue = applet.readSensor()[0];
-          } catch(error) {
+      var handleSensorValues = function(error, values) {
+        if (error) {
+          if (error instanceof appletErrors.AlreadyReadingError) {
+            // Don't worry about it -- we just overlapped another call to readSensor
+          } else if(error instanceof appletErrors.SensorConnectionError){
             clearInterval(sensorPollingIntervalID);
-            if(error instanceof appletErrors.SensorConnectionError){
-              handleSensorConnectionError();
-            } else {
-              throw error;
+            handleSensorConnectionError();
+          } else {
+            clearInterval(sensorPollingIntervalID);
+            throw error;
+          }
+        } else {
+          makeInvalidatingChange(function() {
+            rawSensorValue = values[0];
+            if (isTaring) {
+              model.properties.tareValue = rawSensorValue;
+              isTaring = false;
             }
-            return;
-          }
-          if (isTaring) {
-            model.properties.tareValue = rawSensorValue;
-            isTaring = false;
-          }
-        });
+          });
+        }
+      };
+      sensorPollingIntervalID = setInterval(function() {
+        applet.readSensor(handleSensorValues);
       }, 1000/sensorPollsPerSecond);
     }
 
@@ -396,21 +400,18 @@ define(function(require) {
           return;
         }
 
-        try {
-          applet.start();
-        } catch (e) {
-          if (e instanceof appletErrors.SensorConnectionError) {
-            handleSensorConnectionError();
-            return;
-          } else {
-            throw e;
+        applet.start(function(error, isStarted) {
+          if (error) {
+            if (error instanceof appletErrors.SensorConnectionError) {
+              handleSensorConnectionError();
+            }
+          } else if (isStarted) {
+            makeInvalidatingChange(function() {
+              isStopped = false;
+            });
+            dispatch.play();
           }
-        }
-
-        makeInvalidatingChange(function() {
-          isStopped = false;
-        });
-        dispatch.play();
+        })
       },
 
       stop: function() {
