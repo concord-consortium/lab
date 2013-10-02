@@ -358,9 +358,11 @@ define(function(require) {
       }
 
       if (this.getState() !== 'stopped') {
-        setTimeout(function(){
-          callback.call(this, new Error("Tried to start the applet from non-stopped state '" + this.getState() + '"'), false);
-        }, 5);
+        if (callback) {
+          setTimeout(function(){
+            callback.call(this, new Error("Tried to start the applet from non-stopped state '" + this.getState() + '"'), false);
+          }, 5);
+        }
         return;
       }
       // in IE a slow call to an applet will result in other javascript being executed while waiting
@@ -375,11 +377,15 @@ define(function(require) {
       this.isSensorConnected(function(connected) {
         if (!connected) {
           self._state = 'stopped';
-          callback.call(self, new errors.SensorConnectionError("Device reported the requested sensor type was not attached."), null);
+          if (callback) {
+            callback.call(self, new errors.SensorConnectionError("Device reported the requested sensor type was not attached."), null);
+          }
         } else {
           self.appletInstance.startCollecting();
           self._state = 'started';
-          callback.call(self, null, true);
+          if (callback) {
+            callback.call(self, null, true);
+          }
         }
       });
     },
