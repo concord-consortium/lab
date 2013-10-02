@@ -516,6 +516,7 @@ define(function (require) {
         var clonedEvent = document.createEvent("MouseEvent");
         clonedEvent.initMouseEvent(e.type, e.canBubble, e.cancelable, e.view, e.detail, e.screenX, e.screenY, e.clientX, e.clientY, e.ctrlKey, e.altKey, e.shiftKey, e.metaKey, e.button, e.relatedTarget);
         clonedEvent.target = target;
+        e.stopPropagation();
         return clonedEvent;
       }
 
