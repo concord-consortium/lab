@@ -592,6 +592,10 @@ define(function (require) {
           // http://www.quirksmode.org/mobile/tableViewport_desktop.html
           target = document.elementFromPoint(e.clientX, e.clientY);
 
+          // FIXME? Since we nominally allow target layers to be hidden or have pointer-events: none
+          // we would have to replace this simplistic test. In the case that the layer is
+          // transparent to events even before we hide it, target !== layer not because target is an
+          // element in the layer that received the hit but because the target is below the layer.
           if (target !== layer) {
             unhideLayers(i-1);
             target.dispatchEvent(retargetMouseEvent(e, target));
