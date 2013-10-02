@@ -501,9 +501,12 @@ define(function (require) {
       // events work, and is what Pixi expects.)
       // see https://developer.apple.com/library/safari/documentation/UserExperience/Reference/TouchEventClassReference/TouchEvent/TouchEvent.html#//apple_ref/javascript/instm/TouchEvent/initTouchEvent
 
-      var foregroundNode = foregroundContainer.node(),
-          backgroundNode = backgroundContainer.node(),
-          viewportNode   = viewportContainer.node();
+      var foregroundNode = foregroundContainer.node();
+      var backgroundNode = backgroundContainer.node();
+      var viewportNode   = viewportContainer.node();
+
+      var pointerEvents;
+      var visibility;
 
       // Elements added to the viewportContainer will go in the middle. The viewportContainer itself
       // is just a holder -- it shouldn't receive mouse/touch events itself.
@@ -516,10 +519,11 @@ define(function (require) {
         return clonedEvent;
       }
 
-      // make layers 0 to n visible
+      // Restore original visiblity and pointer-events styles of layers n to 0, inclusive
       function unhideLayers(n) {
-        for (var i = 0; i <= n; i++) {
-          layersToHitTest[i].style.visibility = "visible";
+        for (var i = n; i >= 0; i--) {
+          layersToHitTest[i].style.visibility = visibility[i];
+          layersToHitTest[i].style.pointerEvents = pointerEvents[i];
         }
         if (n >= layersToHitTest.length - 2) {
           // Viewport container is treated as a layer between last viewport and background.
@@ -535,14 +539,25 @@ define(function (require) {
           return;
         }
 
+        // Remember style rules of the layers we peel back
+        visibility = [];
+        pointerEvents = [];
+
         var layer;
+        var prevLayer;
         var target;
 
         for (var i = 1, len = layersToHitTest.length; i < len; i++) {
           layer = layersToHitTest[i];
+          prevLayer = layersToHitTest[i-1];
 
-          // Assumption: layers are normally visible (we don't have to push/pop visibility)
-          layersToHitTest[i-1].style.visibility = "hidden";
+          // Set prevLayer's visiblity to "hidden" and pointer-events to "none"; need to do both
+          // because Safari doesn't respect visibility changes in elementFromPoint (!) and IE9 & 10
+          // don't support pointerEvents.
+          visibility[i-1] = prevLayer.style.visibility;
+          prevLayer.style.visibility = "hidden";
+          pointerEvents[i-1] = prevLayer.style.pointerEvents;
+          prevLayer.style.pointerEvents = "none";
 
           if (layer === backgroundNode) {
             // When we are testing background container, we have to hide also viewportContainer.
