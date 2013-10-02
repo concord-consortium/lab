@@ -73,7 +73,6 @@ define(function(require) {
       }
 
       downAtom = null;
-      dragged = false;
     }
 
     function clickTest() {
