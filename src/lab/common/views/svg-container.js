@@ -763,9 +763,9 @@ define(function (require) {
 
       repaint: function() {
         setupBackground();
-        api.updateClickHandlers();
-
         if (renderer.repaint) renderer.repaint();
+
+        api.updateClickHandlers();
 
         api.renderCanvas();
       },
