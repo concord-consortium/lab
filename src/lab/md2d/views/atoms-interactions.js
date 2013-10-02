@@ -169,6 +169,11 @@ define(function(require) {
         } else {
           model.liveDrag(x, y);
         }
+
+        // Custom drag handler.
+        if (modelView.dragHandler.atom) {
+          modelView.dragHandler.atom(x, y, atom, i);
+        }
       }).one("mouseup.drag", function () {
         $(window).off("mousemove.drag");
 
