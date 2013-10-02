@@ -529,6 +529,7 @@ define(function (require) {
         if (n >= layersToHitTest.length - 2) {
           // Viewport container is treated as a layer between last viewport and background.
           viewportNode.style.visibility = "visible";
+          viewportNode.style.pointerEvents = "auto";
         }
       }
 
@@ -564,6 +565,7 @@ define(function (require) {
             // When we are testing background container, we have to hide also viewportContainer.
             // Otherwise it will detected in .elementFromPoint() call.
             viewportNode.style.visibility = "hidden";
+            viewportNode.style.pointerEvents = "none";
           }
 
           // If target is a <canvas> with its own hit testing to (say, a Pixi view...):
