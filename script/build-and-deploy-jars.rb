@@ -104,9 +104,16 @@ def checkout_project(project_path, project, options)
   from:    #{options[:repository]}
   branch:  #{options[:branch]}
   into:    #{project_path}
-
         HEREDOC
         `git clone #{options[:repository]} -b #{options[:branch]} #{project_path}`
+        if options[:commit]
+          `git checkout #{options[:commit]}`
+          print <<-HEREDOC
+  commit:  #{options[:commit]}
+          HEREDOC
+        else
+          puts
+        end
       end
     end
   end
