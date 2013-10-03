@@ -37,7 +37,7 @@ define(function(require) {
       TWO_PI = 2 * Math.PI,
 
       // expected value of lifetime of excited energy state, in fs
-      LIFETIME = 50,
+      LIFETIME = 200,
       EMISSION_PROBABILITY_PER_FS = 1/LIFETIME,
 
       // dispatch events from handlePhotonAtomCollision
@@ -62,6 +62,10 @@ define(function(require) {
         lightSource          = properties.lightSource,
 
         dimensions           = engine.getDimensions(),
+
+        excitationTime       = [],
+
+        modelTime,
 
         atoms,
         elements,
@@ -192,6 +196,7 @@ define(function(require) {
           for (i = energyLevelIndex + 1, nLevels = energyLevels.length; i < nLevels; i++) {
             if (Math.abs(energyLevels[i] - electronEnergy - photonEnergy) < ENERGY_GAP_TOLERANCE) {
               atoms.excitation[atomIndex] = i;
+              excitationTime[atomIndex] = modelTime;
               removePhoton(photonIndex);
               return true;
             }
@@ -346,6 +351,7 @@ define(function(require) {
           nextEnergyLevel = Math.ceil(Math.random() * highest) + currentEnergyLevel;
 
           atoms.excitation[i] = nextEnergyLevel;
+          excitationTime[i] = modelTime;
           energyAbsorbed = energyLevels[nextEnergyLevel] - currentElectronEnergy;
           updateVelocities(energyAbsorbed);
           return true;
@@ -408,14 +414,28 @@ define(function(require) {
 
           // excite a random atom, or pick the excitable one if only one can be excited
           if (!excitation1) {
+            if (!readyToThermallyDeexcite(atom2Idx)) return false;
             selection = atom2Idx;
           } else if (!excitation2) {
+            if (!readyToThermallyDeexcite(atom1Idx)) return false;
             selection = atom1Idx;
           } else {
             selection = Math.random() < 0.5 ? atom1Idx : atom2Idx;
+            if (!readyToThermallyDeexcite(selection)) {
+              selection = atom1Idx + atom2Idx - selection;
+              if (!readyToThermallyDeexcite(selection)) {
+                return false;
+              }
+            }
           }
           deexciteAtom(selection);
           return true;
+        },
+
+        readyToThermallyDeexcite = function(i) {
+          if (modelTime > excitationTime[i] + LIFETIME) {
+            return true;
+          }
         },
 
         deexciteAtom = function(i) {
@@ -602,6 +622,7 @@ define(function(require) {
       },
 
       performActionWithinIntegrationLoop: function(neighborList, dt, time) {
+        modelTime = time;
         movePhotons(dt);
         handlePhotonAtomCollisions();
         thermallyExciteAndDeexciteAtoms(neighborList);
