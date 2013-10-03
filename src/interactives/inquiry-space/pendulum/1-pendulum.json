@@ -17,7 +17,8 @@
       "id": "pendulum1$0",
       "url": "imports/legacy-mw-content/converted/inquiry-space/pendulum/pendulum1$0.json",
       "viewOptions": {
-        "controlButtons": "",
+        "controlButtons": "reset",
+        "controlButtonStyle": "text",
         "gridLines": true,
         "showClock": true,
         "velocityVectors": {
@@ -31,13 +32,14 @@
         "modelSampleRate": 60
       },
       "onLoad": [
-        "setComponentDisabled('start-button', false);",
-        "setComponentDisabled('stop-button', true);",
+        "function setGraphRange() {",
+        "  setComponentAttributes('propertiesGraph', {'xmax': get('experimentDuration')*1.1});",
+        "}",
         "function setButtonState() {",
-        "  setComponentDisabled('start-button', !get('isPlayable'));",
-        "  setComponentDisabled('stop-button', get('isPlayable'));",
-        "  setComponentDisabled('new-run-button', ! (get('hasPlayed') && get('isPlayable')));",
-        "  setComponentDisabled('analyze-data-button', ! (get('hasPlayed') && get('isPlayable')));",
+        "  setComponentDisabled('start-button', get('hasPlayed'));",
+        "  setComponentDisabled('stop-button', get('isStopped'));",
+        "  setComponentDisabled('new-run-button', !get('hasPlayed'));",
+        "  setComponentDisabled('analyze-data-button', !(get('hasPlayed') && get('isStopped') && canExportData() && isUnexportedDataPresent()));",
         "}",
         "function resetAngle() {",
         "  set({startingAngle: get('startingAngle')});",
@@ -52,8 +54,21 @@
         "onPropertyChange('damping', resetAngle);",
         "onPropertyChange('startingAngle', stopMotion);",
         "onPropertyChange('isPlayable', setButtonState);",
-        "onPropertyChange('hasPlayed', setButtonState);"
-      ]
+        "onPropertyChange('isStopped', setButtonState);",
+        "onPropertyChange('hasPlayed', setButtonState);",
+        "setButtonState();",
+        "callEvery(1, function() {",
+        "   if ((Math.floor(getTime()) >= get('experimentDuration')) && get('durationEnabled')) {",
+        "     stop();",
+        "     setComponentDisabled('start-button',true);",
+        "   }",
+        "});",
+        "onPropertyChange('experimentDuration', setGraphRange);",
+        "onPropertyChange('durationEnabled', function(){ setComponentDisabled('duration-slider', !(get('durationEnabled'))); });",
+        "setGraphRange();",
+        "setComponentDisabled('stop-button', true);",
+        "setComponentDisabled('start-button', false);"
+       ]
     }
   ],
   "outputs": [
@@ -70,6 +85,14 @@
     }
   ],
   "parameters": [
+    {
+      "name": "experimentDuration",
+      "initialValue": 5
+    },
+    {
+      "name": "durationEnabled",
+      "initialValue": true
+    },
     {
       "name": "gravity",
       "label": "Gravity",
@@ -125,7 +148,10 @@
       "id": "start-button",
       "text": "Start",
       "tooltip": "Start the experiment run.",
-      "action": "start();"
+      "action": [
+        "start();",
+        "setComponentDisabled('start-button', true);"
+      ]
     },
     {
       "type": "button",
@@ -141,24 +167,46 @@
       "tooltip": "Set up a new experiment run.",
       "action": [
         "reset({",
-        "  retainParameters: ['gravity', 'rodLength', 'startingAngle', 'ballMass', 'damping'],",
+        "  retainParameters: ['gravity', 'rodLength', 'startingAngle', 'ballMass', 'damping','experimentDuration', 'durationEnabled'],",
         "  cause: 'new-run'",
         "});"
       ]
     },
     {
       "type": "button",
-      "id": "reset-button",
-      "text": "Reset",
-      "tooltip": "Reset the experiment parameters to the original settings.",
-      "action": "reload()"
-    },
-    {
-      "type": "button",
       "id": "analyze-data-button",
       "text": "Analyze Data",
       "tooltip": "Put data from the experiment run into DataGames.",
-      "action": "exportData();"
+      "action": [
+        "exportData();",
+        "setComponentDisabled('analyze-data-button', !isUnexportedDataPresent());"
+      ]
+    },
+    {
+      "type": "slider",
+      "id": "duration-slider",
+      "min": 1,
+      "max": 30,
+      "displayValue": "return format('.0f')(value)",
+      "labels": [
+        {
+          "value": 1,
+          "label": "1"
+        },
+        {
+          "value": 30,
+          "label": "30"
+        }
+      ],
+      "steps": 29,
+      "width": "8.5em",
+      "title": "Duration of Exp. (s)",
+      "property": "experimentDuration"
+    },
+    {
+      "type": "checkbox",
+      "id": "duration-enabled-checkbox",
+      "property": "durationEnabled"
     },
     {
       "type": "slider",
@@ -261,12 +309,6 @@
       "property": "damping"
     },
     {
-      "type": "checkbox",
-      "id": "velocity-vectors",
-      "text": "Show velocity vector",
-      "property": "showVelocityVectors"
-    },
-    {
       "type": "numericOutput",
       "id": "current-angle-display",
       "property": "currentAngle",
@@ -298,9 +340,10 @@
       [
         "start-button",
         "stop-button",
+        "analyze-data-button",
         "new-run-button",
-        "reset-button",
-        "analyze-data-button"
+        "duration-slider",
+        "duration-enabled-checkbox"
       ],
       [
         "gravity-slider",
@@ -310,9 +353,6 @@
       [
         "mass-slider",
         "damping-slider",
-        "velocity-vectors"
-      ],
-      [
         "current-angle-display"
       ]
     ]

@@ -13,42 +13,47 @@
     <script type="text/javascript" src="../../vendor/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="../../vendor/d3/d3.js"></script>
     <script type="text/javascript" src="../../lab/lab.grapher.js"></script>
-    <script src="sensor.js"></script>
+    <script src="../../lab/lab.sensor-applet.js"></script>
   </head>
   <body>
     <p class="sensor-selector">Interface and Sensor Type:
       <select id="sensor-type-selector">
         <option value="select-sensor" disabled selected>select interface and sensor ...</option>
         <optgroup label='GoIO'>
-          <option value="GoIO temperature">GoIO Temperature</option>
-          <option value="GoIO light">GoIO Light</option>
-          <option value="GoIO force (5N)">GoIO Force (5N) (built-in config)</option>
-          <option value="GoIO force (50N)">GoIO Force (50N)</option>
-          <option value="GoIO CO2">GoIO CO2</option>
-          <option value="GoIO pH">GoIO pH</option>
-          <option value="GoIO O2">GoIO Oxygen Gas</option>
+          <option value="goLinkTemperature">GoIO Temperature</option>
+          <option value="goLinkLight">GoIO Light</option>
+          <option value="goLinkForce">GoIO Force</option>
+          <option value="goLinkCO2">GoIO CO2</option>
+          <option value="goLinkPH">GoIO pH</option>
+          <option value="goLinkO2">GoIO Oxygen Gas</option>
         </optgroup>
         <optgroup label='GoMotion'>
-          <option value="GoIO distance">GoMotion</option>
+          <option value="goMotion">GoMotion</option>
         </optgroup>
         <optgroup label='LabQuest'>
-          <option value="LabQuest temperature">LabQuest Temperature</option>
-          <option value="LabQuest light">LabQuest Light</option>
-          <option value="LabQuest force (5N)">LabQuest Force (5N)</option>
-          <option value="LabQuest force (50N)">LabQuest Force (50N)</option>
-          <option value="LabQuest CO2">LabQuest CO2</option>
-          <option value="LabQuest distance">LabQuest Distance</option>
-          <option value="LabQuest pH">LabQuest pH</option>
-          <option value="LabQuest O2">LabQuest Oxygen Gas</option>
+          <option value="labQuestTemperature">LabQuest Temperature</option>
+          <option value="labQuestLight">LabQuest Light</option>
+          <option value="labQuestForce">LabQuest Force</option>
+          <option value="labQuestCO2">LabQuest CO2</option>
+          <option value="labQuestMotion">LabQuest Distance</option>
+          <option value="labQuestPH">LabQuest pH</option>
+          <option value="labQuestO2">LabQuest Oxygen Gas</option>
         </optgroup>
-        <optgroup label='Pseudo Probes'>
-          <option value="Pseudo Sound">Pseudo Sound</option>
-        </optgroup>
-
       </select>
     </p>
     <div id="vis">
       <div id="chart" class="graph"></div>
+      <ul class="sensorbuttons">
+        <li class='sensor_button'>
+          <a class="active" id="start_button">Start</a>
+        </li>
+        <li class='sensor_button'>
+          <a class="active" id="stop_button">Stop</a>
+        </li>
+        <li class='sensor_button'>
+          <a class="active" id="clear_button">Clear</a>
+        </li>
+      </ul>
     </div>
     <div id="applet-container" ></div>
     <p id="connect-status"></p>
@@ -87,425 +92,95 @@
             dataChange: false
           },
           graph = new Lab.grapher.Graph("#chart", blankGraphOptions, "Select a Sensor Type"),
-          applet,
-          appletContainer = document.getElementById("applet-container"),
+          applet = null,
           appletLoadingStr = "Sensor Applet Loading ...",
           sensorTypeSelector = document.getElementById("sensor-type-selector"),
-          sampleInterval,
-          temperature_data = [],
-          distance_data = [],
-          force_data = [],
-          light_data = [],
-          co2_data = [],
-          o2_data = [],
-          ph_data = [],
-          sound_data = [],
           sensorType,
-          goioAppletString = ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
-                               '     width="1" height="1" MAYSCRIPT="true"',
-                               '     archive="',
-                               '           com/sun/jna/jna.jar,',
-                               '           org/concord/sensor/sensor.jar,',
-                               '           org/concord/sensor/goio-jna/goio-jna.jar,',
-                               '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
-                               '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
-                               '     MAYSCRIPT="true">',
-                               '  <param name="MAYSCRIPT" value="true"/>',
-                               '  Your browser is completely ignoring the applet tag!',
-                               '</applet>'].join('\n'),
-          labquestAppletString = ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
-                               '     width="1" height="1" MAYSCRIPT="true"',
-                               '     archive="',
-                               '           com/sun/jna/jna.jar,',
-                               '           org/concord/sensor/sensor.jar,',
-                               '           org/concord/sensor/labquest-jna/labquest-jna.jar,',
-                               '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
-                               '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
-                               '     MAYSCRIPT="true">',
-                               '  <param name="MAYSCRIPT" value="true"/>',
-                               '  Your browser is completely ignoring the applet tag!',
-                               '</applet>'].join('\n'),
-          sensorConfigurations = {
-            "GoIO temperature": {
-              "graphOptions": {
-                title: "GoIO Temperature Sensor",
-                xlabel:    "Time (s)",
-                xmin: 0, xmax: 60,
-                ylabel:    "Temperature, (Degrees C)",
-                ymin: 10, ymax: 40,
-                realTime: true,
-                points: temperature_data,
-                sampleInterval: 0.1,
-                markAllDataPoints: false,
-                dataChange: false
-              },
-              "sensor": {
-                "deviceType": "golink",
-                "sensors": [
-                  { "type": "temperature" }
-                ]
-              },
-              "appletString": goioAppletString
-            },
-            "LabQuest temperature": {
-              "graphOptions": {
-                title: "LabQuest Temperature Sensor",
-                xlabel:    "Time (s)",
-                xmin: 0, xmax: 60,
-                ylabel:    "Temperature, (Degrees C)",
-                ymin: 10, ymax: 40,
-                realTime: true,
-                points: temperature_data,
-                sampleInterval: 0.1,
-                markAllDataPoints: false,
-                dataChange: false
-              },
-              "sensor": {
-                "deviceType": "labquest",
-                "sensors": [
-                  { "type": "temperature" }
-                ]
-              },
-              "appletString": labquestAppletString
-            },
-            "GoIO distance": {
-              "graphOptions": {
-                title: "GoIO Distance Sensor",
-                xlabel:    "Time (s)",
-                xmin: 0, xmax: 20,
-                ylabel:    "Distance, (m)",
-                ymin: 0, ymax: 4,
-                realTime: true,
-                points: distance_data,
-                sampleInterval: 0.1,
-                markAllDataPoints: false,
-                dataChange: false
-              },
-              "sensor": {
-                "deviceType": "golink",
-                "sensors": [
-                  { "type": "distance" }
-                ]
-              },
-              "appletString": goioAppletString
-            },
-            "LabQuest distance": {
-              "graphOptions": {
-                title: "LabQuest Distance Sensor",
-                xlabel:    "Time (s)",
-                xmin: 0, xmax: 20,
-                ylabel:    "Distance, (m)",
-                ymin: 0, ymax: 4,
-                realTime: true,
-                points: distance_data,
-                sampleInterval: 0.1,
-                markAllDataPoints: false,
-                dataChange: false
-              },
-              "sensor": {
-                "deviceType": "labquest",
-                "sensors": [
-                  { "type": "distance" }
-                ]
-              },
-              "appletString": labquestAppletString
-            },
-            "GoIO force (5N) (built-in config)": {
-              "graphOptions": {
-                title: "GoIO Force (5N) Sensor",
-                xlabel:    "Time (s)",
-                xmin: 0, xmax: 20,
-                ylabel:    "Force, (N)",
-                ymin: -5, ymax: 5,
-                realTime: true,
-                points: force_data,
-                sampleInterval: 0.01,
-                markAllDataPoints: false,
-                dataChange: false
-              },
-              "sensor": {
-                "deviceType": "golink",
-                "sensors": [
-                  { "type": "force 5n" }
-                ]
-              },
-              "appletString": goioAppletString
-            },
-            "LabQuest force (5N)": {
-              "graphOptions": {
-                title: "LabQuest Force (5N) Sensor",
-                xlabel:    "Time (s)",
-                xmin: 0, xmax: 20,
-                ylabel:    "Force, (N)",
-                ymin: -5, ymax: 5,
-                realTime: true,
-                points: force_data,
-                sampleInterval: 0.01,
-                markAllDataPoints: false,
-                dataChange: false
-              },
-              "sensor": {
-                "deviceType": "labquest",
-                "sensors": [
-                  { "type": "force 5n" }
-                ]
-              },
-              "appletString": labquestAppletString
-            },
-            "GoIO force (50N)": {
-              "graphOptions": {
-                title: "GoIO Force (50N) Sensor",
-                xlabel:    "Time (s)",
-                xmin: 0, xmax: 20,
-                ylabel:    "Force, (N)",
-                ymin: -50, ymax: 50,
-                realTime: true,
-                points: force_data,
-                sampleInterval: 0.01,
-                markAllDataPoints: false,
-                dataChange: false
-              },
-              "sensor": {
-                "deviceType": "golink",
-                "sensors": [
-                  { "type": "force 50n" }
-                ]
-              },
-              "appletString": goioAppletString
-            },
-            "LabQuest force (50N)": {
-              "graphOptions": {
-                title: "LabQuest Force (50N) Sensor",
-                xlabel:    "Time (s)",
-                xmin: 0, xmax: 20,
-                ylabel:    "Force, (N)",
-                ymin: -50, ymax: 50,
-                realTime: true,
-                points: force_data,
-                sampleInterval: 0.01,
-                markAllDataPoints: false,
-                dataChange: false
-              },
-              "sensor": {
-                "deviceType": "labquest",
-                "sensors": [
-                  { "type": "force 50n" }
-                ]
-              },
-              "appletString": labquestAppletString
-            },
-            "GoIO CO2": {
-              "graphOptions": {
-                title: "GoIO CO2 Sensor",
-                xlabel:    "Time (s)",
-                xmin: 0, xmax: 60,
-                ylabel:    "CO2, (ppm)",
-                ymin: 0, ymax: 5000,
-                realTime: true,
-                points: co2_data,
-                sampleInterval: 1.0,
-                markAllDataPoints: false,
-                dataChange: false
-              },
-              "sensor": {
-                "deviceType": "golink",
-                "sensors": [
-                  { "type": "co2" }
-                ]
-              },
-              "appletString": goioAppletString
-            },
-            "LabQuest CO2": {
-              "graphOptions": {
-                title: "LabQuest CO2 Sensor",
-                xlabel:    "Time (s)",
-                xmin: 0, xmax: 60,
-                ylabel:    "CO2, (ppm)",
-                ymin: 0, ymax: 5000,
-                realTime: true,
-                points: co2_data,
-                sampleInterval: 1.0,
-                markAllDataPoints: false,
-                dataChange: false
-              },
-              "sensor": {
-                "deviceType": "labquest",
-                "sensors": [
-                  { "type": "co2" }
-                ]
-              },
-              "appletString": labquestAppletString
-            },
-            "GoIO O2": {
-              "graphOptions": {
-                title: "GoIO O2 Sensor",
-                xlabel:    "Time (s)",
-                xmin: 0, xmax: 60,
-                ylabel:    "O2, (%)",
-                ymin: 0, ymax: 100,
-                realTime: true,
-                points: o2_data,
-                sampleInterval: 1.0,
-                markAllDataPoints: false,
-                dataChange: false
-              },
-              "sensor": {
-                "deviceType": "golink",
-                "sensors": [
-                  { "type": "o2" }
-                ]
-              },
-              "appletString": goioAppletString
-            },
-            "LabQuest O2": {
-              "graphOptions": {
-                title: "LabQuest O2 Sensor",
-                xlabel:    "Time (s)",
-                xmin: 0, xmax: 60,
-                ylabel:    "O2, (%)",
-                ymin: 0, ymax: 100,
-                realTime: true,
-                points: o2_data,
-                sampleInterval: 1.0,
-                markAllDataPoints: false,
-                dataChange: false
-              },
-              "sensor": {
-                "deviceType": "labquest",
-                "sensors": [
-                  { "type": "o2" }
-                ]
-              },
-              "appletString": labquestAppletString
-            },
-            "GoIO pH": {
-              "graphOptions": {
-                title: "GoIO pH Sensor",
-                xlabel:    "Time (s)",
-                xmin: 0, xmax: 60,
-                ylabel:    "pH, (pH)",
-                ymin: 0, ymax: 14,
-                realTime: true,
-                points: ph_data,
-                sampleInterval: 0.1,
-                markAllDataPoints: false,
-                dataChange: false
-              },
-              "sensor": {
-                "deviceType": "golink",
-                "sensors": [
-                  { "type": "ph" }
-                ]
-              },
-              "appletString": goioAppletString
-            },
-            "LabQuest pH": {
-              "graphOptions": {
-                title: "LabQuest pH Sensor",
-                xlabel:    "Time (s)",
-                xmin: 0, xmax: 60,
-                ylabel:    "pH, (pH)",
-                ymin: 0, ymax: 14,
-                realTime: true,
-                points: ph_data,
-                sampleInterval: 0.1,
-                markAllDataPoints: false,
-                dataChange: false
-              },
-              "sensor": {
-                "deviceType": "labquest",
-                "sensors": [
-                  { "type": "ph" }
-                ]
-              },
-              "appletString": labquestAppletString
-            },
-            "Pseudo Sound": {
-              "graphOptions": {
-                title: "Pseudo Sound Sensor",
-                xlabel:    "Time (s)",
-                xmin: 0, xmax: 60,
-                ylabel:    "Sound level, (db)",
-                ymin: 0, ymax: 120,
-                realTime: true,
-                points: sound_data,
-                sampleInterval: 0.1,
-                markAllDataPoints: false,
-                dataChange: false
-              },
-              "sensor": {
-                "deviceType": "pseudo",
-                "sensors": [
-                  {
-                    "type": "manual",
-                    "precision": 1,
-                    "min": 0.0,
-                    "max": 120.0,
-                    "stepSize": 1.0,
-                    "type": 14
-                  }
-                ]
-              },
-              "appletString": goioAppletString
-            },
-            "GoIO light": {
-              "graphOptions": {
-                title: "GoIO Light Sensor",
-                xlabel:    "Time (s)",
-                xmin: 0, xmax: 60,
-                ylabel:    "Light, (Lux)",
-                ymin: 0, ymax: 10000,
-                realTime: true,
-                points: light_data,
-                sampleInterval: 0.1,
-                markAllDataPoints: false,
-                dataChange: false
-              },
-              "sensor": {
-                "deviceType": "golink",
-                "sensors": [
-                  { "type": "light" }
-                ]
-              },
-              "appletString": goioAppletString
-            },
-            "LabQuest light": {
-              "graphOptions": {
-                title: "LabQuest Light Sensor",
-                xlabel:    "Time (s)",
-                xmin: 0, xmax: 60,
-                ylabel:    "Light, (Lux)",
-                ymin: 0, ymax: 10000,
-                realTime: true,
-                points: light_data,
-                sampleInterval: 0.1,
-                markAllDataPoints: false,
-                dataChange: false
-              },
-              "sensor": {
-                "deviceType": "labquest",
-                "sensors": [
-                  { "type": "light" }
-                ]
-              },
-              "appletString": labquestAppletString
-            }
-          };
+          sensorDef;
 
       function sensorTypeSelectorHandler() {
+        var graphOptions,
+            appletClass,
+            status = document.getElementById("connect-status");
+
+        status.innerHTML = "";
+
+        if(applet != null){
+          applet.remove();
+          applet = null;
+        }
         graph.notify(appletLoadingStr);
         sensorType = sensorTypeSelector.value;
-        sensorConfig = sensorConfigurations[sensorType];
-        graph.reset("#chart", sensorConfig.graphOptions, appletLoadingStr);
-        d3.selectAll(".sensorbuttons").remove();
-        appletContainer.innerHTML = sensorConfig.appletString;
-        var status = document.getElementById("connect-status");
-        status.innerHTML = "";
-        applet = document.getElementById("sensor-applet");
-        applet_grapher = new sensor.AppletGrapher(applet, vis, graph, sensorConfig.sensor, sensorConfig.graphOptions.sampleInterval, "applet_grapher.JsListener()", graph.notify);
+        sensorDef = Lab.sensorApplet.sensorDefinitions[sensorType];
+        graphOptions = {
+          title: sensorDef.measurementName,
+          fontScaleRelativeToParent: false,
+          xlabel:    "Time (s)",
+          xmin: 0,
+          xmax: sensorDef.maxSeconds,
+          xTickCount: 10,
+          ylabel: sensorDef.measurementName,
+          ymin: sensorDef.minReading,
+          ymax: sensorDef.maxReading,
+          yTickCount: 8,
+          realTime: true,
+          points: [],
+          sampleInterval: 1 / sensorDef.samplesPerSecond,
+          markAllDataPoints: false,
+          dataChange: false
+        }
+        graph.reset("#chart", graphOptions, appletLoadingStr);
+
+        if(sensorDef.appletClass === 'goio'){
+          appletClass = Lab.sensorApplet.GoIO;
+        } else if (sensorDef.appletClass === 'labquest'){
+          appletClass = Lab.sensorApplet.LabQuest;
+        } else {
+          throw "unknown appletClass: " + sensorDef.appletClass;
+        }
+        applet = new appletClass({
+          sensorDefinitions: [sensorDef],
+          codebase: '/jnlp',
+          listenerPath: 'applet'
+        });
+        applet.on('data', function(data){
+          graph.addSamples([data[0]]);
+        });
+        applet.append($('body'), function(error){
+          if(error){
+            if (error instanceof Lab.sensorApplet.JavaLoadError) {
+              status.innerHTML = "It appears that Java applets cannot run in your browser. If you are able to fix this, reload the page to use the sensor";
+            } else if (error instanceof Lab.sensorApplet.AppletInitializationError) {
+              status.innerHTML = "The sensor applet appears not to be loading. If you are able to fix this, reload the page to use the sensor";
+            } else if (error instanceof Lab.sensorApplet.SensorConnectionError) {
+              status.innerHTML = "Either the device or the sensor is not connected";
+            } else {
+              status.innerHTML = "There was an unexpected error when connecting to the sensor";
+            }
+          } else {
+            graph.notify();
+            status.innerHTML = "Device connected!";
+          }
+        });
       }
       sensorTypeSelector.value = "select-sensor";
       sensorTypeSelector.onchange = sensorTypeSelectorHandler;
+
+      // Add the **Start**, **Stop**, and **Clear** buttons.
+      $('#start_button').click(function(){
+        applet.start();
+      });
+
+      $('#stop_button').click(function(){
+        applet.stop();
+      });
+
+      $('#clear_button').click(function(){
+        applet.stop();
+        graph.resetSamples([[]]);
+        graph.reset();
+      });
+
     </script>
   </body>
 </html>

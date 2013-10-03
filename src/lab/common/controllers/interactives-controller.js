@@ -635,6 +635,8 @@ define(function (require) {
               }
             } else if (typeof overlay[p] === "object" && !(overlay[p] instanceof Array)) {
               overlay[p] = meldOptions(base[p], overlay[p]);
+            } else if (overlay[p] instanceof Array && base[p] instanceof Array) {
+              overlay[p] = $.extend(true, base[p], overlay[p]);
             }
           }
           return overlay;

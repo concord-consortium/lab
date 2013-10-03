@@ -4,6 +4,7 @@ define(function (require) {
 
   var labConfig   = require('lab.config'),
       performance = require('common/performance');
+
   var global = (function() { return this; }());
 
   function ModelController(modelUrl, modelOptions, interactivesController,
@@ -206,7 +207,9 @@ define(function (require) {
     } else {
       setupModel();
       // publish model so it can be inspected at console
-      global.model = model;
+      global.getModel = function() {
+        return model;
+      };
     }
 
     benchmarks = new Benchmarks(controller);

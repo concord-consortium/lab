@@ -1,4 +1,4 @@
-/*global defineClass, extendClass, Lab, d3 */
+/*global defineClass, extendClass, mixin, Lab, d3 */
 /*jshint eqnull:true, indent: false */
 
 if (typeof ISImporter === 'undefined') ISImporter = {};
@@ -45,242 +45,75 @@ var MENU_GROUPS = {
   LAB_QUEST: { name: "LabQuest" }
 };
 
+// FIXME it should just be /jnlp
+mixin( Lab.sensorApplet.GoIO.prototype, {codebase: '/jnlp'} );
+mixin( Lab.sensorApplet.LabQuest.prototype, {codebase: '/jnlp'} );
+
 ISImporter.sensors = {
-
-  goMotion: {
-    applet: new ISImporter.GoIOApplet({
-      listenerPath: 'ISImporter.sensors.goMotion.applet',
-      sensorType: 'distance',
-      appletId: 'distance-sensor'
-    }),
+  none: {
+    applet: null,
     menuGroup: MENU_GROUPS.NONE,
-    menuText: "GoMotion",
-    title: "Distance",
-    tareable: true,
+    menuText: "select type of sensor...",
+    menuDisabled: true,
+    menuSelected: true,
+    title: "Sensor",
+    tareable: false,
+    minReading: 0,
     maxReading: 2,
-    minReading: -1,
-    readingUnits: "m",
-    precision: 2,
-    samplesPerSecond: 20,
+    readingUnits: "",
+    precision: 1,
     maxSeconds: 20
   },
-
-  goLinkTemperature: {
-    applet: new ISImporter.GoIOApplet({
-      listenerPath: 'ISImporter.sensors.goLinkTemperature.applet',
-      sensorType: 'temperature',
-      appletId: 'temperature-sensor'
-    }),
-    menuGroup: MENU_GROUPS.GO_LINK,
-    menuText: "Temperature",
-    title: "Temperature",
-    readingUnits: "°C",
-    maxReading: 40,
-    samplesPerSecond: 10,
-    downsampleRate: 5,
-    maxSeconds: 20
-  },
-
-  goLinkLight: {
-    applet: new ISImporter.GoIOApplet({
-      listenerPath: 'ISImporter.sensors.goLinkLight.applet',
-      sensorType: 'light',
-      appletId: 'light-sensor'
-    }),
-    menuGroup:  MENU_GROUPS.GO_LINK,
-    menuText: "Light",
-    title: "Light Intensity",
-    readingUnits: "lux",
-    maxReading: 2000,
-    samplesPerSecond: 10,
-    maxSeconds: 20
-  },
-
-  goLinkForce: {
-    applet: new ISImporter.GoIOApplet({
-      listenerPath: 'ISImporter.sensors.goLinkForce.applet',
-      sensorType: 'force 50n',
-      appletId: 'force-sensor'
-    }),
-    menuGroup:  MENU_GROUPS.GO_LINK,
-    menuText: "Force",
-    tareable: true,
-    title: "Force",
-    readingUnits: "N",
-    minReading: -50,
-    maxReading: 50,
-    precision: 2,
-    samplesPerSecond: 20,
-    maxSeconds: 10
-  },
-
-  goLinkPH: {
-    applet: new ISImporter.GoIOApplet({
-      listenerPath: 'ISImporter.sensors.goLinkPH.applet',
-      sensorType: 'ph',
-      appletId: 'ph-sensor'
-    }),
-    menuGroup:  MENU_GROUPS.GO_LINK,
-    menuText: "pH",
-    title: "pH",
-    readingUnits: "pH units",
-    minReading: 0,
-    maxReading: 14,
-    samplesPerSecond: 10,
-    downsampleRate: 10,
-    maxSeconds: 60
-  },
-
-  goLinkCO2: {
-    applet: new ISImporter.GoIOApplet({
-      listenerPath: 'ISImporter.sensors.goLinkCO2.applet',
-      sensorType: 'co2',
-      appletId: 'co2-sensor'
-    }),
-    menuGroup:  MENU_GROUPS.GO_LINK,
-    menuText: "CO₂",
-    title: "CO₂ Concentration",
-    readingUnits: "ppm",
-    minReading: 0,
-    maxReading: 5000,
-    samplesPerSecond: 1,
-    maxSeconds: 60
-  },
-
-  goLinkO2: {
-    applet: new ISImporter.GoIOApplet({
-      listenerPath: 'ISImporter.sensors.goLinkO2.applet',
-      sensorType: 'o2',
-      appletId: 'o2-sensor'
-    }),
-    menuGroup:  MENU_GROUPS.GO_LINK,
-    menuText: "O₂",
-    title: "O₂ Concentration",
-    readingUnits: "%",
-    minReading: 0,
-    maxReading: 100,
-    samplesPerSecond: 1,
-    maxSeconds: 60
-  },
-
-  labQuestMotion: {
-    applet: new ISImporter.LabQuestApplet({
-      listenerPath: 'ISImporter.sensors.labQuestMotion.applet',
-      sensorType: 'distance',
-      appletId: 'distance-sensor'
-    }),
-    menuGroup:  MENU_GROUPS.LAB_QUEST,
-    menuText: "Motion",
-    title: "Distance",
-    tareable: true,
-    maxReading: 2,
-    minReading: -1,
-    readingUnits: "m",
-    precision: 2,
-    samplesPerSecond: 20,
-    maxSeconds: 20
-  },
-
-  labQuestTemperature: {
-    applet: new ISImporter.LabQuestApplet({
-      listenerPath: 'ISImporter.sensors.labQuestTemperature.applet',
-      sensorType: 'temperature',
-      appletId: 'temperature-sensor'
-    }),
-    menuGroup: MENU_GROUPS.LAB_QUEST,
-    menuText: "Temperature",
-    title: "Temperature",
-    readingUnits: "°C",
-    maxReading: 40,
-    samplesPerSecond: 10,
-    downsampleRate: 5,
-    maxSeconds: 20
-  },
-
-  labQuestLight: {
-    applet: new ISImporter.LabQuestApplet({
-      listenerPath: 'ISImporter.sensors.labQuestLight.applet',
-      sensorType: 'light',
-      appletId: 'light-sensor'
-    }),
-    menuGroup:  MENU_GROUPS.LAB_QUEST,
-    menuText: "Light",
-    title: "Light Intensity",
-    readingUnits: "lux",
-    maxReading: 2000,
-    samplesPerSecond: 10,
-    maxSeconds: 20
-  },
-
-  labQuestForce: {
-    applet: new ISImporter.LabQuestApplet({
-      listenerPath: 'ISImporter.sensors.labQuestForce.applet',
-      sensorType: 'force 50n',
-      appletId: 'force-sensor'
-    }),
-    menuGroup:  MENU_GROUPS.LAB_QUEST,
-    menuText: "Force",
-    tareable: true,
-    title: "Force",
-    readingUnits: "N",
-    minReading: -50,
-    maxReading: 50,
-    precision: 2,
-    samplesPerSecond: 20,
-    maxSeconds: 10
-  },
-
-  labQuestPH: {
-    applet: new ISImporter.LabQuestApplet({
-      listenerPath: 'ISImporter.sensors.labQuestPH.applet',
-      sensorType: 'ph',
-      appletId: 'ph-sensor'
-    }),
-    menuGroup:  MENU_GROUPS.LAB_QUEST,
-    menuText: "pH",
-    title: "pH",
-    readingUnits: "pH units",
-    minReading: 0,
-    maxReading: 14,
-    samplesPerSecond: 10,
-    downsampleRate: 10,
-    maxSeconds: 60
-  },
-
-  labQuestCO2: {
-    applet: new ISImporter.LabQuestApplet({
-      listenerPath: 'ISImporter.sensors.labQuestCO2.applet',
-      sensorType: 'co2',
-      appletId: 'co2-sensor'
-    }),
-    menuGroup:  MENU_GROUPS.LAB_QUEST,
-    menuText: "CO₂",
-    title: "CO₂ Concentration",
-    readingUnits: "ppm",
-    minReading: 0,
-    maxReading: 5000,
-    samplesPerSecond: 1,
-    maxSeconds: 60
-  },
-
-  labQuestO2: {
-    applet: new ISImporter.LabQuestApplet({
-      listenerPath: 'ISImporter.sensors.labQuestO2.applet',
-      sensorType: 'o2',
-      appletId: 'o2-sensor'
-    }),
-    menuGroup:  MENU_GROUPS.LAB_QUEST,
-    menuText: "O₂",
-    title: "O₂ Concentration",
-    readingUnits: "%",
-    minReading: 0,
-    maxReading: 100,
-    samplesPerSecond: 1,
-    maxSeconds: 60
-  }
-
 };
+var sensorDef,
+    appletClass,
+    sensorMenuGroup,
+    unitsDef = Lab.sensorApplet.unitsDefinition.units;
 
+for (key in Lab.sensorApplet.sensorDefinitions) {
+  if (Lab.sensorApplet.sensorDefinitions.hasOwnProperty(key)) {
+    sensorDef = Lab.sensorApplet.sensorDefinitions[key];
+    if(sensorDef.appletClass === 'goio') {
+      appletClass = Lab.sensorApplet.GoIO;
+    } else if (sensorDef.appletClass === 'labquest') {
+      appletClass = Lab.sensorApplet.LabQuest;
+    } else {
+      throw "Unknown appletClass: " + sensorDef.appletClass;
+    }
+    if(sensorDef.deviceName === 'GoMotion') {
+      sensorMenuGroup = MENU_GROUPS.NONE;
+    } else if (sensorDef.deviceName === 'GoIO') {
+      sensorMenuGroup = MENU_GROUPS.GO_LINK;
+    } else if (sensorDef.deviceName === 'LabQuest') {
+      sensorMenuGroup = MENU_GROUPS.LAB_QUEST;
+    } else {
+      throw "Unknown deviceName: " + sensorDef.deviceName;
+    }
+
+    ISImporter.sensors[key] = {
+      applet: new appletClass({
+        listenerPath: 'ISImporter.sensors.' + key + '.applet',
+        sensorDefinitions: [sensorDef],
+        appletId: sensorDef.measurementType + '-sensor'
+      }),
+      menuGroup: sensorMenuGroup,
+      // This is different than before it will duplicate the menuGroup
+      // in most cases, the sensor definitions will likely change shortly
+      // then this can be fixed
+      menuText: sensorDef.sensorName,
+      title: sensorDef.measurementName,
+      tareable: sensorDef.tareable,
+      maxReading: sensorDef.maxReading,
+      minReading: sensorDef.minReading,
+      readingUnits: unitsDef[sensorDef.measurementType].symbol,
+      precision: sensorDef.precision,
+      samplesPerSecond: sensorDef.samplesPerSecond,
+      maxSeconds: sensorDef.maxSeconds
+    };
+  }
+}
+
+// It just so happens that the keys of the
 
 ISImporter.GraphController = defineClass({
 
@@ -448,6 +281,7 @@ ISImporter.appController = new ISImporter.Object({
   init: function() {
     var self = this;
     this.appletDataListener = function(y) {
+      y = y[0];
       if (self.sensor.tareable) {
         y -= (self.sensor.tareValue || 0);
       }
@@ -594,7 +428,9 @@ ISImporter.appController = new ISImporter.Object({
       }
     }
 
-    $el.append('<option value="' + sensorKey + '">' + sensor.menuText + '</option>');
+    disabled = sensor.menuDisabled ? " disabled" : "";
+    selected = sensor.menuSelected ? " selected" : "";
+    $el.append('<option value="' + sensorKey + '"' + disabled + selected + '>' + sensor.menuText + '</option>');
   },
 
   setupGraph: function(title, yLabel, yMax, dataset) {},
@@ -656,56 +492,8 @@ ISImporter.appController = new ISImporter.Object({
     $('.metadata-label, .metadata-value').attr("disabled","disabled");
   },
 
-  // events
-  sensorChanged: function() {
-    var val        = this.getSensorSelection(),
-        self       = this;
-
-    this.sensor = ISImporter.sensors[val];
-
-    if (this.currentApplet === this.sensor.applet && this.currentApplet.getState() !== "not appended") {
-      return;
-    }
-
-    this.stopInterface(self);
-
-    if (this.currentApplet) {
-      this.currentApplet.removeListeners('data');
-      this.currentApplet.remove();
-    }
-
-    this.currentApplet = this.sensor.applet;
-    this.currentAppletReady = false;
-    this.currentApplet.on('sensorReady', function() {
-      self.sensorAppletReady();
-    });
-    this.currentApplet.on('deviceUnplugged', function() {
-      self.stopInterface(self);
-      self.logAction('deviceUnplugged');
-      $('#dialog-confirm-content').text("No sensor device is connected! Please connect your device and click OK to try again, or Cancel to stop trying.");
-      $('#dialog-confirm').attr('title', "No sensor device found!");
-      $('#dialog-confirm').dialog({
-        resizable: false,
-        height: 300,
-        width: 400,
-        modal: true,
-        buttons: {
-          "OK": function() {
-            $(this).dialog("close");
-            if (self.singleValueTimerId === null) {
-              self.singleValueTimerId = setInterval(function() {self.readSingleValue();}, 1000);
-            }
-          },
-          "Cancel": function() {
-            $(this).dialog("close");
-            self.sensorDisconnect();
-          }
-        }
-      });
-    });
-    this.currentApplet.on('sensorUnplugged', function() {
-      self.stopInterface(self);
-      self.logAction('sensorUnplugged');
+  handleSensorNotConnected: function() {
+      var self = this;
       $('#dialog-confirm-content').text("No sensor (or the wrong sensor) is connected! Please connect your sensor and click OK to try again, or Cancel to stop trying.");
       $('#dialog-confirm').attr('title', "No sensor found!");
       $('#dialog-confirm').dialog({
@@ -726,7 +514,62 @@ ISImporter.appController = new ISImporter.Object({
           }
         }
       });
-    });
+  },
+
+  // events
+  sensorChanged: function() {
+    var val        = (this.getSensorSelection() || "none"),
+        self       = this;
+
+    this.sensor = ISImporter.sensors[val];
+
+    if (this.currentApplet === this.sensor.applet && (this.currentApplet === null || this.currentApplet.getState() !== "not appended")) {
+      return;
+    }
+
+    this.stopInterface(self);
+
+    if (this.currentApplet) {
+      this.currentApplet.removeListeners('data');
+      this.currentApplet.remove();
+    }
+
+    this.currentApplet = this.sensor.applet;
+    this.currentAppletReady = false;
+    if (this.currentApplet !== null) {
+      this.currentApplet.on('sensorReady', function() {
+        self.sensorAppletReady();
+      });
+      this.currentApplet.on('deviceUnplugged', function() {
+        self.stopInterface(self);
+        self.logAction('deviceUnplugged');
+        $('#dialog-confirm-content').text("No sensor device is connected! Please connect your device and click OK to try again, or Cancel to stop trying.");
+        $('#dialog-confirm').attr('title', "No sensor device found!");
+        $('#dialog-confirm').dialog({
+          resizable: false,
+          height: 300,
+          width: 400,
+          modal: true,
+          buttons: {
+            "OK": function() {
+              $(this).dialog("close");
+              if (self.singleValueTimerId === null) {
+                self.singleValueTimerId = setInterval(function() {self.readSingleValue();}, 1000);
+              }
+            },
+            "Cancel": function() {
+              $(this).dialog("close");
+              self.sensorDisconnect();
+            }
+          }
+        });
+      });
+      this.currentApplet.on('sensorUnplugged', function() {
+        self.stopInterface(self);
+        self.logAction('sensorUnplugged');
+        self.handleSensorNotConnected();
+      });
+    }
 
     this.dataset = new ISImporter.Dataset();
     this.rawDataset = this.getNewRawDataset();
@@ -740,7 +583,23 @@ ISImporter.appController = new ISImporter.Object({
     ISImporter.graphController.setYMax( this.sensor.maxReading );
     ISImporter.graphController.setTitle( this.sensor.title + " Graph");
 
-    this.currentApplet.append();
+    if(this.currentApplet){
+      this.currentApplet.append($('#main .left'), function(error){
+        if(error) {
+          if (error instanceof Lab.sensorApplet.JavaLoadError) {
+            throw "It appears that Java applets cannot run in your browser. If you are able to fix this, reload the page to use the sensor";
+          } else if (error instanceof Lab.sensorApplet.AppletInitializationError) {
+            throw "The sensor applet appears not to be loading. If you are able to fix this, reload the page to use the sensor";
+          } else if (error instanceof Lab.sensorApplet.SensorConnectionError) {
+            self.handleSensorNotConnected();
+          } else {
+            throw "There was an unexpected error when connecting to the sensor";
+          }
+        } else {
+          self.sensorAppletReady();
+        }
+      });
+    }
 
     // we'll skip explicit state management... for now.
     this.disableControlButtons();
@@ -753,8 +612,13 @@ ISImporter.appController = new ISImporter.Object({
       this.hide(this.$tareButton);
     }
 
-    this.enable(this.$sensorDisconnect);
-    this.show(this.$realtimeDisplay);
+    if (this.currentApplet) {
+      this.enable(this.$sensorDisconnect);
+      this.show(this.$realtimeDisplay);
+    } else {
+      this.disable(this.$sensorDisconnect);
+      this.hide(this.$realtimeDisplay);
+    }
 
     ISImporter.graphController.removeNotification();
   },
@@ -804,22 +668,20 @@ ISImporter.appController = new ISImporter.Object({
   singleValueTimerId: null,
   readSingleValue: function() {
     try {
-      var values = this.currentApplet.appletInstance.getConfiguredSensorsValues(this.currentApplet.deviceType);
-      if (values != null) {
-        var val = values[0];
+      var values = this.currentApplet.readSensor();
+      var val = values[0];
 
-        if (this.sensor.tareable) {
-          val -= (this.sensor.tareValue || 0);
-        }
-
-        var precision = this.sensor.precision;
-        if (typeof(precision) === 'undefined' || precision === null) {
-          precision = 1;
-        }
-
-        this.$realtimeDisplayValue.text(ISImporter.fixed(val, precision));
-        this.$realtimeDisplayUnits.show();
+      if (this.sensor.tareable) {
+        val -= (this.sensor.tareValue || 0);
       }
+
+      var precision = this.sensor.precision;
+      if (typeof(precision) === 'undefined' || precision === null) {
+        precision = 1;
+      }
+
+      this.$realtimeDisplayValue.text(ISImporter.fixed(val, precision));
+      this.$realtimeDisplayUnits.show();
     } catch(e) {
       // console.log("problem enumeratingSensors " + e);
     }
@@ -978,7 +840,7 @@ ISImporter.appController = new ISImporter.Object({
     logString += JSON.stringify({
       action: action,
       type: "sensor",
-      sensorType: this.sensor.title,
+      measurementType: this.sensor.title,
       fields: labels,
       values: values
     });
@@ -1007,6 +869,11 @@ ISImporter.appController = new ISImporter.Object({
   // accessors
   getSensorSelection: function() {
     return this.$sensorSelector.val();
+  },
+
+  setSensorSelection: function(id) {
+    this.$sensorSelector.val(id);
+    this.sensorChanged();
   },
 
   getMetadataItemCount: function() {

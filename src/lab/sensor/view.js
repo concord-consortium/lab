@@ -2,7 +2,7 @@ define(function() {
 
   var SelectBoxView = require('common/views/select-box-view'),
       NumericOutputView = require('common/views/numeric-output-view'),
-      sensorDefinitions = require('sensor/applet/sensor-definitions'),
+      sensorDefinitions = require('sensor-applet/sensor-definitions'),
       viewState = require('common/views/view-state');
 
   return function(model, modelUrl) {
@@ -70,7 +70,7 @@ define(function() {
     }
 
     return view = {
-      $el: $("<div id='model-container' class='container' />"),
+      $el: $("<div id='model-container' class='container sensor-model-container' />"),
 
       bindModel: function(newModel, newModelUrl) {
         modelUrl = newModelUrl || modelUrl;

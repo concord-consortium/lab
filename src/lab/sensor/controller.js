@@ -35,6 +35,12 @@ define(function (require) {
         }
       });
 
+      model.addObserver('needsReload', function() {
+        if (model.properties.needsReload) {
+          controller.reload();
+        }
+      });
+
       model.addPropertyDescriptionObserver('sensorReading', function() {
         var description = model.getPropertyDescription('sensorReading');
         var view = controller.modelContainer;

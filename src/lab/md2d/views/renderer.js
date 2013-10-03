@@ -114,7 +114,6 @@ define(function(require) {
       atomToolTip, atomToolTipPre,
 
       fontSizeInPixels,
-      textBoxFontSizeInPixels,
 
       modelTimeFormatter = d3.format("5.1f"),
       timePrefix = "",
@@ -1070,7 +1069,7 @@ define(function(require) {
 
     function getTextBoxCoords(d) {
       var x, y, hostX, hostY, textX, textY, frameX, frameY, calloutX, calloutY,
-        pixelScale = textBoxFontSizeInPixels * d.fontScale;
+        pixelScale = model2px(d.fontSize);
 
       x = d.x;
       y = d.y;
@@ -1268,10 +1267,10 @@ define(function(require) {
             "width": 0,
             "height": 0,
             "rx": function(d) {
-              return d.frame === "rounded rectangle" ? textBoxFontSizeInPixels / 2.5 : 0;
+              return d.frame === "rounded rectangle" ? model2px(d.fontSize) / 2.5 : 0;
             },
             "ry": function(d) {
-              return d.frame === "rounded rectangle" ? textBoxFontSizeInPixels / 2 : 0;
+              return d.frame === "rounded rectangle" ? model2px(d.fontSize) / 2 : 0;
             },
             "x": function(d) {
               return getTextBoxCoords(d)[2];
@@ -1320,7 +1319,7 @@ define(function(require) {
             "xml:space": "preserve",
             "font-family": "'" + labConfig.fontface + "', sans-serif",
             "font-size": function(d) {
-              return d.fontScale * textBoxFontSizeInPixels + "px";
+              return model2px(d.fontSize) + "px";
             },
             "fill": function(d) {
               return d.color || "black";
@@ -2172,7 +2171,6 @@ define(function(require) {
       model2pxInv = modelView.model2pxInv;
 
       fontSizeInPixels = modelView.getFontSizeInPixels();
-      textBoxFontSizeInPixels = fontSizeInPixels * 0.9;
 
       modelAtoms = model.getAtoms();
       modelElements = model.get_elements();
@@ -2250,7 +2248,6 @@ define(function(require) {
         model2pxInv = m2pxInv;
       }
       fontSizeInPixels = modelView.getFontSizeInPixels();
-      textBoxFontSizeInPixels = fontSizeInPixels * 0.9;
 
       setupMiscOptions();
       setupDynamicGradients();

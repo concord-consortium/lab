@@ -7,10 +7,11 @@ define(function(require) {
       RunningAverageFilter = require('cs!common/filters/running-average-filter'),
       validator            = require('common/validator'),
       metadata             = require('./metadata'),
-      unitsDefinition      = require('./units-definition'),
-      appletClasses        = require('./applet/applet-classes'),
-      appletErrors         = require('./applet/errors'),
-      sensorDefinitions    = require('./applet/sensor-definitions'),
+      unitsDefinition      = require('sensor-applet/units-definition'),
+      appletClasses        = require('sensor-applet/applet-classes'),
+      appletErrors         = require('sensor-applet/errors'),
+      sensorDefinitions    = require('sensor-applet/sensor-definitions'),
+      labConfig            = require('lab.config'),
       BasicDialog          = require('common/controllers/basic-dialog'),
       ExportController     = require('common/controllers/export-controller');
 
@@ -44,6 +45,7 @@ define(function(require) {
         viewOptions,
         mainProperties,
         isStopped = true,
+        needsReload = false,
         dispatch = d3.dispatch('play', 'stop', 'tick', 'willReset', 'reset', 'stepForward',
                                'stepBack', 'seek', 'invalidation'),
         initialSensorType,
@@ -190,7 +192,7 @@ define(function(require) {
         applet.on('deviceUnplugged', function() { handleUnplugged('device'); });
         applet.on('sensorUnplugged', function() { handleUnplugged('sensor'); });
 
-        applet.append(function(error) {
+        applet.append($('body'),function(error) {
 
           if (error) {
             if (error instanceof appletErrors.JavaLoadError) {
@@ -227,6 +229,7 @@ define(function(require) {
         },
         Cancel: function() {
           $(this).remove();
+          model.reload();
         }
       });
     }
@@ -236,6 +239,7 @@ define(function(require) {
       simpleAlert(message, {
         OK: function() {
           $(this).remove();
+          model.reload();
         }
       });
     }
@@ -259,15 +263,29 @@ define(function(require) {
       if (sensorPollingIntervalID) {
         clearInterval(sensorPollingIntervalID);
       }
-
-      sensorPollingIntervalID = setInterval(function() {
-        makeInvalidatingChange(function() {
-          rawSensorValue = applet.readSensor();
-          if (isTaring) {
-            model.properties.tareValue = rawSensorValue;
-            isTaring = false;
+      var handleSensorValues = function(error, values) {
+        if (error) {
+          if (error instanceof appletErrors.AlreadyReadingError) {
+            // Don't worry about it -- we just overlapped another call to readSensor
+          } else if(error instanceof appletErrors.SensorConnectionError){
+            clearInterval(sensorPollingIntervalID);
+            handleSensorConnectionError();
+          } else {
+            clearInterval(sensorPollingIntervalID);
+            throw error;
           }
-        });
+        } else {
+          makeInvalidatingChange(function() {
+            rawSensorValue = values[0];
+            if (isTaring) {
+              model.properties.tareValue = rawSensorValue;
+              isTaring = false;
+            }
+          });
+        }
+      };
+      sensorPollingIntervalID = setInterval(function() {
+        applet.readSensor(handleSensorValues);
       }, 1000/sensorPollsPerSecond);
     }
 
@@ -318,9 +336,9 @@ define(function(require) {
 
         applet = window.Lab.sensor[sensorType] = new AppletClass({
           listenerPath: 'Lab.sensor.' + sensorType,
-          measurementType: measurementType,
-          sensorDefinition: sensorDefinition,
-          appletId: sensorType+'-sensor'
+          sensorDefinitions: [sensorDefinition],
+          appletId: sensorType+'-sensor',
+          codebase: labConfig.actualRoot + "jnlp"
         });
 
         appendApplet();
@@ -356,7 +374,7 @@ define(function(require) {
       // the problem go away!
       window.__bizarreSafariFix = 1;
 
-      rawSensorValue = d;
+      rawSensorValue = d[0];
       // Once we collect data for a given sensor, don't allow changingn the sensor typea
       if (!didCollectData) {
         model.freeze('sensorType');
@@ -382,21 +400,18 @@ define(function(require) {
           return;
         }
 
-        try {
-          applet.start();
-        } catch (e) {
-          if (e instanceof appletErrors.SensorConnectionError) {
-            handleSensorConnectionError();
-            return;
-          } else {
-            throw e;
+        applet.start(function(error, isStarted) {
+          if (error) {
+            if (error instanceof appletErrors.SensorConnectionError) {
+              handleSensorConnectionError();
+            }
+          } else if (isStarted) {
+            makeInvalidatingChange(function() {
+              isStopped = false;
+            });
+            dispatch.play();
           }
-        }
-
-        makeInvalidatingChange(function() {
-          isStopped = false;
-        });
-        dispatch.play();
+        })
       },
 
       stop: function() {
@@ -437,6 +452,13 @@ define(function(require) {
         model.properties.sensorType = initialSensorType;
 
         dispatch.reset();
+      },
+
+      reload: function() {
+        model.stop();
+        makeInvalidatingChange(function() {
+          needsReload = true;
+        });
       },
 
       isStopped: function() {
@@ -636,6 +658,11 @@ define(function(require) {
       return isStopped && !didCollectData && isSensorTareable && !isTaring;
     });
 
+    model.defineOutput('needsReload', {
+      label: "Needs Reload?"
+    }, function() {
+      return needsReload;
+    });
 
     // Clean up state before we go -- failing to remove the applet from the page before switching
     // between 2 sensor types that use the same interface causes an applet exception.

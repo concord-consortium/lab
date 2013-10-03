@@ -19,6 +19,7 @@ MD2D_SRC_FILES := $(shell find src/lab/md2d -type f ! -name '.*' -print)
 GRAPHER_SRC_FILES := $(shell find src/lab/grapher -type f ! -name '.*' -print)
 IMPORT_EXPORT_SRC_FILES := $(shell find src/lab/import-export -type f ! -name '.*' -print)
 IFRAME_PHONE_SRC_FILES := $(shell find src/lab/iframe-phone -type f ! -name '.*' -print)
+SENSOR_APPLET_SRC_FILES := $(shell find src/lab/sensor-applet -type f ! -name '.*' -print)
 
 COMMON_SRC_FILES := $(shell find src/lab/common -type f ! -name '.*' -print)
 
@@ -55,7 +56,8 @@ LAB_JS_FILES = \
 	public/lab/lab.js \
 	public/lab/lab.grapher.js \
 	public/lab/lab.import-export.js \
-	public/lab/lab.iframe-phone.js
+	public/lab/lab.iframe-phone.js \
+	public/lab/lab.sensor-applet.js
 
 # default target executed when running make
 .PHONY: all
@@ -427,6 +429,10 @@ public/lab/lab.import-export.js: \
 public/lab/lab.iframe-phone.js: \
 	$(IFRAME_PHONE_SRC_FILES)
 	$(R_OPTIMIZER) -o src/lab/iframe-phone/iframe-phone.build.js
+
+public/lab/lab.sensor-applet.js: \
+	$(SENSOR_APPLET_SRC_FILES)
+	$(R_OPTIMIZER) -o src/lab/sensor-applet/sensor-applet.build.js
 
 # ------------------------------------------------
 #

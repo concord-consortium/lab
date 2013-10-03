@@ -2234,6 +2234,7 @@ define(function (require) {
       if (options.title && title) {
         title.text(options.title);
       }
+      renderGraph();
     }
 
     // update the x-axis label
@@ -2241,6 +2242,7 @@ define(function (require) {
       if (options.xlabel && xlabel) {
         xlabel.text(options.xlabel);
       }
+      renderGraph();
     }
 
     // update the y-axis label
@@ -2250,6 +2252,7 @@ define(function (require) {
       } else {
         ylabel.style("display", "none");
       }
+      renderGraph();
     }
 
     // ------------------------------------------------------------

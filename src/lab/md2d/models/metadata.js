@@ -717,8 +717,8 @@ define(function() {
       rotate: {
         defaultValue: 0
       },
-      fontScale: {
-        defaultValue: 1
+      fontSize: {
+        defaultValue: 0.12 // defined in nm!
       },
       hostType: {},
       hostIndex: {},

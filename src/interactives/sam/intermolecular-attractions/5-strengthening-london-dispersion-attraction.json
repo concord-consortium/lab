@@ -19,19 +19,17 @@
         "textBoxes": [
           {
             "text": "Explore the different attractive forces between molecules of varying size and shape. Look for how the area of close contact between the molecules influences their attraction.",
-            "x": 0.55,
-            "y": 1.85,
-            "width": 2.7,
-            "fontScale": 1.4,
-            "layer": 1
+            "x": 0.4,
+            "y": 1.7,
+            "fontSize": 0.14,
+            "width": 3.2
           },
           {
             "text": "Choose a pair of molecules from the menu below.",
             "x": 0.4,
-            "y": 0.45,
-            "fontScale": 1.4,
-            "width": 3.0,
-            "layer": 1
+            "y": 0.6,
+            "fontSize": 0.14,
+            "width": 3.2
           }
         ]
       }

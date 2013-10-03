@@ -296,7 +296,8 @@ define(function() {
                                "afterInvalidatingChangeSequence"),
 
         invalidatingChangeNestingLevel = 0,
-        suppressInvalidatingChangeHooks = false,
+        invalidatingChangeOccurredDuringBatch,
+        suppressInvalidationForBatch = false,
 
         // all properties that were notified while notifications were batched
         changedPropertyKeys = [],
@@ -678,7 +679,7 @@ define(function() {
           var observers = propertyInformation[key].observers,
               index = observers.indexOf(callback);
 
-          if (index > 0) {
+          if (index >= 0) {
             observers.splice(index, 1);
           }
         };
@@ -708,7 +709,7 @@ define(function() {
           var observers = propertyInformation[key].propertyDescriptionObservers,
               index = observers.indexOf(callback);
 
-          if (index > 0) {
+          if (index >= 0) {
             observers.splice(index, 1);
           }
         };
@@ -966,7 +967,13 @@ define(function() {
       },
 
       invalidatingChangePreHook: function() {
-        if (suppressInvalidatingChangeHooks) return;
+
+        // Only the first invalidating change during a batch runs the "pre hook".
+        if (suppressInvalidationForBatch && invalidatingChangeOccurredDuringBatch) {
+          return;
+        }
+
+        invalidatingChangeOccurredDuringBatch = true;
 
         if (invalidatingChangeNestingLevel === 0) {
           api.storeComputedProperties();
@@ -979,7 +986,7 @@ define(function() {
       },
 
       invalidatingChangePostHook: function() {
-        if (suppressInvalidatingChangeHooks) return;
+        if (suppressInvalidationForBatch) return;
 
         invalidatingChangeNestingLevel--;
 
@@ -993,14 +1000,17 @@ define(function() {
         }
       },
 
+      // N.B. We don't currently handle nested batches. This may be a problem.
       startBatch: function() {
-        api.invalidatingChangePreHook();
-        suppressInvalidatingChangeHooks = true;
+        invalidatingChangeOccurredDuringBatch = false;
+        suppressInvalidationForBatch = true;
       },
 
       endBatch: function() {
-        suppressInvalidatingChangeHooks = false;
-        api.invalidatingChangePostHook();
+        suppressInvalidationForBatch = false;
+        if (invalidatingChangeOccurredDuringBatch) {
+          api.invalidatingChangePostHook();
+        }
       },
 
       on: function (type, listener) {
