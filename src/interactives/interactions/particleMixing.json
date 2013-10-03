@@ -15,6 +15,7 @@
         "controlButtons": ""
       },
       "onLoad": [
+        "setTextBoxProperties(1, {x: 3.5});",
         "set('indices-column-a',[1,0]);",
         "set('indices-column-b',[2,3]);",
         "set('indices-column-c',[6,7,8]);",
