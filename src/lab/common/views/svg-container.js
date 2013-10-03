@@ -321,11 +321,13 @@ define(function (require) {
       }
     }
 
-    // TODO confirm this is required?
-    function xlinkable() {
+
+    function basicSVGAttrs() {
       return this.attr({
+        // TODO confirm xmlns def is required?
         'xmlns': 'http://www.w3.org/2000/svg',
-        'xmlns:xmlns:xlink': 'http://www.w3.org/1999/xlink' // hack: doubling xmlns: so it doesn't disappear once in the DOM
+        'xmlns:xmlns:xlink': 'http://www.w3.org/1999/xlink', // hack: doubling xmlns: so it doesn't disappear once in the DOM
+        'overflow': 'hidden' // Important in IE! Otherwise content won't be clipped by SVG container
       });
     }
 
@@ -350,7 +352,7 @@ define(function (require) {
         backgroundContainer = d3.select(node).append("svg")
           .attr("class", "container background-container")
           .call(layeredOnTop)
-          .call(xlinkable);
+          .call(basicSVGAttrs);
 
         containerBackground = backgroundContainer.append("rect")
           .attr("class", "container-background background");
@@ -365,7 +367,7 @@ define(function (require) {
         foregroundContainer = d3.select(node).append("svg")
           .attr("class", "container foreground-container")
           .call(layeredOnTop)
-          .call(xlinkable);
+          .call(basicSVGAttrs);
 
         brushContainer = foregroundContainer.append("g")
           .attr("class", "brush-container");
@@ -790,7 +792,7 @@ define(function (require) {
         var viewport = viewportContainer.append("svg")
           .attr("class", "svg-viewport")
           .call(layeredOnTop)
-          .call(xlinkable);
+          .call(basicSVGAttrs);
 
         // Cascade events into this viewport
         layersToHitTest.splice(1, 0, viewport.node());
