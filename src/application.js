@@ -47,7 +47,6 @@ AUTHORING = false;
 
       editor,
       modelEditor,
-      modelJson,
 
       jsonModelPath,
       $jsonModelLink = $("#json-model-link"),
@@ -780,67 +779,64 @@ AUTHORING = false;
         $modelTextArea = $("#model-text-area"),
         $modelEditorContent = $("#model-editor-content"),
         modelButtonHandlersAdded,
-        foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
+        foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder),
+        modelJson;
 
-    if (typeof modelJson === 'undefined') {
-      $.get(Lab.config.actualRoot + interactive.models[0].url).done(function(results) {
-        if (typeof results === 'string') results = JSON.parse(results);
-        modelJson = results;
-        $modelTextArea.text(JSON.stringify(modelJson, null, indent));
-        if (!modelEditor) {
-          modelEditor = CodeMirror.fromTextArea($modelTextArea.get(0), {
-            mode: { name: "javascript", json: true },
-            indentUnit: indent,
-            lineNumbers: true,
-            lineWrapping: false,
-            onGutterClick: foldFunc
-          });
-        } else {
-          modelEditor.setValue(JSON.stringify(modelJson, null, indent));
+    function serializeModelAndUpdateEditor() {
+      var modelState;
+      if(isFullPage()) {
+        modelState = controller.modelController.state();
+        modelEditor.setValue(JSON.stringify(modelState, null, indent));
+      } else {
+        iframePhone.post({ type:'getModelState' });
+        iframePhone.addListener('modelState', function(message) {
+          modelEditor.setValue(JSON.stringify(message, null, indent));
+        });
+      }
+    }
+
+    if (!modelEditor) {
+      modelEditor = CodeMirror.fromTextArea($modelTextArea.get(0), {
+        mode: { name: "javascript", json: true },
+        indentUnit: indent,
+        lineNumbers: true,
+        lineWrapping: false,
+        onGutterClick: foldFunc
+      });
+    }
+
+    serializeModelAndUpdateEditor();
+
+    if (!modelButtonHandlersAdded) {
+      modelButtonHandlersAdded = true;
+
+      $updateModelButton.on('click', function() {
+        try {
+          modelJson = JSON.parse(modelEditor.getValue());
+        } catch (e) {
+          alert("Model JSON syntax error: " + e.message);
+          throw new Error("Model JSON syntax error: " + e.message);
         }
-        if (!modelButtonHandlersAdded) {
-          modelButtonHandlersAdded = true;
-
-          $updateModelButton.on('click', function() {
-            try {
-              modelJson = JSON.parse(modelEditor.getValue());
-            } catch (e) {
-              alert("Model JSON syntax error: " + e.message);
-              throw new Error("Model JSON syntax error: " + e.message);
-            }
-            if(isFullPage()) {
-              controller.loadModel(interactive.models[0].id, modelJson);
-            } else {
-              iframePhone.post({ type:'loadModel', data: { modelId: interactive.models[0].id, modelObject: modelJson } });
-            }
-          });
-
-          $autoFormatModelJsonButton.on('click', function() {
-            autoFormatEditorContent(modelEditor);
-          });
-
-          $updateJsonFromModelButton.on('click', function() {
-            var modelState;
-            if(isFullPage()) {
-              modelState = controller.modelController.state();
-              modelEditor.setValue(JSON.stringify(modelState, null, indent));
-            } else {
-              iframePhone.post({ type:'getModelState' });
-              iframePhone.addListener('modelState', function(message) {
-                modelEditor.setValue(JSON.stringify(message, null, indent));
-              });
-            }
-          });
-
-          $showModelEditor.change(function() {
-            if (this.checked) {
-              $modelEditorContent.show(100);
-            } else {
-              $modelEditorContent.hide(100);
-            }
-          }).change();
+        if(isFullPage()) {
+          controller.loadModel(interactive.models[0].id, modelJson);
+        } else {
+          iframePhone.post({ type:'loadModel', data: { modelId: interactive.models[0].id, modelObject: modelJson } });
         }
       });
+
+      $autoFormatModelJsonButton.on('click', function() {
+        autoFormatEditorContent(modelEditor);
+      });
+
+      $updateJsonFromModelButton.on('click', serializeModelAndUpdateEditor);
+
+      $showModelEditor.change(function() {
+        if (this.checked) {
+          $modelEditorContent.show(100);
+        } else {
+          $modelEditorContent.hide(100);
+        }
+      }).change();
     }
   }
 
