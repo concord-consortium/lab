@@ -550,6 +550,7 @@ define(function (require) {
         var layer;
         var prevLayer;
         var target;
+        var testEvent;
 
         for (var i = 1, len = layersToHitTest.length; i < len; i++) {
           layer = layersToHitTest[i];
@@ -574,10 +575,16 @@ define(function (require) {
             // Need to ask the Canvas-based view to perform custom hit-testing. It will set our
             // hitTestFlag if it considers the event a "hit"
             api.hitTestFlag = false;
-            layer.dispatchEvent(retargetMouseEvent(e, layer));
+
+            // For now we have to dispatch an event first, *then* see if the Canvas-based view
+            // considered it a hit -- we stopPropagation and keep going if it does not report a hit.
+            testEvent = retargetMouseEvent(e, layer);
+            layer.dispatchEvent(testEvent);
             if (api.hitTestFlag) {
               unhideLayers(i-1);
               return;
+            } else {
+              testEvent.stopPropagation();
             }
           }
 
