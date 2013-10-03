@@ -125,8 +125,10 @@ define(function(require) {
         // changed (e.g. during atom dragging).
         targetOffset = $target.offset();
         targetOversampling = $target.attr("width") / $target.width();
-        viewportX = model.get("viewPortX");
-        viewportY = model.get("viewPortY");
+        // Undefined is a perfectly correct value for view port coords, it means that the whole
+        // model area is being displayed.
+        viewportX = model.get("viewPortX") || 0;
+        viewportY = model.get("viewPortY") || 0;
       }
 
       POINT_CACHE.x = m2px.invert((e.clientX - targetOffset.left) * targetOversampling) + viewportX;
@@ -180,7 +182,9 @@ define(function(require) {
         if (!dragged) return;
 
         if (model.isStopped()) {
-          if (!setAtomPosition(i, x, y, true, true)) {
+          // Important: set position to (atom.x, atom.y), not (x, y)! Note that custom drag handler
+          // could be executed and it could change actual position!
+          if (!setAtomPosition(i, atom.x, atom.y, true, true)) {
             alert("You can't drop the atom there");
             setAtomPosition(i, originX, originY, false, true);
             modelView.update();
