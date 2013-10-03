@@ -198,7 +198,7 @@ define(function(require) {
           lightCol: colors[0],
           medCol: colors[1],
           darkCol: colors[2],
-          opacity: visible,
+          opacity: Number(visible),
           label: label.text,
           fontSize: label.fontSize,
           excited: excitation
