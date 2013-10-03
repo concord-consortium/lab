@@ -3,7 +3,7 @@
   "publicationStatus": "draft",
   "subtitle": "Explore how liquids mix at the molecular level.",
   "about": "",
-  "aspectRatio": 1,
+  "aspectRatio": 0.9325,
   "fontScale": 0.9,
   "models": [
     {
@@ -15,17 +15,21 @@
         "controlButtons": ""
       },
       "onLoad": [
+        "set('indices-column-a',[1,0]);",
+        "set('indices-column-b',[2,3]);",
+        "set('indices-column-c',[6,7,8]);",
+        "set('indices-column-d',[4,5,9]);",
         "setLineProperties([0,1,2,3],{lineColor: 'red'});",
         "start();",
         "var timeStepsPerTick = get('timeStepsPerTick'),",
-        "    waterIndices     = getAtomsWithinShape(2),",
-        "    ethanolIndices   = getAtomsWithinShape(1);",
+        "    waterIndices     = getAtomsWithinShape(get('indices-column-b')[0]),",
+        "    ethanolIndices   = getAtomsWithinShape(get('indices-column-a')[0]),",
+        "    indicesColumnC   = get('indices-column-c'),",
+        "    indicesColumnD   = get('indices-column-d'),",
+        "    indicesColumnB   = get('indices-column-b'),",
+        "    indicesColumnA   = get('indices-column-a');",
         "callEvery(timeStepsPerTick,function(){",
-        "  var _waterIndices   = waterIndices,",
-        "      _ethanolIndices = ethanolIndices;",
-        "  if (get('applyHeatBathToWater')) setTemperatureOfAtoms(_waterIndices,get('waterTemp'));",
-        "  if (get('applyHeatBathToEthanol')) setTemperatureOfAtoms(_ethanolIndices,get('ethanolTemp'));",
-        "  var nToDrop = getAtomsWithinShape(6).length;",
+        "  var nToDrop = getAtomsWithinShape(indicesColumnC[0]).length;",
         "  if (get('isWaterDropping')) {",
         "    if (nToDrop > 0) {",
         "      set('applyHeatBathToWater',false);",
@@ -33,9 +37,10 @@
         "      set('applyHeatBathToWater',true);",
         "      set('isWaterDropping',false);",
         "      set('isWaterDropped',true);",
-        "      setShapeProperties([6,7,8],{visible: false});",
-        "      setShapeProperties([7,8],{y: -10});",
-        "      setShapeProperties([2,3],{visible: true});",
+        "      if (get('isEthanolDropped')) setComponentDisabled('cap-and-shake',false);",
+        "      setShapeProperties(indicesColumnC,{visible: false});",
+        "      setShapeProperties(indicesColumnC.slice(1,3),{y: -10});",
+        "      setShapeProperties(indicesColumnB,{visible: true});",
         "    }",
         "  }",
         "  if (get('isEthanolDropping')) {",
@@ -45,11 +50,73 @@
         "      set('applyHeatBathToEthanol',true);",
         "      set('isEthanolDropping',false);",
         "      set('isEthanolDropped',true);",
-        "      setShapeProperties([6,7,8],{visible: false});",
-        "      setShapeProperties([7,8],{y: -10});",
-        "      setShapeProperties([0,1],{visible: true});",
+        "      if (get('isWaterDropped')) setComponentDisabled('cap-and-shake',false);",
+        "      setShapeProperties(indicesColumnC,{visible: false});",
+        "      setShapeProperties(indicesColumnC.slice(1,3),{y: -10});",
+        "      setShapeProperties(indicesColumnA,{visible: true});",
         "    }",
         "  }",
+        "  if (get('applyHeatBathToWater')) setTemperatureOfAtoms(waterIndices, get('waterTemp'));",
+        "  if (get('applyHeatBathToEthanol')) setTemperatureOfAtoms(ethanolIndices, get('ethanolTemp'));",
+        "});"
+      ]
+    },
+    {
+      "type": "md2d",
+      "id": "particleMixingDoubleEthanol$0",
+      "url": "imports/legacy-mw-content/converted/interactions/mixing-liquids/particleMixingDoubleEthanol$0.json",
+      "importedFrom": "imports/legacy-mw-content/interactions/mixing-liquids/particleMixingDoubleEthanol$0.mml",
+      "viewOptions": {
+        "controlButtons": ""
+      },
+      "onLoad": [
+        "set('indices-column-a',[1,0]);",
+        "set('indices-column-b',[9,2]);",
+        "set('indices-column-c',[5,6,7]);",
+        "set('indices-column-d',[3,4,8]);",
+        "setTextBoxProperties(3, {x: 1.1} );",
+        "setTextBoxProperties(4, {x: 2.35} );",
+        "setTextBoxProperties(1, {x: 3.4, y: 2.78});",
+        "setTextBoxProperties(0, {x: 0.35, y: 1.825});",
+        "setLineProperties([0,1,2,3],{lineColor: 'red'});",
+        "start();",
+        "var timeStepsPerTick = get('timeStepsPerTick'),",
+        "    waterIndices     = getAtomsWithinShape(get('indices-column-b')[0]),",
+        "    ethanolIndices   = getAtomsWithinShape(get('indices-column-a')[0]),",
+        "    indicesColumnC   = get('indices-column-c'),",
+        "    indicesColumnD   = get('indices-column-d'),",
+        "    indicesColumnB   = get('indices-column-b'),",
+        "    indicesColumnA   = get('indices-column-a');",
+        "callEvery(timeStepsPerTick,function(){",
+        "  var nToDrop = getAtomsWithinShape(indicesColumnC[0]).length;",
+        "  if (get('isWaterDropping')) {",
+        "    if (nToDrop > 0) {",
+        "      set('applyHeatBathToWater',false);",
+        "    } else {",
+        "      set('applyHeatBathToWater',true);",
+        "      set('isWaterDropping',false);",
+        "      set('isWaterDropped',true);",
+        "      if (get('isEthanolDropped')) setComponentDisabled('cap-and-shake',false);",
+        "      setShapeProperties(indicesColumnC,{visible: false});",
+        "      setShapeProperties(indicesColumnC.slice(1,3),{y: -10});",
+        "      setShapeProperties(indicesColumnB,{visible: true});",
+        "    }",
+        "  }",
+        "  if (get('isEthanolDropping')) {",
+        "    if (nToDrop > 0) {",
+        "      set('applyHeatBathToEthanol',false);",
+        "    } else {",
+        "      set('applyHeatBathToEthanol',true);",
+        "      set('isEthanolDropping',false);",
+        "      set('isEthanolDropped',true);",
+        "      if (get('isWaterDropped')) setComponentDisabled('cap-and-shake',false);",
+        "      setShapeProperties(indicesColumnC,{visible: false});",
+        "      setShapeProperties(indicesColumnC.slice(1,3),{y: -10});",
+        "      setShapeProperties(indicesColumnA,{visible: true});",
+        "    }",
+        "  }",
+        "  if (get('applyHeatBathToWater')) setTemperatureOfAtoms(waterIndices, get('waterTemp'));",
+        "  if (get('applyHeatBathToEthanol')) setTemperatureOfAtoms(ethanolIndices, get('ethanolTemp'));",
         "});"
       ]
     }
@@ -86,25 +153,41 @@
     {
       "name": "ethanolTemp",
       "initialValue": 50
+    },
+    {
+      "name": "indices-column-b",
+      "initialValue": [2,3]
+    },
+    {
+      "name": "indices-column-a",
+      "initialValue": [1,0]
+    },
+    {
+      "name": "indices-column-c",
+      "initialValue": [6,7,8]
+    },
+    {
+      "name": "indices-column-d",
+      "initialValue": [4,5,9]
     }
   ],
   "components": [
     {
       "type": "button",
       "id": "add-water",
-      "text": "Add water",
+      "text": "Add second",
       "action": [
         "if ( !(get('isWaterDropping') || get('isEthanolDropping')) ) {",
         "  stop();",
         "  set('isWaterDropping',true);",
         "  setComponentDisabled('add-water',true);",
-        "  var dx = getShapeProperties(4).x - getShapeProperties(2).x,",
-        "      dy = getShapeProperties(6).y - getShapeProperties(2).y,",
-        "      atomIndices = getAtomsWithinShape(2);",
+        "  var dx = getShapeProperties(get('indices-column-c')[0]).x - getShapeProperties(get('indices-column-b')[0]).x,",
+        "      dy = getShapeProperties(get('indices-column-c')[0]).y - getShapeProperties(get('indices-column-b')[0]).y,",
+        "      atomIndices = getAtomsWithinShape(get('indices-column-b')[0]);",
         "  batch(function(){",
-        "    setShapeProperties([2,3],{visible: false});",
-        "    setShapeProperties([7,8],{y: 3.29});",
-        "    setShapeProperties([6,7,8],{visible: true});",
+        "    setShapeProperties(get('indices-column-b'),{visible: false});",
+        "    setShapeProperties(get('indices-column-c').slice(1,3),{y: 3.29});",
+        "    setShapeProperties(get('indices-column-c'),{visible: true});",
         "    for (var i = 0, ii = atomIndices[0]; i < atomIndices.length; ii = atomIndices[++i]) {",
         "      setAtomProperties(ii, {x: getAtomProperties(ii).x + dx} );",
         "      setAtomProperties(ii, {y: getAtomProperties(ii).y + dy} );",
@@ -117,19 +200,19 @@
     {
       "type": "button",
       "id": "add-ethanol",
-      "text": "Add ethanol",
+      "text": "Add first",
       "action": [
         "if ( !(get('isEthanolDropped') || get('isEthanolDropping') || get('isWaterDropping')) ) {",
         "  stop();",
         "  set('isEthanolDropping',true);",
         "  setComponentDisabled('add-ethanol',true);",
-        "  var dx = getShapeProperties(4).x - getShapeProperties(1).x,",
-        "      dy = getShapeProperties(6).y - getShapeProperties(2).y,",
-        "      atomIndices = getAtomsWithinShape(1);",
+        "  var dx = getShapeProperties(get('indices-column-c')[0]).x - getShapeProperties(get('indices-column-a')[0]).x,",
+        "      dy = getShapeProperties(get('indices-column-c')[0]).y - getShapeProperties(get('indices-column-a')[0]).y,",
+        "      atomIndices = getAtomsWithinShape(get('indices-column-a')[0]);",
         "  batch(function(){",
-        "    setShapeProperties([0,1],{visible: false});",
-        "    setShapeProperties([7,8],{y: 3.29});",
-        "    setShapeProperties([6,7,8],{visible: true});",
+        "    setShapeProperties(get('indices-column-a'),{visible: false});",
+        "    setShapeProperties(get('indices-column-c').slice(1,3),{y: 3.29});",
+        "    setShapeProperties(get('indices-column-c'),{visible: true});",
         "    for (var i = 0, ii = atomIndices[0]; i < atomIndices.length; ii = atomIndices[++i]) {",
         "      setAtomProperties(ii, {x: getAtomProperties(ii).x + dx} );",
         "      setAtomProperties(ii, {y: getAtomProperties(ii).y + dy} );",
@@ -143,11 +226,14 @@
       "type": "button",
       "id": "cap-and-shake",
       "text": "Cap and shake",
+      "disabled": true,
       "action": [
-        "var p0     = getShapeProperties(4),",
-        "    nAbove = atomsWithinRect(p0.x, p0.y + p0.height, p0.width, p0.height).length;",
+        "var i      = get('indices-column-d'),",
+        "    prop   = getShapeProperties(i[0]),",
+        "    nAbove = atomsWithinRect(prop.x, prop.y + prop.height, prop.width, prop.height).length;",
         "if ( get('isWaterDropped') && get('isEthanolDropped') && nAbove === 0 ) {",
-        "  setShapeProperties(9, {y: getShapeProperties(4).y + getShapeProperties(4).height});",
+        "  setComponentDisabled('stop-shaking',false);",
+        "  setShapeProperties(i[2], {y: prop.y + prop.height});",
         "  set('waterTemp',5000);",
         "  set('ethanolTemp',5000);",
         "}"
@@ -157,21 +243,64 @@
       "type": "button",
       "id": "stop-shaking",
       "text": "Stop shaking",
+      "disabled": true,
       "action": [
-        "setShapeProperties(9, {y: -10});",
         "set('waterTemp',50);",
-        "set('ethanolTemp',50);"
+        "set('ethanolTemp',50);",
+        "callAt( get('time') + 1000, function() {",
+        "  setShapeProperties(get('indices-column-d')[2], {y: -10});",
+        "  setComponentDisabled('stop-shaking',true);",
+        "});"
       ]
     },
     {
       "type": "button",
       "id": "reset",
       "text": "Reset",
-      "action": "reset();"
+      "action": [
+        "reset();",
+        "setComponentDisabled('add-water',false);",
+        "setComponentDisabled('add-ethanol',false);",
+        "setComponentDisabled('cap-and-shake',true);",
+        "start()"
+      ]
+    },
+    {
+      "type": "text",
+      "id": "label-select-model",
+      "text": "**Select liquids**"
+    },
+    {
+      "type": "radio",
+      "id": "select-model",
+      "orientation": "horizontal",
+      "options": [
+        {
+          "text": "Water + Ethanol",
+          "loadModel": "particleMixing$0",
+          "selected": true
+        },
+        {
+          "text": "Ethanol + Ethanol",
+          "loadModel": "particleMixingDoubleEthanol$0"
+        }
+      ]
     }
   ],
   "layout": {
     "bottom": [
+      ["label-select-model"],
+      ["select-model"],
+      ["add-ethanol", "add-water", "cap-and-shake", "stop-shaking", "reset"]
     ]
-  }
+  },
+  "template": [
+    {
+      "id": "bottom",
+      "width": "model.width",
+      "left": "model.left",
+      "top": "model.bottom",
+      "align": "center"
+    }
+  ]
 }

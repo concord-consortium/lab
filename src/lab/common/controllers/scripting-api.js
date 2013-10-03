@@ -425,9 +425,14 @@ define(function (require) {
             interactivesController.repaintModelView();
           },
 
-          canExportData: function() {
+          canExportData: function canExportData() {
             var exportController = interactivesController.getDGExportController();
-            return exportController.canExportData();
+            return exportController && exportController.canExportData() || false;
+          },
+
+          isUnexportedDataPresent: function isUnexportedDataPresent() {
+            var exportController = interactivesController.getDGExportController();
+            return exportController && exportController.isUnexportedDataPresent() || false;
           },
 
           exportData: function exportData() {

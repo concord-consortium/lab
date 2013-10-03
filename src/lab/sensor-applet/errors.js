@@ -29,9 +29,15 @@ define(function(require) {
   }
   inherit(SensorConnectionError, Error);
 
+  function AlreadyReadingError() {
+    errorConstructor.apply(this, Array.prototype.slice.apply(arguments));
+  }
+  inherit(AlreadyReadingError, Error);
+
   return {
     JavaLoadError: JavaLoadError,
     AppletInitializationError: AppletInitializationError,
+    AlreadyReadingError: AlreadyReadingError,
     SensorConnectionError: SensorConnectionError
   };
 

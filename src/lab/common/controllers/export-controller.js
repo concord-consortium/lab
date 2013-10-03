@@ -286,6 +286,10 @@ define(function (require) {
         return ExportController.canExportData();
       },
 
+      isUnexportedDataPresent: function() {
+        return isUnexportedDataPresent;
+      },
+
       exportData: function() {
         var perRunPropertyLabels = [],
             perRunPropertyValues = [],
