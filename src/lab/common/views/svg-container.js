@@ -25,7 +25,7 @@ define(function (require) {
         emsize,
         fontSizeInPixels,
 
-        backgroundContainer, viewportContainer, foregroundContainer,
+        backgroundContainer, viewportContainer, foregroundContainer, clickShield,
 
         containerBackground, gridContainer, brushContainer,
 
@@ -321,7 +321,6 @@ define(function (require) {
       }
     }
 
-
     function basicSVGAttrs() {
       return this.attr({
         // TODO confirm xmlns def is required?
@@ -341,7 +340,6 @@ define(function (require) {
 
     function renderContainer() {
       var viewBox;
-      var svgs;
 
       // Update cx, cy, size, viewport and modelSize variables.
       scale();
@@ -350,8 +348,7 @@ define(function (require) {
       if (backgroundContainer === undefined) {
 
         backgroundContainer = d3.select(node).append("svg")
-          .attr("class", "container background-container")
-          .call(layeredOnTop)
+          .attr("class", "root-layer container background-container")
           .call(basicSVGAttrs);
 
         containerBackground = backgroundContainer.append("rect")
@@ -361,21 +358,27 @@ define(function (require) {
           .attr("class", "grid-container");
 
         viewportContainer = d3.select(node).append("div")
-          .attr("class", "container viewport-container")
-          .call(layeredOnTop);
+          .attr("class", "root-layer container viewport-container");
 
         foregroundContainer = d3.select(node).append("svg")
-          .attr("class", "container foreground-container")
+          .attr("class", "root-layer container foreground-container")
           .on("contextmenu", function() {
             // Disable default context menu on foreground container, as otherwise it  covers all
             // possible context menu that can be used by layers beneath.
             d3.event.preventDefault();
           })
-          .call(layeredOnTop)
           .call(basicSVGAttrs);
 
         brushContainer = foregroundContainer.append("g")
           .attr("class", "brush-container");
+
+        // Transparent click shield receives all mouse/touch events; setupHitTesting() sets up
+        // handlers that re-dispatch the event to the appropriate element in the appropriate layer.
+        clickShield = d3.select(node).append("div")
+          .attr("class", "root-layer click-shield");
+
+        // Root layers should overlap each other.
+        d3.select(node).selectAll(".root-layer").call(layeredOnTop);
 
         if (model.get("enableKeyboardHandlers")) {
           d3.select(node)
@@ -395,13 +398,13 @@ define(function (require) {
         height: cy + "px"
       });
 
-      // Set new dimensions of SVG containers
-      svgs = d3.select(node).selectAll('.background-container, .foreground-container, .svg-viewport');
-
-      svgs
+      // Dimension/position of all the root layers
+      d3.select(node).selectAll('.root-layer')
         .attr({
           width: cx,
-          height: cy
+          height: cy,
+          left: padding.left,
+          top: padding.top
         })
         // Update style values too, as otherwise SVG isn't clipped correctly e.g. in Safari.
         .style({
@@ -444,7 +447,8 @@ define(function (require) {
       });
 
       // Update padding, as it can be changed after rescaling.
-      svgs.attr("transform", "translate(" + padding.left + "," + padding.top + ")");
+      // TODO move this up to where other attrs are set on 'layers'. It doesn't look like 'padding'
+      // is changed between here and there (and if it *is*, that needs to be made more explicit.)
 
       // Rescale main plot.
       backgroundContainer.select("rect.container-background")
@@ -511,6 +515,7 @@ define(function (require) {
       var foregroundNode = foregroundContainer.node();
       var backgroundNode = backgroundContainer.node();
       var viewportNode   = viewportContainer.node();
+      var clickShieldNode = clickShield.node();
 
       var pointerEvents;
       var visibility;
@@ -538,16 +543,11 @@ define(function (require) {
           viewportNode.style.visibility = "visible";
           viewportNode.style.pointerEvents = "auto";
         }
+        clickShieldNode.style.visibility = "visible";
+        clickShieldNode.style.pointerEvents = "auto";
       }
 
       function hitTest(e) {
-        // Event bubbled to the foregroundNode; if the target was a descendant of the
-        // foregroundNode, then we have already completed the hit test (the foreground already
-        // received the event.) Otherwise, continue.
-        if (e.target !== foregroundNode) {
-          return;
-        }
-
         // Remember style rules of the layers we peel back
         visibility = [];
         pointerEvents = [];
@@ -557,17 +557,23 @@ define(function (require) {
         var target;
         var testEvent;
 
-        for (var i = 1, len = layersToHitTest.length; i < len; i++) {
-          layer = layersToHitTest[i];
-          prevLayer = layersToHitTest[i-1];
+        clickShieldNode.style.visibility = "hidden";
+        clickShieldNode.style.pointerEvents = "none";
 
-          // Set prevLayer's visiblity to "hidden" and pointer-events to "none"; need to do both
-          // because Safari doesn't respect visibility changes in elementFromPoint (!) and IE9 & 10
-          // don't support pointerEvents.
-          visibility[i-1] = prevLayer.style.visibility;
-          prevLayer.style.visibility = "hidden";
-          pointerEvents[i-1] = prevLayer.style.pointerEvents;
-          prevLayer.style.pointerEvents = "none";
+        for (var i = 0, len = layersToHitTest.length; i < len; i++) {
+          layer = layersToHitTest[i];
+
+          if (i > 0) {
+            prevLayer = layersToHitTest[i-1];
+
+            // Set prevLayer's visiblity to "hidden" and pointer-events to "none"; need to do both
+            // because Safari doesn't respect visibility changes in elementFromPoint (!) and IE9 & 10
+            // don't support pointerEvents.
+            visibility[i-1] = prevLayer.style.visibility;
+            prevLayer.style.visibility = "hidden";
+            pointerEvents[i-1] = prevLayer.style.pointerEvents;
+            prevLayer.style.pointerEvents = "none";
+          }
 
           if (layer === backgroundNode) {
             // When we are testing background container, we have to hide also viewportContainer.
@@ -616,7 +622,14 @@ define(function (require) {
       }
 
       EVENT_TYPES.forEach(function(eventType) {
-        foregroundNode.addEventListener(eventType, hitTest);
+        // Use a capturing handler on window so we can swallow the event
+        window.addEventListener(eventType, function(e) {
+          if (e.target === clickShieldNode) {
+            e.stopPropagation();
+            e.preventDefault();
+            hitTest(e);
+          }
+        }, true);
       });
     }
 
