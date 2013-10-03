@@ -629,17 +629,17 @@ define(function(require) {
         spontaneouslyEmitPhotons(dt);
         // Temporary hard-wired light source, for demo purposes
 
-        if (isLightSourceOn && time % lightSource.radiationPeriod < dt) {
+        if (lightSource.on && time % lightSource.radiationPeriod < dt) {
           emitLightSourcePhotons();
         }
       },
 
       turnOnLightSource: function() {
-        isLightSourceOn = true;
+        lightSource.on = true;
       },
 
       turnOffLightSource: function() {
-        isLightSourceOn = false;
+        lightSource.on = false;
       },
 
       setLightSourceAngle: function(angle) {
