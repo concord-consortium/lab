@@ -631,7 +631,7 @@ define(function (require) {
         // other nodes will work again. It's based on the d3 implementation,
         // please see drag() function here:
         // https://github.com/mbostock/d3/blob/master/src/behavior/drag.js
-        d3.select(node).on("mousedown.drag", null)
+        backgroundContainer.on("mousedown.drag", null)
             .on("touchstart.drag", null)
             .classed("draggable", false);
         return;
@@ -668,7 +668,7 @@ define(function (require) {
         d3.timer(step);
       });
 
-      d3.select(node).call(dragBehavior).classed("draggable", true);
+      backgroundContainer.call(dragBehavior).classed("draggable", true);
 
       function updateArrays() {
         xs.push(model.properties.viewPortX);
