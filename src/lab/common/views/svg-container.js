@@ -570,17 +570,14 @@ define(function (require) {
             viewportNode.style.pointerEvents = "none";
           }
 
-          // If target is a <canvas> with its own hit testing to (say, a Pixi view...):
-          //   clear hit-test flag on target's view
-          //   dispatch event to canvas
-          //   (if view responds to event (hit test was true), it should set the hit-test flag)
-          //   check the view's hit-test flag-- if true, break
           if (layer.tagName.toLowerCase() === "canvas") {
+            // Need to ask the Canvas-based view to perform custom hit-testing. It will set our
+            // hitTestFlag if it considers the event a "hit"
             api.hitTestFlag = false;
             layer.dispatchEvent(retargetMouseEvent(e, layer));
             if (api.hitTestFlag) {
               unhideLayers(i-1);
-              break;
+              return;
             }
           }
 
@@ -601,7 +598,7 @@ define(function (require) {
             target.dispatchEvent(retargetMouseEvent(e, target));
             // There was an element in the layer at the event target. This hides the event from all
             // layers below, so we're done.
-            break;
+            return;
           }
         }
       }
