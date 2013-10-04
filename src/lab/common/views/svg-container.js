@@ -501,7 +501,7 @@ define(function (require) {
     */
     function setupHitTesting() {
 
-      var EVENT_TYPES = ['mousedown', 'mouseup', 'click', 'contextmenu'];
+      var EVENT_TYPES = ['mousedown', 'mouseup', 'contextmenu'];
 
       // TODO: touch events (touchstart, touchmove, touchend).
       //
@@ -529,6 +529,7 @@ define(function (require) {
         clonedEvent.initMouseEvent(e.type, e.bubbles, e.cancelable, e.view, e.detail, e.screenX, e.screenY, e.clientX, e.clientY, e.ctrlKey, e.altKey, e.shiftKey, e.metaKey, e.button, e.relatedTarget);
         clonedEvent.target = target;
         e.stopPropagation();
+        e.preventDefault();
         return clonedEvent;
       }
 
@@ -631,6 +632,15 @@ define(function (require) {
           }
         }, true);
       });
+
+      // Completely swallow "click" events on the clickShieldNode. The browser can't issue these
+      // correctly; we have to issue them ourselves after a mouseup.
+      window.addEventListener('click', function(e) {
+        if (e.target === clickShieldNode) {
+          e.stopPropagation();
+          e.preventDefault();
+        }
+      }, true);
     }
 
     // Support viewport dragging behavior.
