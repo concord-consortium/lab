@@ -34,7 +34,7 @@ define(function(require) {
 
       // Dragging is only allowed when user touches an atom or uses *left* mouse button (== 0).
       // Right mouse button can interfere with context menus.
-      if (e.type === "touchstart" || e.button === 0) {
+      if (e.button === 0) {
         dragBehavior(downAtom);
       }
     }
@@ -103,9 +103,7 @@ define(function(require) {
       // target (canvas) can be cleaned up using jQuery .empty() method (during layout) and all
       // jQuery handlers will be destroyed. Native handles will remain untouched.
       target.addEventListener("mousedown", mouseDownTest);
-      target.addEventListener("touchstart", mouseDownTest);
       target.addEventListener("mouseup", mouseUpTest);
-      target.addEventListener("touchend", mouseUpTest);
       target.addEventListener("contextmenu", contextMenuTest);
 
       amniacidContextMenu.register(model, modelView, ".atoms-interaction-layer", function () {
