@@ -30,8 +30,6 @@ define(function(require) {
     //**********************************************************************************************
     // Basic handlers:
     function mouseDownHandler(x, y, atom, e) {
-      modelView.hitTestFlag = true;
-
       // Dragging is only allowed when user touches an atom or uses *left* mouse button (== 0).
       // Right mouse button can interfere with context menus.
       if (e.button === 0) {
@@ -40,19 +38,17 @@ define(function(require) {
     }
 
     function mouseUpHandler(x, y, atom, e) {
-      modelView.hitTestFlag = true;
+      // noop for now
     }
 
     function clickHandler(x, y, atom, e) {
-      modelView.hitTestFlag = true;
-
       if (modelView.clickHandler[".atom"]) {
         modelView.clickHandler[".atom"](x, y, atom, atom.idx);
       }
     }
 
     function contextMenuHandler(x, y, atom, e) {
-      modelView.hitTestFlag = true;
+      // noop
     }
     //**********************************************************************************************
 
@@ -63,15 +59,22 @@ define(function(require) {
       contextMenuAtom = null;
       dragged = false;
 
-      if (downAtom) mouseDownHandler(p.x, p.y, downAtom, e);
+      modelView.hitTestCallback(!!downAtom);
+      if (downAtom) {
+        mouseDownHandler(p.x, p.y, downAtom, e);
+      }
     }
 
     function mouseUpTest(e) {
       var p = getClickCoords(e),
           upAtom = getAtomUnder(p.x, p.y);
 
+      modelView.hitTestCallback(!!upAtom);
+      if (upAtom) {
+        mouseUpHandler(p.x, p.y, upAtom, e);
+      }
+
       if (!dragged && upAtom) {
-        mouseUpHandler(p.x, p.y, upAtom);
         if (downAtom === upAtom) {
           // TODO: call modelView.canvasClickEventCallback
           clickHandler(p.x, p.y, downAtom);
@@ -87,6 +90,7 @@ define(function(require) {
 
       contextMenuAtom = getAtomUnder(p.x, p.y);
 
+      modelView.hitTestCallback(!!contextMenuAtom);
       if (contextMenuAtom) {
         contextMenuHandler(p.x, p.y, contextMenuAtom);
       }

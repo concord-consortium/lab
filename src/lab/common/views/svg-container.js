@@ -557,6 +557,7 @@ define(function (require) {
         var prevLayer;
         var target;
         var testEvent;
+        var hitTestSucceeded;
 
         clickShieldNode.style.visibility = "hidden";
         clickShieldNode.style.pointerEvents = "none";
@@ -584,19 +585,25 @@ define(function (require) {
           }
 
           if (layer.tagName.toLowerCase() === "canvas") {
-            // Need to ask the Canvas-based view to perform custom hit-testing. It will set our
-            // hitTestFlag if it considers the event a "hit"
-            api.hitTestFlag = false;
+            // Need to ask the Canvas-based view to perform custom hit-testing.
+            // TODO: make this a static function rather than rebinding to closure each time∫
+            api.hitTestCallback = function(isHit) {
+              hitTestSucceeded = isHit;
+              if (isHit) {
+                unhideLayers(i-1);
+              } else {
+                testEvent.stopPropagation();
+                testEvent.preventDefault();
+              }
+            };
 
             // For now we have to dispatch an event first, *then* see if the Canvas-based view
             // considered it a hit -- we stopPropagation and keep going if it does not report a hit.
             testEvent = retargetMouseEvent(e, layer);
             layer.dispatchEvent(testEvent);
-            if (api.hitTestFlag) {
-              unhideLayers(i-1);
-              return;
-            } else {
-              testEvent.stopPropagation();
+
+            if (hitTestSucceeded) {
+              return layer;
             }
           }
 
@@ -617,7 +624,7 @@ define(function (require) {
             target.dispatchEvent(retargetMouseEvent(e, target));
             // There was an element in the layer at the event target. This hides the event from all
             // layers below, so we're done.
-            return;
+            return target;
           }
         }
       }
@@ -869,7 +876,7 @@ define(function (require) {
         };
       },
 
-      hitTestFlag: false,
+      hitTestCallback: function() {},
 
       resize: function() {
         renderContainer();
