@@ -466,13 +466,13 @@ define(function (require) {
     /**
       setupHitTesting:
 
-      Forward mouse/touch events to the view's stack of overlaid visual layers to simulate
-      the "hit testing" that would occur natively if the visual layers were all implemented as
-      descendants of a single, common svg element.
+      Forward mouse events to the view's stack of overlaid visual layers to simulate the "hit
+      testing" that would occur natively if the visual layers were all implemented as descendants of
+      a single, common svg element.
 
-      In that scenario, native hit-testing is used: a mouse click or touch event at any point is
-      forwarded to the topmost visible element at that point; the layers above it are effectively
-      transparent to the event. This is subject to control by the 'pointer-events' property. See
+      In that scenario, native hit-testing is used: a mouse event at any point is forwarded to the
+      topmost visible element at that point; the layers above it are effectively transparent to the
+      event. This is subject to control by the 'pointer-events' property. See
       http://www.w3.org/TR/SVG/interact.html#pointer-processing
 
       However, in order to allow some layers to be implemented as <canvas> elements (or perhaps
@@ -480,9 +480,9 @@ define(function (require) {
       allow those layers to be above some layers and below others, our layers cannot in fact be
       children of a common svg element.
 
-      This means that the topmost layer always becomes the target of any mouse or click event on the
-      view, regardless of whether it has an element at that point, and it hides the event from the
-      layers below.
+      This means that the topmost layer always becomes the target of any mouseevent on the view,
+      regardless of whether it has an element at that point, and it hides the event from the layers
+      below.
 
       What we need, therefore, is to simulate svg's hit testing. This can be achieved by listening
       to events that bubble to the topmost layer and successively hiding the layers below, applying
@@ -498,6 +498,37 @@ define(function (require) {
 
       Note that to the extent we do use CSS pointer-events, document.elementFromPoint correctly
       respects the "none" value.
+
+      What this means for event handling:
+
+        * Mousedown, mouseup, and any custom mouse events such as those created by the jQuery
+          ContextMenu plugin, are captured by a click shield element and prevented from bubbling.
+          However, a clone event is dispatched to the element that passed the hit test and allowed
+          to bubble to the window.
+
+        * Click events on the click shield are captured and canceled because they are inherently not
+          meaningful--the browser cannot tell if the mouseup and mousedown targets are "really" the
+          same so it dispatches click events anytime a mousedown and mouseup occur on the view.
+          Instead, if the mousedown and mouseup occur on the same element or sprite (e.g., same
+          atom) we dispatch a synthetic click event targeted at the element. In the case that the
+          mouseup occurs on a sprite in the canvas layer, the click event is only emitted if the
+          same sprite was under the previous mousedown. Additionally, the target of a click on a
+          sprite is the canvas layer itself since to DOM gives us no way to be any more specific.
+          (Notice this means the same canvas can successfully hit test a mousedown followed by a
+          mouseup, but still not cause a click to be issued, if the mousedown and mouseup were over
+          two different sprites.)
+
+        * Canvas elements should not listen for click events. They are responsible instead for
+          performing a click action, if appropriate, when they receive a mouseup, and notifying the
+          parent whether a DOM click event should be issued. (This prevents them from having to
+          hit-test the same coordinates twice, once for the mouseup and then once for a click.)
+
+        * Single-touch containing touch events will be captured and canceled, and synthetic mouse
+          events corresponding to the touches will be issued and routed through the above-discussed
+          hit test exactly as if they were mouse events. This is a reasonable choice because we do
+          not use any multitouch gestures and must retain compatibility with desktop browsers.
+
+        * Note that mouseover/mouseout/mousenter/mouseleave events are not handled in any way!
     */
     function setupHitTesting() {
 
