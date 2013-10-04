@@ -874,6 +874,15 @@ AUTHORING = false;
   //
   // Benchmarks
   //
+  function getFingerprint() {
+    if (Lab.config.environment == 'production') {
+      // fake fingerprint on production because library won't be loaded
+      return "mock fingerprint";
+    } else {
+      return new Fingerprint().get(); // semi-unique browser id
+    }
+  }
+
   function setupBenchmarks() {
     var $showBenchmarks = $("#show-benchmarks"),
         $benchmarksContent = $("#benchmarks-content"),
@@ -882,7 +891,7 @@ AUTHORING = false;
         $submissionInfo = $("#browser-submission-info"),
         $showSubmissionInfo = $("#show-browser-submission-info"),
         $browserFingerprint = $("#browser-fingerprint"),
-        fingerprint = new Fingerprint().get();               // semi-unique browser id
+        fingerprint = getFingerprint();
 
     $showBenchmarks.change(function() {
       if (this.checked) {
