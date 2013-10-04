@@ -2,7 +2,8 @@
 
 define(function(require) {
   // Dependencies.
-  var alert = require('common/alert'),
+  var alert               = require('common/alert'),
+      amniacidContextMenu = require('cs!md2d/views/aminoacid-context-menu'),
 
       POINT_CACHE = {};
 
@@ -24,36 +25,46 @@ define(function(require) {
 
         preventClick,
         downAtom,
+        contextMenuAtom,
         dragged;
 
-    // =============================================================================================
+    //**********************************************************************************************
     // Basic handlers:
-    function mouseDownHandler(x, y, atom, i) {
+    function mouseDownHandler(x, y, atom, e) {
       modelView.hitTestFlag = true;
 
-      dragBehavior(atom);
+      // Dragging is only allowed when user touches an atom or uses *left* mouse button (== 0).
+      // Right mouse button can interfere with context menus.
+      if (e.type === "touchstart" || e.button === 0) {
+        dragBehavior(downAtom);
+      }
     }
 
-    function mouseUpHandler(x, y, atom, i) {
+    function mouseUpHandler(x, y, atom, e) {
       modelView.hitTestFlag = true;
     }
 
-    function clickHandler(x, y, atom, i) {
+    function clickHandler(x, y, atom, e) {
       modelView.hitTestFlag = true;
 
       if (modelView.clickHandler[".atom"]) {
-        modelView.clickHandler[".atom"](x, y, atom, i);
+        modelView.clickHandler[".atom"](x, y, atom, atom.idx);
       }
     }
-    // =============================================================================================
+
+    function contextMenuHandler(x, y, atom, e) {
+      modelView.hitTestFlag = true;
+    }
+    //**********************************************************************************************
 
     function mouseDownTest(e) {
       var p = getClickCoords(e);
 
       downAtom = getAtomUnder(p.x, p.y);
+      contextMenuAtom = null;
       dragged = false;
 
-      if (downAtom) mouseDownHandler(p.x, p.y, downAtom, downAtom.idx);
+      if (downAtom) mouseDownHandler(p.x, p.y, downAtom, e);
     }
 
     function mouseUpTest(e) {
@@ -61,9 +72,9 @@ define(function(require) {
           upAtom = getAtomUnder(p.x, p.y);
 
       if (!dragged && upAtom) {
-        mouseUpHandler(p.x, p.y, upAtom, upAtom.idx);
+        mouseUpHandler(p.x, p.y, upAtom);
         if (downAtom === upAtom) {
-          clickHandler(p.x, p.y, downAtom, downAtom.idx);
+          clickHandler(p.x, p.y, downAtom);
         }
       }
 
@@ -86,11 +97,22 @@ define(function(require) {
       }
     }
 
+    function contextMenuTest(e) {
+      var p = getClickCoords(e);
+
+      contextMenuAtom = getAtomUnder(p.x, p.y);
+
+      if (contextMenuAtom) {
+        contextMenuHandler(p.x, p.y, contextMenuAtom);
+      }
+    }
+
     function init() {
       m2px = modelView.model2canvas;
       m2pxInv = modelView.model2canvasInv;
 
       $target = $(target);
+      $target.addClass("atoms-interaction-layer");
 
       // Use native .addEventListener() instead of jQuery's .on() method, because parent of the
       // target (canvas) can be cleaned up using jQuery .empty() method (during layout) and all
@@ -100,6 +122,11 @@ define(function(require) {
       target.addEventListener("mouseup", mouseUpTest);
       target.addEventListener("touchend", mouseUpTest);
       target.addEventListener("click", clickTest);
+      target.addEventListener("contextmenu", contextMenuTest);
+
+      amniacidContextMenu.register(model, modelView, ".atoms-interaction-layer", function () {
+        return contextMenuAtom;
+      });
 
       api.bindModel(model);
     }

@@ -38,9 +38,10 @@ define (require) ->
   ###
   Register context menu for DOM elements defined by @selector.
   @model, @view are associated model and view, used to set
-  properties and redraw view.
+  properties and redraw view. @getClickedAtom should return data
+  of the clicked atom.
   ###
-  register: (model, view, selector) ->
+  register: (model, view, selector, getClickedAtom) ->
     # Unregister the same menu first.
     $.contextMenu "destroy", selector
     # Register new one.
@@ -59,7 +60,7 @@ define (require) ->
       # Default callback for every item.
       callback: (key, options) ->
         # Get properties of atom representing amino acid.
-        props = d3.select(options.$trigger[0]).datum()
+        props = getClickedAtom()
         # Remove current selection. It won't be handled by events.#hide callback defined below,
         # because we modify element property. Also, do not setup new selection, as it makes
         # no sense - after click the menu is hidden.
@@ -125,7 +126,10 @@ define (require) ->
       events:
         # Mark currently selected AA type.
         show: (options) ->
-          props = d3.select(options.$trigger[0]).datum()
+          props = getClickedAtom()
+          if !props
+            return false
+
           key = aminoacids.getAminoAcidByElement(props.element).abbreviation
           $node = options.items[key].$node
           $node.addClass MARKED_CLASS
@@ -138,7 +142,7 @@ define (require) ->
 
         # Remove marker added above.
         hide: (options) ->
-          props = d3.select(options.$trigger[0]).datum()
+          props = getClickedAtom()
           key = aminoacids.getAminoAcidByElement(props.element).abbreviation
           options.items[key].$node.removeClass MARKED_CLASS
           # Ensure that this callback returns true (required to hide menu).

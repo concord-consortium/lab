@@ -12,7 +12,6 @@ define(function(require) {
     alert               = require('common/alert'),
     console             = require('common/console'),
     benchmark           = require('common/benchmark/benchmark'),
-    amniacidContextMenu = require('cs!md2d/views/aminoacid-context-menu'),
     AtomsRenderer       = require('md2d/views/atoms-renderer'),
     GeneticRenderer     = require('md2d/views/genetic-renderer'),
     wrapSVGText         = require('cs!common/layout/wrap-svg-text'),
@@ -2097,10 +2096,6 @@ define(function(require) {
 
       createSymbolImages();
       createImmutableGradients();
-      // Register additional controls, context menus etc.
-      // Note that special selector for class is used. Typical class selectors
-      // (e.g. '.amino-acid') cause problems when interacting with SVG nodes.
-      amniacidContextMenu.register(model, api, '[class~="amino-acid"]');
 
       // Initialize renderers.
       geneticRenderer = new GeneticRenderer(modelView, model);

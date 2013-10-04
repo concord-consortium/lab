@@ -366,6 +366,11 @@ define(function (require) {
 
         foregroundContainer = d3.select(node).append("svg")
           .attr("class", "container foreground-container")
+          .on("contextmenu", function() {
+            // Disable default context menu on foreground container, as otherwise it  covers all
+            // possible context menu that can be used by layers beneath.
+            d3.event.preventDefault();
+          })
           .call(layeredOnTop)
           .call(basicSVGAttrs);
 
@@ -492,7 +497,7 @@ define(function (require) {
     */
     function setupHitTesting() {
 
-      var EVENT_TYPES = ['mousedown', 'mouseup', 'click'];
+      var EVENT_TYPES = ['mousedown', 'mouseup', 'click', 'contextmenu'];
 
       // TODO: touch events (touchstart, touchmove, touchend).
       //
