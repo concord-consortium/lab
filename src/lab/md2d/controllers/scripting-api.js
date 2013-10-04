@@ -763,6 +763,14 @@ define(function (require) {
         return model.getNumberOfLines();
       },
 
+      getImageProperties: function(i) {
+        return model.getImageProperties(i);
+      },
+
+      setImageProperties: function(i, props) {
+        setProperty(model.setImageProperties, i, props);
+      },
+
       repaintIfReady: function(options) {
         if (!(batchDepth > 0 || options && options.suppressRepaint)) {
           api.repaint();

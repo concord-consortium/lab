@@ -762,6 +762,32 @@ define(function() {
       }
     },
 
+    image: {
+      imageUri: {
+        required: true
+      },
+      imageX: {
+        defaultValue: 0,
+        required: true
+      },
+      imageY: {
+        defaultValue: 0,
+        required: true
+      },
+      imageHostType: {
+        defaultValue: ""
+      },
+      imageHostIndex: {
+        defaultValue: 0
+      },
+      imageLayer: {
+        defaultValue: 1
+      },
+      imageLayerPosition: {
+        defaultValue: 1
+      }
+    },
+
     quantumDynamics: {
       elementEnergyLevels: {
         defaultValue: []

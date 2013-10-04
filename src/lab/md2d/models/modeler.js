@@ -172,7 +172,7 @@ define(function(require) {
           d.addEventTypes("tick",
                           "addAtom", "removeAtom", "addRadialBond", "removeRadialBond",
                           "addElectricField", "removeElectricField", "changeElectricField",
-                          "removeAngularBond", "textBoxesChanged");
+                          "removeAngularBond", "textBoxesChanged", "imagesChanged");
           return d;
         }()),
 
@@ -1531,8 +1531,29 @@ define(function(require) {
       }
     };
 
+    model.setImageProperties = function(i, props) {
+      var image = model.get('images')[i],
+          prop;
+
+      if (image) {
+        props = validator.validate(metadata.image, props);
+        for (prop in props) {
+          if (props.hasOwnProperty(prop)) {
+            image[prop] = props[prop];
+          }
+        }
+        dispatch.imagesChanged();
+      } else {
+        throw new Error("Image \"" + i + "\" does not exist, so it cannot have properties set.");
+      }
+    };
+
     model.getTextBoxProperties = function(i) {
       return model.get('textBoxes')[i];
+    };
+
+    model.getImageProperties = function(i) {
+      return model.get('images')[i];
     };
 
     /**
