@@ -42,7 +42,8 @@ define(function(require) {
     }
 
     function clickHandler(x, y, atom, e) {
-      if (modelView.clickHandler[".atom"]) {
+      // Custom click handlers for atoms are not supposed to be triggered if the atom was dragged
+      if (!dragged && modelView.clickHandler[".atom"]) {
         modelView.clickHandler[".atom"](x, y, atom, atom.idx);
       }
     }
@@ -67,20 +68,22 @@ define(function(require) {
 
     function mouseUpTest(e) {
       var p = getClickCoords(e),
-          upAtom = getAtomUnder(p.x, p.y);
+          upAtom = getAtomUnder(p.x, p.y),
+          isDOMClick = false;
 
       modelView.hitTestCallback(!!upAtom);
+
       if (upAtom) {
         mouseUpHandler(p.x, p.y, upAtom, e);
-      }
-
-      if (!dragged && upAtom) {
-        if (downAtom === upAtom) {
-          // TODO: call modelView.canvasClickEventCallback
+        if (upAtom === downAtom) {
+          // Regardless of whether or not the atom was dragged, if mouseup target == mousedown
+          // target we should issue a DOM click event.
+          isDOMClick = true;
           clickHandler(p.x, p.y, downAtom);
         }
       }
 
+      modelView.mouseupCallback(isDOMClick);
       downAtom = null;
     }
 

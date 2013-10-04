@@ -520,16 +520,31 @@ define(function (require) {
       var pointerEvents;
       var visibility;
 
+      var mousedownTarget;
+      var targetForCreatedClick;
+
       // Elements added to the viewportContainer will go in the middle. The viewportContainer itself
       // is just a holder -- it shouldn't receive mouse/touch events itself.
       layersToHitTest = [foregroundNode, backgroundNode];
 
+
+      // Return a cloned version of 'e' having 'target' as its target property; cancel the original
+      // event.
       function retargetMouseEvent(e, target) {
         var clonedEvent = document.createEvent("MouseEvent");
         clonedEvent.initMouseEvent(e.type, e.bubbles, e.cancelable, e.view, e.detail, e.screenX, e.screenY, e.clientX, e.clientY, e.ctrlKey, e.altKey, e.shiftKey, e.metaKey, e.button, e.relatedTarget);
         clonedEvent.target = target;
         e.stopPropagation();
         e.preventDefault();
+        return clonedEvent;
+      }
+
+      // Create a click event from a mouse event (presumably mouseup). Leaves original event as-is.
+      function createClick(e, target) {
+        // TODO. Does copying the properties adequately capture all the semantics of the click event?
+        var clonedEvent = document.createEvent("MouseEvent");
+        clonedEvent.initMouseEvent('click', true, e.cancelable, e.view, e.detail, e.screenX, e.screenY, e.clientX, e.clientY, e.ctrlKey, e.altKey, e.shiftKey, e.metaKey, e.button, e.relatedTarget);
+        clonedEvent.target = target;
         return clonedEvent;
       }
 
@@ -558,9 +573,13 @@ define(function (require) {
         var target;
         var testEvent;
         var hitTestSucceeded;
+        var isCanvasObjectClick;
 
         clickShieldNode.style.visibility = "hidden";
         clickShieldNode.style.pointerEvents = "none";
+
+        // Must be set, as we test it after calling hitTest()
+        targetForCreatedClick = null;
 
         for (var i = 0, len = layersToHitTest.length; i < len; i++) {
           layer = layersToHitTest[i];
@@ -597,10 +616,19 @@ define(function (require) {
               }
             };
 
+            api.mouseupCallback = function(isClick) {
+              isCanvasObjectClick = isClick;
+            };
+
             // For now we have to dispatch an event first, *then* see if the Canvas-based view
             // considered it a hit -- we stopPropagation and keep going if it does not report a hit.
             testEvent = retargetMouseEvent(e, layer);
             layer.dispatchEvent(testEvent);
+
+            if (isCanvasObjectClick) {
+              // The canvas view itself won't listen to this click, but let the click bubble.
+              targetForCreatedClick = layer;
+            }
 
             if (hitTestSucceeded) {
               return layer;
@@ -632,10 +660,25 @@ define(function (require) {
       EVENT_TYPES.forEach(function(eventType) {
         // Use a capturing handler on window so we can swallow the event
         window.addEventListener(eventType, function(e) {
-          if (e.target === clickShieldNode) {
-            e.stopPropagation();
-            e.preventDefault();
-            hitTest(e);
+          var target;
+
+          if (e.target !== clickShieldNode) {
+            return;
+          }
+
+          e.stopPropagation();
+          e.preventDefault();
+          target = hitTest(e);
+
+          if (e.type === 'mousedown') {
+            mousedownTarget = target;
+          } else if (e.type === 'mouseup') {
+            if (target === mousedownTarget && target.tagName.toLowerCase() !== 'canvas') {
+              target.dispatchEvent(createClick(e), target);
+            }
+            if (targetForCreatedClick) {
+              targetForCreatedClick.dispatchEvent(createClick(e), targetForCreatedClick);
+            }
           }
         }, true);
       });
