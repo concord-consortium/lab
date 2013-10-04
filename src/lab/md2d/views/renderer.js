@@ -9,7 +9,6 @@
 define(function(require) {
   // Dependencies.
   var labConfig         = require('lab.config'),
-    alert               = require('common/alert'),
     console             = require('common/console'),
     benchmark           = require('common/benchmark/benchmark'),
     AtomsRenderer       = require('md2d/views/atoms-renderer'),
@@ -82,19 +81,11 @@ define(function(require) {
 
       iconContainer = modelView.foregroundContainer.append("g").attr("class", "icon-container"),
 
-      dragOrigin,
-
       // Renderers specific for MD2D
       // TODO: try to create new renderers in separate files for clarity and easier testing.
       atomsRenderer = new AtomsRenderer(modelView, model, atomsPixi.pixiContainer, atomsPixi.canvas),
       geneticRenderer,
 
-      gradientNameForElement = [
-        "url(#elem0-grad)",
-        "url(#elem1-grad)",
-        "url(#elem2-grad)",
-        "url(#elem3-grad)"
-      ],
       // Set of gradients used for Kinetic Energy Shading.
       gradientNameForKELevel = [],
       // Number of gradients used for Kinetic Energy Shading.
@@ -104,12 +95,9 @@ define(function(require) {
       gradientNameForNegativeChargeLevel = [],
       // Number of gradients used for Charge Shading (for both positive and negative charges).
       CHARGE_SHADING_STEPS = 25,
-      // Array which defines a gradient assigned to a given particle.
-      gradientNameForParticle = [],
 
       atomTooltipOn = false,
 
-      particle, label, labelEnter,
       atomToolTip, atomToolTipPre,
 
       fontSizeInPixels,
@@ -133,7 +121,6 @@ define(function(require) {
       radialBond1, radialBond2,
       vdwPairs = [],
       vdwLines,
-      chargeShadingMode,
       keShadingMode,
       useQuantumDynamics,
       drawVdwLines,
@@ -178,13 +165,6 @@ define(function(require) {
 
     function modelTimeLabel() {
       return timePrefix + modelTimeFormatter(model.get('displayTime')) + timeSuffix;
-    }
-
-    function setAtomPosition(i, xpos, ypos, checkPosition, moveMolecule) {
-      return model.setAtomProperties(i, {
-        x: xpos,
-        y: ypos
-      }, checkPosition, moveMolecule);
     }
 
     // Pass in the signed 24-bit Integer used for Java MW elementColors
@@ -396,54 +376,6 @@ define(function(require) {
       }
     }
 
-    // Returns gradient appropriate for a given atom.
-    // d - atom data.
-
-    function getParticleGradient(d) {
-      var ke, keIndex, charge, chargeIndex, chargeColor,
-        aminoAcidColorScheme = model.get("aminoAcidColorScheme");
-
-      if (d.marked) {
-        return "url(#mark-grad)";
-      }
-
-      if (keShadingMode) {
-        ke = model.getAtomKineticEnergy(d.idx);
-        // Convert Kinetic Energy to [0, 1] range
-        // using empirically tested transformations.
-        // K.E. shading should be similar to the classic MW K.E. shading.
-        keIndex = Math.min(5 * ke, 1);
-
-        return gradientNameForKELevel[Math.round(keIndex * (KE_SHADING_STEPS - 1))];
-      }
-
-      if (chargeShadingMode || aminoAcidColorScheme === "charge" || aminoAcidColorScheme === "chargeAndHydro") {
-        charge = d.charge;
-        chargeIndex = Math.round(Math.min(Math.abs(charge) / 3, 1) * (CHARGE_SHADING_STEPS - 1));
-        chargeColor = chargeIndex === 0 ? "url(#neutral-grad)" : (charge >= 0 ? gradientNameForPositiveChargeLevel : gradientNameForNegativeChargeLevel)[chargeIndex];
-      }
-
-      if (chargeShadingMode || aminoAcidColorScheme === "charge" || aminoAcidColorScheme === "chargeAndHydro" && chargeIndex !== 0) {
-        return chargeColor;
-      }
-
-      if (!d.isAminoAcid()) {
-        return gradientNameForElement[d.element % 4];
-      }
-      // Particle represents amino acid.
-      // Note that if charge shading were on, the charge color would have been returned above
-      switch (aminoAcidColorScheme) {
-        case "none":
-        case "charge":
-          return "url(#neutral-grad)";
-        case "hydrophobicity":
-        case "chargeAndHydro":
-          return d.hydrophobicity > 0 ? "url(#orange-grad)" : "url(#green-grad)";
-        default:
-          throw new Error("ModelContainer: unknown amino acid color scheme.");
-      }
-    }
-
     // Returns first color appropriate for a given radial bond (color next to atom1).
     // d - radial bond data.
 
@@ -552,56 +484,6 @@ define(function(require) {
       } else {
         iconContainer.select("#ke-gradient").style("display", "none");
       }
-    }
-
-    function updateParticleRadius() {
-      atomsContainer.selectAll("circle").data(modelAtoms).attr("r", function(d) {
-        return model2px(d.radius);
-      });
-    }
-
-    /**
-      Call this wherever a d3 selection is being used to add circles for atoms
-    */
-
-    function particleEnterExit() {
-      particle.enter().append("circle")
-        .attr({
-          "class": function(d) {
-            return d.isAminoAcid() ? "draggable atom amino-acid" : "atom draggable";
-          },
-          "r": function(d) {
-            return model2px(d.radius);
-          },
-          "cx": function(d) {
-            return model2px(d.x);
-          },
-          "cy": function(d) {
-            return model2pxInv(d.y);
-          },
-          "fill-opacity": function(d) {
-            return d.visible ? 1 : 0;
-          },
-          "fill": function(d, i) {
-            return gradientNameForParticle[i];
-          },
-          "filter": function(d) {
-            if (d.excitation) {
-              return "url(#glow)";
-            }
-            return null;
-          }
-        })
-        .on("mousedown", moleculeMouseDown)
-        .on("mouseover", moleculeMouseOver)
-        .on("mouseout", moleculeMouseOut)
-        .call(d3.behavior.drag()
-          .on("dragstart", nodeDragStart)
-          .on("drag", nodeDrag)
-          .on("dragend", nodeDragEnd)
-      );
-
-      particle.exit().remove();
     }
 
     function vectorEnter(vector, pathFunc, widthFunc, color, name) {
@@ -754,7 +636,7 @@ define(function(require) {
             return model2px(shapes.height[d.index]);
           },
           "fill": function(d) {
-            return shapes.visible[d.index] && shapes.type[d.index] == 'rectangle' ? gradients.toSVG(gradients.parse(shapes.color[d.index]), atomsContainer) : "transparent";
+            return shapes.visible[d.index] && shapes.type[d.index] === 'rectangle' ? gradients.toSVG(gradients.parse(shapes.color[d.index]), atomsContainer) : "transparent";
           },
           "stroke-width": function(d) {
             return shapes.lineWeight[d.index];
@@ -763,7 +645,7 @@ define(function(require) {
             return shapes.lineDashes[d.index];
           },
           "stroke": function(d) {
-            return shapes.visible[d.index] && shapes.type[d.index] == 'rectangle' ? shapes.lineColor[d.index] : "transparent";
+            return shapes.visible[d.index] && shapes.type[d.index] === 'rectangle' ? shapes.lineColor[d.index] : "transparent";
           }
         });
         shapeGroup.append("ellipse").attr({
@@ -781,7 +663,7 @@ define(function(require) {
             return model2px(shapes.height[d.index]) / 2;
           },
           "fill": function(d) {
-            return shapes.visible[d.index] && shapes.type[d.index] == 'ellipse' ? gradients.toSVG(gradients.parse(shapes.color[d.index]), atomsContainer) : "transparent";
+            return shapes.visible[d.index] && shapes.type[d.index] === 'ellipse' ? gradients.toSVG(gradients.parse(shapes.color[d.index]), atomsContainer) : "transparent";
           },
           "stroke-width": function(d) {
             return shapes.lineWeight[d.index];
@@ -790,7 +672,7 @@ define(function(require) {
             return shapes.lineDashes[d.index];
           },
           "stroke": function(d) {
-            return shapes.visible[d.index] && shapes.type[d.index] == 'ellipse' ? shapes.lineColor[d.index] : "transparent";
+            return shapes.visible[d.index] && shapes.type[d.index] === 'ellipse' ? shapes.lineColor[d.index] : "transparent";
           }
         });
       }
@@ -1425,116 +1307,6 @@ define(function(require) {
       });
     }
 
-    function setupColorsOfParticles() {
-      var i, len;
-
-      chargeShadingMode = model.get("chargeShading");
-      keShadingMode = model.get("keShading");
-
-      gradientNameForParticle.length = modelAtoms.length;
-      for (i = 0, len = modelAtoms.length; i < len; i++)
-        gradientNameForParticle[i] = getParticleGradient(modelAtoms[i]);
-    }
-
-    function setupParticles() {
-      atomsRenderer.setup();
-
-      return;
-
-      var showChargeSymbols = model.get("showChargeSymbols"),
-        useThreeLetterCode = model.get("useThreeLetterCode");
-
-      setupColorsOfParticles();
-
-      atomsContainer.selectAll("circle").remove();
-      atomsContainer.selectAll("g.label").remove();
-
-      particle = atomsContainer.selectAll("circle").data(modelAtoms);
-      updateParticleRadius();
-
-      particleEnterExit();
-
-      label = atomsContainer.selectAll("g.label")
-        .data(modelAtoms);
-
-      labelEnter = label.enter().append("g")
-        .attr("class", "label")
-        .attr("transform", function(d) {
-          return "translate(" + model2px(d.x) + "," + model2pxInv(d.y) + ")";
-        });
-
-      labelEnter.each(function(d) {
-        var selection = d3.select(this),
-          txtValue, txtSelection;
-        // Append appropriate label. For now:
-        // If 'atomNumbers' option is enabled, use indices.
-        // If not and there is available 'label'/'symbol' property, use one of them
-        // (check 'useThreeLetterCode' option to decide which one).
-        // If not and 'showChargeSymbols' option is enabled, use charge symbols.
-        if (model.get("atomNumbers")) {
-          selection.append("text")
-            .text(d.idx)
-            .style("font-size", model2px(1.4 * d.radius) + "px");
-        } else if (useThreeLetterCode && d.label) {
-          // Add shadow - a white stroke, which increases readability.
-          selection.append("text")
-            .text(d.label)
-            .attr("class", "shadow")
-            .style("font-size", model2px(d.radius) + "px");
-          selection.append("text")
-            .text(d.label)
-            .style("font-size", model2px(d.radius) + "px");
-        } else if (!useThreeLetterCode && d.symbol) {
-          // Add shadow - a white stroke, which increases readability.
-          selection.append("text")
-            .text(d.symbol)
-            .attr("class", "shadow")
-            .style("font-size", model2px(1.4 * d.radius) + "px");
-          selection.append("text")
-            .text(d.symbol)
-            .style("font-size", model2px(1.4 * d.radius) + "px");
-        } else if (showChargeSymbols) {
-          if (d.charge > 0) {
-            txtValue = "+";
-          } else if (d.charge < 0) {
-            txtValue = "-";
-          } else {
-            return;
-          }
-          selection.append("text")
-            .text(txtValue)
-            .style("font-size", model2px(1.6 * d.radius) + "px");
-        }
-        // Set common attributes for labels (+ shadows).
-        txtSelection = selection.selectAll("text");
-        // Check if node exists and if so, set appropriate attributes.
-        if (txtSelection.node()) {
-          txtSelection
-            .attr("pointer-events", "none")
-            .style({
-              "font-weight": "bold",
-              "opacity": 0.7
-            });
-          txtSelection
-            .attr({
-              // Center labels, use real width and height.
-              // Note that this attrs should be set *after* all previous styling options.
-              // .node() will return first node in selection. It's OK - both texts
-              // (label and its shadow) have the same dimension.
-              "x": -txtSelection.node().getBBox().width / 2,
-              "y": "0.31em"
-            });
-        }
-        // Set common attributes for shadows.
-        selection.select("text.shadow")
-          .style({
-            "stroke": "#fff",
-            "stroke-width": 0.15 * model2px(d.radius),
-            "stroke-opacity": 0.7
-          });
-      });
-    }
-
     function setupObstacles() {
       obstacles = model.get_obstacles();
       atomsContainer.selectAll("g.obstacle").remove();
@@ -1770,51 +1542,6 @@ define(function(require) {
       }
     }
 
-    // TODO: this function name seems to be inappropriate to
-    // its content.
-
-    function updateParticles() {
-      atomsRenderer.update();
-
-      return;
-
-      particle.attr({
-        "cx": function(d) {
-          return model2px(d.x);
-        },
-        "cy": function(d) {
-          return model2pxInv(d.y);
-        }
-      });
-
-      if (keShadingMode || chargeShadingMode) {
-        // When Kinetic Energy Shading or Charge Shading is enabled, update style of atoms
-        // during each frame.
-        setupColorsOfParticles();
-        // Update particles "fill" attribute. Array of colors is already updated.
-        particle.attr("fill", function(d, i) {
-          return gradientNameForParticle[i];
-        });
-      }
-
-      if (useQuantumDynamics) {
-        particle.attr("filter", function(d) {
-          if (d.excitation) {
-            return "url(#glow)";
-          }
-          return null;
-        });
-      }
-
-      label.attr("transform", function(d) {
-        return "translate(" + model2px(d.x) + "," + model2pxInv(d.y) + ")";
-      });
-
-      if (atomTooltipOn === 0 || atomTooltipOn > 0) {
-        renderAtomTooltip(atomTooltipOn);
-      }
-    }
-
     function getVelVectorPath(d) {
       var x_pos = model2px(d.x),
         y_pos = model2pxInv(d.y),
@@ -1939,68 +1666,6 @@ define(function(require) {
       }
     }
 
-    function nodeDragStart(d, i) {
-      if (model.isStopped()) {
-        // cache the *original* atom position so we can go back to it if drag is disallowed
-        dragOrigin = [d.x, d.y];
-      } else if (d.draggable) {
-        model.liveDragStart(i);
-      }
-    }
-
-    /**
-      Given x, y, and a bounding box (object with keys top, left, bottom, and right relative to
-      (x, y), returns an (x, y) constrained to keep the bounding box within the molecule container.
-    */
-
-    function dragBoundingBox(x, y, bbox) {
-      if (bbox.left + x < 0) x = 0 - bbox.left;
-      if (bbox.right + x > modelWidth) x = modelWidth - bbox.right;
-      if (bbox.bottom + y < 0) y = 0 - bbox.bottom;
-      if (bbox.top + y > modelHeight) y = modelHeight - bbox.top;
-
-      return {
-        x: x,
-        y: y
-      };
-    }
-
-    function clip(value, min, max) {
-      if (value < min) return min;
-      if (value > max) return max;
-      return value;
-    }
-
-    /**
-      Given x, y, make sure that x and y are clipped to remain within the model container's
-      boundaries
-    */
-
-    function dragPoint(x, y) {
-      return {
-        x: clip(x, 0, modelWidth),
-        y: clip(y, 0, modelHeight)
-      };
-    }
-
-    function nodeDrag(d, i) {
-      var dragX = model2px.invert(d3.event.x),
-        dragY = model2pxInv.invert(d3.event.y),
-        drag;
-
-      if (model.isStopped()) {
-        drag = dragBoundingBox(dragX, dragY, model.getMoleculeBoundingBox(i));
-        setAtomPosition(i, drag.x, drag.y, false, true);
-        update();
-      } else if (d.draggable) {
-        drag = dragPoint(dragX, dragY);
-        model.liveDrag(drag.x, drag.y);
-      }
-      if (modelView.dragHandler.atom) {
-        modelView.dragHandler.atom(drag.x, drag.y, d, i);
-      }
-    }
-
     function textDrag(d) {
       var dragDx = model2px.invert(d3.event.dx),
         dragDy = model2px.invert(d3.event.dy);
@@ -2012,21 +1677,6 @@ define(function(require) {
         d.x = d.x + dragDx;
         d.y = d.y - dragDy;
         updateTextBoxes();
-      }
-    }
-
-    function nodeDragEnd(d, i) {
-      if (model.isStopped()) {
-
-        if (!setAtomPosition(i, d.x, d.y, true, true)) {
-          alert("You can't drop the atom there"); // should be changed to a nice Lab alert box
-          setAtomPosition(i, dragOrigin[0], dragOrigin[1], false, true);
-        }
-        update();
-      } else if (d.draggable) {
-        // here we just assume we are removing the one and only spring force.
-        // This assumption will have to change if we can have more than one.
-        model.liveDragEnd();
       }
     }
 
@@ -2200,11 +1850,11 @@ define(function(require) {
         setupElectricField);
 
       model.on('addAtom', redrawClickableObjects(function () {
-        setupParticles();
+        atomsRenderer.setup();
         modelView.renderCanvas();
       }));
       model.on('removeAtom', redrawClickableObjects(function () {
-        setupParticles();
+        atomsRenderer.setup();
         modelView.renderCanvas();
       }));
       model.on('addRadialBond', redrawClickableObjects(setupRadialBonds));
@@ -2248,7 +1898,7 @@ define(function(require) {
       setupDynamicGradients();
       setupObstacles();
       setupVdwPairs();
-      setupParticles();
+      atomsRenderer.setup();
 
       // Always setup radial bonds *after* particles to use correct atoms
       // color table.
@@ -2297,7 +1947,7 @@ define(function(require) {
         updateVdwPairs();
       }
 
-      updateParticles();
+      atomsRenderer.update();
 
       if (modelRadialBonds) {
         // Always update radial bonds *after* particles, as particles can
