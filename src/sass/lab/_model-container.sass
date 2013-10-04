@@ -8,11 +8,10 @@
     cursor: move
   @include user-select(none)
 
-  & > canvas
-    // Canvas is a next layer.
-    position: absolute
-    top: 0
-    left: 0
+  & > .container
+    // Disable blinking effect on iOS when user taps a model container. Events are manually
+    // dispatched and if user taps an atom on canvas, the whole container will blink.
+    -webkit-tap-highlight-color: rgba(0,0,0,0)
 
   // Radial bonds.
   .radialbond1, .radialbond2
