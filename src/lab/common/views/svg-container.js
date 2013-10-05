@@ -391,6 +391,7 @@ define(function (require) {
         pixiContainers = [];
 
         setupHitTesting();
+        setupTouchEventTranslation();
       }
 
       viewportContainer.style({
@@ -722,6 +723,96 @@ define(function (require) {
           e.preventDefault();
         }
       }, true);
+    }
+
+    // Translate any touch events on the clickShield which have only a single touch point ("finger")
+    // when started, to the corresponding mouse events. Does not attempt to initiate a cancel action
+    // for touchcancel; just issues mouseup stops tracking the touch.
+    function setupTouchEventTranslation() {
+      // Identifier of the touch point we are tracking; set to null when touch not in progress.
+      var touchId = null;
+      var clickShieldNode = clickShield.node();
+
+      function createMouseEvent(touch, type) {
+        var mouseEvent = document.createEvent("MouseEvent");
+        mouseEvent.initMouseEvent(type, true, true, window, 1, touch.screenX, touch.screenY, touch.clientX, touch.clientY, false, false, false, false, 0, null);
+        return mouseEvent;
+      }
+
+      // listener for touchstart
+      function touchStarted(e) {
+        var touch = e.changedTouches[0];
+
+        if (e.touches.length > 1 || touch.target !== clickShieldNode) {
+          return;
+        }
+
+        e.stopPropagation();
+        e.preventDefault();
+
+        // Remember which touch point--later touch events may or may not include this touch point
+        // but we have to listen to them all to make sure we update dragging state correctly.
+        touchId = touch.identifier;
+        clickShieldNode.dispatchEvent(createMouseEvent(touch, 'mousedown'));
+      }
+
+      // Listener for touchmove, touchend, and touchcancel:
+      function touchChanged(e) {
+
+        if (touchId === null) {
+          return;
+        }
+
+        var i;
+        var len;
+        var touch;
+        var target;
+
+        for (i = 0, len = e.changedTouches.length; i < len; i++) {
+          touch = e.changedTouches[i];
+
+          if (touch.identifier !== touchId) {
+            continue;
+          }
+
+          if (len === 1) {
+            e.stopPropagation();
+          }
+
+          // Generally, sending preventDefault for the first touchmove in a series prevents browser
+          // default actions such as pinch-zoom. So it looks as if as a rule we give up on letting
+          // the user "add a finger" to pinch-zoom midway through a dragging operation. Therefore,
+          // prevent away. preventDefault on touchend will also prevent the browser from generating
+          // a click, but that's okay; our hit testing intentionally ignores browser-generated click
+          // events anyway, and generates its own when appropriate.
+          e.preventDefault();
+
+          // touch's target will always be the element that received the touchstart. But since
+          // we're creating a pretend mousemove, let its target be the target the browser would
+          // report for an actual mousemove/mouseup (Remember that the--expensive--hitTest() is not
+          // called for mousemove, though; drag handlers should and do listen for mousemove on the
+          // window). Note that clientX can be off the document, so report window in that case!
+          target = document.elementFromPoint(touch.clientX, touch.clientY) || window;
+
+          if (e.type === 'touchmove') {
+            target.dispatchEvent(createMouseEvent(touch, 'mousemove'));
+          } else if (e.type === 'touchcancel' || e.type === 'touchend') {
+            // Remember this generates a click, too
+            target.dispatchEvent(createMouseEvent(touch, 'mouseup'));
+            touchId = null;
+          }
+          return;
+        }
+      }
+
+      window.addEventListener('touchstart', touchStarted, true);
+      ['touchmove', 'touchend', 'touchcancel'].forEach(function (eventType) {
+        window.addEventListener(eventType, touchChanged, true);
+      });
+
+      // TODO implement cancel semantics for atom dragging?
+      // see http://alxgbsn.co.uk/2011/12/23/different-ways-to-trigger-touchcancel-in-mobile-browsers/
+      // until then we have to observe touchcancel to stop in-progress drags.
     }
 
     // Support viewport dragging behavior.
