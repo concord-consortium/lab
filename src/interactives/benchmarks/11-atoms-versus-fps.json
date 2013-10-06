@@ -1,0 +1,98 @@
+{
+  "title": "Atoms Versus FPS",
+  "publicationStatus": "public",
+  "subtitle": "Demo showing how many atoms md2d can handle",
+  "about": "",
+  "fontScale": 0.8,
+  "models": [
+    {
+      "type": "md2d",
+      "id": "main-model",
+      "url": "models/md2d/benchmarks/atoms-versus-fps.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "name": "fps",
+      "value": [
+        "return getFPS();"
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "number",
+      "label": "Number of Atoms",
+      "unitAbbreviation": "",
+      "onChange": [
+        "var N = getNumberOfAtoms(),",
+        "    props,",
+        "    radius,",
+        "    width,",
+        "    height,",
+        "    i;",
+        "value = Math.round(value);",
+        "if (value > N) {",
+        "  props = getAtomProperties(0);",
+        "  radius = props.radius",
+        "  delete props.radius;",
+        "  delete props.px;",
+        "  delete props.py;",
+        "  delete props.speed;",
+        "  delete props.mass",
+        "  width = get('width');",
+        "  height = get('height');",
+        "  batch(function() {",
+        "    for (i = N; i < value; i++) {",
+        "      props.x = Math.random() * (width - 2*radius);",
+        "      props.y = Math.random() * height;",
+        "      addAtom(props, { suppressCheck: true });",
+        "    }",
+        "  });",
+        "  minimizeEnergy();",
+        "} else if (value < N) {",
+        "  batch(function() {",
+        "    for (i = value; i < N; i++) {",
+        "      removeAtom(0);",
+        "    }",
+        "  });",
+        "}"
+      ],
+      "initialValue": 200
+    }
+  ],
+  "components": [
+    {
+      "type": "slider",
+      "id": "number-slider",
+      "min": 10,
+      "max": 2000,
+      "displayValue": "return format('.1f')(value)",
+      "labels": [
+        {
+          "value": 10,
+          "label": "10"
+        },
+        {
+          "value": 2000,
+          "label": "2000"
+        }
+      ],
+      "steps": 100,
+      "title": "Number of Atoms",
+      "property": "number",
+      "width": "45em"
+    },
+    {
+      "id": "fps",
+      "type": "numericOutput",
+      "property": "fps",
+      "label": "Rendering Speed",
+      "displayValue": "return format('.2f')(value)",
+      "units": "frames per second"
+    }
+  ]
+}
