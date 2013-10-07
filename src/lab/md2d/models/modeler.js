@@ -984,18 +984,14 @@ define(function(require) {
         propertySupport.invalidatingChangePostHook();
       }
 
-      if (!options.suppressEvent) {
-        dispatch.addAtom();
-      }
+      dispatch.addAtom();
 
       return true;
     };
 
-    model.removeAtom = function(i, options) {
+    model.removeAtom = function(i) {
       var prevRadBondsCount = engine.getNumberOfRadialBonds(),
           prevAngBondsCount = engine.getNumberOfAngularBonds();
-
-      options = options || {};
 
       propertySupport.invalidatingChangePreHook();
       engine.removeAtom(i);
@@ -1003,18 +999,16 @@ define(function(require) {
       viewAtoms.length = 0;
       propertySupport.invalidatingChangePostHook();
 
-      if (!options.suppressEvent) {
-        // Notify listeners that atoms is removed.
-        dispatch.removeAtom();
+      // Notify listeners that atoms is removed.
+      dispatch.removeAtom();
 
-        // Removing of an atom can also cause removing of
-        // the connected radial bond. Detect it and notify listeners.
-        if (engine.getNumberOfRadialBonds() !== prevRadBondsCount) {
-          dispatch.removeRadialBond();
-        }
-        if (engine.getNumberOfAngularBonds() !== prevAngBondsCount) {
-          dispatch.removeAngularBond();
-        }
+      // Removing of an atom can also cause removing of
+      // the connected radial bond. Detect it and notify listeners.
+      if (engine.getNumberOfRadialBonds() !== prevRadBondsCount) {
+        dispatch.removeRadialBond();
+      }
+      if (engine.getNumberOfAngularBonds() !== prevAngBondsCount) {
+        dispatch.removeAngularBond();
       }
     };
 

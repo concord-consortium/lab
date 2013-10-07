@@ -71,29 +71,14 @@ define(function (require) {
         return model.getNumberOfAngularBonds();
       },
 
-      addAtom: function addAtom(props, options) {
-        if (options && options.suppressRepaint) {
-          // Translate suppressRepaint option to
-          // option understable by modeler.
-          // supresRepaint is a conveniance option for
-          // Scripting API users.
-          options.suppressEvent = true;
-        }
-        return model.addAtom(props, options);
+      addAtom: function addAtom(props) {
+        return model.addAtom(props);
       },
 
       /*
         Removes atom 'i'.
       */
       removeAtom: function removeAtom(i, options) {
-        if (options && options.suppressRepaint) {
-          // Translate suppressRepaint option to
-          // option understable by modeler.
-          // supresRepaint is a conveniance option for
-          // Scripting API users.
-          options.suppressEvent = true;
-          delete options.suppressRepaint;
-        }
         try {
           model.removeAtom(i, options);
         } catch (e) {
@@ -350,8 +335,8 @@ define(function (require) {
         Sets individual atom properties using human-readable hash.
         e.g. setAtomProperties(5, {x: 1, y: 0.5, charge: 1})
       */
-      setAtomProperties: function setAtomProperties(i, props, checkLocation, moveMolecule, options) {
-        setProperty(model.setAtomProperties, i, props, checkLocation, moveMolecule, options);
+      setAtomProperties: function setAtomProperties(i, props, checkLocation, moveMolecule) {
+        setProperty(model.setAtomProperties, i, props, checkLocation, moveMolecule);
       },
 
       /**
@@ -771,8 +756,8 @@ define(function (require) {
         setProperty(model.setImageProperties, i, props);
       },
 
-      repaintIfReady: function(options) {
-        if (!(batchDepth > 0 || options && options.suppressRepaint)) {
+      repaintIfReady: function() {
+        if (batchDepth === 0) {
           api.repaint();
         }
       },
