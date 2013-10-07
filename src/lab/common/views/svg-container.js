@@ -665,28 +665,30 @@ define(function (require) {
             if (hitTestSucceeded) {
               return layer;
             }
-          }
+          } else {
+            // clientX and clientY report the event coords in CSS pixels relative to the viewport
+            // (ie they aubtract the x, y the page is scrolled to). This is what elementFromPoint
+            // requires in Chrome, Safari 5+, IE 8+, and Firefox 3+.
+            // http://www.quirksmode.org/dom/tests/elementfrompoint.html
+            // http://www.quirksmode.org/blog/archives/2010/06/new_webkit_test.html
+            // http://www.quirksmode.org/mobile/tableViewport_desktop.html
+            target = document.elementFromPoint(e.clientX, e.clientY);
 
-          // clientX and clientY report the event coords in CSS pixels relative to the viewport
-          // (ie they aubtract the x, y the page is scrolled to). This is what elementFromPoint
-          // requires in Chrome, Safari 5+, IE 8+, and Firefox 3+.
-          // http://www.quirksmode.org/dom/tests/elementfrompoint.html
-          // http://www.quirksmode.org/blog/archives/2010/06/new_webkit_test.html
-          // http://www.quirksmode.org/mobile/tableViewport_desktop.html
-          target = document.elementFromPoint(e.clientX, e.clientY);
-
-          // FIXME? Since we nominally allow target layers to be hidden or have pointer-events: none
-          // we would have to replace this simplistic test. In the case that the layer is
-          // transparent to events even before we hide it, target !== layer not because target is an
-          // element in the layer that received the hit but because the target is below the layer.
-          if (target !== layer) {
-            unhideLayers(i-1);
-            target.dispatchEvent(retargetMouseEvent(e, target));
-            // There was an element in the layer at the event target. This hides the event from all
-            // layers below, so we're done.
-            return target;
+            // FIXME? Since we nominally allow target layers to be hidden or have pointer-events: none
+            // we would have to replace this simplistic test. In the case that the layer is
+            // transparent to events even before we hide it, target !== layer not because target is an
+            // element in the layer that received the hit but because the target is below the layer.
+            if (target !== layer) {
+              unhideLayers(i-1);
+              target.dispatchEvent(retargetMouseEvent(e, target));
+              // There was an element in the layer at the event target. This hides the event from all
+              // layers below, so we're done.
+              return target;
+            }
           }
         }
+        // If no element is hit, make sure that all layer properties are restored.
+        unhideLayers(layersToHitTest.length - 2); // -2 because the last layer is never hidden
       }
 
       EVENT_TYPES.forEach(function(eventType) {
