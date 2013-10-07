@@ -2,8 +2,7 @@
 
 define(function(require) {
   // Dependencies.
-  var console              = require('common/console'),
-      performance          = require('common/performance'),
+  var performance          = require('common/performance'),
       serialize            = require('common/serialize'),
       validator            = require('common/validator'),
       LabModelerMixin      = require('common/lab-modeler-mixin'),
@@ -972,17 +971,11 @@ define(function(require) {
         return false;
       }
 
-      // When atoms are being deserialized, the deserializing function
-      // should handle change hooks due to performance reasons.
-      if (!options.deserialization) {
-        propertySupport.invalidatingChangePreHook();
-      }
+      propertySupport.invalidatingChangePreHook();
 
       engine.addAtom(props);
 
-      if (!options.deserialization) {
-        propertySupport.invalidatingChangePostHook();
-      }
+      propertySupport.invalidatingChangePostHook();
 
       dispatch.addAtom();
 
@@ -1095,22 +1088,11 @@ define(function(require) {
       dispatch.removeElectricField();
     };
 
-    model.addRadialBond = function(props, options) {
-      // Validate properties, use default values if there is such need.
+    model.addRadialBond = function(props) {
       props = validator.validateCompleteness(metadata.radialBond, props);
-
-      // During deserialization change hooks are managed manually.
-      if (!options || !options.deserialization) {
-        propertySupport.invalidatingChangePreHook();
-      }
-
-      // Finally, add radial bond.
+      propertySupport.invalidatingChangePreHook();
       engine.addRadialBond(props);
-
-      if (!options || !options.deserialization) {
-        propertySupport.invalidatingChangePostHook();
-      }
-
+      propertySupport.invalidatingChangePostHook();
       dispatch.addRadialBond();
     };
 
@@ -1121,21 +1103,11 @@ define(function(require) {
       dispatch.removeRadialBond();
     };
 
-    model.addAngularBond = function(props, options) {
-      // Validate properties, use default values if there is such need.
+    model.addAngularBond = function(props) {
       props = validator.validateCompleteness(metadata.angularBond, props);
-
-      // During deserialization change hooks are managed manually.
-      if (!options || !options.deserialization) {
-        propertySupport.invalidatingChangePreHook();
-      }
-
-      // Finally, add angular bond.
+      propertySupport.invalidatingChangePreHook();
       engine.addAngularBond(props);
-
-      if (!options || !options.deserialization) {
-        propertySupport.invalidatingChangePostHook();
-      }
+      propertySupport.invalidatingChangePostHook();
     };
 
     model.removeAngularBond = function(idx) {
@@ -1935,7 +1907,7 @@ define(function(require) {
             lightSource: engine.callPluginAccessor('getLightSource')
           };
 
-      if (!data.lightSource) delete data.lightSource
+      if (!data.lightSource) delete data.lightSource;
 
       return data;
     }
