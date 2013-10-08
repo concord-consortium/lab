@@ -1,4 +1,4 @@
-/*global $, define: false, d3: false */
+/*global $, define: false, d3: false, Modernizr: false */
 // ------------------------------------------------------------
 //
 //   SVG View Container
@@ -549,8 +549,14 @@ define(function (require) {
       var viewportNode   = viewportContainer.node();
       var clickShieldNode = clickShield.node();
 
-      var pointerEvents;
-      var visibility;
+      // We need to hide HTML layers from mouse events. It can be achieved by setting "pointer-
+      // events" style to "none", however it isn't supported by all browsers (e.g. IE9  and IE10).
+      // The fallback method is to set layer's visibility to "hidden".
+      var cssPointerEvents = Modernizr.testProp("cssPointerEvents");
+      var propName = cssPointerEvents ? "pointerEvents" : "visibility";
+      var propHidden = cssPointerEvents ? "none" : "hidden";
+      var propVisible = cssPointerEvents ? "auto" : "visible";
+      var propBackup;
 
       var mousedownTarget;
       var targetForCreatedClick;
@@ -558,7 +564,6 @@ define(function (require) {
       // Elements added to the viewportContainer will go in the middle. The viewportContainer itself
       // is just a holder -- it shouldn't receive mouse/touch events itself.
       layersToHitTest = [foregroundNode, backgroundNode];
-
 
       // Return a cloned version of 'e' having 'target' as its target property; cancel the original
       // event.
@@ -580,35 +585,36 @@ define(function (require) {
         return clonedEvent;
       }
 
-      // Restore original visiblity and pointer-events styles of layers n to 0, inclusive
+      // Hide layer from mouse events using visibility or pointer-events styles.
+      function hideLayer(i) {
+        var layer = layersToHitTest[i];
+        propBackup[i] = layer.style[propName];
+        layer.style[propName] = propHidden;
+      }
+
+      // Restore original visibility or pointer-events styles of layers n to 0, inclusive.
       function unhideLayers(n) {
         for (var i = n; i >= 0; i--) {
-          layersToHitTest[i].style.visibility = visibility[i];
-          layersToHitTest[i].style.pointerEvents = pointerEvents[i];
+          layersToHitTest[i].style[propName] = propBackup[i];
         }
         if (n >= layersToHitTest.length - 2) {
           // Viewport container is treated as a layer between last viewport and background.
-          viewportNode.style.visibility = "visible";
-          viewportNode.style.pointerEvents = "auto";
+          viewportNode.style[propName] = propVisible;
         }
-        clickShieldNode.style.visibility = "visible";
-        clickShieldNode.style.pointerEvents = "auto";
+        clickShieldNode.style[propName] = propVisible;
       }
 
       function hitTest(e) {
         // Remember style rules of the layers we peel back
-        visibility = [];
-        pointerEvents = [];
+        propBackup = [];
 
         var layer;
-        var prevLayer;
         var target;
         var testEvent;
         var hitTestSucceeded;
         var isCanvasObjectClick;
 
-        clickShieldNode.style.visibility = "hidden";
-        clickShieldNode.style.pointerEvents = "none";
+        clickShieldNode.style[propName] = propHidden;
 
         // Must be set, as we test it after calling hitTest()
         targetForCreatedClick = null;
@@ -617,22 +623,13 @@ define(function (require) {
           layer = layersToHitTest[i];
 
           if (i > 0) {
-            prevLayer = layersToHitTest[i-1];
-
-            // Set prevLayer's visiblity to "hidden" and pointer-events to "none"; need to do both
-            // because Safari doesn't respect visibility changes in elementFromPoint (!) and IE9 & 10
-            // don't support pointerEvents.
-            visibility[i-1] = prevLayer.style.visibility;
-            prevLayer.style.visibility = "hidden";
-            pointerEvents[i-1] = prevLayer.style.pointerEvents;
-            prevLayer.style.pointerEvents = "none";
+            hideLayer(i - 1);
           }
 
           if (layer === backgroundNode) {
             // When we are testing background container, we have to hide also viewportContainer.
             // Otherwise it will detected in .elementFromPoint() call.
-            viewportNode.style.visibility = "hidden";
-            viewportNode.style.pointerEvents = "none";
+            viewportNode.style[propName] = propHidden;
           }
 
           if (layer.tagName.toLowerCase() === "canvas") {
