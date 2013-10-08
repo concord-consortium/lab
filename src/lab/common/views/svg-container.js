@@ -375,7 +375,11 @@ define(function (require) {
         // Transparent click shield receives all mouse/touch events; setupHitTesting() sets up
         // handlers that re-dispatch the event to the appropriate element in the appropriate layer.
         clickShield = d3.select(node).append("div")
-          .attr("class", "root-layer click-shield");
+          .attr("class", "root-layer click-shield")
+          // IE bug: without background color, layer will be transparent for mouse events,
+          // underlying canvas (if any) will become an event target. See:
+          // https://www.pivotaltracker.com/story/show/58418116
+          .style("background-color", "rgba(0,0,0,0)");
 
         // Root layers should overlap each other.
         d3.select(node).selectAll(".root-layer").call(layeredOnTop);
@@ -613,6 +617,7 @@ define(function (require) {
         var testEvent;
         var hitTestSucceeded;
         var isCanvasObjectClick;
+        var layerBgColor;
 
         clickShieldNode.style[propName] = propHidden;
 
@@ -663,6 +668,12 @@ define(function (require) {
               return layer;
             }
           } else {
+            // IE bug: without background color layer will be transparent for .elementFromPoint(),
+            // underlying canvas (if any) will become a target. See:
+            // https://www.pivotaltracker.com/story/show/58418116
+            layerBgColor = layer.style.backgroundColor;
+            layer.style.backgroundColor = "rgba(0,0,0,0)";
+
             // clientX and clientY report the event coords in CSS pixels relative to the viewport
             // (ie they aubtract the x, y the page is scrolled to). This is what elementFromPoint
             // requires in Chrome, Safari 5+, IE 8+, and Firefox 3+.
@@ -670,6 +681,9 @@ define(function (require) {
             // http://www.quirksmode.org/blog/archives/2010/06/new_webkit_test.html
             // http://www.quirksmode.org/mobile/tableViewport_desktop.html
             target = document.elementFromPoint(e.clientX, e.clientY);
+
+            // Restore original background color.
+            layer.style.backgroundColor = layerBgColor;
 
             // FIXME? Since we nominally allow target layers to be hidden or have pointer-events: none
             // we would have to replace this simplistic test. In the case that the layer is
