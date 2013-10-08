@@ -147,8 +147,8 @@ define(function(require) {
         viewportY = model.get("viewPortY") || 0;
       }
 
-      POINT_CACHE.x = m2px.invert((e.clientX - targetOffset.left) * targetOversampling) + viewportX;
-      POINT_CACHE.y = m2pxInv.invert((e.clientY - targetOffset.top) * targetOversampling) + viewportY;
+      POINT_CACHE.x = m2px.invert((e.pageX - targetOffset.left) * targetOversampling) + viewportX;
+      POINT_CACHE.y = m2pxInv.invert((e.pageY - targetOffset.top) * targetOversampling) + viewportY;
       return POINT_CACHE;
     }
 
