@@ -157,6 +157,9 @@ define(function(require) {
           p, x, y, originX, originY;
 
       $(window).on("mousemove.drag", function (e) {
+        // Prevent accidental text selection or another unwanted action while dragging.
+        e.preventDefault();
+
         if (!dragged) {
           // Lazily initialize drag process when user really drags an atom (not only clicks it).
           if (model.isStopped()) {
@@ -191,11 +194,14 @@ define(function(require) {
         if (modelView.dragHandler.atom) {
           modelView.dragHandler.atom(x, y, atom, i);
         }
-      }).one("mouseup.drag", function () {
+      }).one("mouseup.drag", function (e) {
         $(window).off("mousemove.drag");
 
         // If user only clicked an atom (mousedown + mouseup, no mousemove), nothing to do.
         if (!dragged) return;
+
+        // Prevent accidental text selection or another unwanted action while dragging.
+        e.preventDefault();
 
         if (model.isStopped()) {
           // Important: set position to (atom.x, atom.y), not (x, y)! Note that custom drag handler
