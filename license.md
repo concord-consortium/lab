@@ -89,6 +89,7 @@ Here is a list of projects and resources included in the in the `vendor/` direct
 28. [fingerprintjs](https://github.com/Valve/fingerprintjs): [MIT](http://www.opensource.org/licenses/MIT)
 29. [pixi.js](https://github.com/GoodBoyDigital/pixi.js): [MIT](http://www.opensource.org/licenses/MIT)
 30. [canvg](https://code.google.com/p/canvg): [MIT](http://www.opensource.org/licenses/MIT)
+31. [fastclick](https://github.com/ftlabs/fastclick): [MIT](http://www.opensource.org/licenses/MIT)
 
 In addition there are three fontface directories in `vendor/fonts` that are distributed
 under compatible open source licenses:
