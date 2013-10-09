@@ -65,6 +65,7 @@
     'pixi': '../../vendor/pixi.js/bin/pixi.dev',
     'canvg': '../../vendor/canvg-1.3/canvg',
     'rgbcolor': '../../vendor/canvg-1.3/rgbcolor',
+    'fastclick': '../../vendor/fastclick/lib/fastclick',
     'backbone': '../../node_modules/backbone/backbone',
     'mustache': '../../node_modules/mustache/mustache',
     'markdown': '../../node_modules/markdown/lib/markdown'
