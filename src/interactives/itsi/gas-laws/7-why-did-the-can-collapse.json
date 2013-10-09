@@ -506,15 +506,15 @@
       "left": "right-graphs.left",
       "top": "right-count.bottom",
       "fontScale": 0.8,
-      "padding-left": "1em",
-      "padding-right": "1em"
+      "padding-left": "0.5em",
+      "padding-right": "0.5em"
     },
     {
       "id": "right-heat",
       "left": "right-graphs.left",
       "top": "right-heat-label.bottom",
       "fontScale": 0.65,
-      "padding-left": "1em"
+      "padding-left": "0.5em"
     },
     {
       "id": "footer",

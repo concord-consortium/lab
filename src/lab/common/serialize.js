@@ -33,7 +33,8 @@ define(function(require) {
         if (propertiesHash[propName] !== undefined && metaData[propName].serialize !== false) {
           prop = propertiesHash[propName];
           if (arrays.isArray(prop)) {
-            result[propName] = count !== undefined ? arrays.copy(arrays.extend(prop, count), []) : arrays.copy(prop, []);
+            result[propName] = arrays.copy(prop, []);
+            if (count !== undefined) result[propName] = arrays.extend(result[propName], count);
           }
           else if (typeof prop === 'object') {
             result[propName] = $.extend(true, {}, prop);

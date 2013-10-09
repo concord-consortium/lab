@@ -45,7 +45,6 @@
   - :name: lab
     :url: lab.concord.org
     :branch: production
-    :dataGamesProxyPrefix: DataGames/Games/concord/lab/
   - :name: lab-staging
     :url: lab-staging.concord.org
     :branch: staging

@@ -1,7 +1,7 @@
 # See the README for installation instructions.
 
 # Utilities
-JS_COMPILER = ./node_modules/uglify-js/bin/uglifyjs
+JS_COMPILER = ./node_modules/uglify-js/bin/uglifyjs -c -m -
 COFFEESCRIPT_COMPILER = ./node_modules/coffee-script/bin/coffee
 MARKDOWN_COMPILER = bin/kramdown
 

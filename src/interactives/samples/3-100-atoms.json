@@ -27,20 +27,15 @@
       "text": "Charge",
       "property": "chargeShading",
       "onClick": [
-        "if (value) {",
-        "  batch(function(){",
-        "    var chargeVal = 1.5;",
-        "    for (var i=0; i < getNumberOfAtoms(); i++) {",
-        "      setAtomProperties(i, {charge: chargeVal}, false, false, {});",
-        "      chargeVal *= -1;",
-        "    }",
-        "  });",
-        "  set('chargeShading', true);",
-        "}",
-        "else {",
-        "  setAtomProperties(atomsWithinRect(get('width'),get('height')), {charge: 0}, false, false, {});",
-        "  set('chargeShading',false);",
-        "}"
+        "batch(function(){",
+        "  var count = getNumberOfAtoms();",
+        "  var chargeVal;",
+        "  if (value) { chargeVal = 1.5 } else { chargeVal = 0; }",
+        "  for (var i=0; i < count; i++) {",
+        "    setAtomProperties(i, {charge: chargeVal}, false, false);",
+        "    chargeVal *= -1;",
+        "  }",
+        "});"
       ]
     },
     {

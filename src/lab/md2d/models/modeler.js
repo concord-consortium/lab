@@ -171,7 +171,7 @@ define(function(require) {
           d.addEventTypes("tick",
                           "addAtom", "removeAtom", "addRadialBond", "removeRadialBond",
                           "addElectricField", "removeElectricField", "changeElectricField",
-                          "removeAngularBond", "textBoxesChanged");
+                          "removeAngularBond", "textBoxesChanged", "imagesChanged");
           return d;
         }()),
 
@@ -960,30 +960,20 @@ define(function(require) {
         return false;
       }
 
-      // When atoms are being deserialized, the deserializing function
-      // should handle change hooks due to performance reasons.
-      if (!options.deserialization) {
-        propertySupport.invalidatingChangePreHook();
-      }
+      propertySupport.invalidatingChangePreHook();
 
       engine.addAtom(props);
 
-      if (!options.deserialization) {
-        propertySupport.invalidatingChangePostHook();
-      }
+      propertySupport.invalidatingChangePostHook();
 
-      if (!options.suppressEvent) {
-        dispatch.addAtom();
-      }
+      dispatch.addAtom();
 
       return true;
     };
 
-    model.removeAtom = function(i, options) {
+    model.removeAtom = function(i) {
       var prevRadBondsCount = engine.getNumberOfRadialBonds(),
           prevAngBondsCount = engine.getNumberOfAngularBonds();
-
-      options = options || {};
 
       propertySupport.invalidatingChangePreHook();
       engine.removeAtom(i);
@@ -991,18 +981,16 @@ define(function(require) {
       viewAtoms.length = 0;
       propertySupport.invalidatingChangePostHook();
 
-      if (!options.suppressEvent) {
-        // Notify listeners that atoms is removed.
-        dispatch.removeAtom();
+      // Notify listeners that atoms is removed.
+      dispatch.removeAtom();
 
-        // Removing of an atom can also cause removing of
-        // the connected radial bond. Detect it and notify listeners.
-        if (engine.getNumberOfRadialBonds() !== prevRadBondsCount) {
-          dispatch.removeRadialBond();
-        }
-        if (engine.getNumberOfAngularBonds() !== prevAngBondsCount) {
-          dispatch.removeAngularBond();
-        }
+      // Removing of an atom can also cause removing of
+      // the connected radial bond. Detect it and notify listeners.
+      if (engine.getNumberOfRadialBonds() !== prevRadBondsCount) {
+        dispatch.removeRadialBond();
+      }
+      if (engine.getNumberOfAngularBonds() !== prevAngBondsCount) {
+        dispatch.removeAngularBond();
       }
     };
 
@@ -1089,22 +1077,11 @@ define(function(require) {
       dispatch.removeElectricField();
     };
 
-    model.addRadialBond = function(props, options) {
-      // Validate properties, use default values if there is such need.
+    model.addRadialBond = function(props) {
       props = validator.validateCompleteness(metadata.radialBond, props);
-
-      // During deserialization change hooks are managed manually.
-      if (!options || !options.deserialization) {
-        propertySupport.invalidatingChangePreHook();
-      }
-
-      // Finally, add radial bond.
+      propertySupport.invalidatingChangePreHook();
       engine.addRadialBond(props);
-
-      if (!options || !options.deserialization) {
-        propertySupport.invalidatingChangePostHook();
-      }
-
+      propertySupport.invalidatingChangePostHook();
       dispatch.addRadialBond();
     };
 
@@ -1115,21 +1092,11 @@ define(function(require) {
       dispatch.removeRadialBond();
     };
 
-    model.addAngularBond = function(props, options) {
-      // Validate properties, use default values if there is such need.
+    model.addAngularBond = function(props) {
       props = validator.validateCompleteness(metadata.angularBond, props);
-
-      // During deserialization change hooks are managed manually.
-      if (!options || !options.deserialization) {
-        propertySupport.invalidatingChangePreHook();
-      }
-
-      // Finally, add angular bond.
+      propertySupport.invalidatingChangePreHook();
       engine.addAngularBond(props);
-
-      if (!options || !options.deserialization) {
-        propertySupport.invalidatingChangePostHook();
-      }
+      propertySupport.invalidatingChangePostHook();
     };
 
     model.removeAngularBond = function(idx) {
@@ -1519,8 +1486,29 @@ define(function(require) {
       }
     };
 
+    model.setImageProperties = function(i, props) {
+      var image = model.get('images')[i],
+          prop;
+
+      if (image) {
+        props = validator.validate(metadata.image, props);
+        for (prop in props) {
+          if (props.hasOwnProperty(prop)) {
+            image[prop] = props[prop];
+          }
+        }
+        dispatch.imagesChanged();
+      } else {
+        throw new Error("Image \"" + i + "\" does not exist, so it cannot have properties set.");
+      }
+    };
+
     model.getTextBoxProperties = function(i) {
       return model.get('textBoxes')[i];
+    };
+
+    model.getImageProperties = function(i) {
+      return model.get('images')[i];
     };
 
     /**

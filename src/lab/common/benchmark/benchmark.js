@@ -127,7 +127,7 @@ define(function (require) {
       average_row,
       browser_detect = require('./browser-detect'),
       what_browser = browser_detect.what_browser,
-      isMobile = browser_detect.isMobile;
+      _isMobile = browser_detect.isMobile;
 
   function renderToTable(benchmarks_table, benchmarksThatWereRun, results) {
     var i = 0,
@@ -316,7 +316,7 @@ define(function (require) {
       return what_browser();
     },
     get isMobile() {
-      return isMobile;
+      return _isMobile;
     },
     // run benchmarks, add row to table, update averages row
     run: function(benchmarks_to_run, benchmarks_table, resultsCallback, start_callback, end_callback) {
