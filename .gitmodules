@@ -78,4 +78,4 @@
 	url = https://github.com/concord-consortium/pixi.js.git
 [submodule "vendor/fastclick"]
 	path = vendor/fastclick
-	url = git@github.com:ftlabs/fastclick.git
+	url = https://github.com/ftlabs/fastclick.git
