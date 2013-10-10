@@ -1,8 +1,8 @@
 helpers = require '../../helpers'
 helpers.setupBrowserEnvironment()
 
-Model      = requirejs 'md2d/models/modeler'
-aminoacids = requirejs 'md2d/models/aminoacids-props'
+Model      = requirejs 'models/md2d/models/modeler'
+aminoacids = requirejs 'models/md2d/models/aminoacids-props'
 
 describe "MD2D modeler", ->
   model = null
