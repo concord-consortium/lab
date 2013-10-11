@@ -614,7 +614,7 @@ define(function (require) {
 
         var layer;
         var target;
-        var testEvent;
+        var mouseEvent;
         var hitTestSucceeded;
         var isCanvasObjectClick;
         var layerBgColor;
@@ -644,9 +644,10 @@ define(function (require) {
               hitTestSucceeded = isHit;
               if (isHit) {
                 unhideLayers(i-1);
+                defaultPreventedFlag = mouseEvent.defaultPrevented;
               } else {
-                testEvent.stopPropagation();
-                testEvent.preventDefault();
+                mouseEvent.stopPropagation();
+                mouseEvent.preventDefault();
               }
             };
 
@@ -656,8 +657,8 @@ define(function (require) {
 
             // For now we have to dispatch an event first, *then* see if the Canvas-based view
             // considered it a hit -- we stopPropagation and keep going if it does not report a hit.
-            testEvent = retargetMouseEvent(e, layer);
-            layer.dispatchEvent(testEvent);
+            mouseEvent = retargetMouseEvent(e, layer);
+            layer.dispatchEvent(mouseEvent);
 
             if (isCanvasObjectClick) {
               // The canvas view itself won't listen to this click, but let the click bubble.
@@ -691,7 +692,9 @@ define(function (require) {
             // element in the layer that received the hit but because the target is below the layer.
             if (target !== layer) {
               unhideLayers(i-1);
-              target.dispatchEvent(retargetMouseEvent(e, target));
+              mouseEvent = retargetMouseEvent(e, target);
+              target.dispatchEvent(mouseEvent);
+              defaultPreventedFlag = mouseEvent.defaultPrevented;
               // There was an element in the layer at the event target. This hides the event from all
               // layers below, so we're done.
               return target;
@@ -738,6 +741,8 @@ define(function (require) {
       }, true);
     }
 
+    var defaultPreventedFlag;
+
     // Translate any touch events on the clickShield which have only a single touch point ("finger")
     // when started, to the corresponding mouse events. Does not attempt to initiate a cancel action
     // for touchcancel; just issues mouseup stops tracking the touch.
@@ -760,13 +765,15 @@ define(function (require) {
           return;
         }
 
-        e.stopPropagation();
-        e.preventDefault();
-
         // Remember which touch point--later touch events may or may not include this touch point
         // but we have to listen to them all to make sure we update dragging state correctly.
         touchId = touch.identifier;
         clickShieldNode.dispatchEvent(createMouseEvent(touch, 'mousedown'));
+
+        if (defaultPreventedFlag) {
+          e.preventDefault();
+        }
+        e.stopPropagation();
       }
 
       // Listener for touchmove, touchend, and touchcancel:
@@ -780,6 +787,7 @@ define(function (require) {
         var len;
         var touch;
         var target;
+        var mouseMoveEvent;
 
         for (i = 0, len = e.changedTouches.length; i < len; i++) {
           touch = e.changedTouches[i];
@@ -792,14 +800,6 @@ define(function (require) {
             e.stopPropagation();
           }
 
-          // Generally, sending preventDefault for the first touchmove in a series prevents browser
-          // default actions such as pinch-zoom. So it looks as if as a rule we give up on letting
-          // the user "add a finger" to pinch-zoom midway through a dragging operation. Therefore,
-          // prevent away. preventDefault on touchend will also prevent the browser from generating
-          // a click, but that's okay; our hit testing intentionally ignores browser-generated click
-          // events anyway, and generates its own when appropriate.
-          e.preventDefault();
-
           // touch's target will always be the element that received the touchstart. But since
           // we're creating a pretend mousemove, let its target be the target the browser would
           // report for an actual mousemove/mouseup (Remember that the--expensive--hitTest() is not
@@ -808,12 +808,30 @@ define(function (require) {
           target = document.elementFromPoint(touch.clientX, touch.clientY) || window;
 
           if (e.type === 'touchmove') {
-            target.dispatchEvent(createMouseEvent(touch, 'mousemove'));
+            mouseMoveEvent = createMouseEvent(touch, 'mousemove');
+            target.dispatchEvent(mouseMoveEvent);
           } else if (e.type === 'touchcancel' || e.type === 'touchend') {
             // Remember this generates a click, too
             target.dispatchEvent(createMouseEvent(touch, 'mouseup'));
             touchId = null;
           }
+
+          if (mouseMoveEvent) {
+            // 'mousemove' event isn't handled by our custom hit testing algorithm, so set the flag
+            // value manually.
+            defaultPreventedFlag = mouseMoveEvent.defaultPrevented;
+          }
+
+          if (defaultPreventedFlag) {
+            // Generally, sending preventDefault for the first touchmove in a series prevents
+            // browser default actions such as pinch-zoom. So it looks as if as a rule we give up on
+            // letting the user "add a finger" to pinch-zoom midway through a dragging operation.
+            // Therefore, prevent away. preventDefault on touchend will also prevent the browser
+            // from generating a click, but that's okay; our hit testing intentionally ignores
+            // browser-generated click events anyway, and generates its own when appropriate.
+            e.preventDefault();
+          }
+
           return;
         }
       }
@@ -1208,7 +1226,17 @@ define(function (require) {
         selectBrush = d3.svg.brush()
           .x(model2px)
           .y(model2pxInv)
+          .on("brushstart.select", function() {
+            // Prevent default on mousemove. It's necessary when we deal with synthetic mouse
+            // events translated from touch events. Then we have to prevent default action (panning,
+            // zooming etc.).
+            d3.select(window).on("mousemove.select", function () {
+              d3.event.preventDefault();
+            });
+          })
           .on("brushend.select", function() {
+            d3.select(window).on("mousemove.select", null);
+
             var r = selectBrush.extent(),
                 x      = r[0][0],
                 y      = r[0][1],
