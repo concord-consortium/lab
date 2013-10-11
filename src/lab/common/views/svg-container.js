@@ -1,4 +1,4 @@
-/*global $, define: false, d3: false, Modernizr: false */
+/*global $, define: false, d3: false */
 // ------------------------------------------------------------
 //
 //   SVG View Container
@@ -8,6 +8,7 @@ define(function (require) {
   // Dependencies.
   var performance           = require('common/performance'),
       getNextTabIndex       = require('common/views/tab-index'),
+      featureTests          = require('common/feature-tests'),
       console               = require('common/console'),
       PIXI                  = require('pixi'),
 
@@ -548,18 +549,17 @@ define(function (require) {
       // events work, and is what Pixi expects.)
       // see https://developer.apple.com/library/safari/documentation/UserExperience/Reference/TouchEventClassReference/TouchEvent/TouchEvent.html#//apple_ref/javascript/instm/TouchEvent/initTouchEvent
 
-      var foregroundNode = foregroundContainer.node();
-      var backgroundNode = backgroundContainer.node();
-      var viewportNode   = viewportContainer.node();
+      var foregroundNode  = foregroundContainer.node();
+      var backgroundNode  = backgroundContainer.node();
+      var viewportNode    = viewportContainer.node();
       var clickShieldNode = clickShield.node();
 
-      // We need to hide HTML layers from mouse events. It can be achieved by setting "pointer-
-      // events" style to "none", however it isn't supported by all browsers (e.g. IE9  and IE10).
-      // The fallback method is to set layer's visibility to "hidden".
-      var cssPointerEvents = Modernizr.testProp("cssPointerEvents");
-      var propName = cssPointerEvents ? "pointerEvents" : "visibility";
-      var propHidden = cssPointerEvents ? "none" : "hidden";
-      var propVisible = cssPointerEvents ? "auto" : "visible";
+      // We need to hide HTML layers from mouse events. It can be achieved by setting
+      // "pointer-events" style to "none", however it isn't supported by all browsers
+      // (e.g. IE9, IE10, Safari 5). The fallback method is to set layer's visibility to "hidden".
+      var propName    = featureTests.cssPointerEvents ? "pointerEvents" : "visibility";
+      var propHidden  = featureTests.cssPointerEvents ? "none" : "hidden";
+      var propVisible = featureTests.cssPointerEvents ? "auto" : "visible";
       var propBackup;
 
       var mousedownTarget;
