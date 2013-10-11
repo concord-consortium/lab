@@ -10,7 +10,7 @@
       try{Typekit.load();}catch(e){}
       if (!Modernizr.svg) { window.location = '../../browser-upgrade.html'; }
     </script>
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300italic,400,300,700&amp;subset=latin,greek,latin-ext' rel='stylesheet' type='text/css' />
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300italic,400,300,700&amp;subset=latin,greek,latin-ext' rel='stylesheet' type='text/css' />
     <link href='../../examples/examples.css' rel='stylesheet' type='text/css' />
     <link href='webgl.css' rel='stylesheet' type='text/css' />
   </head>
@@ -22,18 +22,18 @@
       <h1>WebGL GPGPU experiment - reading a floating point texture</h1>
     </div>
     <div id='content'>
-    	
+
 	  <div id="viz">
 	  	<div class="top">
 	  		<div id="convas-container"></div>
 	  	</div>
 	  </div>
-      
+
       <div id='description-right'>
       	<h2>Initial test - writing and reading of random data. </h2>
         <p>Its purpose is to check if simple transfer of random data to the GPU memory and reading it back to the main memory introduce some numeric errors.
       	   These errors can occur, as WebGL does not provide any convenient function for reading floating point textures. <i>readPixels</i> function is limited to the RGBA format and the UNSIGNED_BYTE type (see: <a href="http://www.khronos.org/registry/webgl/specs/latest/#5.14.12">WebGL specification</a>).
-           A workaround for this problem is to create a special GLSL shader which packs each Float value into four Unsigned Byte components (RGBA). 
+           A workaround for this problem is to create a special GLSL shader which packs each Float value into four Unsigned Byte components (RGBA).
            The biggest drawback of this solution is a performance overhead and possible numeric errors. If you are interested how it works, look at the <i>encodeShader1</i> and <i>encodeShader2</i>
            in the <a href="script.js"><i>script.js</i></a>.<p>
            <p>This test consists of writing random data to the texture, conversion from Float to Unsigned Byte, reading of data using <i>readPixels</i> and a final comparison of received values with the initial data.</p>
@@ -52,7 +52,7 @@
             </ul>
           </li>
         </ul>
-	
+
       	<h2>Continuous test - simple simulation.</h2>
         <p>This test is mainly focused on the measurement of different operations which are connected with GPGPU calculations.</p>
   	    <p>One step consists of:</p>
@@ -60,7 +60,7 @@
   	      <li>rendering of the data: <span id="render-time"> </span> ms</li>
   	      <li>simple CPU calculations: <span id="cpu-time"> </span> ms</li>
   	      <li>simple GPU calculations: <span id="gpu-time"> </span> ms</li>
-  	      <li>reading a floating point texture: 
+  	      <li>reading a floating point texture:
             <ul>
               <li>Method 1: <span id="read-time-m1"> </span> ms</li>
               <li>Method 2: <span id="read-time-m2"> </span> ms</li>
@@ -68,10 +68,10 @@
           </li>
   	    </ul>
         <p>Step: <span id="step"></span> </p>
-  	     
+
   	    <p>Each 5 steps, CPU and GPU data is being compared.</p>
   	    <p>Average difference between CPU and GPU value: <span id="error"></span> %</p>
-  	    
+
   	    <h2>Parameters</h2>
   	    <ul>
   	    <li>Grid resolution:
