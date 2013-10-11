@@ -526,9 +526,21 @@ define(function (require) {
           },
           getHeightForWidth: function() { return 0; },
           resize: function() {},
-          model: function() { return {}; }
+          model: {
+            on: function() {},
+            isStopped: function() {},
+            set: function() {},
+            get: function() {},
+            addObserver: function() {},
+            properties: {}
+          },
+          modelSetupComplete: function() {},
+          initializeView: function() {}
         };
         model = modelController.model;
+
+        // setup fake model definition
+        controller.currentModel = {};
         createScriptingAPI();
         finishLoadingInteractive();
       }
