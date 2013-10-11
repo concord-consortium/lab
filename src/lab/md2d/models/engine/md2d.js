@@ -2734,7 +2734,7 @@ define(function (require, exports) {
       */
       addAtom: function(props) {
         if (N + 1 > atoms.x.length) {
-          utils.extendArrays(atoms, N + 10);
+          utils.extendArrays(atoms, N * 1.5 + 10);
           assignShortcutReferences.atoms();
         }
 
