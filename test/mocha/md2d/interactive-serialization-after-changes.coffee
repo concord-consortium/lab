@@ -2,173 +2,174 @@ helpers = require '../../helpers'
 helpers.setupBrowserEnvironment()
 simpleModel = helpers.getModel 'simple-model.json'
 
-interactivesController = requirejs 'common/controllers/interactives-controller'
-layoutConfig           = requirejs 'common/layout/semantic-layout-config'
-labConfig              = requirejs 'lab.config'
+helpers.withIsolatedRequireJSAndViewsMocked (requirejs) ->
+  interactivesController = requirejs 'common/controllers/interactives-controller'
+  layoutConfig           = requirejs 'common/layout/semantic-layout-config'
+  labConfig              = requirejs 'lab.config'
 
-describe "Lab interactives: serialization", ->
-  before ->
-    # This test requires that all view elements are attached to DOM (JSDOM). So, we cannot mock
-    # layout and the test tends to be pretty slow. To optimize it, limit number of layout algorithm
-    # iterations to 0, because we completely do not care about layout quality.
-    layoutConfig.iterationsLimit = 0
-    # Also disable logging in Lab project so as not to obfuscate Mocha reporter.
-    labConfig.logging = false
+  describe "Lab interactives: serialization", ->
+    before ->
+      # This test requires that all view elements are attached to DOM (JSDOM). So, we cannot mock
+      # layout and the test tends to be pretty slow. To optimize it, limit number of layout algorithm
+      # iterations to 0, because we completely do not care about layout quality.
+      layoutConfig.iterationsLimit = 0
+      # Also disable logging in Lab project so as not to obfuscate Mocha reporter.
+      labConfig.logging = false
 
 
-  describe "serialization after changes of interactive components should reflect these changes", ->
-    controller = null
-    interactive = null
-    model = null
+    describe "serialization after changes of interactive components should reflect these changes", ->
+      controller = null
+      interactive = null
+      model = null
 
-    setupControllerAndModel = ->
-      helpers.withModel simpleModel, ->
-        controller = interactivesController interactive, 'body'
-      model = controller.modelController.model
+      setupControllerAndModel = ->
+        helpers.withModel simpleModel, ->
+          controller = interactivesController interactive, 'body'
+        model = controller.modelController.model
 
-    beforeEach ->
-      interactive = {
-        "title": "Test Interactive",
-        "publicationStatus": "draft",
-        "subtitle": "Subtitle",
-        "about": "Description",
-        "models": [
-          {
-            "type": "generic-model",
-            "id": "model1",
-            "url": "model1",
-            "parameters": [
-              {
-                "name": "parameter1",
-                "initialValue": '1',
-                "onChange": []
-              }
-            ]
-          }, {
-            "type": "generic-model",
-            "id": "model2",
-            "url": "model2",
-            "parameters": [
-              {
-                "name": "parameter2",
-                "initialValue": '2',
-                "onChange": []
-              }
-            ]
-          }
-        ],
-        "parameters": [
-          {
-            "name": "parameter2",
-            "initialValue": '3',
-            "onChange": []
-          }
-        ],
-        "components": [
-          {
-            "type": "checkbox",
-            "id": "checkbox1",
-            "onClick": ";",
-            "initialValue": false
-          }, {
-            "type": "slider",
-            "id": "slider1",
-            "min": 0,
-            "max": 10,
-            "steps": 10,
-            "action": ";",
-            "initialValue": 5
-          }, {
-            "type": "pulldown",
-            "id": "pulldown1",
-            "options": [
-              {
-                "text": "option1",
-                "selected": true
-              }, {
-                "text": "option2"
-              }
-            ]
-          }, {
-            "type": "radio",
-            "id": "radio1",
-            "options": [
-              {
-                "text": "option1",
-                "selected": true
-              }, {
-                "text": "option2"
-              }
-            ]
-          }
-        ]
-      }
-    
-    it "custom parameters should be updated correctly", ->
-      setupControllerAndModel()
-      validatedInteractive = controller.validateInteractive(interactive)
+      beforeEach ->
+        interactive = {
+          "title": "Test Interactive",
+          "publicationStatus": "draft",
+          "subtitle": "Subtitle",
+          "about": "Description",
+          "models": [
+            {
+              "type": "generic-model",
+              "id": "model1",
+              "url": "model1",
+              "parameters": [
+                {
+                  "name": "parameter1",
+                  "initialValue": '1',
+                  "onChange": []
+                }
+              ]
+            }, {
+              "type": "generic-model",
+              "id": "model2",
+              "url": "model2",
+              "parameters": [
+                {
+                  "name": "parameter2",
+                  "initialValue": '2',
+                  "onChange": []
+                }
+              ]
+            }
+          ],
+          "parameters": [
+            {
+              "name": "parameter2",
+              "initialValue": '3',
+              "onChange": []
+            }
+          ],
+          "components": [
+            {
+              "type": "checkbox",
+              "id": "checkbox1",
+              "onClick": ";",
+              "initialValue": false
+            }, {
+              "type": "slider",
+              "id": "slider1",
+              "min": 0,
+              "max": 10,
+              "steps": 10,
+              "action": ";",
+              "initialValue": 5
+            }, {
+              "type": "pulldown",
+              "id": "pulldown1",
+              "options": [
+                {
+                  "text": "option1",
+                  "selected": true
+                }, {
+                  "text": "option2"
+                }
+              ]
+            }, {
+              "type": "radio",
+              "id": "radio1",
+              "options": [
+                {
+                  "text": "option1",
+                  "selected": true
+                }, {
+                  "text": "option2"
+                }
+              ]
+            }
+          ]
+        }
 
-      # Change value of parameter defined only in models section.
-      model.set parameter1: 10
-      validatedInteractive.models[0].parameters[0].initialValue = 10
+      it "custom parameters should be updated correctly", ->
+        setupControllerAndModel()
+        validatedInteractive = controller.validateInteractive(interactive)
 
-      # Change value of paramter defiend both in models and top-level parameter sections.
-      # As model 0 is loaded (by default), top-level definition should be used and updated.
-      model.set parameter2: 20
-      validatedInteractive.parameters[0].initialValue = 20
+        # Change value of parameter defined only in models section.
+        model.set parameter1: 10
+        validatedInteractive.models[0].parameters[0].initialValue = 10
 
-      serializedInteractive = controller.serialize()
-      serializedInteractive.should.eql validatedInteractive
+        # Change value of paramter defiend both in models and top-level parameter sections.
+        # As model 0 is loaded (by default), top-level definition should be used and updated.
+        model.set parameter2: 20
+        validatedInteractive.parameters[0].initialValue = 20
 
-      # Now change the model to second one.
-      setupControllerAndModel()
+        serializedInteractive = controller.serialize()
+        serializedInteractive.should.eql validatedInteractive
 
-      helpers.withModel simpleModel, ->
-        controller.loadModel "model2"
-      model = controller.modelController.model
+        # Now change the model to second one.
+        setupControllerAndModel()
 
-      validatedInteractive = controller.validateInteractive(interactive)
+        helpers.withModel simpleModel, ->
+          controller.loadModel "model2"
+        model = controller.modelController.model
 
-      # Change value of paramter defiend both in models and top-level parameter sections.
-      # As the second model is loaded, this time definition in model section should be updated.
-      model.set parameter2: 20
-      validatedInteractive.models[1].parameters[0].initialValue = 20
+        validatedInteractive = controller.validateInteractive(interactive)
 
-      serializedInteractive = controller.serialize()
-      serializedInteractive.should.eql validatedInteractive
+        # Change value of paramter defiend both in models and top-level parameter sections.
+        # As the second model is loaded, this time definition in model section should be updated.
+        model.set parameter2: 20
+        validatedInteractive.models[1].parameters[0].initialValue = 20
 
-    it "checkbox should be updated correctly", ->
-      setupControllerAndModel()
-      validatedInteractive = controller.validateInteractive(interactive)
+        serializedInteractive = controller.serialize()
+        serializedInteractive.should.eql validatedInteractive
 
-      # Change value of the slider.
-      $("#checkbox1").attr "checked", true
-      validatedInteractive.components[0].initialValue = true
+      it "checkbox should be updated correctly", ->
+        setupControllerAndModel()
+        validatedInteractive = controller.validateInteractive(interactive)
 
-      serializedInteractive = controller.serialize()
-      serializedInteractive.should.eql validatedInteractive
+        # Change value of the slider.
+        $("#checkbox1").attr "checked", true
+        validatedInteractive.components[0].initialValue = true
 
-    it "slider should be updated correctly", ->
-      setupControllerAndModel()
-      validatedInteractive = controller.validateInteractive(interactive)
+        serializedInteractive = controller.serialize()
+        serializedInteractive.should.eql validatedInteractive
 
-      # Change value of the slider.
-      $("#slider1").slider "value", 8
-      validatedInteractive.components[1].initialValue = 8
+      it "slider should be updated correctly", ->
+        setupControllerAndModel()
+        validatedInteractive = controller.validateInteractive(interactive)
 
-      serializedInteractive = controller.serialize()
-      serializedInteractive.should.eql validatedInteractive
+        # Change value of the slider.
+        $("#slider1").slider "value", 8
+        validatedInteractive.components[1].initialValue = 8
 
-    it "pulldown should be updated correctly", ->
-      setupControllerAndModel()
-      validatedInteractive = controller.validateInteractive(interactive)
+        serializedInteractive = controller.serialize()
+        serializedInteractive.should.eql validatedInteractive
 
-      # Change value of the pulldown.
-      $("#pulldown1 select").val "option2"
-      # Manually trigger change event, as ".val" doesn't do it.
-      $("#pulldown1 select").trigger "change"
-      delete validatedInteractive.components[2].options[0].selected
-      validatedInteractive.components[2].options[1].selected = true
+      it "pulldown should be updated correctly", ->
+        setupControllerAndModel()
+        validatedInteractive = controller.validateInteractive(interactive)
 
-      serializedInteractive = controller.serialize()
-      serializedInteractive.should.eql validatedInteractive
+        # Change value of the pulldown.
+        $("#pulldown1 select").val "option2"
+        # Manually trigger change event, as ".val" doesn't do it.
+        $("#pulldown1 select").trigger "change"
+        delete validatedInteractive.components[2].options[0].selected
+        validatedInteractive.components[2].options[1].selected = true
+
+        serializedInteractive = controller.serialize()
+        serializedInteractive.should.eql validatedInteractive

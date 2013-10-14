@@ -4,6 +4,7 @@ define(function (require) {
   // Dependencies.
   var labConfig               = require('lab.config'),
       arrays                  = require('arrays'),
+      FastClick               = require('fastclick'),
       alert                   = require('common/alert'),
       metadata                = require('common/controllers/interactive-metadata'),
       validator               = require('common/validator'),
@@ -1446,6 +1447,14 @@ define(function (require) {
     // Select interactive container.
     // TODO: controller rather should create it itself to follow pattern of other components.
     $interactiveContainer = $(viewSelector);
+
+    // Attach FastClick only to the interactive container. We don't want to affect rest of the
+    // web page (e.g. by attaching FastClick to "body" or window), let its developer decide whether
+    // FastClick should be used there or not. It solves two issues on mobile browsers:
+    // - eliminates 300ms delay between a physical tap and the firing of a click event
+    // - fixes sticky :hover state (https://www.pivotaltracker.com/story/show/58373748)
+    FastClick.attach($interactiveContainer[0]);
+
     // add container to API
     controller.interactiveContainer = $interactiveContainer;
     // Initialize semantic layout.

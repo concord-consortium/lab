@@ -44,16 +44,16 @@ define(function (require) {
       this.$element.removeClass('text').addClass('video');
 
       /** @private */
-      this._$reset = $('<a class="reset"><i class="icon-step-backward"></i></a>').appendTo(this.$element);
+      this._$reset = $('<button class="reset"><i class="icon-step-backward"></i></button>').appendTo(this.$element);
       /** @private */
-      this._$playPause = $('<a class="play-pause"><i class="icon-play"></i><i class="icon-pause"></i></a>').appendTo(this.$element);
+      this._$playPause = $('<button class="play-pause"><i class="icon-play"></i><i class="icon-pause"></i></button>').appendTo(this.$element);
       /** @private */
       this._$timeDisplay = $('<span class="time-display">').appendTo(this._$playPause);
 
       /** @private */
-      this._$stepBackward = $('<a class="step"><i class="icon-backward"></i></a>').insertBefore(this._$playPause);
+      this._$stepBackward = $('<button class="step"><i class="icon-backward"></i></button>').insertBefore(this._$playPause);
       /** @private */
-      this._$stepForward = $('<a class="step"><i class="icon-forward"></i></a>').insertAfter(this._$playPause);
+      this._$stepForward = $('<button class="step"><i class="icon-forward"></i></button>').insertAfter(this._$playPause);
 
       this._$reset.after('<div class="spacer reset">');
       this._$stepBackward.after('<div class="spacer step">');
@@ -197,7 +197,7 @@ define(function (require) {
       } else if (mode === "play_reset_step") {
         this.$element.find(".spacer, .step, .reset, .play-pause").removeClass("hidden");
       }
-      $buttons = this.$element.find("a");
+      $buttons = this.$element.find("button");
       $buttons.removeClass("first");
       $buttons.removeClass("last");
       $buttons = $buttons.not(".hidden");

@@ -178,8 +178,10 @@ define(function(require) {
 
     (function() {
       // Instantiate SVG views.
-      parts_view = new PartsView(SVGContainer, SVGContainer.viewport.append("g"));
-      sensors_view = new SensorsView(SVGContainer, SVGContainer.viewport.append("g"));
+      var viewport = SVGContainer.appendViewport();
+
+      parts_view = new PartsView(SVGContainer, viewport.append("g"));
+      sensors_view = new SensorsView(SVGContainer, viewport.append("g"));
       SVGContainer.$el.append($canvasCont);
       SVGContainer.$el.append($status);
     }());

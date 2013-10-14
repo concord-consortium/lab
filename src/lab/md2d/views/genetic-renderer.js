@@ -24,10 +24,10 @@ define(function (require) {
 
   function GeneticRenderer(modelView, model) {
     var api,
-        svg = modelView.svg,
+        node = modelView.node,
         model2px = modelView.model2px,
         model2pxInv = modelView.model2pxInv,
-        viewportG = svg.select(".viewport"),
+        viewportG = d3.select(node).select(".svg-viewport.below-atoms"),
 
         g = null,
         currentTrans = null,
@@ -39,7 +39,7 @@ define(function (require) {
         animStateInProgress = null,
 
         stateMgr = new GeneticAnimStates(model),
-        objectRenderer = new GeneticElementsRenderer(svg, model2px, model2pxInv, model),
+        objectRenderer = new GeneticElementsRenderer(node, model2px, model2pxInv, model),
 
         transitionFunction;
 
@@ -223,14 +223,13 @@ define(function (require) {
     }
 
     function cancelTransitions() {
-      var g = svg.select("g.genetics");
+      var d3node = d3.select(node);
+      var g = d3node.select("g.genetics");
       if (!g.empty() && g.node().__transition__) {
-       // Note that some transitions can be applied to elements that live
-       // outside g.genetics element, e.g. viewport and background. So, it
-       // isn't enough to use d3.selectAll("g.genetics *").
-        svg.selectAll("g.genetics, g.genetics *").interrupt();
-        svg.select(".plot").interrupt(); // background changes
-        viewportG.interrupt();           // viewport scrolling
+       // Note that some transitions can be applied to elements that live outside g.genetics
+       // element, e.g. background. So, it isn't enough to use d3.selectAll("g.genetics *").
+        d3node.selectAll("g.genetics, g.genetics *").interrupt();
+        d3node.select(".container-background").interrupt(); // background changes
         currentTrans = null;
         animStateInProgress = null;
       }
@@ -312,7 +311,7 @@ define(function (require) {
         renderState(t, "dna", function (t) {
           // Make some transitions almost immediate.
           t.selectAll(".nucleotide").duration(5);
-          t.selectAll(".plot").duration(5);
+          t.selectAll(".container-background").duration(5);
         });
       },
 
@@ -348,7 +347,7 @@ define(function (require) {
       "before-translation": function beforeTranslation() {
         var t = nextTrans().ease("cubic-in-out").duration(1000);
         renderState(t, "before-translation-s0", function (t) {
-          t.selectAll(".plot").duration(1);
+          t.selectAll(".container-background").duration(1);
         });
 
         t = nextTrans().ease("cubic-in-out").duration(1500);
@@ -360,7 +359,7 @@ define(function (require) {
         t = nextTrans().ease("cubic").duration(1000);
         renderState(t, "before-translation-s3", function (t) {
           t.selectAll(".bonds").duration(250);
-          t.selectAll(".plot").duration(1);
+          t.selectAll(".container-background").duration(1);
         });
 
         t = nextTrans().ease("cubic-out").duration(1000);
