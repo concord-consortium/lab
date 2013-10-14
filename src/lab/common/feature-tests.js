@@ -13,17 +13,25 @@ define(function () {
     get cssPointerEvents() {
       if (CACHE.cssPointerEvents === undefined) {
         CACHE.cssPointerEvents = (function () {
-          var $div, $svg, result;
+          var $div1, $div2, $svg, result;
           // Using "fixed" positioning we can avoid thinking about scrollTop / scrollLeft values,
           // test elements will be always inside the current viewport.
-          $div = $("<div id='supported'>").css({
+          $div1 = $("<div class='supported'>").css({
             "position": "fixed",
             "left": 0,
             "top": 0,
             "width": "10px",
             "height": "10px"
           }).appendTo("body");
-          $svg = $("<svg id='unsupported'>").css({
+          $div2 = $("<div class='unsupported'>").css({
+            "position": "fixed",
+            "left": 0,
+            "top": 0,
+            "width": "10px",
+            "height": "10px",
+            "pointer-events": "none" // !!!
+          }).appendTo("body");
+          $svg = $("<svg class='unsupported'>").css({
             "position": "fixed",
             "left": 0,
             "top": 0,
@@ -32,10 +40,11 @@ define(function () {
             "pointer-events": "none" // !!!
           }).appendTo("body");
 
-          result = document.elementFromPoint(5, 5).id;
+          result = document.elementFromPoint(5, 5).className;
 
           $svg.remove();
-          $div.remove();
+          $div2.remove();
+          $div1.remove();
 
           switch(result) {
             case "supported":
