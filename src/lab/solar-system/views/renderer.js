@@ -38,12 +38,14 @@ define(function (require) {
         // the latest results will be in this array when the view is executing
         modelResults,
 
+        viewport = SVGContainer.appendViewport(),
+
         // "Containers" - SVG g elements used to position layers of the final visualization.
-        imageContainerBelow  = SVGContainer.viewport.append("g").attr("class", "image-container-below"),
-        textContainerBelow   = SVGContainer.viewport.append("g").attr("class", "text-container-below"),
-        mainContainer        = SVGContainer.viewport.append("g").attr("class", "main-container"),
-        imageContainerTop    = SVGContainer.viewport.append("g").attr("class", "image-container-top"),
-        textContainerTop     = SVGContainer.viewport.append("g").attr("class", "text-container-top"),
+        imageContainerBelow  = viewport.append("g").attr("class", "image-container-below"),
+        textContainerBelow   = viewport.append("g").attr("class", "text-container-below"),
+        mainContainer        = viewport.append("g").attr("class", "main-container"),
+        imageContainerTop    = viewport.append("g").attr("class", "image-container-top"),
+        textContainerTop     = viewport.append("g").attr("class", "text-container-top"),
 
         // Array which defines a gradient assigned to a given astromonicalBody.
         gradientNameForBody = [],

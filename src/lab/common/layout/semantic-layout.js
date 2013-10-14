@@ -531,7 +531,6 @@ define(function (require) {
         while (--redraws > 0 && !resizeModelContainer()) {
           positionContainers();
         }
-        console.log('[layout] update: ' + (layoutConfig.iterationsLimit - redraws) + ' iterations');
 
         // 2. Notify components that their containers have new sizes.
         modelController.resize();

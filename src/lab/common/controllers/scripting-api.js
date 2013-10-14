@@ -221,7 +221,7 @@ define(function (require) {
 
           /**
            * Sets a custom click handler for objects of a given type.
-           * Basic type which is always supported is "plot". It is empty
+           * Basic type which is always supported is "background". It is empty
            * area of a model. Various models can support different clickable
            * types. Please see the model documentation to check what
            * other object types are supported.
@@ -231,7 +231,7 @@ define(function (require) {
            * object and try to use it.
            *
            * MD2D specific notes:
-           * Supported types: "plot", "atom", "obstacle", "image", "textBox".
+           * Supported types: "background", "atom", "obstacle", "image", "textBox".
            * TODO: move it to MD2D related docs in the future.
            *
            * @param {string}   type    Name of the type of clickable objects.

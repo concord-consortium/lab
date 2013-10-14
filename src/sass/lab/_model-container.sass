@@ -7,6 +7,12 @@
   &.draggable:hover
     cursor: move
   @include user-select(none)
+
+  & > .container
+    // Disable blinking effect on iOS when user taps a model container. Events are manually
+    // dispatched and if user taps an atom on canvas, the whole container will blink.
+    -webkit-tap-highlight-color: rgba(0,0,0,0)
+
   // Radial bonds.
   .radialbond1, .radialbond2
     fill: none

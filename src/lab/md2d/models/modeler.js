@@ -375,53 +375,42 @@ define(function(require) {
     }
 
     // Transpose 'atoms' object into 'viewAtoms' for consumption by view code
-    var updateViewAtoms = (function() {
-      var isAminoAcid = function () {
-        return aminoacidsHelper.isAminoAcid(this.element);
-      };
+    function updateViewAtoms(atoms) {
+      var n = engine.getNumberOfAtoms(),
+          i,
+          prop,
+          amino,
+          viewAtom;
 
-      return function(atoms) {
-        var n = engine.getNumberOfAtoms(),
-            i,
-            prop,
-            amino,
-            viewAtom;
+      // TODO: refactor whole approach to creation of objects from flat arrays.
+      // Think about more general way of detecting and representing amino acids.
+      // However it would be reasonable to perform such refactoring later, when all requirements
+      // related to proteins engine are clearer.
 
-        // TODO: refactor whole approach to creation of objects from flat arrays.
-        // Think about more general way of detecting and representing amino acids.
-        // However it would be reasonable to perform such refactoring later, when all requirements
-        // related to proteins engine are clearer.
+      viewAtoms.length = n;
 
-        viewAtoms.length = n;
+      for (i = 0, n; i < n; i++) {
+        if (!viewAtoms[i]) {
+          viewAtoms[i] = {
+            idx: i
+          };
+        }
+        viewAtom = viewAtoms[i];
 
-        for (i = 0, n; i < n; i++) {
-          if (!viewAtoms[i]) {
-            viewAtoms[i] = {
-              idx: i
-            };
-          }
-          viewAtom = viewAtoms[i];
-
-          for (prop in atoms) {
-            if (atoms.hasOwnProperty(prop)) {
-              viewAtom[prop] = atoms[prop][i];
-            }
-          }
-
-          // Provide convenience function for view, do not force it to ask
-          // model / engine directly. In the future, atom objects should be
-          // represented by a separate class.
-          viewAtom.isAminoAcid = isAminoAcid;
-
-          // Additional properties, used only by view.
-          if (viewAtom.isAminoAcid()) {
-            amino = aminoacidsHelper.getAminoAcidByElement(atoms.element[i]);
-            viewAtom.symbol = amino.symbol;
-            viewAtom.label  = amino.abbreviation;
+        for (prop in atoms) {
+          if (atoms.hasOwnProperty(prop)) {
+            viewAtom[prop] = atoms[prop][i];
           }
         }
-      };
-    }());
+
+        viewAtom.aminoAcid = aminoacidsHelper.isAminoAcid(atoms.element[i]);
+        if (viewAtom.aminoAcid) {
+          amino = aminoacidsHelper.getAminoAcidByElement(atoms.element[i]);
+          viewAtom.symbol = amino.symbol;
+          viewAtom.label  = amino.abbreviation;
+        }
+      }
+    }
 
     function updateViewRadialBonds(radialBonds, atoms) {
       var n = engine.getNumberOfRadialBonds(),
