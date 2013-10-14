@@ -1027,30 +1027,32 @@ define(function (require) {
         canvas (where container will be rendered) instead of SVG element.
        */
       appendPixiViewport: function() {
-        var pixiRenderer  = PIXI.autoDetectRenderer(cx * CANVAS_OVERSAMPLING,
-                                                    cy * CANVAS_OVERSAMPLING, null, true),
-            pixiStage     = new PIXI.Stage(null),
-            pixiContainer = new PIXI.DisplayObjectContainer();
+        if (pixiRenderers.length === 0) {
+          var pixiRenderer  = PIXI.autoDetectRenderer(cx * CANVAS_OVERSAMPLING,
+                                                      cy * CANVAS_OVERSAMPLING, null, true),
+              pixiStage     = new PIXI.Stage(null);
 
-        pixiStage.addChild(pixiContainer);
+          viewportContainer.node().appendChild(pixiRenderer.view);
+          d3.select(pixiRenderer.view)
+            .attr("class", "pixi-viewport")
+            .call(layeredOnTop);
 
-        viewportContainer.node().appendChild(pixiRenderer.view);
-        d3.select(pixiRenderer.view)
-          .attr("class", "pixi-viewport")
-          .call(layeredOnTop);
+          pixiRenderers.push(pixiRenderer);
+          pixiStages.push(pixiStage);
 
-        // Cascade events into this viewport
-        layersToHitTest.splice(1, 0, pixiRenderer.view);
+          // Cascade events into this viewport
+          layersToHitTest.splice(1, 0, pixiRenderer.view);
+        }
 
-        pixiRenderers.push(pixiRenderer);
-        pixiStages.push(pixiStage);
+        var pixiContainer = new PIXI.DisplayObjectContainer();
+        pixiStages[0].addChild(pixiContainer);
         pixiContainers.push(pixiContainer);
 
         // We return container instead of stage, as we can apply view port transformations to it.
         // Stage transformations seem to be ignored by the PIXI renderer.
         return {
           pixiContainer: pixiContainer,
-          canvas: pixiRenderer.view
+          canvas: pixiRenderers[0].view
         };
       },
 
