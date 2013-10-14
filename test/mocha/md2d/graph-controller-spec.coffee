@@ -238,7 +238,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
             it "should pass options to grapher.reset", ->
               grapher.reset.getCall(0).args.should.have.length 2
               options = grapher.reset.getCall(0).args[1]
-              options.should.be.a 'object'
+              options.should.be.an.Object
 
             it "should pass 1 array of length 2 to resetPoints", ->
               newData = grapher.resetPoints.getCall(0).args[0]

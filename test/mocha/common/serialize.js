@@ -33,7 +33,7 @@ describe('serialize()', function() {
 
     result = serialize(metaData, input);
 
-    result.should.be.a('object');
+    result.should.be.an.Object;
     result.should.have.property('a');
     result.should.have.property('b');
     result.should.not.have.property('c');
@@ -53,7 +53,7 @@ describe('serialize()', function() {
 
     result = serialize(metaData, input);
 
-    result.should.be.a('object');
+    result.should.be.an.Object;
     result.should.have.property('a');
     result.should.not.have.property('b');
     result.should.not.have.property('c');
@@ -79,7 +79,7 @@ describe('serialize()', function() {
 
     result = serialize(metaData, input);
 
-    result.should.be.a('object');
+    result.should.be.an.Object;
     result.should.have.property('a');
     result.should.have.property('b');
     result.should.not.have.property('c');
@@ -108,7 +108,7 @@ describe('serialize()', function() {
 
     result = serialize(metaData, input);
 
-    result.should.be.a('object');
+    result.should.be.an.Object;
     result.should.have.property('a');
     result.should.have.property('b');
     result.a.should.eql(input.a);
