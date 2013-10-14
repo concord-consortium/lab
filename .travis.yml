@@ -2,8 +2,9 @@
 branches:
   only:
     - master
+    - pixijs-rendering
 notifications:
-  irc: 
+  irc:
     channels:
       - "irc.freenode.org#ccdevs"
     on_success: change
