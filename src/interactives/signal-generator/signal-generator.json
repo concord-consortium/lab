@@ -32,8 +32,8 @@
       "ymax": 1.2,
       "xmax": 10,
       "xTickCount": 5,
-      "xFormatter": "2s",
-      "yFormatter": "2s",
+      "xFormatter": ".2s",
+      "yFormatter": ".2s",
       "properties": [
         "signalValue"
       ]

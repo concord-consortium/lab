@@ -1,5 +1,4 @@
 /*global define: false */
-/*jslint onevar: true devel:true eqnull: true */
 
 define(function() {
 
@@ -49,6 +48,8 @@ define(function() {
     }
 
     function reset() {
+      var i;
+
       list = [];
       listState = {
         // Equal to list.length:
@@ -63,6 +64,12 @@ define(function() {
         // Invariant: counter == index + startCounter
         startCounter: 0
       };
+      // Send push request to external objects defining TickHistoryCompatible Interface.
+      for (i = 0; i < externalObjects.length; i++) {
+        if (externalObjects[i].reset) {
+          externalObjects[i].reset();
+        }
+      }
     }
 
     function copyModelState(destination) {
@@ -207,6 +214,11 @@ define(function() {
       extract(list[i]);
     };
 
+    tickHistory.saveInitialState = function() {
+      initialState = newState();
+      copyModelState(initialState);
+    };
+
     tickHistory.restoreInitialState = function() {
       reset();
       extract(initialState);
@@ -265,11 +277,8 @@ define(function() {
     // Initialization
     //
     if (size == null) size = defaultSize;
-    initialState = newState();
-    copyModelState(initialState);
 
     reset();
-    push();
     return tickHistory;
   };
 });

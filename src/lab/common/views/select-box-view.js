@@ -39,7 +39,7 @@ define(function() {
 
       render: function(parent) {
         var $options = [],
-            $option, $label, ulWidth, arrowWidth, boxWidth;
+            $option, $label, ulEms, arrowEms, textMaxWidth, boxWidth;
 
         $select = $('<select>');
 
@@ -98,15 +98,20 @@ define(function() {
           return this.width();
         }
 
-        ulWidth    = pxToEm($wrapper.measure(width, "ul", parent));
-        arrowWidth = pxToEm($wrapper.measure(width, ".selectboxit-arrow-container", parent));
-        boxWidth   = ulWidth + arrowWidth + 0.3;
+        ulEms    = pxToEm($wrapper.measure(width, "ul", parent));
+        arrowEms = pxToEm($wrapper.measure(width, ".selectboxit-arrow-container", parent));
 
-        $wrapper.find(".selectboxit").css("width", boxWidth + "em");
-        $wrapper.find(".selectboxit-text").css("max-width", ulWidth + "em");
+        textMaxWidth = ulEms+"em";
+        boxWidth  = (ulEms + arrowEms + 0.3)+"em";
+
+        $wrapper.find(".selectboxit").css("width", boxWidth);
+        $wrapper.find(".selectboxit-text").css("max-width", textMaxWidth);
 
         // set hidden select box dimensions too, for mobile devices
-        $wrapper.find(".selectboxit-container select").css({ width: boxWidth, height: "100%" });
+        $wrapper.find(".selectboxit-container select").css({
+          width: boxWidth,
+          height: "100%"
+        });
 
         return $wrapper;
       }

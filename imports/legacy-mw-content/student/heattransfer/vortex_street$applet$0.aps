@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<state>
+<view>
+</view>
+<model>
+<timestep>0.2</timestep><buoyancy_approximation>1</buoyancy_approximation><part>
+<rectangle x="0.0" y="4.0" width="0.5" height="2.0" thermal_conductivity="0.08" specific_heat="1300.0" density="25.0" temperature="20.0"/>
+< thermal_conductivity="0.08" specific_heat="1300.0" density="25.0"/>
+</part>
+</model>
+</state>

@@ -25,7 +25,7 @@
       "min": 0,
       "max": 1000,
       "initialValue": 500,
-      "displayValue": "return format('4f')(value)",
+      "displayValue": "return format('f')(value)",
       "labels": [
         {
           "value": 0,

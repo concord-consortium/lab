@@ -1,0 +1,23 @@
+{
+  "title": "twoToOne",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "twoToOne",
+      "url": "imports/legacy-mw-content/converted/itsi/stoichiometry/twoToOne.json",
+      "importedFrom": "imports/legacy-mw-content/itsi/stoichiometry/twoToOne.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

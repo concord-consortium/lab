@@ -2,35 +2,40 @@
 
 define(function(require) {
   // Dependencies.
-  var console              = require('common/console'),
-      performance          = require('common/performance'),
-      md2d                 = require('md2d/models/engine/md2d'),
-      metadata             = require('md2d/models/metadata'),
+  var performance          = require('common/performance'),
+      serialize            = require('common/serialize'),
+      validator            = require('common/validator'),
       LabModelerMixin      = require('common/lab-modeler-mixin'),
       OutputSupport        = require('common/output-support'),
       TickHistory          = require('common/models/tick-history'),
-      Solvent              = require('cs!md2d/models/solvent'),
-      serialize            = require('common/serialize'),
-      validator            = require('common/validator'),
-      aminoacids           = require('md2d/models/aminoacids-props'),
-      aminoacidsHelper     = require('cs!md2d/models/aminoacids-helper'),
-      GeneticEngine        = require('md2d/models/engine/genetic-engine'),
+      md2d                 = require('md2d/models/engine/md2d'),
+      metadata             = require('md2d/models/metadata'),
       units                = require('md2d/models/engine/constants/units'),
       unitDefinitions      = require('md2d/models/unit-definitions/index'),
       UnitsTranslation     = require('md2d/models/units-translation'),
+      Solvent              = require('cs!md2d/models/solvent'),
+      aminoacids           = require('md2d/models/aminoacids-props'),
+      aminoacidsHelper     = require('cs!md2d/models/aminoacids-helper'),
+      GeneticEngine        = require('md2d/models/engine/genetic-engine'),
       PerformanceOptimizer = require('md2d/models/performance-optimizer'),
       AtomTransition       = require('md2d/models/atom-transition'),
       _ = require('underscore'),
 
       // plugins
-      QuantumDynamics      = require('md2d/models/engine/plugins/quantum-dynamics');
+      QuantumDynamics      = require('md2d/models/engine/plugins/quantum-dynamics'),
+      ChemicalReactions    = require('md2d/models/engine/plugins/chemical-reactions'),
 
-  return function Model(initialProperties) {
+      md2dModelCount = 0;
+
+  return function Model(initialProperties, initializationOptions) {
 
     // all models created with this constructor will be of type: "md2d"
     this.constructor.type = "md2d";
 
+    initializationOptions = initializationOptions || {};
+
     var model = {},
+        namespace = "md2dModel" + (++md2dModelCount),
 
         customSetters = {
           targetTemperature: function (value) {
@@ -166,7 +171,7 @@ define(function(require) {
           d.addEventTypes("tick",
                           "addAtom", "removeAtom", "addRadialBond", "removeRadialBond",
                           "addElectricField", "removeElectricField", "changeElectricField",
-                          "removeAngularBond", "invalidation", "textBoxesChanged");
+                          "removeAngularBond", "textBoxesChanged", "imagesChanged");
           return d;
         }()),
 
@@ -219,6 +224,9 @@ define(function(require) {
         // A hash of arrays consisting of arrays of shape property values
         shapes,
 
+        // A hash of arrays consisting of arrays of line property values
+        lines,
+
         // A hash of arrays consisting of arrays of electric field property values
         electricFields,
 
@@ -239,6 +247,10 @@ define(function(require) {
         // speedy computation by the engine.
         viewAtoms = [],
 
+        // An array of objects consisting of radial bond index numbers and radial bond property
+        // values, for easy consumption by the view.
+        viewRadialBonds = [],
+
         // An array of objects consisting of photon index numbers and property values, for easy
         // consumption by the view. Only defined if the quantum dynamics plugin is used.
         viewPhotons,
@@ -246,11 +258,6 @@ define(function(require) {
         // An array of objects consisting of point coordinates and electric field force at that point
         // (e.g. [{ x: 1, y: 2, fx: 0.1, fy: 0.3 }, ...]).
         electricField = [],
-
-        // A two dimensional array consisting of radial bond index numbers, radial bond
-        // properties, and the postions of the two bonded atoms.
-        // FIXME. Engine should not be calculating this.
-        radialBondResults,
 
         // The index of the "spring force" used to implement dragging of atoms in a running model
         liveDragSpringForceIndex = null,
@@ -363,6 +370,7 @@ define(function(require) {
       // representation provided by modelState.photons
       viewPhotons = engine.callPluginAccessor('getViewPhotons');
       updateViewAtoms(modelState.atoms);
+      updateViewRadialBonds(modelState.radialBonds, modelState.atoms);
       updateViewElectricField();
     }
 
@@ -414,6 +422,32 @@ define(function(require) {
         }
       };
     }());
+
+    function updateViewRadialBonds(radialBonds, atoms) {
+      var n = engine.getNumberOfRadialBonds(),
+          viewBond, prop, i;
+
+      viewRadialBonds.length = n;
+
+      for (i = 0; i < n; i++) {
+        if (!viewRadialBonds[i]) {
+          viewRadialBonds[i] = {
+            idx: i
+          };
+        }
+        viewBond = viewRadialBonds[i];
+
+        for (prop in radialBonds) {
+          viewBond[prop] = radialBonds[prop][i];
+        }
+
+        // Additionally calculate x1, y1, x2, y2 properties that are useful for view.
+        viewBond.x1 = atoms.x[viewBond.atom1];
+        viewBond.y1 = atoms.y[viewBond.atom1];
+        viewBond.x2 = atoms.x[viewBond.atom2];
+        viewBond.y2 = atoms.y[viewBond.atom2];
+      }
+    }
 
     function updateViewElectricField() {
       // It may seem strange that model reads "viewOption"
@@ -599,15 +633,22 @@ define(function(require) {
         properties.useQuantumDynamics = false;
       }
 
+      if (pluginProperties.chemicalReactions) {
+        properties.useChemicalReactions = true;
+        engine.addPlugin(new ChemicalReactions(engine, pluginProperties.chemicalReactions));
+      } else {
+        properties.useChemicalReactions = false;
+      }
+
       // Copy reference to basic properties.
       // FIXME. This should go away. https://www.pivotaltracker.com/story/show/50086079
-      elements = engine.elements;
-      radialBonds = engine.radialBonds;
-      radialBondResults = engine.radialBondResults;
-      angularBonds = engine.angularBonds;
-      restraints = engine.restraints;
-      obstacles = engine.obstacles;
-      shapes = engine.shapes;
+      elements          = engine.elements;
+      radialBonds       = engine.radialBonds;
+      angularBonds      = engine.angularBonds;
+      restraints        = engine.restraints;
+      obstacles         = engine.obstacles;
+      shapes            = engine.shapes;
+      lines             = engine.lines;
       electricFields = engine.electricFields;
     }
 
@@ -799,6 +840,24 @@ define(function(require) {
       return model;
     };
 
+    model.createLines = function(_lines) {
+      var numLines = _lines.x1.length,
+          i, prop, lineProps;
+
+      // See function above
+      for (i = 0; i < numLines; i++) {
+        lineProps = {};
+        for (prop in _lines) {
+          if (_lines.hasOwnProperty(prop)) {
+            lineProps[prop] = _lines[prop][i];
+          }
+        }
+        model.addLine(lineProps);
+      }
+
+      return model;
+    };
+
     model.createElectricFields = function(_eFields) {
       model.batch(function () {
         var count = _eFields.intensity.length,
@@ -825,6 +884,7 @@ define(function(require) {
       engine.setTime(0);
       tickHistory.restoreInitialState();
       propertySupport.invalidatingChangePostHook();
+      model.resetAllOutputProperties();
       dispatch.reset();
     };
 
@@ -870,7 +930,7 @@ define(function(require) {
       } while (++numTries < maxTries);
 
       return false;
-    },
+    };
 
     /**
       Adds a new atom defined by properties.
@@ -911,30 +971,20 @@ define(function(require) {
         return false;
       }
 
-      // When atoms are being deserialized, the deserializing function
-      // should handle change hooks due to performance reasons.
-      if (!options.deserialization) {
-        propertySupport.invalidatingChangePreHook();
-      }
+      propertySupport.invalidatingChangePreHook();
 
       engine.addAtom(props);
 
-      if (!options.deserialization) {
-        propertySupport.invalidatingChangePostHook();
-      }
+      propertySupport.invalidatingChangePostHook();
 
-      if (!options.suppressEvent) {
-        dispatch.addAtom();
-      }
+      dispatch.addAtom();
 
       return true;
-    },
+    };
 
-    model.removeAtom = function(i, options) {
+    model.removeAtom = function(i) {
       var prevRadBondsCount = engine.getNumberOfRadialBonds(),
           prevAngBondsCount = engine.getNumberOfAngularBonds();
-
-      options = options || {};
 
       propertySupport.invalidatingChangePreHook();
       engine.removeAtom(i);
@@ -942,20 +992,18 @@ define(function(require) {
       viewAtoms.length = 0;
       propertySupport.invalidatingChangePostHook();
 
-      if (!options.suppressEvent) {
-        // Notify listeners that atoms is removed.
-        dispatch.removeAtom();
+      // Notify listeners that atoms is removed.
+      dispatch.removeAtom();
 
-        // Removing of an atom can also cause removing of
-        // the connected radial bond. Detect it and notify listeners.
-        if (engine.getNumberOfRadialBonds() !== prevRadBondsCount) {
-          dispatch.removeRadialBond();
-        }
-        if (engine.getNumberOfAngularBonds() !== prevAngBondsCount) {
-          dispatch.removeAngularBond();
-        }
+      // Removing of an atom can also cause removing of
+      // the connected radial bond. Detect it and notify listeners.
+      if (engine.getNumberOfRadialBonds() !== prevRadBondsCount) {
+        dispatch.removeRadialBond();
       }
-    },
+      if (engine.getNumberOfAngularBonds() !== prevAngBondsCount) {
+        dispatch.removeAngularBond();
+      }
+    };
 
     model.addElement = function(props) {
       // Validate properties, use default values if there is such need.
@@ -1003,6 +1051,25 @@ define(function(require) {
       //TODO FIXME: also .removeShape() event should be dispatched.
     };
 
+    model.addLine = function(props) {
+      var validatedProps;
+      // Validate properties, use default values if there is such need.
+      validatedProps = validator.validateCompleteness(metadata.line, props);
+      // Finally, add line.
+      propertySupport.invalidatingChangePreHook();
+      engine.addLine(validatedProps);
+      propertySupport.invalidatingChangePostHook();
+    };
+
+    model.removeLine = function (idx) {
+      //var prevElFieldsCount = engine.getNumberOfElectricFields();
+
+      propertySupport.invalidatingChangePreHook();
+      engine.removeLine(idx);
+      propertySupport.invalidatingChangePostHook();
+      //TODO FIXME: also .removeLine() event should be dispatched.
+    };
+
     model.addElectricField = function(props) {
       var validatedProps;
       // Validate properties, use default values if there is such need.
@@ -1021,47 +1088,26 @@ define(function(require) {
       dispatch.removeElectricField();
     };
 
-    model.addRadialBond = function(props, options) {
-      // Validate properties, use default values if there is such need.
+    model.addRadialBond = function(props) {
       props = validator.validateCompleteness(metadata.radialBond, props);
-
-      // During deserialization change hooks are managed manually.
-      if (!options || !options.deserialization) {
-        propertySupport.invalidatingChangePreHook();
-      }
-
-      // Finally, add radial bond.
+      propertySupport.invalidatingChangePreHook();
       engine.addRadialBond(props);
-
-      if (!options || !options.deserialization) {
-        propertySupport.invalidatingChangePostHook();
-      }
-
+      propertySupport.invalidatingChangePostHook();
       dispatch.addRadialBond();
-    },
+    };
 
     model.removeRadialBond = function(idx) {
       propertySupport.invalidatingChangePreHook();
       engine.removeRadialBond(idx);
-      propertySupport.invalidatingChangePreHook();
+      propertySupport.invalidatingChangePostHook();
       dispatch.removeRadialBond();
     };
 
-    model.addAngularBond = function(props, options) {
-      // Validate properties, use default values if there is such need.
+    model.addAngularBond = function(props) {
       props = validator.validateCompleteness(metadata.angularBond, props);
-
-      // During deserialization change hooks are managed manually.
-      if (!options || !options.deserialization) {
-        propertySupport.invalidatingChangePreHook();
-      }
-
-      // Finally, add angular bond.
+      propertySupport.invalidatingChangePreHook();
       engine.addAngularBond(props);
-
-      if (!options || !options.deserialization) {
-        propertySupport.invalidatingChangePostHook();
-      }
+      propertySupport.invalidatingChangePostHook();
     };
 
     model.removeAngularBond = function(idx) {
@@ -1120,7 +1166,7 @@ define(function(require) {
       cy = atoms.y[atomIndex];
 
       return { top: top-cy, left: left-cx, bottom: bottom-cy, right: right-cx };
-    },
+    };
 
     model.setTemperatureOfAtoms = function(atomIndices, T) {
       propertySupport.invalidatingChangePreHook();
@@ -1272,6 +1318,26 @@ define(function(require) {
         }
       }
       return translateFromMD2DUnits(props, shapeMetaData);
+    };
+
+    model.setLineProperties = function(i, props) {
+      // Validate properties.
+      props = validator.validate(metadata.line, props);
+      propertySupport.invalidatingChangePreHook();
+      engine.setLineProperties(i, translateToMD2DUnits(props, metadata.line));
+      propertySupport.invalidatingChangePostHook();
+    };
+
+    model.getLineProperties = function(i) {
+      var lineMetaData = metadata.line,
+          props = {},
+          propName;
+      for (propName in lineMetaData) {
+        if (lineMetaData.hasOwnProperty(propName)) {
+          props[propName] = lines[propName][i];
+        }
+      }
+      return translateFromMD2DUnits(props, lineMetaData);
     };
 
     model.setElectricFieldProperties = function(i, props) {
@@ -1431,6 +1497,31 @@ define(function(require) {
       }
     };
 
+    model.setImageProperties = function(i, props) {
+      var image = model.get('images')[i],
+          prop;
+
+      if (image) {
+        props = validator.validate(metadata.image, props);
+        for (prop in props) {
+          if (props.hasOwnProperty(prop)) {
+            image[prop] = props[prop];
+          }
+        }
+        dispatch.imagesChanged();
+      } else {
+        throw new Error("Image \"" + i + "\" does not exist, so it cannot have properties set.");
+      }
+    };
+
+    model.getTextBoxProperties = function(i) {
+      return model.get('textBoxes')[i];
+    };
+
+    model.getImageProperties = function(i) {
+      return model.get('images')[i];
+    };
+
     /**
       Implements dragging of an atom in a running model, by creating a spring force that pulls the
       atom towards the mouse cursor position (x, y) and damping the resulting motion by temporarily
@@ -1508,6 +1599,10 @@ define(function(require) {
       return viewAtoms;
     };
 
+    model.getRadialBonds = function() {
+      return viewRadialBonds;
+    };
+
     model.getElectricField = function() {
       return electricField;
     };
@@ -1527,8 +1622,20 @@ define(function(require) {
       engine.callPluginAccessor('turnOffLightSource');
     };
 
-    model.get_radial_bond_results = function() {
-      return radialBondResults;
+    model.setLightSourceAngle = function(angle) {
+      engine.callPluginAccessor('setLightSourceAngle', [angle]);
+    };
+
+    model.setLightSourceFrequency = function(freq) {
+      engine.callPluginAccessor('setLightSourceFrequency', [freq]);
+    };
+
+    model.setLightSourcePeriod = function(period) {
+      engine.callPluginAccessor('setLightSourcePeriod', [period]);
+    };
+
+    model.setLightSourceNumber = function(number) {
+      engine.callPluginAccessor('setLightSourceNumber', [number]);
     };
 
     /**
@@ -1560,6 +1667,10 @@ define(function(require) {
       return shapes;
     };
 
+    model.get_lines = function() {
+      return lines;
+    };
+
     // FIXME. Should be an output property.
     model.getNumberOfElements = function () {
       return engine.getNumberOfElements();
@@ -1572,6 +1683,10 @@ define(function(require) {
 
     model.getNumberOfShapes = function () {
       return engine.getNumberOfShapes();
+    };
+
+    model.getNumberOfLines = function () {
+      return engine.getNumberOfLines();
     };
 
     // FIXME. Should be an output property.
@@ -1594,8 +1709,8 @@ define(function(require) {
       return engine.getNumberOfElectricFields();
     };
 
-    model.get_radial_bonds = function() {
-      return radialBonds;
+    model.getNumberOfTextBoxes = function () {
+      return  model.get('textBoxes').length;
     };
 
     model.get_restraints = function() {
@@ -1619,12 +1734,8 @@ define(function(require) {
       return model;
     };
 
-    model.tick = function(elapsedTime) {
+    model.tick = function() {
       var timeStep = model.get('timeStep'),
-          // Save number of radial bonds in engine before integration,
-          // as integration can create new disulfide bonds. This is the
-          // only type of objects which can be created by the engine autmatically.
-          prevNumOfRadialBonds = engine.getNumberOfRadialBonds(),
           t, sampleTime;
 
       if (unitsTranslation) {
@@ -1647,26 +1758,22 @@ define(function(require) {
         }
       }
 
+      performance.enterScope("engine");
       // timeStepsPerTick is defined in Classic MW as the number of timesteps per view update.
       // However, in MD2D we prefer the more physical notion of integrating for a particular
       // length of time.
-      console.time('integration');
       engine.integrate(model.get('timeStepsPerTick') * timeStep, timeStep);
-      console.timeEnd('integration');
-      console.time('reading model state');
+      performance.leaveScope("engine");
+
       readModelState();
       model.updateAllOutputProperties();
-      console.timeEnd('reading model state');
-
-      console.time('tick history push');
       tickHistory.push();
-      console.timeEnd('tick history push');
 
       newStep = true;
 
-      if (prevNumOfRadialBonds < engine.getNumberOfRadialBonds()) {
-        dispatch.addRadialBond();
-      }
+      // TODO: we should just dispatch "radialBondsChanged" event, as there is no code interested
+      // whether we really added or removed radial bond.
+      if (engine.radialBondsChanged) dispatch.addRadialBond();
 
       dispatch.tick();
     };
@@ -1792,13 +1899,21 @@ define(function(require) {
     }
 
     function serializeQuantumDynamics() {
-      var photons = model.getPhotons();
+      var photons = model.getPhotons(),
+          data = {
+            photons: serialize(metadata.photon, unroll(photons), photons.length),
+            elementEnergyLevels: engine.callPluginAccessor('getElementEnergyLevels'),
+            radiationlessEmissionProbability: engine.callPluginAccessor('getRadiationlessEmissionProbability'),
+            lightSource: engine.callPluginAccessor('getLightSource')
+          };
 
-      return {
-        photons: serialize(metadata.photon, unroll(photons), photons.length),
-        elementEnergyLevels: engine.callPluginAccessor('getElementEnergyLevels'),
-        radiationlessEmissionProbability: engine.callPluginAccessor('getRadiationlessEmissionProbability')
-      };
+      if (!data.lightSource) delete data.lightSource;
+
+      return data;
+    }
+
+    function serializeChemicalReactions() {
+      return {};
     }
 
     model.serialize = function() {
@@ -1838,6 +1953,9 @@ define(function(require) {
       if (engine.getNumberOfShapes()) {
         propCopy.shapes = serialize(metadata.shape, shapes, engine.getNumberOfShapes());
       }
+      if (engine.getNumberOfLines()) {
+        propCopy.lines = serialize(metadata.line, lines, engine.getNumberOfLines());
+      }
       if (engine.getNumberOfElectricFields()) {
         propCopy.electricFields = serialize(metadata.electricField, electricFields, engine.getNumberOfElectricFields());
       }
@@ -1874,6 +1992,12 @@ define(function(require) {
       // TODO. Should be able to ask plugins to serialize their data.
       if (model.properties.useQuantumDynamics) {
         propCopy.quantumDynamics = serializeQuantumDynamics();
+      }
+
+      if (model.properties.useChemicalReactions) {
+        propCopy.chemicalReactions = serializeChemicalReactions();
+      } else {
+        delete propCopy.atoms.radical;
       }
 
       removeAtomsArrayIfDefault("marked", metadata.atom.marked.defaultValue);
@@ -1933,7 +2057,8 @@ define(function(require) {
     // requires changing the model JSON schema when functionality is moved out of the main engine
     // and into a plugin, or vice-versa.
     pluginProperties = {
-      quantumDynamics: initialProperties.quantumDynamics
+      quantumDynamics: initialProperties.quantumDynamics,
+      chemicalReactions: initialProperties.chemicalReactions
     };
 
     // TODO: Elements are stored and treated different from other objects. This was enforced by
@@ -1985,6 +2110,7 @@ define(function(require) {
     if (initialProperties.restraints)     model.createRestraints(initialProperties.restraints);
     if (initialProperties.obstacles)      model.createObstacles(initialProperties.obstacles);
     if (initialProperties.shapes)         model.createShapes(initialProperties.shapes);
+    if (initialProperties.lines)          model.createLines(initialProperties.lines);
     if (initialProperties.electricFields) model.createElectricFields(initialProperties.electricFields);
     // Basically, this #deserialize method is more or less similar to other #create... methods used
     // above. However, this is the first step to delegate some functionality from modeler to smaller classes.
@@ -1999,6 +2125,10 @@ define(function(require) {
       restoreProperties: propertySupport.setRawValues,
       state: engine.getState()
     }, model, defaultMaxTickHistory);
+
+    // Since we can't provide tickHistory to the mixed-in methods at the time we create
+    // labModelerMixin (see below comment), provide it now.
+    labModelerMixin.tickHistory = tickHistory;
 
     // FIXME: ugly workaround - mixin OutputSupport again, this time providing
     // tickHistory, so filtered outputs will use it. We couldn't pass
@@ -2134,10 +2264,48 @@ define(function(require) {
       return value;
     });
 
+    // FIXME. More yuck: We still need a pattern for recompute model properties which don't depend
+    // on physics (and which therefore can be recomputed without invalidating and recomputing all
+    // the physics based properties) while still making them (1) observable and (2) read-only.
+
+    // used to triggers recomputation of isPlayable property based on isStopped and isReady:
+    model.on('play.model', recomputeProperties);
+    model.on('stop.model', recomputeProperties);
+
+    function recomputeProperties() {
+      propertySupport.invalidatingChangePreHook();
+      propertySupport.invalidatingChangePostHook();
+    }
+
+    model.defineOutput('isPlayable', {
+      label: "Playable"
+    }, function() {
+      // FIXME: isStopped predates the use of ES5 getters, therefore it must be invoked
+      return model.isReady && model.isStopped();
+    });
+
+    model.defineOutput('hasPlayed', {
+      label: "has Played"
+    }, function() {
+      return model.hasPlayed;
+    });
+
+    model.defineOutput('isStopped', {
+      label: "Stopped?"
+    }, function() {
+      return model.isStopped();
+    });
+
     readModelState();
     model.updateAllOutputProperties();
 
+    if (!initializationOptions.waitForSetup) {
+      model.ready();
+    }
+
     model.performanceOptimizer = new PerformanceOptimizer(model);
+
+    model.namespace = namespace;
 
     return model;
   };

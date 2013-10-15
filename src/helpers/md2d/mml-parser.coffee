@@ -45,7 +45,7 @@ parseMML = (mmlString) ->
     ### perform any pre-processing on the string ###
 
     # MML classes have periods or $ in them, which is not valid in DOM
-    mmlString = mmlString.replace /class=".*"/g, (match) ->
+    mmlString = mmlString.replace /class=".*"|id=".*"|idref=".*"/g, (match) ->
       match.replace /[\.$]/g, "-"
 
     ### load the string into Cheerio ###
@@ -59,8 +59,10 @@ parseMML = (mmlString) ->
       $entity
 
     getProperty = ($node, propertyName, additionalSelector) ->
-      additionalSelector = '' if not additionalSelector?
-      $node.find("[property=#{propertyName}] #{additionalSelector}").text()
+      if additionalSelector
+        $node.find("[property=#{propertyName}]>#{additionalSelector}").text()
+      else
+        $node.find("[property=#{propertyName}]").text()
 
     parseBoolean = (str, defaultOption) ->
       bool = str.replace(/^\s+|\s+$/g, '')
@@ -102,6 +104,10 @@ parseMML = (mmlString) ->
         else if typeof props[prop] == 'object'
           removeNaNProperties props[prop]
 
+    removeNullProperties = (props) ->
+      for own prop of props
+        delete props[prop] if !props[prop]?
+
     ### Convert a cheerio node whose text is a number, to an actual number ###
     toNumber = ($node, {defaultValue}) ->
       val = $node.text()
@@ -120,6 +126,37 @@ parseMML = (mmlString) ->
       y = y - originalViewPortY
 
       toNextgenLengths x, y
+
+    ### Converts a stroke dash number into nexgen stroke dash style ###
+    convertLineDashes = (lineStyle) ->
+      return switch
+        when lineStyle is 1 then "2,2"
+        when lineStyle is 2 then "4,4"
+        when lineStyle is 3 then "6,6"
+        when lineStyle is 4 then "2,4,8,4"
+        else 'none'
+
+    ### Converts an arrowhead number into nexgen arrowhead style ###
+    convertArrowHead = (arrowStyle, reverse) ->
+      return switch
+        when arrowStyle is 1
+          if reverse
+            "M 0 0 L 10 5 L 0 10 z"
+          else
+            "M 10 0 L 0 5 L 10 10 z"
+        when arrowStyle is 2
+          if reverse
+            "M 0 0 L 10 5 L 0 10"
+          else
+            "M 10 0 L 0 5 L 10 10"
+        when arrowStyle is 3
+          if reverse
+            "M 0 0 L 10 5 L 0 10 L 3 5 z"
+          else
+            "M 10 0 L 0 5 L 10 10 L 7 5 z"
+        when arrowStyle is 4 then "M 0 5 L 5 10 L 10 5 L 5 0 z"
+        when arrowStyle is 5 then "M 0 5 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0 z"
+        else 'none'
 
     ### Extracts a java-awt-Color into a core color  ###
     getColorProperty = ($node, alpha) ->
@@ -141,10 +178,17 @@ parseMML = (mmlString) ->
       fillColor = getNode fillNode.children("object")
       if fillColor and fillColor.length
         if fillColor.is ".org-concord-modeler-draw-FillMode-ColorFill"
-          return getColorProperty fillColor, alpha
+          return getColorProperty (getNode fillColor.find "[property=color]>object"), alpha
         else if fillColor.is ".org-concord-modeler-draw-FillMode-GradientFill"
           color1  = getColorProperty (getNode fillColor.find "[property=color1]>object"), alpha
           color2  = getColorProperty (getNode fillColor.find "[property=color2]>object"), alpha
+          # Sometimes color can't be found due to problems with ID references. See:
+          # https://www.pivotaltracker.com/story/show/55563212
+          # Use white color as a fallback value.
+          if not color1
+            color1 = if alpha? then "rgba(255,255,255,#{alpha/255})" else "#fff"
+          if not color2
+            color2 = if alpha? then "rgba(255,255,255,#{alpha/255})" else "#fff"
           style   = getIntProperty fillColor, "style"
           variant = getIntProperty fillColor, "variant"
           if style is 1036
@@ -181,14 +225,15 @@ parseMML = (mmlString) ->
     ### Find and parse mml nodes representing obstacles ###
     parseObstacles = ->
       obstacles = []
-      obstacleNodes = $mml "[property=obstacles] .org-concord-mw2d-models-RectangularObstacle-Delegate"
+      obstacleNodes = $mml "void[property=obstacles] .org-concord-mw2d-models-RectangularObstacle-Delegate"
       for node in obstacleNodes
         $node = getNode cheerio node
 
         height     = getFloatProperty $node, 'height'
         width      = getFloatProperty $node, 'width'
         x          = getFloatProperty $node, 'x'
-        y          = getFloatProperty $node, 'y'
+        # in mml, y is left unspecified if y = 0 in the model
+        y          = getFloatProperty( $node, 'y' ) || 0
         vx         = getFloatProperty $node, 'vx'
         vy         = getFloatProperty $node, 'vy'
         externalAx = getFloatProperty $node, 'externalFx'
@@ -273,7 +318,7 @@ parseMML = (mmlString) ->
     ### Find and parse mml nodes representing rectangles ###
     parseRectangles = ->
       rectangles = []
-      rectangleNodes = $mml "[property=rectangles] object.org-concord-mw2d-models-RectangleComponent-Delegate"
+      rectangleNodes = $mml "void[property=rectangles] object.org-concord-mw2d-models-RectangleComponent-Delegate"
       for node, idx in rectangleNodes
         $node = getNode cheerio node
 
@@ -282,7 +327,7 @@ parseMML = (mmlString) ->
         width         = getFloatProperty $node, 'width'
         x             = getFloatProperty $node, 'x'
         y             = getFloatProperty $node, 'y'
-        lineStyle     = getFloatProperty $node, 'lineStyle'
+        lineDashes    = convertLineDashes getFloatProperty $node, 'lineStyle'
         lineWeight    = getFloatProperty $node, 'lineWeight'
         layer         = getFloatProperty $node, 'layer'
         layerPosition = getFloatProperty $node, 'layerPosition'
@@ -291,17 +336,10 @@ parseMML = (mmlString) ->
         fence         = getBooleanProperty $node, 'reflection'
         color         = getFillColor $node,alpha
         lineColor     = getLineColor $node
-        
+
         # Change all Boolean values to 0/1.
         visible = Number visible if visible?
         fence   = Number fence if fence?
-
-        lineDashes = switch
-              when lineStyle is 1 then '2,2'
-              when lineStyle is 2 then '4,4'
-              when lineStyle is 3 then '6,6'
-              when lineStyle is 4 then '2,4,8,4'
-              else 'none'
 
         if not x?
           x=20
@@ -333,8 +371,22 @@ parseMML = (mmlString) ->
 
         rectangles.push validatedData
 
+        # <void property="vectorField">
+        #  <object class="org.concord.mw2d.models.ElectricField">
+        #   <void property="frequency">
+        #    <double>0.06911503837897545</double>
+        #   </void>
+        #   <void property="intensity">
+        #    <double>0.10000000149011612</double>
+        #   </void>
+        #   <void property="local">
+        #    <boolean>true</boolean>
+        #   </void>
+        #  </object>
+        # </void>
+
         # Shape can also specify electric field.
-        $elField = $node.find "object.org-concord-mw2d-models-ElectricField"
+        $elField = $node.find "[property=vectorField]>object.org-concord-mw2d-models-ElectricField"
         if $elField.length > 0
           parsedElField = parseElectricField $elField
           parsedElField.shapeIdx = idx
@@ -345,7 +397,7 @@ parseMML = (mmlString) ->
     ### Find and parse mml nodes representing ellipses ###
     parseEllipses = ->
       ellipses = []
-      ellipseNodes = $mml "[property=ellipses] object.org-concord-mw2d-models-EllipseComponent-Delegate"
+      ellipseNodes = $mml "void[property=ellipses] object.org-concord-mw2d-models-EllipseComponent-Delegate"
       for node, idx in ellipseNodes
         $node = getNode cheerio node
 
@@ -354,7 +406,7 @@ parseMML = (mmlString) ->
         width         = getFloatProperty $node, 'width'
         x             = getFloatProperty $node, 'x'
         y             = getFloatProperty $node, 'y'
-        lineStyle     = getFloatProperty $node, 'lineStyle'
+        lineDashes    = convertLineDashes getFloatProperty $node, 'lineStyle'
         lineWeight    = getFloatProperty $node, 'lineWeight'
         layer         = getFloatProperty $node, 'layer'
         layerPosition = getFloatProperty $node, 'layerPosition'
@@ -363,17 +415,18 @@ parseMML = (mmlString) ->
         fence         = getBooleanProperty $node, 'reflection'
         color         = getFillColor $node,alpha
         lineColor     = getLineColor $node
+        alphaAtCenter = getFloatProperty $node, 'alphaAtCenter'
+        alphaAtEdge   = getFloatProperty $node, 'alphaAtEdge'
 
+        # Support additional alphaAtCenter/Edge properties. They were separate properties in
+        # Classic MW, however in MW just merge them into gradient definition.
+        if alphaAtCenter? and color.indexOf 'radial' == 0
+          color = color.replace /rgba?(\(\d+,\d+,\d+)[\d,\.]*(\) 0%)/, "rgba$1,#{alphaAtCenter/255}$2"
+        if alphaAtEdge? and color.indexOf 'radial' == 0
+          color = color.replace /rgba?(\(\d+,\d+,\d+)[\d,\.]*(\) 100%)/, "rgba$1,#{alphaAtEdge/255}$2"
         # Change all Boolean values to 0/1.
         visible = Number visible if visible?
         fence   = Number fence if fence?
-
-        lineDashes = switch
-              when lineStyle is 1 then '2,2'
-              when lineStyle is 2 then '4,4'
-              when lineStyle is 3 then '6,6'
-              when lineStyle is 4 then '2,4,8,4'
-              else 'none'
 
         if not x?
           x=20
@@ -414,6 +467,73 @@ parseMML = (mmlString) ->
 
       ellipses
 
+    parseLines = ->
+      lines = []
+      lineNodes = $mml "void[property=lines] object.org-concord-mw2d-models-LineComponent-Delegate"
+      for node, idx in lineNodes
+        $node = getNode cheerio node
+
+        x             = getFloatProperty $node, 'x'
+        y             = getFloatProperty $node, 'y'
+        x12           = getFloatProperty $node, 'x12'
+        y12           = getFloatProperty $node, 'y12'
+        beginStyle    = convertArrowHead getFloatProperty $node, 'beginStyle'
+        endStyle      = convertArrowHead (getFloatProperty $node, 'endStyle'), true
+        lineDashes    = convertLineDashes getFloatProperty $node, 'style'
+        lineWeight    = getFloatProperty $node, 'weight'
+        layer         = getFloatProperty $node, 'layer'
+        layerPosition = getFloatProperty $node, 'layerPosition'
+        visible       = getBooleanProperty $node, 'visible'
+        fence         = getBooleanProperty $node, 'reflector'
+        lineColor     = getColorProperty getNode $node.find "[property=color]>object"
+
+        # Change all Boolean values to 0/1.
+        visible = Number visible if visible?
+        fence   = Number fence if fence?
+
+        if not x?
+          x = 20
+        if not y?
+          y = 20
+        if not x12?
+          x12 = 0
+        if not y12?
+          y12 = 0
+
+        # Convert x,y and x12, y12 into x1, y1 and x2, y2
+        x1 = x + x12 / 2
+        y1 = y + y12 / 2
+        x2 = x - x12 / 2
+        y2 = y - y12 / 2
+
+        # Unit conversion.
+        [x1, y1]          = toNextgenCoordinates x1, y1
+        [x2, y2]          = toNextgenCoordinates x2, y2
+
+        rawData = {
+          x1, y1,
+          x2, y2,
+          beginStyle,
+          endStyle,
+          fence,
+          lineColor,
+          lineWeight,lineDashes,
+          layer,layerPosition,
+          visible
+        }
+
+        # Unit conversion performed on undefined values can convert them to NaN.
+        # Revert back all NaNs to undefined, as we do not expect any NaN
+        # as property. Undefined values will be replaced by default values by validator.
+        removeNaNProperties rawData
+
+        # Validate all properties and provides default values for undefined values.
+        validatedData = validator.validateCompleteness metadata.line, rawData
+
+        lines.push validatedData
+
+      lines
+
     ###
       Find the container size
     ###
@@ -425,12 +545,12 @@ parseMML = (mmlString) ->
       Find the view-port size. Do it at the beginning, as view-port X and Y dimensions
       are used during conversion of other objects.
     ###
-    viewPort = viewProps.find("[property=viewSize] .java-awt-Dimension int")
-    if (viewPort)
+    viewPort = viewProps.find("[property=viewSize]>.java-awt-Dimension>int")
+    if (viewPort.length)
       originalViewPortWidth  = parseInt viewPort[0].children[0].data
       originalViewPortHeight = parseInt viewPort[1].children[0].data
-      originalViewPortX = parseInt viewProps.find("[property=x] double").text() || 0
-      originalViewPortY = parseInt viewProps.find("[property=y] double").text() || 0
+      originalViewPortX = parseInt viewProps.find("[property=x]>double").text() || 0
+      originalViewPortY = parseInt viewProps.find("[property=y]>double").text() || 0
     else
       originalViewPortWidth  = width
       originalViewPortHeight = height
@@ -454,7 +574,7 @@ parseMML = (mmlString) ->
     ###
       Find the background color
     ###
-    bgColors = (cheerio(n).text() for n in $mml "[property=background] > .java-awt-Color > int")
+    bgColors = (cheerio(n).text() for n in $mml "void[property=background] > .java-awt-Color > int")
     # If array of RGBA values is found, use it. Otherwise, left 'backgroundColor' undefined, so default value will be used.
     backgroundColor = "rgba(#{bgColors[0]},#{bgColors[1]},#{bgColors[2]},#{bgColors[3]})" if bgColors.length == 4
     # A tiny "hack" - replace background color of water or oil used in Classic MW to one used in Next Gen MW.
@@ -478,7 +598,7 @@ parseMML = (mmlString) ->
       'solventForceType', 'dielectricConstant' and 'backgroundColor'. See:
       md2d/models/solvent.coffee and md2d/models/modeler.#setSolvent(solventName)
     ###
-    $solvent = $mml "[property=solvent] .org-concord-mw2d-models-Solvent"
+    $solvent = $mml "[property=solvent]>.org-concord-mw2d-models-Solvent"
     solventForceType = getIntProperty $solvent, "type", "short"
 
     ###
@@ -498,12 +618,15 @@ parseMML = (mmlString) ->
     electricFieldDensity = do () ->
       EFCellSize = getIntProperty $mml.root(), "EFCellSize", "int"
       [EFCellSize] = toNextgenLengths EFCellSize
-      if EFCellSize < 100
+      if EFCellSize < 10 && EFCellSize >= 0
         Math.round width / EFCellSize
       else
         # Quite often in Classic MW cell size equal to 100 was used to disable
-        # electric field completely. Instead of using density 0, use defaul
+        # electric field completely. Instead of using density 0, use default
         # density + set showElectricField to false.
+        #
+        # In rare cases (e.g. maze game), EFCellSize = -1 or 1000 was also
+        # used to disable electric field.
         showElectricField = false
         return undefined
 
@@ -609,22 +732,22 @@ parseMML = (mmlString) ->
         { ...
       ]
     ###
-    imageProps = $mml("[property=images] array")
+    imageProps = $mml("[property=images]>array")
     imageBlock = imageProps.find("object.org-concord-mw2d-models-ImageComponent-Delegate")
     images = [];
     if imageProps.length > 0
       for image in imageBlock
         $image = getNode(cheerio(image))
-        imageUri = $image.find("[property=URI] string").text()
-        imageHostIndex = parseInt $image.find("[property=hostIndex] int").text()
+        imageUri = $image.find("[property=URI]>string").text()
+        imageHostIndex = parseInt $image.find("[property=hostIndex]>int").text()
         if (isNaN(imageHostIndex))
           imageHostIndex = 0
-        imageHostType = $image.find("[property=hostType] string").text()
+        imageHostType = $image.find("[property=hostType]>string").text()
         imageHostType = imageHostType.slice(imageHostType.lastIndexOf(".")+1)
-        imageLayer = parseInt $image.find("[property=layer] int").text()
-        imageLayerPosition = parseInt $image.find("[property=layerPosition] byte").text()
-        imageX = parseFloat $image.find("[property=x] double").text()
-        imageY = parseFloat $image.find("[property=y] double").text()
+        imageLayer = parseInt $image.find("[property=layer]>int").text()
+        imageLayerPosition = parseInt $image.find("[property=layerPosition]>byte").text()
+        imageX = parseFloat $image.find("[property=x]>double").text()
+        imageY = parseFloat $image.find("[property=y]>double").text()
         [imageX, imageY] = toNextgenCoordinates imageX, imageY
         images.push {imageUri: imageUri, imageHostIndex: imageHostIndex, imageHostType: imageHostType, imageLayer: imageLayer, imageLayerPosition: imageLayerPosition, imageX: imageX, imageY: imageY }
 
@@ -637,42 +760,48 @@ parseMML = (mmlString) ->
 
     parseTextBoxNode = (textBoxNode) ->
       $textBoxNode = getNode cheerio textBoxNode
-      text = wrapTextBoxText $textBoxNode.find("[property=text] string").text()
-      $x = parseFloat $textBoxNode.find("[property=x] double").text() || 0.001
-      $y = parseFloat $textBoxNode.find("[property=y] double").text() || 0
-      layer = parseInt($textBoxNode.find("[property=layer] int").text()) || 1
-      textHostIndex = parseInt $textBoxNode.find("[property=hostIndex] int").text()
+      text = wrapTextBoxText $textBoxNode.find("[property=text]>string").text()
+      $x = parseFloat $textBoxNode.find("[property=x]>double").text() || 0.001
+      $y = parseFloat $textBoxNode.find("[property=y]>double").text() || 0
+      layer = parseInt($textBoxNode.find("[property=layer]>int").text()) || 1
+      textHostIndex = parseInt $textBoxNode.find("[property=hostIndex]>int").text()
       if (isNaN(textHostIndex))
         textHostIndex = 0
-      textHostType = $textBoxNode.find("[property=hostType] string").text()
+      textHostType = $textBoxNode.find("[property=hostType]>string").text()
       textHostType = textHostType.slice(textHostType.lastIndexOf(".")+1)
-      colorDef  = $textBoxNode.find "[property=foregroundColor]>.java-awt-Color>int"
+      # textboxes using referenced colors do not use class .java-awt-color, but still have a child
+      # object to specify the referenced color
+      colorDef = getNode($textBoxNode.find("void[property=foregroundColor]>object")).find(">int")
       if colorDef and colorDef.length > 0
         fontColor    = "rgb("
         fontColor   += parseInt(cheerio(colorDef[0]).text()) + ","
         fontColor   += parseInt(cheerio(colorDef[1]).text()) + ","
         fontColor   += parseInt(cheerio(colorDef[2]).text()) + ")"
-      backgroundColorDef = $textBoxNode.find "[property=fillMode] .java-awt-Color>int"
+      backgroundColorDef = $textBoxNode.find "void[property=fillMode] .java-awt-Color>int"
       if backgroundColorDef and backgroundColorDef.length > 0
         backgroundTextColor    = "rgb("
         backgroundTextColor   += parseInt(cheerio(backgroundColorDef[0]).text()) + ","
         backgroundTextColor   += parseInt(cheerio(backgroundColorDef[1]).text()) + ","
         backgroundTextColor   += parseInt(cheerio(backgroundColorDef[2]).text()) + ")"
-      borderType = parseInt($textBoxNode.find("[property=borderType] int").text()) || 0
+      borderType = parseInt($textBoxNode.find("[property=borderType]>int").text()) || 0
       frame = switch borderType
         when 0 then ""
         when 1 then "rectangle"
         when 2 then "rounded rectangle"
-      callout = parseBoolean($textBoxNode.find("[property=callOut] boolean").text()) || false
-      calloutPointDef = $textBoxNode.find "[property=callOutPoint] .java-awt-Point>int"
+      callout = parseBoolean($textBoxNode.find("[property=callOut]>boolean").text()) || false
+      calloutPointDef = $textBoxNode.find "void[property=callOutPoint] .java-awt-Point>int"
       if callout and calloutPointDef and calloutPointDef.length > 1
         calloutPoint = (parseInt(cheerio(el).text()) for el in calloutPointDef)
+      $font = getNode $textBoxNode.find "[property=font] > object"
+      fontSize = $font.children().eq(2).text() or 12
 
       [x, y] = toNextgenCoordinates $x, $y
+      [fontSize] = toNextgenLengths fontSize
 
       textBox = { text, x, y, layer }
       textBox.frame = frame if frame
       textBox.color = fontColor if fontColor
+      textBox.fontSize = fontSize
       if calloutPoint
         textBox.calloutPoint = toNextgenCoordinates calloutPoint[0], calloutPoint[1]
       if textHostType
@@ -684,7 +813,7 @@ parseMML = (mmlString) ->
       textBox.anchor = "upper-left"
       textBox
 
-    $textBoxesArray = $mml "[property=textBoxes] array"
+    $textBoxesArray = $mml "[property=textBoxes]>array"
     if $textBoxesArray.length > 0
       $textBoxNodes = $textBoxesArray.find "object.org-concord-mw2d-models-TextBoxComponent-Delegate"
       textBoxes = (parseTextBoxNode(node) for node in $textBoxNodes)
@@ -729,7 +858,23 @@ parseMML = (mmlString) ->
 
       return props
 
-    $fields = $mml "[property=fields] object.org-concord-mw2d-models-ElectricField"
+    # <void property="fields">
+    #  <void method="add">
+    #   <object class="org.concord.mw2d.models.ElectricField">
+    #    <void property="frequency">
+    #     <double>0.006283185307179587</double>
+    #    </void>
+    #    <void property="intensity">
+    #     <double>0.07000000029802322</double>
+    #    </void>
+    #    <void property="orientation">
+    #     <int>3003</int>
+    #    </void>
+    #   </object>
+    #  </void>
+    # </void>
+
+    $fields = $mml "[method=add]>object.org-concord-mw2d-models-ElectricField"
     if $fields.length > 0
       electricFields = (parseElectricField(node) for node in $fields)
     else
@@ -744,6 +889,11 @@ parseMML = (mmlString) ->
       Find shapes
     ###
     shapes = parseRectangles().concat parseEllipses()
+
+    ###
+      Find lines
+    ###
+    lines = parseLines()
 
     ###
       Find all elements. Results in:
@@ -788,7 +938,7 @@ parseMML = (mmlString) ->
 
     elementColors = [-855310, -9066941, -9092186, -2539040]
 
-    elementColorNodes = $mml("[property=elementColors] > void")
+    elementColorNodes = $mml("void[property=elementColors] > void")
     for node in elementColorNodes
       $node = getNode(cheerio(node))
       index = $node.attr("index")
@@ -836,11 +986,11 @@ parseMML = (mmlString) ->
     pairwiseLJProperties = []
 
     # This set defines whether mean values are used for pair (so lbMixing is true) or custom (lbMixing is false).
-    lbMixingProps = $mml ".org-concord-mw2d-models-Affinity [property=lbMixing]>[method=put]"
+    lbMixingProps = $mml ".org-concord-mw2d-models-Affinity>[property=lbMixing]>[method=put]"
 
     # Custom values for sigma and epsilon.
-    epsilonProps = $mml ".org-concord-mw2d-models-Affinity [property=epsilon]"
-    sigmaProps = $mml ".org-concord-mw2d-models-Affinity [property=sigma]"
+    epsilonProps = $mml ".org-concord-mw2d-models-Affinity>[property=epsilon]"
+    sigmaProps = $mml ".org-concord-mw2d-models-Affinity>[property=sigma]"
 
     # Iterate over lbMixing properties first.
     for prop in lbMixingProps
@@ -899,13 +1049,14 @@ parseMML = (mmlString) ->
       for node in atomNodes
         $node = getNode(cheerio(node))
 
-        element = getIntProperty $node, 'ID', 'int' # selector = "[property=ID] int"
-        x       = getFloatProperty $node, 'rx'
-        y       = getFloatProperty $node, 'ry'
-        vx      = getFloatProperty $node, 'vx'
-        vy      = getFloatProperty $node, 'vy'
-        charge  = getFloatProperty $node, 'charge'
+        element   = getIntProperty $node, 'ID', 'int' # selector = "void[property=ID] int"
+        x         = getFloatProperty $node, 'rx'
+        y         = getFloatProperty $node, 'ry'
+        vx        = getFloatProperty $node, 'vx'
+        vy        = getFloatProperty $node, 'vy'
+        charge    = getFloatProperty $node, 'charge'
         friction  = getFloatProperty $node, 'friction'
+        radical   = getBooleanProperty $node, 'radical'
         visible   = getBooleanProperty $node, 'visible'
         marked    = getBooleanProperty $node, 'marked'
         movable   = getBooleanProperty $node, 'movable'
@@ -917,6 +1068,7 @@ parseMML = (mmlString) ->
         pinned  = if movable? then not movable else undefined
 
         # Change all Boolean values to 0/1.
+        radical   = Number radical if radical?
         pinned    = Number pinned if pinned?
         visible   = Number visible if visible?
         marked    = Number marked if marked?
@@ -954,7 +1106,7 @@ parseMML = (mmlString) ->
           restraints.push restraintValidatedData
 
 
-        atomRawData = { element, x, y, vx, vy, charge, friction, pinned, marked, visible, draggable }
+        atomRawData = { element, x, y, vx, vy, charge, friction, radical, pinned, marked, visible, draggable }
 
         # Unit conversion performed on undefined values can convert them to NaN.
         # Revert back all NaNs to undefined, as we do not expect any NaN
@@ -1056,6 +1208,7 @@ parseMML = (mmlString) ->
     vy = (atom.vy for atom in atoms)
     charge = (atom.charge for atom in atoms)
     friction = (atom.friction for atom in atoms)
+    radical = (atom.radical for atom in atoms)
     element = (atom.element for atom in atoms)
     pinned = (atom.pinned for atom in atoms)
     marked = (atom.marked for atom in atoms)
@@ -1065,9 +1218,71 @@ parseMML = (mmlString) ->
     id = atoms[0]?.element || 0
 
     ###
+      Chemical Reactions
+      Reaction Types/Parameters
+       nA__An
+         VAA
+         VBB
+         VCC
+         VDD
+         VAB
+         VAC
+         VAD
+         VBC
+         VBD
+         VCD
+       A2_B2__2AB
+         VAA
+         VBB
+         VAB
+         VAB2
+         VA2B
+       O2_2H2__2H2O
+         VHH
+         VOO
+         VHO
+         VHO2
+         VOH2
+       A2_B2_C__2AB_C
+         VAA
+         VBB
+         VCC
+         VAB
+         VAC
+         VBC
+         VAB2
+         VBA2
+         VCA2
+         VCB2
+         VABC
+         VBAC
+    ###
+
+    $reactionObj = $mml('[class*="org-concord-mw2d-models-Reaction"]')
+
+    useChemicalReactions = $reactionObj.length > 0
+
+    if useChemicalReactions
+      parameters = $reactionObj.find("[method=put]")
+      reaction = {}
+
+      # Do not convert reaction parameters now. Default values from metadata will be used. We will
+      # have to implement conversion from Classic to NextGen format.
+      # reactionParameters = {}
+      # for prop in parameters
+      #   $node = cheerio(prop)
+      #   key = $node.find('string').text()
+      #   value = parseFloat($node.find('double').text())
+      #   reactionParameters[key] = value
+      #
+      # reaction.parameters = reactionParameters
+
+      reaction = validator.validateCompleteness metadata.chemicalReactions, reaction
+
+    ###
       Quantum Dynamics
     ###
-    excitationStates = $mml(".org-concord-mw2d-models-ExcitedStates [method=put]")
+    excitationStates = $mml("void[property=excitedStates] void[method=put]")
     useQuantumDynamics = excitationStates.length > 0
 
     if useQuantumDynamics
@@ -1123,7 +1338,7 @@ parseMML = (mmlString) ->
 
         $elementNode = getNode(cheerio(elementNode))
 
-        for node in $elementNode.find '[property=energyLevels] > void'
+        for node in $elementNode.find 'void[property=energyLevels] > void'
           $node = getNode(cheerio(node))
           if $node.attr('method') is 'clear'
             energyLevels = []
@@ -1143,7 +1358,7 @@ parseMML = (mmlString) ->
       for atom in excitationStates
         $node = getNode cheerio atom
         atomIndex = parseInt cheerio($node.find("int")[0]).text()
-        excitation = parseInt $node.find("[index=1] int").text()
+        excitation = parseInt $node.find("void[index=1] int").text()
         excitation = 0 if isNaN excitation
         atoms[atomIndex].excitation = excitation
 
@@ -1155,7 +1370,7 @@ parseMML = (mmlString) ->
 
       quantumRule = $mml(".org-concord-mw2d-models-QuantumRule")
       if quantumRule.length
-        probabilityMap = quantumRule.find "[property=probabilityMap]>[method=put]"
+        probabilityMap = quantumRule.find "void[property=probabilityMap]>[method=put]"
         for put in probabilityMap
           $node = getNode(cheerio(put))
           key = parseInt $node.find("int").text()
@@ -1165,9 +1380,26 @@ parseMML = (mmlString) ->
           if key is 11
             radiationlessEmissionProbability = val
 
+      lightSource = {}
+      $lightSource = $mml("void[property=lightSource]")
+      if $lightSource.length > 0
+        lightSource = {}
+        lightSource.on               = getBooleanProperty( $lightSource, "on"  ) || false
+        lightSource.frequency        = getFloatProperty    $lightSource, "frequency"
+        lightSource.radiationPeriod  = getIntProperty      $lightSource, "radiationPeriod"
+        lightSource.numberOfBeams    = getIntProperty      $lightSource, "numberOfBeams"
+        lightSource.angleOfIncidence = getFloatProperty    $lightSource, "angleOfIncidence"
+        lightSource.radiationPeriod  = lightSource.radiationPeriod / 2 if lightSource.radiationPeriod
+        lightSource.angleOfIncidence = -lightSource.angleOfIncidence if lightSource.angleOfIncidence
+
+      removeNullProperties lightSource
+
+      lightSource = undefined if !lightSource.frequency?
+
       quantumDynamics = validator.validateCompleteness metadata.quantumDynamics, {
         elementEnergyLevels
         radiationlessEmissionProbability
+        lightSource
       }
 
 
@@ -1251,6 +1483,7 @@ parseMML = (mmlString) ->
       vy: vy
       charge: charge
       friction: friction
+      radical: radical
       element: element
       pinned: pinned
       marked: marked
@@ -1279,8 +1512,17 @@ parseMML = (mmlString) ->
     if electricFields.length > 0
       json.electricFields = unroll electricFields, 'intensity', 'orientation', 'shapeIdx'
 
+    if lines.length > 0
+      json.lines = unroll lines, 'x1', 'y1', 'x2', 'y2', 'beginStyle', 'endStyle', 'fence', 'lineColor', 'lineWeight', 'lineDashes',
+        'layer', 'layerPosition', 'visible'
+
     if useQuantumDynamics
       json.quantumDynamics = quantumDynamics
+      json.useQuantumDynamics = true
+
+    if useChemicalReactions
+      json.chemicalReactions = reaction
+      json.useChemicalReactions = true
 
     # Remove some properties from the final serialized model.
     removeArrayIfDefault = (name, array, defaultVal) ->
@@ -1297,6 +1539,8 @@ parseMML = (mmlString) ->
     delete json.viewOptions.atomTraceId if not json.viewOptions.showAtomTrace
     # Remove excitation if not using quantum dynamics
     delete json.atoms.excitation if not useQuantumDynamics
+    # Remove radicals if not using chemical reactions
+    delete json.atoms.radical if not useChemicalReactions
 
     # Remove modelSampleRate as this is Next Gen MW specific option.
     delete json.modelSampleRate

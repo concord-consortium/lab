@@ -1,0 +1,58 @@
+{
+  "title": "Custom Arrowheads",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "arrowheads",
+      "url": "models/md2d/arrowheads.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "textBoxes": [
+          {
+            "text": "begining of line",
+            "x": 1,
+            "y": 1.8,
+            "layer": 2
+          },
+          {
+            "text": "end of line",
+            "x": 1,
+            "y": 8.75,
+            "layer": 2
+          }
+        ]
+      }
+    }
+  ],
+  "parameters": [
+    {
+      "name": "visible-4",
+      "initialValue": 1,
+      "onChange": "setLineProperties(4,{visible: value})"
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "change-color",
+      "text": "Randomize a color",
+      "action": [
+        "var r = Math.floor(Math.random()*256),",
+        "    g = Math.floor(Math.random()*256),",
+        "    b = Math.floor(Math.random()*256),",
+        "    rgb = 'rgb(' + r + ',' + g + ',' + b + ')',",
+        "    i = 2 + Math.floor(Math.random()*4);",
+        "setLineProperties(i, {lineColor: rgb});"
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "visibility-4",
+      "text": "#3 Visible?",
+      "property": "visible-4"
+    }
+  ]
+}

@@ -133,7 +133,7 @@
       "id": "timestep-slider",
       "min": 0.01,
       "max": 5,
-      "displayValue": "return format('1.2f')(value)",
+      "displayValue": "return format('.2f')(value)",
       "labels": [
         {
           "value": 0.01,
@@ -205,7 +205,7 @@
       "type": "numericOutput",
       "property": "fps",
       "label": "Rendering Speed",
-      "displayValue": "return format('1.2f')(value)",
+      "displayValue": "return format('.2f')(value)",
       "units": "frames per second"
     },
     {
@@ -213,7 +213,7 @@
       "type": "numericOutput",
       "property": "progressRate",
       "label": "Simulation Progress Rate",
-      "displayValue": "return format('1.2f')(value)",
+      "displayValue": "return format('.2f')(value)",
       "units": "model femtoseconds per actual second"
     },
     {

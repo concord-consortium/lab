@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<state>
+<view>
+<minimum_temperature>0.0</minimum_temperature>
+<maximum_temperature>40.0</maximum_temperature>
+</view>
+<model>
+<timestep>0.2</timestep></model>
+</state>

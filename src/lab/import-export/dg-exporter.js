@@ -22,11 +22,15 @@ define(function(require) {
     },
 
     isDgGameControllerDefined: function() {
-      return !!(window.parent && window.parent.DG && window.parent.DG.currGameController);
+      if (Lab.config.dataGamesProxyPrefix) {
+        return !!(window.parent && window.parent.DG && window.parent.DG.currGameController);
+      } else {
+        return false;
+      }
     },
 
     // Synonym...
-    isExportAvailable: function() {
+    canExportData: function() {
       return this.isDgGameControllerDefined();
     },
 

@@ -1,8 +1,14 @@
 {
-  "title": "act2model",
+  "title": "Distance and Force Magnitude",
   "publicationStatus": "draft",
-  "subtitle": "",
-  "about": "",
+  "subtitle": "Explore the relationship between the electric field around an object and the forces on charged objects.",
+  "aspectRatio": 1.18,
+  "about": [
+    "Control the polarity of the stationary charged object and observe how it affects the electric field around the charged object.",
+    "Add a second charged object and move it around the stationary object.",
+    "Observe how the strength and direction of the forces depends on the charges and distance between the two objects.",
+    "Turn the force and electric field visualizations on and off to see their interactions."
+  ],
   "models": [
     {
       "type": "md2d",
@@ -10,14 +16,83 @@
       "url": "imports/legacy-mw-content/converted/interactions/distance-and-force/act2model$0.json",
       "importedFrom": "imports/legacy-mw-content/interactions/distance-and-force/act2model$0.mml",
       "viewOptions": {
-        "controlButtons": "play_reset"
-      }
+        "controlButtons": "",
+        "electricFieldDensity": 24,
+        "electricFieldColor": "rgb(0,255,0)",
+        "forceVectors": {
+          "length": 1.5
+        }
+      },
+      "onLoad": [
+        "setAtomProperties(0,{charge: 3});",
+        "set('showElectricField',true);"
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "show-second-atom",
+      "initialValue": false,
+      "onChange": [
+        "if (value) {",
+        "  setAtomProperties(1, {charge: 3, visible: true});",
+        "} else {",
+        "  setAtomProperties(1, {charge: 0, visible: false});",
+        "}"
+      ]
     }
   ],
   "components": [
+    {
+      "type": "checkbox",
+      "id": "select-show-forces",
+      "property": "showForceVectors",
+      "text": "Show forces"
+    },
+    {
+      "type": "checkbox",
+      "id": "select-show-electric-field",
+      "property": "showElectricField",
+      "text": "Show electric field"
+    },
+    {
+      "type": "checkbox",
+      "id": "select-show-second-atom",
+      "property": "show-second-atom",
+      "text": "Show second object"
+    },
+    {
+      "type": "text",
+      "id": "label-set-charge",
+      "text": "Change the charge on the **center object**"
+    },
+    {
+      "type": "button",
+      "id": "set-charge-negative",
+      "action": "setAtomProperties(0,{charge: -3});",
+      "text": "Negative (-)"
+    },
+    {
+      "type": "button",
+      "id": "set-charge-positive",
+      "action": "setAtomProperties(0,{charge: 3});",
+      "text": "Positive (+)"
+    }
+  ],
+  "template": [
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "left": "model.left",
+      "width": "model.width",
+      "align": "center"
+    }
   ],
   "layout": {
     "bottom": [
+      ["label-set-charge"],
+      ["set-charge-negative","set-charge-positive"],
+      ["select-show-second-atom","select-show-electric-field","select-show-forces"]
     ]
   }
 }

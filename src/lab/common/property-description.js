@@ -1,5 +1,5 @@
 /*global define, d3 */
-/*jshint eqnull:true boss:true */
+/*jshint eqnull:true, boss:true */
 
 define(function(require) {
 
@@ -35,6 +35,11 @@ define(function(require) {
     if (descriptionHash.unitPluralName) this._unitPluralName = descriptionHash.unitPluralName;
     if (descriptionHash.unitAbbreviation) this._unitAbbreviation = descriptionHash.unitAbbreviation;
 
+    this._min = descriptionHash.min;
+    this._max = descriptionHash.max;
+
+    this._frozen = descriptionHash.frozen;
+
     this.setFormat(descriptionHash.format);
   }
 
@@ -66,6 +71,22 @@ define(function(require) {
 
   PropertyDescription.prototype.getUnitAbbreviation = function() {
     return this._unitAbbreviation;
+  };
+
+  PropertyDescription.prototype.getMin = function() {
+    return this._min;
+  };
+
+  PropertyDescription.prototype.getMax = function() {
+    return this._max;
+  };
+
+  PropertyDescription.prototype.getFrozen = function() {
+    return this._frozen;
+  };
+
+  PropertyDescription.prototype.setFrozen = function(b) {
+    this._frozen = b;
   };
 
   PropertyDescription.prototype.setFormat = function(s) {

@@ -1,0 +1,95 @@
+{
+  "title": "Phase Changes Caused by Energy Input",
+  "publicationStatus": "draft",
+  "subtitle": "Explore how energy input causes matter to change states.",
+  "aspectRatio": 1.5,
+  "about": [
+    "Matter exists as solids, liquids and gases, and can change state between these.",
+    "",
+    "The model shows a liquid material on the left (small atoms). The amount of heat",
+    "energy is shown by kinetic energy (KE) shading, with deeper shades of red",
+    "representing more energetic atoms. On the right side of the barrier is a solid",
+    "material (large atoms).",
+    "",
+    "Run the model. How much energy is able to penetrate the barrier? Remove the barrier.",
+    "How quickly do the more energetic atoms melt the solid?"
+  ],
+  "models": [
+    {
+      "type": "md2d",
+      "id": "page6$0",
+      "url": "imports/legacy-mw-content/converted/itsi/states-of-matter/phase-changes-caused-by-energy-input$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "textBoxes": [
+          {
+            "text": "Cold solid",
+            "x": 4.175,
+            "y": 0.275,
+            "fontScale": 0.9,
+            "layer": 1,
+            "frame": "rounded rectangle",
+            "backgroundColor": "rgb(128,192,255)"
+          },
+          {
+            "text": "Hot liquid",
+            "x": 0.05,
+            "y": 0.275,
+            "fontScale": 0.9,
+            "layer": 1,
+            "frame": "rounded rectangle",
+            "backgroundColor": "rgb(255, 190, 194)"
+          }
+        ]
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "name": "largeAtomKE",
+      "label": "Kinetic Energy of Large Atoms",
+      "unitType": "energy",
+      "value": [
+        "var largeKE = 0;",
+        "var numLarge = 0;",
+        "var elemNum = 3;",
+        "var mass = getElementProperties(elemNum).mass;",
+        "for (var i = 0; i < getNumberOfAtoms(); i++) {",
+        "  if (getAtomProperties(i).element == elemNum) {",
+        "    largeKE += 0.5 * mass * Math.pow(getAtomProperties(i).speed,2);",
+        "    numLarge++;",
+        "  }",
+        "}",
+        "return (largeKE/numLarge)*100000;"
+      ]
+    }
+  ],
+  "components": [
+    {
+      "type": "checkbox",
+      "id": "ke-shading",
+      "text": "KE shading",
+      "property": "keShading"
+    },
+    {
+      "type": "button",
+      "id": "withdraw-barrier",
+      "text": "Withdraw the barrier",
+      "action": "if (getNumberOfObstacles() > 0) { removeObstacle(0) };"
+    },
+    {
+      "type": "barGraph",
+      "id": "bar-graph",
+      "min": 0,
+      "max": 5,
+      "title": "Avg. Kinetic Energy of Large Atoms",
+      "property": "largeAtomKE"
+    }
+  ],
+  "layout": {
+    "right": [
+      "bar-graph"
+    ]
+  },
+  "template": "narrow-right"
+}

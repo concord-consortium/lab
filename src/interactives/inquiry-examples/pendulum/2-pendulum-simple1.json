@@ -1,0 +1,667 @@
+{
+  "title": "Pendulum: rod length and mass",
+  "publicationStatus": "public",
+  "subtitle": "Explore how the factors of rod length and mass affect the period of a pendulum.",
+  "about": [
+    "Adjust the **Rod length**, **Mass of the ball** and **Starting angle** parameters.",
+    "Then click the **Start** button to start an experiment run. Watch the **Pendulum Angle**",
+    "graph to see how the angle of the pendulum changes as it swings back and forth.",
+    "Use the graph to determine the period of the pendulum. Try changing each parameter",
+    "and observe how each one affects the period. Can you explain why?",
+    "",
+    "After closing this window click the **?** help icon in the upper left to find out more."
+  ],
+  "aspectRatio": 1.25,
+  "fontScale": 0.8,
+  "models": [
+    {
+      "type": "md2d",
+      "id": "pendulum1$0",
+      "url": "models/md2d/inquiry-examples/pendulum/pendulum.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "gridLines": false,
+        "xunits": false,
+        "yunits": false,
+        "showClock": false,
+        "velocityVectors": {
+          "length": 10
+        }
+      },
+      "modelOptions": {
+        "unitsScheme": "mks",
+        "timeStepsPerTick": 167,
+        "timeStep": 1,
+        "modelSampleRate": 60
+      },
+      "onLoad": [
+        "function resetAngle() {",
+        "  set({startingAngle: get('startingAngle')});",
+        "}",
+        "function stopMotion() {",
+        "  stop();",
+        "  setAtomProperties(1, { vx: 0, vy: 0 });",
+        "}",
+        "onPropertyChange('rodLength', resetAngle);",
+        "onPropertyChange('ballMass', resetAngle);",
+        "onPropertyChange('gravitationalField', resetAngle);",
+        "onPropertyChange('damping', resetAngle);",
+        "onPropertyChange('startingAngle', stopMotion);",
+        "appendDataPropertiesToComponent('last-run-table');"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "name": "currentAngle",
+      "unitAbbreviation": "°",
+      "label": "Angle",
+      "value": [
+        "var a0 = getAtomProperties(0),",
+        "    a1 = getAtomProperties(1),",
+        "    ang = Math.atan2(a1.y-a0.y, a1.x-a0.x) * rad2deg;",
+        "return (a1.x < a0.x && a1.y >= a0.y) ? ang - 270 : ang + 90;"
+      ]
+    }
+  ],
+  "filteredOutputs": [
+    {
+      "name": "period",
+      "unitType": "time",
+      "label": "Period",
+      "property": "currentAngle",
+      "type": "SimplePeriod"
+    }
+   ],
+  "parameters": [
+    {
+      "name": "gravity",
+      "label": "Gravity",
+      "unitType": "acceleration",
+      "onChange": "set('gravitationalField', value);",
+      "initialValue": 9.8
+    },
+    {
+      "name": "rodLength",
+      "label": "Rod length",
+      "unitAbbreviation": "cm",
+      "onChange": "var len = value/100, a0 = getAtomProperties(0), a1 = getAtomProperties(1), angle = Math.atan((a1.x-a0.x)/(a0.y-a1.y)); setRadialBondProperties(0, { length: len }); setAtomProperties(1, {x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0});",
+      "initialValue": 100
+    },
+    {
+      "name": "startingAngle",
+      "label": "Starting angle",
+      "unitAbbreviation": "°",
+      "onChange": "var a0 = getAtomProperties(0), angle = value*deg2rad, len = getRadialBondProperties(0).length; setAtomProperties(1, {x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0});",
+      "initialValue": 45
+    },
+    {
+      "name": "ballMass",
+      "label": "Ball mass",
+      "unitAbbreviation": "g",
+      "onChange": "setElementProperties(3, { mass: value/1000 });",
+      "initialValue": 250
+    },
+    {
+      "name": "damping",
+      "label": "Damping",
+      "unitType": "dampingCoefficient",
+      "onChange": "setAtomProperties(1, { friction: value });",
+      "initialValue": 0
+    },
+    {
+      "name": "timeExperimentStarted",
+      "initialValue": 0,
+      "onChange": ""
+    },
+    {
+      "name": "experimentRunning",
+      "initialValue": false,
+      "onChange": ""
+    },
+    {
+      "name": "experimentCleared",
+      "initialValue": false,
+      "onChange": ""
+    },
+    {
+      "name": "experimentTime",
+      "label": "Experiment time",
+      "unitType": "time",
+      "initialValue": 0,
+      "onChange": ""
+    },
+    {
+      "name": "xAxis",
+      "label": "X Axis",
+      "unitType": "",
+      "onChange": [
+        "var xAxisParams = {",
+        "     'rodLength' : {",
+        "       'xProperty': 'rodLength',",
+        "       'xlabel': 'Rod length (cm)',",
+        "       'xmin': 0,",
+        "       'xmax': 210",
+        "     },",
+        "     'ballMass' : {",
+        "       'xProperty': 'ballMass',",
+        "       'xlabel': 'Mass of the ball (g)',",
+        "       'xmin': 0,",
+        "       'xmax': 500",
+        "     },",
+        "     'startingAngle' : {",
+        "       'xProperty': 'startingAngle',",
+        "       'xlabel': 'Starting angle (°)',",
+        "       'xmin': 0,",
+        "       'xmax': 100",
+        "     },",
+        "   },",
+        "   opts = xAxisParams[value];",
+        "opts.dataPoints = getComponentData('experiment-table', [value, 'period']);",
+        "setComponentAttributes('parameter-graph', opts);"
+      ],
+      "initialValue": "rodLength"
+    },
+    {
+      "name": "xAxisSelection",
+      "label": "X Axis Selection",
+      "unitType": "",
+      "onChange": "set('xAxis', value);",
+      "initialValue": "rodLength"
+    }
+  ],
+  "experiment": {
+    "timeSeries": {
+      "xProperty": "displayTime",
+      "properties": [
+        "currentAngle"
+      ]
+    },
+    "parameters": {
+      "inputs": [
+        "rodLength",
+        "ballMass",
+        "startingAngle"
+      ],
+      "outputs": [
+        "period"
+      ]
+    },
+    "destinations": [
+      {
+        "type": "timeSeries",
+        "componentIds": [
+          "angle-graph"
+        ],
+        "properties": [
+          "currentAngle"
+        ]
+      },
+      {
+        "type": "timeSeries",
+        "componentIds": [
+          "last-run-table"
+        ],
+        "properties": [
+          "rodLength",
+          "ballMass",
+          "startingAngle",
+          "period"
+        ]
+      },
+      {
+        "type": "parameterSeries",
+        "componentIds": [
+          "experiment-table",
+          "parameter-graph"
+        ],
+        "properties": [
+          "rodLength",
+          "ballMass",
+          "startingAngle",
+          "period"
+        ]
+      }
+    ],
+    "stateButtons": {
+      "startRun": "start-run",
+      "stopRun": "stop-run",
+      "saveRun": "save-run",
+      "nextRun": "next-run",
+      "clearAll": "clear-all"
+    },
+    "onReset": [
+      "resetAngle();",
+      "stopMotion();",
+      "set('rodLength', get('rodLength'));"
+    ]
+  },
+  "exports": {
+    "perRun": [
+      "gravity",
+      "rodLength",
+      "startingAngle",
+      "ballMass",
+      "damping"
+    ],
+    "perTick": [
+      "currentAngle"
+    ]
+  },
+  "components": [
+    {
+      "type": "text",
+      "id": "parameters-header",
+      "text": "**Parameters:**"
+    },
+    {
+      "type": "slider",
+      "id": "length-slider",
+      "min": 10,
+      "max": 200,
+      "width": "14em",
+      "tooltip": "Adjust length of pendulum.",
+      "displayValue": "return format('f')(value)",
+      "labels": [
+        {
+          "value": 10,
+          "label": "10 cm"
+        },
+        {
+          "value": 200,
+          "label": "2 m"
+        }
+      ],
+      "steps": 19,
+      "title": "Rod length (cm)",
+      "property": "rodLength"
+    },
+    {
+      "type": "slider",
+      "id": "mass-slider",
+      "min": 10,
+      "max": 400,
+      "width": "14em",
+      "tooltip": "Adjust mass of ball at end of pendulum.",
+      "displayValue": "return format('f')(value)",
+      "labels": [
+        {
+          "value": 10,
+          "label": "10"
+        },
+        {
+          "value": 400,
+          "label": "400"
+        }
+      ],
+      "steps": 39,
+      "title": "Mass of the ball (g)",
+      "property": "ballMass"
+    },
+    {
+      "type": "slider",
+      "id": "angle-slider",
+      "min": 0,
+      "max": 90,
+      "width": "14em",
+      "tooltip": "Adjust angle of pendulum when starting experiment run.",
+      "displayValue": "return format('f')(value)",
+      "labels": [
+        {
+          "value": 0,
+          "label": "0"
+        },
+        {
+          "value": 90,
+          "label": "90"
+        }
+      ],
+      "steps": 45,
+      "title": "Starting angle (&deg;)",
+      "property": "startingAngle"
+    },
+    {
+      "type": "button",
+      "id": "start-run",
+      "text": "Start",
+      "tooltip": "Start experiment run. Will stop automatically after 8s.",
+      "action": ""
+    },
+    {
+      "type": "button",
+      "id": "stop-run",
+      "text": "Stop",
+      "tooltip": "Stop currently running experiment.",
+      "action": ""
+    },
+    {
+      "type": "button",
+      "id": "save-run",
+      "text": "Save",
+      "tooltip": "Save parameter data and period from current run into Experiment Table.",
+      "action": ""
+    },
+    {
+      "type": "button",
+      "id": "next-run",
+      "text": "Next Run",
+      "tooltip": "Clear just the last experiment run and setup next run.",
+      "action": ""
+    },
+    {
+      "type": "button",
+      "id": "clear-all",
+      "text": "Clear All",
+      "tooltip": "Clear all experiment data.",
+      "action": ""
+    },
+    {
+      "type": "graph",
+      "id": "angle-graph",
+      "title": "",
+      "xlabel": "Time  (s)",
+      "ylabel": "Pendulum Angle (°)",
+      "ymin": -100,
+      "ymax": 100,
+      "xmax": 10,
+      "xTickCount": 5,
+      "yTickCount": 6,
+      "xFormatter": ".2r",
+      "yFormatter": ".2s",
+      "properties": [
+        "currentAngle"
+      ]
+    },
+    {
+      "type": "table",
+      "id": "last-run-table",
+      "clearDataOnReset": true,
+      "streamDataFromModel": true,
+      "addNewRows": false,
+      "visibleRows": 1,
+      "indexColumn": false,
+      "propertyColumns": [
+        "rodLength",
+        "ballMass",
+        "startingAngle",
+        "period"
+      ]
+    },
+    {
+      "type": "table",
+      "id": "experiment-table",
+      "title": "Experiment Table",
+      "clearDataOnReset": false,
+      "streamDataFromModel": false,
+      "visibleRows": 4,
+      "height": "12em",
+      "indexColumn": true,
+      "propertyColumns": [
+        "rodLength",
+        "ballMass",
+        "startingAngle",
+        "period"
+      ]
+    },
+    {
+      "type": "graph",
+      "id": "parameter-graph",
+      "title": "Parameter Graph",
+      "clearDataOnReset": false,
+      "streamDataFromModel": false,
+      "markAllDataPoints": true,
+      "showRulersOnSelection": true,
+      "enableAutoScaleButton": false,
+      "enableAxisScaling": false,
+      "xlabel": "Rod length (cm",
+      "xmin": 0,
+      "xmax": 210,
+      "ylabel": "Period (s)",
+      "ymin": 0,
+      "ymax": 4,
+      "lines": false,
+      "lineWidth": 2,
+      "yTickCount": 5,
+      "xTickCount": 5,
+      "xFormatter": ".2s",
+      "yFormatter": ".2s",
+      "xProperty": "rodLength",
+      "properties": [
+        "period"
+      ]
+    },
+    {
+      "type": "pulldown",
+      "id": "x-axis-pulldown",
+      "property": "xAxisSelection",
+      "options": [
+        {
+          "text": "Rod length",
+          "value": "rodLength"
+        },
+        {
+          "text": "Mass of the ball",
+          "value": "ballMass"
+        },
+        {
+          "text": "Starting angle",
+          "value": "startingAngle"
+        }
+      ]
+    }
+  ],
+  "helpTips": [
+    {
+      "text": [
+        "#Simple Pendulum Experiment",
+        "- - -",
+        "Adjust the experiment parameters **Rod length**, **Mass of the ball**, and",
+        "** Starting angle** and then run multiple experiments to find out how",
+        "adjusting these parameters affect the period of the pendulum."
+      ]
+    },
+    {
+      "component": "model",
+      "text": [
+        "When you adjust the parameters and run this pendulum model it",
+        "wlll accurately simulate the new dynamic behavior of the pendulum.",
+        "",
+        "You can also construct a real pendulum using the same parameters and the",
+        "results you measure should be very similar to the ones in this model."
+      ]
+    },
+    {
+      "component": "length-slider",
+      "text": [
+        "Adjust the length of the pendulum rod.",
+        "",
+        ""
+      ]
+    },
+    {
+      "component": "mass-slider",
+      "text": [
+        "Adjust the mass of the ball at the end of pendulum.",
+        "",
+        ""
+      ]
+    },
+    {
+      "component": "angle-slider",
+      "text": [
+        "Adjust the angle of pendulum at the start of an experiment run.",
+        ""
+      ]
+    },
+    {
+      "component": "start-run",
+      "text": [
+        "Start an experiment run. Experiment runs will automatically stop after 8 seconds.",
+        ""
+      ]
+    },
+    {
+      "component": "stop-run",
+      "text": [
+        "Stop a currently running experiment. Experiment runs will automatically stop after 8 seconds.",
+        "",
+        ""
+      ]
+    },
+    {
+      "component": "save-run",
+      "text": [
+        "Save parameter data and **Period** from your current experiment run into the **Experiment Table** and",
+        "**Parameter Graph**.",
+        ""
+      ]
+    },
+    {
+      "component": "next-run",
+      "text": [
+        "Clears the data from the last experiment run and resets the model",
+        "so you can setup the **next** experiment run.",
+        ""
+      ]
+    },
+    {
+      "component": "clear-all",
+      "text": [
+        "Clear **all** the data, including data in the **Experiment Table** and **Parameter Graph**."
+      ]
+    },
+    {
+      "component": "last-run-table",
+      "text": [
+        "This table shows the values of the parameters as well as the **Period** for your current run.",
+        "",
+        "Initially the value for Period is 0.0 but after the pendulum has swung back and forth",
+        "once the Period value will be updated."
+      ]
+    },
+    {
+      "component": "angle-graph",
+      "text": [
+        "A graph of the angle of the pendulum over time for an experiment run.",
+        "",
+        "You can adjust the scales of the X and Y axes by dragging on them.",
+        "You can also drag the canvas of the graph to move it and click the",
+        "autocale button in the upper right to rescale the graph to show all the data."
+      ]
+    },
+    {
+      "component": "experiment-table",
+      "text": [
+        "A table where the parameters and the period from each experiment run can be saved.",
+        "Data saved here is also plotted in the **Parameter Graph**."
+      ]
+    },
+    {
+      "component": "parameter-graph",
+      "text": [
+        "This graph shows the relationship of **Rod length** to **Period**.",
+        "",
+        "The axes for this graph are not adjustable.",
+        "",
+        "In the future you will be able to compare how changing any model parameter affects **Period**."
+      ]
+    },
+    {
+      "component": "x-axis-pulldown",
+      "text": [
+        "After collecting data in the Experiment Table you can look for relationships between any",
+        "of the parameters: **Rod length**, **Mass of the ball**, and **Starting angle** by changing",
+        "the X axis in the Parameter graph.",
+        ""
+      ]
+    }
+  ],
+  "layout": {
+    "top": [
+      "parameters-header", "length-slider", "mass-slider", "angle-slider"
+    ],
+    "top-right": [
+      "angle-graph"
+    ],
+    "experiment-controls": [
+      [ "start-run", "stop-run", "save-run", "next-run", "clear-all" ]
+    ],
+    "last-run-data": [
+      "last-run-table"
+    ],
+    "bottom-left": [
+      "experiment-table"
+    ],
+    "bottom-right": [
+      "parameter-graph"
+    ],
+    "pgraph-xaxis-pulldown": [
+      "x-axis-pulldown"
+    ]
+  },
+  "template": [
+    {
+      "id": "experiment-controls",
+      "fontScale": "0.8",
+      "bottom": "model.top",
+      "padding-top": "0.5em",
+      "padding-left": "0em",
+      "padding-bottom": "0.4em"
+    },
+    {
+      "id": "last-run-data",
+      "fontScale": "0.85",
+      "bottom": "experiment-controls.bottom",
+      "left": "experiment-controls.right",
+      "padding-top": "0.5em",
+      "padding-left": "1.5em",
+      "padding-right": "0.4em",
+      "align": "center"
+    },
+    {
+      "id": "top",
+      "bottom": "last-run-data.top",
+      "fontScale": "0.9",
+      "padding-left": "0.5em",
+      "padding-bottom": "0em"
+    },
+    {
+      "id": "bottom-left",
+      "fontScale": "0.9",
+      "top": "model.bottom",
+      "left": "model.left",
+      "width": "model.width",
+      "padding-top": "0.5em",
+      "padding-left": "0.5em"
+    },
+    {
+      "id": "top-right",
+      "top": "last-run-data.bottom",
+      "left": "model.right",
+      "height": "model.height",
+      "width": "model.width",
+      "padding-top": "0.2em",
+      "padding-left": "1em",
+      "padding-right": "1.5em"
+    },
+    {
+      "id": "bottom-right",
+      "top": "top-right.bottom",
+      "left": "model.right",
+      "height": "model.height",
+      "width": "model.width",
+      "padding-top": "0.2em",
+      "padding-left": "1em",
+      "padding-right": "1.5em",
+      "padding-bottom": "1.0em"
+    },
+    {
+      "id": "pgraph-xaxis-pulldown",
+      "fontScale": "0.7",
+      "top": "bottom-right.bottom*0.95",
+      "right": "bottom-right.right*1.0",
+      "padding-top": "0em",
+      "padding-right": "0.3em"
+    }
+  ]
+}

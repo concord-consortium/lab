@@ -1,0 +1,951 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_51" class="java.beans.XMLDecoder"> 
+ <object class="org.concord.mw2d.models.MesoModel$State"> 
+  <void property="boundary"> 
+   <object class="org.concord.mw2d.models.RectangularBoundary$Delegate"> 
+    <void property="height"> 
+     <double>300.0</double> 
+    </void> 
+    <void property="viewSize"> 
+     <object class="java.awt.Dimension"> 
+      <int>370</int> 
+      <int>300</int> 
+     </object> 
+    </void> 
+    <void property="width"> 
+     <double>370.0</double> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="heatBath"> 
+   <object class="org.concord.mw2d.models.HeatBath"> 
+    <void property="expectedTemperature"> 
+     <double>1100.0</double> 
+    </void> 
+    <void property="interval"> 
+     <int>100</int> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="numberOfParticles"> 
+   <int>25</int> 
+  </void> 
+  <void property="properties"> 
+   <void method="put"> 
+    <string>filename</string> 
+    <string>what-dissolves-in-water$0.gbl</string> 
+   </void> 
+   <void method="put"> 
+    <string>date</string> 
+    <object class="java.util.Date"> 
+     <long>1269888290000</long> 
+    </object> 
+   </void> 
+   <void method="put"> 
+    <string>url</string> 
+    <string>/Users/stephen/dev/concord/lab/imports/legacy-mw-content/itsi/dissolving/what-dissolves-in-water$0.gbl</string> 
+   </void> 
+   <void method="put"> 
+    <string>size</string> 
+    <long>23738</long> 
+   </void> 
+   <void method="put"> 
+    <string>codebase</string> 
+    <string>/share/sam/solubilityv2/solubility_itsi_models</string> 
+   </void> 
+  </void> 
+  <void property="universe"> 
+   <object class="org.concord.mw2d.models.Universe"/> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.MesoView$State"> 
+  <void property="background"> 
+   <object class="java.awt.Color"> 
+    <int>227</int> 
+    <int>231</int> 
+    <int>171</int> 
+    <int>255</int> 
+   </object> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.GayBerneParticle"> 
+  <void property="breadth"> 
+   <double>26.0</double> 
+  </void> 
+  <void property="dipoleMoment"> 
+   <double>10.0</double> 
+  </void> 
+  <void property="inertia"> 
+   <double>884.0</double> 
+  </void> 
+  <void property="length"> 
+   <double>34.0</double> 
+  </void> 
+  <void property="omega"> 
+   <double>3.769199853288008E-5</double> 
+  </void> 
+  <void property="rx"> 
+   <double>99.31462968345942</double> 
+  </void> 
+  <void property="ry"> 
+   <double>131.1485707269644</double> 
+  </void> 
+  <void property="theta"> 
+   <double>-4.27389002199933</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-0.01777620947533278</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-0.02410696499908946</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.GayBerneParticle"> 
+  <void property="breadth"> 
+   <double>26.0</double> 
+  </void> 
+  <void property="dipoleMoment"> 
+   <double>10.0</double> 
+  </void> 
+  <void property="inertia"> 
+   <double>884.0</double> 
+  </void> 
+  <void property="length"> 
+   <double>34.0</double> 
+  </void> 
+  <void property="omega"> 
+   <double>2.2506788626515232E-4</double> 
+  </void> 
+  <void property="rx"> 
+   <double>65.70971646758795</double> 
+  </void> 
+  <void property="ry"> 
+   <double>49.73873329452397</double> 
+  </void> 
+  <void property="theta"> 
+   <double>-12.573941485508184</double> 
+  </void> 
+  <void property="vx"> 
+   <double>0.002533739471465878</double> 
+  </void> 
+  <void property="vy"> 
+   <double>0.03419727037299801</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.GayBerneParticle"> 
+  <void property="breadth"> 
+   <double>26.0</double> 
+  </void> 
+  <void property="dipoleMoment"> 
+   <double>10.0</double> 
+  </void> 
+  <void property="inertia"> 
+   <double>884.0</double> 
+  </void> 
+  <void property="length"> 
+   <double>34.0</double> 
+  </void> 
+  <void property="omega"> 
+   <double>-2.340610206512719E-5</double> 
+  </void> 
+  <void property="rx"> 
+   <double>26.282086665893793</double> 
+  </void> 
+  <void property="ry"> 
+   <double>129.49380507281222</double> 
+  </void> 
+  <void property="theta"> 
+   <double>-7.735117301444787</double> 
+  </void> 
+  <void property="vx"> 
+   <double>0.0037055825844656055</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-5.46591562949154E-4</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.GayBerneParticle"> 
+  <void property="breadth"> 
+   <double>26.0</double> 
+  </void> 
+  <void property="dipoleMoment"> 
+   <double>10.0</double> 
+  </void> 
+  <void property="inertia"> 
+   <double>884.0</double> 
+  </void> 
+  <void property="length"> 
+   <double>34.0</double> 
+  </void> 
+  <void property="omega"> 
+   <double>0.0013318489909670344</double> 
+  </void> 
+  <void property="rx"> 
+   <double>107.57130284593872</double> 
+  </void> 
+  <void property="ry"> 
+   <double>158.48480725481062</double> 
+  </void> 
+  <void property="theta"> 
+   <double>-6.257196219314834</double> 
+  </void> 
+  <void property="vx"> 
+   <double>0.01945755690701593</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-0.0014198414571570499</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.GayBerneParticle"> 
+  <void property="breadth"> 
+   <double>26.0</double> 
+  </void> 
+  <void property="dipoleMoment"> 
+   <double>10.0</double> 
+  </void> 
+  <void property="inertia"> 
+   <double>884.0</double> 
+  </void> 
+  <void property="length"> 
+   <double>34.0</double> 
+  </void> 
+  <void property="omega"> 
+   <double>9.565762185262833E-4</double> 
+  </void> 
+  <void property="rx"> 
+   <double>49.834982987351424</double> 
+  </void> 
+  <void property="ry"> 
+   <double>81.82716525119554</double> 
+  </void> 
+  <void property="theta"> 
+   <double>-8.813554659714676</double> 
+  </void> 
+  <void property="vx"> 
+   <double>0.045237882542682996</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-0.02525968631181504</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.GayBerneParticle"> 
+  <void property="breadth"> 
+   <double>26.0</double> 
+  </void> 
+  <void property="dipoleMoment"> 
+   <double>10.0</double> 
+  </void> 
+  <void property="inertia"> 
+   <double>884.0</double> 
+  </void> 
+  <void property="length"> 
+   <double>34.0</double> 
+  </void> 
+  <void property="omega"> 
+   <double>0.0010941867363893363</double> 
+  </void> 
+  <void property="rx"> 
+   <double>72.40285553692597</double> 
+  </void> 
+  <void property="ry"> 
+   <double>138.85745430657465</double> 
+  </void> 
+  <void property="theta"> 
+   <double>-4.671784283187735</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-0.028716075312193806</double> 
+  </void> 
+  <void property="vy"> 
+   <double>0.022308745643427726</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.GayBerneParticle"> 
+  <void property="breadth"> 
+   <double>26.0</double> 
+  </void> 
+  <void property="dipoleMoment"> 
+   <double>10.0</double> 
+  </void> 
+  <void property="inertia"> 
+   <double>884.0</double> 
+  </void> 
+  <void property="length"> 
+   <double>34.0</double> 
+  </void> 
+  <void property="omega"> 
+   <double>-0.0014654334212972808</double> 
+  </void> 
+  <void property="rx"> 
+   <double>79.81509786695251</double> 
+  </void> 
+  <void property="ry"> 
+   <double>73.91975416190101</double> 
+  </void> 
+  <void property="theta"> 
+   <double>-4.133644178835212</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-0.0573942592862347</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-0.009970361370710192</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.GayBerneParticle"> 
+  <void property="breadth"> 
+   <double>26.0</double> 
+  </void> 
+  <void property="dipoleMoment"> 
+   <double>10.0</double> 
+  </void> 
+  <void property="inertia"> 
+   <double>884.0</double> 
+  </void> 
+  <void property="length"> 
+   <double>34.0</double> 
+  </void> 
+  <void property="omega"> 
+   <double>-4.672829264910611E-5</double> 
+  </void> 
+  <void property="rx"> 
+   <double>130.41904948270388</double> 
+  </void> 
+  <void property="ry"> 
+   <double>136.4422267888802</double> 
+  </void> 
+  <void property="theta"> 
+   <double>-7.347661516578055</double> 
+  </void> 
+  <void property="vx"> 
+   <double>0.002665022390744777</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-0.014714444289153517</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.GayBerneParticle"> 
+  <void property="breadth"> 
+   <double>26.0</double> 
+  </void> 
+  <void property="dipoleMoment"> 
+   <double>10.0</double> 
+  </void> 
+  <void property="inertia"> 
+   <double>884.0</double> 
+  </void> 
+  <void property="length"> 
+   <double>34.0</double> 
+  </void> 
+  <void property="omega"> 
+   <double>-8.128615353409684E-4</double> 
+  </void> 
+  <void property="rx"> 
+   <double>32.933140957165115</double> 
+  </void> 
+  <void property="ry"> 
+   <double>55.780633769501335</double> 
+  </void> 
+  <void property="theta"> 
+   <double>-7.25636498126951</double> 
+  </void> 
+  <void property="vx"> 
+   <double>0.008353664113388367</double> 
+  </void> 
+  <void property="vy"> 
+   <double>0.03087806322302553</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.GayBerneParticle"> 
+  <void property="breadth"> 
+   <double>26.0</double> 
+  </void> 
+  <void property="dipoleMoment"> 
+   <double>10.0</double> 
+  </void> 
+  <void property="inertia"> 
+   <double>884.0</double> 
+  </void> 
+  <void property="length"> 
+   <double>34.0</double> 
+  </void> 
+  <void property="omega"> 
+   <double>-0.0019823191391297196</double> 
+  </void> 
+  <void property="rx"> 
+   <double>109.94894479727398</double> 
+  </void> 
+  <void property="ry"> 
+   <double>79.00435606326573</double> 
+  </void> 
+  <void property="theta"> 
+   <double>-8.364739916843282</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-0.08201752384970341</double> 
+  </void> 
+  <void property="vy"> 
+   <double>0.007331611664859745</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.GayBerneParticle"> 
+  <void property="breadth"> 
+   <double>26.0</double> 
+  </void> 
+  <void property="dipoleMoment"> 
+   <double>10.0</double> 
+  </void> 
+  <void property="inertia"> 
+   <double>884.0</double> 
+  </void> 
+  <void property="length"> 
+   <double>34.0</double> 
+  </void> 
+  <void property="omega"> 
+   <double>-8.853951738507314E-4</double> 
+  </void> 
+  <void property="rx"> 
+   <double>80.99434897323336</double> 
+  </void> 
+  <void property="ry"> 
+   <double>107.2886743364724</double> 
+  </void> 
+  <void property="theta"> 
+   <double>1.1615112804887293</double> 
+  </void> 
+  <void property="vx"> 
+   <double>0.002978674751580972</double> 
+  </void> 
+  <void property="vy"> 
+   <double>0.04813237763623535</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.GayBerneParticle"> 
+  <void property="breadth"> 
+   <double>26.0</double> 
+  </void> 
+  <void property="dipoleMoment"> 
+   <double>10.0</double> 
+  </void> 
+  <void property="inertia"> 
+   <double>884.0</double> 
+  </void> 
+  <void property="length"> 
+   <double>34.0</double> 
+  </void> 
+  <void property="omega"> 
+   <double>3.717142374101171E-4</double> 
+  </void> 
+  <void property="rx"> 
+   <double>119.09091915130215</double> 
+  </void> 
+  <void property="ry"> 
+   <double>108.36902266509932</double> 
+  </void> 
+  <void property="theta"> 
+   <double>-21.687966194694656</double> 
+  </void> 
+  <void property="vx"> 
+   <double>0.06093870479996087</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-0.050762511443659696</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.GayBerneParticle"> 
+  <void property="breadth"> 
+   <double>26.0</double> 
+  </void> 
+  <void property="dipoleMoment"> 
+   <double>10.0</double> 
+  </void> 
+  <void property="inertia"> 
+   <double>884.0</double> 
+  </void> 
+  <void property="length"> 
+   <double>34.0</double> 
+  </void> 
+  <void property="omega"> 
+   <double>-2.97976712875188E-4</double> 
+  </void> 
+  <void property="rx"> 
+   <double>142.35316166098502</double> 
+  </void> 
+  <void property="ry"> 
+   <double>74.32492692151789</double> 
+  </void> 
+  <void property="theta"> 
+   <double>-22.163491473661367</double> 
+  </void> 
+  <void property="vx"> 
+   <double>0.019611746738989144</double> 
+  </void> 
+  <void property="vy"> 
+   <double>0.011597217973893546</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.GayBerneParticle"> 
+  <void property="breadth"> 
+   <double>26.0</double> 
+  </void> 
+  <void property="color"> 
+   <object class="java.awt.Color"> 
+    <int>204</int> 
+    <int>255</int> 
+    <int>102</int> 
+    <int>255</int> 
+   </object> 
+  </void> 
+  <void property="epsilon0"> 
+   <double>0.5</double> 
+  </void> 
+  <void property="inertia"> 
+   <double>884.0</double> 
+  </void> 
+  <void property="length"> 
+   <double>34.0</double> 
+  </void> 
+  <void property="omega"> 
+   <double>9.220255043032927E-4</double> 
+  </void> 
+  <void property="rx"> 
+   <double>245.9962821937398</double> 
+  </void> 
+  <void property="ry"> 
+   <double>213.137210443433</double> 
+  </void> 
+  <void property="theta"> 
+   <double>13.957311466246294</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-0.01763092083886093</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-0.02386945520972897</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.GayBerneParticle"> 
+  <void property="breadth"> 
+   <double>26.0</double> 
+  </void> 
+  <void property="dipoleMoment"> 
+   <double>10.0</double> 
+  </void> 
+  <void property="inertia"> 
+   <double>884.0</double> 
+  </void> 
+  <void property="length"> 
+   <double>34.0</double> 
+  </void> 
+  <void property="omega"> 
+   <double>-9.333597119238259E-4</double> 
+  </void> 
+  <void property="rx"> 
+   <double>52.782928426734586</double> 
+  </void> 
+  <void property="ry"> 
+   <double>160.84600080143446</double> 
+  </void> 
+  <void property="theta"> 
+   <double>-9.030049485608176</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-0.02490861589172037</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-0.00805837880249775</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.GayBerneParticle"> 
+  <void property="breadth"> 
+   <double>26.0</double> 
+  </void> 
+  <void property="dipoleMoment"> 
+   <double>10.0</double> 
+  </void> 
+  <void property="inertia"> 
+   <double>884.0</double> 
+  </void> 
+  <void property="length"> 
+   <double>34.0</double> 
+  </void> 
+  <void property="omega"> 
+   <double>-6.980182591318104E-4</double> 
+  </void> 
+  <void property="rx"> 
+   <double>48.97508992486495</double> 
+  </void> 
+  <void property="ry"> 
+   <double>109.66474672681113</double> 
+  </void> 
+  <void property="theta"> 
+   <double>-6.353545087474887</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-0.021496877273202136</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-0.010581489296494412</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.GayBerneParticle"> 
+  <void property="breadth"> 
+   <double>26.0</double> 
+  </void> 
+  <void property="color"> 
+   <object class="java.awt.Color"> 
+    <int>204</int> 
+    <int>255</int> 
+    <int>102</int> 
+    <int>255</int> 
+   </object> 
+  </void> 
+  <void property="epsilon0"> 
+   <double>0.5</double> 
+  </void> 
+  <void property="inertia"> 
+   <double>884.0</double> 
+  </void> 
+  <void property="length"> 
+   <double>34.0</double> 
+  </void> 
+  <void property="omega"> 
+   <double>7.979409720669056E-4</double> 
+  </void> 
+  <void property="rx"> 
+   <double>203.05288472221164</double> 
+  </void> 
+  <void property="ry"> 
+   <double>236.5650467817199</double> 
+  </void> 
+  <void property="theta"> 
+   <double>13.539212973201252</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-0.037669137393402885</double> 
+  </void> 
+  <void property="vy"> 
+   <double>0.019744687737543846</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.GayBerneParticle"> 
+  <void property="breadth"> 
+   <double>26.0</double> 
+  </void> 
+  <void property="color"> 
+   <object class="java.awt.Color"> 
+    <int>204</int> 
+    <int>255</int> 
+    <int>102</int> 
+    <int>255</int> 
+   </object> 
+  </void> 
+  <void property="epsilon0"> 
+   <double>0.5</double> 
+  </void> 
+  <void property="inertia"> 
+   <double>884.0</double> 
+  </void> 
+  <void property="length"> 
+   <double>34.0</double> 
+  </void> 
+  <void property="omega"> 
+   <double>0.0010678938399996717</double> 
+  </void> 
+  <void property="rx"> 
+   <double>233.18303373974723</double> 
+  </void> 
+  <void property="ry"> 
+   <double>255.13089157646894</double> 
+  </void> 
+  <void property="theta"> 
+   <double>13.75263038252144</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-0.02102728007150759</double> 
+  </void> 
+  <void property="vy"> 
+   <double>0.04488209099600587</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.GayBerneParticle"> 
+  <void property="breadth"> 
+   <double>26.0</double> 
+  </void> 
+  <void property="color"> 
+   <object class="java.awt.Color"> 
+    <int>204</int> 
+    <int>255</int> 
+    <int>102</int> 
+    <int>255</int> 
+   </object> 
+  </void> 
+  <void property="epsilon0"> 
+   <double>0.5</double> 
+  </void> 
+  <void property="inertia"> 
+   <double>884.0</double> 
+  </void> 
+  <void property="length"> 
+   <double>34.0</double> 
+  </void> 
+  <void property="omega"> 
+   <double>-0.0017970756463220833</double> 
+  </void> 
+  <void property="rx"> 
+   <double>208.08353333114803</double> 
+  </void> 
+  <void property="ry"> 
+   <double>276.47835517553233</double> 
+  </void> 
+  <void property="theta"> 
+   <double>13.126418040463564</double> 
+  </void> 
+  <void property="vx"> 
+   <double>0.026022977161005933</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-0.044220976499851516</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.GayBerneParticle"> 
+  <void property="breadth"> 
+   <double>26.0</double> 
+  </void> 
+  <void property="color"> 
+   <object class="java.awt.Color"> 
+    <int>204</int> 
+    <int>255</int> 
+    <int>102</int> 
+    <int>255</int> 
+   </object> 
+  </void> 
+  <void property="epsilon0"> 
+   <double>0.5</double> 
+  </void> 
+  <void property="inertia"> 
+   <double>884.0</double> 
+  </void> 
+  <void property="length"> 
+   <double>34.0</double> 
+  </void> 
+  <void property="omega"> 
+   <double>0.0017464729662531612</double> 
+  </void> 
+  <void property="rx"> 
+   <double>271.23309866505093</double> 
+  </void> 
+  <void property="ry"> 
+   <double>209.1205524408409</double> 
+  </void> 
+  <void property="theta"> 
+   <double>13.979912758216022</double> 
+  </void> 
+  <void property="vx"> 
+   <double>0.016913143197193385</double> 
+  </void> 
+  <void property="vy"> 
+   <double>0.035774509960848626</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.GayBerneParticle"> 
+  <void property="breadth"> 
+   <double>26.0</double> 
+  </void> 
+  <void property="color"> 
+   <object class="java.awt.Color"> 
+    <int>204</int> 
+    <int>255</int> 
+    <int>102</int> 
+    <int>255</int> 
+   </object> 
+  </void> 
+  <void property="epsilon0"> 
+   <double>0.5</double> 
+  </void> 
+  <void property="inertia"> 
+   <double>884.0</double> 
+  </void> 
+  <void property="length"> 
+   <double>34.0</double> 
+  </void> 
+  <void property="omega"> 
+   <double>0.0018872938097527726</double> 
+  </void> 
+  <void property="rx"> 
+   <double>275.2159317472044</double> 
+  </void> 
+  <void property="ry"> 
+   <double>244.17250222934325</double> 
+  </void> 
+  <void property="theta"> 
+   <double>14.081062843695824</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-0.016559866763238333</double> 
+  </void> 
+  <void property="vy"> 
+   <double>0.009374880508639872</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.GayBerneParticle"> 
+  <void property="breadth"> 
+   <double>26.0</double> 
+  </void> 
+  <void property="color"> 
+   <object class="java.awt.Color"> 
+    <int>204</int> 
+    <int>255</int> 
+    <int>102</int> 
+    <int>255</int> 
+   </object> 
+  </void> 
+  <void property="epsilon0"> 
+   <double>0.5</double> 
+  </void> 
+  <void property="inertia"> 
+   <double>884.0</double> 
+  </void> 
+  <void property="length"> 
+   <double>34.0</double> 
+  </void> 
+  <void property="omega"> 
+   <double>0.0016605120099339365</double> 
+  </void> 
+  <void property="rx"> 
+   <double>173.49553879252153</double> 
+  </void> 
+  <void property="ry"> 
+   <double>265.1963867851176</double> 
+  </void> 
+  <void property="theta"> 
+   <double>13.86769259748082</double> 
+  </void> 
+  <void property="vx"> 
+   <double>0.013511993970103959</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-0.005398707222762644</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.GayBerneParticle"> 
+  <void property="breadth"> 
+   <double>26.0</double> 
+  </void> 
+  <void property="color"> 
+   <object class="java.awt.Color"> 
+    <int>204</int> 
+    <int>255</int> 
+    <int>102</int> 
+    <int>255</int> 
+   </object> 
+  </void> 
+  <void property="epsilon0"> 
+   <double>0.5</double> 
+  </void> 
+  <void property="inertia"> 
+   <double>884.0</double> 
+  </void> 
+  <void property="length"> 
+   <double>34.0</double> 
+  </void> 
+  <void property="omega"> 
+   <double>8.762849624645765E-4</double> 
+  </void> 
+  <void property="rx"> 
+   <double>211.54313323949236</double> 
+  </void> 
+  <void property="ry"> 
+   <double>201.60430326294104</double> 
+  </void> 
+  <void property="theta"> 
+   <double>13.819714706305312</double> 
+  </void> 
+  <void property="vx"> 
+   <double>-0.009567683900248716</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-0.00615996858339643</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.GayBerneParticle"> 
+  <void property="breadth"> 
+   <double>26.0</double> 
+  </void> 
+  <void property="color"> 
+   <object class="java.awt.Color"> 
+    <int>204</int> 
+    <int>255</int> 
+    <int>102</int> 
+    <int>255</int> 
+   </object> 
+  </void> 
+  <void property="epsilon0"> 
+   <double>0.5</double> 
+  </void> 
+  <void property="inertia"> 
+   <double>884.0</double> 
+  </void> 
+  <void property="length"> 
+   <double>34.0</double> 
+  </void> 
+  <void property="omega"> 
+   <double>0.0010105489530302955</double> 
+  </void> 
+  <void property="rx"> 
+   <double>231.04580549584387</double> 
+  </void> 
+  <void property="ry"> 
+   <double>176.32254090985117</double> 
+  </void> 
+  <void property="theta"> 
+   <double>13.845070585893765</double> 
+  </void> 
+  <void property="vx"> 
+   <double>0.020111749005295658</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-0.047059005685210924</double> 
+  </void> 
+ </object> 
+ <object class="org.concord.mw2d.models.GayBerneParticle"> 
+  <void property="breadth"> 
+   <double>26.0</double> 
+  </void> 
+  <void property="color"> 
+   <object class="java.awt.Color"> 
+    <int>204</int> 
+    <int>255</int> 
+    <int>102</int> 
+    <int>255</int> 
+   </object> 
+  </void> 
+  <void property="epsilon0"> 
+   <double>0.5</double> 
+  </void> 
+  <void property="inertia"> 
+   <double>884.0</double> 
+  </void> 
+  <void property="length"> 
+   <double>34.0</double> 
+  </void> 
+  <void property="omega"> 
+   <double>0.0012018227273490078</double> 
+  </void> 
+  <void property="rx"> 
+   <double>175.22232970106083</double> 
+  </void> 
+  <void property="ry"> 
+   <double>219.04373455020834</double> 
+  </void> 
+  <void property="theta"> 
+   <double>13.725858793899759</double> 
+  </void> 
+  <void property="vx"> 
+   <double>0.036642369195033546</double> 
+  </void> 
+  <void property="vy"> 
+   <double>-0.022842330501967177</double> 
+  </void> 
+ </object> 
+</java> 

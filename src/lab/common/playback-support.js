@@ -1,7 +1,8 @@
 /*global define: false, d3: false */
 
 define(function (require) {
-  var console = require('common/console');
+  var console     = require('common/console'),
+      performance = require('common/performance');
 
   return function PlaybackSupport(args) {
         // DispatchSupport instance or compatible module.
@@ -17,7 +18,7 @@ define(function (require) {
           // module.
           if (dispatch) {
             if (dispatch.on && dispatch.addEventTypes) {
-              dispatch.addEventTypes("play", "stop");
+              dispatch.addEventTypes("play", "stop", "tickStart", "tickEnd");
               return true;
             } else {
               throw new Error("[PlaybackSupport] Provided Dispatch object doesn't implement required interface!");
@@ -29,7 +30,8 @@ define(function (require) {
 
         stopped = true,
         stopRequest = false,
-        restartRequest = false;
+        restartRequest = false,
+        hasPlayed = false;
 
     /**
       Repeatedly calls `f` at an interval defined by the modelSampleRate property, until f returns
@@ -82,7 +84,8 @@ define(function (require) {
           stopped = false;
 
           timer(function timerTick(elapsedTime) {
-            console.timeEnd('gap between frames');
+            if (eventsSupported) dispatch.tickStart();
+            performance.leaveScope("gap");
             // Cancel the timer and refuse to to step the model, if the model is stopped.
             // This is necessary because there is no direct way to cancel a d3 timer.
             // See: https://github.com/mbostock/d3/wiki/Transitions#wiki-d3_timer)
@@ -97,15 +100,17 @@ define(function (require) {
               return true;
             }
 
+            performance.enterScope("tick");
             target.tick(elapsedTime);
+            performance.leaveScope("tick");
 
-            console.time('gap between frames');
+            performance.enterScope("gap");
             return false;
           });
 
           if (eventsSupported) dispatch.play();
 
-          console.time('gap between frames');
+          performance.enterScope("gap");
           return target;
         };
 
@@ -123,6 +128,21 @@ define(function (require) {
         target.isStopped = function () {
           return stopped || stopRequest;
         };
+
+        target.on('play.playback-support', function() {
+          hasPlayed = true;
+        });
+
+        target.on('reset.playback-support', function() {
+          hasPlayed = false;
+        });
+
+        Object.defineProperty(target, 'hasPlayed', {
+          enumerable: true,
+          get: function() {
+            return hasPlayed;
+          }
+        });
       }
     };
   };

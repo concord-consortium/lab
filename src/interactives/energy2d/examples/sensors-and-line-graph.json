@@ -26,8 +26,8 @@
       "ymax": 50,
       "xmax": 240,
       "xTickCount": 5,
-      "xFormatter": "2s",
-      "yFormatter": "2s",
+      "xFormatter": ".2s",
+      "yFormatter": ".2s",
       "xProperty": "time",
       "properties": [
         "sensor-1", "sensor-0"
@@ -46,7 +46,7 @@
       "property": "ticksPerGPUSync",
       "min": 0,
       "max": 300,
-      "displayValue": "return format('1f')(value)",
+      "displayValue": "return format('.1f')(value)",
       "steps": 300
     },
     {
@@ -56,7 +56,7 @@
       "property": "timeStepsPerTick",
       "min": 1,
       "max": 50,
-      "displayValue": "return format('1f')(value)",
+      "displayValue": "return format('.1f')(value)",
       "steps": 50
     }
   ],

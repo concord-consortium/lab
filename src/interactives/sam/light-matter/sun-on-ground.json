@@ -25,7 +25,7 @@
     {
       "type": "md2d",
       "id": "sun-on-ground-and-co2",
-      "url": "imports/legacy-mw-content/converted/sam-activities/light-matter/green house-gases/sunOnGroundAndCO2.json",
+      "url": "imports/legacy-mw-content/converted/sam-activities/light-matter/greenhouse-gases/sunOnGroundAndCO2.json",
       "viewOptions": {
         "controlButtons": "play_reset"
       }
@@ -44,12 +44,22 @@
       "name": "lightSourceEnabled",
       "onChange": [
         "if (value) {",
-        "  turnOnLightSource(0);",
+        "  turnOnLightSource();",
         "} else {",
-        "  turnOffLightSource(0);",
+        "  turnOffLightSource();",
         "}"
       ],
-      "initialValue": false
+      "initialValue": true
+    }
+  ],
+  "filteredOutputs": [
+    {
+      "name": "averageTemperature",
+      "property": "temperature",
+      "type": "RunningAverage",
+      "period": 2500,
+      "label": "Average Temperature",
+      "unitType": "temperature"
     }
   ],
   "components": [
@@ -89,11 +99,11 @@
     {
       "type": "barGraph",
       "id": "thermometer",
-      "property": "temperature",
+      "property": "averageTemperature",
       "title": "Temperature",
       "labels": 0,
       "min": 0,
-      "max": 350
+      "max": 3000
     },
     {
       "type": "checkbox",

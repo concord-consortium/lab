@@ -1,0 +1,23 @@
+{
+  "title": "reaction2",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "reaction2",
+      "url": "imports/legacy-mw-content/converted/itsi/stoichiometry/reaction2.json",
+      "importedFrom": "imports/legacy-mw-content/itsi/stoichiometry/reaction2.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

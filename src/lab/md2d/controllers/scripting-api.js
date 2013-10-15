@@ -1,4 +1,4 @@
-/*global define, model */
+/*global define */
 
 define(function (require) {
 
@@ -15,13 +15,37 @@ define(function (require) {
 
     @param: api
   */
-  return function MD2DScriptingAPI (api) {
+  return function MD2DScriptingAPI (api, model) {
 
-    var dnaEditDialog = new DNAEditDialog(),
+    var dnaEditDialog = new DNAEditDialog(model),
         // whether we are currently processing a batch command, suppresses repaint
-        inBatch = false;
+        batchDepth = 0;
+
+    var setProperty = function () {
+      var setter = arguments[0],
+          i      = arguments[1],
+          args;
+
+      if (Array.isArray(i)) {
+        args = Array.prototype.slice.call(arguments, 2, arguments.length);
+        api.batch( function() {
+          for (var j = 0, jj = i[0]; j < i.length; jj = i[++j]) {
+            setter.apply(null,Array.prototype.concat(jj, args));
+          }
+        });
+      } else {
+        args = Array.prototype.slice.call(arguments, 1, arguments.length);
+        setter.apply(null,args);
+      }
+      api.repaintIfReady();
+    };
 
     return {
+
+      getCurrentComputerTime: function() {
+        return Date.now();
+      },
+
       /* Returns number of atoms in the system. */
       getNumberOfAtoms: function getNumberOfAtoms(f) {
         return model.getNumberOfAtoms(f);
@@ -47,29 +71,14 @@ define(function (require) {
         return model.getNumberOfAngularBonds();
       },
 
-      addAtom: function addAtom(props, options) {
-        if (options && options.suppressRepaint) {
-          // Translate suppressRepaint option to
-          // option understable by modeler.
-          // supresRepaint is a conveniance option for
-          // Scripting API users.
-          options.suppressEvent = true;
-        }
-        return model.addAtom(props, options);
+      addAtom: function addAtom(props) {
+        return model.addAtom(props);
       },
 
       /*
         Removes atom 'i'.
       */
       removeAtom: function removeAtom(i, options) {
-        if (options && options.suppressRepaint) {
-          // Translate suppressRepaint option to
-          // option understable by modeler.
-          // supresRepaint is a conveniance option for
-          // Scripting API users.
-          options.suppressEvent = true;
-          delete options.suppressRepaint;
-        }
         try {
           model.removeAtom(i, options);
         } catch (e) {
@@ -142,15 +151,33 @@ define(function (require) {
         return api.choose(n, numAtoms);
       },
 
+      /**
+        Quantum Dynamics
+      */
 
-      /** Turn on quantum dynamics light source. TODO: sort out whether it's possible to expose
-          lightSource[index].enabled */
-      turnOnLightSource: function turnOnLightSource(index) {
-        model.turnOnLightSource(index);
+      /** Turn on quantum dynamics light source. */
+      turnOnLightSource: function turnOnLightSource() {
+        model.turnOnLightSource();
       },
 
-      turnOffLightSource: function turnOffLightSource(index) {
-        model.turnOffLightSource(index);
+      turnOffLightSource: function turnOffLightSource() {
+        model.turnOffLightSource();
+      },
+
+      setLightSourceAngle: function setLightSourceAngle(angle) {
+        model.setLightSourceAngle(angle);
+      },
+
+      setLightSourceFrequency: function setLightSourceFrequency(freq) {
+        model.setLightSourceFrequency(freq);
+      },
+
+      setLightSourcePeriod: function setLightSourcePeriod(period) {
+        model.setLightSourcePeriod(period);
+      },
+
+      setLightSourceNumber: function setLightSourceNumber(number) {
+        model.setLightSourceNumber(number);
       },
 
       /**
@@ -308,9 +335,8 @@ define(function (require) {
         Sets individual atom properties using human-readable hash.
         e.g. setAtomProperties(5, {x: 1, y: 0.5, charge: 1})
       */
-      setAtomProperties: function setAtomProperties(i, props, checkLocation, moveMolecule, options) {
-        model.setAtomProperties(i, props, checkLocation, moveMolecule);
-        api.repaintIfReady(options);
+      setAtomProperties: function setAtomProperties(i, props, checkLocation, moveMolecule) {
+        setProperty(model.setAtomProperties, i, props, checkLocation, moveMolecule);
       },
 
       /**
@@ -371,8 +397,7 @@ define(function (require) {
       },
 
       setElementProperties: function setElementProperties(i, props) {
-        model.setElementProperties(i, props);
-        api.repaintIfReady();
+        setProperty(model.setElementProperties, i, props);
       },
 
       /**
@@ -409,8 +434,7 @@ define(function (require) {
         e.g. setObstacleProperties(0, {x: 1, y: 0.5, externalAx: 0.00001})
       */
       setObstacleProperties: function setObstacleProperties(i, props) {
-        model.setObstacleProperties(i, props);
-        api.repaintIfReady();
+        setProperty(model.setObstacleProperties, i, props);
       },
 
       /**
@@ -436,12 +460,19 @@ define(function (require) {
       },
 
       setShapeProperties: function setShapeProperties(i, props) {
-        model.setShapeProperties(i, props);
-        api.repaintIfReady();
+        setProperty( model.setShapeProperties, i, props );
       },
 
       getShapeProperties: function getShapeProperties(i) {
         return model.getShapeProperties(i);
+      },
+
+      setLineProperties: function setLineProperties(i, props) {
+        setProperty(model.setLineProperties, i, props);
+      },
+
+      getLineProperties: function getLineProperties(i) {
+        return model.getLineProperties(i);
       },
 
       addElectricField: function addElectricField(props, options) {
@@ -478,6 +509,16 @@ define(function (require) {
       removeShape: function removeShape(i, options) {
         try {
           model.removeShape(i);
+        } catch (e) {
+          if (!options || !options.silent)
+            throw e;
+        }
+        api.repaintIfReady();
+      },
+
+      removeLine: function removeLine(i, options) {
+        try {
+          model.removeLine(i);
         } catch (e) {
           if (!options || !options.silent)
             throw e;
@@ -692,23 +733,43 @@ define(function (require) {
       },
 
       setTextBoxProperties: function(i, props) {
-        model.setTextBoxProperties(i, props);
+        setProperty(model.setTextBoxProperties, i, props);
       },
 
-      repaintIfReady: function(options) {
-        if (!(inBatch || options && options.suppressRepaint)) {
+      getTextBoxProperties: function(i) {
+        return model.getTextBoxProperties(i);
+      },
+
+      getNumberOfTextBoxes: function() {
+        return model.getNumberOfTextBoxes();
+      },
+
+      getNumberOfLines: function() {
+        return model.getNumberOfLines();
+      },
+
+      getImageProperties: function(i) {
+        return model.getImageProperties(i);
+      },
+
+      setImageProperties: function(i, props) {
+        setProperty(model.setImageProperties, i, props);
+      },
+
+      repaintIfReady: function() {
+        if (batchDepth === 0) {
           api.repaint();
         }
       },
 
       batch: function(func) {
-        inBatch = true;
+        ++batchDepth;
 
         model.startBatch();
         func();
         model.endBatch();
 
-        inBatch = false;
+        --batchDepth;
 
         // call repaint manually
         api.repaintIfReady();

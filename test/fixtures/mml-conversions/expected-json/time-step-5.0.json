@@ -21,6 +21,8 @@
   "DNAState": "dna",
   "DNA": "",
   "DNAMutations": true,
+  "useQuantumDynamics": false,
+  "useChemicalReactions": false,
   "viewOptions": {
     "viewPortWidth": 4,
     "viewPortHeight": 2.5,
@@ -89,7 +91,7 @@
       -0.0010000000474974513,
       -0.0010000000474974513,
       -0.0010000000474974513,
-      -5
+      -0.1
     ],
     "color": [
       -855310,
@@ -199,6 +201,47 @@
     ],
     "visible": [
       true
+    ]
+  },
+  "lines": {
+    "x1": [
+      2.09
+    ],
+    "y1": [
+      2.47
+    ],
+    "x2": [
+      2.09
+    ],
+    "y2": [
+      0.02
+    ],
+    "beginStyle": [
+      "none"
+    ],
+    "endStyle": [
+      "none"
+    ],
+    "fence": [
+      0
+    ],
+    "lineColor": [
+      "rgb(255,0,0)"
+    ],
+    "lineWeight": [
+      1
+    ],
+    "lineDashes": [
+      "6,6"
+    ],
+    "layer": [
+      1
+    ],
+    "layerPosition": [
+      1
+    ],
+    "visible": [
+      1
     ]
   }
 }

@@ -5,7 +5,7 @@
   "aspectRatio": 2.1,
   "fontScale": 0.8,
   "about": [
-    "Specific heat capacitiy is the measure of the heat energy required",
+    "Specific heat capacity is the measure of the heat energy required",
     "to raise the temperature of a given quantity of a substance by one",
     "kelvin. Latent heat of melting describes tœhe amount of heat",
     "required to melt a solid. When a solid is undergoing melting, the",
@@ -42,6 +42,7 @@
         "timeStep": 2.5
       },
       "onLoad": [
+        "setComponentDisabled('start-heating', false);",
         "callEvery(200, function() {",
         "  if (get('experimentRunning')) {",
         "    var numAtoms, i, props, newVx, newVy, ratio, vXConstant, vYConstant;",
@@ -126,6 +127,7 @@
       "text": "Start adding heat",
       "action": [
         "if (isStopped()) {",
+        "  setComponentDisabled('start-heating', true);",
         "  start();",
         "}",
         "set('timeExperimentStarted', get('time'));",
@@ -137,7 +139,7 @@
       "id": "reset-experiment",
       "text": "Reset experiment",
       "action": [
-        "reset();",
+        "reload();",
         "set('experimentRunning', false);"
       ]
     },
@@ -145,7 +147,7 @@
       "type": "numericOutput",
       "id": "experiment-time",
       "property": "experimentTime",
-      "displayValue": "return format('1.1f')(value/1000)"
+      "displayValue": "return format('.1f')(value/1000)"
     },
     {
       "type": "graph",
@@ -161,8 +163,8 @@
       "lineWidth": 2,
       "yTickCount": 5,
       "xTickCount": 5,
-      "xFormatter": "2s",
-      "yFormatter": "2s",
+      "xFormatter": ".2s",
+      "yFormatter": ".2s",
       "xProperty": "totalEnergy",
       "properties": [
         "temperatureFiltered"
@@ -186,17 +188,16 @@
       "top": "model.top",
       "bottom": "model.bottom",
       "left": "model.right",
-      "padding-left": "1em",
+      "padding-left": "0.5em",
       "padding-right": "0.5em",
-      "padding-bottom": "0.5em",
-      "width": "model.width*0.6"
+      "padding-bottom": "0.5em"
     },
     {
       "id": "right-lines",
       "top": "model.top",
       "bottom": "model.bottom",
       "left": "right-bars.right",
-      "width": "model.width*0.8"
+      "width": "16em"
     },
     {
       "id": "bottom",

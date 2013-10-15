@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?> 
-<java version="1.6.0_51" class="java.beans.XMLDecoder"> 
+<java version="1.6.0_45" class="java.beans.XMLDecoder"> 
  <object id="Element0" class="org.concord.mw2d.models.Element"> 
   <void property="epsilon"> 
    <double>0.0010000000474974513</double> 
@@ -437,12 +437,12 @@
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1365632320000</long> 
+     <long>1374153037000</long> 
     </object> 
    </void> 
    <void method="put"> 
     <string>url</string> 
-    <string>/Users/wsd/cc/lab/imports/legacy-mw-content/sam-activities/diffusion/semipermeable/semipermeable$1.mml</string> 
+    <string>/home/piotr/Concord/lab/imports/legacy-mw-content/sam-activities/diffusion/semipermeable/semipermeable$1.mml</string> 
    </void> 
    <void method="put"> 
     <string>size</string> 
@@ -450,7 +450,7 @@
    </void> 
    <void method="put"> 
     <string>codebase</string> 
-    <string>/Users/wsd/cc/lab/imports/legacy-mw-content/sam-activities/diffusion/semipermeable</string> 
+    <string>/home/piotr/Concord/lab/imports/legacy-mw-content/sam-activities/diffusion/semipermeable</string> 
    </void> 
   </void> 
   <void property="quantumRule"> 

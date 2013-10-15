@@ -71,11 +71,18 @@ define(function(require) {
 
       stepCounter: function() {
         return stepCounter;
+      },
+
+      reset: function() {
+        dispatch.reset();
+        // TODO
       }
+
     };
 
     labModelerMixin.mixInto(model);
     dispatch.addEventTypes("tick");
+    dispatch.addEventTypes('reset');
 
     model.defineOutput('time', {
       label: "Time",

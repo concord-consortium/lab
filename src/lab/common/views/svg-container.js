@@ -1,7 +1,7 @@
 /*global $, define: false, d3: false */
 // ------------------------------------------------------------
 //
-//   PTA View Container
+//   SVG View Container
 //
 // ------------------------------------------------------------
 define(function (require) {
@@ -543,7 +543,7 @@ define(function (require) {
       },
 
       setup: function() {
-        if (renderer.setup) renderer.setup();
+        if (renderer.setup) renderer.setup(model);
       },
 
       update: function() {
@@ -564,8 +564,6 @@ define(function (require) {
         init();
 
         if (renderer.bindModel) renderer.bindModel(newModel, newModelUrl);
-
-        api.repaint();
       },
 
       pos: function() {
@@ -590,9 +588,11 @@ define(function (require) {
         }
         return rect;
       },
+
       on: function(type, listener) {
         dispatch.on(type, listener);
       },
+
       /**
        * Sets custom click handler.
        *
@@ -616,6 +616,7 @@ define(function (require) {
        * Note that this function should be called each time when possibly
        * clickable object is added or repainted!
        */
+
       updateClickHandlers: function () {
         var selector;
 
@@ -639,6 +640,7 @@ define(function (require) {
           }
         }
       },
+
       /**
        * Sets custom select handler. When you provide function as a handler, select action
        * is enabled and the provided handler executed when select action is finished.
@@ -731,8 +733,7 @@ define(function (require) {
     node = $el[0];
 
     init();
-    renderer = new Renderer(api);
-    renderer.bindModel(model);
+    renderer = new Renderer(api, model);
 
     return api;
   };

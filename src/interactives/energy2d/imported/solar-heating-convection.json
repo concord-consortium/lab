@@ -3,6 +3,7 @@
   "publicationStatus": "draft",
   "subtitle": "",
   "about": "",
+  "aspectRatio": 1.0,
   "importedFrom": "imports/energy2d/content/solar-heating-convection.html",
   "models": [
     {

@@ -1,23 +1,220 @@
 {
-  "title": "mazeGame",
-  "publicationStatus": "draft",
-  "subtitle": "",
-  "about": "",
+  "title": "Electrostatics: Maze Game",
+  "publicationStatus": "public",
+  "subtitle": "Guide a charged object through a maze.",
+  "about": "Control the charge of the gray ball by using the -, 0, and + buttons below the game. Use the attractive and repulsive forces between charged objects to navigate through the maze. Can you get it to the target before time runs out?",
+  "aspectRatio": 2.04,
+  "fontScale": 0.65,
+  "helpOnLoad": true,
   "models": [
     {
       "type": "md2d",
-      "id": "mazeGame$0",
-      "url": "imports/legacy-mw-content/converted/interactions/maze-game/mazeGame$0.json",
+      "id": "three-atoms-three-elements$0",
+      "url": "imports/legacy-mw-content/converted/interactions/maze-game/mazeGameModified$0.json",
       "importedFrom": "imports/legacy-mw-content/interactions/maze-game/mazeGame$0.mml",
       "viewOptions": {
-        "controlButtons": "play_reset"
-      }
+        "controlButtons": "",
+        "imageMapping": {
+          "target.png": "target.svg"
+        },
+        "textBoxes": [
+          {
+            "text": "50",
+            "x": 6.25,
+            "y": 1.6,
+            "layer": 2,
+            "width": 0.25,
+            "textAlign": "center",
+            "fontScale": 1.6,
+            "frame": "rounded rectangle",
+            "backgroundColor": "rgba(249,238,193,1)"
+          }
+        ]
+      },
+      "onLoad": [
+        "var props;",
+        "setObstacleProperties(1,{",
+        "  height: get('height') - getObstacleProperties(0).y",
+        "});",
+        "props = getObstacleProperties(3);",
+        "setObstacleProperties(3,{",
+        "  height: props.y + props.height,",
+        "  width: props.x + props.width,",
+        "  x: 0,",
+        "  y: 0",
+        "});",
+        "props = getObstacleProperties(4);",
+        "setObstacleProperties(4,{",
+        "  width: props.x + props.width,",
+        "  height: get('height') - props.y,",
+        "  x: 0",
+        "});",
+        "props = getObstacleProperties(5);",
+        "setObstacleProperties(5,{",
+        "  width: getObstacleProperties(1).x - props.x",
+        "});",
+        "props = getObstacleProperties(2);",
+        "setObstacleProperties(2, {",
+        "  y: getObstacleProperties(6).y + getObstacleProperties(6).height,",
+        "  height: getObstacleProperties(0).x - (getObstacleProperties(6).y + getObstacleProperties(6).height)",
+        "});",
+        "props = getObstacleProperties(6);",
+        "setObstacleProperties(6,{",
+        "  y: 0,",
+        "  height: getObstacleProperties(2).y",
+        "});",
+        "props = getObstacleProperties(7);",
+        "setObstacleProperties(7,{",
+        "  height: props.y + props.height,",
+        "  y: 0",
+        "});",
+        "var renderUpdateTimeStep = get('timeStep') * get('timeStepsPerTick') * 10;",
+        "callEvery(renderUpdateTimeStep, function(t) {",
+        "  var countdown = get('countdown');",
+        "  setTextBoxProperties(0,{text: format('0.0f')(countdown)});",
+        "  if (countdown <= 0) { ",
+        "    stop();",
+        "    alert('Game over!');",
+        "  } else {",
+        "    var target = getShapeProperties(0);",
+        "    if (atomsWithinRect(target.x, target.y, target.width, target.height).length > 0) {",
+        "      stop();",
+        "      if(get('max-countdown-time') - countdown <= 15) {",
+        "        alert('Did you cheat?');",
+        "      } else {",
+        "        alert('You won!');",
+        "      }",
+        "    }",
+        "  }",
+        "});"
+      ]
+    }
+  ],
+  "helpTips": [
+    {
+      "component": "",
+      "text": [
+        "Welcome to the Maze Game!",
+        "- - -",
+        "Your goal is to get the gray ball to the target before time runs out."
+      ]
+    },
+    {
+      "component": "set-negative",
+      "text": [
+        "Gives the ball a negative charge."
+      ]
+    }
+,
+    {
+      "component": "set-neutral",
+      "text": [
+        "Removes all charge from the ball."
+      ]
+    }
+,
+    {
+      "component": "set-positive",
+      "text": [
+        "Gives the ball a positive charge."
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "name": "countdown",
+      "label": "Countdown",
+      "value": "return (1 - get('time')/get('max-model-time'))*get('max-countdown-time')",
+      "unitType": "",
+      "unitAbbreviation": ""
+    }
+  ],
+  "parameters": [
+    {
+      "name": "max-model-time",
+      "initialValue": 250000,
+      "onChange": []
+    },
+    {
+      "name": "max-countdown-time",
+      "initialValue": 50,
+      "onChange": [
+        "setTextBoxProperties(0,{text: format('0.0f')(value)});"
+      ]
     }
   ],
   "components": [
+    {
+      "type": "button",
+      "id": "set-negative",
+      "text": "-",
+      "action": "setAtomProperties(0,{charge:-1});start()"
+    },
+    {
+      "type": "button",
+      "id": "set-neutral",
+      "text": "0",
+      "action": "setAtomProperties(0,{charge:0});start()"
+    },
+    {
+      "type": "button",
+      "id": "set-positive",
+      "text": "+",
+      "action": "setAtomProperties(0,{charge:1});start()"
+    },
+    {
+      "type": "button",
+      "id": "run",
+      "text": "Run",
+      "action": "start()"
+    },
+    {
+      "type": "button",
+      "id": "stop",
+      "text": "Stop",
+      "action": "stop()"
+    },
+    {
+      "type": "button",
+      "id": "reset",
+      "text": "Reset",
+      "action": "reload();"
+    },
+    {
+      "type": "pulldown",
+      "id": "difficulty",
+      "property": "max-countdown-time",
+      "tooltip": "Change the game diffulty. Harder mode has a shorter countdown.",
+      "options": [
+        {
+          "text": "Easier",
+          "value": 50
+        },
+        {
+          "text": "Harder",
+          "value": 25
+        }
+      ]
+    }
   ],
   "layout": {
     "bottom": [
+      "set-negative", "set-neutral", "set-positive", "run", "reset", "stop", "difficulty"
     ]
-  }
+  },
+  "template":[
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "width": "model.width",
+      "left": "model.left",
+      "align": "center"
+    },
+    {
+      "id": "right",
+      "padding-left": "0.5em",
+      "left": "model.right",
+      "top": "model.top"
+    }
+  ]
 }

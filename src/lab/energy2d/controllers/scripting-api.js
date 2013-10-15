@@ -1,8 +1,8 @@
-/*global define: false, model: false */
+/*global define: false */
 
 define(function () {
 
-  return function MD2DScriptingAPI (api) {
+  return function Energy2DScriptingAPI (api, model) {
 
     return {
       getTemperatureAt: function getTemperatureAt(x, y) {

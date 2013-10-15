@@ -1,0 +1,23 @@
+{
+  "title": "water20",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "water20",
+      "url": "imports/legacy-mw-content/converted/itsi/stoichiometry/water20.json",
+      "importedFrom": "imports/legacy-mw-content/itsi/stoichiometry/water20.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

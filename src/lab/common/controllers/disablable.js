@@ -8,20 +8,28 @@
  */
 define(function () {
 
+  var viewState = require('common/views/view-state');
+  var enableView = viewState.enableView;
+  var disableView = viewState.disableView;
+
   return function disablable(component, componentDef) {
     // Extend Public API of a component.
     component.setDisabled = function(v) {
       var $element = this.getViewContainer();
       if (v) {
-        $element.addClass("lab-disabled");
-        $element.append('<div class="lab-disabled-overlay"/>');
+        disableView($element);
+        this.isDisabled = true;
       } else {
-        $element.removeClass("lab-disabled");
-        $element.find(".lab-disabled-overlay").remove();
+        enableView($element);
+        this.isDisabled = false;
       }
     };
+
+    // Components are effectively enabled until we take specific action to disable them, so:
+    component.isDisabled = false;
+
     // Set initial value if componentDef is provided.
-    if (arguments.length > 1) {
+    if (componentDef) {
       component.setDisabled(componentDef.disabled);
     }
   };

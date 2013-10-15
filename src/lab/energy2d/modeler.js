@@ -6,6 +6,7 @@ define(function (require) {
       console         = require('common/console'),
       validator       = require('common/validator'),
       serialize       = require('common/serialize'),
+      performance     = require('common/performance'),
       LabModelerMixin = require('common/lab-modeler-mixin'),
       metadata        = require('energy2d/metadata'),
       coremodel       = require('energy2d/models/core-model'),
@@ -33,11 +34,15 @@ define(function (require) {
             symbol: "m/s"
           }
         }
-      };
+      },
+
+      energy2dModelCount = 0;
+
 
   return function Modeler(initialProperties) {
     var model,
         coreModel,
+        namespace = "energy2dModel" + (++energy2dModelCount),
 
         labModelerMixin = new LabModelerMixin({
           metadata: metadata,
@@ -268,11 +273,17 @@ define(function (require) {
     }
 
     model = {
+      namespace: namespace,
+
       tick: function () {
         var i, len, diverged;
+
+        performance.enterScope("engine");
         for (i = 0, len = model.properties.timeStepsPerTick; i < len; i++) {
           coreModel.nextStep();
         }
+        performance.leaveScope("engine");
+
         if (coreModel.isWebGLActive()) {
           if (ticksToGPUSync > 0) {
             ticksToGPUSync--;
@@ -343,6 +354,34 @@ define(function (require) {
         // copy CPU arrays to GPU in case of need.
         model.properties.use_WebGL = WebGLOrg;
         dispatch.partsChanged();
+      },
+
+      // Beware. The "reset" button in Lab interactives do not call this method. Instead they "reload"
+      // the model, discarding this model object and creating a new one from the model JSON.
+      reset: function() {
+        dispatch.willReset();
+        propertySupport.invalidatingChangePreHook();
+
+        model.stop();
+        coreModel.reset();
+
+        var parts;
+        // Validate parts before passing options to coreModel.
+        if (initialProperties.structure && initialProperties.structure.part) {
+          parts = validateParts(initialProperties.structure.part);
+        }
+        coreModel = coremodel.makeCoreModel(model.properties, parts);
+        setWebGLEnabled(model.properties.use_WebGL);
+        if (initialProperties.sensors) {
+          createSensors(initialProperties.sensors);
+        }
+        updatePartsViewModel();
+        updateSensorViewModel();
+
+        propertySupport.invalidatingChangePostHook();
+        model.resetAllOutputProperties();
+        dispatch.reset();
+        dispatch.invalidation();
       },
 
       stepCounter: function () {
@@ -424,10 +463,6 @@ define(function (require) {
         return viewModel.sensors;
       },
 
-      setPerformanceTools: function () {
-        return coreModel.setPerformanceTools();
-      },
-
       serialize: function () {
         var propCopy = {},
             rawProperties = propertySupport.rawValues;
@@ -471,6 +506,19 @@ define(function (require) {
 
       updatePartsViewModel();
       updateSensorViewModel();
+
+      // FIXME. More yuck: We still need a pattern for recompute model properties which don't depend
+      // on physics (and which therefore can be recomputed without invalidating and recomputing all
+      // the physics based properties) while still making them (1) observable and (2) read-only.
+
+      // used to triggers recomputation of isPlayable property based on isStopped and isReady:
+      model.on('play.model', recomputeProperties);
+      model.on('stop.model', recomputeProperties);
+
+      function recomputeProperties() {
+        propertySupport.invalidatingChangePreHook();
+        propertySupport.invalidatingChangePostHook();
+      }
 
       // Temporal workaround. In fact width and height should
       // be outputs based on min / max.

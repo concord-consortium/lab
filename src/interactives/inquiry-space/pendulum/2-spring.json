@@ -10,7 +10,7 @@
     "Can you explain why? Is this different from the relationships for a pendulum? Try the",
     "damping slider. Does damping change the period?"
   ],
-  "aspectRatio": 1.6,
+  "aspectRatio": 1.5,
   "fontScale": 0.8,
   "models": [
     {
@@ -120,7 +120,7 @@
       "id": "gravity-slider",
       "min": 0.8,
       "max": 19.8,
-      "displayValue": "return format('1.1f')(value)",
+      "displayValue": "return format('.1f')(value)",
       "labels": [
         {
           "value": 1,
@@ -140,7 +140,7 @@
       "id": "spring-constant-slider",
       "min": 1,
       "max": 30,
-      "displayValue": "return format('1.1f')(value)",
+      "displayValue": "return format('.1f')(value)",
       "labels": [
         {
           "value": 1,
@@ -160,7 +160,7 @@
       "id": "length-slider",
       "min": -0.6,
       "max": 0.6,
-      "displayValue": "return format('1.2f')(value)",
+      "displayValue": "return format('.2f')(value)",
       "labels": [
         {
           "value": -0.6,
@@ -172,7 +172,8 @@
         }
       ],
       "steps": 24,
-      "title": "Starting distance from equilibrium (m)",
+      "title": "Starting position (m)",
+      "tooltip": "Starting distance from equilibrium position",
       "property": "startingDisplacement"
     },
     {
@@ -200,7 +201,7 @@
       "id": "damping-slider",
       "min": 0,
       "max": 1,
-      "displayValue": "return format('1.2f')(value)",
+      "displayValue": "return format('.2f')(value)",
       "labels": [
         {
           "value": 0,
@@ -212,14 +213,15 @@
         }
       ],
       "steps": 20,
-      "title": "Damping (Newton per m/s)",
+      "title": "Damping (N per m/s)",
+      "tooltip": "Damping force in Newtons per m/s",
       "property": "damping"
     },
     {
       "type": "numericOutput",
       "id": "equilibrium-display",
       "property": "equilibriumLength",
-      "displayValue": "return format('1.2f')(value)"
+      "displayValue": "return format('.2f')(value)"
     },
     {
       "type": "checkbox",
@@ -231,7 +233,7 @@
       "type": "numericOutput",
       "id": "displacement-display",
       "property": "currentDisplacement",
-      "displayValue": "return format('1.2f')(value)"
+      "displayValue": "return format('.2f')(value)"
     },
     {
       "type": "graph",
@@ -242,9 +244,10 @@
       "ymin": -0.6,
       "ymax": 0.6,
       "xmax": 10,
-      "yFormatter": "2s",
       "xTickCount": 5,
-      "xFormatter": "2s",
+      "yTickCount": 6,
+      "xFormatter": ".2s",
+      "yFormatter": ".2s",
       "properties": [
         "currentDisplacement"
       ]
@@ -271,5 +274,25 @@
       ]
     ]
   },
-  "template": "wide-right"
+  "template": [
+    {
+      "id": "top",
+      "bottom": "model.top",
+      "width": "interactive.width"
+    },
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "padding-top": "0.5em"
+    },
+    {
+      "id": "right",
+      "top": "model.top",
+      "left": "model.right",
+      "right": "interactive.right",
+      "height": "model.height",
+      "padding-left": "1em",
+      "padding-right": "0.5em"
+    }
+  ]
 }

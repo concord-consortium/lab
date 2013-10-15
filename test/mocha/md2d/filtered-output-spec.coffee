@@ -2,7 +2,7 @@ helpers = require '../../helpers'
 helpers.setupBrowserEnvironment()
 simpleModel = helpers.getModel 'simple-model.json'
 
-RunningAverageFilter = requirejs 'cs!common/running-average-filter'
+RunningAverageFilter = requirejs 'cs!common/filters/running-average-filter'
 Model                = requirejs 'md2d/models/modeler'
 
 describe "MD2D filters", ->

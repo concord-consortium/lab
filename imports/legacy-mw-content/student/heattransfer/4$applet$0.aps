@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<state>
+<view>
+</view>
+<model>
+<timestep>0.5</timestep>
+<measurement_interval>100</measurement_interval>
+<sun_angle>1.5707964</sun_angle><solar_power_density>2000.0</solar_power_density><solar_ray_count>24</solar_ray_count><solar_ray_speed>0.1</solar_ray_speed><photon_emission_interval>20</photon_emission_interval><background_conductivity>1.0</background_conductivity><background_viscosity>0.1</background_viscosity><thermal_buoyancy>5.0E-4</thermal_buoyancy>
+<buoyancy_approximation>0</buoyancy_approximation>
+<boundary>
+<flux_at_border upper="0.0" lower="0.0" left="0.0" right="0.0"/>
+</boundary>
+<structure>
+<part><rectangle  x="0.0" y="0.0" width="10.0" height="1.0"/><thermal_conductivity>1.0E-6</thermal_conductivity>
+<specific_heat>1300.0</specific_heat>
+<density>25.0</density>
+<transmission>0.0</transmission>
+<reflection>0.0</reflection>
+<absorption>1.0</absorption>
+<emissivity>0.0</emissivity>
+</part>
+<part><rectangle  x="0.0" y="9.0" width="10.0" height="1.0"/><thermal_conductivity>1.0E-6</thermal_conductivity>
+<specific_heat>1300.0</specific_heat>
+<density>25.0</density>
+<transmission>0.0</transmission>
+<reflection>0.0</reflection>
+<absorption>1.0</absorption>
+<emissivity>0.0</emissivity>
+</part>
+<part><ellipse  x="4.5" y="8.5" a="1.0" b="0.5"/><thermal_conductivity>1.0</thermal_conductivity>
+<specific_heat>1300.0</specific_heat>
+<density>25.0</density>
+<transmission>0.0</transmission>
+<reflection>0.0</reflection>
+<absorption>1.0</absorption>
+<emissivity>0.0</emissivity>
+<temperature>50.0</temperature>
+</part>
+<part><polygon count="3" vertices="5.5, 7.5, 8.0, 7.5, 5.0, 6.5"/>
+<thermal_conductivity>0.01</thermal_conductivity>
+<specific_heat>1300.0</specific_heat>
+<density>25.0</density>
+<transmission>0.0</transmission>
+<reflection>0.0</reflection>
+<absorption>1.0</absorption>
+<emissivity>0.0</emissivity>
+</part>
+</structure>
+</model>
+</state>

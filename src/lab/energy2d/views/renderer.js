@@ -3,7 +3,7 @@
 define(function(require) {
   var HeatmapView        = require('energy2d/views/heatmap'),
       HeatmapWebGLView   = require('energy2d/views/heatmap-webgl'),
-      WebGLStatus        = require('energy2d/views/webgl-status'),
+      WebGLStatusView    = require('energy2d/views/webgl-status'),
       VectormapView      = require('energy2d/views/vectormap'),
       VectormapWebGLView = require('energy2d/views/vectormap-webgl'),
       PhotonsView        = require('energy2d/views/photons'),
@@ -11,21 +11,20 @@ define(function(require) {
       SensorsView        = require('energy2d/views/sensors');
 
 
-  return function Renderer(SVGContainer) {
+  return function Renderer(SVGContainer, model) {
     var api,
-        model,
 
         heatmap_view,
         velocity_view,
         photons_view,
         parts_view,
         sensors_view,
-        webgl_status = new WebGLStatus(),
+        webgl_status = new WebGLStatusView(null, model),
         $status = webgl_status.getHTMLElement(),
         $canvasCont = $("<div id='e2d-canvas-views'>"),
-        cavasCount = 0,
+        canvasCount = 0,
 
-        beforeSetup = true;
+        isSetup = false;
 
     function setAsNextLayer(view) {
       var $layer = view.getHTMLElement();
@@ -35,8 +34,8 @@ define(function(require) {
       $layer.css('position', 'absolute');
       $layer.css('top', 0);
       $layer.css('left', 0);
-      $layer.css('z-index', cavasCount);
-      cavasCount += 1;
+      $layer.css('z-index', canvasCount);
+      canvasCount += 1;
 
       $canvasCont.append($layer);
 
@@ -58,11 +57,11 @@ define(function(require) {
       // TODO: check if new version (30+?) fixes that.
     }
 
-    function setupCavnasViews() {
+    function setupCanvasViews() {
       var props = model.properties;
 
       $canvasCont.empty();
-      cavasCount = 0;
+      canvasCount = 0;
       // Use isWebGLActive() method, not use_WebGL property. The fact that
       // use_WebGL option is set to true doesn't mean that WebGL can be
       // initialized. It's only a preference.
@@ -111,9 +110,9 @@ define(function(require) {
         return width * model.properties.grid_height / model.properties.grid_width;
       },
 
-      setup: function () {
-        beforeSetup = false;
-        setupCavnasViews();
+      setup: function (model) {
+        isSetup = true;
+        setupCanvasViews();
 
         parts_view.bindPartsArray(model.getPartsArray());
         sensors_view.bindSensorsArray(model.getSensorsArray());
@@ -126,7 +125,7 @@ define(function(require) {
         api.update();
 
         model.addPropertiesListener("use_WebGL", function() {
-          setupCavnasViews();
+          setupCanvasViews();
           setVisOptions();
           webgl_status.render();
           api.update();
@@ -146,7 +145,7 @@ define(function(require) {
       },
 
       update: function () {
-        if (beforeSetup) return;
+        if (!isSetup) return;
         heatmap_view.renderHeatmap();
         velocity_view.renderVectormap();
         photons_view.renderPhotons();
@@ -155,7 +154,7 @@ define(function(require) {
 
       resize: function () {
         // Ignore all resize() callbacks if view isn't already set up.
-        if (beforeSetup) return;
+        if (!isSetup) return;
         heatmap_view.resize();
         velocity_view.resize();
         photons_view.resize();

@@ -41,9 +41,15 @@ define(function (require) {
           properties: propertySupport.properties
         });
 
+    // Is the model setup complete, so the model is ready to be played and record to tick history?
+    // "Naked" models are ready upon instantation, but in an interactive, a model shouldn't record
+    // history or play until external code has finished setting up parameters, running onload
+    // scripts; in the latter case, we wait for a call to model.ready()
+    var isReady = false;
+
     // FIXME: These events have to be available as some other modules try to
     // add listeners. Probably they aren't necessary, trace it and fix.
-    dispatchSupport.addEventTypes("reset", "stepForward", "stepBack", "seek", "invalidation", "willReset");
+    dispatchSupport.addEventTypes("reset", "stepForward", "stepBack", "seek", "invalidation", "willReset", "ready");
 
     api = {
       mixInto: function(target) {
@@ -59,6 +65,42 @@ define(function (require) {
         target.willReset = function() {
           dispatchSupport.willReset();
         };
+
+        /**
+          Indicate that the model is ready, causing it to save its current state as the initial state,
+          to push the current state as the first state of the regular tick history, and to emit the
+          ready event.
+
+          This is a public method because we may have to wait for
+          external code to indicate that setup is complete (e.g., code that defines parameters and sets
+          their initial values, or manipulates the model in some other way)
+
+          This method is called upon model instantiation if initializationOptions.waitForSetup is false
+          Otherwise, it must be called by external code. It is an error to call it twice.
+        */
+        target.ready = function() {
+          if (isReady) {
+            throw new Error("ready() called on an already-ready model.");
+          }
+
+          if (api.tickHistory) {
+            api.tickHistory.saveInitialState();
+            api.tickHistory.push();
+          }
+
+          propertySupport.invalidatingChangePreHook();
+          isReady = true;
+          propertySupport.invalidatingChangePostHook();
+
+          dispatchSupport.ready();
+        };
+
+        Object.defineProperty(target, 'isReady', {
+          enumerable: true,
+          get: function() {
+            return isReady;
+          }
+        });
 
         if (metadata) {
           defineBuiltinProperties({

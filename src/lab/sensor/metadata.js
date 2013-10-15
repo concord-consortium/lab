@@ -9,10 +9,16 @@ define(function() {
         immutable: true
       },
       sensorType: {
-        defaultValue: 'goMotion'
+        defaultValue: null
       },
       samplesPerSecond: {
         readOnly: true
+      },
+      collectionTime: {
+        defaultValue: null
+      },
+      tareValue: {
+        defaultValue: 0
       }
     },
     viewOptions: {

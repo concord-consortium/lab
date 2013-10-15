@@ -88,14 +88,14 @@
       "id": "left-specific-heat-output",
       "property": "left-specific-heat",
       "orientation": "horizontal",
-      "displayValue": "return format('1f')(value)"
+      "displayValue": "return format('.1f')(value)"
     },
     {
       "type": "numericOutput",
       "id": "right-specific-heat-output",
       "property": "right-specific-heat",
       "orientation": "horizontal",
-      "displayValue": "return format('1f')(value)"
+      "displayValue": "return format('.1f')(value)"
     },
     {
       "type": "graph",
@@ -107,8 +107,8 @@
       "ymax": 10,
       "xmax": 400,
       "xTickCount": 5,
-      "xFormatter": "2s",
-      "yFormatter": "2s",
+      "xFormatter": ".2s",
+      "yFormatter": ".2s",
       "xProperty": "time",
       "properties": [
         "sensor-1", "sensor-0"

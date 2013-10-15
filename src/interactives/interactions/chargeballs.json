@@ -1,8 +1,8 @@
 {
   "title": "Opposites Attract",
-  "publicationStatus": "draft",
+  "publicationStatus": "public",
   "subtitle": "Explore how charged objects interact.",
-  "about": "Change the charge on each ball to positive or negative. Observe how the different charges on each ball affect the relationship between the balls.",
+  "about": "Change the charge on each sphere to positive or negative. Observe how the charges affect the interaction between the spheres.",
   "aspectRatio": 1.8,
   "models": [
     {
@@ -54,7 +54,7 @@
       "type": "button",
       "id": "reset",
       "text": "Reset",
-      "action": "reset()"
+      "action": "reload();"
     }
   ],
   "layout": {

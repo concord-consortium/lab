@@ -49,7 +49,7 @@
       "id": "force-slider",
       "min": 15,
       "max": 120,
-      "displayValue": "return format('1f')(value)",
+      "displayValue": "return format('.1f')(value)",
       "labels": [
         {
           "value": 15,
@@ -70,14 +70,14 @@
       "id": "area-display",
       "property": "area",
       "orientation": "vertical",
-      "displayValue": "return format('1.1f')(value)"
+      "displayValue": "return format('.1f')(value)"
     },
     {
       "type": "numericOutput",
       "id": "pressure-times-area-display",
       "property": "pressureTimesArea",
       "orientation": "vertical",
-      "displayValue": "return format('1f')(value)"
+      "displayValue": "return format('.0f')(value)"
     }
   ]
 }

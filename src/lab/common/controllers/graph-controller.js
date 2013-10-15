@@ -1,4 +1,4 @@
-/*global define, $, model*/
+/*global define, $*/
 
 define(function (require) {
   var Graph = require('grapher/core/graph'),
@@ -10,7 +10,11 @@ define(function (require) {
       // internal implementation detail (the grapher options format).
       grapherOptionForComponentSpecProperty = {
         title: 'title',
+        enableAutoScaleButton: 'enableAutoScaleButton',
+        enableAxisScaling: 'enableAxisScaling',
         dataPoints: 'dataPoints',
+        markAllDataPoints: 'markAllDataPoints',
+        showRulersOnSelection: 'showRulersOnSelection',
         fontScaleRelativeToParent: 'fontScaleRelativeToParent',
         xlabel: 'xlabel',
         xmin: 'xmin',
@@ -29,17 +33,42 @@ define(function (require) {
         bars: 'bars'
       },
 
-  graphControllerCount = 0;
+      graphControllerCount = 0;
 
-  return function graphController(component, scriptingAPI, interactivesController) {
+  return function graphController(component, interactivesController) {
     var // HTML element containing view
         $container,
         grapher,
         controller,
+        model,
+        scriptingAPI,
         properties,
-        data = [],
+        dataPointsArrays = [],
         namespace = "graphController" + (++graphControllerCount);
 
+    // Name of the model property whose description sets the current yLabel.
+    var yLabelProperty;
+
+    function initialize() {
+      scriptingAPI = interactivesController.getScriptingAPI();
+      model = interactivesController.getModel();
+
+      // Validate component definition, use validated copy of the properties.
+      component = validator.validateCompleteness(metadata.graph, component);
+      // The list of properties we are being asked to graph.
+      properties = component.properties.slice();
+      $container = $('<div>').attr('id', component.id).addClass('graph');
+      // Each interactive component has to have class "component".
+      $container.addClass("component");
+      // Apply custom width and height settings.
+      $container.css({
+        width: component.width,
+        height: component.height
+      });
+      if (component.tooltip) {
+        $container.attr("title", component.tooltip);
+      }
+    }
 
     /**
       Returns an array containing two-element arrays each containing the current model
@@ -80,10 +109,18 @@ define(function (require) {
       var dataPoint = getDataPoint(),
           i;
 
-      for (i = 0; i < dataPoint.length; i++) {
-        data[i] = [dataPoint[i]];
+      if (component.streamDataFromModel) {
+        for (i = 0; i < dataPoint.length; i++) {
+          dataPointsArrays[i] = [dataPoint[i]];
+        }
+        grapher.resetPoints(dataPointsArrays);
+      } else {
+        for (i = 0; i < dataPoint.length; i++) {
+          dataPointsArrays[i] = [];
+        }
+        grapher.resetPoints();
       }
-      grapher.resetPoints(data);
+      grapher.repaint();
     }
 
     /**
@@ -95,7 +132,7 @@ define(function (require) {
           i;
 
       for (i = 0; i < dataPoint.length; i++) {
-        data[i].push(dataPoint[i]);
+        dataPointsArrays[i].push(dataPoint[i]);
       }
       // The grapher considers each individual (property, time) pair to be a "point", and therefore
       // considers the set of properties at any 1 time (what we consider a "point") to be "points".
@@ -111,9 +148,9 @@ define(function (require) {
 
       for (i = 0; i < properties.length; i++) {
         // Account for initial data, which corresponds to stepCounter == 0
-        data[i].length = model.stepCounter() + 1;
+        dataPointsArrays[i].length = model.stepCounter()+1;
       }
-      grapher.resetPoints(data);
+      grapher.resetPoints(dataPointsArrays);
     }
 
     /**
@@ -131,49 +168,67 @@ define(function (require) {
       grapher.reset('#' + component.id, getOptions());
     }
 
-
     function registerModelListeners() {
-      // Namespace listeners to '.graphController' so we can eventually remove them all at once
-      model.on('tick.'+namespace, appendDataPoint);
-      model.on('stepBack.'+namespace, redrawCurrentStepPointer);
-      model.on('stepForward.'+namespace, redrawCurrentStepPointer);
-      model.on('seek.'+namespace, redrawCurrentStepPointer);
-      model.on('reset.'+namespace, function() {
-        resetGrapher();
-        resetData();
-      });
-      model.on('play.'+namespace, function() {
-        if (grapher.numberOfPoints() && model.stepCounter() < grapher.numberOfPoints()) {
+      if (component.streamDataFromModel) {
+        // Namespace listeners to '.graphController' so we can eventually remove them all at once
+        model.on('tick.'+namespace, appendDataPoint);
+        model.on('stepBack.'+namespace, redrawCurrentStepPointer);
+        model.on('stepForward.'+namespace, redrawCurrentStepPointer);
+        model.on('seek.'+namespace, redrawCurrentStepPointer);
+        model.on('play.'+namespace, function() {
+          if (grapher.numberOfPoints() && model.stepCounter() < grapher.numberOfPoints()) {
+            removeDataAfterStepPointer();
+          }
+        });
+        model.on('invalidation.'+namespace, function() {
           removeDataAfterStepPointer();
+        });
+        model.on('reset.'+namespace, modelResetHandler);
+      }
+    }
+
+    function updateYLabelHandler() {
+      if (yLabelProperty) {
+        model.removePropertyDescriptionObserver(yLabelProperty, setYLabelFromProperty);
+        yLabelProperty = null;
+      }
+
+      if (!component.ylabel && properties.length === 1) {
+        yLabelProperty = properties[0];
+        setYLabelFromProperty();
+        model.addPropertyDescriptionObserver(yLabelProperty, setYLabelFromProperty);
+      }
+    }
+
+    function setYLabelFromProperty() {
+      var description = model.getPropertyDescription(yLabelProperty);
+      grapher.yLabel(description.getLabel() + " (" + description.getUnitAbbreviation() + ")");
+    }
+
+    function modelResetHandler() {
+      if (grapher) {
+        if (component.clearDataOnReset) {
+          resetData();
+          if (component.resetAxesOnReset) {
+            resetGrapher();
+          }
         }
-      });
-      model.on('invalidation.'+namespace, removeDataAfterStepPointer);
+      } else {
+        grapher = new Graph($container[0], getOptions(), undefined, interactivesController.getNextTabIndex());
+      }
+      updateYLabelHandler();
     }
 
-    //
-    // Initialization.
-    //
-    // Validate component definition, use validated copy of the properties.
-    component = validator.validateCompleteness(metadata.graph, component);
-    // The list of properties we are being asked to graph.
-    properties = component.properties.slice();
-    $container = $('<div>').attr('id', component.id).addClass('graph');
-    // Each interactive component has to have class "component".
-    $container.addClass("component");
-    // Apply custom width and height settings.
-    $container.css({
-      width: component.width,
-      height: component.height
-    });
-    if (component.tooltip) {
-      $container.attr("title", component.tooltip);
-    }
+    controller = {
+      type: "graph",
 
-    return controller = {
       /**
         Called by the interactives controller when the model finishes loading.
       */
       modelLoadedCallback: function() {
+        model = interactivesController.getModel();
+        scriptingAPI = interactivesController.getScriptingAPI();
+
         if (grapher) {
           resetGrapher();
         } else {
@@ -181,6 +236,95 @@ define(function (require) {
         }
         resetData();
         registerModelListeners();
+        updateYLabelHandler();
+        grapher.repaint();
+      },
+
+      /**
+        Used when manually adding points to the graph.
+      */
+      appendDataPropertiesToComponent: appendDataPoint,
+
+
+      /**
+        Add non-realtime dataset to the graph.
+      */
+      addDataSet: function (dataset) {
+        dataPointsArrays.push(dataset);
+      },
+
+      /**
+        Remove all non-realtime datasets
+      */
+      clearDataSets: function () {
+        dataPointsArrays.length = properties.length;
+      },
+
+      /**
+        Modifies the current list of graph options with new values and resets the graph.the
+        Note: does not support changes to the 'properties' list.
+      */
+      setAttributes: function(opts) {
+        if (grapher) {
+          $.extend(component, opts);
+          resetData();
+          if (opts.dataPoints) {
+            dataPointsArrays = opts.dataPoints;
+          }
+          resetGrapher();
+        }
+        // We may have set or unset the explicit 'ylabel' option; update the graph's ylabel as
+        // appropriate
+        updateYLabelHandler();
+      },
+
+      /**
+        Adjusts axis ranges to match those of the properties the graph is reading from, without
+        clearing data.
+
+        Does nothing to the x-axis if the description of the xProperty has no min or max property.
+        For the y-axis properties, finds the (min, max) pair that contains all property ranges,
+        ignoring missing values for min or max, as long as at least one property has a min and one
+        property has a max.
+      */
+      syncAxisRangesToPropertyRanges: function() {
+        var xDescription = model.getPropertyDescription(component.xProperty);
+        var yDescriptions = properties.map(function(property) {
+          return model.getPropertyDescription(property);
+        });
+        var ymin;
+        var ymax;
+
+        if (xDescription && xDescription.getMin() != null && xDescription.getMax() != null) {
+          grapher.xDomain([xDescription.getMin(), xDescription.getMax()]);
+        }
+
+        ymin = Infinity;
+        ymax = -Infinity;
+        yDescriptions.forEach(function(description) {
+          if (description) {
+            if (description.getMin() < ymin) ymin = description.getMin();
+            if (description.getMax() > ymax) ymax = description.getMax();
+          }
+        });
+
+        if (isFinite(ymin) && isFinite(ymax)) {
+          grapher.yDomain([ymin, ymax]);
+        }
+      },
+
+      /**
+        If the x=0 is not visible in the current x axis range, move the x-axis so that x=0 is
+        present at the left of the graph, while keeping the current x axis scale and the y axis
+        range.
+      */
+      scrollXAxisToZero: function() {
+        var xmin = grapher.xmin();
+        var xmax = grapher.xmax();
+
+        if (0 < xmin || xmax < 0) {
+          grapher.xDomain([0, xmax - xmin]);
+        }
       },
 
       /**
@@ -201,6 +345,18 @@ define(function (require) {
         // For now only "fit to parent" behavior is supported.
         if (grapher) {
           grapher.resize();
+        }
+      },
+
+      reset: function () {
+        if (grapher) {
+          resetGrapher();
+        }
+      },
+
+      update: function () {
+        if (grapher) {
+          grapher.update();
         }
       },
 
@@ -230,6 +386,9 @@ define(function (require) {
         return result;
       }
     };
-  };
 
+    initialize();
+    return controller;
+
+  };
 });

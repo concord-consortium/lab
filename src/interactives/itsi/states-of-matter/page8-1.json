@@ -1,0 +1,88 @@
+{
+  "title": "Evaporation - A more realistic model",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "aspectRatio": 2.0,
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "page8$1",
+      "url": "imports/legacy-mw-content/converted/itsi/states-of-matter/page8$1.json",
+      "importedFrom": "imports/legacy-mw-content/converted/itsi/states-of-matter/page8$1.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      },
+      "onLoad": [
+        "setComponentDisabled('remove-cover', false);",
+        "onPropertyChange('time', function(t) {",
+        "  var atoms = atomsWithinRect(0, 1.575, 5, 0.125);",
+        "  batch(function() {",
+        "    for(var i = 0; i < atoms.length; i++) {",
+        "      removeAtom(atoms[i])",
+        "    }",
+        "  })",
+        "  setTextBoxProperties(0, {text: getNumberOfAtoms() + ' molecules'});",
+        "});"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "name": "shiftedTemperature",
+      "unitType": "temperature",
+      "label": "Temperature",
+      "value": [
+        "return get('temperature')-300;"
+      ]
+    }
+  ],
+  "filteredOutputs": [
+    {
+      "name": "temperatureFiltered",
+      "unitType": "temperature",
+      "label": "Temperature",
+      "property": "shiftedTemperature",
+      "type": "RunningAverage",
+      "period": 5000
+    }
+   ],
+  "components": [
+    {
+      "type": "button",
+      "id": "remove-cover",
+      "text": "Remove the cover: let it evaporate",
+      "action": [
+        "if (getNumberOfObstacles() > 0) {",
+        "  removeObstacle(0);",
+        "  removeTextBox(1);",
+        "  setComponentDisabled('remove-cover', true);",
+        "  start();",
+        "}"
+      ]
+    },
+    {
+      "type": "barGraph",
+      "id": "thermometer",
+      "property": "temperatureFiltered",
+      "units": "C",
+      "labelFormat": "3r",
+      "min": 0,
+      "max": 300
+    },
+    {
+      "type": "checkbox",
+      "id": "show-attractions",
+      "text": "Show Van der Waals Attractions",
+      "property": "showVDWLines"
+    }
+  ],
+  "layout": {
+    "bottom": [
+      "remove-cover", "show-attractions"
+    ],
+    "right": [
+      "thermometer"
+    ]
+  }
+}

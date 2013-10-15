@@ -100,10 +100,10 @@ group :build do
       command("make")
     end
 
-    watch(/(^src\/doc\/.+)/) do |match|
-      puts "running make because of change to src/doc file #{match[0]}"
-      command("make")
-    end
+    # watch(/(^src\/doc\/.+)/) do |match|
+    #   puts "running make because of change to src/doc file #{match[0]}"
+    #   command("make")
+    # end
 
     watch(/(^test\/vows\/.+\.js)$/) do |match|
       command("./node_modules/.bin/vows --isolate --no-color #{match[0]}")

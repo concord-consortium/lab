@@ -47,110 +47,59 @@
       ]
     }
   ],
+  "parameters": [
+    {
+      "name": "atomsCount",
+      "initialValue": 120,
+      "onChange": [
+        "var obsX = getObstacleProperties(0).x;",
+        "/* Ensure that available volume is enough for 100 molecules. */",
+        "if (value >= 100 && obsX < 1) { obsX = 1; setObstacleProperties(0, {x: obsX}); }",
+        "batch(function () {",
+        "  var atomsCount = getNumberOfAtoms();",
+        "  var xMax = obsX - getElementProperties(3).sigma;",
+        "  var h = get('height');",
+        "  while (atomsCount < value) {",
+        "    if (addAtom({ element: 3, x: xMax * Math.random(), y: h * Math.random()})) ",
+        "      atomsCount += 1;",
+        "  }",
+        "  while (atomsCount > value) {",
+        "    removeAtom(getNumberOfAtoms() - 1);",
+        "    atomsCount -= 1;",
+        "  }",
+        "});"
+      ]
+    }
+  ],
   "components": [
     {
       "type": "pulldown",
       "id": "pulldown1",
+      "property": "atomsCount",
       "options": [
         {
           "text": "120 molecules",
-          "action": [
-            "var opt = {suppressRepaint: true};",
-            "var obsX = getObstacleProperties(0).x;",
-            "/* Ensure that available volume is enough for 100 molecules. */",
-            "if (obsX < 1) { obsX = 1; setObstacleProperties(0, {x: obsX}); }",
-            "var xMax = obsX - getElementProperties(3).sigma;",
-            "var h = get('height');",
-            "while (getNumberOfAtoms() < 120) {",
-            "  addAtom({ element: 3, x: xMax * Math.random(), y: h * Math.random()}, opt);",
-            "}",
-            "while (getNumberOfAtoms() > 120) {",
-            "  removeAtom(getNumberOfAtoms() - 1, opt);",
-            "}",
-            "repaint();"
-          ]
+          "value": 120
         },
         {
           "text": "100 molecules",
-          "action": [
-            "var opt = {suppressRepaint: true};",
-            "var obsX = getObstacleProperties(0).x;",
-            "/* Ensure that available volume is enough for 100 molecules. */",
-            "if (obsX < 1) { obsX = 1; setObstacleProperties(0, {x: obsX}); }",
-            "var xMax = obsX - getElementProperties(3).sigma;",
-            "var h = get('height');",
-            "while (getNumberOfAtoms() < 100) {",
-            "  addAtom({ element: 3, x: xMax * Math.random(), y: h * Math.random()}, opt);",
-            "}",
-            "while (getNumberOfAtoms() > 100) {",
-            "  removeAtom(getNumberOfAtoms() - 1, opt);",
-            "}",
-            "repaint();"
-          ]
+          "value": 100
         },
         {
           "text": "80 molecules",
-          "action": [
-            "var opt = {suppressRepaint: true};",
-            "var obsX = getObstacleProperties(0).x;",
-            "var xMax = obsX - getElementProperties(3).sigma;",
-            "var h = get('height');",
-            "while (getNumberOfAtoms() < 80) {",
-            "  addAtom({ element: 3, x: xMax * Math.random(), y: h * Math.random()}, opt);",
-            "}",
-            "while (getNumberOfAtoms() > 80) {",
-            "  removeAtom(getNumberOfAtoms() - 1, opt);",
-            "}",
-            "repaint();"
-          ]
+          "value": 80
         },
         {
           "text": "60 molecules",
-          "action": [
-            "var opt = {suppressRepaint: true};",
-            "var obsX = getObstacleProperties(0).x;",
-            "var xMax = obsX - getElementProperties(3).sigma;",
-            "var h = get('height');",
-            "while (getNumberOfAtoms() < 60) {",
-            "  addAtom({ element: 3, x: xMax * Math.random(), y: h * Math.random()}, opt);",
-            "}",
-            "while (getNumberOfAtoms() > 60) {",
-            "  removeAtom(getNumberOfAtoms() - 1, opt);",
-            "}",
-            "repaint();"
-          ]
+          "value": 60
         },
         {
           "text": "40 molecules",
-          "action": [
-            "var opt = {suppressRepaint: true};",
-            "var obsX = getObstacleProperties(0).x;",
-            "var xMax = obsX - getElementProperties(3).sigma;",
-            "var h = get('height');",
-            "while (getNumberOfAtoms() < 40) {",
-            "  addAtom({ element: 3, x: xMax * Math.random(), y: h * Math.random()}, opt);",
-            "}",
-            "while (getNumberOfAtoms() > 40) {",
-            "  removeAtom(getNumberOfAtoms() - 1, opt);",
-            "}",
-            "repaint();"
-          ]
+          "value": 40
         },
         {
           "text": "20 molecules",
-          "action": [
-            "var opt = {suppressRepaint: true};",
-            "var obsX = getObstacleProperties(0).x;",
-            "var xMax = obsX - getElementProperties(3).sigma;",
-            "var h = get('height');",
-            "while (getNumberOfAtoms() < 20) {",
-            "  addAtom({ element: 3, x: xMax * Math.random(), y: h * Math.random()}, opt);",
-            "}",
-            "while (getNumberOfAtoms() > 20) {",
-            "  removeAtom(getNumberOfAtoms() - 1, opt);",
-            "}",
-            "repaint();"
-          ]
+          "value": 20
         }
       ]
     },
@@ -160,7 +109,7 @@
       "label": "Gas volume",
       "units": "nm³",
       "property": "volume",
-      "displayValue": "return format('1.2f')(value)"
+      "displayValue": "return format('.2f')(value)"
     }
   ]
 }

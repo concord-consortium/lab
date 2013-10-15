@@ -1,0 +1,23 @@
+{
+  "title": "heattransfer2",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "heattransfer2$0",
+      "url": "imports/legacy-mw-content/converted/student/heattransfer/heattransfer2$0.json",
+      "importedFrom": "imports/legacy-mw-content/student/heattransfer/heattransfer2$0.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

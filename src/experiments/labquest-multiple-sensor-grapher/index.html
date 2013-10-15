@@ -13,42 +13,50 @@
     <script type="text/javascript" src="../../vendor/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="../../vendor/d3/d3.js"></script>
     <script type="text/javascript" src="../../lab/lab.grapher.js"></script>
-    <script src="sensor-configs.js"></script>
-    <script src="sensor.js"></script>
+    <script src="../../lab/lab.sensor-applet.js"></script>
   </head>
   <body>
     <p class="sensor-selector">Interface and Sensor Type:
       <select id="sensor-type-selector1">
         <option value="select-sensor" disabled selected>select interface and sensor ...</option>
-        <option value="LabQuest temperature">LabQuest Temperature</option>
-        <option value="LabQuest light">LabQuest Light</option>
-        <option value="LabQuest force (5N)">LabQuest Force (5N)</option>
-        <option value="LabQuest force (50N)">LabQuest Force (50N)</option>
-        <option value="LabQuest CO2">LabQuest CO2</option>
-        <option value="LabQuest distance">LabQuest Distance</option>
-        <option value="LabQuest pH">LabQuest pH</option>
-        <option value="LabQuest O2">LabQuest Oxygen Gas</option>
-        <option value="Pseudo Sound">Pseudo Sound</option>
+        <option value="labQuestTemperature">LabQuest Temperature</option>
+        <option value="labQuestLight">LabQuest Light</option>
+        <option value="labQuestForce">LabQuest Force</option>
+        <option value="labQuestCO2">LabQuest CO2</option>
+        <option value="labQuestMotion">LabQuest Distance</option>
+        <option value="labQuestPH">LabQuest pH</option>
+        <option value="labQuestO2">LabQuest Oxygen Gas</option>
       </select>
       <select id="sensor-type-selector2">
         <option value="select-sensor" disabled selected>select interface and sensor ...</option>
-        <option value="LabQuest temperature">LabQuest Temperature</option>
-        <option value="LabQuest light">LabQuest Light</option>
-        <option value="LabQuest force (5N)">LabQuest Force (5N)</option>
-        <option value="LabQuest force (50N)">LabQuest Force (50N)</option>
-        <option value="LabQuest CO2">LabQuest CO2</option>
-        <option value="LabQuest distance">LabQuest Distance</option>
-        <option value="LabQuest pH">LabQuest pH</option>
-        <option value="LabQuest O2">LabQuest Oxygen Gas</option>
-        <option value="Pseudo Sound">Pseudo Sound</option>
+        <option value="labQuestTemperature">LabQuest Temperature</option>
+        <option value="labQuestLight">LabQuest Light</option>
+        <option value="labQuestForce">LabQuest Force</option>
+        <option value="labQuestCO2">LabQuest CO2</option>
+        <option value="labQuestMotion">LabQuest Distance</option>
+        <option value="labQuestPH">LabQuest pH</option>
+        <option value="labQuestO2">LabQuest Oxygen Gas</option>
       </select>
     </p>
     <div id="vis">
       <div id="chart1" class="graph"></div>
       <div id="chart2" class="graph"></div>
     </div>
-    <div id="controls"></div>
+    <div id="controls">
+      <ul class="sensorbuttons">
+        <li class='sensor_button'>
+          <a class="active" id="start_button">Start</a>
+        </li>
+        <li class='sensor_button'>
+          <a class="active" id="stop_button">Stop</a>
+        </li>
+        <li class='sensor_button'>
+          <a class="active" id="clear_button">Clear</a>
+        </li>
+      </ul>
+    </div>
     <div id="applet-container" ></div>
+    <p id="connect-status"></p>
     <script type="text/javascript">
       var i, blankGraphOptions = {
             title: "LabQuest Sensor Graph",
@@ -70,80 +78,152 @@
       graph2 = new Lab.grapher.Graph("#chart2", blankGraphOptions, "Select a Sensor Type"),
       sampleInterval = 0.1,
       sensorCfgs = [],
-      labquestAppletString = ['<applet id="sensor-applet", codebase="/jnlp", code="org.concord.sensor.applet.SensorApplet"',
-                               '     width="1" height="1" MAYSCRIPT="true"',
-                               '     archive="',
-                               '           com/sun/jna/jna.jar,',
-                               '           org/concord/sensor/sensor.jar,',
-                               '           org/concord/sensor/labquest-jna/labquest-jna.jar,',
-                               '           org/concord/sensor/sensor-vernier/sensor-vernier.jar,',
-                               '           org/concord/sensor/sensor-applets/sensor-applets.jar"',
-                               '     MAYSCRIPT="true">',
-                               '  <param name="MAYSCRIPT" value="true"/>',
-                               '  Your browser is completely ignoring the applet tag!',
-                               '</applet>'].join('\n'),
+      applet = null,
+      appletLoadingStr = "Sensor Applet Loading ...",
+
       appletReadyCallback = function() {
         graph1.notify();
         graph2.notify();
       },
       sensorTypeSelectorHandler = function(graph, selector, chartId) {
         var sensorType = selector.val();
-        var sensorConfig = $.extend(true, {}, SENSOR_CONFIGS[sensorType]);
-        sensorConfig.graphOptions.points = [];
-        sensorConfig.chartId = chartId;
-        sensorConfig.graph = graph;
-        sensorConfig.sensorType = sensorType;
-        graph.reset(chartId, sensorConfig.graphOptions, sensorType);
-        d3.selectAll(".sensorbuttons").remove();
+        var sensorDef = Lab.sensorApplet.sensorDefinitions[sensorType];
+        var sensorConfig = {
+          chartId: chartId,
+          graph: graph,
+          sensorDef: sensorDef
+        }
+        graph.reset(chartId, graphOptions(sensorDef), sensorDef.sensorName);
         return sensorConfig;
       },
-      startApplet = function() {
-        $('#applet-container')[0].innerHTML = labquestAppletString;
-        var sampleInterval = 10,
-        sensorSetup = {
-          "deviceType": "labquest",
-          "sensors": []
-        },
-        curCfg;
-        for (i = 0; i < sensorCfgs.length; i++) {
-          curCfg = sensorCfgs[i];
-          sensorSetup.sensors.push(curCfg.sensor.sensors[0]);
-          if (curCfg.graphOptions.sampleInterval < sampleInterval) {
-            sampleInterval = curCfg.graphOptions.sampleInterval;
-            console.log("cfg '"  + curCfg.sensorType + "' had a smaller sampleInterval of: " + sampleInterval);
-          }
-        }
-        if (sampleInterval !== 10) {
-          console.log("resetting sampleInterval to: " + sampleInterval);
-          // reset all the graphs
-          for (i = 0; i < sensorCfgs.length; i++) {
-            curCfg = sensorCfgs[i];
-            graphOpts = $.extend(true, {}, curCfg.graphOptions)
-            graphOpts.sampleInterval = sampleInterval;
-            curCfg.graph.reset(curCfg.graphId, graphOpts, curCfg.sensorType);
-          }
-        }
-        applet_grapher = new sensor.AppletGrapher($('#sensor-applet')[0], $('#controls')[0], [graph1,graph2], sensorSetup, sampleInterval, "applet_grapher.JsListener()", appletReadyCallback);
-
-      },
       sensorHandler1 = function() {
-        var cfg = sensorTypeSelectorHandler(graph1, $('#sensor-type-selector1'), "#chart1", sensorHandler2);
+        var cfg = sensorTypeSelectorHandler(graph1, $('#sensor-type-selector1'), "#chart1");
         sensorCfgs[0] = cfg;
         var otherVal = $('#sensor-type-selector2').val();
         if (otherVal !== null && otherVal !== 'select-sensor') {
-          startApplet();
+          appendApplet();
         }
       },
       sensorHandler2 = function() {
-        var cfg = sensorTypeSelectorHandler(graph2, $('#sensor-type-selector2'), "#chart2", sensorHandler1);
+        var cfg = sensorTypeSelectorHandler(graph2, $('#sensor-type-selector2'), "#chart2");
         sensorCfgs[1] = cfg;
         var otherVal = $('#sensor-type-selector1').val();
         if (otherVal !== null && otherVal !== 'select-sensor') {
-          startApplet();
+          appendApplet();
         }
       };
       $('#sensor-type-selector1').on('change', sensorHandler1);
       $('#sensor-type-selector2').on('change', sensorHandler2);
+
+      // Add the **Start**, **Stop**, and **Clear** buttons.
+      $('#start_button').click(function(){
+        applet.start();
+      });
+
+      $('#stop_button').click(function(){
+        applet.stop();
+      });
+
+      $('#clear_button').click(function(){
+        applet.stop();
+        graph1.resetSamples([[]]);
+        graph2.resetSamples([[]]);
+        graph1.reset();
+        graph2.reset();
+      });
+
+      function graphOptions(sensorDef){
+        return {
+          title: sensorDef.measurementName,
+          fontScaleRelativeToParent: false,
+          xlabel:    "Time (s)",
+          xmin: 0,
+          xmax: sensorDef.maxSeconds,
+          xTickCount: 10,
+          ylabel: sensorDef.measurementName,
+          ymin: sensorDef.minReading,
+          ymax: sensorDef.maxReading,
+          yTickCount: 8,
+          realTime: true,
+          points: [],
+          sampleInterval: 1 / sensorDef.samplesPerSecond,
+          markAllDataPoints: false,
+          dataChange: false
+        }
+      }
+
+      function appendApplet() {
+        var sensorDefs = [],
+            appletClass,
+            status = document.getElementById("connect-status");
+
+        status.innerHTML = "";
+
+        if(applet != null){
+          applet.remove();
+          applet = null;
+        }
+
+        var samplesPerSecond = 0.1,
+            curCfg;
+        for (i = 0; i < sensorCfgs.length; i++) {
+          curCfg = sensorCfgs[i];
+          sensorDefs.push(curCfg.sensorDef);
+          if (curCfg.sensorDef.samplesPerSecond > samplesPerSecond) {
+            samplesPerSecond = curCfg.sensorDef.samplesPerSecond;
+            console.log("cfg '"  + curCfg.sensorDef.sensorName + "' had a larger samplesPerSecond of: " + samplesPerSecond);
+          }
+          // Currently we assume this is only LabQuest
+          // need to go through both
+          if(curCfg.sensorDef.appletClass != 'labquest'){
+            throw "unexpected appletClass: " + curCfg.sensorDef.appletClass;
+          }
+        }
+        if (samplesPerSecond !== 0.1) {
+          console.log("resetting samplesPerSecond to: " + samplesPerSecond);
+          // reset all the graphs
+          for (i = 0; i < sensorCfgs.length; i++) {
+            curCfg = sensorCfgs[i];
+            graphOpts = graphOptions(curCfg.sensorDef);
+            graphOpts.sampleInterval = 1 / samplesPerSecond;
+            curCfg.graph.reset(curCfg.graphId, graphOpts, curCfg.sensorDef.sensorName);
+          }
+        }
+
+        // notify both graphs we are loading?
+        graph1.notify(appletLoadingStr);
+        graph2.notify(appletLoadingStr);
+
+        applet = new Lab.sensorApplet.LabQuest({
+          // this needs to be an array
+          sensorDefinitions: [sensorCfgs[0].sensorDef, sensorCfgs[1].sensorDef],
+          codebase: '/jnlp',
+          listenerPath: 'applet'
+        });
+        // the data even will now send an array with one sample for each
+        applet.on('data', function(data){
+          graph1.addSamples([data[0]]);
+          graph2.addSamples([data[1]]);
+        });
+        applet.append($('body'), function(error){
+          if(error){
+            if (error instanceof Lab.sensorApplet.JavaLoadError) {
+              status.innerHTML = "It appears that Java applets cannot run in your browser. If you are able to fix this, reload the page to use the sensor";
+            } else if (error instanceof Lab.sensorApplet.AppletInitializationError) {
+              status.innerHTML = "The sensor applet appears not to be loading. If you are able to fix this, reload the page to use the sensor";
+            } else if (error instanceof Lab.sensorApplet.SensorConnectionError) {
+              status.innerHTML = "Either the device or the sensor is not connected";
+            } else {
+              status.innerHTML = "There was an unexpected error when connecting to the sensor";
+            }
+          } else {
+            graph1.notify();
+            graph2.notify();
+            status.innerHTML = "Device connected!";
+          }
+        });
+      }
+
     </script>
   </body>
 </html>

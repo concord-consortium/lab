@@ -1,0 +1,23 @@
+{
+  "title": "singleDisp",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "singleDisp",
+      "url": "imports/legacy-mw-content/converted/itsi/stoichiometry/singleDisp.json",
+      "importedFrom": "imports/legacy-mw-content/itsi/stoichiometry/singleDisp.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

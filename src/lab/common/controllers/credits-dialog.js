@@ -44,7 +44,7 @@ define(function (require) {
         "&utm_medium=embedded_interactive&utm_campaign=" + labConfig.utmCampaign;
       view.concordUrl += "?" + utmString;
       view.nextGenUrl += "?" + utmString;
-      view.interactiveCreditsUrl += "&" + encodeURI("utm_source=embed_link&utm_medium=embedded_interactive&utm_campaign=" + labConfig.utmCampaign);
+      view.interactiveCreditsUrl += "?" + encodeURI("utm_source=embed_link&utm_medium=embedded_interactive&utm_campaign=" + labConfig.utmCampaign);
     }
 
     if (!labConfig.sharing) {

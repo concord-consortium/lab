@@ -1,5 +1,5 @@
 {
-  "predef": ["$", "d3", "define", "model"],
+  "predef": ["$", "d3", "define", "_gaq"],
 
   "browser" : true,
 
@@ -10,7 +10,7 @@
   "devel": false,
   "eqeqeq": true,
   "evil": true,
-  "forin": true,
+  "forin": false,
   "immed": true,
   "indent": false,
   "laxbreak": false,

@@ -1,0 +1,28 @@
+{
+  "title": "Convection 4D: The stack effect",
+  "publicationStatus": "public",
+  "subtitle": "Where does the house lose energy?",
+  "about": [
+    "The two rooms each have a heater at the bottom and **leaks** near the top.",
+    "",
+    "1.  Run the model and look for leaking energy.",
+    "2.  Click on the wall and roof elements to change the sizes and locations of the leaks.",
+    "3.  Note the convection pattern in each situation."
+  ],
+  "importedFrom": "imports/energy2d/content-htb/S4D.html",
+  "aspectRatio": 1.0,
+  "models": [
+    {
+      "type": "energy2d",
+      "id": "S4D1",
+      "url": "imports/energy2d/models-json/S4D1.json",
+      "importedFrom": "imports/energy2d/models-xml/S4D1.e2d",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+
+  ]
+}

@@ -19,19 +19,17 @@
         "textBoxes": [
           {
             "text": "Explore the different attractive forces between molecules of varying size and shape. Look for how the area of close contact between the molecules influences their attraction.",
-            "x": 0.55,
-            "y": 1.85,
-            "width": 2.7,
-            "fontScale": 1.4,
-            "layer": 1
+            "x": 0.4,
+            "y": 1.7,
+            "fontSize": 0.14,
+            "width": 3.2
           },
           {
             "text": "Choose a pair of molecules from the menu below.",
             "x": 0.4,
-            "y": 0.45,
-            "fontScale": 1.4,
-            "width": 3.0,
-            "layer": 1
+            "y": 0.6,
+            "fontSize": 0.14,
+            "width": 3.2
           }
         ]
       }
@@ -56,7 +54,8 @@
             "backgroundColor": "rgb(250,250,250)"
           }
         ]
-      }
+      },
+      "onLoad": "start();"
     },
     {
       "type": "md2d",
@@ -78,7 +77,8 @@
             "backgroundColor": "rgb(250,250,250)"
           }
         ]
-      }
+      },
+      "onLoad": "start();"
     },
     {
       "type": "md2d",
@@ -100,7 +100,8 @@
             "backgroundColor": "rgb(250,250,250)"
           }
         ]
-      }
+      },
+      "onLoad": "start();"
     },
     {
       "type": "md2d",
@@ -122,7 +123,8 @@
             "backgroundColor": "rgb(250,250,250)"
           }
         ]
-      }
+      },
+      "onLoad": "start();"
     },
     {
       "type": "md2d",
@@ -144,7 +146,8 @@
             "backgroundColor": "rgb(250,250,250)"
           }
         ]
-      }
+      },
+      "onLoad": "start();"
     }
   ],
   "components": [
@@ -158,23 +161,23 @@
         },
         {
           "text": "Small molecules",
-          "action": "loadModel('npSmallStraight', start);"
+          "loadModel": "npSmallStraight"
         },
         {
           "text": "Large straight molecules",
-          "action": "loadModel('npLargeStraight', start);"
+          "loadModel": "npLargeStraight"
         },
         {
           "text": "Large straight and bent",
-          "action": "loadModel('npStraightJagged', start);"
+          "loadModel": "npStraightJagged"
         },
         {
           "text": "Large straight and circular",
-          "action": "loadModel('npStraightRound', start);"
+          "loadModel": "npStraightRound"
         },
         {
           "text": "Large curved and circular",
-          "action": "loadModel('npCurvedRound', start);"
+          "loadModel": "npCurvedRound"
         }
       ]
     },
@@ -182,7 +185,7 @@
       "type": "button",
       "id": "reset",
       "text": "Reset",
-      "action": "reset();"
+      "action": "reload();"
     }
   ]
 }

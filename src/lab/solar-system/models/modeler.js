@@ -5,25 +5,25 @@ define(function(require) {
   // Dependencies.
   var arrays               = require('arrays'),
       console              = require('common/console'),
-      solarSystem          = require('solar-system/models/engine/solar-system'),
-      metadata             = require('solar-system/models/metadata'),
-      TickHistory          = require('common/models/tick-history'),
-      PropertySupport      = require('common/property-support'),
       serialize            = require('common/serialize'),
       validator            = require('common/validator'),
-      units                = require('solar-system/models/engine/constants/units'),
+      PropertySupport      = require('common/property-support'),
       PropertyDescription  = require('common/property-description'),
+      TickHistory          = require('common/models/tick-history'),
+      solarSystem          = require('solar-system/models/engine/solar-system'),
+      metadata             = require('solar-system/models/metadata'),
+      units                = require('solar-system/models/engine/constants/units'),
       unitDefinitions      = require('solar-system/models/unit-definitions/index'),
       _ = require('underscore');
 
-  return function Model(initialProperties) {
+  return function Model(initialProperties, initializationOptions) {
 
     // all models created with this constructor will be of type: "solar-system"
     this.constructor.type = "solar-system";
 
     var model = {},
         dispatch = d3.dispatch("tick", "play", "stop", "reset", "stepForward", "stepBack",
-            "seek", "addBody", "removeBody", "invalidation", "textBoxesChanged"),
+            "seek", "addBody", "removeBody", "invalidation", "textBoxesChanged", "ready"),
 
         propertySupport = new PropertySupport({
           types: ["output", "parameter", "mainProperty", "viewOption"]
@@ -83,6 +83,8 @@ define(function(require) {
 
         // The initial viewOptions, validated and filtered from the initialProperties
         viewOptions;
+
+    var isReady = false;
 
     function defineBuiltinProperty(type, key, setter) {
       var metadataForType,
@@ -674,11 +676,28 @@ define(function(require) {
       return model;
     };
 
+    model.ready = function() {
+      if (isReady) {
+        throw new Error("ready() called on an already-ready model.");
+      }
+
+      tickHistory.saveInitialState();
+      tickHistory.push();
+
+      propertySupport.invalidatingChangePreHook();
+      isReady = true;
+      propertySupport.invalidatingChangePostHook();
+
+      dispatch.ready();
+    };
+
     model.reset = function() {
       engine.setTime(0);
       tickHistory.restoreInitialState();
       dispatch.reset();
     };
+
+
 
 
     /**
@@ -1156,7 +1175,17 @@ define(function(require) {
       return newStep;
     });
 
+    model.defineOutput('isPlayable', {
+      label: "Playable"
+    }, function() {
+      return isReady;
+    });
+
     updateAllOutputProperties();
+
+    if (!initializationOptions.waitForSetup) {
+      model.ready();
+    }
 
     return model;
   };

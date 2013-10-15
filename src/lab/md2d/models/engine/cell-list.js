@@ -29,11 +29,18 @@ define(function () {
 
     // Public API.
     api = {
-      reinitialize: function (newCellSize) {
-        if (newCellSize !== cellSize) {
-          cellSize = newCellSize;
-          init();
+      reinitialize: function (newWidth, newHeight, newCellSize) {
+        var change = false;
+        if (newWidth !== undefined) {
+          if (newWidth !== width) { width = newWidth; change = true; }
         }
+        if (newHeight !== undefined) {
+          if (newHeight !== height) { height = newHeight; change = true; }
+        }
+        if (newCellSize !== undefined) {
+          if (newCellSize !== cellSize) { cellSize = newCellSize; change = true; }
+        }
+        if (change) init();
       },
 
       addToCell: function (atomIdx, x, y) {

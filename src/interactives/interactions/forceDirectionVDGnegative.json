@@ -1,0 +1,129 @@
+{
+  "title": "Direction of Force Around a VDG (Negatively Charged)",
+  "publicationStatus": "draft",
+  "subtitle": "How is the direction of force oriented between charged objects?",
+  "about": [
+    "The colored arrow indicates the direction of force between the charged object and the VDG.",
+    "How does the orientation of the arrow change as the charged object is moved around?",
+    "Use the *trace force vectors* checkbox to help characterize the direction of force arrow when the charged object is in different positions"
+  ],
+  "models": [
+    {
+      "type": "md2d",
+      "id": "forceDirectionVDG$0",
+      "url": "imports/legacy-mw-content/converted/interactions/force-direction-VDG-negative/forceDirectionVDG$0.json",
+      "importedFrom": "imports/legacy-mw-content/interactions/force-direction-VDG-negative/forceDirectionVDG$0.mml",
+      "viewOptions": {
+        "controlButtons": "reset",
+        "imageMapping": {
+          "vdg.png": "vdg.svg"
+        }
+      },
+      "onLoad": [
+          "onDrag('atom', function(x, y, d, i) {",
+          "  if (getNumberOfTextBoxes() > 0) { removeTextBox(0); }",
+          "  if( i === 0 ) {",
+          "    var dragAtomProps   = getAtomProperties(0);",
+          "    var targetAtomProps = getAtomProperties(1);",
+          "    var dx = targetAtomProps.x - dragAtomProps.x;",
+          "    var dy = targetAtomProps.y - dragAtomProps.y;",
+          "    var L = Math.sqrt(dx*dx + dy*dy);",
+          "    var targetX = dragAtomProps.x + 0.4/L*dx;",
+          "    var targetY = dragAtomProps.y + 0.4/L*dy;",
+          "    setLineProperties(0, {x1: dragAtomProps.x, y1: dragAtomProps.y, x2: targetX, y2: targetY});",
+          "    if( get('trace-force-vectors') ){",
+          "      var tNow = getCurrentComputerTime();",
+          "      if( tNow - get('last-trace-time') > 250 ) {",
+          "        var traceidx = get('trace-idx');",
+          "        setLineProperties(2 + traceidx, {x1: dragAtomProps.x, y1: dragAtomProps.y, x2: targetX, y2: targetY, visible: true});",
+          "        set('trace-idx', (traceidx+1)%96);",
+          "        set('last-trace-time', tNow);",
+          "      }",
+          "    }",
+          "    targetX = targetAtomProps.x - 0.4/L*dx;",
+          "    targetY = targetAtomProps.y - 0.4/L*dy;",
+          "    setLineProperties(1, {x1: targetAtomProps.x, y1: targetAtomProps.y, x2: targetX, y2: targetY});",
+          "  }",
+          "});"
+        ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "last-trace-time",
+      "initialValue": 0,
+      "onChange": []
+    },
+    {
+      "name": "trace-idx",
+      "initialValue": 0,
+      "onChange": []
+    },
+    {
+      "name": "show-force-on-object",
+      "initialValue": true,
+      "onChange": "setLineProperties(0, {visible: value});"
+    },
+    {
+      "name": "show-force-on-VDG",
+      "initialValue": false,
+      "onChange": "setLineProperties(1, {visible: value});"
+    },
+    {
+      "name": "trace-force-vectors",
+      "initialValue": false,
+      "onChange": []
+    }
+  ],
+  "components": [
+    {
+      "type": "checkbox",
+      "id": "toggle-show-force-on-object",
+      "property": "show-force-on-object",
+      "text": "Show force on draggable object"
+    },
+    {
+      "type": "checkbox",
+      "id": "toggle-show-force-on-VDG",
+      "property": "show-force-on-VDG",
+      "text": "Show force on VDG"
+    },
+    {
+      "type": "checkbox",
+      "id": "toggle-trace-force-vectors",
+      "property": "trace-force-vectors",
+      "text": "Trace force vectors"
+    },
+    {
+      "type": "text",
+      "id": "label-forces",
+      "text": "**Forces:**"
+    },
+    {
+      "type": "text",
+      "id": "label-tracing",
+      "text": "**Tracing:**"
+    },
+    {
+      "type": "button",
+      "id": "clear-trace",
+      "text": "Clear",
+      "action": [
+        "batch( function() { ",
+        "  for( var i = 2; i < 98; setLineProperties(i++, {visible: false})); // clear traces",
+        "});"
+      ]
+    }
+  ],
+  "layout": {
+    "right": [
+      ["label-forces"],
+      ["toggle-show-force-on-object"],
+      ["toggle-show-force-on-VDG"],
+      ["label-tracing"],
+      ["toggle-trace-force-vectors"],
+      ["clear-trace"]
+    ]
+  },
+  "template": "wide-right"
+}

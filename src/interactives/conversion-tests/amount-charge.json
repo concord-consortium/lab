@@ -3,6 +3,7 @@
   "publicationStatus": "public",
   "subtitle": "Test for smooth charge shading",
   "about": "",
+  "aspectRatio": 1.4,
   "models": [
     {
       "type": "md2d",
@@ -36,7 +37,7 @@
       "id": "left-slider",
       "min": -3,
       "max": 3,
-      "displayValue": "return format('1.1f')(value)",
+      "displayValue": "return format('.1f')(value)",
       "labels": [
       {
         "value": -3,
@@ -56,7 +57,7 @@
       "id": "right-slider",
       "min": -3,
       "max": 3,
-      "displayValue": "return format('1.1f')(value)",
+      "displayValue": "return format('.1f')(value)",
       "labels": [
       {
         "value": -3,
@@ -88,7 +89,7 @@
       "id": "electric-field-density-slider",
       "min": 0,
       "max": 25,
-      "displayValue": "return format('1f')(value)",
+      "displayValue": "return format('.1f')(value)",
       "labels": [
         {
           "value": 0,
@@ -145,13 +146,6 @@
       "left": "model.left",
       "top": "model.bottom",
       "padding-top": "0.5em",
-      "width": "model.width",
-      "align": "center"
-    },
-    {
-      "id": "bottom2",
-      "left": "model.left",
-      "top": "bottom.bottom",
       "width": "interactive.width"
     }
   ]

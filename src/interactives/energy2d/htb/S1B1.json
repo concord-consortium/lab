@@ -59,7 +59,7 @@
       "title": "Left block",
       "min": 100,
       "max": 5000,
-      "displayValue": "return format('1f')(value)",
+      "displayValue": "return format('.1f')(value)",
       "labels": [
         {
           "value": 100,
@@ -80,7 +80,7 @@
       "title": "Right block",
       "min": 100,
       "max": 5000,
-      "displayValue": "return format('1f')(value)",
+      "displayValue": "return format('.1f')(value)",
       "labels": [
         {
           "value": 100,
@@ -104,8 +104,8 @@
       "ymax": 50,
       "xmax": 300,
       "xTickCount": 5,
-      "xFormatter": "2s",
-      "yFormatter": "2s",
+      "xFormatter": ".2s",
+      "yFormatter": ".2s",
       "xProperty": "time",
       "properties": [
         "sensor-1", "sensor-0"

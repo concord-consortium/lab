@@ -1,0 +1,128 @@
+{
+  "title": "Simplest Free Radical Reaction",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "simplest-reaction$0",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/chemical-reactions/simplest-free-radical-reaction$0.json",
+      "importedFrom": "imports/legacy-mw-content/conversion-and-physics-examples/chemical-reactions/simplest-free-radical-reaction$0.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "parameters": [
+    {
+      "name": "atom0-vx",
+      "label": "Atom 0 velocity",
+      "unitType": "velocity",
+      "onChange": "setAtomProperties(0, {vx: value});",
+      "initialValue": 0.0005
+    }
+  ],
+  "components": [
+    {
+      "type": "slider",
+      "id": "velocity",
+      "min": 0.0005,
+      "max": 0.005,
+      "labels": [
+        {
+          "value": 0.0005,
+          "label": "low"
+        },
+        {
+          "value": 0.005,
+          "label": "high"
+        }
+      ],
+      "steps": 1,
+      "title": "Atom 0 velocity",
+      "property": "atom0-vx"
+    },
+    {
+      "type": "checkbox",
+      "id": "heat-bath",
+      "property": "temperatureControl",
+      "text": "Heat bath"
+    },
+    {
+      "type": "slider",
+      "id": "temperature",
+      "min": 100,
+      "max": 100000,
+      "displayValue": "return format('f')(value)",
+      "labels": [
+        {
+          "value": 100,
+          "label": "low"
+        },
+        {
+          "value": 100000,
+          "label": "high"
+        }
+      ],
+      "steps": 100,
+      "title": "Target temperature",
+      "property": "targetTemperature"
+    },
+    {
+      "type": "graph",
+      "id": "energyGraph",
+      "title": "Energy (KE:red, PE:green, TE:blue)",
+      "xlabel": "Time  (s)",
+      "ylabel": "Energy (eV)",
+      "ymin": -5,
+      "ymax": 5,
+      "xmax": 10,
+      "xTickCount": 5,
+      "yTickCount": 6,
+      "xFormatter": ".2r",
+      "yFormatter": ".2s",
+      "properties": [
+        "kineticEnergy",
+        "potentialEnergy",
+        "totalEnergy"
+      ]
+    }
+  ],
+  "template": [
+    {
+      "id": "right",
+      "top": "model.top",
+      "left": "model.right",
+      "padding-left": "1em",
+      "padding-right": "0.5em",
+      "width": "1.6 * model.width",
+      "height": "interactive.height",
+      "min-width": "6em"
+    },
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "width": "model.width",
+      "padding-top": "0.5em"
+    },
+    {
+      "id": "bottom2",
+      "top": "bottom.bottom",
+      "width": "model.width",
+      "padding-top": "1em"
+    }
+  ],
+  "layout": {
+    "bottom": [
+      ["velocity"]
+    ],
+    "bottom2": [
+      ["heat-bath"],
+      ["temperature"]
+    ],
+    "right": [
+      "energyGraph"
+    ]
+  }
+}

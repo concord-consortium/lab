@@ -59,8 +59,17 @@ define(function() {
         defaultValue: []
       },
 
+      experiment: {
+        required: false
+      },
+
       exports: {
         required: false
+      },
+
+      hideExportDataControl: {
+        required: false,
+        defaultValue: false
       },
 
       components: {
@@ -174,6 +183,100 @@ define(function() {
       },
       perTick: {
         required: true
+      }
+    },
+
+    /**
+      Interactive experiment template:
+    */
+    experiment: {
+      timeSeries: {
+        required: true
+      },
+      parameters: {
+        required: true,
+        defaultValue: []
+      },
+      destinations: {
+        required: true,
+        defaultValue: []
+      },
+      stateButtons: {
+        required: true,
+        startRun: {
+          required: true,
+          defaultValue: "start-run"
+        },
+        stopRun: {
+          required: true,
+          defaultValue: "stop-run"
+        },
+        saveRun: {
+          required: true,
+          defaultValue: "save-run"
+        },
+        nextRun: {
+          required: true,
+          defaultValue: "next-run"
+        },
+        clearAll: {
+          required: true,
+          defaultValue: "clear-all"
+        }
+      },
+      onReset: {
+      },
+      savedRuns: {
+        defaultValue: []
+      }
+    },
+
+    experimentTimeSeries: {
+      time: {
+        defaultValue: "displayTime"
+      },
+      properties: {
+        required: true,
+        defaultValue: []
+      }
+    },
+
+    experimentParameter: {
+      inputs: {
+        required: true,
+        defaultValue: []
+      },
+      outputs: {
+        required: true,
+        defaultValue: []
+      }
+    },
+
+    experimentDestination: {
+      type: {
+        required: true
+      },
+      componentIds: {
+        required: true,
+        defaultValue: []
+      },
+      properties: {
+        required: true,
+        defaultValue: []
+      }
+    },
+
+    experimentSavedRun: {
+      timeStamp: {
+        required: true
+      },
+      timeSeries: {
+        required: true,
+        defaultValue: []
+      },
+      parameters: {
+        required: true,
+        defaultValue: []
       }
     },
 
@@ -503,6 +606,9 @@ define(function() {
       type: {
         required: true
       },
+      property: {
+        required: true
+      },
       label: {
         defaultValue: ""
       },
@@ -518,7 +624,6 @@ define(function() {
       height: {
         defaultValue: "auto"
       },
-      property: {},
       displayValue: {},
       tooltip: {
         defaultValue: ""
@@ -569,6 +674,51 @@ define(function() {
       }
     },
 
+    table: {
+      id: {
+        required: true
+      },
+      type: {
+        required: true
+      },
+      title: {
+        defaultValue: null
+      },
+      clearDataOnReset: {
+        defaultValue: true
+      },
+      streamDataFromModel: {
+        defaultValue: true
+      },
+      addNewRows: {
+        defaultValue: true
+      },
+      visibleRows: {
+        defaultValue: 4
+      },
+      indexColumn: {
+        defaultValue: true
+      },
+      propertyColumns: {
+        defaultValue: []
+      },
+      headerData: {
+        defaultValue: []
+      },
+      tableData: {
+        defaultValue: []
+      },
+      width: {
+        defaultValue: "auto"
+      },
+      height: {
+        defaultValue: "100%"
+      },
+      tooltip: {
+        defaultValue: ""
+      }
+    },
+
     graph: {
       id: {
         required: true
@@ -576,8 +726,29 @@ define(function() {
       type: {
         required: true
       },
+      clearDataOnReset: {
+        defaultValue: true
+      },
+      resetAxesOnReset: {
+        defaultValue: true
+      },
+      streamDataFromModel: {
+        defaultValue: true
+      },
+      enableAutoScaleButton: {
+        defaultValue: true
+      },
+      enableAxisScaling: {
+        defaultValue: true
+      },
       dataPoints: {
         defaultValue: []
+      },
+      markAllDataPoints: {
+        defaultValue: false
+      },
+      showRulersOnSelection: {
+        defaultValue: false
       },
       fontScaleRelativeToParent: {
         defaultValue: true
@@ -631,10 +802,10 @@ define(function() {
         defaultValue: 0.5
       },
       xFormatter: {
-        defaultValue: "3.2r"
+        defaultValue: ".2r"
       },
       yFormatter: {
-        defaultValue: "3.2r"
+        defaultValue: ".2r"
       },
       lines: {
         defaultValue: true

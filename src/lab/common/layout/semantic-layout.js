@@ -397,7 +397,7 @@ define(function (require) {
       }
 
       // find all strings of the form x.y
-      vars = dim.match(/[a-zA-Z\-]+\.[a-zA-Z]+/g);
+      vars = dim.match(/[a-zA-Z][a-zA-Z0-9\-]+\.[a-zA-Z]+/g);
 
       // replace all x.y's with the actual dimension
       for (i=0, ii=vars.length; i<ii; i++) {
@@ -405,6 +405,8 @@ define(function (require) {
         dim = dim.replace(vars[i], value);
       }
       // eval only if we contain no more alphabetic letters
+      // dim can contain strings which are just numbers ...
+      // or strings with with expressions like this: "839/2 - 117/2"
       if (/^[^a-zA-Z]*$/.test(dim)) {
         return eval(dim);
       } else {
@@ -419,9 +421,15 @@ define(function (require) {
           return availableWidth;
         case "container.height":
           return availableHeight;
+        case "interactive.left":
+          return leftBoundary;
+        case "interactive.top":
+          return topBoundary;
         case "interactive.width":
+        case "interactive.right":
           return availableWidth - leftBoundary;
         case "interactive.height":
+        case "interactive.bottom":
           return availableHeight - topBoundary - bottomBarWidth;
         default:
           dim = dim.split(".");

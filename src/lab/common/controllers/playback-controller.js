@@ -1,4 +1,4 @@
-/*global define, $, model */
+/*global define, $ */
 
 define(function (require) {
 
@@ -11,11 +11,11 @@ define(function (require) {
    * @constructor
    * @extends InteractiveComponent
    * @param {Object} component Component JSON definition.
-   * @param {ScriptingAPI} scriptingAPI
+   * @param {interactivesController} interactives controller that created this playback controller
    */
-  function PlaybackController(component, scriptingAPI) {
+  function PlaybackController(component, interactivesController) {
     // Call super constructor.
-    InteractiveComponent.call(this, "playback", component, scriptingAPI);
+    InteractiveComponent.call(this, "playback", component, interactivesController);
 
     this.$element.addClass("interactive-playback");
 
@@ -27,8 +27,12 @@ define(function (require) {
     this._showClock = true;
     /** @private */
     this._timeDesc = null;
-
-    this._scriptingAPI = scriptingAPI.api;
+    /** @private */
+    this._model = null;
+    /** @private */
+    this._scriptingAPI = null;
+    /** @private */
+    this._interactivesController = interactivesController;
   }
   inherit(PlaybackController, InteractiveComponent);
 
@@ -56,7 +60,7 @@ define(function (require) {
       this._$stepForward.before('<div class="spacer step">');
 
       // Bind click handlers.
-      this._$reset.on("click", scriptingAPI.reset);
+      this._$reset.on("click", scriptingAPI.reload);
 
       this._$playPause.on("click", $.proxy(function () {
         if (this._modelStopped) {
@@ -82,12 +86,12 @@ define(function (require) {
 
       this.$element.removeClass('video').addClass('text');
 
-      this._$start = $('<button class-="start">Start</button>').appendTo(this.$element);
+      this._$start = $('<button class="start">Start</button>').appendTo(this.$element);
       this._$stop = $('<button class="stop">Stop</button>').appendTo(this.$element);
       this._$reset = $('<button class="reset">Reset</button>').appendTo(this.$element);
 
       // Bind click handlers
-      this._$reset.on('click', scriptingAPI.reset);
+      this._$reset.on('click', scriptingAPI.reload);
       this._$start.on('click', scriptingAPI.start);
       this._$stop.on('click', scriptingAPI.stop);
 
@@ -99,29 +103,33 @@ define(function (require) {
 
   PlaybackController.prototype._updateButtonStatesFor = {
     video: function () {
-      if (this._modelStopped) {
-        this._$playPause.removeClass("playing");
-      } else {
+      var playing = !this._modelStopped;
+      var playable = this._modelPlayable;
+
+      if (playing) {
         this._$playPause.addClass("playing");
+      } else {
+        this._$playPause.removeClass("playing");
       }
 
-      if (this._modelPlayable) {
-        this._$playPause.removeClass("disabled");
-      } else {
+      if (!playable && !playing) {
         this._$playPause.addClass("disabled");
+      } else {
+        this._$playPause.removeClass("disabled");
       }
     },
 
     text: function () {
-      if ( ! this._modelPlayable) {
-        this._$start.addClass("disabled");
-        this._$stop.addClass("disabled");
-      } else if (this._modelStopped) {
-        this._$start.removeClass("disabled");
+      if (this._modelStopped) {
         this._$stop.addClass("disabled");
       } else {
-        this._$start.addClass("disabled");
         this._$stop.removeClass("disabled");
+      }
+
+      if (this._modelPlayable) {
+        this._$start.removeClass("disabled");
+      } else {
+        this._$start.addClass("disabled");
       }
     }
   };
@@ -131,9 +139,9 @@ define(function (require) {
    * @private
    */
   PlaybackController.prototype._simulationStateChanged = function () {
-    this._modelStopped = model.isStopped();
+    this._modelStopped = this._model.isStopped();
     // Coerce undefined to *true* for models that don't have isPlayable property
-    this._modelPlayable = model.properties.isPlayable === false ? false : true;
+    this._modelPlayable = this._model.properties.isPlayable === false ? false : true;
 
     this._updateButtonStatesFor[this.controlButtonStyle].call(this);
   };
@@ -147,11 +155,11 @@ define(function (require) {
       return;
     }
 
-    this._showClock = model.get("showClock");
+    this._showClock = this._model.get("showClock");
     if (this._showClock) {
       this._$playPause.addClass("with-clock");
       // Update 'displayTime' description (used for formatting).
-      this._timeDesc =  model.getPropertyDescription("displayTime");
+      this._timeDesc =  this._model.getPropertyDescription("displayTime");
       // Update clock immediately.
       this._timeChanged();
     } else {
@@ -167,7 +175,7 @@ define(function (require) {
     if (!this._showClock || this.controlButtonStyle !== 'video') {
       return;
     }
-    this._$timeDisplay.html(this._timeDesc.format(model.get("displayTime")));
+    this._$timeDisplay.html(this._timeDesc.format(this._model.get("displayTime")));
   };
 
 
@@ -214,14 +222,14 @@ define(function (require) {
           "\" is not understood or is not compatible with controlButtonStyle \"text\"");
       }
     }
-  },
+  };
 
   /**
    * Updates playback controller mode (none, "play", "play_reset" or "play_reset_step").
    * @private
    */
   PlaybackController.prototype._controlButtonChoicesChanged = function () {
-    var mode = model.properties.controlButtons;
+    var mode = this._model.properties.controlButtons;
     this._updateControlButtonChoicesFor[this.controlButtonStyle].call(this, mode);
   };
 
@@ -231,7 +239,7 @@ define(function (require) {
    */
   PlaybackController.prototype._controlButtonStyleChanged = function () {
     // To handle model types whose metadata don't define controlButtonStyle, default to 'video' here
-    var style = model.properties.controlButtonStyle || 'video';
+    var style = this._model.properties.controlButtonStyle || 'video';
     if (this.controlButtonStyle === style) {
       return;
     }
@@ -248,18 +256,22 @@ define(function (require) {
    * Implements optional callback supported by Interactive Controller.
    */
   PlaybackController.prototype.modelLoadedCallback = function () {
+
+    this._model = this._interactivesController.getModel();
+    this._scriptingAPI = this._interactivesController.getScriptingAPI().api;
+
     // Update play / pause button.
     // Use event namespace to let multiple playbacks work fine with one model.
-    model.on('play.' + this.component.id, $.proxy(this._simulationStateChanged, this));
-    model.on('stop.' + this.component.id, $.proxy(this._simulationStateChanged, this));
-    model.addObserver('isPlayable', $.proxy(this._simulationStateChanged, this));
+    this._model.on('play.' + this.component.id, $.proxy(this._simulationStateChanged, this));
+    this._model.on('stop.' + this.component.id, $.proxy(this._simulationStateChanged, this));
+    this._model.addObserver('isPlayable', $.proxy(this._simulationStateChanged, this));
 
-    model.addObserver('showClock', $.proxy(this._showClockChanged, this));
-    model.addObserver('displayTime', $.proxy(this._timeChanged, this));
+    this._model.addObserver('showClock', $.proxy(this._showClockChanged, this));
+    this._model.addObserver('displayTime', $.proxy(this._timeChanged, this));
 
     // Update display mode (=> buttons are hidden or visible).
-    model.addObserver('controlButtons', $.proxy(this._controlButtonChoicesChanged, this));
-    model.addObserver('controlButtonStyle', $.proxy(this._controlButtonStyleChanged, this));
+    this._model.addObserver('controlButtons', $.proxy(this._controlButtonChoicesChanged, this));
+    this._model.addObserver('controlButtonStyle', $.proxy(this._controlButtonStyleChanged, this));
 
     this._controlButtonStyleChanged();
     this._controlButtonChoicesChanged();

@@ -1,0 +1,23 @@
+{
+  "title": "fourToFour",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "fourToFour",
+      "url": "imports/legacy-mw-content/converted/itsi/stoichiometry/fourToFour.json",
+      "importedFrom": "imports/legacy-mw-content/itsi/stoichiometry/fourToFour.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

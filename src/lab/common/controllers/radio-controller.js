@@ -1,4 +1,5 @@
-/*global define, $, model */
+/*global define, $ */
+/*jshint loopfunc: true */
 
 define(function () {
 
@@ -6,7 +7,7 @@ define(function () {
       validator  = require('common/validator'),
       disablable = require('common/controllers/disablable');
 
-  return function RadioController(component, scriptingAPI, interactivesController) {
+  return function RadioController(component, interactivesController) {
         // Public API.
     var controller,
         // DOM elements.
@@ -16,7 +17,9 @@ define(function () {
         // List of jQuery objects wrapping <input type="radio"> elements.
         $options = [],
         // List of jQuery objects wrapping <div> used for radio styling.
-        $fakeCheckables = [];
+        $fakeCheckables = [],
+        model,
+        scriptingAPI;
 
     // Updates radio using model property. Used in modelLoadedCallback.
     // Make sure that this function is only called when:
@@ -24,10 +27,12 @@ define(function () {
     // b) radio is bound to some property.
     function updateRadio() {
       var value = model.get(component.property),
+          modelId = interactivesController.getLoadedModelId(),
           i, len;
 
       for (i = 0, len = options.length; i < len; i++) {
-        if (options[i].value === value) {
+        if (options[i].value === undefined && !options[i].loadModel) return;
+        if ((options[i].value !== undefined && options[i].value === value) || options[i].loadModel === modelId) {
           $options[i].attr("checked", true);
           $fakeCheckables[i].addClass('checked');
         } else {
@@ -36,6 +41,12 @@ define(function () {
         }
       }
     }
+
+    function updateRadioDisabledState() {
+      var description = model.getPropertyDescription(component.property);
+      controller.setDisabled(description.getFrozen());
+    }
+
 
     function customClickEvent (e) {
       var $clickedParent = $(this).closest('span'),
@@ -70,6 +81,9 @@ define(function () {
     function initialize() {
       var $option, $fakeCheckable, $label,
           option, i, len;
+
+      model = interactivesController.getModel();
+      scriptingAPI = interactivesController.getScriptingAPI();
 
       // Validate component definition, use validated copy of the properties.
       component = validator.validateCompleteness(metadata.radio, component);
@@ -156,13 +170,21 @@ define(function () {
     // Public API.
     controller = {
       modelLoadedCallback: function () {
+        if (model && component.property !== undefined) {
+          model.removeObserver(component.property, updateRadio);
+          model.removePropertyDescriptionObserver(component.property, updateRadioDisabledState);
+        }
+        model = interactivesController.getModel();
+        scriptingAPI = interactivesController.getScriptingAPI();
         // Connect radio with model's property if its name is defined.
         if (component.property !== undefined) {
           // Register listener for property.
           model.addPropertiesListener([component.property], updateRadio);
-          // Perform initial radio setup.
-          updateRadio();
+          model.addPropertyDescriptionObserver(component.property, updateRadioDisabledState);
         }
+
+        // Perform initial radio setup.
+        updateRadio();
       },
 
       // Returns view container.

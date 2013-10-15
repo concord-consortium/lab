@@ -22,7 +22,7 @@
       "type": "slider",
       "title": "viewPortX",
       "property": "viewPortX",
-      "displayValue": "return format('1.1f')(value)",
+      "displayValue": "return format('.1f')(value)",
       "min": -4,
       "max": 4,
       "steps": 100
@@ -32,7 +32,7 @@
       "type": "slider",
       "title": "viewPortY",
       "property": "viewPortY",
-      "displayValue": "return format('1.1f')(value)",
+      "displayValue": "return format('.1f')(value)",
       "min": -2.5,
       "max": 2.5,
       "steps": 50
@@ -42,7 +42,7 @@
       "type": "slider",
       "title": "viewPortZoom",
       "property": "viewPortZoom",
-      "displayValue": "return format('1.1f')(value)",
+      "displayValue": "return format('.1f')(value)",
       "min": 0.1,
       "max": 5,
       "steps": 100

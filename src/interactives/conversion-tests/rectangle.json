@@ -48,7 +48,7 @@
       "min": 0,
       "max": 2.8,
       "initialValue": 0.34,
-      "displayValue": "return format('1.3f')(value)",
+      "displayValue": "return format('.3f')(value)",
       "labels": [
         {
           "value": 0,
@@ -69,7 +69,7 @@
       "min": 0,
       "max": 2.8,
       "initialValue": 0.76,
-      "displayValue": "return format('1.3f')(value)",
+      "displayValue": "return format('.3f')(value)",
       "labels": [
         {
           "value": 0,
@@ -90,7 +90,7 @@
       "min": 0,
       "max": 2,
       "initialValue": 0.45,
-      "displayValue": "return format('1.3f')(value)",
+      "displayValue": "return format('.3f')(value)",
       "labels": [
         {
           "value": 0,
@@ -111,7 +111,7 @@
       "min": 0,
       "max": 2,
       "initialValue": 1.82,
-      "displayValue": "return format('1.3f')(value)",
+      "displayValue": "return format('.3f')(value)",
       "labels": [
         {
           "value": 0,

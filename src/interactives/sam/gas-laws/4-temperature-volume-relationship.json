@@ -23,12 +23,7 @@
             "x": 1.973017120361328,
             "y": 1.7,
             "width": 0.5,
-            "fontScale": 1.1,
-            "layer": 1,
-            "frame": "rounded rectangle",
-            "hostType": "RectangularObstacle",
-            "hostIndex": 0,
-            "backgroundColor": "rgb(250,250,250)",
+            "fontSize": 0.13,
             "textAlign": "center"
           }
         ]
@@ -71,7 +66,7 @@
       "label": "Gas volume",
       "units": "nm³",
       "property": "volume",
-      "displayValue": "return format('1.2f')(value)"
+      "displayValue": "return format('.2f')(value)"
     }
   ]
 }

@@ -1,0 +1,486 @@
+{
+  "title": "Double Pendulum",
+  "publicationStatus": "public",
+  "subtitle": "Explore a double pendulum.",
+  "about": [
+    "Adjust the **Rod length**, **Mass of the ball** and **Starting angle** parameters.",
+    "Then click the **Start** button to start an experiment run. Watch the **Pendulum Angle**",
+    "graph to see how the angle of the pendulum changes as it swings back and forth.",
+    "Use the graph to determine the period of the pendulum. Try changing each parameter",
+    "and observe how each one affects the period. Can you explain why?",
+    "",
+    "After closing this window click the **?** help icon in the upper left to find out more."
+  ],
+  "models": [
+    {
+      "type": "md2d",
+      "id": "doublependulum1$0",
+      "url": "models/md2d/inquiry-examples/pendulum/double-pendulum.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "enableKeyboardHandlers": true
+      },
+      "modelOptions": {
+        "unitsScheme": "mks",
+        "timeStepsPerTick": 167,
+        "timeStep": 1,
+        "modelSampleRate": 60
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "name": "currentAngle1",
+      "unitAbbreviation": "°",
+      "label": "Angle",
+      "value": [
+        "var a0 = getAtomProperties(0),",
+        "    a2 = getAtomProperties(2),",
+        "    ang = Math.atan2(a2.y-a0.y, a2.x-a0.x) * rad2deg;",
+        "return (a2.x < a0.x && a2.y >= a0.y) ? ang - 270 : ang + 90;"
+      ]
+    },
+    {
+      "name": "currentAngle2",
+      "unitAbbreviation": "°",
+      "label": "Angle",
+      "value": [
+        "var a2 = getAtomProperties(2),",
+        "    a1 = getAtomProperties(1),",
+        "    ang = Math.atan2(a1.y-a2.y, a1.x-a2.x) * rad2deg;",
+        "return (a1.x < a2.x && a1.y >= a2.y) ? ang - 270 : ang + 90;"
+      ]
+    }
+  ],
+  "filteredOutputs": [
+    {
+      "name": "period1",
+      "unitType": "time",
+      "label": "Period1",
+      "property": "currentAngle1",
+      "type": "SimplePeriod"
+    },
+    {
+      "name": "period2",
+      "unitType": "time",
+      "label": "Period2",
+      "property": "currentAngle2",
+      "type": "SimplePeriod"
+    }
+  ],
+  "parameters": [
+    {
+      "name": "gravity",
+      "label": "Gravity",
+      "unitType": "acceleration",
+      "onChange": "set('gravitationalField', value);",
+      "initialValue": 9.8
+    },
+    {
+      "name": "rodLength1",
+      "label": "Rod length1",
+      "unitAbbreviation": "cm",
+      "onChange": [
+        "var len = value/100,",
+        "    pivot = getAtomProperties(0),",
+        "    ball = getAtomProperties(2),",
+        "    angle = Math.atan((ball.x-pivot.x)/(pivot.y-ball.y));",
+        "setRadialBondProperties(0, { length: len });",
+        "setAtomProperties(2, {x: pivot.x+Math.sin(angle)*len, y: pivot.y-Math.cos(angle)*len, vx: 0, vy: 0});"
+      ],
+      "initialValue": 50
+    },
+    {
+      "name": "rodLength2",
+      "label": "Rod length2",
+      "unitAbbreviation": "cm",
+      "onChange": [
+        "var len = value/100,",
+        "    pivot = getAtomProperties(2),",
+        "    ball = getAtomProperties(1),",
+        "    angle = Math.atan((ball.x-pivot.x)/(pivot.y-ball.y));",
+        "setRadialBondProperties(1, { length: len });",
+        "setAtomProperties(1, {x: pivot.x+Math.sin(angle)*len, y: pivot.y-Math.cos(angle)*len, vx: 0, vy: 0});"
+      ],
+      "initialValue": 50
+    },
+    {
+      "name": "startingAngle1",
+      "label": "Starting angle1",
+      "unitAbbreviation": "°",
+      "onChange": [
+        "var pivot = getAtomProperties(0),",
+        "    angle = value*deg2rad,",
+        "    len = getRadialBondProperties(0).length;",
+        "setAtomProperties(2, {x: pivot.x+Math.sin(angle)*len, y: pivot.y-Math.cos(angle)*len, vx: 0, vy: 0});"
+      ],
+      "initialValue": -45
+    },
+    {
+      "name": "startingAngle2",
+      "label": "Starting angle2",
+      "unitAbbreviation": "°",
+      "onChange": [
+        "var pivot = getAtomProperties(2),",
+        "    angle = value*deg2rad,",
+        "    len = getRadialBondProperties(1).length;",
+        "setAtomProperties(1, {x: pivot.x+Math.sin(angle)*len, y: pivot.y-Math.cos(angle)*len, vx: 0, vy: 0});"
+      ],
+      "initialValue": -145
+    },
+    {
+      "name": "ballMass1",
+      "label": "Ball mass",
+      "unitAbbreviation": "g",
+      "onChange": "setElementProperties(3, { mass: value/1000 });",
+      "initialValue": 250
+    },
+    {
+      "name": "ballMass2",
+      "label": "Ball mass",
+      "unitAbbreviation": "g",
+      "onChange": "setElementProperties(1, { mass: value/1000 });",
+      "initialValue": 250
+    },
+    {
+      "name": "damping1",
+      "label": "Damping1",
+      "unitType": "dampingCoefficient",
+      "onChange": "setAtomProperties(2, { friction: value });",
+      "initialValue": 0
+    },
+    {
+      "name": "damping2",
+      "label": "Damping2",
+      "unitType": "dampingCoefficient",
+      "onChange": "setAtomProperties(2, { friction: value });",
+      "initialValue": 0
+    }
+  ],
+  "experiment": {
+    "timeSeries": {
+      "xProperty": "displayTime",
+      "properties": [
+        "currentAngle1",
+        "currentAngle2"
+      ]
+    },
+    "parameters": {
+      "inputs": [
+        "rodLength1",
+        "rodLength2",
+        "ballMass1",
+        "ballMass2",
+        "startingAngle1",
+        "startingAngle2"
+      ],
+      "outputs": [
+        "period"
+      ]
+    },
+    "destinations": [
+      {
+        "type": "timeSeries",
+        "componentIds": [
+          "angle-graph"
+        ],
+        "properties": [
+          "currentAngle"
+        ]
+      },
+      {
+        "type": "timeSeries",
+        "componentIds": [
+          "time-series-table"
+        ],
+        "properties": [
+          "currentAngle1",
+          "currentAngle2",
+          "period1",
+          "period2"
+        ]
+      }
+    ],
+    "stateButtons": {
+      "startRun": "start-run",
+      "stopRun": "stop-run",
+      "saveRun": "save-run",
+      "nextRun": "next-run",
+      "clearAll": "clear-all"
+    }
+  },
+  "components": [
+    {
+      "type": "text",
+      "id": "first-label",
+      "text": "**First:**"
+    },
+    {
+      "type": "text",
+      "id": "second-label",
+      "text": "**Second:**"
+    },
+    {
+      "type": "slider",
+      "id": "length-slider1",
+      "min": 10,
+      "max": 100,
+      "width": "14em",
+      "tooltip": "Adjust length of first pendulum.",
+      "displayValue": "return format('f')(value)",
+      "labels": [
+        {
+          "value": 10,
+          "label": "10 cm"
+        },
+        {
+          "value": 100,
+          "label": "1 m"
+        }
+      ],
+      "steps": 18,
+      "title": "Rod length (cm)",
+      "property": "rodLength1"
+    },
+    {
+      "type": "slider",
+      "id": "length-slider2",
+      "min": 10,
+      "max": 100,
+      "width": "14em",
+      "tooltip": "Adjust length of second pendulum.",
+      "displayValue": "return format('f')(value)",
+      "labels": [
+        {
+          "value": 10,
+          "label": "10 cm"
+        },
+        {
+          "value": 100,
+          "label": "1 m"
+        }
+      ],
+      "steps": 18,
+      "title": "Rod length (cm)",
+      "property": "rodLength2"
+    },
+    {
+      "type": "slider",
+      "id": "mass-slider1",
+      "min": 10,
+      "max": 400,
+      "width": "14em",
+      "tooltip": "Adjust mass of ball at end of first pendulum.",
+      "displayValue": "return format('f')(value)",
+      "labels": [
+        {
+          "value": 10,
+          "label": "10"
+        },
+        {
+          "value": 400,
+          "label": "400"
+        }
+      ],
+      "steps": 39,
+      "title": "Mass of the ball (g)",
+      "property": "ballMass1"
+    },
+
+    {
+      "type": "slider",
+      "id": "mass-slider2",
+      "min": 10,
+      "max": 400,
+      "width": "14em",
+      "tooltip": "Adjust mass of ball at end of second pendulum.",
+      "displayValue": "return format('f')(value)",
+      "labels": [
+        {
+          "value": 10,
+          "label": "10"
+        },
+        {
+          "value": 400,
+          "label": "400"
+        }
+      ],
+      "steps": 39,
+      "title": "Mass of the ball (g)",
+      "property": "ballMass2"
+    },
+    {
+      "type": "slider",
+      "id": "angle-slider1",
+      "min": -180,
+      "max": 180,
+      "width": "14em",
+      "tooltip": "Adjust angle of first pendulum when starting experiment run.",
+      "displayValue": "return format('f')(value)",
+      "labels": [
+        {
+          "value": -180,
+          "label": "-180"
+        },
+        {
+          "value": 0,
+          "label": "0"
+        },
+        {
+          "value": 180,
+          "label": "180"
+        }
+      ],
+      "steps": 72,
+      "title": "Starting angle (&deg;)",
+      "property": "startingAngle1"
+    },
+    {
+      "type": "slider",
+      "id": "angle-slider2",
+      "min": -180,
+      "max": 180,
+      "width": "14em",
+      "tooltip": "Adjust angle of second pendulum when starting experiment run.",
+      "displayValue": "return format('f')(value)",
+      "labels": [
+        {
+          "value": -180,
+          "label": "-180"
+        },
+        {
+          "value": 0,
+          "label": "0"
+        },
+        {
+          "value": 180,
+          "label": "180"
+        }
+      ],
+      "steps": 72,
+      "title": "Starting angle (&deg;)",
+      "property": "startingAngle2"
+    },
+    {
+      "type": "button",
+      "id": "start-run",
+      "text": "Start",
+      "tooltip": "Start experiment run. Will stop automatically after 8s.",
+      "action": ""
+    },
+    {
+      "type": "button",
+      "id": "stop-run",
+      "text": "Stop",
+      "tooltip": "Stop currently running experiment.",
+      "action": ""
+    },
+    {
+      "type": "button",
+      "id": "save-run",
+      "text": "Save",
+      "tooltip": "Save parameter data and period from current run into Experiment Table.",
+      "action": ""
+    },
+    {
+      "type": "button",
+      "id": "next-run",
+      "text": "Next Run",
+      "tooltip": "Clear just the last experiment run and setup next run.",
+      "action": ""
+    },
+    {
+      "type": "button",
+      "id": "clear-all",
+      "text": "Clear All",
+      "tooltip": "Clear all experiment data.",
+      "action": ""
+    },
+    {
+      "type": "graph",
+      "id": "angle-graph",
+      "title": "",
+      "xlabel": "Time  (s)",
+      "ylabel": "Pendulum Angle (°)",
+      "ymin": -180,
+      "ymax": 180,
+      "xmax": 10,
+      "xTickCount": 5,
+      "yTickCount": 6,
+      "xFormatter": ".2r",
+      "yFormatter": ".2s",
+      "properties": [
+        "currentAngle1", "currentAngle2"
+      ]
+    },
+    {
+      "type": "table",
+      "id": "time-series-table",
+      "title": "Time Series Table",
+      "clearDataOnReset": true,
+      "streamDataFromModel": true,
+      "addNewRows": false,
+      "visibleRows": 4,
+      "indexColumn": false,
+      "propertyColumns": [
+        "displayTime",
+        "currentAngle1",
+        "currentAngle2",
+        "period1",
+        "period2"
+      ]
+    }
+  ],
+  "layout": {
+    "top": [
+      [ "first-label", "length-slider1", "angle-slider1", "mass-slider1" ],
+      [ "second-label", "length-slider2", "angle-slider2", "mass-slider2" ]
+    ],
+    "top-right": [
+      "angle-graph"
+    ],
+    "experiment-controls": [
+      [ "start-run", "stop-run", "save-run", "next-run", "clear-all" ]
+    ],
+    "time-series-table": [
+      "time-series-table"
+    ]
+  },
+  "template": [
+    {
+      "id": "experiment-controls",
+      "fontScale": "0.6",
+      "bottom": "model.top",
+      "padding-top": "0.5em",
+      "padding-left": "0em",
+      "padding-bottom": "0.4em"
+    },
+    {
+      "id": "top",
+      "bottom": "experiment-controls.top",
+      "fontScale": "0.7",
+      "padding-left": "0.5em",
+      "padding-bottom": "0em"
+    },
+    {
+      "id": "top-right",
+      "top": "experiment-controls.bottom",
+      "left": "model.right",
+      "height": "model.height",
+      "width": "model.width*1.3",
+      "padding-top": "0.2em",
+      "padding-left": "1em",
+      "padding-right": "1.5em"
+    },
+    {
+      "id": "time-series-table",
+      "fontScale": "0.6",
+      "top": "model.bottom",
+      "left": "model.left",
+      "padding-top": "0.5em",
+      "padding-left": "0.5em",
+      "padding-right": "0.4em",
+      "align": "center"
+    }
+  ]
+}

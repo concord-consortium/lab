@@ -1,0 +1,23 @@
+{
+  "title": "polarity-of-molecules",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "polarity-of-molecules$0",
+      "url": "imports/legacy-mw-content/converted/itsi/dissolving/polarity-of-molecules$0.json",
+      "importedFrom": "imports/legacy-mw-content/itsi/dissolving/polarity-of-molecules$0.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

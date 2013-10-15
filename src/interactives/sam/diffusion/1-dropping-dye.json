@@ -39,17 +39,18 @@
       "id": "trace",
       "text": "Trace Random Molecule",
       "action": [
-        "var opt = {suppressRepaint: true};",
-        "var atomID = randomAtoms(1);",
-        "var tracedAtomID = get('tracedAtom');",
-        "if (tracedAtomID != -99) {",
-        "setAtomProperties(tracedAtomID, {element: 0, marked: get('wasMarked')}, false, false, opt);",
-        "}",
-        "setAtomProperties(atomID, {element: 1}, false, false, opt);",
-        "set({tracedAtom: atomID});",
-        "set({wasMarked: getAtomProperties(atomID).marked});",
-        "setAtomProperties(atomID, { marked: 0}, false, false, opt);",
-        "traceAtom(atomID);"
+        "batch(function () {",
+        "  var atomID = randomAtoms(1);",
+        "  var tracedAtomID = get('tracedAtom');",
+        "  if (tracedAtomID != -99) {",
+        "    setAtomProperties(tracedAtomID, {element: 0, marked: get('wasMarked')}, false, false, opt);",
+        "  }",
+        "  setAtomProperties(atomID, {element: 1}, false, false, opt);",
+        "  set({tracedAtom: atomID});",
+        "  set({wasMarked: getAtomProperties(atomID).marked});",
+        "  setAtomProperties(atomID, { marked: 0}, false, false, opt);",
+        "  traceAtom(atomID);",
+        "});"
       ]
     },
     {

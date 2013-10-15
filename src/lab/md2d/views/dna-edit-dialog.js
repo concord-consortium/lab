@@ -1,8 +1,8 @@
-/*global $, define, model */
+/*global $, define */
 
 define(function () {
 
-  return function DNAEditDialog() {
+  return function DNAEditDialog(model) {
     var api,
         $dialogDiv,
         $dnaTextInput,

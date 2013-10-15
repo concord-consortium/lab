@@ -108,8 +108,8 @@
       "xmax": 10000,
       "xTickCount": 4,
       "yTickCount": 2,
-      "xFormatter": "2s",
-      "yFormatter": "2s",
+      "xFormatter": ".2s",
+      "yFormatter": ".2s",
       "properties": [
         "temperature"
       ],

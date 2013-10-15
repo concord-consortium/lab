@@ -47,7 +47,7 @@
       "property": "part-y",
       "min": 4.4,
       "max": 6.8,
-      "displayValue": "return format('1.1f')(value)",
+      "displayValue": "return format('.1f')(value)",
       "steps": 20
     },
     {
@@ -57,7 +57,7 @@
       "property": "part-temp",
       "min": 0,
       "max": 40,
-      "displayValue": "return format('1.1f')(value)",
+      "displayValue": "return format('.1f')(value)",
       "steps": 80
     },
     {
@@ -67,7 +67,7 @@
       "property": "new-part-temp",
       "min": 0,
       "max": 40,
-      "displayValue": "return format('1.1f')(value)",
+      "displayValue": "return format('.1f')(value)",
       "steps": 80
     },
     {

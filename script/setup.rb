@@ -54,11 +54,11 @@ end
 FONTFACE_LINK = case FONTFACE
 when "Lato"
   <<-HEREDOC
-<link href='http://fonts.googleapis.com/css?family=Lato:300italic,700italic,300,400,400italic,700' rel='stylesheet' type='text/css'>
+<link href='//fonts.googleapis.com/css?family=Lato:300italic,700italic,300,400,400italic,700' rel='stylesheet' type='text/css'>
   HEREDOC
 else          # default is "Open Sans"
   <<-HEREDOC
-<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300italic,400,300,700&amp;subset=latin,greek,latin-ext' rel='stylesheet' type='text/css'>
+<link href='//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300italic,400,300,700&amp;subset=latin,greek,latin-ext' rel='stylesheet' type='text/css'>
   HEREDOC
 end
 
@@ -73,6 +73,7 @@ when 'production'
 <script src="vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js" type="text/javascript"></script>
 <script src="vendor/jquery-context-menu/jquery.contextMenu.js" type="text/javascript"></script>
 <script src="vendor/jquery-selectBoxIt/jquery.selectBoxIt.min.js" type="text/javascript"></script>
+<script src='vendor/tinysort/jquery.tinysort.min.js' type='text/javascript'></script>
   HEREDOC
 else
   <<-HEREDOC
@@ -82,13 +83,13 @@ else
 <script src="vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js" type="text/javascript"></script>
 <script src="vendor/jquery-context-menu/jquery.contextMenu.js" type="text/javascript"></script>
 <script src="vendor/jquery-selectBoxIt/jquery.selectBoxIt.min.js" type="text/javascript"></script>
+<script src='vendor/tinysort/jquery.tinysort.js' type='text/javascript'></script>
   HEREDOC
 end
 
 LAB_JS_ADDITIONAL_DEPENDENCIES = case CONFIG[:environment]
 when 'production'
   <<-HEREDOC
-<script src='vendor/tinysort/jquery.tinysort.min.js' type='text/javascript'></script>
 <script src='vendor/codemirror/lib/codemirror.js' type='text/javascript'></script>
 <script src='vendor/codemirror/mode/javascript/javascript.js' type='text/javascript'></script>
 <script src='vendor/codemirror/addon/fold/foldcode.js' type='text/javascript'></script>
@@ -99,7 +100,6 @@ when 'production'
   HEREDOC
 else
   <<-HEREDOC
-<script src='vendor/tinysort/jquery.tinysort.js' type='text/javascript'></script>
 <script src='vendor/codemirror/lib/codemirror.js' type='text/javascript'></script>
 <script src='vendor/codemirror/mode/javascript/javascript.js' type='text/javascript'></script>
 <script src='vendor/codemirror/addon/fold/foldcode.js' type='text/javascript'></script>
@@ -107,6 +107,7 @@ else
 <script src='vendor/codemirror/addon/format/formatting.js' type='text/javascript'></script>
 <script src='vendor/codemirror/addon/edit/matchbrackets.js' type='text/javascript'></script>
 <script src='vendor/codemirror/addon/edit/closebrackets.js' type='text/javascript'></script>
+<script src='vendor/fingerprintjs/fingerprint.min.js' type='text/javascript'></script>
   HEREDOC
 end
 
@@ -135,4 +136,10 @@ else
   );
 </script>
   HEREDOC
+end
+
+if ENV['LAB_DISABLE_MODEL_LIST']
+  LAB_MODEL_LIST = ''
+else
+  LAB_MODEL_LIST = "<script src='imports/legacy-mw-content/model-list.js' type='text/javascript'></script>"
 end

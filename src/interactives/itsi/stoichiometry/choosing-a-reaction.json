@@ -1,0 +1,23 @@
+{
+  "title": "choosing-a-reaction",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "choosing-a-reaction$0",
+      "url": "imports/legacy-mw-content/converted/itsi/stoichiometry/choosing-a-reaction$0.json",
+      "importedFrom": "imports/legacy-mw-content/itsi/stoichiometry/choosing-a-reaction$0.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

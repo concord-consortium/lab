@@ -170,6 +170,79 @@
       right: 0.22197em
       bottom: 0.22197em
 
+.interactive-table
+  div.title
+    text-align: center
+    padding: 0.3em 0em
+    color: black
+  div.table-wrapper
+    padding: 0.2em 0.8em 0.2em 0.4em
+    background-color: #eee
+    border-radius: 0.4em
+    height: 100%
+    width: auto
+    overflow: hidden
+    table
+      border-collapse: collapse
+      background-color: #eee
+      width: 100%
+      thead
+        border-collapse: collapse
+        border-bottom: 1px solid #888
+        display: table-header-group
+        width: 80%
+        tr
+          display: block
+          position: relative
+        th
+          text-align: left
+          background-repeat: no-repeat
+          background-position: center right
+          cursor: n-resize
+          font-weight: normal
+          font-size: 90%
+          margin-bottom: 0.1em
+          padding: 0.4em 0.5em 0.5em 0.2em
+          border-radius: 0.1em
+          min-width: 1em
+        th.sorted
+          background: darken(#eee, 10%)
+        th.sorted.asc
+          background-image: url("#{$directory}/resources/down.png")
+          background-size: 15%
+          background-repeat: no-repeat
+          background-position: bottom right
+        th.sorted.desc
+          background-image: url("#{$directory}/resources/up.png")
+          background-size: 15%
+          background-repeat: no-repeat
+          background-position: top right
+          cursor: s-resize
+      tbody
+        border-collapse: collapse
+        padding-bottom: 0.3em
+        display: block
+        overflow: auto
+        width: 100%
+        background-color: white
+        vertical-align: middle
+        tr
+          display: table-row-group
+          border-top: 1px solid #888
+          &:nth-child(odd)
+            background-color: #f8f8f8
+          &:nth-child(even)
+            background-color: #fff
+          &:first-child
+            border-top: none
+          td
+            font-size: 80%
+            font-weight: normal
+            text-align: left
+            padding: 0.2em 0.3em 0.2em 0.3em
+        tr.selected
+          background-color: #fff4b8
+
 .numeric-output
   padding: 0.3em 0.2em 0.3em 0.7em
   span.output

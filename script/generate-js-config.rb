@@ -28,8 +28,13 @@ CONFIG[:jsconfig][:tracing] = false if CONFIG[:jsconfig][:tracing] == nil
 CONFIG[:jsconfig][:authoring] = false if CONFIG[:jsconfig][:authoring] == nil
 CONFIG[:jsconfig][:actualRoot] = "" if CONFIG[:jsconfig][:actualRoot] == nil
 CONFIG[:jsconfig][:fontface] = "Open Sans" if CONFIG[:jsconfig][:fontface] == nil
-CONFIG[:jsconfig][:dataGamesProxyPrefix] = "DataGames/Games/concord/lab/" if CONFIG[:jsconfig][:dataGamesProxyPrefix] == nil
 CONFIG[:jsconfig][:environment] = CONFIG[:environment]
+
+if ENV['LAB_STATIC'] || CONFIG[:jsconfig][:static]
+  CONFIG[:jsconfig][:static] = true
+else
+  CONFIG[:jsconfig][:static] = false
+end
 
 jsconfig = <<HEREDOC
 // this file is generated during build process by: ./script/generate-js-config.rb

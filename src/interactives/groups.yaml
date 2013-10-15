@@ -26,6 +26,10 @@
   :name: "Science of Atoms and Molecules: Light and Matter"
   :category: Curriculum
 
+- :path: inquiry-examples/pendulum
+  :name: "Inquiry Examples: Pendulums"
+  :category: Curriculum
+
 - :path: inquiry-space/pendulum
   :name: "Inquiry Space: Pendulums"
   :category: Curriculum
@@ -34,8 +38,24 @@
   :name: "ITSI: Crystals"
   :category: Curriculum
 
+- :path: itsi/states-of-matter
+  :name: "ITSI: States of Matter"
+  :category: Curriculum
+
 - :path: itsi/gas-laws
   :name: "ITSI: Gas Laws"
+  :category: Curriculum
+
+- :path: itsi/heattransfer
+  :name: "ITSI: Heat Transfer"
+  :category: Curriculum
+
+- :path: itsi/stoichiometry
+  :name: "ITSI: Stoichiometry"
+  :category: Curriculum
+
+- :path: itsi/dissolving
+  :name: "ITSI: Dissolving"
   :category: Curriculum
 
 - :path: itsi/energy2d
@@ -86,6 +106,10 @@
   :name: "Physics Conversion Tests"
   :category: Tests
 
+- :path: conversion-tests/chemical-reactions
+  :name: "Chemical Reaction Conversion Tests"
+  :category: Tests
+
 - :path: layout-tests
   :name: "Layout Tests"
   :category: Tests
@@ -124,6 +148,10 @@
 
 - :path: student/fluid
   :name: "Classic Java MW Examples: Fluid"
+  :category: Curriculum
+
+- :path: student/heattransfer
+  :name: "Classic Java MW Examples: Heat Transfer"
   :category: Curriculum
 
 - :path: student/materials

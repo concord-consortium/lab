@@ -186,6 +186,18 @@
       "id": "callEvery25Count",
       "type": "numericOutput",
       "property": "callEvery25Count"
+    },
+    {
+      "id": "reset-button",
+      "type": "button",
+      "text": "Reset",
+      "action": "reset();"
+    },
+    {
+      "id": "reload-button",
+      "type": "button",
+      "text": "Reload",
+      "action": "reload();"
     }
   ],
   "layout": {
@@ -219,6 +231,10 @@
         "r-5",
         "callEvery25",
         "callEvery25Count"
+      ],
+      [
+        "reset-button",
+        "reload-button"
       ]
     ]
   }

@@ -1,0 +1,74 @@
+{
+  "title": "Atomic Movement in Solids",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "solid1",
+      "url": "imports/legacy-mw-content/converted/itsi/states-of-matter/solid1.json",
+      "importedFrom": "imports/legacy-mw-content/itsi/states-of-matter/solid1.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "atomTraceColor": "#f00",
+        "markColor": "#ff0"
+      }
+    },
+    {
+      "type": "md2d",
+      "id": "solid2",
+      "url": "imports/legacy-mw-content/converted/itsi/states-of-matter/solid2.json",
+      "importedFrom": "imports/legacy-mw-content/itsi/states-of-matter/solid2.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "atomTraceColor": "#f00",
+        "markColor": "#ff0"
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "radio",
+      "id": "select-model",
+      "orientation": "horizontal",
+      "options": [
+        {
+          "text": "Solid 1",
+          "loadModel": "solid1",
+          "selected": true
+        },
+        {
+          "text": "Solid 2",
+          "loadModel": "solid2"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show-interactions",
+      "text": "Show interactions",
+      "property": "showVDWLines"
+    },
+    {
+      "type": "button",
+      "id": "trace-atom",
+      "text": "Randomly pick an atom and show its trajectory",
+      "action": "traceAtom(randomAtoms(1));"
+    },
+    {
+      "type": "button",
+      "id": "mark-one-atom",
+      "text": "Mark atoms near center",
+      "action": [
+        "markAtoms(atomsWithinRect(1.75, 1.0, 0.5, 0.5));"
+      ]
+    }
+  ],
+  "layout": {
+    "bottom": [
+      [ "select-model", "show-interactions" ],
+      [ "trace-atom", "mark-one-atom" ]
+    ]
+  }
+}

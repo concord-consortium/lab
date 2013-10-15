@@ -296,7 +296,8 @@ define(function() {
                                "afterInvalidatingChangeSequence"),
 
         invalidatingChangeNestingLevel = 0,
-        suppressInvalidatingChangeHooks = false,
+        invalidatingChangeOccurredDuringBatch,
+        suppressInvalidationForBatch = false,
 
         // all properties that were notified while notifications were batched
         changedPropertyKeys = [],
@@ -400,6 +401,12 @@ define(function() {
       }
     }
 
+    // Note this does not respect batched notifications, as property descriptions are not expected
+    // to be updated en masse during an engine tick as are property values.
+    function notifyPropertyDescriptionObservers(key) {
+      notifyCallbacksOnce(propertyInformation[key].propertyDescriptionObservers);
+    }
+
     // Private implementation of the getter for the property specified by 'key'. Handles caching
     // concerns, but not afterGetTransform, etc.
     function get(key) {
@@ -435,6 +442,13 @@ define(function() {
         info.hasCachedValue = true;
         info.cachedValue = value;
       }
+    }
+
+    function setPropertyDescription(key, description) {
+      var info = propertyInformation[key];
+
+      info.descriptor.description = description;
+      notifyPropertyDescriptionObservers(key);
     }
 
     function invalidateCachedPropertiesObjects(type) {
@@ -561,9 +575,7 @@ define(function() {
         Object.defineProperty(target, 'properties', {
           configurable: false,
           enumerable: true,
-          get: function() {
-            return getPropertiesObject();
-          }
+          get: getPropertiesObject
         });
 
         /**
@@ -607,6 +619,20 @@ define(function() {
         */
         target.get = function(key) {
           return target.properties[key];
+        };
+
+        // This is the publicly-accessible setter for 'freezing' the property.
+        target.freeze = function(key) {
+          var description = target.getPropertyDescription(key);
+          description.setFrozen(true);
+          setPropertyDescription(key, description);
+        };
+
+        // This is the publicly-accessible setter for 'un-freezing' the property.
+        target.unfreeze = function(key) {
+          var description = target.getPropertyDescription(key);
+          description.setFrozen(false);
+          setPropertyDescription(key, description);
         };
 
         /**
@@ -653,7 +679,37 @@ define(function() {
           var observers = propertyInformation[key].observers,
               index = observers.indexOf(callback);
 
-          if (index > 0) {
+          if (index >= 0) {
+            observers.splice(index, 1);
+          }
+        };
+
+        /**
+          The 'addPropertyDescriptionObserver' method mixed into 'target' adds 'callback' to the end
+          of the list of property-description observers of the property specified by key. Note that
+          adding a callback more than once to the property-description observer list for a given
+          property has no effect.
+
+          Property-description observers are called immediately when the observed property's
+          description object is reassigned. Note that observing of mutation of the description
+          object is not supported; to change a property's description after the property is created,
+          always pass a property description object to propertySupport.setPropertyDescription.
+        */
+        target.addPropertyDescriptionObserver = function(key, callback) {
+          if (!propertyInformation[key]) {
+            return;
+          }
+          var observers = propertyInformation[key].propertyDescriptionObservers;
+          if (observers.indexOf(callback) < 0) {
+            observers.push(callback);
+          }
+        };
+
+        target.removePropertyDescriptionObserver = function(key, callback) {
+          var observers = propertyInformation[key].propertyDescriptionObservers,
+              index = observers.indexOf(callback);
+
+          if (index >= 0) {
             observers.splice(index, 1);
           }
         };
@@ -720,6 +776,7 @@ define(function() {
         propertyInformation[key] = {
           descriptor: descriptor,
           observers: [],
+          propertyDescriptionObservers: [],
           hasCachedValue: false,
           cachedValue: undefined,
           previousValue: undefined
@@ -733,6 +790,14 @@ define(function() {
         }
 
         invalidateCachedPropertiesObjects(descriptor.type);
+      },
+
+      /**
+        Set the PropertyDescription associated with 'key' to 'description' and notify any
+        property-description observers (added via target.addPropertyDescriptionObserver())
+      */
+      setPropertyDescription: function(key, description) {
+        setPropertyDescription(key, description);
       },
 
       /**
@@ -902,7 +967,13 @@ define(function() {
       },
 
       invalidatingChangePreHook: function() {
-        if (suppressInvalidatingChangeHooks) return;
+
+        // Only the first invalidating change during a batch runs the "pre hook".
+        if (suppressInvalidationForBatch && invalidatingChangeOccurredDuringBatch) {
+          return;
+        }
+
+        invalidatingChangeOccurredDuringBatch = true;
 
         if (invalidatingChangeNestingLevel === 0) {
           api.storeComputedProperties();
@@ -915,7 +986,7 @@ define(function() {
       },
 
       invalidatingChangePostHook: function() {
-        if (suppressInvalidatingChangeHooks) return;
+        if (suppressInvalidationForBatch) return;
 
         invalidatingChangeNestingLevel--;
 
@@ -929,14 +1000,17 @@ define(function() {
         }
       },
 
+      // N.B. We don't currently handle nested batches. This may be a problem.
       startBatch: function() {
-        api.invalidatingChangePreHook();
-        suppressInvalidatingChangeHooks = true;
+        invalidatingChangeOccurredDuringBatch = false;
+        suppressInvalidationForBatch = true;
       },
 
       endBatch: function() {
-        suppressInvalidatingChangeHooks = false;
-        api.invalidatingChangePostHook();
+        suppressInvalidationForBatch = false;
+        if (invalidatingChangeOccurredDuringBatch) {
+          api.invalidatingChangePostHook();
+        }
       },
 
       on: function (type, listener) {

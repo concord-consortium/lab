@@ -74,7 +74,7 @@
       "id": "number-slider",
       "min": 10,
       "max": 60,
-      "displayValue": "return format('1f')(value)",
+      "displayValue": "return format('.1f')(value)",
       "labels": [
         {
           "value": 10,
@@ -95,7 +95,7 @@
       "id": "area-display",
       "property": "area",
       "orientation": "vertical",
-      "displayValue": "return format('1.1f')(value)"
+      "displayValue": "return format('.1f')(value)"
     }
   ]
 }

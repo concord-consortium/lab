@@ -37,19 +37,19 @@ define(function(require) {
       }
     });
 
-    // on message 'getModelState' call and return controller.getModelController().state()
+    // on message 'getModelState' call and return controller.modelController.state()
     parentMessageController.addListener('getModelState', function(message) {
-      if (controller && controller.getModelController) {
+      if (controller && controller.modelController) {
         parentMessageController.post({
           type:  'modelState',
-          values: controller.getModelController().state()
+          values: controller.modelController.state()
         });
       }
     });
 
     // on message 'getInteractiveState' call and return controller.serialize() result
     parentMessageController.addListener('getInteractiveState', function(message) {
-      if (controller && controller.getModelController) {
+      if (controller && controller.modelController) {
         parentMessageController.post({
           type:  'interactiveState',
           values: controller.serialize()
@@ -60,8 +60,8 @@ define(function(require) {
     // on message 'runBenchmarks' call controller.runBenchmarks
     parentMessageController.addListener('runBenchmarks', function() {
       var modelController, benchmarks;
-      if (controller && controller.getModelController) {
-        modelController = controller.getModelController();
+      if (controller && controller.modelController) {
+        modelController = controller.modelController;
         benchmarks = controller.benchmarks.concat(modelController.benchmarks);
         benchmark.bench(benchmarks, function(results) {
           console.log(results);
@@ -141,6 +141,10 @@ define(function(require) {
 
     parentMessageController.addListener('stop', function(message) {
       controller.scriptingAPI.api.stop();
+    });
+
+    parentMessageController.addListener('stop', function(message) {
+      model.stop();
     });
 
     parentMessageController.initialize();

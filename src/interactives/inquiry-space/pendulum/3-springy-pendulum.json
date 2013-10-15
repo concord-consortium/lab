@@ -13,7 +13,7 @@
     "other variables are unchanged?"
   ],
   "aspectRatio": 1.4,
-  "fontScale": 0.8,
+  "fontScale": 0.7,
   "models": [
     {
       "type": "md2d",
@@ -62,8 +62,9 @@
       "label": "Angle",
       "value": [
         "var a0 = getAtomProperties(0),",
-        "    a1 = getAtomProperties(1);",
-        "return Math.atan2(-Math.abs(a1.y-a0.y), a1.x-a0.x) * rad2deg + 90;"
+        "    a1 = getAtomProperties(1),",
+        "    ang = Math.atan2(a1.y-a0.y, a1.x-a0.x) * rad2deg;",
+        "return (a1.x < a0.x && a1.y >= a0.y) ? ang - 270 : ang + 90;"
       ]
     },
     {
@@ -154,7 +155,7 @@
       "id": "gravity-slider",
       "min": 0.8,
       "max": 19.8,
-      "displayValue": "return format('1.1f')(value)",
+      "displayValue": "return format('.1f')(value)",
       "labels": [
         {
           "value": 1,
@@ -234,7 +235,7 @@
       "id": "spring-constant-slider",
       "min": 1,
       "max": 30,
-      "displayValue": "return format('1.1f')(value)",
+      "displayValue": "return format('.1f')(value)",
       "labels": [
         {
           "value": 1,
@@ -254,7 +255,7 @@
       "id": "damping-slider",
       "min": 0,
       "max": 1,
-      "displayValue": "return format('1.2f')(value)",
+      "displayValue": "return format('.2f')(value)",
       "labels": [
         {
           "value": 0,
@@ -266,7 +267,8 @@
         }
       ],
       "steps": 20,
-      "title": "Damping (Newton per m/s)",
+      "title": "Damping (N per m/s)",
+      "tooltip": "Damping force in Newtons per m/s",
       "property": "damping"
     },
     {
@@ -289,7 +291,7 @@
       "property": "equilibriumLength",
       "width": "14em",
       "orientation": "vertical",
-      "displayValue": "return format('1.2f')(value)"
+      "displayValue": "return format('.2f')(value)"
     },
     {
       "type": "numericOutput",
@@ -297,7 +299,7 @@
       "property": "currentDisplacement",
       "width": "14em",
       "orientation": "vertical",
-      "displayValue": "return format('1.2f')(value)"
+      "displayValue": "return format('.2f')(value)"
     },
     {
       "type": "numericOutput",
@@ -335,8 +337,8 @@
       "xmax": 10,
       "yTickCount": 4,
       "xTickCount": 5,
-      "xFormatter": "2s",
-      "yFormatter": "2s",
+      "xFormatter": ".2s",
+      "yFormatter": ".2s",
       "properties": [
         "currentDisplacement"
       ]
@@ -353,48 +355,52 @@
       [
         "gravity-slider",
         "length-slider",
-        "angle-slider",
-        "velocity-vectors"
+        "angle-slider"
       ],
       [
         "mass-slider",
         "spring-constant-slider",
-        "damping-slider",
-        "ke-shading"
+        "damping-slider"
       ],
       [
         "equilibrium-display",
         "displacement-display",
         "current-angle-display"
+      ],
+      [
+        "velocity-vectors",
+        "ke-shading"
       ]
     ]
   },
   "template": [
     {
-      "id": "right-upper",
-      "top": "model.top",
-      "left": "model.right",
-      "height": "model.height * 0.5",
-      "padding-left": "1em",
-      "padding-right": "0.5em",
-      "width": "model.width * 1.0",
-      "min-width": "model.width * 0.8"
-    },
-    {
-      "id": "right-lower",
-      "left": "model.right",
-      "top": "right-upper.bottom",
-      "height": "model.height * 0.5",
-      "padding-left": "1em",
-      "padding-right": "0.5em",
-      "width": "model.width * 1.0",
-      "min-width": "model.width * 0.8"
+      "id": "top",
+      "bottom": "model.top",
+      "width": "interactive.width"
     },
     {
       "id": "bottom",
       "top": "model.bottom",
-      "width": "interactive.width",
       "padding-top": "0.5em"
+    },
+    {
+      "id": "right-upper",
+      "top": "model.top",
+      "left": "model.right",
+      "right": "interactive.right",
+      "height": "model.height * 0.5",
+      "padding-left": "1em",
+      "padding-right": "0.5em"
+    },
+    {
+      "id": "right-lower",
+      "top": "right-upper.bottom",
+      "left": "model.right",
+      "right": "interactive.right",
+      "height": "model.height * 0.5",
+      "padding-left": "1em",
+      "padding-right": "0.5em"
     }
   ]
 }

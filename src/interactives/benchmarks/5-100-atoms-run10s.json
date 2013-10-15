@@ -32,21 +32,27 @@
         {
           "text": "Charged Atoms",
           "action": [
-            "var chargeVal = 1;",
-            "for (var i=0; i < getNumberOfAtoms(); i++) {",
-            "setAtomProperties(i, {charge: chargeVal}, false, false, {suppressRepaint: true});",
-            "chargeVal *= -1;",
-            "}",
-            "set({chargeShading: true});"
+            "batch(function () {",
+            "  var chargeVal = 1;",
+            "  var count = getNumberOfAtoms();",
+            "  for (var i=0; i < count; i++) {",
+            "    setAtomProperties(i, {charge: chargeVal}, false, false);",
+            "    chargeVal *= -1;",
+            "  }",
+            "  set({chargeShading: true});",
+            "})"
           ]
         },
         {
           "text": "Neutral Atoms",
           "action": [
-            "for (var i=0; i < getNumberOfAtoms(); i++) {",
-            "setAtomProperties(i, { charge: 0}, false, false, {suppressRepaint: true});",
-            "}",
-            "set({chargeShading: false});"
+            "batch(function () {",
+            "  var count = getNumberOfAtoms();",
+            "  for (var i=0; i < count; i++) {",
+            "    setAtomProperties(i, {charge: 0}, false, false);",
+            "  }",
+            "  set({chargeShading: false});",
+            "})"
           ]
         }
       ]
@@ -57,7 +63,7 @@
       "min": 0.075,
       "max": 0.3,
       "initialValue": 0.14,
-      "displayValue": "return format('1.3f')(value)",
+      "displayValue": "return format('.3f')(value)",
       "labels": [
         {
           "value": 0.075,
@@ -78,7 +84,7 @@
       "min": 10,
       "max": 5000,
       "initialValue": 400,
-      "displayValue": "return format('4f')(value)",
+      "displayValue": "return format('f')(value)",
       "labels": [
         {
           "value": 10,

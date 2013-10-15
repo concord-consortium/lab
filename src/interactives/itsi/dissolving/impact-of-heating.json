@@ -1,0 +1,23 @@
+{
+  "title": "impact-of-heating",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "impact-of-heating$0",
+      "url": "imports/legacy-mw-content/converted/itsi/dissolving/impact-of-heating$0.json",
+      "importedFrom": "imports/legacy-mw-content/itsi/dissolving/impact-of-heating$0.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

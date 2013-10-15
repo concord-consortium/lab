@@ -1,4 +1,4 @@
-/*global define, $, model */
+/*global define, $ */
 
 define(function () {
 
@@ -6,7 +6,7 @@ define(function () {
       disablable = require('common/controllers/disablable'),
       validator  = require('common/validator');
 
-  return function CheckboxController(component, scriptingAPI, interactivesController) {
+  return function CheckboxController(component, interactivesController) {
     var propertyName,
         onClickScript,
         initialValue,
@@ -14,7 +14,9 @@ define(function () {
         $fakeCheckable,
         $label,
         $element,
-        controller;
+        controller,
+        model,
+        scriptingAPI;
 
     // Updates checkbox using model property. Used in modelLoadedCallback.
     // Make sure that this function is only called when:
@@ -22,6 +24,11 @@ define(function () {
     // b) checkbox is bound to some property.
     function updateCheckbox () {
       setCheckbox(model.get(propertyName));
+    }
+
+    function updateCheckboxDisabledState() {
+      var description = model.getPropertyDescription(propertyName);
+      controller.setDisabled(description.getFrozen());
     }
 
     function setCheckbox(value) {
@@ -45,6 +52,9 @@ define(function () {
       // Trigger change event!
       $checkbox.trigger('change');
     }
+
+    model = interactivesController.getModel();
+    scriptingAPI = interactivesController.getScriptingAPI();
 
     // Validate component definition, use validated copy of the properties.
     component = validator.validateCompleteness(metadata.checkbox, component);
@@ -120,14 +130,27 @@ define(function () {
       $element.attr("title", component.tooltip);
     }
 
-    // Public API.
+    // Public API
     controller = {
       // This callback should be trigger when model is loaded.
       modelLoadedCallback: function () {
+        if (model && propertyName !== undefined) {
+          model.removeObserver(propertyName, updateCheckbox);
+          model.removePropertyDescriptionObserver(propertyName, updateCheckboxDisabledState);
+        }
+        model = interactivesController.getModel();
+        scriptingAPI = interactivesController.getScriptingAPI();
+
+        onClickScript = component.onClick;
+        if (onClickScript) {
+          onClickScript = scriptingAPI.makeFunctionInScriptContext('value', onClickScript);
+        }
+
         // Connect checkbox with model's property if its name is defined.
         if (propertyName !== undefined) {
           // Register listener for 'propertyName'.
           model.addPropertiesListener([propertyName], updateCheckbox);
+          model.addPropertyDescriptionObserver(propertyName, updateCheckboxDisabledState);
           // Perform initial checkbox setup.
           updateCheckbox();
         }

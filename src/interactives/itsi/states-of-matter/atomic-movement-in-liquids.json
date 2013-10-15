@@ -1,0 +1,77 @@
+{
+  "title": "Atomic Movement in Liquids",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "liquid1",
+      "url": "imports/legacy-mw-content/converted/itsi/states-of-matter/liquid1.json",
+      "importedFrom": "imports/legacy-mw-content/itsi/states-of-matter/liquid1.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "atomTraceColor": "#ff0",
+        "markColor": "#ff0"
+      }
+    },
+    {
+      "type": "md2d",
+      "id": "liquid2",
+      "url": "imports/legacy-mw-content/converted/itsi/states-of-matter/liquid2.json",
+      "importedFrom": "imports/legacy-mw-content/itsi/states-of-matter/liquid2.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "atomTraceColor": "#ff0"
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "radio",
+      "id": "select-model",
+      "orientation": "horizontal",
+      "options": [
+        {
+          "text": "Liquid 1",
+          "loadModel": "liquid1",
+          "selected": true
+        },
+        {
+          "text": "Liquid 2",
+          "loadModel": "liquid2"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show-interactions",
+      "text": "Show interactions",
+      "property": "showVDWLines"
+    },
+    {
+      "type": "button",
+      "id": "trace-atom",
+      "text": "Randomly pick an atom and show its trajectory",
+      "action": "traceAtom(randomAtoms(1));"
+    },
+    {
+      "type": "button",
+      "id": "mark-one-atom",
+      "text": "Mark atom near center",
+      "action": [
+        "var centerAtoms = atomsWithinCircle(2, 1.25, 0.5),",
+        "    atomNum = centerAtoms[randomInteger(centerAtoms.length)],",
+        "    atoms = getMoleculeAtoms(atomNum);",
+        "atoms.push(atomNum);",
+        "markAtoms(atoms);"
+      ]
+    }
+  ],
+  "layout": {
+    "bottom": [
+      [ "select-model", "show-interactions" ],
+      [ "trace-atom", "mark-one-atom" ]
+    ]
+  }
+}

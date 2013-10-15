@@ -16,6 +16,7 @@ suite.addBatch({
           i, ii;
       for (i=0, ii=mmlFiles.length; i<ii; i++) {
         mmlFile = mmlFiles[i];
+        if (mmlFile[0] === '.') continue; // skip hidden files, e.g. .DS_Store
         mml = fs.readFileSync(testDir + "input-mml/" + mmlFile).toString();
         modelName = /\/?([^\/]*)\.mml/.exec(mmlFile)[1];
 

@@ -1,0 +1,213 @@
+{
+  "title": "Specific Heat and Latent Heat in Condensation",
+  "publicationStatus": "draft",
+  "subtitle": "Seeing Specific Heat and Latent Heat in a Condensation Experiment",
+  "aspectRatio": 2.1,
+  "fontScale": 0.8,
+  "about": [
+    "Specific heat capacitiy is the measure of the heat energy required",
+    "to raise the temperature of a given quantity of a substance by one",
+    "kelvin. Latent heat of melting describes tœhe amount of heat",
+    "required to melt a solid. When a solid is undergoing melting, the",
+    "temperature basically remains constant until the entire solid is",
+    "molten. The above simulation demonstrates the specific heat and",
+    "the latent heat.",
+    "",
+    "The physical origin of latent heat is that when a system is in a",
+    "phase transition, its structure will change. Changing structure",
+    "usually results in changes of potential energy, because potential",
+    "energy depends primarily on structure. In the simulation,",
+    "the energy added to the system is absorbed by the atoms and used",
+    "to break the interatomic interactions (so that they can leave the",
+    "condensed state). During the phase transition the kinetic energy",
+    "doesn't increase, as the",
+    "potential energy increases in the expense of the input energy.",
+    "During this period, the interatomic interactions diminish and the",
+    "structure breaks up, resulting in a phase transition.",
+    "",
+    "One thing you would notice is that the temperature-energy curve on",
+    "the right has fluctuations. This is because we have much fewer",
+    "atoms (169) in the simulation than there would be in a real",
+    "physical model."
+  ],
+  "models": [
+    {
+      "type": "md2d",
+      "id": "latentheat3$0",
+      "url": "imports/legacy-mw-content/converted/itsi/states-of-matter/latentheat3$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step"
+      },
+      "modelOptions": {
+        "timeStep": 2.5
+      },
+      "onLoad": [
+        "setComponentDisabled('start-cooling', false);",
+        "callEvery(200, function() {",
+        "  if (get('experimentRunning')) {",
+        "    var numAtoms, i, props, vx2, vy2, newVx, newVy, ratio, vXConstant, vYConstant;",
+        "    batch(function(){",
+        "      numAtoms = getNumberOfAtoms()",
+        "      for(i=0; i<numAtoms; i++){",
+        "        // The idea here is to subtract the same amount of KE from every atom, and to keep",
+        "        // the direction of the velocity the same",
+        "        props = getAtomProperties(i);",
+        "        vx2 = props.vx * props.vx;",
+        "        vy2 = props.vy * props.vy;",
+        "        if (vx2*vy2) {",
+        "          ratio = vx2/vy2;",
+        "          vXConstant = 0.000000002*ratio/(1+ratio);",
+        "          vYConstant = 0.000000002 - vXConstant;",
+        "          if(props.vx >= 0) newVx =  Math.sqrt(Math.max(0, vx2-vXConstant));",
+        "          if(props.vx < 0) newVx = - Math.sqrt(Math.max(0, vx2-vXConstant));",
+        "          if(props.vy >= 0) newVy =  Math.sqrt(Math.max(0, vy2-vYConstant));",
+        "          if(props.vy < 0) newVy = - Math.sqrt(Math.max(0, vy2-vYConstant));",
+        "          setAtomProperties(i, {vx:newVx, vy:newVy});",
+        "        }",
+        "      }",
+        "    });",
+        "    var runningTime = get('time') - get('timeExperimentStarted');",
+        "    set('experimentTime', runningTime);",
+        "    if (runningTime > 150000) stop();",
+        "  }",
+        "});"
+      ]
+    }
+  ],
+  "filteredOutputs": [
+    {
+      "name": "temperatureFiltered",
+      "unitType": "temperature",
+      "label": "Temperature",
+      "property": "temperature",
+      "type": "RunningAverage",
+      "period": 5000
+    }
+   ],
+  "parameters": [
+    {
+      "name": "timeExperimentStarted",
+      "initialValue": 0,
+      "onChange": ""
+    },
+    {
+      "name": "experimentRunning",
+      "initialValue": false,
+      "onChange": ""
+    },
+    {
+      "name": "experimentTime",
+      "label": "Experiment time",
+      "initialValue": 0,
+      "onChange": ""
+    }
+  ],
+  "components": [
+    {
+      "type": "barGraph",
+      "id": "ke-bar-graph",
+      "min": 0,
+      "max": 75,
+      "labels": 0,
+      "barWidth": "1.5em",
+      "title": "Kinetic Energy",
+      "property": "kineticEnergy",
+      "averagePeriod": 2500
+    },
+    {
+      "type": "barGraph",
+      "id": "pe-bar-graph",
+      "min": -200,
+      "max": 0,
+      "labels": 0,
+      "barWidth": "1.5em",
+      "title": "Potential Energy",
+      "property": "potentialEnergy",
+      "averagePeriod": 2500
+    },
+    {
+      "type": "button",
+      "id": "start-cooling",
+      "text": "Start removing heat",
+      "action": [
+        "if (isStopped()) {",
+        "  setComponentDisabled('start-cooling', true);",
+        "  start();",
+        "}",
+        "set('timeExperimentStarted', get('time'));",
+        "set('experimentRunning', true);"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "reset-experiment",
+      "text": "Reset experiment",
+      "action": [
+        "reload();",
+        "set('experimentRunning', false);"
+      ]
+    },
+    {
+      "type": "numericOutput",
+      "id": "experiment-time",
+      "property": "experimentTime",
+      "displayValue": "return format('.1f')(value/1000)"
+    },
+    {
+      "type": "graph",
+      "id": "temperature-energy-graph",
+      "title": "",
+      "xlabel": "Total energy",
+      "ylabel": "Temperature (K)",
+      "ymin": 0,
+      "ymax": 4000,
+      "xmin": -160,
+      "xmax": 50,
+      "lines": false,
+      "lineWidth": 2,
+      "yTickCount": 5,
+      "xTickCount": 5,
+      "xFormatter": ".2s",
+      "yFormatter": ".2s",
+      "xProperty": "totalEnergy",
+      "properties": [
+        "temperatureFiltered"
+      ]
+    }
+  ],
+  "layout": {
+    "right-bars": [
+      "ke-bar-graph", "pe-bar-graph"
+    ],
+    "right-lines": [
+      "temperature-energy-graph"
+    ],
+    "bottom": [
+      "start-cooling", "reset-experiment", "experiment-time"
+    ]
+  },
+  "template": [
+    {
+      "id": "right-bars",
+      "top": "model.top",
+      "bottom": "model.bottom",
+      "left": "model.right",
+      "padding-left": "0.5em",
+      "padding-right": "0.5em",
+      "padding-bottom": "0.5em"
+    },
+    {
+      "id": "right-lines",
+      "top": "model.top",
+      "bottom": "model.bottom",
+      "left": "right-bars.right",
+      "width": "16em"
+    },
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "width": "interactive.width",
+      "padding-top": "1em"
+    }
+  ]
+}

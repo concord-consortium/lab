@@ -44,12 +44,8 @@ define(function (require, exports) {
           T: K
       */
       convertKEtoT = function(totalKEinMWUnits, N) {
-        // In 2 dimensions, kT = (2/N_df) * KE
-
-        var N_df = 2 * N,
-            averageKEinMWUnits = (2 / N_df) * totalKEinMWUnits,
+        var averageKEinMWUnits = totalKEinMWUnits / N,
             averageKEinJoules = constants.convert(averageKEinMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.JOULE });
-
         return averageKEinJoules / BOLTZMANN_CONSTANT_IN_JOULES;
       },
 
@@ -62,10 +58,9 @@ define(function (require, exports) {
           KE: "MW Energy Units" (Dalton * nm^2 / fs^2)
       */
       convertTtoKE = function(T, N) {
-        var N_df = 2 * N,
-            averageKEinJoules  = T * BOLTZMANN_CONSTANT_IN_JOULES,
+        var averageKEinJoules  = T * BOLTZMANN_CONSTANT_IN_JOULES,
             averageKEinMWUnits = constants.convert(averageKEinJoules, { from: unit.JOULE, to: unit.MW_ENERGY_UNIT }),
-            totalKEinMWUnits = averageKEinMWUnits * N_df / 2;
+            totalKEinMWUnits = averageKEinMWUnits * N;
 
         return totalKEinMWUnits;
       },
@@ -170,7 +165,7 @@ define(function (require, exports) {
         //                      Atom Properties
 
         // Individual property arrays for the atoms, indexed by atom number
-        radius, px, py, x, y, vx, vy, speed, ax, ay, charge, element, friction, pinned, mass, hydrophobicity,
+        radius, px, py, x, y, vx, vy, speed, ax, ay, charge, element, friction, radical, pinned, mass, hydrophobicity,
         // Helper array, which may be used by various engine routines traversing atoms in untypical order.
         // Make sure that you reset it before use. At the moment, it's used by updateAminoAcidForces() function.
         visited,
@@ -219,17 +214,15 @@ define(function (require, exports) {
         // Left undefined if there are no radial bonds.
         radialBonds,
 
-        // An array of individual radial bond index values and properties.
-        // Each object contains all radial bond properties (atom1, atom2, length, strength, style)
-        // and additionally (x,y) coordinates of bonded atoms defined as x1, y1, x2, y2 properties.
-        radialBondResults,
-
         // radialBondMatrix[i][j] === true when atoms i and j are "radially bonded"
         // radialBondMatrix[i][j] === undefined otherwise
         radialBondMatrix,
 
         // Number of actual radial bonds (may be smaller than the length of the property arrays).
         N_radialBonds = 0,
+
+        // Flag indicating if some radial bonds were added or removed during the integration step.
+        radialBondsChanged = false,
 
         // ####################################################################
         //                      Restraint Properties
@@ -331,6 +324,32 @@ define(function (require, exports) {
 
         // Number of actual shapes
         N_shapes = 0,
+
+
+        // ####################################################################
+        //                      Line Properties
+
+        // Individual properties for the lines
+        lineX1,
+        lineY1,
+        lineX2,
+        lineY2,
+        lineBeginStyle,
+        lineEndStyle,
+        lineFence,
+        lineLineColor,
+        lineLineDashes,
+        lineLineWeight,
+        lineLayer,
+        lineLayerPosition,
+        lineVisible,
+
+        // An object that contains references to the above line-property arrays.
+        // Left undefined if there are no lines.
+        lines,
+
+        // Number of actual lines
+        N_lines = 0,
 
         // ####################################################################
         //                      Electric Field Properties
@@ -438,20 +457,13 @@ define(function (require, exports) {
           createSpringForcesArray(0);
           createObstaclesArray(0);
           createShapesArray(0);
+          createLinesArray(0);
           createElectricFieldsArray(0);
 
           // Custom pairwise properties.
           pairwiseLJProperties = new PairwiseLJProperties(engine);
 
           radialBondMatrix = [];
-
-          // Initialize radialBondResults[] array consisting of hashes of radial bond
-          // index numbers and transposed radial bond properties.
-
-          // FIXME. Why is the engine computing this? The modeler exists to insulate the engine
-          // code from view concerns such as this "results" array.
-          // See https://www.pivotaltracker.com/story/show/50086303
-          radialBondResults = engine.radialBondResults = [];
         },
 
         // Throws an informative error if a developer tries to use the setCoefficients method of an
@@ -561,7 +573,7 @@ define(function (require, exports) {
           if (cellList === undefined) {
             cellList = new CellList(size[0], size[1], computeMaxCutoff());
           } else {
-            cellList.reinitialize(computeMaxCutoff());
+            cellList.reinitialize(size[0], size[1], computeMaxCutoff());
           }
         },
 
@@ -610,6 +622,7 @@ define(function (require, exports) {
             ay             = atoms.ay;
             charge         = atoms.charge;
             friction       = atoms.friction;
+            radical        = atoms.radical;
             element        = atoms.element;
             pinned         = atoms.pinned;
             mass           = atoms.mass;
@@ -689,6 +702,22 @@ define(function (require, exports) {
             shapeVisible       = shapes.visible;
           },
 
+          lines: function() {
+            lineX1            = lines.x1;
+            lineY1            = lines.y1;
+            lineX2            = lines.x2;
+            lineY2            = lines.y2;
+            lineBeginStyle    = lines.beginStyle;
+            lineEndStyle      = lines.endStyle;
+            lineFence         = lines.fence;
+            lineLineColor     = lines.lineColor;
+            lineLineDashes    = lines.lineDashes;
+            lineLineWeight    = lines.lineWeight;
+            lineLayer         = lines.layer;
+            lineLayerPosition = lines.layerPosition;
+            lineVisible       = lines.visible;
+          },
+
           electricFields: function() {
             electricFieldIntensity    = electricFields.intensity;
             electricFieldOrientation  = electricFields.orientation;
@@ -737,6 +766,7 @@ define(function (require, exports) {
           atoms.ay             = arrays.create(num, 0, arrayTypes.floatType);
           atoms.charge         = arrays.create(num, 0, arrayTypes.floatType);
           atoms.friction       = arrays.create(num, 0, arrayTypes.floatType);
+          atoms.radical        = arrays.create(num, 0, arrayTypes.uint8Type);
           atoms.element        = arrays.create(num, 0, arrayTypes.uint8Type);
           atoms.pinned         = arrays.create(num, 0, arrayTypes.uint8Type);
           atoms.mass           = arrays.create(num, 0, arrayTypes.floatType);
@@ -854,6 +884,26 @@ define(function (require, exports) {
           shapes.fence         = arrays.create(num, 0, arrayTypes.uint8Type);
 
           assignShortcutReferences.shapes();
+        },
+
+        createLinesArray = function(num) {
+          lines = engine.lines = {};
+
+          lines.x1            = arrays.create(num, 0, arrayTypes.floatType);
+          lines.y1            = arrays.create(num, 0, arrayTypes.floatType);
+          lines.x2            = arrays.create(num, 0, arrayTypes.floatType);
+          lines.y2            = arrays.create(num, 0, arrayTypes.floatType);
+          lines.beginStyle    = [];
+          lines.endStyle      = [];
+          lines.lineColor     = [];
+          lines.lineDashes    = [];
+          lines.lineWeight    = arrays.create(num, 0, arrayTypes.floatType);
+          lines.layer         = arrays.create(num, 0, arrayTypes.uint8Type);
+          lines.layerPosition = arrays.create(num, 0, arrayTypes.uint8Type);
+          lines.visible       = arrays.create(num, 0, arrayTypes.uint8Type);
+          lines.fence         = arrays.create(num, 0, arrayTypes.uint8Type);
+
+          assignShortcutReferences.lines();
         },
 
         createElectricFieldsArray = function(num) {
@@ -1250,7 +1300,7 @@ define(function (require, exports) {
             if (!shapeFence[j])
               continue;
 
-            if (shapeType[j] == 'rectangle') {
+            if (shapeType[j] === 'rectangle') {
 
               x_outside_left = shapeX[j] - r;
               x_outside_right = shapeX[j] + shapeWidth[j] + r;
@@ -1286,22 +1336,20 @@ define(function (require, exports) {
                 if (xi <= x_inside_left) {
                   x[i] = x_inside_left + (x_inside_left - xi);
                   vx[i] *= -1;
-                }
-                else if (xi >= x_inside_right) {
+                } else if (xi >= x_inside_right) {
                   x[i] = x_inside_right - (xi - x_inside_right);
                   vx[i] *= -1;
                 }
-                else if (yi <= y_inside_bottom) {
+                if (yi <= y_inside_bottom) {
                   y[i] = y_inside_bottom + (y_inside_bottom - yi);
                   vy[i] *= -1;
-                }
-                else if (yi >= y_inside_top) {
+                } else if (yi >= y_inside_top) {
                   y[i] = y_inside_top - (yi - y_inside_top);
                   vy[i] *= -1;
                 }
               }
             }
-            else if (shapeType[j] == 'ellipse') {
+            else if (shapeType[j] === 'ellipse') {
               a = shapeWidth[j] / 2;
               b = shapeHeight[j] / 2;
               // Transform points from model space to ellipse space
@@ -1322,7 +1370,7 @@ define(function (require, exports) {
               br *= br;
               if (tx + ty <= 1 && tx_prev + ty_prev > 1 || tx * ar + ty * br >= 1 && tx_prev * ar + ty_prev * br < 1) {
 
-                //Calculate the two foci
+                // Calculate the two foci
                 if (shapeWidth[j] > shapeHeight[j]) {
                   c = Math.sqrt(a * a - b * b);
                   f1x = shapeX[j] + a + c;
@@ -1343,15 +1391,15 @@ define(function (require, exports) {
 
                 // Determine the distance from the point of collision
                 // to both foci
-                f1d = Math.sqrt((f1x - mx) * (f1x - mx) + (f1y - my) * (f1y - my));
-                f2d = Math.sqrt((f2x - mx) * (f2x - mx) + (f2y - my) * (f2y - my));
+                f1d = Math.sqrt(sumSquare(f1x - mx, f1y - my));
+                f2d = Math.sqrt(sumSquare(f2x - mx, f2x - mx));
 
                 // Calculate the angle bisector which is the normal vector
                 nx = mx - (f1x * f2d + f2x * f1d) / (f1d + f2d);
                 ny = my - (f1y * f2d + f2y * f1d) / (f1d + f2d);
 
                 // Normalize the normal vector
-                nd = Math.sqrt(nx * nx + ny * ny);
+                nd = Math.sqrt(sumSquare(nx, ny));
                 nx /= nd;
                 ny /= nd;
 
@@ -1368,25 +1416,91 @@ define(function (require, exports) {
             }
           }
         },
+
+        bounceParticleOffLines = function(i, x_prev, y_prev) {
+          // fast path if no lines
+          if (N_lines < 1) return;
+
+          var r,
+              x1,
+              y1,
+              ld,
+              atom1_to_line,
+              atom2_to_line,
+              line1_to_atom,
+              line2_to_atom,
+              mx,my,
+              nx,ny,nd,
+              tvx,tvy;
+
+          r = radius[i];
+          xi = x[i];
+          yi = y[i];
+
+          for (j = 0; j < N_lines; j++) {
+            if (!lineFence[j])
+              continue;
+
+            // Find a bunch of cross products to check collision
+            line1_to_atom = cross(x_prev - lineX1[j], y_prev - lineY1[j], xi - lineX1[j], yi - lineY1[j]);
+            line2_to_atom = cross(x_prev - lineX2[j], y_prev - lineY2[j], xi - lineX2[j], yi - lineY2[j]);
+            if (line1_to_atom * line2_to_atom < 0) {
+              ld = Math.sqrt(sumSquare(lineX1[j] - lineX2[j], lineY1[j] - lineY2[j]));
+              atom1_to_line = cross(lineX2[j] - x_prev, lineY2[j] - y_prev, lineX1[j] - x_prev, lineY1[j] - y_prev);
+              atom2_to_line = cross(lineX2[j] - xi, lineY2[j] - yi, lineX1[j] - xi, lineY1[j] - yi);
+              if ((atom1_to_line < 0 && atom2_to_line > -r*ld || atom1_to_line > 0 && atom2_to_line < r*ld) &&
+                   atom1_to_line * line1_to_atom > 0) {
+                // Collision!
+
+                // Determine the midpoint of the atom's motion path
+                // so it can be used as an approximate point of collision
+                mx = (xi + x_prev) / 2;
+                my = (yi + y_prev) / 2;
+
+                // Caclulate the normal vector (just perpendicular to the line)
+                nx = lineY2[j] - lineY1[j];
+                ny = -(lineX2[j] - lineX1[j]);
+
+                // Normalize the normal vector
+                nd = Math.sqrt(sumSquare(nx, ny));
+                nx /= nd;
+                ny /= nd;
+
+                // Reflect the atom's position off the normal vector
+                x[i] = (mx - x_prev) - 2 * ((mx - x_prev) * nx + (my - y_prev) * ny) * nx + mx;
+                y[i] = (my - y_prev) - 2 * ((mx - x_prev) * nx + (my - y_prev) * ny) * ny + my;
+
+                // Reflect the atom's velocity off the normal vector
+                tvx = vx[i]
+                tvy = vy[i]
+                vx[i] = (tvx - 2 * (tvx * nx + tvy * ny) * nx);
+                vy[i] = (tvy - 2 * (tvx * nx + tvy * ny) * ny);
+              }
+            }
+          }
+        },
+
         // ####################################################################
         // #         Functions calculating forces and accelerations.          #
         // ####################################################################
 
         // Calculate distance and force (if distance < cut-off distance).
         calculateLJInteraction = function(i, j) {
-          // Fast path.
-          if (radialBondMatrix && radialBondMatrix[i] && radialBondMatrix[i][j]) return;
-
           var elI = element[i],
               elJ = element[j],
               dx  = x[j] - x[i],
               dy  = y[j] - y[i],
-              rSq = dx * dx + dy * dy,
+              rSq = sumSquare(dx, dy),
               fOverR, fx, fy;
 
           if (updateNeighborList && rSq < cutoffNeighborListSquared[elI][elJ]) {
             neighborList.markNeighbors(i, j);
           }
+
+          // Don't calculate LJ interaction between bonded atoms. However note that bonded atoms
+          // will be marked as neighbors during list update - it's necessary to avoid divergence
+          // when the bond is removed.
+          if (radialBondMatrix && radialBondMatrix[i] && radialBondMatrix[i][j]) return;
 
           if (rSq < cutoffDistance_LJ_sq[elI][elJ]) {
             fOverR = ljCalculator[elI][elJ].forceOverDistanceFromSquaredDistance(rSq);
@@ -1982,6 +2096,8 @@ define(function (require, exports) {
             bounceParticleOffObstacles(i, xPrev, yPrev, true);
             // Bounce off shapes
             bounceParticleOffShapes(i, xPrev, yPrev);
+            // Bounce off lines
+            bounceParticleOffLines(i, xPrev, yPrev);
           }
         },
 
@@ -2246,7 +2362,7 @@ define(function (require, exports) {
           // plugins can update the data arrays as needed so we pass in the arrays.
           // we do this as an object, so we can add new arrays as needed by the plugins
           // without needing to update all existing plugins
-          plugin.initialize({atoms: atoms, elements: elements});
+          plugin.initialize({atoms: atoms, elements: elements, radialBonds: radialBonds});
         }
 
         pluginController.registerPlugin(plugin);
@@ -2471,9 +2587,7 @@ define(function (require, exports) {
         // Set all properties from props hash.
         for (key in props) {
           if (props.hasOwnProperty(key)) {
-            radialBonds[key][i]       = props[key];
-            // Update radial bond results also.
-            radialBondResults[i][key] = props[key];
+            radialBonds[key][i] = props[key];
           }
         }
 
@@ -2590,6 +2704,16 @@ define(function (require, exports) {
         }
       },
 
+      setLineProperties: function (i, props) {
+        var key;
+        // Set properties from props hash.
+        for (key in props) {
+          if (props.hasOwnProperty(key)) {
+            lines[key][i] = props[key];
+          }
+        }
+      },
+
       setElectricFieldProperties: function (i, props) {
         var key;
         // Set properties from props hash.
@@ -2694,15 +2818,6 @@ define(function (require, exports) {
           }
         }
 
-        // Also in radial bonds results...
-        // TODO: they should be recalculated while computing output state.
-        for (i = 0, len = radialBondResults.length; i < len; i++) {
-          if (radialBondResults[i].atom1 > idx)
-            radialBondResults[i].atom1--;
-          if (radialBondResults[i].atom2 > idx)
-            radialBondResults[i].atom2--;
-        }
-
         // Recalculate radial bond matrix, as indices have changed.
         calculateRadialBondMatrix();
 
@@ -2759,10 +2874,10 @@ define(function (require, exports) {
 
         N_radialBonds++;
 
-        // Add results object.
-        radialBondResults[N_radialBonds - 1] = {idx: N_radialBonds - 1};
         // Set new radial bond properties.
         engine.setRadialBondProperties(N_radialBonds - 1, props);
+
+        radialBondsChanged = true;
       },
 
       removeRadialBond: function(idx) {
@@ -2810,10 +2925,10 @@ define(function (require, exports) {
 
         N_radialBonds--;
 
-        arrays.remove(radialBondResults, idx);
-
         // Recalculate radial bond matrix.
         calculateRadialBondMatrix();
+
+        radialBondsChanged = true;
       },
 
       /**
@@ -3028,6 +3143,45 @@ define(function (require, exports) {
         // (e.g. views) use shapes.x.length as the real number of shapes.
         utils.extendArrays(shapes, N_shapes);
         assignShortcutReferences.shapes();
+      },
+
+      addLine: function(props) {
+        if (N_lines + 1 > lines.x1.length) {
+          // Extend arrays each time (as there are only
+          // a few lines in typical model).
+          utils.extendArrays(lines, N_lines + 1);
+          assignShortcutReferences.lines();
+        }
+
+        N_lines++;
+
+        // Set properties of new line.
+        engine.setLineProperties(N_lines - 1, props);
+      },
+
+      removeLine: function(idx) {
+        var i, prop;
+
+        if (idx >= N_lines) {
+          throw new Error("Line " + idx + " doesn't exist, so it can't be removed.");
+        }
+
+        // Shift lines properties.
+        // It can be optimized by just replacing the last
+        // shape with shape 'i', however this approach
+        //  preserves more expectable lines indexing.
+        for (i = idx; i < N_shapes; i++) {
+          for (prop in lines) {
+            if (lines.hasOwnProperty(prop)) {
+              lines[prop][i] = lines[prop][i + 1];
+            }
+          }
+        }
+
+        // FIXME: This shouldn't be necessary, however various modules
+        // (e.g. views) use lines.x1.length as the real number of lines.
+        utils.extendArrays(lines, N_shapes);
+        assignShortcutReferences.lines();
       },
 
       addElectricField: function(props) {
@@ -3328,6 +3482,10 @@ define(function (require, exports) {
         dt = _dt;        // dt is a closure variable that helpers need access to
         dt_sq = dt * dt; // the squared time step is also needed by some helpers.
 
+        // Clear flag indicating if some radial bonds were added or removed during the integration
+        // step.
+        radialBondsChanged = false;
+
         // Prepare optimization structures to ensure that they are valid during integration.
         // Note that when user adds or removes various objects (like atoms, bonds), such structures
         // can become invalid. That's why we update them each time before integration.
@@ -3375,9 +3533,6 @@ define(function (require, exports) {
           // Move obstacles using very simple integration.
           updateObstaclesPosition();
 
-          // Adjust temperature, e.g. when heat bath is enabled.
-          adjustTemperature();
-
           // If solvent is different from vacuum (water or oil), ensure that
           // the total momentum of each molecule is equal to zero. This
           // prevents amino acids chains from drifting towards one boundary of
@@ -3389,6 +3544,8 @@ define(function (require, exports) {
 
           pluginController.callPluginFunction('performActionWithinIntegrationLoop', [neighborList, dt, time]);
 
+          // Adjust temperature, e.g. when heat bath is enabled.
+          adjustTemperature();
         } // end of integration loop
 
         // Collisions between particles and obstacles are collected during
@@ -3443,6 +3600,8 @@ define(function (require, exports) {
             bounceParticleOffObstacles(i, xPrev, yPrev, false);
             // Bounce off shapes
             bounceParticleOffShapes(i, xPrev, yPrev);
+            // Bounce off lines
+            bounceParticleOffLines(i, xPrev, yPrev);
           }
 
           // Calculate accelerations.
@@ -3518,8 +3677,12 @@ define(function (require, exports) {
         return N_obstacles;
       },
 
-			getNumberOfShapes: function() {
+      getNumberOfShapes: function() {
         return N_shapes;
+      },
+
+      getNumberOfLines: function() {
+        return N_lines;
       },
 
       getNumberOfRadialBonds: function() {
@@ -3637,13 +3800,6 @@ define(function (require, exports) {
           if (useCoulombInteraction && charge[i1] && charge[i2]) {
             PE -= coulomb.potential(Math.sqrt(r_sq), charge[i1], charge[i2], dielectricConst, realisticDielectricEffect);
           }
-
-          // Also save the updated position of the two bonded atoms
-          // in a row in the radialBondResults array.
-          radialBondResults[i].x1 = x[i1];
-          radialBondResults[i].y1 = y[i1];
-          radialBondResults[i].x2 = x[i2];
-          radialBondResults[i].y2 = y[i2];
         }
 
         // Angular bonds.
@@ -3721,7 +3877,13 @@ define(function (require, exports) {
         state.omega_CM       = omega_CM;
 
         // "micro" state. TODO: put radial bonds, etc here.
+        // TODO2: do we really need to put all objects here? Can't modeler ask about interesting
+        // arrays using just some getter or property, e.g.: engine.getAtoms() or engine.atoms?
         state.atoms = atoms;
+        state.radialBonds = radialBonds;
+
+        // Let plugins modify output state, e.g. PE, KE etc.
+        pluginController.callPluginFunction('processOutputState', [state]);
       },
 
 
@@ -3962,6 +4124,25 @@ define(function (require, exports) {
         viscosity = v;
       },
 
+      get ljCalculator() {
+        return ljCalculator;
+      },
+
+      /**
+        Indicates whether some radial bonds were added or removed during the last integration step.
+        This flag is cleared at the beginning of the integration.
+       */
+      get radialBondsChanged() {
+        return radialBondsChanged;
+      },
+
+      /**
+       * Returns true when atoms i and j are "radially bonded", false otherwise.
+       */
+      atomsBonded: function(i, j) {
+        return !!(radialBondMatrix && radialBondMatrix[i] && radialBondMatrix[i][j]);
+      },
+
       // ######################################################################
       //                State definition of the engine
 
@@ -3978,6 +4159,7 @@ define(function (require, exports) {
           new CloneRestoreWrapper(atoms),
           new CloneRestoreWrapper(obstacles),
           new CloneRestoreWrapper(shapes),
+          new CloneRestoreWrapper(lines),
           new CloneRestoreWrapper(radialBonds),
           new CloneRestoreWrapper(angularBonds),
           new CloneRestoreWrapper(restraints),
@@ -3993,7 +4175,8 @@ define(function (require, exports) {
                 N             : N,
                 N_elements    : N_elements,
                 N_obstacles   : N_obstacles,
-                N_shapes  : N_shapes,
+                N_shapes      : N_shapes,
+                N_lines       : N_lines,
                 N_radialBonds : N_radialBonds,
                 N_angularBonds: N_angularBonds,
                 N_restraints  : N_restraints,
@@ -4004,7 +4187,8 @@ define(function (require, exports) {
               time           = state.time;
               N              = state.N;
               N_elements     = state.N_elements;
-              N_shapes   = state.N_shapes;
+              N_shapes       = state.N_shapes;
+              N_lines        = state.N_lines;
               N_radialBonds  = state.N_radialBonds;
               N_angularBonds = state.N_angularBonds;
               N_restraints   = state.N_restraints;
@@ -4023,9 +4207,10 @@ define(function (require, exports) {
       // FIXME. Not a sustainable pattern. This is just a temporary pass-through of modeler-level
       // methods that are implemented in the quantumDynamics plugin, because for now the plugin is
       // only callable from the engine.
-      callPluginAccessor: function(accessorMethodName) {
+      callPluginAccessor: function(accessorMethodName, args) {
         var returnValue;
-        pluginController.callPluginFunction(accessorMethodName, [], function(_) {
+            args = args || [];
+        pluginController.callPluginFunction(accessorMethodName, args, function(_) {
           returnValue = _;
         });
         return returnValue;

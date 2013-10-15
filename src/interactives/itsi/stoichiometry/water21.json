@@ -1,0 +1,23 @@
+{
+  "title": "water21",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "water21",
+      "url": "imports/legacy-mw-content/converted/itsi/stoichiometry/water21.json",
+      "importedFrom": "imports/legacy-mw-content/itsi/stoichiometry/water21.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

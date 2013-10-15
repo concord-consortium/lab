@@ -1,0 +1,334 @@
+{
+  "title": "Chemical Reactions and Stoichiometry: Getting the ratios right.",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "water0",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/chemical-reactions//water0.json",
+      "importedFrom": "imports/legacy-mw-content/conversion-and-physics-examples/chemical-reactions//water0.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    },
+    {
+      "type": "md2d",
+      "id": "water1",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/chemical-reactions//water1.json",
+      "importedFrom": "imports/legacy-mw-content/conversion-and-physics-examples/chemical-reactions//water1.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    },
+    {
+      "type": "md2d",
+      "id": "water2",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/chemical-reactions//water2.json",
+      "importedFrom": "imports/legacy-mw-content/conversion-and-physics-examples/chemical-reactions//water2.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    },
+    {
+      "type": "md2d",
+      "id": "water3",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/chemical-reactions//water3.json",
+      "importedFrom": "imports/legacy-mw-content/conversion-and-physics-examples/chemical-reactions//water3.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    },
+    {
+      "type": "md2d",
+      "id": "water4",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/chemical-reactions//water4.json",
+      "importedFrom": "imports/legacy-mw-content/conversion-and-physics-examples/chemical-reactions//water4.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    },
+    {
+      "type": "md2d",
+      "id": "water10",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/chemical-reactions//water10.json",
+      "importedFrom": "imports/legacy-mw-content/conversion-and-physics-examples/chemical-reactions//water10.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    },
+    {
+      "type": "md2d",
+      "id": "water11",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/chemical-reactions//water11.json",
+      "importedFrom": "imports/legacy-mw-content/conversion-and-physics-examples/chemical-reactions//water11.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    },
+    {
+      "type": "md2d",
+      "id": "water12",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/chemical-reactions//water12.json",
+      "importedFrom": "imports/legacy-mw-content/conversion-and-physics-examples/chemical-reactions//water12.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    },
+    {
+      "type": "md2d",
+      "id": "water13",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/chemical-reactions//water13.json",
+      "importedFrom": "imports/legacy-mw-content/conversion-and-physics-examples/chemical-reactions//water13.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    },
+    {
+      "type": "md2d",
+      "id": "water14",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/chemical-reactions//water14.json",
+      "importedFrom": "imports/legacy-mw-content/conversion-and-physics-examples/chemical-reactions//water14.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    },
+    {
+      "type": "md2d",
+      "id": "water20",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/chemical-reactions//water20.json",
+      "importedFrom": "imports/legacy-mw-content/conversion-and-physics-examples/chemical-reactions//water20.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    },
+    {
+      "type": "md2d",
+      "id": "water21",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/chemical-reactions//water21.json",
+      "importedFrom": "imports/legacy-mw-content/conversion-and-physics-examples/chemical-reactions//water21.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    },
+    {
+      "type": "md2d",
+      "id": "water22",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/chemical-reactions//water22.json",
+      "importedFrom": "imports/legacy-mw-content/conversion-and-physics-examples/chemical-reactions//water22.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    },
+    {
+      "type": "md2d",
+      "id": "water23",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/chemical-reactions//water23.json",
+      "importedFrom": "imports/legacy-mw-content/conversion-and-physics-examples/chemical-reactions//water23.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    },
+    {
+      "type": "md2d",
+      "id": "water24",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/chemical-reactions//water24.json",
+      "importedFrom": "imports/legacy-mw-content/conversion-and-physics-examples/chemical-reactions//water24.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    },
+    {
+      "type": "md2d",
+      "id": "water30",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/chemical-reactions//water30.json",
+      "importedFrom": "imports/legacy-mw-content/conversion-and-physics-examples/chemical-reactions//water30.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    },
+    {
+      "type": "md2d",
+      "id": "water31",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/chemical-reactions//water31.json",
+      "importedFrom": "imports/legacy-mw-content/conversion-and-physics-examples/chemical-reactions//water31.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    },
+    {
+      "type": "md2d",
+      "id": "water32",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/chemical-reactions//water32.json",
+      "importedFrom": "imports/legacy-mw-content/conversion-and-physics-examples/chemical-reactions//water32.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    },
+    {
+      "type": "md2d",
+      "id": "water33",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/chemical-reactions//water33.json",
+      "importedFrom": "imports/legacy-mw-content/conversion-and-physics-examples/chemical-reactions//water33.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    },
+    {
+      "type": "md2d",
+      "id": "water34",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/chemical-reactions//water34.json",
+      "importedFrom": "imports/legacy-mw-content/conversion-and-physics-examples/chemical-reactions//water34.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    },
+    {
+      "type": "md2d",
+      "id": "water40",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/chemical-reactions//water40.json",
+      "importedFrom": "imports/legacy-mw-content/conversion-and-physics-examples/chemical-reactions//water40.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    },
+    {
+      "type": "md2d",
+      "id": "water41",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/chemical-reactions//water41.json",
+      "importedFrom": "imports/legacy-mw-content/conversion-and-physics-examples/chemical-reactions//water41.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    },
+    {
+      "type": "md2d",
+      "id": "water42",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/chemical-reactions//water42.json",
+      "importedFrom": "imports/legacy-mw-content/conversion-and-physics-examples/chemical-reactions//water42.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    },
+    {
+      "type": "md2d",
+      "id": "water43",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/chemical-reactions//water43.json",
+      "importedFrom": "imports/legacy-mw-content/conversion-and-physics-examples/chemical-reactions//water43.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    },
+    {
+      "type": "md2d",
+      "id": "water44",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/chemical-reactions//water44.json",
+      "importedFrom": "imports/legacy-mw-content/conversion-and-physics-examples/chemical-reactions//water44.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "parameters": [
+    {
+      "name": "loaded-modelid",
+      "initialValue": "water0"
+    },
+    {
+      "name": "h2-param",
+      "label": "H2",
+      "onChange": [
+        "var o2 = get('o2-param') || 0,",
+        "    num = +get('h2-param') * 10 + o2,",
+        "    modelid = 'water' + num;",
+        "set('loaded-modelid', modelid);"
+      ],
+      "initialValue": 0
+    },
+    {
+      "name": "o2-param",
+      "label": "O2",
+      "onChange": [
+        "var o2 = +get('o2-param') || 0,",
+        "    num = +get('h2-param') * 10 + o2,",
+        "    modelid = 'water' + num;",
+        "set('loaded-modelid', modelid);"
+      ],
+      "initialValue": 0
+    }
+  ],
+  "components": [
+    {
+      "type": "pulldown",
+      "id": "select-h2",
+      "label": "H2",
+      "labelOn": "left",
+      "property": "h2-param",
+      "options": [
+        {
+          "text": "0",
+          "value": 0
+        },
+        {
+          "text": "1",
+          "value": 1
+        },
+        {
+          "text": "2",
+          "value": 2
+        },
+        {
+          "text": "3",
+          "value": 3
+        },
+        {
+          "text": "4",
+          "value": 4
+        }
+      ]
+    },
+    {
+      "type": "pulldown",
+      "id": "select-o2",
+      "label": "O2",
+      "labelOn": "left",
+      "property": "o2-param",
+      "options": [
+        {
+          "text": "0",
+          "value": 0
+        },
+        {
+          "text": "1",
+          "value": 1
+        },
+        {
+          "text": "2",
+          "value": 2
+        },
+        {
+          "text": "3",
+          "value": 3
+        },
+        {
+          "text": "4",
+          "value": 4
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "id": "load-model",
+      "text": "Load model",
+      "action": "loadModel(get('loaded-modelid'));"
+    }
+  ],
+  "layout": {
+    "right": [
+      [ "select-h2" ],
+      [ "select-o2" ],
+      [ "load-model" ]
+    ]
+  }
+}

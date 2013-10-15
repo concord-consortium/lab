@@ -1,0 +1,16 @@
+{
+  "title": "Radial Bonds Types",
+  "publicationStatus": "public",
+  "subtitle": "Demonstrates visualization of single, double and triple radial bonds.",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "radial-bonds-rendering$0",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/radial-bonds-rendering$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ]
+}

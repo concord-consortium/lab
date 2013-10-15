@@ -25,7 +25,7 @@ define(function (require) {
   // Return all available types of arrays.
   // If you need to use new type, declare it here.
   return {
-    floatType:  useTyped ? 'Float32Array' : 'regular',
+    floatType:  useTyped ? 'Float64Array' : 'regular',
     int32Type:  useTyped ? 'Int32Array'   : 'regular',
     int16Type:  useTyped ? 'Int16Array'   : 'regular',
     int8Type:   useTyped ? 'Int8Array'    : 'regular',

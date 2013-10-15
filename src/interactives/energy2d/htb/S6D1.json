@@ -29,7 +29,7 @@
       "id": "sun-angle-slider",
       "min": 1.57079,
       "max": 3.14159,
-      "displayValue": "return format('1f')((value - 3.14159) * -rad2deg )",
+      "displayValue": "return format('.1f')((value - 3.14159) * -rad2deg )",
       "labels": [
         {
           "value": 3.14159,
@@ -54,8 +54,8 @@
       "ymax": 20,
       "xmax": 216000,
       "xTickCount": 5,
-      "xFormatter": "2s",
-      "yFormatter": "2s",
+      "xFormatter": ".2s",
+      "yFormatter": ".2s",
       "xProperty": "time",
       "properties": [
         "sensor-0", "sensor-1, sensor-2"

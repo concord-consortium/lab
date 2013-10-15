@@ -36,7 +36,7 @@
       "min": -2000,
       "max": 2000,
       "steps": 20,
-      "displayValue": "return format('1f')(value)",
+      "displayValue": "return format('.1f')(value)",
       "labels": [
         {
           "value": -2000,

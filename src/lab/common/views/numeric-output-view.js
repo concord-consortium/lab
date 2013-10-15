@@ -24,6 +24,15 @@ define(function () {
         $units.html(value);
       },
 
+      hideUnits: function() {
+        // avoid growing/shrinking the box unnecessarily
+        $units.css('opacity', 0);
+      },
+
+      showUnits: function() {
+        $units.css('opacity', 1);
+      },
+
       render: function() {
         $numericOutput = $('<div class="numeric-output">');
         $label  = $('<span class="label"></span>');

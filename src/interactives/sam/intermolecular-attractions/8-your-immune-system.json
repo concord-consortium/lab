@@ -10,8 +10,12 @@
       "id": "page8$0",
       "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page8/page8$0.json",
       "viewOptions": {
-        "controlButtons": "play"
-      }
+        "controlButtons": "play",
+        "imageMapping": {
+          "star.png": "star.svg"
+        }
+      },
+      "onLoad": "start();"
     },
     {
       "type": "md2d",
@@ -19,7 +23,8 @@
       "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page8/antibodyDesign1.json",
       "viewOptions": {
         "controlButtons": "play"
-      }
+      },
+      "onLoad": "start();"
     },
     {
       "type": "md2d",
@@ -27,7 +32,8 @@
       "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page8/antibodyDesign2.json",
       "viewOptions": {
         "controlButtons": "play"
-      }
+      },
+      "onLoad": "start();"
     },
     {
       "type": "md2d",
@@ -35,7 +41,8 @@
       "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page8/antibodyDesign3.json",
       "viewOptions": {
         "controlButtons": "play"
-      }
+      },
+      "onLoad": "start();"
     },
     {
       "type": "md2d",
@@ -43,7 +50,8 @@
       "url": "imports/legacy-mw-content/converted/sam-activities/intermolecular-attraction/original-interactives-in-pages/page8/antibodyDesign4.json",
       "viewOptions": {
         "controlButtons": "play"
-      }
+      },
+      "onLoad": "start();"
     }
   ],
   "components": [
@@ -57,19 +65,19 @@
         },
         {
           "text": "shape1",
-          "action": "loadModel('antibodyDesign1', start);"
+          "loadModel": "antibodyDesign1"
         },
         {
           "text": "shape2",
-          "action": "loadModel('antibodyDesign2', start);"
+          "loadModel": "antibodyDesign2"
         },
         {
           "text": "shape3",
-          "action": "loadModel('antibodyDesign3', start);"
+          "loadModel": "antibodyDesign3"
         },
         {
           "text": "shape4",
-          "action": "loadModel('antibodyDesign4', start);"
+          "loadModel": "antibodyDesign4"
         }
       ]
     }

@@ -1,4 +1,6 @@
 /*global $, define: false, d3: false, Image */
+/*jshint loopfunc: true */
+
 // ------------------------------------------------------------
 //
 //   MD2D View Renderer
@@ -32,6 +34,9 @@ define(function(require) {
     // Public API object to be returned.
     var api = {},
 
+      // Allows us to defer running actual renderer setup until layout system has determined oursize.
+      isSetup = false,
+
       // The model function getAtoms() returns a 2 dimensional array
       // of particle indices and properties that is updated every model tick.
       // This array is not garbage-collected so the view can be assured that
@@ -52,17 +57,18 @@ define(function(require) {
       model2pxInv,
 
       // "Containers" - SVG g elements used to position layers of the final visualization.
-      fieldVisualization = modelView.viewport.append("g").attr("class", "field-visualization"),
-      shapeContainerBelow = modelView.viewport.append("g").attr("class", "shape-container-below"),
-      imageContainerBelow = modelView.viewport.append("g").attr("class", "image-container-below"),
-      textContainerBelow = modelView.viewport.append("g").attr("class", "text-container-below"),
+      fieldVisualization   = modelView.viewport.append("g").attr("class", "field-visualization"),
+      shapeContainerBelow  = modelView.viewport.append("g").attr("class", "shape-container-below"),
+      imageContainerBelow  = modelView.viewport.append("g").attr("class", "image-container-below"),
+      textContainerBelow   = modelView.viewport.append("g").attr("class", "text-container-below"),
       radialBondsContainer = modelView.viewport.append("g").attr("class", "radial-bonds-container"),
-      VDWLinesContainer = modelView.viewport.append("g").attr("class", "vdw-lines-container"),
-      mainContainer = modelView.viewport.append("g").attr("class", "main-container"),
-      shapeContainerTop = modelView.viewport.append("g").attr("class", "shape-container-top"),
-      imageContainerTop = modelView.viewport.append("g").attr("class", "image-container-top"),
-      textContainerTop = modelView.viewport.append("g").attr("class", "text-container-top"),
-      iconContainer = modelView.vis.append("g").attr("class", "icon-container"),
+      VDWLinesContainer    = modelView.viewport.append("g").attr("class", "vdw-lines-container"),
+      mainContainer        = modelView.viewport.append("g").attr("class", "main-container"),
+      shapeContainerTop    = modelView.viewport.append("g").attr("class", "shape-container-top"),
+      lineContainerTop     = modelView.viewport.append("g").attr("class", "line-container-top"),
+      imageContainerTop    = modelView.viewport.append("g").attr("class", "image-container-top"),
+      textContainerTop     = modelView.viewport.append("g").attr("class", "text-container-top"),
+      iconContainer        = modelView.vis.append("g").attr("class", "icon-container"),
 
       dragOrigin,
 
@@ -95,14 +101,12 @@ define(function(require) {
       atomToolTip, atomToolTipPre,
 
       fontSizeInPixels,
-      textBoxFontSizeInPixels,
 
       modelTimeFormatter = d3.format("5.1f"),
       timePrefix = "",
       timeSuffix = "",
 
-      radialBonds,
-      radialBondResults,
+      modelRadialBonds,
       obstacle,
       obstacles,
       mockObstaclesArray = [],
@@ -111,6 +115,9 @@ define(function(require) {
       shapeBelow,
       mockShapesTop = [],
       mockShapesBelow = [],
+      lines,
+      lineTop,
+      mockLinesTop = [],
       radialBond1, radialBond2,
       vdwPairs = [],
       vdwLines,
@@ -154,7 +161,7 @@ define(function(require) {
       // this is a hack put in place to temporarily deal with a IE 10 bug which
       // does not update line markers when svg lines are moved
       // see https://connect.microsoft.com/IE/feedback/details/781964/
-      hideLineMarkers = browser.browser === "MSIE" && browser.version >= "10.0";
+      hideLineMarkers = browser.browser === "MSIE" && Number(browser.version) >= 10;
 
 
     function modelTimeLabel() {
@@ -290,6 +297,37 @@ define(function(require) {
       gradients.createRadialGradient("orange-grad", "#F0E6D1", "#E0A21B", "#AD7F1C", mainContainer);
     }
 
+    function createCustomArrowHead(i, path, start) {
+      if(!path || path === "none"){
+        return "none";
+      }
+      // Create marker defs for _each_ path in order to account for differing path colors and visibility
+      var defs,
+        id = "Arrowhead-path" + i + '-' + path.toLowerCase().replace(/[^a-z0-9]/g,'') + (start ? "-start" : ""),
+        arrowHead;
+      defs = mainContainer.select("defs");
+      if (defs.empty()) {
+        defs = mainContainer.append("defs");
+      }
+      arrowHead = defs.select("#" + id);
+      // Must rerender markers to account for changes in line properties (e.g. visibility, color)
+      arrowHead.remove();
+      arrowHead = defs.append("marker")
+        .attr("id", id)
+        .attr("viewBox", "0 0 10 10")
+        .attr("refX", "5")
+        .attr("refY", "5")
+        .attr("markerUnits", "strokeWidth")
+        .attr("markerWidth", "4")
+        .attr("markerHeight", "4")
+        .attr("orient", "auto");
+      arrowHead.append("path")
+        .attr("d", path)
+        .attr("fill",lines.visible[i] ? lines.lineColor[i] : "transparent")
+        .attr("transform", start ? "translate(10, 10) rotate(180)" : "");
+      return "url(#" + id + ")";
+    }
+
     function createVectorArrowHeads(color, name) {
       var defs,
         id = "Triangle-" + name,
@@ -326,10 +364,10 @@ define(function(require) {
       if (glow.empty()) {
         glow = defs.append("filter")
           .attr("id", "glow")
-          .attr("x", "-1")
-          .attr("y", "-1")
-          .attr("width", "400%")
-          .attr("height", "400%");
+          .attr("x", "-2")
+          .attr("y", "-2")
+          .attr("width", "800%")
+          .attr("height", "800%");
         glow.append("feMorphology")
           .attr("result", "bigger")
           .attr("in", "SourceGraphic")
@@ -358,7 +396,7 @@ define(function(require) {
       }
 
       if (keShadingMode) {
-        ke = model.getAtomKineticEnergy(d.idx),
+        ke = model.getAtomKineticEnergy(d.idx);
         // Convert Kinetic Energy to [0, 1] range
         // using empirically tested transformations.
         // K.E. shading should be similar to the classic MW K.E. shading.
@@ -746,47 +784,60 @@ define(function(require) {
       }
     }
 
-    function radialBondEnter() {
-      radialBond1.enter().append("path")
-        .attr({
-          "d": function(d) {
-            return findPoints(d, 1);
-          },
-          "stroke-width": function(d) {
-            if (isSpringBond(d)) {
-              return springStrokeWidth(d);
-            } else {
-              return model2px(Math.min(modelAtoms[d.atom1].radius, modelAtoms[d.atom2].radius)) * 0.75;
-            }
-          },
-          "stroke": getBondAtom1Color,
-          "fill": "none"
-        })
-        .classed("radialbond1", true)
-        .classed("disulphideBond", function(d) {
-          return d.type === RADIAL_BOND_TYPES.DISULPHIDE_BOND;
-        });
+    function lineEnter() {
+      lineTop.enter().append("line").attr({
+        "class": "line",
+        "x1": function(d, i) {
+          return model2px(lines.x1[i]);
+        },
+        "y1": function(d, i) {
+          return model2pxInv(lines.y1[i]);
+        },
+        "x2": function(d, i) {
+          return model2px(lines.x2[i]);
+        },
+        "y2": function(d, i) {
+          return model2pxInv(lines.y2[i]);
+        },
+        "stroke-width": function(d, i) {
+          return lines.lineWeight[i];
+        },
+        "stroke-dasharray": function(d, i) {
+          return lines.lineDashes[i];
+        },
+        "stroke": function(d, i) {
+          return lines.visible[i] ? lines.lineColor[i] : "transparent";
+        },
+        "marker-start": function(d,i){
+          return createCustomArrowHead(i, lines.beginStyle[i], true);
+        },
+        "marker-end": function(d,i){
+          return createCustomArrowHead(i, lines.endStyle[i]);
+        }
+      });
+    }
 
-      radialBond2.enter().append("path")
-        .attr({
-          "d": function(d) {
-            return findPoints(d, 2);
-          },
-          "stroke-width": function(d) {
-            if (isSpringBond(d)) {
-              return springStrokeWidth(d);
-            } else {
-              return model2px(Math.min(modelAtoms[d.atom1].radius, modelAtoms[d.atom2].radius)) * 0.75;
-            }
-          },
-          "stroke": getBondAtom2Color,
-          "fill": "none"
-        })
-        .classed("radialbond2", true)
-        .classed("disulphideBond", function(d) {
-          return d.type === RADIAL_BOND_TYPES.DISULPHIDE_BOND;
-        });
-
+    function radialBondWidth(d) {
+      if (isSpringBond(d)) {
+        return 1.25;
+        // The following code is intended to use a thicker stroke-width when
+        // the spring constant is larger ... but to work properly in models with
+        // both MD2D and MKS units schemes the model would need to supply
+        // an appropriately scaled default spring constant.
+        // For example in the Spring and Mass Interactive which uses an MKS unit
+        // scheme the spring constant is varied between 0.001 and 0.003 ... while in
+        // the Comparing Dipole atom-pulling Interactive that uses an MD2D unit
+        // scheme the spring constant is 10.
+        // return (1 + Math.log(1+d.strength*1000)) * 0.25;;
+      }
+      var result = model2px(Math.min(modelAtoms[d.atom1].radius, modelAtoms[d.atom2].radius));
+      if (d.type === RADIAL_BOND_TYPES.DOUBLE_BOND) {
+        return result * 0.50;
+      } else if (d.type === RADIAL_BOND_TYPES.TRIPLE_BOND) {
+        return result * 0.35;
+      } else { // STANDARD_STICK and other types that are not yet implemented.
+        return result * 0.75;
+      }
     }
 
     function findPoints(d, num) {
@@ -807,7 +858,9 @@ define(function(require) {
         cosThetaDiameter,
         sinThetaDiameter,
         cosThetaSpikes,
-        sinThetaSpikes;
+        sinThetaSpikes,
+        bondAngle, bondShift,
+        xs, ys;
 
       x1 = model2px(d.x1);
       y1 = model2pxInv(d.y1);
@@ -849,7 +902,33 @@ define(function(require) {
           path += " L " + pointX + "," + pointY;
         }
         return path += " L " + x2 + "," + y2;
-      } else {
+      } else if (d.type === RADIAL_BOND_TYPES.DOUBLE_BOND) {
+        bondShift = model2px(Math.min(modelAtoms[d.atom1].radius, modelAtoms[d.atom2].radius)) * 0.4;
+        bondAngle = Math.atan2(dy, dx);
+        xs = Math.sin(bondAngle) * bondShift;
+        ys = -Math.cos(bondAngle) * bondShift;
+        if (num === 1) {
+          return "M " + (x1 + xs) + "," + (y1 + ys) + " L " + ((x2 + x1 + radiusFactorX) / 2 + xs) + " , " + ((y2 + y1 + radiusFactorY) / 2 + ys) + " " +
+                 "M " + (x1 - xs) + "," + (y1 - ys) + " L " + ((x2 + x1 + radiusFactorX) / 2 - xs) + " , " + ((y2 + y1 + radiusFactorY) / 2 - ys);
+        } else {
+          return "M " + ((x2 + x1 + radiusFactorX) / 2 + xs) + " , " + ((y2 + y1 + radiusFactorY) / 2 + ys) + " L " + (x2 + xs) + "," + (y2 + ys) + " " +
+                 "M " + ((x2 + x1 + radiusFactorX) / 2 - xs) + " , " + ((y2 + y1 + radiusFactorY) / 2 - ys) + " L " + (x2 - xs) + "," + (y2 - ys);
+        }
+      } else if (d.type === RADIAL_BOND_TYPES.TRIPLE_BOND) {
+        bondShift = model2px(Math.min(modelAtoms[d.atom1].radius, modelAtoms[d.atom2].radius)) * 0.52;
+        bondAngle = Math.atan2(dy, dx);
+        xs = Math.sin(bondAngle) * bondShift;
+        ys = -Math.cos(bondAngle) * bondShift;
+        if (num === 1) {
+          return "M " + x1 + "," + y1 + " L " + ((x2 + x1 + radiusFactorX) / 2) + " , " + ((y2 + y1 + radiusFactorY) / 2) + " " +
+                 "M " + (x1 + xs) + "," + (y1 + ys) + " L " + ((x2 + x1 + radiusFactorX) / 2 + xs) + " , " + ((y2 + y1 + radiusFactorY) / 2 + ys) + " " +
+                 "M " + (x1 - xs) + "," + (y1 - ys) + " L " + ((x2 + x1 + radiusFactorX) / 2 - xs) + " , " + ((y2 + y1 + radiusFactorY) / 2 - ys);
+        } else {
+          return "M " + ((x2 + x1 + radiusFactorX) / 2) + " , " + ((y2 + y1 + radiusFactorY) / 2) + " L " + x2 + "," + y2 + " " +
+                 "M " + ((x2 + x1 + radiusFactorX) / 2 + xs) + " , " + ((y2 + y1 + radiusFactorY) / 2 + ys) + " L " + (x2 + xs) + "," + (y2 + ys) + " " +
+                 "M " + ((x2 + x1 + radiusFactorX) / 2 - xs) + " , " + ((y2 + y1 + radiusFactorY) / 2 - ys) + " L " + (x2 - xs) + "," + (y2 - ys);
+        }
+      } else { // STANDARD_STICK and other types that are not yet supported.
         if (num === 1) {
           return "M " + x1 + "," + y1 + " L " + ((x2 + x1 + radiusFactorX) / 2) + " , " + ((y2 + y1 + radiusFactorY) / 2);
         } else {
@@ -860,19 +939,6 @@ define(function(require) {
 
     function isSpringBond(d) {
       return d.type === RADIAL_BOND_TYPES.SHORT_SPRING;
-    }
-
-    function springStrokeWidth() {
-      return 1.25;
-      // The following code is intended to use a thicker stroke-width when
-      // the spring constant is larger ... but to work properly in models with
-      // both MD2D and MKS units schemes the model would need to supply
-      // an apprpriately scaled default spring constant.
-      // For example in the Spring and Mass Interactive which uses an MKS unit
-      // scheme the spring constant is varied between 0.001 and 0.003 ... while in
-      // the Comparing Dipole atom-pulling Interactive that uses an MD2D unit
-      // scheme the spring constant is 10.
-      // return (1 + Math.log(1+d.strength*1000)) * 0.25;
     }
 
     function vdwLinesEnter() {
@@ -990,7 +1056,7 @@ define(function(require) {
 
     function getTextBoxCoords(d) {
       var x, y, hostX, hostY, textX, textY, frameX, frameY, calloutX, calloutY,
-        pixelScale = textBoxFontSizeInPixels * d.fontScale;
+        pixelScale = model2px(d.fontSize);
 
       x = d.x;
       y = d.y;
@@ -1188,10 +1254,10 @@ define(function(require) {
             "width": 0,
             "height": 0,
             "rx": function(d) {
-              return d.frame === "rounded rectangle" ? textBoxFontSizeInPixels / 2.5 : 0;
+              return d.frame === "rounded rectangle" ? model2px(d.fontSize) / 2.5 : 0;
             },
             "ry": function(d) {
-              return d.frame === "rounded rectangle" ? textBoxFontSizeInPixels / 2 : 0;
+              return d.frame === "rounded rectangle" ? model2px(d.fontSize) / 2 : 0;
             },
             "x": function(d) {
               return getTextBoxCoords(d)[2];
@@ -1240,7 +1306,7 @@ define(function(require) {
             "xml:space": "preserve",
             "font-family": "'" + labConfig.fontface + "', sans-serif",
             "font-size": function(d) {
-              return d.fontScale * textBoxFontSizeInPixels + "px";
+              return model2px(d.fontSize) + "px";
             },
             "fill": function(d) {
               return d.color || "black";
@@ -1484,26 +1550,38 @@ define(function(require) {
           }
         }
         mockShapesTop.sort(function(a, b) {
-          return a.layerPosition - b.layerPosition
-        })
+          return a.layerPosition - b.layerPosition;
+        });
         mockShapesBelow.sort(function(a, b) {
-          return a.layerPosition - b.layerPosition
-        })
+          return a.layerPosition - b.layerPosition;
+        });
         shapeTop = shapeContainerTop.selectAll(".shape").data(mockShapesTop);
         shapeBelow = shapeContainerBelow.selectAll(".shape").data(mockShapesBelow);
         shapeEnter();
       }
     }
 
+    function setupLines() {
+      lines = model.get_lines();
+      lineContainerTop.selectAll(".line").remove();
+      if (lines) {
+        mockLinesTop.length = lines.x1.length;
+        lineTop = lineContainerTop.selectAll(".line").data(mockLinesTop);
+        lineEnter();
+      }
+    }
+
     function setupRadialBonds() {
       radialBondsContainer.selectAll("path.radialbond1").remove();
       radialBondsContainer.selectAll("path.radialbond2").remove();
-      radialBonds = model.get_radial_bonds();
-      radialBondResults = model.get_radial_bond_results();
-      if (radialBondResults) {
-        radialBond1 = radialBondsContainer.selectAll("path.radialbond1").data(radialBondResults);
-        radialBond2 = radialBondsContainer.selectAll("path.radialbond2").data(radialBondResults);
-        radialBondEnter();
+      modelRadialBonds = model.getRadialBonds();
+      if (modelRadialBonds) {
+        radialBond1 = radialBondsContainer.selectAll("path.radialbond1").data(modelRadialBonds);
+        radialBond2 = radialBondsContainer.selectAll("path.radialbond2").data(modelRadialBonds);
+        radialBond1.enter().append("path").classed("radialbond1", true);
+        radialBond2.enter().append("path").classed("radialbond2", true);
+
+        updateRadialBonds();
       }
     }
 
@@ -1597,7 +1675,7 @@ define(function(require) {
           return "rotate(" + (Math.atan2(d.fx, d.fy) * rad2deg) + ")";
         })
         .style("opacity", function(d) {
-          return Math.min(1, Math.pow(d.fx * d.fx + d.fy * d.fy, .2) * .3);
+          return Math.min(1, Math.pow(d.fx * d.fx + d.fy * d.fy, 0.2) * 0.3);
         });
     }
 
@@ -1783,18 +1861,26 @@ define(function(require) {
     }
 
     function updateRadialBonds() {
-      radialBond1.attr("d", function(d) {
-        return findPoints(d, 1);
-      });
-      radialBond2.attr("d", function(d) {
-        return findPoints(d, 2);
-      });
-
-      if (keShadingMode || chargeShadingMode) {
-        // Update also radial bonds color when keShading or chargeShading is on.
-        radialBond1.attr("stroke", getBondAtom1Color);
-        radialBond2.attr("stroke", getBondAtom2Color);
-      }
+      // "atom1", "atom2" or "type" properties can be changed during "tick", so we have to update
+      // visual properties that depend on them (e.g. width, color).
+      radialBond1
+          .attr("d", function(d) {
+            return findPoints(d, 1);
+          })
+          .classed("disulphideBond", function(d) {
+            return d.type === RADIAL_BOND_TYPES.DISULPHIDE_BOND;
+          })
+          .attr("stroke-width", radialBondWidth)
+          .attr("stroke", getBondAtom1Color);
+      radialBond2
+          .attr("d", function(d) {
+            return findPoints(d, 2);
+          })
+          .classed("disulphideBond", function(d) {
+            return d.type === RADIAL_BOND_TYPES.DISULPHIDE_BOND;
+          })
+          .attr("stroke-width", radialBondWidth)
+          .attr("stroke", getBondAtom2Color);
     }
 
     function getImageCoords(i) {
@@ -1990,7 +2076,6 @@ define(function(require) {
 
       createSymbolImages();
       createImmutableGradients();
-
       // Register additional controls, context menus etc.
       // Note that special selector for class is used. Typical class selectors
       // (e.g. '.amino-acid') cause problems when interacting with SVG nodes.
@@ -2036,8 +2121,8 @@ define(function(require) {
         .attr({
           "class": "photon",
           "d": photonPath,
-          "stroke-width": 1,
-          "stroke": "black",
+          "stroke-width": 0.5,
+          "stroke": "rgba(0,0,0,0.8)",
           "fill-opacity": 0
         });
 
@@ -2055,17 +2140,16 @@ define(function(require) {
     //
 
     //
-    // MD2D Renderer: init
+    // MD2D Renderer: setup
     //
 
-    function init() {
+    function setup() {
       timeSuffix = " (" + model.getPropertyDescription('displayTime').getUnitAbbreviation() + ")";
 
       model2px = modelView.model2px;
       model2pxInv = modelView.model2pxInv;
 
       fontSizeInPixels = modelView.getFontSizeInPixels();
-      textBoxFontSizeInPixels = fontSizeInPixels * 0.9;
 
       modelAtoms = model.getAtoms();
       modelElements = model.get_elements();
@@ -2104,18 +2188,21 @@ define(function(require) {
       model.on('addRadialBond', redrawClickableObjects(setupRadialBonds));
       model.on('removeRadialBond', redrawClickableObjects(setupRadialBonds));
       model.on('textBoxesChanged', redrawClickableObjects(drawTextBoxes));
+      model.on('imagesChanged', redrawClickableObjects(drawImageAttachment));
       model.on('addElectricField', setupElectricField);
       model.on('removeElectricField', setupElectricField);
       model.on('changeElectricField', setupElectricField);
 
       setupFirefoxWarning();
+
+      isSetup = true;
     }
 
     // Call when model is reset or reloaded.
 
     function bindModel(newModel) {
       model = newModel;
-      init();
+      setup();
     }
 
     //
@@ -2134,17 +2221,17 @@ define(function(require) {
         model2pxInv = m2pxInv;
       }
       fontSizeInPixels = modelView.getFontSizeInPixels();
-      textBoxFontSizeInPixels = fontSizeInPixels * 0.9;
 
       setupMiscOptions();
       setupDynamicGradients();
       setupObstacles();
       setupVdwPairs();
       setupParticles();
+
       // Always setup radial bonds *after* particles to use correct atoms
       // color table.
       setupShapes();
-      //Shapes are ON TOP of particles
+      setupLines();
       setupRadialBonds();
       geneticRenderer.setup();
       setupVectors();
@@ -2190,7 +2277,7 @@ define(function(require) {
 
       updateParticles();
 
-      if (radialBondResults) {
+      if (modelRadialBonds) {
         // Always update radial bonds *after* particles, as particles can
         // change their color and radial bonds should reflect that too (=> use
         // updated colors array).
@@ -2225,8 +2312,24 @@ define(function(require) {
     //
     api = {
       // Expose private methods.
-      update: update,
-      repaint: repaint,
+      setup: function() {
+        if (!isSetup) {
+          setup();
+        }
+      },
+
+      update: function() {
+        if (isSetup) {
+          update();
+        }
+      },
+
+      repaint: function() {
+        if (isSetup) {
+          repaint();
+        }
+      },
+
       bindModel: bindModel,
       model2px: modelView.model2px,
       model2pxInv: modelView.model2pxInv

@@ -20,19 +20,17 @@
         "textBoxes": [
           {
             "text": "Explore the different attractive forces between polar and non-polar molecules by dragging the \"star\" image found in the following simulations.",
-            "x": 0.4,
+            "x": 0.3,
             "y": 1.7,
-            "width": 2.7,
-            "fontScale": 1.4,
-            "layer": 1
+            "fontSize": 0.12,
+            "width": 2.7
           },
           {
             "text": "Choose a pair of molecules from the menu below.",
-            "x": 0.4,
+            "x": 0.3,
             "y": 0.4,
-            "fontScale": 1.4,
-            "width": 3,
-            "layer": 1
+            "fontSize": 0.12,
+            "width": 2.7
           }
         ]
       }
@@ -49,15 +47,13 @@
         },
         "textBoxes": [
           {
-            "text": "Non-polar molecules: London dispersion attraction",
-            "x": 0.3,
+            "x": 0.4,
             "y": 1.7,
-            "layer": 1,
-            "frame": "rounded rectangle",
-            "backgroundColor": "rgb(250,250,250)"
+            "fontSize": 0.12
           }
         ]
-      }
+      },
+      "onLoad": "start();"
     },
     {
       "type": "md2d",
@@ -71,15 +67,13 @@
         },
         "textBoxes": [
           {
-            "text": "Polar molecules: dipole-dipole attraction",
-            "x": 0.59,
+            "x": 0.4,
             "y": 1.7,
-            "layer": 1,
-            "frame": "rounded rectangle",
-            "backgroundColor": "rgb(250,250,250)"
+            "fontSize": 0.12
           }
         ]
-      }
+      },
+      "onLoad": "start();"
     },
     {
       "type": "md2d",
@@ -93,16 +87,13 @@
         },
         "textBoxes": [
           {
-            "text": "Non-polar and polar molecules: induced dipole attraction",
-            "x": 0.9,
+            "x": 0.4,
             "y": 1.7,
-            "width": 2,
-            "layer": 1,
-            "frame": "rounded rectangle",
-            "backgroundColor": "rgb(250,250,250)"
+            "fontSize": 0.12
           }
         ]
-      }
+      },
+      "onLoad": "start();"
     }
   ],
   "components": [
@@ -116,15 +107,15 @@
         },
         {
           "text": "Pull apart two non-polar molecules",
-          "action": "loadModel('npPulling', start);"
+          "loadModel": "npPulling"
         },
         {
           "text": "Pull apart two polar molecules",
-          "action": "loadModel('polarPulling', start);"
+          "loadModel": "polarPulling"
         },
         {
           "text": "Pull apart a non-polar and polar molecules",
-          "action": "loadModel('polarNpPulling', start);"
+          "loadModel": "polarNpPulling"
         }
       ]
     },
@@ -132,7 +123,7 @@
       "type": "button",
       "id": "reset",
       "text": "Reset",
-      "action": "reset();"
+      "action": "reload();"
     }
   ]
 }

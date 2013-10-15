@@ -80,3 +80,20 @@
 
 applet
   border: thin solid #EEE
+  // make sure the test applet shows up in front of the graph and its builtin autoscale button.
+  // (That way, users can click-to-play if necessary)
+  // which have (z-index 2 and 3, currently; set by code, so they're not currently SASS variables)
+  &.test-sensor-applet
+    z-index: 4
+
+#sensor-progressbar-container
+  position: absolute
+  left: 30%
+  width: 40%
+  height: 2.5em
+  z-index: 5
+  .label
+    width: 100%
+    text-align: center
+  .ui-progressbar
+    height: 1em

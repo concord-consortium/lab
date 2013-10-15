@@ -64,11 +64,11 @@
       "ylabel": "eV",
       "ymin": 0,
       "ymax": 7,
-      "xmax": 6000,
+      "xmax": 60,
       "xTickCount": 5,
       "yTickCount": 5,
-      "xFormatter": "2s",
-      "yFormatter": "2s",
+      "xFormatter": ".2s",
+      "yFormatter": ".2s",
       "properties": [
         "totalEnergy"
       ]

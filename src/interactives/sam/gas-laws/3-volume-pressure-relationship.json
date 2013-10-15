@@ -86,7 +86,7 @@
       "id": "current-volume",
       "label": "Gas volume",
       "property": "volume",
-      "displayValue": "return format('1.2f')(value)"
+      "displayValue": "return format('.2f')(value)"
     },
     {
       "type": "barGraph",

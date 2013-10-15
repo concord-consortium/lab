@@ -1,23 +1,192 @@
 {
-  "title": "targetGameDist",
-  "publicationStatus": "draft",
-  "subtitle": "",
-  "about": "",
+  "title": "Target Game (Distance/Force Relationship)",
+  "publicationStatus": "broken",
+  "subtitle": "Can you manipulate the position of charged particles to steer another object to a target?",
+  "about": [
+    "Use the *Launch a positive particle* button to shoot a positive particle across the game board.",
+    "Adjust the position of the negatively and positively charged objects to steer the moving particle to the target."
+  ],
+  "helpOnLoad": true,
   "models": [
     {
       "type": "md2d",
-      "id": "targetGameDist$0",
-      "url": "imports/legacy-mw-content/converted/interactions/target-game-distance/targetGameDist$0.json",
+      "id": "level1",
+      "url": "imports/legacy-mw-content/converted/interactions/target-game-distance/targetGameDist-noLabels$0.json",
       "importedFrom": "imports/legacy-mw-content/interactions/target-game-distance/targetGameDist$0.mml",
       "viewOptions": {
-        "controlButtons": "play_reset"
-      }
+        "controlButtons": "",
+        "electricFieldDensity": 24,
+        "electricFieldColor": "rgb(0,255,0)"
+      },
+      "onLoad": [
+        "setAtomProperties(0,{draggable: true});",
+        "setAtomProperties(1,{draggable: true});",
+        "setShapeProperties(3, {lineColor: 'rgb(255,0,0)', lineWeight: 7});",
+        "set('atomTraceColor','yellow');",
+        "onDrag('atom', function (x, y, d, i) {",
+        "  if (i === 0) {",
+        "    y = Math.max(2.5, Math.min(3.5, y));",
+        "    x = 2.312;",
+        "  } else if (i === 1) {",
+        "    x = Math.max(4, Math.min(5, x));",
+        "    y = 3.3595;",
+        "  }",
+        "  setAtomProperties(i, {x: x, y: y});",
+        "});",
+        "var timePerTick = get('timePerTick'),",
+        "    collisionPadding = 0.075;",
+        "callEvery(timePerTick, function() {",
+        "  var target = getShapeProperties(2);",
+        "  if (atomsWithinRect(target.x, target.y, target.width, target.height).length > 0) {",
+        "    alert('You won!');",
+        "    stop();",
+        "  }",
+        "  for (var i = 0; i < 6; i++) {",
+        "    target = getObstacleProperties(i);",
+        "    if (atomsWithinRect(target.x - collisionPadding, target.y - collisionPadding, target.width + 2*collisionPadding, target.height + 2*collisionPadding).length > 0) {",
+        "      alert('You lose!');",
+        "      stop();",
+        "    }",
+        "  }",
+        "});",
+        "start();"
+      ]
+    },
+    {
+      "type": "md2d",
+      "id": "level2",
+      "url": "imports/legacy-mw-content/converted/interactions/target-game-distance/level2-noLabels$0.json",
+      "importedFrom": "imports/legacy-mw-content/interactions/target-game-distance/level2$0.mml",
+      "viewOptions": {
+        "controlButtons": "",
+        "electricFieldDensity": 24
+      },
+      "onLoad": [
+        "setAtomProperties(0,{draggable: true});",
+        "setAtomProperties(1,{draggable: true});",
+        "setShapeProperties(3, {lineColor: 'rgb(255,0,0)', lineWeight: 7});",
+        "set('atomTraceColor','yellow');",
+        "onDrag('atom', function (x, y, d, i) {",
+        "  if (i === 0) {",
+        "    y = Math.max(2.5, Math.min(3.5, y));",
+        "    x = 2.312;",
+        "  } else if (i === 1) {",
+        "    x = Math.max(4, Math.min(5, x));",
+        "    y = 3.3595;",
+        "  }",
+        "  setAtomProperties(i, {x: x, y: y});",
+        "});",
+        "var timePerTick = get('timePerTick'),",
+        "    collisionPadding = 0.075;",
+        "callEvery(timePerTick, function() {",
+        "  var target = getShapeProperties(2);",
+        "  if (atomsWithinRect(target.x, target.y, target.width, target.height).length > 0) {",
+        "    alert('You won!');",
+        "    stop();",
+        "  }",
+        "  for (var i = 0; i < 6; i++) {",
+        "    target = getObstacleProperties(i);",
+        "    if (atomsWithinRect(target.x - collisionPadding, target.y - collisionPadding, target.width + 2*collisionPadding, target.height + 2*collisionPadding).length > 0) {",
+        "      alert('You lose!');",
+        "      stop();",
+        "    }",
+        "  }",
+        "});",
+        "start();"
+      ]
+    }
+  ],
+  "helpTips": [
+    {
+      "component": "",
+      "text": [
+        "Your goal is to shoot a positive particle so that it hits the target.",
+        "Drag the positive and negative balls into position and, then launch your particle and try to win."
+      ]
+    }
+  ],
+  "parameters":[
+    {
+      "name":"electric-field",
+      "label": "electridField",
+      "onChange": "set('showElectricField', value);",
+      "initialValue": false
+    },
+    {
+      "name":"force-vectors",
+      "label": "forceVectors",
+      "onChange": "set('showForceVectors', value);",
+      "initialValue": false
     }
   ],
   "components": [
+    {
+      "type": "button",
+      "id": "add-atom",
+      "text": "Launch a positive particle",
+      "action": [
+        "if (getNumberOfAtoms() > 2) {",
+        "  untraceAtom(getNumberOfAtoms()-1);",
+        "  removeAtom(getNumberOfAtoms()-1);",
+        "}",
+        "addAtom( {x: getShapeProperties(0).x + getShapeProperties(0).width, y: get('height')/2, element: 1, vx: 0.0025, vy: 0, charge: 1});",
+        "start();",
+        "traceAtom( getNumberOfAtoms() - 1 );"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "reset",
+      "text": "Reset",
+      "action": [
+        "reset({",
+        "  retainParameters: ['electric-field','force-vectors'],",
+        "  cause: 'new-run'",
+        "});"
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "select-show-force-vectors",
+      "text": "Show force on objects",
+      "property": "force-vectors"
+    },
+    {
+      "type": "checkbox",
+      "id": "select-show-electric-field",
+      "text": "Show electric field",
+      "property": "electric-field"
+    },
+    {
+      "type": "radio",
+      "id": "select-level",
+      "orientation": "horizontal",
+      "options": [
+        {
+          "text": "Level 1",
+          "loadModel": "level1",
+          "selected": true
+        },
+        {
+          "text": "Level 2",
+          "loadModel": "level2"
+        }
+      ]
+    }
   ],
   "layout": {
     "bottom": [
+      ["add-atom", "reset", "select-level"],
+      ["select-show-electric-field", "select-show-force-vectors"]
     ]
-  }
+  },
+  "template": [
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "width": "model.width",
+      "left": "model.left",
+      "align": "center"
+    }
+  ]
 }

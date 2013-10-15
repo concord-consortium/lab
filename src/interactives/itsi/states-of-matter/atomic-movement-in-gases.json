@@ -1,0 +1,78 @@
+{
+  "title": "Atomic Movement in Gases",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "gas1",
+      "url": "imports/legacy-mw-content/converted/itsi/states-of-matter/gas1.json",
+      "importedFrom": "imports/legacy-mw-content/itsi/states-of-matter/gas1.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "atomTraceColor": "#ff0",
+        "markColor": "#ff0"
+      }
+    },
+    {
+      "type": "md2d",
+      "id": "gas2",
+      "url": "imports/legacy-mw-content/converted/itsi/states-of-matter/gas2.json",
+      "importedFrom": "imports/legacy-mw-content/itsi/states-of-matter/gas2.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "atomTraceColor": "#ff0",
+        "markColor": "#ff0"
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "radio",
+      "id": "select-model",
+      "orientation": "horizontal",
+      "options": [
+        {
+          "text": "Gas 1",
+          "loadModel": "gas1",
+          "selected": true
+        },
+        {
+          "text": "Gas 2",
+          "loadModel": "gas2"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show-interactions",
+      "text": "Show interactions",
+      "property": "showVDWLines"
+    },
+    {
+      "type": "button",
+      "id": "trace-atom",
+      "text": "Randomly pick an atom and show its trajectory",
+      "action": "traceAtom(randomAtoms(1));"
+    },
+    {
+      "type": "button",
+      "id": "mark-one-atom",
+      "text": "Mark atom near center",
+      "action": [
+        "var centerAtoms = atomsWithinCircle(2, 1.25, 0.5),",
+        "    atomNum = centerAtoms[randomInteger(centerAtoms.length)],",
+        "    atoms = getMoleculeAtoms(atomNum);",
+        "atoms.push(atomNum);",
+        "markAtoms(atoms);"
+      ]
+    }
+  ],
+  "layout": {
+    "bottom": [
+      [ "select-model", "show-interactions" ],
+      [ "trace-atom", "mark-one-atom" ]
+    ]
+  }
+}

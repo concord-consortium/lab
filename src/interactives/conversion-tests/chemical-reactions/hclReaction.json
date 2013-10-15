@@ -1,0 +1,23 @@
+{
+  "title": "hclReaction",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "hclReaction",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/chemical-reactions/hclReaction.json",
+      "importedFrom": "imports/legacy-mw-content/conversion-and-physics-examples/chemical-reactions/hclReaction.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "title": "Hydrogen-Oxygen Reaction",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "simplest-reaction$0",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/chemical-reactions/hydrogen-oxygen-reaction$0.json",
+      "importedFrom": "imports/legacy-mw-content/conversion-and-physics-examples/chemical-reactions/hydrogen-oxygen-reaction$0.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "atomNumbers": true
+      },
+      "modelOptions": {
+        "chemicalReactions": {
+          "valenceElectrons": [
+            1,
+            1,
+            6,
+            7
+          ],
+          "bondEnergy": {
+            "default": 6,
+            "1-2": 5.2,
+            "1-1": 4.52,
+            "2-2": 0.1,
+            "2=2": 5.16
+          },
+          "activationEnergy": {
+            "default": 0.2,
+            "1+2-2": 0.01,
+            "2+1-2": 0.01,
+            "2+1-1": 0.01,
+            "1+2-1": 0.01
+          }
+        }
+      }
+    }
+  ],
+  "parameters": [
+    {
+      "name": "slow-motion",
+      "initialValue": false,
+      "onChange": "if (value) set('timeStep', 0.025); else set('timeStep', 0.25);"
+    }
+  ],
+  "components": [
+    {
+        "type": "slider",
+        "id": "temp-slider",
+        "min": 0,
+        "max": 1000,
+        "displayValue": "return format('g')(value)",
+        "width": "20em",
+        "labels": [
+          {
+            "value": 0.0,
+            "label": "0 K"
+          },
+          {
+            "value": 500,
+            "label": "500 K"
+          },
+          {
+            "value": 1000,
+            "label": "1000 K"
+          }
+        ],
+        "steps": 500,
+        "title": "Target temperature",
+        "property": "targetTemperature"
+    },
+    {
+      "type": "checkbox",
+      "id": "heat-bath-checkbox",
+      "text": "Heat bath",
+      "property": "temperatureControl"
+    },
+    {
+      "type": "checkbox",
+      "id": "slow-motion-checkbox",
+      "text": "Slow motion",
+      "property": "slow-motion"
+    },
+    {
+      "type": "barGraph",
+      "id": "thermometer",
+      "property": "temperature",
+      "units": true,
+      "labelFormat": "3r",
+      "title": "Temperature",
+      "titleOn": "top",
+      "min": 0,
+      "max": 10000,
+      "averagePeriod": 2500
+    }
+  ],
+  "layout": {
+    "bottom": [
+      "temp-slider",
+      "heat-bath-checkbox",
+      "slow-motion-checkbox"
+    ],
+    "right": [
+      "thermometer"
+    ]
+  }
+}

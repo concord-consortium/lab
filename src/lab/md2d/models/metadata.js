@@ -126,8 +126,10 @@ define(function() {
         defaultValue: true
       },
       useQuantumDynamics: {
-        default: false,
-        serialize: false
+        defaultValue: false
+      },
+      useChemicalReactions: {
+        defaultValue: false
       }
     },
 
@@ -321,6 +323,9 @@ define(function() {
         defaultValue: 0,
         unitType: "dampingCoefficient"
       },
+      radical: {
+        defaultValue: 0
+      },
       visible: {
         defaultValue: 1
       },
@@ -362,6 +367,10 @@ define(function() {
         serialize: false
       },
       excitation: {
+        // [Quantum Dynamics plugin]
+      },
+      sharedElectrons: {
+        // [Chemical Reactions plugin]
       }
     },
 
@@ -548,6 +557,59 @@ define(function() {
       }
     },
 
+    line: {
+      // Required properties:
+      x1: {
+        defaultValue: 0,
+        required: true,
+        unitType: "length"
+      },
+      y1: {
+        defaultValue: 0,
+        required: true,
+        unitType: "length"
+      },
+      x2: {
+        defaultValue: 0,
+        required: true,
+        unitType: "length"
+      },
+      y2: {
+        defaultValue: 0,
+        required: true,
+        unitType: "length"
+      },
+      // Optional properties:
+      beginStyle: {
+        defaultValue: "none",
+      },
+      endStyle: {
+        defaultValue: "none",
+      },
+      fence: {
+        defaultValue: 0,
+      },
+      // View options.
+      lineColor: {
+        defaultValue: "black"
+      },
+      lineDashes: {
+        defaultValue: "none"
+      },
+      lineWeight: {
+        defaultValue: 1
+      },
+      layer: {
+        defaultValue: 1
+      },
+      layerPosition: {
+        defaultValue: 1
+      },
+      visible: {
+        defaultValue: 1
+      }
+    },
+
     radialBond: {
       atom1: {
         defaultValue: 0
@@ -655,12 +717,75 @@ define(function() {
       rotate: {
         defaultValue: 0
       },
-      fontScale: {
-        defaultValue: 1
+      fontSize: {
+        defaultValue: 0.12 // defined in nm!
       },
       hostType: {},
       hostIndex: {},
       textAlign: {}
+    },
+
+    chemicalReactions: {
+      valenceElectrons: {
+        defaultValue: [1, 1, 7, 7],
+        immutable: true
+      },
+      bondEnergy: {
+        defaultValue: {
+          // This configuration means that default bond chemical energy is 6eV, however single bonds
+          // between the same elements (like bond between 1 and 1) have a bit smaller chemical
+          // energy equal to 4eV. You can freely modify this configuration. Note that you should
+          // define "default" key if you don't specify all possible configurations.
+          "default": 6,
+          "0-0": 4,
+          "1-1": 4,
+          "2-2": 4,
+          "3-3": 4
+        },
+        immutable: true
+      },
+      activationEnergy: {
+        defaultValue: {
+          // This configuration means that default activation energy is equal to 0.2eV.
+          // If you need custom parameters for various combinations, you can add e.g.:
+          // "1+2-2": 0.5,
+          // "2+1-1": 5
+          // what means that when element 1 collides with two bonded elements 2, activation
+          // energy that causes bonds exchange is 0.5 eV. Similarly, when element 2 collides with
+          // two bonded elements 1, activation energy that causes bonds exchange is 5 eV.
+          // Note that format is important! Single element is first, then "+" sign, then pair
+          // description.
+          "default": 0.2
+
+        },
+        immutable: true
+      }
+    },
+
+    image: {
+      imageUri: {
+        required: true
+      },
+      imageX: {
+        defaultValue: 0,
+        required: true
+      },
+      imageY: {
+        defaultValue: 0,
+        required: true
+      },
+      imageHostType: {
+        defaultValue: ""
+      },
+      imageHostIndex: {
+        defaultValue: 0
+      },
+      imageLayer: {
+        defaultValue: 1
+      },
+      imageLayerPosition: {
+        defaultValue: 1
+      }
     },
 
     quantumDynamics: {
@@ -672,6 +797,8 @@ define(function() {
       },
       radiationlessEmissionProbability: {
         defaultValue: 1
+      },
+      lightSource: {
       }
     },
 

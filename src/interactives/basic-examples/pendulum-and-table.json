@@ -1,0 +1,357 @@
+{
+  "title": "Pendulum: rod length and graph",
+  "publicationStatus": "public",
+  "subtitle": "Explore how rod length affects the period of a pendulum.",
+  "about": [
+  ],
+  "aspectRatio": 1.8,
+  "fontScale": 0.8,
+  "models": [
+    {
+      "type": "md2d",
+      "id": "pendulum1$0",
+      "url": "models/md2d/basic-examples/pendulum.json",
+      "viewOptions": {
+        "controlButtons": "",
+        "gridLines": false,
+        "xunits": false,
+        "yunits": false,
+        "showClock": false,
+        "velocityVectors": {
+          "length": 10
+        }
+      },
+      "modelOptions": {
+        "unitsScheme": "mks",
+        "timeStepsPerTick": 167,
+        "timeStep": 1,
+        "modelSampleRate": 60
+      },
+      "onLoad": [
+        "function resetAngle() {",
+        "  set({startingAngle: get('startingAngle')});",
+        "}",
+        "function stopMotion() {",
+        "  stop();",
+        "  setAtomProperties(1, { vx: 0, vy: 0 });",
+        "}",
+        "onPropertyChange('rodLength', resetAngle);"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "name": "currentAngle",
+      "unitAbbreviation": "°",
+      "label": "Angle",
+      "value": [
+        "var a0 = getAtomProperties(0),",
+        "    a1 = getAtomProperties(1),",
+        "    ang = Math.atan2(a1.y-a0.y, a1.x-a0.x) * rad2deg;",
+        "return (a1.x < a0.x && a1.y >= a0.y) ? ang - 270 : ang + 90;"
+      ]
+    }
+  ],
+  "filteredOutputs": [
+    {
+      "name": "period",
+      "unitType": "time",
+      "label": "Period",
+      "property": "currentAngle",
+      "type": "SimplePeriod"
+    }
+   ],
+  "parameters": [
+    {
+      "name": "rodLength",
+      "label": "Rod length",
+      "unitAbbreviation": "cm",
+      "onChange": "var len = value/100, a0 = getAtomProperties(0), a1 = getAtomProperties(1), angle = Math.atan((a1.x-a0.x)/(a0.y-a1.y)); setRadialBondProperties(0, { length: len }); setAtomProperties(1, {x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0});",
+      "initialValue": 100
+    },
+    {
+      "name": "startingAngle",
+      "label": "Starting angle",
+      "unitAbbreviation": "°",
+      "onChange": "var a0 = getAtomProperties(0), angle = value*deg2rad, len = getRadialBondProperties(0).length; setAtomProperties(1, {x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0});",
+      "initialValue": 45
+    }
+  ],
+  "experiment": {
+    "timeSeries": {
+      "time": "displayTime",
+      "properties": [
+        "currentAngle"
+      ]
+    },
+    "parameters": {
+      "inputs": [
+        "rodLength"
+      ],
+      "outputs": [
+        "period"
+      ]
+    },
+    "destinations": [
+      {
+        "type": "timeSeries",
+        "componentIds": [
+          "time-series-table"
+        ],
+        "properties": [
+          "displayTime",
+          "currentAngle"
+        ]
+      },
+      {
+        "type": "parameterSeries",
+        "componentIds": [
+          "experiment-table"
+        ],
+        "properties": [
+          "rodLength",
+          "period"
+        ]
+      }
+    ],
+    "stateButtons": {
+      "startRun": "start-run",
+      "stopRun": "stop-run",
+      "saveRun": "save-run",
+      "nextRun": "next-run",
+      "clearAll": "clear-all"
+    },
+    "onReset": [
+      "resetAngle();",
+      "stopMotion();",
+      "set('rodLength', get('rodLength'));"
+    ]
+  },
+  "components": [
+    {
+      "type": "slider",
+      "id": "length-slider",
+      "min": 10,
+      "max": 200,
+      "width": "14em",
+      "tooltip": "Adjust length of pendulum.",
+      "displayValue": "return format('f')(value)",
+      "labels": [
+        {
+          "value": 10,
+          "label": "10 cm"
+        },
+        {
+          "value": 200,
+          "label": "2 m"
+        }
+      ],
+      "steps": 19,
+      "title": "Rod length (cm)",
+      "property": "rodLength"
+    },
+    {
+      "type": "numericOutput",
+      "id": "period-display",
+      "property": "period",
+      "displayValue": "return format('.3r')(value)"
+    },
+
+    {
+      "type": "button",
+      "id": "start-run",
+      "text": "Start",
+      "tooltip": "Start experiment run. Will stop automatically after 8s.",
+      "action": ""
+    },
+    {
+      "type": "button",
+      "id": "stop-run",
+      "text": "Stop",
+      "tooltip": "Stop currently running experiment.",
+      "action": ""
+    },
+    {
+      "type": "button",
+      "id": "save-run",
+      "text": "Save",
+      "tooltip": "Save parameter data and period from current run into Experiment Table.",
+      "action": ""
+    },
+    {
+      "type": "button",
+      "id": "next-run",
+      "text": "Next Run",
+      "tooltip": "Clear just the last experiment run and setup next run.",
+      "action": ""
+    },
+    {
+      "type": "button",
+      "id": "clear-all",
+      "text": "Clear All",
+      "tooltip": "Clear all experiment data.",
+      "action": ""
+    },
+    {
+      "type": "table",
+      "id": "time-series-table",
+      "title": "Time Series Table",
+      "clearDataOnReset": true,
+      "streamDataFromModel": true,
+      "visibleRows": 4,
+      "height": "24em",
+      "width": "auto",
+      "indexColumn": true,
+      "propertyColumns": [
+        "displayTime",
+        "currentAngle"
+      ]
+    },
+    {
+      "type": "table",
+      "id": "experiment-table",
+      "title": "Experiment Table",
+      "clearDataOnReset": false,
+      "streamDataFromModel": false,
+      "visibleRows": 4,
+      "height": "10em",
+      "width": "20em",
+      "indexColumn": true,
+      "propertyColumns": [
+        "rodLength",
+        "period"
+      ]
+    }
+  ],
+  "helpTips": [
+    {
+      "text": [
+        "#Simple Pendulum Experiment",
+        "- - -",
+        "Adjust the **Rod length** experiment parameter and then run multiple",
+        "experiments to find out how changing this parameter affects the",
+        "period of the pendulum."
+      ]
+    },
+    {
+      "component": "model",
+      "text": [
+        "When you adjust **Rod length** and run this pendulum model it",
+        "wlll accurately simulate the new dynamic behavior of the pendulum.",
+        "",
+        "You can also construct a real pendulum using the same parameters and the",
+        "results you measure should be very similar to the ones in this model."
+      ]
+    },
+    {
+      "component": "ime-series-table",
+      "text": [
+        "A table of the time and angle of the pendulum over time for an experiment run.",
+        ""
+      ]
+    },
+    {
+      "component": "length-slider",
+      "text": [
+        "Adjust the length of the pendulum rod.",
+        "",
+        ""
+      ]
+    },
+    {
+      "component": "period-display",
+      "text": [
+        "Displays period of the pendulum by measuring zero-crossing times."
+      ]
+    },
+    {
+      "component": "experiment-table",
+      "text": [
+        "A table where **Rod length** and **Period** from each experiment run can be saved."
+      ]
+    },
+    {
+      "component": "start-run",
+      "text": [
+        "Start an experiment run. Experiment runs will automatically stop after 8 seconds.",
+        ""
+      ]
+    },
+    {
+      "component": "stop-run",
+      "text": [
+        "Stop a currently running experiment. Experiment runs will automatically stop after 8 seconds.",
+        "",
+        ""
+      ]
+    },
+    {
+      "component": "save-run",
+      "text": [
+        "Save parameter data and **Period** from your current experiment run into the **Experiment Table** and",
+        "**Parameter Graph**.",
+        ""
+      ]
+    },
+    {
+      "component": "next-run",
+      "text": [
+        "Clears the data from the last experiment run and resets the model",
+        "so you can setup the **next** experiment run.",
+        ""
+      ]
+    },
+    {
+      "component": "clear-all",
+      "text": [
+        "Clear **all** the data, including data in the **Experiment Table**."
+      ]
+    }
+  ],
+  "layout": {
+    "experiment-controls": [
+      [ "start-run", "stop-run", "save-run", "next-run", "clear-all" ]
+    ],
+    "bottom-left": [
+      [ "experiment-table" ]
+    ],
+    "top-right": [
+      [ "length-slider" ],
+      [ "period-display" ],
+      [ "time-series-table" ]
+    ]
+  },
+  "template": [
+    {
+      "id": "experiment-controls",
+      "fontScale": "0.9",
+      "top": "model.bottom",
+      "left": "model.left",
+      "width": "model.width",
+      "align": "center",
+      "padding-top": "0.5em",
+      "padding-left": "0em"
+    },
+    {
+      "id": "bottom-left",
+      "fontScale": "0.9",
+      "top": "experiment-controls.bottom",
+      "left": "model.left",
+      "width": "model.width",
+      "align": "center",
+      "padding-top": "0.5em",
+      "padding-bottom": "0.5em",
+      "padding-left": "0em"
+    },
+    {
+      "id": "top-right",
+      "fontScale": "0.9",
+      "left": "model.right",
+      "height": "24em",
+      "padding-top": "0.2em",
+      "padding-bottom": "0.5em",
+      "padding-left": "1em",
+      "padding-right": "0.5em"
+    }
+  ]
+}

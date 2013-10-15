@@ -1,18 +1,52 @@
 {
   "title": "Hydrogen Combustion",
   "publicationStatus": "draft",
-  "subtitle": "The physics in this model will be incomplete until the development of the Chemical Reactions engine.",
-  "about": "",
+  "subtitle": "Hydrogen and oxygen can burn to form water",
+  "about": [
+    "This model shows how hydrogen and oxygen burn to form water.",
+    "The equation for this reaction is:",
+    "",
+    "2H2 + O2 ➡ 2H2O",
+    "",
+    "**Instructions**",
+    "",
+    "1. Run the model.",
+    "2. Click **Spark** to initiate the reaction."
+  ],
   "models": [
     {
       "type": "md2d",
       "id": "hydrogen1newcolors$0",
       "url": "imports/legacy-mw-content/converted/visual/ChemicalReactions/hydrogen1newcolors$0.json",
       "viewOptions": {
-        "controlButtons": "play_reset_step",
-        "gridLines": true,
-        "xunits": true,
-        "yunits": true
+        "controlButtons": "play_reset",
+        "gridLines": false,
+        "xunits": false,
+        "yunits": false
+      },
+      "modelOptions": {
+        "chemicalReactions": {
+          "valenceElectrons": [
+            1,
+            1,
+            6,
+            7
+          ],
+          "bondEnergy": {
+            "default": 6,
+            "1-2": 5.2,
+            "1-1": 4.52,
+            "2-2": 0.1,
+            "2=2": 5.16
+          },
+          "activationEnergy": {
+            "default": 0.2,
+            "1+2-2": 0.01,
+            "2+1-2": 0.01,
+            "2+1-1": 0.01,
+            "1+2-1": 0.01
+          }
+        }
       }
     }
   ],
@@ -37,10 +71,23 @@
   "components": [
     {
       "type": "button",
+      "id": "start-button",
+      "text": "Start model",
+      "action": [
+        "if (isStopped()) {",
+        "  start();",
+        "}"
+      ]
+    },
+    {
+      "type": "button",
       "id": "spark-button",
       "text": "Spark",
       "action": [
         "var atoms, index, atom1, atom2, rbonds, atom1props, atom2props;",
+        "if (isStopped()) {",
+        "  start();",
+        "}",
         "atoms = atomsWithinRect(0.5, 0.5, 2, 2)",
         "if (atoms.length === 0) return;",
         "atoms = atoms.filter(function(i) { return getAtomProperties(i).element === 1; });",
@@ -67,7 +114,7 @@
       "type": "checkbox",
       "id": "slow_motion",
       "text": "Slow Motion",
-      "onClick": "if (value) { set({timeStep: 0.1}) } else { set({timeStep: 1})};"
+      "onClick": "if (value) { set({timeStep: 0.025}) } else { set({timeStep: 1})};"
     },
     {
       "type": "barGraph",
@@ -83,12 +130,70 @@
       "id": "temperature-output",
       "property": "filteredSimplifiedTemperature",
       "orientation": "vertical",
-      "displayValue": "return format('1.1f')(value)"
+      "displayValue": "return format('.1f')(value)"
+    }
+  ],
+  "helpTips": [
+    {
+      "text": [
+        "#Hydrogen Combustion",
+        "- - -",
+        "This model shows how hydrogen and oxygen burn to form water.",
+        "The equation for this reaction is:",
+        "",
+        "2H2 + O2 ➡ 2H2O"
+      ]
+    },
+    {
+      "component": "model",
+      "text": [
+        "There are a collection of H2 and O2 molecules in this model at the start",
+        "but there are no water molecules (H2O)."
+      ]
+    },
+    {
+      "component": "start-button",
+      "text": [
+        "Start the model running.",
+        ""
+      ]
+    },
+    {
+      "component": "spark-button",
+      "text": [
+        "Create a simulated **spark** in the model. This causes the bond between a randomly",
+        "selected H2 molecule to break.",
+        "",
+        "The two hydrogen atoms now separated fly off in opposite directions",
+        "with an increased velocity and energy."
+      ]
+    },
+    {
+      "component": "bar-graph",
+      "text": [
+        "A proportional representation of the amount of thermal energy in this model."
+      ]
+    },
+    {
+      "component": "temperature-output",
+      "text": [
+        "A numeric representation of the amount of thermal energy in this model."
+      ]
+    },
+    {
+      "component": "slow_motion",
+      "text": [
+        "Once the combustion reaction has started and water is formed the atoms and molecules",
+        "in the model are moving very fast because they are much hotter.",
+        "",
+        "Click **Slow motion** to slow the model down to better see how the new water",
+        "molecules are formed and interact."
+      ]
     }
   ],
   "layout": {
     "bottom": [
-      "spark-button"
+      "start-button", "spark-button"
     ],
     "right": [
       "bar-graph"

@@ -1,0 +1,23 @@
+{
+  "title": "water24",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "water24",
+      "url": "imports/legacy-mw-content/converted/itsi/stoichiometry/water24.json",
+      "importedFrom": "imports/legacy-mw-content/itsi/stoichiometry/water24.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

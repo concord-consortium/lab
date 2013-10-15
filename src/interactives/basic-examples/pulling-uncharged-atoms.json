@@ -24,7 +24,7 @@
       "type": "button",
       "id": "reset",
       "text": "reset",
-      "action": "reset();"
+      "action": "reload();"
     }
   ]
 }

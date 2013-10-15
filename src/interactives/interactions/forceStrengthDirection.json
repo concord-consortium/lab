@@ -1,8 +1,13 @@
 {
-  "title": "forceStrengthDirection",
+  "title": "Direction and Strength of Force in Electric Fields",
   "publicationStatus": "draft",
-  "subtitle": "",
-  "about": "",
+  "subtitle": "Explore the force between charged objects.",
+  "about": [
+    "An electric field is produced by the stationary object in this simulation.",
+    "How does the force on the draggable object change when it is moved around the stationary object?",
+    "How the force affected by the polarity of the charge on the stationary object?",
+    "Use the *trace force vectors* checkbox to help characterize the direction and magnitude of force arrow when the charged object is in different positions."
+  ],
   "models": [
     {
       "type": "md2d",
@@ -10,14 +15,158 @@
       "url": "imports/legacy-mw-content/converted/interactions/force-magnitude-and-direction/forceStrengthDirection$0.json",
       "importedFrom": "imports/legacy-mw-content/interactions/force-magnitude-and-direction/forceStrengthDirection$0.mml",
       "viewOptions": {
-        "controlButtons": "play_reset"
-      }
+        "controlButtons": "reset"
+      },
+      "onLoad": [
+          "onDrag('atom', function(x, y, d, i) {",
+          "  if (getNumberOfTextBoxes() > 0) { removeTextBox(0); }",
+          "  if( i === 0 ) {",
+          "    var forceDirection, dragAtomProps, targetAtomProps, dx, dy, L, color1, color2, rgba, targetX, targetY, zeroRadius, strength;",
+          "    zeroRadius      = 1.2;",
+          "    forceDirection  = get('object-charge');",
+          "    dragAtomProps   = getAtomProperties(0);",
+          "    targetAtomProps = getAtomProperties(1);",
+          "    dx              = targetAtomProps.x - dragAtomProps.x;",
+          "    dy              = targetAtomProps.y - dragAtomProps.y;",
+          "    L               = Math.sqrt(dx*dx + dy*dy);",
+          "    if (get('show-force-using') === 'color') {",
+          "      color1          = Math.floor( Math.max( 0, zeroRadius - L ) / zeroRadius * 255 );",
+          "      color2          = Math.max( 0, Math.min( zeroRadius, 2*zeroRadius - L ) / zeroRadius );",
+          "      rgba            = 'rgba(' + color1 + ',255,' + color1 + ',' + color2 + ')';",
+          "      strength        = 0.4;",
+          "    } else {",
+          "      rgba            = 'rgba(0,255,0,1)';",
+          "      strength        = 0.4/L;",
+          "    }",
+          "    targetX         = dragAtomProps.x + forceDirection * strength/L*dx;",
+          "    targetY         = dragAtomProps.y + forceDirection * strength/L*dy;",
+          "    setLineProperties(0, {x1: dragAtomProps.x, y1: dragAtomProps.y, x2: targetX, y2: targetY, lineColor: rgba});",
+          "    if( get('trace-force-vectors') ){",
+          "      var tNow = getCurrentComputerTime();",
+          "      if( tNow - get('last-trace-time') > 250 ) {",
+          "        var traceidx = get('trace-idx');",
+          "        setLineProperties(2 + traceidx, {x1: dragAtomProps.x, y1: dragAtomProps.y, x2: targetX, y2: targetY, lineColor: rgba, visible: true});",
+          "        set('trace-idx', (traceidx+1)%96);",
+          "        set('last-trace-time', tNow);",
+          "      }",
+          "    }",
+          "    targetX = targetAtomProps.x - forceDirection * strength/L*dx;",
+          "    targetY = targetAtomProps.y - forceDirection * strength/L*dy;",
+          "    setLineProperties(1, {x1: targetAtomProps.x, y1: targetAtomProps.y, x2: targetX, y2: targetY, lineColor: rgba});",
+          "  }",
+          "});"
+        ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "last-trace-time",
+      "initialValue": 0,
+      "onChange": []
+    },
+    {
+      "name": "trace-idx",
+      "initialValue": 0,
+      "onChange": []
+    },
+    {
+      "name": "show-force-using",
+      "initialValue": "length",
+      "onChange": [
+        "batch( function() { ",
+        "  for( var i = 2; i < 98; setLineProperties(i++, {visible: false})); // clear traces",
+        "});"
+      ]
+    },
+    {
+      "name": "trace-force-vectors",
+      "initialValue": false,
+      "onChange": []
+    },
+    {
+      "name": "object-charge",
+      "initialValue": 1,
+      "onChange": [
+        "setAtomProperties(0,{charge: value});",
+        "batch( function() { ",
+        "  for( var i = 2; i < 98; setLineProperties(i++, {visible: false})); // clear traces",
+        "});"
+      ]
     }
   ],
   "components": [
+    {
+      "type": "button",
+      "id": "clear-trace",
+      "text": "Clear",
+      "action": [
+        "batch( function() { ",
+        "  for( var i = 2; i < 98; setLineProperties(i++, {visible: false})); // clear traces",
+        "});"
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "toggle-trace-force-vectors",
+      "property": "trace-force-vectors",
+      "text": "Trace force vectors"
+    },
+    {
+      "type": "text",
+      "id": "label-forces",
+      "text": "**Magnitude of force shown by**"
+    },
+    {
+      "type": "text",
+      "id": "label-tracing",
+      "text": "**Vector tracing**"
+    },
+    {
+      "type": "text",
+      "id": "label-direction",
+      "text": "**Charge on stationary object**"
+    },
+    {
+      "type": "radio",
+      "id": "select-charge",
+      "property": "object-charge",
+      "options": [
+        {
+          "text": "Positive",
+          "value": 1
+        },
+        {
+          "text": "Negative",
+          "value": -1
+        }
+      ]
+    },
+    {
+      "type": "radio",
+      "id": "select-show-force-using",
+      "property": "show-force-using",
+      "options": [
+        {
+          "text": "length of vector",
+          "value": "length"
+        },
+        {
+          "text": "color of vector",
+          "value": "color"
+        }
+      ]
+    }
   ],
   "layout": {
-    "bottom": [
+    "right": [
+      ["label-forces"],
+      ["select-show-force-using"],
+      ["label-tracing"],
+      ["toggle-trace-force-vectors"],
+      ["clear-trace"],
+      ["label-direction"],
+      ["select-charge"]
     ]
-  }
+  },
+  "template": "wide-right"
 }

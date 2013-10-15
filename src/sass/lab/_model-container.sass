@@ -9,6 +9,7 @@
   @include user-select(none)
   // Radial bonds.
   .radialbond1, .radialbond2
+    fill: none
     // Various radial bond styles:
     // Default radial bonds have color calculated dynamically using JavaScipt.
     &.disulphideBond
@@ -153,3 +154,9 @@
     opacity: 0.5
     &:hover
       opacity: 1
+
+
+  // Sensor model. Shrink the components so they fit into 1 model width.
+  &.sensor-model-container
+    .component
+      font-size: 0.9em

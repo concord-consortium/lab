@@ -20,6 +20,7 @@
             "width": 2,
             "textAlign": "center",
             "frame": "rectangle",
+            "fontSize": 0.19,
             "strokeOpacity": 0,
             "backgroundColor": "rgba(145,83,205,0.5)",
             "layer": 1
@@ -161,7 +162,7 @@
       "id": "reset-barrier",
       "text": "Reset experiment",
       "action": [
-        "reset();"
+        "reload();"
       ]
     },
     {
@@ -200,7 +201,7 @@
       "type": "numericOutput",
       "id": "experiment-time",
       "property": "experimentTime",
-      "displayValue": "return format('1.1f')(value)"
+      "displayValue": "return format('.1f')(value)"
     }
   ],
   "layout": {

@@ -1,0 +1,57 @@
+{
+  "title": "how-does-salt-dissolve-in-water",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "saltonly",
+      "url": "imports/legacy-mw-content/converted/itsi/dissolving/saltonly.json",
+      "importedFrom": "imports/legacy-mw-content/itsi/dissolving/saltonly.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    },
+    {
+      "type": "md2d",
+      "id": "saltandwater",
+      "url": "imports/legacy-mw-content/converted/itsi/dissolving/saltandwater.json",
+      "importedFrom": "imports/legacy-mw-content/itsi/dissolving/saltandwater.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "load-water",
+      "text": "Add water",
+      "action": "loadModel('saltandwater');"
+    },
+    {
+      "type": "button",
+      "id": "load-salt",
+      "text": "Restore salt crystal",
+      "action": "loadModel('saltonly');"
+    },
+    {
+      "type": "checkbox",
+      "id": "show-interactions",
+      "text": "Show interactions",
+      "property": "showVDWLines"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_charge",
+      "text": "Show charge",
+      "property": "showChargeSymbols"
+    }
+  ],
+  "layout": {
+    "bottom": [
+      "load-water", "load-salt", "show-interactions", "show_charge"
+    ]
+  }
+}

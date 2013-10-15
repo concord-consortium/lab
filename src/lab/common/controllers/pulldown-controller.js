@@ -1,4 +1,4 @@
-/*global require, define, $, model */
+/*global require, define, $ */
 
 define(function () {
 
@@ -9,21 +9,47 @@ define(function () {
 
       require('common/jquery-plugins');
 
-  return function PulldownController(component, scriptingAPI, interactivesController) {
+  return function PulldownController(component, interactivesController) {
         // Public API.
     var controller,
+        model,
+        scriptingAPI,
         // Options definitions from component JSON definition.
         options,
         view,
         $element;
 
+    function optionTextForLoadModelId(id) {
+      var i, option;
+      for (i = 0; i < component.options.length; i++) {
+        option = component.options[i];
+        if (option.loadModel === id) return option.text;
+      }
+      return false;
+    }
+
     function updatePulldown() {
-      view.update(model.properties[component.property]);
+      var optionText, modelId;
+      modelId = interactivesController.getLoadedModelId();
+      optionText = optionTextForLoadModelId(modelId);
+      if (component.property !== undefined) {
+        view.update(model.get(component.property));
+      } else if (optionText) {
+        view.update(optionText);
+      }
+    }
+
+    function updatePulldownDisabledState() {
+      var description = model.getPropertyDescription(component.property);
+      controller.setDisabled(description.getFrozen());
     }
 
     function initialize() {
       var parent = interactivesController.interactiveContainer,
           i, len;
+
+      model = interactivesController.getModel();
+      scriptingAPI = interactivesController.getScriptingAPI();
 
       // Validate component definition, use validated copy of the properties.
       component = validator.validateCompleteness(metadata.pulldown, component);
@@ -66,13 +92,21 @@ define(function () {
     // Public API.
     controller = {
       modelLoadedCallback: function () {
-        // Connect pulldown with model's property if its name is defined.
+        scriptingAPI = interactivesController.getScriptingAPI();
         if (component.property !== undefined) {
+          if (model) {
+            model.removeObserver(component.property, updatePulldown);
+            model.removePropertyDescriptionObserver(component.property, updatePulldownDisabledState);
+          }
+          model = interactivesController.getModel();
           // Register listener for property.
           model.addObserver(component.property, updatePulldown);
+          model.addPropertyDescriptionObserver(component.property, updatePulldownDisabledState);
           // Perform initial pulldown setup.
-          updatePulldown();
+        } else {
+          model = interactivesController.getModel();
         }
+        updatePulldown();
       },
 
       // Returns view container.

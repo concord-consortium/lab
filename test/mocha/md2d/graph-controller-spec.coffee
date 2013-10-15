@@ -12,6 +12,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
       resetPoints:     sinon.spy()
       updateOrRescale: sinon.spy()
       reset:           sinon.spy()
+      repaint:         sinon.spy()
 
   requirejs.define 'grapher/core/graph', [], ->
     # Just a function that calls through to mock.Graph, while allowing mock.Graph to
@@ -21,11 +22,40 @@ helpers.withIsolatedRequireJS (requirejs) ->
   GraphController = requirejs 'common/controllers/graph-controller'
   Model           = requirejs 'md2d/models/modeler'
 
-  interactivesController =
-    getNextTabIndex: ->
-      1
+  class MockInteractivesController
+    constructor: () ->
+      @modelResetCallbacks = []
+      @modelLoadedCallbacks = []
 
-  scriptingAPI = ->
+    on: (event, callback) ->
+      if event is 'modelReset' then @modelResetCallbacks.push(callback)
+      if event is 'modelLoaded' then @modelLoadedCallbacks.push(callback)
+
+    loadModel: ->
+      @model = loadModel()
+      @modelLoadedCallbacks.forEach (cb) -> cb('initialLoad')
+
+    getModel: ->
+      @model
+
+    getScriptingAPI: ->
+      @scriptingAPI
+
+    getNextTabIndex: ->
+
+    reloadModel: (opts) ->
+      @model.willReset()
+      @model = loadModel()
+      @modelLoadedCallbacks.forEach (cb) -> cb('reload')
+
+    resetModel: (opts) ->
+      opts ||= { cause: 'reset' }
+      @model.willReset()
+      @model.reset()
+      @modelResetCallbacks.forEach (cb) -> cb(opts.cause)
+
+  loadModel = ->
+    model = new Model simpleModel
 
   getComponentSpec = ->
     id: 'graphContainerId'
@@ -34,19 +64,27 @@ helpers.withIsolatedRequireJS (requirejs) ->
 
   # actual tests
   describe "GraphController", ->
+    graphController = null
+    interactivesController = null
+    model = null
+
+    beforeEach ->
+      interactivesController = new MockInteractivesController()
+      interactivesController.loadModel()
+      model = interactivesController.model
+
     it "should exist", ->
       should.exist GraphController
 
     it "should act as a constructor that accepts the component spec as its argument", ->
-      controller = new GraphController getComponentSpec(), scriptingAPI, interactivesController
+      controller = new GraphController getComponentSpec(), interactivesController
       should.exist controller
 
     describe "A GraphController instance", ->
       controller = null
 
       beforeEach ->
-        global.model = new Model simpleModel
-        controller = new GraphController getComponentSpec(), scriptingAPI, interactivesController
+        controller = new GraphController getComponentSpec(), interactivesController
 
       it "should have a getViewContainer method", ->
         controller.should.have.property 'getViewContainer'
@@ -200,7 +238,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
             it "should pass options to grapher.reset", ->
               grapher.reset.getCall(0).args.should.have.length 2
               options = grapher.reset.getCall(0).args[1]
-              options.should.be.a 'object'
+              options.should.be.an.Object
 
             it "should pass 1 array of length 2 to resetPoints", ->
               newData = grapher.resetPoints.getCall(0).args[0]
@@ -269,7 +307,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
 
     describe "handling of graph configuration options in component spec", ->
       grapherOptionsForComponentSpec = (componentSpec) ->
-        controller = new GraphController componentSpec, scriptingAPI, interactivesController
+        controller = new GraphController componentSpec, interactivesController
         sinon.spy mock, 'Graph'
         controller.modelLoadedCallback()
         options = mock.Graph.getCall(0).args[1]

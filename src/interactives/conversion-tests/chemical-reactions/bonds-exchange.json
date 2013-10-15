@@ -1,0 +1,74 @@
+{
+  "title": "Bonds Exchange",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "simplest-reaction$0",
+      "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/chemical-reactions/bonds-exchange$0.json",
+      "importedFrom": "imports/legacy-mw-content/conversion-and-physics-examples/chemical-reactions/bonds-exchange$0.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "atomNumbers": true
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "checkbox",
+      "id": "heat-bath",
+      "property": "temperatureControl",
+      "text": "Heat bath"
+    },
+    {
+      "type": "graph",
+      "id": "energy-graph",
+      "title": "Energy (KE:red, PE:green, TE:blue)",
+      "xlabel": "Time (ps)",
+      "ylabel": "Energy (eV)",
+      "ymin": -15,
+      "ymax": 2,
+      "xmax": 30,
+      "xTickCount": 10,
+      "yTickCount": 10,
+      "xFormatter": ".2r",
+      "yFormatter": ".2s",
+      "properties": [
+        "kineticEnergy",
+        "potentialEnergy",
+        "totalEnergy"
+      ]
+    }
+  ],
+  "template": [
+    {
+      "id": "right",
+      "top": "model.top",
+      "left": "model.right",
+      "padding-left": "1em"
+    },
+    {
+      "id": "left",
+      "top": "model.top",
+      "right": "model.left",
+      "padding-left": "3em"
+    },
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "width": "interactive.width",
+      "height": "1.7 * model.height",
+      "padding-top": "0.5em"
+    }
+  ],
+  "layout": {
+    "bottom": [
+      "energy-graph"
+    ],
+    "right": [
+      "heat-bath"
+    ]
+  }
+}
