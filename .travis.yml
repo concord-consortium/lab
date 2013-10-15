@@ -1,9 +1,10 @@
-# whitelist
+# black list wip branches, however if pull requests are created for one then
+# travis should build it
 branches:
-  only:
-    - master
+  except:
+    - /^(wip|WIP)(-|_).*$/
 notifications:
-  irc: 
+  irc:
     channels:
       - "irc.freenode.org#ccdevs"
     on_success: change
