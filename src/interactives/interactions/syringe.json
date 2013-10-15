@@ -19,6 +19,7 @@
         "    maxX = get('plunger-max'),",
         "    timeStepsPerTick = get('timeStepsPerTick');",
         "setObstacleProperties(indexPlunger,{mass: 9999999999});",
+        "setObstacleProperties(indexPlunger,{friction: 0.005});",
         "callEvery(timeStepsPerTick,function(){",
         "  var prop = getObstacleProperties(indexPlunger);",
         "  if (prop.x < minX) {",
@@ -56,17 +57,17 @@
     {
       "type": "button",
       "id": "plunger-pull-out",
-      "text": "Plunger ⇥ ",
+      "text": "Pull plunger ⇥ ",
       "action": [
-        "setObstacleProperties(get('index-plunger'), {externalAx: 0.0000005, mass: 2500});"
+        "setObstacleProperties(get('index-plunger'), {externalAx: 0.0000005, mass: 5000});"
       ]
     },
     {
       "type": "button",
       "id": "plunger-push-in",
-      "text": "⇤ Plunger",
+      "text": "⇤ Push plunger",
       "action": [
-        "setObstacleProperties(get('index-plunger'), {externalAx: -0.0000005, mass: 2500});"
+        "setObstacleProperties(get('index-plunger'), {externalAx: -0.0000005, mass: 5000});"
       ]
     },
     {
@@ -82,7 +83,7 @@
       "id": "plunger-release",
       "text": "Release plunger ⬄",
       "action": [
-        "setObstacleProperties(get('index-plunger'), {externalAx: 0, vx: 0, mass: 2500});"
+        "setObstacleProperties(get('index-plunger'), {externalAx: 0, vx: 0, mass: 5000});"
       ]
     },
     {
@@ -103,9 +104,14 @@
         "  var moleculesInside = getAtomsWithinShape(1),",
         "      props,",
         "      w = get('width'),",
-        "      h = get('height');",
+        "      h = get('height'),",
+        "      xNew;",
         "  while (moleculesInside.length > 0) {",
-        "    setAtomProperties(moleculesInside[0], {x: 0.1 + Math.random() * (w-0.2)});",
+        "    xNew = 0.1 + Math.random() * (w - 0.2);",
+        "    while(xNew >= 1.32 && xNew < 1.72) {",
+        "      xNew = 0.1 + Math.random() * (w - 0.2);",
+        "    }",
+        "    setAtomProperties(moleculesInside[0], {x: xNew, vx: 0, vy: 0, ax: 0, ay: 0}, true);",
         "    moleculesInside = getAtomsWithinShape(1);",
         "  }",
         "}",
