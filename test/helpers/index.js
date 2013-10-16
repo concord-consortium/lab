@@ -157,6 +157,14 @@ exports.withIsolatedRequireJSAndViewsMocked = function(continuation) {
       },
       FastClick = {
         attach: function() {}
+      },
+      // Mock playback as it uses canvas unsupported by JSDOM.
+      PlaybackController = function() {
+        return {
+          getViewContainer: function() {
+            return $("<div>");
+          }
+        };
       };
 
   // Mock dependencies.
@@ -165,6 +173,7 @@ exports.withIsolatedRequireJSAndViewsMocked = function(continuation) {
   requirejs.define('md2d/views/renderer', [], function() { return Renderer; });
   requirejs.define('common/views/svg-container', [], function() { return SVGContainer; });
   requirejs.define('fastclick', [], function() { return FastClick; });
+  requirejs.define('common/controllers/playback-controller', [], function() { return PlaybackController; });
   // Speedup semantic layout calculations. We need elements in DOM, but don't care about their
   // positions and real layout.
   requirejs('common/layout/semantic-layout-config').iterationsLimit = 0;
