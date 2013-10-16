@@ -78,11 +78,11 @@ when 'production'
 else
   <<-HEREDOC
 <script src="vendor/d3/d3.js" type="text/javascript"></script>
-<script src="vendor/jquery/jquery.min.js" type="text/javascript"></script>
-<script src="vendor/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
-<script src="vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js" type="text/javascript"></script>
+<script src="vendor/jquery/jquery.js" type="text/javascript"></script>
+<script src="vendor/jquery-ui/jquery-ui.js" type="text/javascript"></script>
+<script src="vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.js" type="text/javascript"></script>
 <script src="vendor/jquery-context-menu/jquery.contextMenu.js" type="text/javascript"></script>
-<script src="vendor/jquery-selectBoxIt/jquery.selectBoxIt.min.js" type="text/javascript"></script>
+<script src="vendor/jquery-selectBoxIt/jquery.selectBoxIt.js" type="text/javascript"></script>
 <script src='vendor/tinysort/jquery.tinysort.js' type='text/javascript'></script>
   HEREDOC
 end
