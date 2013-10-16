@@ -200,7 +200,7 @@ test-src: test/layout.html \
 	public/vendor/jquery/jquery.min.js \
 	public/vendor/jquery-ui/jquery-ui.min.js \
 	public/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js \
-	public/vendor/jquery-selectBoxIt \
+	public/vendor/jquery-selectBoxIt/jquery.selectBoxIt.min.js \
 	public/vendor/jquery-context-menu \
 	src/lab/lab.version.js \
 	src/lab/lab.config.js
@@ -446,7 +446,7 @@ public/vendor: \
 	public/vendor/jquery/jquery.min.js \
 	public/vendor/jquery-ui/jquery-ui.min.js \
 	public/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js \
-	public/vendor/jquery-selectBoxIt \
+	public/vendor/jquery-selectBoxIt/jquery.selectBoxIt.min.js \
 	public/vendor/tinysort/jquery.tinysort.js \
 	public/vendor/jquery-context-menu \
 	public/vendor/science.js \
@@ -483,16 +483,26 @@ public/vendor/d3-plugins:
 	cp vendor/d3-plugins/cie/README.md public/vendor/d3-plugins/cie/README.md
 
 public/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js: \
-	public/vendor/jquery-ui-touch-punch
+	public/vendor/jquery-ui-touch-punch \
+	vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js \
+	vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.js
 	cp vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js public/vendor/jquery-ui-touch-punch
+	cp vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.js public/vendor/jquery-ui-touch-punch
 
 public/vendor/jquery-ui-touch-punch:
 	mkdir -p public/vendor/jquery-ui-touch-punch
 
+public/vendor/jquery-selectBoxIt/jquery.selectBoxIt.min.js: \
+	vendor/jquery-selectBoxIt/src/javascripts/jquery.selectBoxIt.js \
+	vendor/jquery-selectBoxIt/src/javascripts/jquery.selectBoxIt.min.js \
+	vendor/jquery-selectBoxIt/src/stylesheets/jquery.selectBoxIt.css \
+	public/vendor/jquery-selectBoxIt
+	cp vendor/jquery-selectBoxIt/src/javascripts/jquery.selectBoxIt.js public/vendor/jquery-selectBoxIt
+	cp vendor/jquery-selectBoxIt/src/javascripts/jquery.selectBoxIt.min.js public/vendor/jquery-selectBoxIt
+	cp vendor/jquery-selectBoxIt/src/stylesheets/jquery.selectBoxIt.css public/vendor/jquery-selectBoxIt
+
 public/vendor/jquery-selectBoxIt:
 	mkdir -p public/vendor/jquery-selectBoxIt
-	cp vendor/jquery-selectBoxIt/src/javascripts/jquery.selectBoxIt.min.js public/vendor/jquery-selectBoxIt/jquery.selectBoxIt.min.js
-	cp vendor/jquery-selectBoxIt/src/stylesheets/jquery.selectBoxIt.css public/vendor/jquery-selectBoxIt/jquery.selectBoxIt.css
 
 public/vendor/jquery-context-menu:
 	mkdir -p public/vendor/jquery-context-menu
