@@ -67,9 +67,6 @@
 [submodule "vendor/fonts/Font-Awesome"]
 	path = vendor/fonts/Font-Awesome
 	url = git://github.com/FortAwesome/Font-Awesome.git
-[submodule "test/vendor/jsdom"]
-	path = test/vendor/jsdom
-	url = git://github.com/tmpvar/jsdom.git
 [submodule "vendor/fingerprintjs"]
 	path = vendor/fingerprintjs
 	url = https://github.com/Valve/fingerprintjs
