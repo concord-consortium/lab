@@ -271,15 +271,11 @@ submodule-update-tags:
 # ------------------------------------------------
 
 node_modules: node_modules/d3 \
-	node_modules/jsdom \
 	node_modules/arrays
 	npm install
 
 node_modules/d3:
 	npm install vendor/d3
-
-node_modules/jsdom:
-	npm install test/vendor/jsdom
 
 node_modules/arrays:
 	npm install src/modules/arrays

@@ -104,8 +104,6 @@ exports.withIsolatedRequireJS = function(continuation) {
   Passes a freshly created 'requirejs' to 'continuation' which may modify its requirejs config
   freely. This functions also mocks a lot of view-related dependencies. Some of them are
   problematic because JSDOM doesn't support SVG 1.1 spec (graphs, MD2D Renderer).
-  Also SemanticLayout is mocked, because it modifies a lot of DOM elements using jQuery what is really
-  slow in node.js + JSDOM environment (at the same time, it isn't necessary for the most of unit tests).
 
   Subsequently sets the global 'requirejs' to a fresh instance of requirejs unaffected
   by the changed config. (Note that it appears that you cannot reuse the original requirejs import.)
@@ -138,6 +136,16 @@ exports.withIsolatedRequireJSAndViewsMocked = function(continuation) {
           }
         };
       },
+      SVGContainer = function () {
+        return {
+          setup: function() {},
+          repaint: function() {},
+          bindModel: function() {},
+          getHeightForWidth: function(width) { return width; },
+          resize: function() {},
+          $el: $('<div id="model-container"></div>')
+        };
+      },
       Renderer = function() {
         return {
           update: function() {},
@@ -147,19 +155,28 @@ exports.withIsolatedRequireJSAndViewsMocked = function(continuation) {
           model2pxInv: function() {}
         };
       },
-      SemanticLayout = function() {
+      FastClick = {
+        attach: function() {}
+      },
+      // Mock playback as it uses canvas unsupported by JSDOM.
+      PlaybackController = function() {
         return {
-          initialize: function() {},
-          setupModel: function() {},
-          isReady: function() {},
-          layoutInteractive: function() {}
+          getViewContainer: function() {
+            return $("<div>");
+          }
         };
       };
+
   // Mock dependencies.
   requirejs.define('grapher/core/graph', [], function() { return Graph; });
   requirejs.define('grapher/bar-graph/bar-graph-view', [], function() { return BarGraphView; });
   requirejs.define('models/md2d/views/renderer', [], function() { return Renderer; });
-  requirejs.define('common/layout/semantic-layout', [], function() { return SemanticLayout; });
+  requirejs.define('common/views/svg-container', [], function() { return SVGContainer; });
+  requirejs.define('fastclick', [], function() { return FastClick; });
+  requirejs.define('common/controllers/playback-controller', [], function() { return PlaybackController; });
+  // Speedup semantic layout calculations. We need elements in DOM, but don't care about their
+  // positions and real layout.
+  requirejs('common/layout/semantic-layout-config').iterationsLimit = 0;
   // Execute 'continuation' with prepared requirejs instance.
   continuation(requirejs);
   // It turns out that, having deleted the old requirejs module from Node's require cache, we can't

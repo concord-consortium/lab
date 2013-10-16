@@ -40,6 +40,18 @@
     },
     'markdown': {
       exports: 'markdown'
+    },
+    'pixi':  {
+      exports: 'PIXI'
+    },
+    'rgbcolor': {
+      exports: 'rgbcolor'
+    },
+    'canvg': {
+      deps: [
+        'rgbcolor'
+      ],
+      exports: 'canvg'
     }
   },
 
@@ -50,6 +62,10 @@
     'cs' :'../../vendor/require-cs/cs',
     'coffee-script': '../../vendor/coffee-script/extras/coffee-script',
     'underscore': '../../vendor/underscore/underscore',
+    'pixi': '../../vendor/pixi.js/bin/pixi.dev',
+    'canvg': '../../vendor/canvg-1.3/canvg',
+    'rgbcolor': '../../vendor/canvg-1.3/rgbcolor',
+    'fastclick': '../../vendor/fastclick/lib/fastclick',
     'backbone': '../../node_modules/backbone/backbone',
     'mustache': '../../node_modules/mustache/mustache',
     'markdown': '../../node_modules/markdown/lib/markdown'

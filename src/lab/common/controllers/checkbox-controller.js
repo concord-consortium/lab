@@ -87,10 +87,10 @@ define(function () {
     $element.addClass("component");
 
     // Ensure that custom div (used for styling) is clickable.
-    $fakeCheckable.on('touchstart click', customClickEvent);
+    $fakeCheckable.on('click', customClickEvent);
     // Label also requires custom event handler to ensure that click updates
     // fake clickable element too.
-    $label.on('touchstart click', customClickEvent);
+    $label.on('click', customClickEvent);
 
     // Custom dimensions.
     $element.css({
