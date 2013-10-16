@@ -57,8 +57,8 @@
         "      setShapeProperties(indicesColumnA,{visible: true});",
         "    }",
         "  }",
-        "  if (get('applyHeatBathToWater')) setTemperatureOfAtoms(waterIndices, get('waterTemp'));",
-        "  if (get('applyHeatBathToEthanol')) setTemperatureOfAtoms(ethanolIndices, get('ethanolTemp'));",
+        "  setTemperatureOfAtoms(waterIndices, get('waterTemp'));",
+        "  setTemperatureOfAtoms(ethanolIndices, get('ethanolTemp'));",
         "});"
       ]
     },
@@ -113,8 +113,64 @@
         "      setShapeProperties(indicesColumnA,{visible: true});",
         "    }",
         "  }",
-        "  if (get('applyHeatBathToWater')) setTemperatureOfAtoms(waterIndices, get('waterTemp'));",
-        "  if (get('applyHeatBathToEthanol')) setTemperatureOfAtoms(ethanolIndices, get('ethanolTemp'));",
+        "  setTemperatureOfAtoms(waterIndices, get('waterTemp'));",
+        "  setTemperatureOfAtoms(ethanolIndices, get('ethanolTemp'));",
+        "});"
+      ]
+    },
+    {
+      "type": "md2d",
+      "id": "particleMixingDoubleWater$0",
+      "url": "imports/legacy-mw-content/converted/interactions/mixing-liquids/particleMixingDoubleWater$0.json",
+      "importedFrom": "imports/legacy-mw-content/interactions/mixing-liquids/particleMixingDoubleWater$0.mml",
+      "viewOptions": {
+        "controlButtons": ""
+      },
+      "onLoad": [
+        "set('indices-column-a',[1,0]);",
+        "set('indices-column-b',[2,3]);",
+        "set('indices-column-c',[6,7,8]);",
+        "set('indices-column-d',[4,5,9]);",
+        "setTextBoxProperties(1, {x: 3.5});",
+        "setLineProperties([0,1,2,3],{lineColor: 'red'});",
+        "start();",
+        "var timeStepsPerTick = get('timeStepsPerTick'),",
+        "    waterIndices     = getAtomsWithinShape(get('indices-column-b')[0]),",
+        "    ethanolIndices   = getAtomsWithinShape(get('indices-column-a')[0]),",
+        "    indicesColumnC   = get('indices-column-c'),",
+        "    indicesColumnD   = get('indices-column-d'),",
+        "    indicesColumnB   = get('indices-column-b'),",
+        "    indicesColumnA   = get('indices-column-a');",
+        "callEvery(timeStepsPerTick,function(){",
+        "  var nToDrop = getAtomsWithinShape(indicesColumnC[0]).length;",
+        "  if (get('isWaterDropping')) {",
+        "    if (nToDrop > 0) {",
+        "      set('applyHeatBathToWater',false);",
+        "    } else {",
+        "      set('applyHeatBathToWater',true);",
+        "      set('isWaterDropping',false);",
+        "      set('isWaterDropped',true);",
+        "      if (get('isEthanolDropped')) setComponentDisabled('cap-and-shake',false);",
+        "      setShapeProperties(indicesColumnC,{visible: false});",
+        "      setShapeProperties(indicesColumnC.slice(1,3),{y: -10});",
+        "      setShapeProperties(indicesColumnB,{visible: true});",
+        "    }",
+        "  }",
+        "  if (get('isEthanolDropping')) {",
+        "    if (nToDrop > 0) {",
+        "      set('applyHeatBathToEthanol',false);",
+        "    } else {",
+        "      set('applyHeatBathToEthanol',true);",
+        "      set('isEthanolDropping',false);",
+        "      set('isEthanolDropped',true);",
+        "      if (get('isWaterDropped')) setComponentDisabled('cap-and-shake',false);",
+        "      setShapeProperties(indicesColumnC,{visible: false});",
+        "      setShapeProperties(indicesColumnC.slice(1,3),{y: -10});",
+        "      setShapeProperties(indicesColumnA,{visible: true});",
+        "    }",
+        "  }",
+        "  setTemperatureOfAtoms(waterIndices, get('waterTemp'));",
+        "  setTemperatureOfAtoms(ethanolIndices, get('ethanolTemp'));",
         "});"
       ]
     }
@@ -146,11 +202,11 @@
     },
     {
       "name": "waterTemp",
-      "initialValue": 50
+      "initialValue": 100
     },
     {
       "name": "ethanolTemp",
-      "initialValue": 50
+      "initialValue": 100
     },
     {
       "name": "indices-column-b",
@@ -281,6 +337,10 @@
         {
           "text": "Ethanol + Ethanol",
           "loadModel": "particleMixingDoubleEthanol$0"
+        },
+        {
+          "text": "Water + Water",
+          "loadModel": "particleMixingDoubleWater$0"
         }
       ]
     }

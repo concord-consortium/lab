@@ -160,7 +160,7 @@ define(function(require) {
       // this is a hack put in place to temporarily deal with a IE 10 bug which
       // does not update line markers when svg lines are moved
       // see https://connect.microsoft.com/IE/feedback/details/781964/
-      hideLineMarkers = browser.browser === "MSIE" && browser.version >= "10.0";
+      hideLineMarkers = browser.browser === "MSIE" && Number(browser.version) >= 10;
 
 
     function modelTimeLabel() {
