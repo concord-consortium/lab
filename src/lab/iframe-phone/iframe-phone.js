@@ -62,7 +62,10 @@ define(function (require){
           messageData = JSON.parse(messageData);
         }
         if (handlers[messageData.type]){
-          handlers[messageData.type](messageData.values);
+          // add new argument to keep backward compatibility,
+          // might be better to leave this as is and force 'senders'
+          // to put all the info in the 'values' property
+          handlers[messageData.type](messageData.values, messageData);
         }
         else {
           console.log("cant handle type: " + messageData.type);
