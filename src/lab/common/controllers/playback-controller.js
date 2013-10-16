@@ -303,6 +303,11 @@ define(function (require) {
    * Implements optional callback supported by Interactive Controller.
    */
   PlaybackController.prototype.resize = function () {
+
+    if ( !this._$timeCanvas ) {
+      return;
+    }
+
     // Oversample canvas, so text will look good on Retina-like displays.
     this._canvWidth = this._$timeCanvas.width() * 2;
     this._canvHeigth = this._$timeCanvas.height() * 2;
