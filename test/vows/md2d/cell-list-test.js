@@ -5,9 +5,9 @@ var vows      = require("vows"),
     assert    = require("assert"),
     requirejs = helpers.getRequireJS(),
 
-    CellList = requirejs("md2d/models/engine/cell-list"),
+    CellList = requirejs("models/md2d/models/engine/cell-list"),
 
-    suite = vows.describe("md2d/models/engine/cell-list");
+    suite = vows.describe("models/md2d/models/engine/cell-list");
 
 suite.addBatch({
   "Cell list": {

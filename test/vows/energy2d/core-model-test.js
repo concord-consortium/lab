@@ -6,9 +6,9 @@ var vows      = require("vows"),
     requirejs = helpers.getRequireJS(),
 
     validator = requirejs('common/validator'),
-    metadata  = requirejs('energy2d/metadata'),
-    core   = requirejs('energy2d/models/core-model'),
-    photon = requirejs('energy2d/models/photon'),
+    metadata  = requirejs('models/energy2d/metadata'),
+    core   = requirejs('models/energy2d/models/core-model'),
+    photon = requirejs('models/energy2d/models/photon'),
     Photon = photon.Photon,
 
     suite = vows.describe("energy2d/models/core-model"),

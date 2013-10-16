@@ -15,7 +15,8 @@ R_OPTIMIZER = ./node_modules/.bin/r.js
 GENERATE_INTERACTIVE_INDEX = ruby src/helpers/process-interactives.rb
 
 LAB_SRC_FILES := $(shell find src/lab -type f ! -name '.*' -print)
-MD2D_SRC_FILES := $(shell find src/lab/md2d -type f ! -name '.*' -print)
+MD2D_SRC_FILES := $(shell find src/lab/models/md2d -type f ! -name '.*' -print)
+
 GRAPHER_SRC_FILES := $(shell find src/lab/grapher -type f ! -name '.*' -print)
 IMPORT_EXPORT_SRC_FILES := $(shell find src/lab/import-export -type f ! -name '.*' -print)
 IFRAME_PHONE_SRC_FILES := $(shell find src/lab/iframe-phone -type f ! -name '.*' -print)
@@ -377,11 +378,11 @@ public/lab:
 
 public/lab/lab.json: \
 	src/lab/common/controllers/interactive-metadata.js \
-	src/lab/energy2d/metadata.js \
-	src/lab/md2d/models/metadata.js \
-	src/lab/sensor/metadata.js \
-	src/lab/signal-generator/metadata.js \
-	src/lab/solar-system/models/metadata.js
+	src/lab/models/energy2d/metadata.js \
+	src/lab/models/md2d/models/metadata.js \
+	src/lab/models/sensor/metadata.js \
+	src/lab/models/signal-generator/metadata.js \
+	src/lab/models/solar-system/models/metadata.js
 	node src/helpers/lab.json.js
 
 public/lab/lab.js: \

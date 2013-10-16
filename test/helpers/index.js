@@ -158,7 +158,7 @@ exports.withIsolatedRequireJSAndViewsMocked = function(continuation) {
   // Mock dependencies.
   requirejs.define('grapher/core/graph', [], function() { return Graph; });
   requirejs.define('grapher/bar-graph/bar-graph-view', [], function() { return BarGraphView; });
-  requirejs.define('md2d/views/renderer', [], function() { return Renderer; });
+  requirejs.define('models/md2d/views/renderer', [], function() { return Renderer; });
   requirejs.define('common/layout/semantic-layout', [], function() { return SemanticLayout; });
   // Execute 'continuation' with prepared requirejs instance.
   continuation(requirejs);
