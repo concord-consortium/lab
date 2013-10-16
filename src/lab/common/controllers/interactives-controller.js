@@ -39,11 +39,11 @@ define(function (require) {
       templates               = require('common/layout/templates'),
 
       ModelControllerFor = {
-        'md2d':             require('md2d/controllers/controller'),
-        'solar-system':     require('solar-system/controllers/controller'),
-        'signal-generator': require('signal-generator/controller'),
-        'sensor':           require('sensor/controller'),
-        'energy2d':         require('energy2d/controllers/controller')
+        'md2d':             require('models/md2d/controllers/controller'),
+        'solar-system':     require('models/solar-system/controllers/controller'),
+        'signal-generator': require('models/signal-generator/controller'),
+        'sensor':           require('models/sensor/controller'),
+        'energy2d':         require('models/energy2d/controllers/controller')
       },
 
       ExperimentController = require('common/controllers/experiment-controller'),

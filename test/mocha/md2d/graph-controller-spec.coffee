@@ -20,7 +20,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
     (-> mock.Graph(arguments...))
 
   GraphController = requirejs 'common/controllers/graph-controller'
-  Model           = requirejs 'md2d/models/modeler'
+  Model           = requirejs 'models/md2d/models/modeler'
 
   class MockInteractivesController
     constructor: () ->
