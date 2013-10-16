@@ -1,5 +1,5 @@
 cheerio   = require 'cheerio'
-constants = require '../../lab/md2d/models/engine/constants'
+constants = require '../../lab/models/md2d/models/engine/constants'
 md2dAPI   = require '../../helpers/md2d/md2d-node-api'
 unit      = constants.unit
 

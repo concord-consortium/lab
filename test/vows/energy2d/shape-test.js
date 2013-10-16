@@ -5,7 +5,7 @@ var vows      = require("vows"),
     assert    = require("assert"),
     requirejs = helpers.getRequireJS(),
 
-    shape     = requirejs('energy2d/models/shape'),
+    shape     = requirejs('models/energy2d/models/shape'),
     Line      = shape.Line,
     Rectangle = shape.Rectangle,
     Ellipse   = shape.Ellipse,
