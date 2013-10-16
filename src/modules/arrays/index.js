@@ -123,8 +123,8 @@ define(function (require, exports, module) {
       }
   };
 
-  arrays.copy = function(source, dest) {
-    var len = source.length,
+  arrays.copy = function(source, dest, num) {
+    var len = num !== undefined ? num : source.length,
         i = -1;
     while(++i < len) { dest[i] = source[i]; }
     if (arrays.constructor_function(dest) === Array) dest.length = len;

@@ -407,25 +407,29 @@
     border-bottom-right-radius: 0.7em
     box-shadow: 0px 1px 1px rgba(0,0,0,0.4)
 
-  a
+  &.video > button
+    @include appearance(none)
     display: inline-block
     vertical-align: middle
     font-family: $fontface, Verdana, Geneva, sans-serif
     font-size: 1em
     height: 100%
-    padding-top: 0.35em
+    padding: 0.35em 0 0 0
     width: 2.7em
     margin: 0
     text-align: center
     border: none
-    @include linear-gradient(#fbfbfb, #BCBEC0, $fallback: #BCBEC0)
+    @include linear-gradient(#fbfbfb, #BCBEC0, $fallback: #eee)
 
     &:hover
       @include linear-gradient(#fff, #e6e6e6, $fallback: #e6e6e6)
       cursor: pointer
 
     &:active
-      @include linear-gradient(#e6e6e6, #fff, $fallback: #bbb)
+      @include linear-gradient(#e6e6e6, #fff, $fallback: #f4f4f4)
+
+    &:focus
+      outline: none
 
   .hidden
     display: none !important
@@ -459,10 +463,16 @@
       font-size: 0.85em
       display: none
     &.with-clock
+      position: relative
       width: 6.4em
       white-space: nowrap
+      i
+        margin-left: -4.5em
       .time-display
         display: inline-block
+        position: absolute
+        right: 0.5em
+        bottom: 0.17em
         text-align: right
         vertical-align: middle
         width: 5em
@@ -471,9 +481,13 @@
         font-weight: bold
         border: 1px solid #bbb
         border-bottom-color: #ccc
-        padding: 0.1em 0.2em 0.1em 0
+        padding: 0.1em 0.2em 0 0
         margin-left: 0.4em
         border-radius: 0.5em
+
+        canvas
+          width: 4em
+          height: 1.1em
 
   i
     // Icons.
