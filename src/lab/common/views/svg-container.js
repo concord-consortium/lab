@@ -721,10 +721,15 @@ define(function (require) {
           if (e.type === 'mousedown') {
             mousedownTarget = target;
           } else if (e.type === 'mouseup') {
-            if (target === mousedownTarget && target.tagName.toLowerCase() !== 'canvas') {
+            // Note that cancelClickFlag can be set to true if e.g. there was significant
+            // touchmove between touchstart (mousedown) and touchend (mouseup). It means that
+            // user was panning the viewport rather than trying to perform "click". Other case can
+            // be when second finger was added between touchstart and touchend what can be used to
+            // perform pinch-zoom rather than click.
+            if (target === mousedownTarget && target.tagName.toLowerCase() !== 'canvas' && !cancelClickFlag) {
               target.dispatchEvent(createClick(e), target);
             }
-            if (targetForCreatedClick) {
+            if (targetForCreatedClick && !cancelClickFlag) {
               targetForCreatedClick.dispatchEvent(createClick(e), targetForCreatedClick);
             }
           }
@@ -742,6 +747,7 @@ define(function (require) {
     }
 
     var defaultPreventedFlag;
+    var cancelClickFlag;
 
     // Translate any touch events on the clickShield which have only a single touch point ("finger")
     // when started, to the corresponding mouse events. Does not attempt to initiate a cancel action
@@ -749,12 +755,21 @@ define(function (require) {
     function setupTouchEventTranslation() {
       // Identifier of the touch point we are tracking; set to null when touch not in progress.
       var touchId = null;
+      var touchStartX;
+      var touchStartY;
       var clickShieldNode = clickShield.node();
 
       function createMouseEvent(touch, type) {
         var mouseEvent = document.createEvent("MouseEvent");
         mouseEvent.initMouseEvent(type, true, true, window, 1, touch.screenX, touch.screenY, touch.clientX, touch.clientY, false, false, false, false, 0, null);
         return mouseEvent;
+      }
+
+      function touchMoved(touch) {
+        if (Math.abs(touch.pageX - touchStartX) > 10 || Math.abs(touch.pageY - touchStartY) > 10) {
+          return true;
+        }
+        return false;
       }
 
       // listener for touchstart
@@ -764,6 +779,10 @@ define(function (require) {
         if (e.touches.length > 1 || touch.target !== clickShieldNode) {
           return;
         }
+
+        cancelClickFlag = false;
+        touchStartX = touch.pageX;
+        touchStartY = touch.pageY;
 
         // Remember which touch point--later touch events may or may not include this touch point
         // but we have to listen to them all to make sure we update dragging state correctly.
@@ -800,6 +819,12 @@ define(function (require) {
             e.stopPropagation();
           }
 
+          if (len > 1) {
+            // User added a second finger, perhaps he wants to do pinch-zoom or pan rather than
+            // trigger "click" action.
+            cancelClickFlag = true;
+          }
+
           // touch's target will always be the element that received the touchstart. But since
           // we're creating a pretend mousemove, let its target be the target the browser would
           // report for an actual mousemove/mouseup (Remember that the--expensive--hitTest() is not
@@ -808,6 +833,9 @@ define(function (require) {
           target = document.elementFromPoint(touch.clientX, touch.clientY) || window;
 
           if (e.type === 'touchmove') {
+            if (!cancelClickFlag) {
+              cancelClickFlag = touchMoved(touch);
+            }
             mouseMoveEvent = createMouseEvent(touch, 'mousemove');
             target.dispatchEvent(mouseMoveEvent);
           } else if (e.type === 'touchcancel' || e.type === 'touchend') {
