@@ -802,6 +802,21 @@ define(function (require) {
           return;
         }
 
+        // Don't translate touch events to mouse events when there are more than two fingers
+        // on the screen. This lets us to support pinch-zoom even if user started gesture only
+        // with one finger and added second later.
+        if (e.type === "touchmove" && e.touches.length > 1) {
+          // User added a second finger, perhaps he wants to do pinch-zoom or pan rather than
+          // trigger "click" action at the end.
+          cancelClickFlag = true;
+          // In theory this isn't 100% correct, but... it ensures that no handler will be able
+          // to call .preventDefault() on this event (e.q. D3 does that for touch events), so we
+          // will always native browser behavior like panning or pinch-zoom. This is reasonable
+          // assumption that 2-finger gestures are always used for navigation.
+          e.stopPropagation();
+          return;
+        }
+
         var i;
         var len;
         var touch;
@@ -819,12 +834,6 @@ define(function (require) {
             e.stopPropagation();
           }
 
-          if (len > 1) {
-            // User added a second finger, perhaps he wants to do pinch-zoom or pan rather than
-            // trigger "click" action.
-            cancelClickFlag = true;
-          }
-
           // touch's target will always be the element that received the touchstart. But since
           // we're creating a pretend mousemove, let its target be the target the browser would
           // report for an actual mousemove/mouseup (Remember that the--expensive--hitTest() is not
@@ -834,6 +843,7 @@ define(function (require) {
 
           if (e.type === 'touchmove') {
             if (!cancelClickFlag) {
+              // Cancel "click" event when finger has moved (> 10px at the moment).
               cancelClickFlag = touchMoved(touch);
             }
             mouseMoveEvent = createMouseEvent(touch, 'mousemove');
