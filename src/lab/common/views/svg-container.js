@@ -911,6 +911,13 @@ define(function (require) {
         ys.length = 0;
         ts.length = 0;
         updateArrays();
+
+        // Prevent default on mousemove. It's necessary when we deal with synthetic mouse
+        // events translated from touch events. Then we have to prevent default action (panning,
+        // zooming etc.).
+        d3.select(window).on("mousemove.viewport-drag", function () {
+          d3.event.preventDefault();
+        });
       }).on("drag", function () {
         var dx = dragOpt === "y" ? 0 : model2px.invert(d3.event.dx),
             dy = dragOpt === "x" ? 0 : model2px.invert(d3.event.dy);
@@ -919,6 +926,8 @@ define(function (require) {
         dispatch.viewportDrag();
         updateArrays();
       }).on("dragend", function () {
+        d3.select(window).on("mousemove.viewport-drag", null);
+
         updateArrays();
         var last = xs.length - 1,
             dt = ts[last] - ts[0];
