@@ -822,13 +822,11 @@ define(function (require) {
             defaultPreventedFlag = mouseMoveEvent.defaultPrevented;
           }
 
-          if (defaultPreventedFlag) {
-            // Generally, sending preventDefault for the first touchmove in a series prevents
-            // browser default actions such as pinch-zoom. So it looks as if as a rule we give up on
-            // letting the user "add a finger" to pinch-zoom midway through a dragging operation.
-            // Therefore, prevent away. preventDefault on touchend will also prevent the browser
-            // from generating a click, but that's okay; our hit testing intentionally ignores
-            // browser-generated click events anyway, and generates its own when appropriate.
+          // .preventDefault() on touchend will prevent the browser from generating a events like
+          // mousedown, mouseup and click. It's necessary as we already translated touchstart
+          // to mousedown and touchend to mouseup. Our hit testing intentionally ignores
+          // browser-generated click events anyway, and generates its own when appropriate.
+          if (e.type === 'touchend' || defaultPreventedFlag) {
             e.preventDefault();
           }
 
