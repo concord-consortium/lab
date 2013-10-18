@@ -393,7 +393,7 @@
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1380235011000</long> 
+     <long>1382130890000</long> 
     </object> 
    </void> 
    <void method="put"> 
@@ -402,7 +402,7 @@
    </void> 
    <void method="put"> 
     <string>size</string> 
-    <long>49311</long> 
+    <long>49142</long> 
    </void> 
    <void method="put"> 
     <string>codebase</string> 
@@ -734,7 +734,7 @@ endif;</string>
        <float>-74.0</float> 
       </void> 
       <void property="y"> 
-       <double>240.0</double> 
+       <double>244.0</double> 
       </void> 
      </object> 
     </void> 
@@ -762,7 +762,7 @@ endif;</string>
        <float>-35.0</float> 
       </void> 
       <void property="y"> 
-       <double>240.0</double> 
+       <double>244.0</double> 
       </void> 
      </object> 
     </void> 
@@ -1048,7 +1048,7 @@ endif;</string>
        <float>50.0</float> 
       </void> 
       <void property="x"> 
-       <double>390.0</double> 
+       <double>385.0</double> 
       </void> 
       <void property="y"> 
        <double>-100.0</double> 
@@ -1094,7 +1094,7 @@ endif;</string>
        <float>50.0</float> 
       </void> 
       <void property="x"> 
-       <double>500.0</double> 
+       <double>505.0</double> 
       </void> 
       <void property="y"> 
        <double>-100.0</double> 
@@ -1238,7 +1238,7 @@ endif;</string>
        <double>359.0</double> 
       </void> 
       <void property="y"> 
-       <double>225.0</double> 
+       <double>230.0</double> 
       </void> 
      </object> 
     </void> 
