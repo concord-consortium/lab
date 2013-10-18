@@ -28,13 +28,25 @@ define(function(require) {
         dragged;
 
     //**********************************************************************************************
-    // Basic handlers:
+    // Event handlers related to particular atom:
     function mouseDownHandler(x, y, atom, e) {
       // Dragging is only allowed when user touches an atom or uses *left* mouse button (== 0).
       // Right mouse button can interfere with context menus.
       if (e.button === 0) {
         dragBehavior(downAtom);
       }
+    }
+
+    function mouseOverHandler(x, y, atom, e) {
+      if (model.isStopped() || atom.draggable) {
+        document.documentElement.style.cursor = "move";
+      } else {
+        document.documentElement.style.cursor = "auto";
+      }
+    }
+
+    function mouseOutHandler(x, y, e) {
+      document.documentElement.style.cursor = "auto";
     }
 
     function mouseUpHandler(x, y, atom, e) {
@@ -51,9 +63,10 @@ define(function(require) {
     function contextMenuHandler(x, y, atom, e) {
       // noop
     }
-    //**********************************************************************************************
 
-    function mouseDownTest(e) {
+    //**********************************************************************************************
+    // Event handlers related to whole target element (canvas):
+    function mouseDownCanvas(e) {
       var p = getClickCoords(e);
 
       downAtom = getAtomUnder(p.x, p.y);
@@ -66,7 +79,19 @@ define(function(require) {
       }
     }
 
-    function mouseUpTest(e) {
+    function mouseMoveCanvas(e) {
+      var p = getClickCoords(e),
+          atom = getAtomUnder(p.x, p.y);
+
+      modelView.hitTestCallback(!!atom);
+      if (atom) {
+        mouseOverHandler(p.x, p.y, atom, e);
+      } else {
+        mouseOutHandler(p.x, p.y, e);
+      }
+    }
+
+    function mouseUpCanvas(e) {
       var p = getClickCoords(e),
           upAtom = getAtomUnder(p.x, p.y),
           isDOMClick = false;
@@ -87,8 +112,16 @@ define(function(require) {
       downAtom = null;
     }
 
+    function mouseEnterCanvas(e) {
+      // noop
+    }
 
-    function contextMenuTest(e) {
+    function mouseOutCanvas(e) {
+      var p = getClickCoords(e);
+      mouseOutHandler(p.x, p.y, e);
+    }
+
+    function contextMenuCanvas(e) {
       var p = getClickCoords(e);
 
       contextMenuAtom = getAtomUnder(p.x, p.y);
@@ -98,6 +131,7 @@ define(function(require) {
         contextMenuHandler(p.x, p.y, contextMenuAtom);
       }
     }
+    //**********************************************************************************************
 
     function init() {
       m2px = modelView.model2canvas;
@@ -109,9 +143,12 @@ define(function(require) {
       // Use native .addEventListener() instead of jQuery's .on() method, because parent of the
       // target (canvas) can be cleaned up using jQuery .empty() method (during layout) and all
       // jQuery handlers will be destroyed. Native handles will remain untouched.
-      target.addEventListener("mousedown", mouseDownTest);
-      target.addEventListener("mouseup", mouseUpTest);
-      target.addEventListener("contextmenu", contextMenuTest);
+      target.addEventListener("mousedown", mouseDownCanvas);
+      target.addEventListener("mouseup", mouseUpCanvas);
+      target.addEventListener("mousemove", mouseMoveCanvas);
+      target.addEventListener("mouseenter", mouseEnterCanvas);
+      target.addEventListener("mouseout", mouseOutCanvas);
+      target.addEventListener("contextmenu", contextMenuCanvas);
 
       amniacidContextMenu.register(model, modelView, ".atoms-interaction-layer", function () {
         return contextMenuAtom;
