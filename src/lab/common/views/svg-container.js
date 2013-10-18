@@ -26,9 +26,9 @@ define(function (require) {
         emsize,
         fontSizeInPixels,
 
-        backgroundContainer, viewportContainer, foregroundContainer, clickShield,
+        backgroundContainer, viewportContainer, foregroundContainer,
 
-        containerBackground, gridContainer, brushContainer,
+        backgroundRect, gridContainer, foregroundGroup, brushContainer,
 
         pixiRenderers, pixiStages, pixiContainers,
 
@@ -301,7 +301,7 @@ define(function (require) {
     // Setup background.
     function setupBackground() {
       var color = model.get("backgroundColor") || "rgba(0, 0, 0, 0)";
-      containerBackground.attr("fill", color);
+      backgroundRect.attr("fill", color);
       // Set color of PIXI.Stage to fix an issue with outlines around the objects that are visible
       // when WebGL renderer is being used. It only happens when PIXI.Stage background is different
       // from model container background. It's necessary to convert color into number, as PIXI
@@ -352,7 +352,7 @@ define(function (require) {
           .attr("class", "root-layer container background-container")
           .call(basicSVGAttrs);
 
-        containerBackground = backgroundContainer.append("rect")
+        backgroundRect = backgroundContainer.append("rect")
           .attr("class", "container-background background");
 
         gridContainer = backgroundContainer.append("g")
@@ -363,6 +363,10 @@ define(function (require) {
 
         foregroundContainer = d3.select(node).append("svg")
           .attr("class", "root-layer container foreground-container")
+          // IE bug: without background color, layer will be transparent for mouse events,
+          // underlying canvas (if any) will become an event target. See:
+          // https://www.pivotaltracker.com/story/show/58418116
+          .style("background-color", "rgba(0,0,0,0)")
           .on("contextmenu", function() {
             // Disable default context menu on foreground container, as otherwise it  covers all
             // possible context menu that can be used by layers beneath.
@@ -370,17 +374,10 @@ define(function (require) {
           })
           .call(basicSVGAttrs);
 
+        foregroundGroup = foregroundContainer.append("g");
+
         brushContainer = foregroundContainer.append("g")
           .attr("class", "brush-container");
-
-        // Transparent click shield receives all mouse/touch events; setupHitTesting() sets up
-        // handlers that re-dispatch the event to the appropriate element in the appropriate layer.
-        clickShield = d3.select(node).append("div")
-          .attr("class", "root-layer click-shield")
-          // IE bug: without background color, layer will be transparent for mouse events,
-          // underlying canvas (if any) will become an event target. See:
-          // https://www.pivotaltracker.com/story/show/58418116
-          .style("background-color", "rgba(0,0,0,0)");
 
         // Root layers should overlap each other.
         d3.select(node).selectAll(".root-layer").call(layeredOnTop);
@@ -552,7 +549,6 @@ define(function (require) {
       var foregroundNode  = foregroundContainer.node();
       var backgroundNode  = backgroundContainer.node();
       var viewportNode    = viewportContainer.node();
-      var clickShieldNode = clickShield.node();
 
       // We need to hide HTML layers from mouse events. It can be achieved by setting
       // "pointer-events" style to "none", however it isn't supported by all browsers
@@ -605,7 +601,6 @@ define(function (require) {
           // Viewport container is treated as a layer between last viewport and background.
           viewportNode.style[propName] = propVisible;
         }
-        clickShieldNode.style[propName] = propVisible;
       }
 
       function hitTest(e) {
@@ -618,8 +613,6 @@ define(function (require) {
         var hitTestSucceeded;
         var isCanvasObjectClick;
         var layerBgColor;
-
-        clickShieldNode.style[propName] = propHidden;
 
         // Must be set, as we test it after calling hitTest()
         targetForCreatedClick = null;
@@ -710,7 +703,7 @@ define(function (require) {
         window.addEventListener(eventType, function(e) {
           var target;
 
-          if (e.target !== clickShieldNode) {
+          if (e.target !== foregroundNode) {
             return;
           }
 
@@ -736,10 +729,10 @@ define(function (require) {
         }, true);
       });
 
-      // Completely swallow "click" events on the clickShieldNode. The browser can't issue these
+      // Completely swallow "click" events on the foregroundNode. The browser can't issue these
       // correctly; we have to issue them ourselves after a mouseup.
       window.addEventListener('click', function(e) {
-        if (e.target === clickShieldNode) {
+        if (e.target === foregroundNode) {
           e.stopPropagation();
           e.preventDefault();
         }
@@ -749,7 +742,7 @@ define(function (require) {
     var defaultPreventedFlag;
     var cancelClickFlag;
 
-    // Translate any touch events on the clickShield which have only a single touch point ("finger")
+    // Translate any touch events on the foreground which have only a single touch point ("finger")
     // when started, to the corresponding mouse events. Does not attempt to initiate a cancel action
     // for touchcancel; just issues mouseup stops tracking the touch.
     function setupTouchEventTranslation() {
@@ -757,7 +750,7 @@ define(function (require) {
       var touchId = null;
       var touchStartX;
       var touchStartY;
-      var clickShieldNode = clickShield.node();
+      var foregroundNode = foregroundContainer.node();
 
       function createMouseEvent(touch, type) {
         var mouseEvent = document.createEvent("MouseEvent");
@@ -776,7 +769,7 @@ define(function (require) {
       function touchStarted(e) {
         var touch = e.changedTouches[0];
 
-        if (e.touches.length > 1 || touch.target !== clickShieldNode) {
+        if (e.touches.length > 1 || touch.target !== foregroundNode) {
           return;
         }
 
@@ -787,7 +780,7 @@ define(function (require) {
         // Remember which touch point--later touch events may or may not include this touch point
         // but we have to listen to them all to make sure we update dragging state correctly.
         touchId = touch.identifier;
-        clickShieldNode.dispatchEvent(createMouseEvent(touch, 'mousedown'));
+        foregroundNode.dispatchEvent(createMouseEvent(touch, 'mousedown'));
 
         if (defaultPreventedFlag) {
           e.preventDefault();
@@ -1230,7 +1223,7 @@ define(function (require) {
           return function (d, i) {
             if (d3.event.defaultPrevented) return;
             // Get current coordinates relative to the plot area!
-            var coords = d3.mouse(containerBackground.node()),
+            var coords = d3.mouse(backgroundRect.node()),
                 x = model2px.invert(coords[0]),
                 y = model2pxInv.invert(coords[1]);
             console.log("[view] click at (" + x.toFixed(3) + ", " + y.toFixed(3) + ")");
