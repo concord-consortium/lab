@@ -808,11 +808,19 @@ define(function (require) {
         return mouseEvent;
       }
 
-      function touchMoved(touch) {
-        if (Math.abs(touch.pageX - touchStartX) > 10 || Math.abs(touch.pageY - touchStartY) > 10) {
-          return true;
-        }
-        return false;
+      // Detect whether the touch was moved >10 device pixels between start and end; if the touch
+      // moved we may infer that the user performed a scroll.
+      //
+      // Contra @ppk (http://www.quirksmode.org/mobile/viewports2.html), screenX and screenY *are*
+      // useful here because we're in an iframe. clientX/Y and pageX/Y are relative to our page and
+      // visual viewport, respectively, *but those both move in rough synchrony with the touch* (and
+      // we can't detect the scroll itself because the iframe's page and visual viewport offsets
+      // don't change! The *outer* page changes but we may not be allowed to measure that.)
+      // Fortunately, screenX and screenY are relative to the device, which lets us know if the
+      // viewport moved "physically" (bonus: measurements in device pixels correspond to actual
+      // physical distances in the user's world, and don't change with zoom).
+      function didTouchMove(touch) {
+        return Math.abs(touch.screenX - touchStartX) > 10 || Math.abs(touch.screenY - touchStartY) > 10;
       }
 
       // listener for touchstart
@@ -824,8 +832,8 @@ define(function (require) {
         }
 
         cancelClickFlag = false;
-        touchStartX = touch.pageX;
-        touchStartY = touch.pageY;
+        touchStartX = touch.screenX;
+        touchStartY = touch.screenY;
 
         // Remember which touch point--later touch events may or may not include this touch point
         // but we have to listen to them all to make sure we update dragging state correctly.
@@ -886,7 +894,7 @@ define(function (require) {
           if (e.type === 'touchmove') {
             if (!cancelClickFlag) {
               // Cancel "click" event when finger has moved (> 10px at the moment).
-              cancelClickFlag = touchMoved(touch);
+              cancelClickFlag = didTouchMove(touch);
             }
             target.dispatchEvent(createMouseEvent(touch, 'mousemove'));
           } else if (e.type === 'touchend') {
