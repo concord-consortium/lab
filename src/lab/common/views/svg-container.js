@@ -629,13 +629,10 @@ define(function (require) {
 
           if (layer.tagName.toLowerCase() === "canvas") {
             // Need to ask the Canvas-based view to perform custom hit-testing.
-            // TODO: make this a static function rather than rebinding to closure each time∫
+            // TODO: make this a static function rather than rebinding to closure each time.
             api.hitTestCallback = function(isHit) {
               hitTestSucceeded = isHit;
-              if (isHit) {
-                unhideLayers(i-1);
-                defaultPreventedFlag = mouseEvent.defaultPrevented;
-              } else {
+              if (!isHit) {
                 mouseEvent.stopPropagation();
                 mouseEvent.preventDefault();
               }
@@ -656,6 +653,8 @@ define(function (require) {
             }
 
             if (hitTestSucceeded) {
+              unhideLayers(i-1);
+              defaultPreventedFlag = mouseEvent.defaultPrevented;
               return layer;
             }
           } else {
@@ -725,6 +724,60 @@ define(function (require) {
           }
         }, true);
       });
+
+      // Setup fast, simplified hit testing for mousemove events. Generally mousemove can be
+      // dispatched only to the first element below the foreground node (we assume it's a canvas
+      // for now). Because of that we can avoid very expensive .elementFromPoint() calls.
+      // Canvas will receive mouseenter and mouseout events too.
+      (function() {
+        var prevTarget;
+
+        // Return a cloned version of 'e' but with a different 'type', 'target' and 'relatedTarget'.
+        function createMouseEvent(e, type, target, relatedTarget) {
+          var clonedEvent = document.createEvent("MouseEvent");
+          clonedEvent.initMouseEvent(type, e.bubbles, e.cancelable, e.view, e.detail, e.screenX, e.screenY, e.clientX, e.clientY, e.ctrlKey, e.altKey, e.shiftKey, e.metaKey, e.button, relatedTarget);
+          clonedEvent.target = target;
+          return clonedEvent;
+        }
+
+        function getTopCanvasLayer() {
+          var len = pixiRenderers.length;
+          return len > 0 ? pixiRenderers[len - 1].view : null;
+        }
+
+        window.addEventListener('mousemove', function (e) {
+          // Note that we have to check if 'e' is not a synthetic event that can be be dispatched by
+          // this handler. Otherwise we will enter infinite loop. We redispatch event even if we are
+          // not retargeting it to be able to set defaultPreventedFlag here, so the touch handling
+          // code can be simpler and always use that flag.
+          if (!e.synthetic) {
+            var canvasTarget = getTopCanvasLayer(),
+                target, mouseEvent;
+            if (!canvasTarget) {
+              return;
+            }
+            if (e.target === foregroundNode) {
+              target = canvasTarget;
+            } else {
+              target = e.target;
+            }
+            if (target !== prevTarget) {
+              if (target === canvasTarget) {
+                canvasTarget.dispatchEvent(createMouseEvent(e, "mouseenter", canvasTarget, prevTarget));
+              } else if (prevTarget === canvasTarget) {
+                canvasTarget.dispatchEvent(createMouseEvent(e, "mouseout", canvasTarget, target));
+              }
+            }
+            mouseEvent = retargetMouseEvent(e, target);
+            mouseEvent.synthetic = true; // !!!
+            target.dispatchEvent(mouseEvent);
+            // Set the defaultPreventedFlag. That's why we redispatch event even if we don't change
+            // target of the event.
+            defaultPreventedFlag = mouseEvent.defaultPrevented;
+            prevTarget = target;
+          }
+        }, true);
+      }());
 
       // Completely swallow "click" events on the foregroundNode. The browser can't issue these
       // correctly; we have to issue them ourselves after a mouseup.
@@ -811,7 +864,6 @@ define(function (require) {
         var len;
         var touch;
         var target;
-        var mouseMoveEvent;
 
         for (i = 0, len = e.changedTouches.length; i < len; i++) {
           touch = e.changedTouches[i];
@@ -836,8 +888,7 @@ define(function (require) {
               // Cancel "click" event when finger has moved (> 10px at the moment).
               cancelClickFlag = touchMoved(touch);
             }
-            mouseMoveEvent = createMouseEvent(touch, 'mousemove');
-            target.dispatchEvent(mouseMoveEvent);
+            target.dispatchEvent(createMouseEvent(touch, 'mousemove'));
           } else if (e.type === 'touchend') {
             target.dispatchEvent(createMouseEvent(touch, 'mouseup'));
             touchId = null;
@@ -846,12 +897,6 @@ define(function (require) {
             cancelClickFlag = true;
             target.dispatchEvent(createMouseEvent(touch, 'mouseup'));
             touchId = null;
-          }
-
-          if (mouseMoveEvent) {
-            // 'mousemove' event isn't handled by our custom hit testing algorithm, so set the flag
-            // value manually.
-            defaultPreventedFlag = mouseMoveEvent.defaultPrevented;
           }
 
           // .preventDefault() on touchend will prevent the browser from generating a events like
