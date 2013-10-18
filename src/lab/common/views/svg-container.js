@@ -26,9 +26,9 @@ define(function (require) {
         emsize,
         fontSizeInPixels,
 
-        backgroundContainer, viewportContainer, foregroundContainer,
+        plotContainer, backgroundContainer, viewportContainer, foregroundContainer,
 
-        backgroundRect, gridContainer, foregroundGroup, brushContainer,
+        backgroundRect, backgroundGroup, foregroundGroup, brushContainer,
 
         pixiRenderers, pixiStages, pixiContainers,
 
@@ -44,7 +44,7 @@ define(function (require) {
         model2canvas    = d3.scale.linear(),
         model2canvasInv = d3.scale.linear(),
 
-        // Basic scaling functions for positio, it transforms model units to "pixels".
+        // Basic scaling functions for position, it transforms model units to "pixels".
         // Use it for positions of objects rendered inside the view.
         //
         // This function is exposed in public API. Never ever recreated it, as
@@ -201,10 +201,10 @@ define(function (require) {
         d3.event.transform(model2px, model2pxInv);
       }
 
-      gridContainer.selectAll("g.x, g.y").remove();
+      plotContainer.selectAll("g.x, g.y").remove();
 
       // Regenerate x-ticks…
-      var gx = gridContainer.selectAll("g.x")
+      var gx = plotContainer.selectAll("g.x")
           .data(model2px.ticks(5), String)
           .attr("transform", tx)
           .classed("axes", true);
@@ -239,7 +239,7 @@ define(function (require) {
       gx.exit().remove();
 
       // x-axis label
-      xlabel = backgroundContainer.selectAll("text.xlabel").data(model.get("xlabel") ? [lengthUnits.pluralName] : []);
+      xlabel = plotContainer.selectAll("text.xlabel").data(model.get("xlabel") ? [lengthUnits.pluralName] : []);
       xlabel.enter().append("text")
           .attr("class", "axis")
           .attr("class", "xlabel")
@@ -251,7 +251,7 @@ define(function (require) {
       xlabel.exit().remove();
 
       // Regenerate y-ticks…
-      var gy = gridContainer.selectAll("g.y")
+      var gy = plotContainer.selectAll("g.y")
           .data(model2pxInv.ticks(5), String)
           .attr("transform", ty)
           .classed("axes", true);
@@ -288,7 +288,7 @@ define(function (require) {
       gy.exit().remove();
 
       // y-axis label
-      ylabel = backgroundContainer.selectAll("text.ylabel").data(model.get("ylabel") ? [lengthUnits.pluralName] : []);
+      ylabel = plotContainer.selectAll("text.ylabel").data(model.get("ylabel") ? [lengthUnits.pluralName] : []);
       ylabel.enter().append("text")
           .attr("class", "axis")
           .attr("class", "ylabel")
@@ -346,27 +346,26 @@ define(function (require) {
       scale();
 
       // Create container, or update properties if it already exists.
-      if (backgroundContainer === undefined) {
+      if (plotContainer === undefined) {
 
-        backgroundContainer = d3.select(node).append("svg")
-          .attr("class", "root-layer container background-container")
+        plotContainer = d3.select(node).append("svg")
+          .attr("class", "root-layer container plot-container")
           .call(basicSVGAttrs);
 
-        backgroundRect = backgroundContainer.append("rect")
+        backgroundRect = plotContainer.append("rect")
           .attr("class", "container-background background");
 
-        gridContainer = backgroundContainer.append("g")
-          .attr("class", "grid-container");
+        backgroundContainer = d3.select(node).append("svg")
+          .attr("class", "root-layer container background-container svg-viewport")
+          .call(basicSVGAttrs);
+
+        backgroundGroup = backgroundContainer.append("g");
 
         viewportContainer = d3.select(node).append("div")
           .attr("class", "root-layer container viewport-container");
 
         foregroundContainer = d3.select(node).append("svg")
-          .attr("class", "root-layer container foreground-container")
-          // IE bug: without background color, layer will be transparent for mouse events,
-          // underlying canvas (if any) will become an event target. See:
-          // https://www.pivotaltracker.com/story/show/58418116
-          .style("background-color", "rgba(0,0,0,0)")
+          .attr("class", "root-layer container foreground-container svg-viewport")
           .on("contextmenu", function() {
             // Disable default context menu on foreground container, as otherwise it  covers all
             // possible context menu that can be used by layers beneath.
@@ -429,7 +428,7 @@ define(function (require) {
                 model2px(viewport.scaledHeight);
 
       // Apply the viewbox to all "viewport" layers we have created
-      viewportContainer.selectAll(".svg-viewport").attr({
+      d3.select(node).selectAll(".svg-viewport").attr({
         viewBox: viewBox,
         x: 0,
         y: 0,
@@ -454,7 +453,7 @@ define(function (require) {
       // is changed between here and there (and if it *is*, that needs to be made more explicit.)
 
       // Rescale main plot.
-      backgroundContainer.select("rect.container-background")
+      backgroundRect
         .attr({
           width: model2px(viewport.width),
           height: model2px(viewport.height),
@@ -547,7 +546,8 @@ define(function (require) {
       // see https://developer.apple.com/library/safari/documentation/UserExperience/Reference/TouchEventClassReference/TouchEvent/TouchEvent.html#//apple_ref/javascript/instm/TouchEvent/initTouchEvent
 
       var foregroundNode  = foregroundContainer.node();
-      var backgroundNode  = backgroundContainer.node();
+      var backgroundNode      = backgroundContainer.node();
+      var plotNode        = plotContainer.node();
       var viewportNode    = viewportContainer.node();
 
       // We need to hide HTML layers from mouse events. It can be achieved by setting
@@ -563,7 +563,7 @@ define(function (require) {
 
       // Elements added to the viewportContainer will go in the middle. The viewportContainer itself
       // is just a holder -- it shouldn't receive mouse/touch events itself.
-      layersToHitTest = [foregroundNode, backgroundNode];
+      layersToHitTest = [foregroundNode, backgroundNode, plotNode];
 
       // Return a cloned version of 'e' having 'target' as its target property; cancel the original
       // event.
@@ -597,10 +597,7 @@ define(function (require) {
         for (var i = n; i >= 0; i--) {
           layersToHitTest[i].style[propName] = propBackup[i];
         }
-        if (n >= layersToHitTest.length - 2) {
-          // Viewport container is treated as a layer between last viewport and background.
-          viewportNode.style[propName] = propVisible;
-        }
+        viewportNode.style[propName] = propVisible;
       }
 
       function hitTest(e) {
@@ -626,7 +623,7 @@ define(function (require) {
 
           if (layer === backgroundNode) {
             // When we are testing background container, we have to hide also viewportContainer.
-            // Otherwise it will detected in .elementFromPoint() call.
+            // Otherwise it will be detected in .elementFromPoint() call.
             viewportNode.style[propName] = propHidden;
           }
 
@@ -895,7 +892,7 @@ define(function (require) {
         // other nodes will work again. It's based on the d3 implementation,
         // please see drag() function here:
         // https://github.com/mbostock/d3/blob/master/src/behavior/drag.js
-        backgroundContainer.on("mousedown.drag", null)
+        plotContainer.on("mousedown.drag", null)
             .on("touchstart.drag", null)
             .classed("draggable", false);
         return;
@@ -941,7 +938,7 @@ define(function (require) {
         d3.timer(step);
       });
 
-      backgroundContainer.call(dragBehavior).classed("draggable", true);
+      plotContainer.call(dragBehavior).classed("draggable", true);
 
       function updateArrays() {
         xs.push(model.properties.viewPortX);
@@ -983,7 +980,7 @@ define(function (require) {
       var selector;
       for (selector in clickHandler) {
         if (clickHandler.hasOwnProperty(selector)) {
-          backgroundContainer.selectAll(selector).on("click.custom", null);
+          plotContainer.selectAll(selector).on("click.custom", null);
         }
       }
     }
@@ -1054,7 +1051,7 @@ define(function (require) {
       },
 
       /**
-        Renderers call this method to append a "viewport" svg element on behalf of a renderer.
+        Renderers call this method to append a "viewport" svg <g> element on behalf of a renderer.
 
         Viewport svgs are drawn to the exact same dimensions at the exact same screen coordinates
         (they overlap each other exactly.) Viewports added later are drawn above viewports added
@@ -1070,21 +1067,14 @@ define(function (require) {
         be reordered.
       */
       appendViewport: function() {
-        var viewport = viewportContainer.append("svg")
-          .attr("class", "svg-viewport")
-          .call(layeredOnTop)
-          .call(basicSVGAttrs);
-
-        // Cascade events into this viewport
-        layersToHitTest.splice(1, 0, viewport.node());
-
-        return viewport;
+        var parent = pixiRenderers.length > 0 ? foregroundGroup : backgroundGroup;
+        return parent.append("g");
       },
 
       /**
         Please see .appendViewport() docs.
         The main difference is that it returns PIXI.DisplayObjectContainer object and related
-        canvas (where container will be rendered) instead of SVG element.
+        canvas (where container will be rendered) instead of SVG group element.
        */
       appendPixiViewport: function() {
         var pixiRenderer  = PIXI.autoDetectRenderer(cx * CANVAS_OVERSAMPLING,
