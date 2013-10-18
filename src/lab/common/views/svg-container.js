@@ -848,8 +848,12 @@ define(function (require) {
             }
             mouseMoveEvent = createMouseEvent(touch, 'mousemove');
             target.dispatchEvent(mouseMoveEvent);
-          } else if (e.type === 'touchcancel' || e.type === 'touchend') {
-            // Remember this generates a click, too
+          } else if (e.type === 'touchend') {
+            target.dispatchEvent(createMouseEvent(touch, 'mouseup'));
+            touchId = null;
+          } else if (e.type === 'touchcancel') {
+            // Do not dispatch click event on touchcancel.
+            cancelClickFlag = true;
             target.dispatchEvent(createMouseEvent(touch, 'mouseup'));
             touchId = null;
           }
