@@ -71,7 +71,7 @@ define(function(require) {
       atomsViewport  = modelView.appendViewport().classed("atoms", true),
       atomsContainer = atomsViewport.append("g").attr("class", "atoms-container"),
 
-      atomsPixi = modelView.appendPixiViewport(),
+      atomsPixi = modelView.appendPixiViewport(true),
 
       aboveAtomsViewport = modelView.appendViewport().classed("above-atoms", true),
       shapeContainerTop  = aboveAtomsViewport.append("g").attr("class", "shape-container-top"),
