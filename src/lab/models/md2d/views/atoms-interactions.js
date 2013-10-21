@@ -38,19 +38,15 @@ define(function(require) {
     }
 
     function mouseOverHandler(x, y, atom, e) {
-      if (model.isStopped() || atom.draggable) {
-        document.documentElement.style.cursor = "move";
-      } else {
-        document.documentElement.style.cursor = "auto";
-      }
+      // noop
     }
 
     function mouseOutHandler(x, y, e) {
-      document.documentElement.style.cursor = "auto";
+      // noop
     }
 
     function mouseUpHandler(x, y, atom, e) {
-      // noop for now
+      // noop
     }
 
     function clickHandler(x, y, atom, e) {
@@ -89,6 +85,7 @@ define(function(require) {
       } else {
         mouseOutHandler(p.x, p.y, e);
       }
+      setCursorForAtom(atom);
     }
 
     function mouseUpCanvas(e) {
@@ -119,6 +116,7 @@ define(function(require) {
     function mouseOutCanvas(e) {
       var p = getClickCoords(e);
       mouseOutHandler(p.x, p.y, e);
+      setCursor("auto");
     }
 
     function contextMenuCanvas(e) {
@@ -132,6 +130,28 @@ define(function(require) {
       }
     }
     //**********************************************************************************************
+
+    function setCursorFromEvent(e) {
+      // If pointer is over some other element just restore the "auto" pointer.
+      if (e.target !== target) {
+        setCursor("auto");
+        return;
+      }
+      var p = getClickCoords(e);
+      setCursorForAtom(getAtomUnder(p.x, p.y));
+    }
+
+    function setCursorForAtom(atom) {
+      if (atom && (model.isStopped() || atom.draggable)) {
+        setCursor("move");
+      } else {
+        setCursor("auto");
+      }
+    }
+
+    function setCursor(name) {
+      document.documentElement.style.cursor = name;
+    }
 
     function init() {
       m2px = modelView.model2canvas;
@@ -245,6 +265,8 @@ define(function(require) {
           model.liveDrag(x, y);
         }
 
+        setCursor("move");
+
         // Custom drag handler.
         if (modelView.dragHandler.atom) {
           modelView.dragHandler.atom(x, y, atom, i);
@@ -257,6 +279,9 @@ define(function(require) {
 
         // Prevent accidental text selection or another unwanted action while dragging.
         e.preventDefault();
+
+        // Pointer can be over atom or not (e.g. when user finished dragging below other object).
+        setCursorFromEvent(e);
 
         if (model.isStopped()) {
           // Important: set position to (atom.x, atom.y), not (x, y)! Note that custom drag handler
