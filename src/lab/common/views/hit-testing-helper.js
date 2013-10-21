@@ -404,7 +404,7 @@ define(function (require) {
       /**
        * Setups fast, simplified hit testing for mousemove events. 'mousemove' will be dispatched
        * only to the specified target element. Because of that we can avoid very expensive
-       * .elementFromPoint() calls. Target will receive mouseenter and mouseout events too.
+       * .elementFromPoint() calls. Target will receive mouseover and mouseout events too.
        * @param  {Element} mmoveSource
        * @param  {Element} mmoveTarget
        */
@@ -437,7 +437,7 @@ define(function (require) {
             }
             if (target !== prevTarget) {
               if (target === mmoveTarget) {
-                mmoveTarget.dispatchEvent(createMouseEvent(e, "mouseenter", mmoveTarget, prevTarget));
+                mmoveTarget.dispatchEvent(createMouseEvent(e, "mouseover", mmoveTarget, prevTarget));
               } else if (prevTarget === mmoveTarget) {
                 mmoveTarget.dispatchEvent(createMouseEvent(e, "mouseout", mmoveTarget, target));
               }

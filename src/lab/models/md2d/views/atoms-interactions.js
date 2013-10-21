@@ -112,7 +112,7 @@ define(function(require) {
       downAtom = null;
     }
 
-    function mouseEnterCanvas(e) {
+    function mouseOverCanvas(e) {
       // noop
     }
 
@@ -146,7 +146,7 @@ define(function(require) {
       target.addEventListener("mousedown", mouseDownCanvas);
       target.addEventListener("mouseup", mouseUpCanvas);
       target.addEventListener("mousemove", mouseMoveCanvas);
-      target.addEventListener("mouseenter", mouseEnterCanvas);
+      target.addEventListener("mouseover", mouseOverCanvas);
       target.addEventListener("mouseout", mouseOutCanvas);
       target.addEventListener("contextmenu", contextMenuCanvas);
 
