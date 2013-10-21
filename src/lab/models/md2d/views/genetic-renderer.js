@@ -27,7 +27,7 @@ define(function (require) {
         node = modelView.node,
         model2px = modelView.model2px,
         model2pxInv = modelView.model2pxInv,
-        viewportG = d3.select(node).select(".svg-viewport.below-atoms"),
+        viewportG = d3.select(node).select(".below-atoms"),
 
         g = null,
         currentTrans = null,
