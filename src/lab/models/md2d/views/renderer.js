@@ -1082,6 +1082,8 @@ define(function(require) {
 
     function drawTextBoxes() {
       var size, layers, appendTextBoxes;
+      // Workaround for a rendering bug in Chrome on OS X; see http://crbug.com/309740
+      var shouldRoundTextBoxStrokeWidth = browser.browser === 'Chrome' && browser.oscpu.indexOf('OS X') > 0;
 
       textBoxes = model.get('textBoxes');
 
@@ -1143,6 +1145,14 @@ define(function(require) {
               var backgroundColor = d.backgroundColor,
                 strokeWidth = d.strokeWidthEms * fontSizeInPixels,
                 strokeOpacity = d.strokeOpacity;
+
+              if (shouldRoundTextBoxStrokeWidth && strokeWidth < 1) {
+                // Workaround for ghosting artifact left when stroke-width < 1 in Chrome on OS X.
+                // Try to adjust opacity to compensate for increased width:
+                strokeOpacity *= strokeWidth;
+                strokeWidth = 1;
+              }
+
               return "fill:" + backgroundColor + ";opacity:1.0;fill-opacity:1;stroke:#000000;stroke-width:" + strokeWidth + ";stroke-opacity:" + strokeOpacity;
             },
             "width": 0,
