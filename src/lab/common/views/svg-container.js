@@ -12,7 +12,9 @@ define(function (require) {
       console               = require('common/console'),
       PIXI                  = require('pixi'),
 
-      CANVAS_OVERSAMPLING = 1.5;
+      CANVAS_OVERSAMPLING = 1.5,
+
+      MAX_Z_INDEX = 1000;
 
   return function SVGContainer(model, modelUrl, Renderer, opt) {
         // Public API object to be returned.
@@ -26,11 +28,13 @@ define(function (require) {
         emsize,
         fontSizeInPixels,
 
-        plotContainer, backgroundContainer, viewportContainer, foregroundContainer,
+        plotContainer, backgroundContainer, foregroundContainer,
 
         backgroundRect, backgroundGroup, foregroundGroup, brushContainer,
 
         pixiRenderers, pixiStages, pixiContainers,
+
+        viewportZIndex = 0,
 
         // A list of all outermost svg/canvas/div containers which may have clickable or touchable
         // child elements, ordered from topmost to bottom-most. Because the layers are siblings, not
@@ -70,6 +74,10 @@ define(function (require) {
         dispatch = d3.dispatch("viewportDrag"),
 
         renderer;
+
+    function nextViewportZIndex() {
+      return viewportZIndex++;
+    }
 
     function getFontSizeInPixels() {
       return parseFloat($el.css('font-size')) || 18;
@@ -350,6 +358,7 @@ define(function (require) {
 
         plotContainer = d3.select(node).append("svg")
           .attr("class", "root-layer container plot-container")
+          .style("z-index", nextViewportZIndex())
           .call(basicSVGAttrs);
 
         backgroundRect = plotContainer.append("rect")
@@ -357,15 +366,14 @@ define(function (require) {
 
         backgroundContainer = d3.select(node).append("svg")
           .attr("class", "root-layer container background-container svg-viewport")
+          .style("z-index", nextViewportZIndex())
           .call(basicSVGAttrs);
 
         backgroundGroup = backgroundContainer.append("g");
 
-        viewportContainer = d3.select(node).append("div")
-          .attr("class", "root-layer container viewport-container");
-
         foregroundContainer = d3.select(node).append("svg")
           .attr("class", "root-layer container foreground-container svg-viewport")
+          .style("z-index", MAX_Z_INDEX)
           .on("contextmenu", function() {
             // Disable default context menu on foreground container, as otherwise it  covers all
             // possible context menu that can be used by layers beneath.
@@ -394,11 +402,6 @@ define(function (require) {
         setupHitTesting();
         setupTouchEventTranslation();
       }
-
-      viewportContainer.style({
-        width: cx + "px",
-        height: cy + "px"
-      });
 
       // Dimension/position of all the root layers
       d3.select(node).selectAll('.root-layer')
@@ -546,23 +549,20 @@ define(function (require) {
       // see https://developer.apple.com/library/safari/documentation/UserExperience/Reference/TouchEventClassReference/TouchEvent/TouchEvent.html#//apple_ref/javascript/instm/TouchEvent/initTouchEvent
 
       var foregroundNode  = foregroundContainer.node();
-      var backgroundNode      = backgroundContainer.node();
+      var backgroundNode  = backgroundContainer.node();
       var plotNode        = plotContainer.node();
-      var viewportNode    = viewportContainer.node();
 
       // We need to hide HTML layers from mouse events. It can be achieved by setting
       // "pointer-events" style to "none", however it isn't supported by all browsers
       // (e.g. IE9, IE10, Safari 5). The fallback method is to set layer's visibility to "hidden".
       var propName    = featureTests.cssPointerEvents ? "pointerEvents" : "visibility";
       var propHidden  = featureTests.cssPointerEvents ? "none" : "hidden";
-      var propVisible = featureTests.cssPointerEvents ? "auto" : "visible";
       var propBackup;
 
       var mousedownTarget;
       var targetForCreatedClick;
 
-      // Elements added to the viewportContainer will go in the middle. The viewportContainer itself
-      // is just a holder -- it shouldn't receive mouse/touch events itself.
+      // Other elements added using .appendViewport() or .appendPixiViewport() will go in the middle.
       layersToHitTest = [foregroundNode, backgroundNode, plotNode];
 
       // Return a cloned version of 'e' having 'target' as its target property; cancel the original
@@ -597,7 +597,6 @@ define(function (require) {
         for (var i = n; i >= 0; i--) {
           layersToHitTest[i].style[propName] = propBackup[i];
         }
-        viewportNode.style[propName] = propVisible;
       }
 
       function hitTest(e) {
@@ -619,12 +618,6 @@ define(function (require) {
 
           if (i > 0) {
             hideLayer(i - 1);
-          }
-
-          if (layer === backgroundNode) {
-            // When we are testing background container, we have to hide also viewportContainer.
-            // Otherwise it will be detected in .elementFromPoint() call.
-            viewportNode.style[propName] = propHidden;
           }
 
           if (layer.tagName.toLowerCase() === "canvas") {
@@ -1137,9 +1130,10 @@ define(function (require) {
 
         pixiStage.addChild(pixiContainer);
 
-        viewportContainer.node().appendChild(pixiRenderer.view);
+        node.appendChild(pixiRenderer.view);
         d3.select(pixiRenderer.view)
           .attr("class", "pixi-viewport")
+          .style("z-index", nextViewportZIndex())
           .call(layeredOnTop);
 
         // Cascade events into this viewport
