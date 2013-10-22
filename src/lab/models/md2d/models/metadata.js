@@ -215,9 +215,11 @@ define(function() {
         defaultValue: "auto"
       },
       showAtomTrace: {
+        storeInTickHistory: true,
         defaultValue: false
       },
       atomTraceId: {
+        storeInTickHistory: true,
         defaultValue: 0
       },
       images: {
