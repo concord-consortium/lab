@@ -2465,7 +2465,7 @@ define(function (require, exports) {
 
       setAtomProperties: function (i, props) {
         var cysteineEl = aminoacidsHelper.cysteineElement,
-            key, idx, rest, amino, j;
+            key, amino, j;
 
         if (props.element !== undefined) {
           if (props.element < 0 || props.element >= N_elements) {
@@ -2513,10 +2513,7 @@ define(function (require, exports) {
         } else if (charge[i] && props.charge === 0) {
           // charge[i] => shortcut for charge[i] !== undefined && charge[i] !== 0 (both cases can occur).
           // Remove index from charged atoms list.
-          idx = chargedAtomsList.indexOf(i);
-          rest = chargedAtomsList.slice(idx + 1);
-          chargedAtomsList.length = idx;
-          Array.prototype.push.apply(chargedAtomsList, rest);
+          chargedAtomsList.splice(chargedAtomsList.indexOf(i), 1);
         }
 
         // Set all properties from props hash.
