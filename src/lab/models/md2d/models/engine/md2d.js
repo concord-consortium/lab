@@ -18,13 +18,6 @@ define(function (require, exports) {
       PluginController     = require('common/models/plugin-controller'),
       utils                = require('./utils'),
 
-      // from A. Rahman "Correlations in the Motion of Atoms in Liquid Argon", Physical Review 136 pp. A405–A411 (1964)
-      ARGON_LJ_EPSILON_IN_EV = -120 * constants.BOLTZMANN_CONSTANT.as(unit.EV_PER_KELVIN),
-      ARGON_LJ_SIGMA_IN_NM   = 0.34,
-
-      ARGON_MASS_IN_DALTON = 39.95,
-      ARGON_MASS_IN_KG = constants.convert(ARGON_MASS_IN_DALTON, { from: unit.DALTON, to: unit.KILOGRAM }),
-
       BOLTZMANN_CONSTANT_IN_JOULES = constants.BOLTZMANN_CONSTANT.as( unit.JOULES_PER_KELVIN ),
 
       cross = function(a0, a1, b0, b1) {
@@ -131,14 +124,8 @@ define(function (require, exports) {
         // otherwise value should be false
         gravitationalField = false,
 
-        // Whether a transient temperature change is in progress.
-        temperatureChangeInProgress = false,
-
         // Desired system temperature, in Kelvin.
         T_target,
-
-        // Tolerance for (T_actual - T_target) relative to T_target
-        tempTolerance = 0.001,
 
         // System dimensions as [x, y] in nanometers. Default value can be changed until particles are created.
         size = [10, 10],
@@ -914,23 +901,6 @@ define(function (require, exports) {
           electricFields.shapeIdx    = [];
 
           assignShortcutReferences.electricFields();
-        },
-
-
-        // Function that accepts a value T and returns an average of the last n values of T (for some n).
-        getTWindowed,
-
-        // Dynamically determine an appropriate window size for use when measuring a windowed average of the temperature.
-        getWindowSize = function() {
-          return useCoulombInteraction && hasChargedAtoms ? 1000 : 1000;
-        },
-
-        // Whether or not the thermostat is not being used, begins transiently adjusting the system temperature; this
-        // causes the adjustTemperature portion of the integration loop to rescale velocities until a windowed average of
-        // the temperature comes within `tempTolerance` of `T_target`.
-        beginTransientTemperatureChange = function()  {
-          temperatureChangeInProgress = true;
-          getTWindowed = math.getWindowedAverager( getWindowSize() );
         },
 
         // Calculates & returns instantaneous temperature of the system.
@@ -2227,11 +2197,7 @@ define(function (require, exports) {
             }
           }
 
-          if (temperatureChangeInProgress && Math.abs(getTWindowed(T) - target) <= target * tempTolerance) {
-            temperatureChangeInProgress = false;
-          }
-
-          if (forceAdjustment || useThermostat || temperatureChangeInProgress && T > 0) {
+          if (forceAdjustment || useThermostat && T > 0) {
             rescalingFactor = Math.sqrt(target / T);
 
             // Scale particles velocity.
@@ -3446,21 +3412,6 @@ define(function (require, exports) {
 
         vdwPairs.count = N_vdwPairs;
         return vdwPairs;
-      },
-
-      relaxToTemperature: function(T) {
-
-        // FIXME this method needs to be modified. It should rescale velocities only periodically
-        // and stop when the temperature approaches a steady state between rescalings.
-
-        if (T != null) T_target = T;
-
-        validateTemperature(T_target);
-
-        beginTransientTemperatureChange();
-        while (temperatureChangeInProgress) {
-          engine.integrate();
-        }
       },
 
       // Velocity Verlet integration scheme.
