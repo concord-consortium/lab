@@ -1408,8 +1408,8 @@ define(function (require, exports) {
                 y[i] = (my - y_prev) - 2 * ((mx - x_prev) * nx + (my - y_prev) * ny) * ny + my;
 
                 // Reflect the atom's velocity off the normal vector
-                tvx = vx[i]
-                tvy = vy[i]
+                tvx = vx[i];
+                tvy = vy[i];
                 vx[i] = (tvx - 2 * (tvx * nx + tvy * ny) * nx);
                 vy[i] = (tvy - 2 * (tvx * nx + tvy * ny) * ny);
               }
@@ -1422,8 +1422,6 @@ define(function (require, exports) {
           if (N_lines < 1) return;
 
           var r,
-              x1,
-              y1,
               ld,
               atom1_to_line,
               atom2_to_line,
@@ -1431,7 +1429,9 @@ define(function (require, exports) {
               line2_to_atom,
               mx,my,
               nx,ny,nd,
-              tvx,tvy;
+              tvx,tvy,
+              j,
+              xi, yi;
 
           r = radius[i];
           xi = x[i];
@@ -1471,8 +1471,8 @@ define(function (require, exports) {
                 y[i] = (my - y_prev) - 2 * ((mx - x_prev) * nx + (my - y_prev) * ny) * ny + my;
 
                 // Reflect the atom's velocity off the normal vector
-                tvx = vx[i]
-                tvy = vy[i]
+                tvx = vx[i];
+                tvy = vy[i];
                 vx[i] = (tvx - 2 * (tvx * nx + tvy * ny) * nx);
                 vy[i] = (tvy - 2 * (tvx * nx + tvy * ny) * ny);
               }
@@ -2130,11 +2130,11 @@ define(function (require, exports) {
             // Fast path when obstacle isn't movable.
             if (obstacleMass[i] === Infinity) continue;
 
-            vx = obstacleVX[i],
-            vy = obstacleVY[i],
+            vx = obstacleVX[i];
+            vy = obstacleVY[i];
             // External forces are defined per mass unit!
             // So, they are accelerations in fact.
-            extFx = obstacleExtAX[i],
+            extFx = obstacleExtAX[i];
             extFy = obstacleExtAY[i];
 
             if (vx || vy || extFx || extFy || gravitationalField) {
