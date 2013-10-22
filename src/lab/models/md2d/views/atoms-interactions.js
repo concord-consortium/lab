@@ -234,7 +234,7 @@ define(function(require) {
       var i = atom.idx,
           p, x, y, originX, originY;
 
-      $(window).on("mousemove.drag", function (e) {
+      $(window).on("mousemove.lab-drag", function (e) {
         // Prevent accidental text selection or another unwanted action while dragging.
         e.preventDefault();
 
@@ -274,8 +274,12 @@ define(function(require) {
         if (modelView.dragHandler.atom) {
           modelView.dragHandler.atom(x, y, atom, i);
         }
-      }).one("mouseup.drag", function (e) {
-        $(window).off("mousemove.drag");
+      }).on("selectstart.lab-drag", function (e) {
+        // Disable selection behavior while dragging an atom. It's supported and required in IE and
+        // Safari. In Chrome it's enough to call .preventDefault() on mousemove event.
+        e.preventDefault();
+      }).one("mouseup.lab-drag", function (e) {
+        $(window).off(".lab-drag");
 
         // If user only clicked an atom (mousedown + mouseup, no mousemove), nothing to do.
         if (!dragged) return;
