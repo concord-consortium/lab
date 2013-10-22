@@ -422,10 +422,6 @@ define(function (require, exports) {
         // potential between elements i and j
         ljCalculator = [],
 
-        // Optimization related variables:
-        // Whether any atoms actually have charges
-        hasChargedAtoms = false,
-
         // List of atoms with charge.
         chargedAtomsList = [],
 
@@ -1546,7 +1542,7 @@ define(function (require, exports) {
 
         updateLongRangeForces = function() {
           // Fast path if Coulomb interaction is disabled or there are no charged atoms.
-          if (!useCoulombInteraction || !hasChargedAtoms) return;
+          if (!useCoulombInteraction || chargedAtomsList.length === 0) return;
 
           var i, j, len, dx, dy, rSq, fOverR, fx, fy,
               charge1, atom1Idx, atom2Idx,
@@ -2522,8 +2518,6 @@ define(function (require, exports) {
           chargedAtomsList.length = idx;
           Array.prototype.push.apply(chargedAtomsList, rest);
         }
-        // Update optimization flag.
-        hasChargedAtoms = !!chargedAtomsList.length;
 
         // Set all properties from props hash.
         for (key in props) {
@@ -3719,7 +3713,7 @@ define(function (require, exports) {
             if (useLennardJonesInteraction) {
               PE -=ljCalculator[element[i]][element[j]].potentialFromSquaredDistance(r_sq);
             }
-            if (useCoulombInteraction && hasChargedAtoms) {
+            if (useCoulombInteraction && chargedAtomsList.length > 0) {
               PE += coulomb.potential(Math.sqrt(r_sq), charge[i], charge[j], dielectricConst, realisticDielectricEffect);
             }
           }
@@ -3875,7 +3869,7 @@ define(function (require, exports) {
               }
             }
 
-            if (useCoulombInteraction && hasChargedAtoms && testCharge) {
+            if (useCoulombInteraction && chargedAtomsList.length > 0 && testCharge) {
               r = Math.sqrt(r_sq);
               PE += -coulomb.potential(r, testCharge, charge[i], dielectricConst, realisticDielectricEffect);
               if (calculateGradient) {
@@ -4008,7 +4002,7 @@ define(function (require, exports) {
         // Let client code reuse objects.
         resultObj = resultObj || {};
         // Fast path if Coulomb interaction is disabled or there are no charged atoms.
-        if (!useCoulombInteraction || !hasChargedAtoms) {
+        if (!useCoulombInteraction || chargedAtomsList.length === 0) {
           resultObj.fx = resultObj.fy = 0;
           return resultObj;
         }
