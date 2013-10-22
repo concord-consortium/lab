@@ -2709,11 +2709,15 @@ define(function (require, exports) {
         // Set acceleration of new atom to zero.
         props.ax = props.ay = 0;
 
-        // Increase number of atoms.
-        N++;
+        // Remove any stray value from charge--setAtomProperties updates chargedAtomsList based on
+        // whether the atom was charged previously.
+        charge[N] = 0;
 
         // Set provided properties of new atom.
-        engine.setAtomProperties(N - 1, props);
+        engine.setAtomProperties(N, props);
+
+        // Increase number of atoms.
+        N++;
 
         // Initialize helper structures for optimizations.
         initializeCellList();
@@ -2749,7 +2753,6 @@ define(function (require, exports) {
         if (i !== -1) {
           arrays.remove(chargedAtomsList, i);
         }
-
 
         // Finally, remove atom.
 
