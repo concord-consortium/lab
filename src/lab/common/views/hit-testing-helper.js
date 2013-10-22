@@ -101,8 +101,6 @@ define(function (require) {
       var clonedEvent = document.createEvent("MouseEvent");
       clonedEvent.initMouseEvent(e.type, e.bubbles, e.cancelable, e.view, e.detail, e.screenX, e.screenY, e.clientX, e.clientY, e.ctrlKey, e.altKey, e.shiftKey, e.metaKey, e.button, e.relatedTarget);
       clonedEvent.target = target;
-      e.stopPropagation();
-      e.preventDefault();
       return clonedEvent;
     }
 
@@ -366,7 +364,14 @@ define(function (require) {
           }
 
           e.stopPropagation();
-          e.preventDefault();
+          // Chrome (and Safari?) bug: http://crbug.com/269917
+          // If we call .preventDefault() on the original mousedown event, it will break handling of
+          // events outside the iframe. It can cause issues like this one:
+          // https://www.pivotaltracker.com/story/show/58446862
+          if (e.type !== 'mousedown') {
+            e.preventDefault();
+          }
+
           target = hitTest(e);
 
           if (e.type === 'mousedown') {
@@ -427,9 +432,6 @@ define(function (require) {
           if (!e.synthetic) {
             var target, mouseEvent;
 
-            if (!mmoveTarget) {
-              return;
-            }
             if (e.target === mmoveSource) {
               target = mmoveTarget;
             } else {
@@ -442,6 +444,8 @@ define(function (require) {
                 mmoveTarget.dispatchEvent(createMouseEvent(e, "mouseout", mmoveTarget, target));
               }
             }
+            e.stopPropagation();
+            e.preventDefault();
             mouseEvent = retargetMouseEvent(e, target);
             mouseEvent.synthetic = true; // !!!
             target.dispatchEvent(mouseEvent);
