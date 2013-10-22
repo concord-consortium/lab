@@ -4146,6 +4146,9 @@ define(function (require, exports) {
               N_angularBonds = state.N_angularBonds;
               N_restraints   = state.N_restraints;
               N_springForces = state.N_springForces;
+
+              neighborList.invalidate();
+              chargedAtomsList.reset();
             }
           }
         ];
