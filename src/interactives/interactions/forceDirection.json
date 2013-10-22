@@ -2,6 +2,7 @@
   "title": "Direction of Force in Electric Fields",
   "publicationStatus": "draft",
   "subtitle": "How is the direction of force oriented between charged objects?",
+  "aspectRatio": 1.6,
   "about": [
     "An electric field is produced by the stationary object in this simulation.",
     "How does the force on the draggable object change when it is moved around the stationary object?",
@@ -77,7 +78,7 @@
       "name": "object-charge",
       "initialValue": 1,
       "onChange": [
-        "setAtomProperties(0,{charge: value});",
+        "setAtomProperties(1,{charge: value});",
         "var forceDirection  = get('object-charge');",
         "var dragAtomProps   = getAtomProperties(0);",
         "var targetAtomProps = getAtomProperties(1);",
@@ -117,7 +118,7 @@
       "type": "checkbox",
       "id": "toggle-show-force-on-VDG",
       "property": "show-force-on-VDG",
-      "text": "Show force on VDG"
+      "text": "Show force on stationary object"
     },
     {
       "type": "checkbox",
@@ -138,7 +139,7 @@
     {
       "type": "text",
       "id": "label-direction",
-      "text": "**Object charge:**"
+      "text": "**Set charge on stationary object**"
     },
     {
       "type": "radio",
