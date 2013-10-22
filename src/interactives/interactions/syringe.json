@@ -3,6 +3,7 @@
   "publicationStatus": "draft",
   "subtitle": "",
   "about": "",
+  "aspectRatio": 1.31625,
   "models": [
     {
       "type": "md2d",
@@ -10,9 +11,14 @@
       "url": "imports/legacy-mw-content/converted/interactions/syringe/syringe$0.json",
       "importedFrom": "imports/legacy-mw-content/interactions/syringe/syringe$0.mml",
       "viewOptions": {
-        "controlButtons": "play_reset"
+        "controlButtons": "play_reset",
+        "imageMapping": {
+          "plunger.png": "plunger.svg",
+          "nail.png": "nail.svg"
+        }
       },
       "onLoad": [
+        "setImageProperties(0,{imageX: 10});",
         "start();",
         "var indexPlunger = get('index-plunger'),",
         "    minX = get('plunger-min'),",
@@ -57,25 +63,28 @@
     {
       "type": "button",
       "id": "plunger-pull-out",
-      "text": "Pull plunger ⇥ ",
+      "text": "Pull plunger out ⇥",
       "action": [
+        "setImageProperties(0,{imageX: 10});",
         "setObstacleProperties(get('index-plunger'), {externalAx: 0.0000005, mass: 5000});"
       ]
     },
     {
       "type": "button",
       "id": "plunger-push-in",
-      "text": "⇤ Push plunger",
+      "text": "Push plunger in ⇤",
       "action": [
+        "setImageProperties(0,{imageX: 10});",
         "setObstacleProperties(get('index-plunger'), {externalAx: -0.0000005, mass: 5000});"
       ]
     },
     {
       "type": "button",
       "id": "plunger-lock",
-      "text": "Lock plunger ⇎",
+      "text": "Lock plunger in place ⇎",
       "action": [
-        "setObstacleProperties(get('index-plunger'), {externalAx: 0, vx: 0, mass: 999999999});"
+        "setObstacleProperties(get('index-plunger'), {externalAx: 0, vx: 0, mass: 999999999});",
+        "setImageProperties(0,{imageX: 3.1});"
       ]
     },
     {
@@ -83,7 +92,8 @@
       "id": "plunger-release",
       "text": "Release plunger ⬄",
       "action": [
-        "setObstacleProperties(get('index-plunger'), {externalAx: 0, vx: 0, mass: 5000});"
+        "setObstacleProperties(get('index-plunger'), {externalAx: 0, vx: 0, mass: 5000});",
+        "setImageProperties(0,{imageX: 10});"
       ]
     },
     {
@@ -121,9 +131,38 @@
     }
   ],
   "layout": {
-    "bottom": [
-      ["plunger-push-in", "plunger-pull-out", "plunger-lock", "plunger-release"],
-      ["plug-remove","plug-add"]
+    "bottom-left": [
+      ["plunger-push-in"],
+      ["plunger-pull-out"]
+    ],
+    "bottom-right": [
+      ["plunger-lock"],
+      ["plunger-release"]
+    ],
+    "bottom-below": [
+      "plug-remove",
+      "plug-add"
     ]
-  }
+  },
+  "template": [
+    {
+      "id": "bottom-left",
+      "top": "model.bottom",
+      "left": "model.left",
+      "align": "left"
+    },
+    {
+      "id": "bottom-right",
+      "top": "bottom-left.top",
+      "right": "model.right",
+      "align": "right"
+    },
+    {
+      "id": "bottom-below",
+      "top": "bottom-left.bottom",
+      "left": "bottom-left.left",
+      "width": "model.width",
+      "align": "center"
+    }
+  ]
 }
