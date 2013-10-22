@@ -422,9 +422,6 @@ define(function (require, exports) {
         // potential between elements i and j
         ljCalculator = [],
 
-        // List of atoms with charge.
-        chargedAtomsList = [],
-
         // List of particles representing cysteine amino acid, which can possibly create disulphide bonds.
         // So, each cysteine in this list is NOT already connected to other cysteine.
         freeCysteinesList = [],
@@ -2310,8 +2307,22 @@ define(function (require, exports) {
           }
         };
 
-        // ####################################################################
-        // ####################################################################
+    // A list of the indices of atoms having nonzero charge.
+    // (Yes, this introduces some slightly different code patterns than are used elsewhere here, as
+    // it's probably time to evolve away from this-avoidance and the onevar style.)
+    var chargedAtomsList = [];
+    chargedAtomsList.reset = function() {
+      var i, j = 0;
+      for (i = 0; i < N; i++) {
+        if (atoms.charge[i]) {
+          this[j++] = i;
+        }
+      }
+      this.length = j;
+    };
+
+    // ####################################################################
+    // ####################################################################
 
     engine = {
 
