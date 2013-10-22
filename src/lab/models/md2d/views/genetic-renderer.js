@@ -205,13 +205,13 @@ define(function (require) {
      * @private
      * @return {d3 transtion} d3 transtion object.
      */
-    function nextTrans() {
+    function nextTrans(forceNew) {
       var newTrans;
       // TODO: this first check is a workaround.
       // Ideal scenario would be to call always:
       // currentTrans[name] = currentTrans[name].transition();
       // but it seems to fail when transition has already ended.
-      if (currentTrans && currentTrans.node().__transition__) {
+      if (!forceNew && currentTrans && currentTrans.node().__transition__) {
         // Some transition is currently in progress, chain a new transition.
         newTrans = currentTrans.transition();
       } else {
@@ -272,22 +272,22 @@ define(function (require) {
       "dna-updated": function dnaUpdated() {
         // Special state - render current animation state again,
         // as model was updated.
-        var t = nextTrans().ease("cubic-in-out").duration(800);
+        var t = nextTrans(true).ease("cubic-in-out").duration(800);
         renderState(t, state.name, null, true);
       },
 
       "intro-zoom1": function introZoom1() {
-        var t = nextTrans().ease("cubic").duration(3000);
+        var t = nextTrans(true).ease("cubic").duration(3000);
         renderState(t, "intro-zoom1");
       },
 
       "intro-zoom2": function introZoom2() {
-        var t = nextTrans().ease("linear").duration(3000);
+        var t = nextTrans(true).ease("linear").duration(3000);
         renderState(t, "intro-zoom2");
       },
 
       "intro-zoom3": function introZoom3() {
-        var t = nextTrans().ease("linear").duration(2000);
+        var t = nextTrans(true).ease("linear").duration(2000);
         renderState(t, "intro-zoom3-s0");
 
         t = nextTrans().ease("quad-out").duration(3300);
@@ -295,7 +295,7 @@ define(function (require) {
       },
 
       "intro-polymerase": function introPolymerase() {
-        var t = nextTrans().ease("quad-out").duration(3000);
+        var t = nextTrans(true).ease("quad-out").duration(3000);
         renderState(t, "intro-polymerase-s0");
 
         t = nextTrans().ease("cubic-in-out").duration(1000);
@@ -303,7 +303,7 @@ define(function (require) {
       },
 
       "dna": function dna() {
-        var t = nextTrans().duration(2000);
+        var t = nextTrans(true).duration(2000);
         renderState(t, "dna-s0");
 
 
@@ -316,7 +316,7 @@ define(function (require) {
       },
 
       "transcription:0": function transcription0() {
-        var t = nextTrans().duration(1500);
+        var t = nextTrans(true).duration(1500);
         renderState(t, "transcription", function(t) {
           // Reselect bonds transition, change duration to 250.
           t.selectAll(".bonds").duration(250);
@@ -324,7 +324,7 @@ define(function (require) {
       },
 
       "transcription": function transcription() {
-        var t = nextTrans().duration(500);
+        var t = nextTrans(true).duration(500);
         renderState(t, "transcription", function (t) {
           // Reselect bonds transition, change duration to ease to cubic.
           t.selectAll(".bonds").ease("cubic");
@@ -332,7 +332,7 @@ define(function (require) {
       },
 
       "transcription-end": function transcriptionEnd() {
-        var t = nextTrans().duration(500);
+        var t = nextTrans(true).duration(500);
         renderState(t, "transcription-end", function (t) {
           // Reselect bonds transition, change duration to ease to cubic.
           t.selectAll(".bonds").ease("cubic");
@@ -340,12 +340,12 @@ define(function (require) {
       },
 
       "after-transcription": function afterTranscription() {
-        var t = nextTrans().ease("cubic-in-out").duration(700);
+        var t = nextTrans(true).ease("cubic-in-out").duration(700);
         renderState(t, "after-transcription");
       },
 
       "before-translation": function beforeTranslation() {
-        var t = nextTrans().ease("cubic-in-out").duration(1000);
+        var t = nextTrans(true).ease("cubic-in-out").duration(1000);
         renderState(t, "before-translation-s0", function (t) {
           t.selectAll(".container-background").duration(1);
         });
@@ -370,7 +370,7 @@ define(function (require) {
       },
 
       "translation:0": function translation0() {
-        var t = nextTrans().ease("cubic-in-out").duration(1000);
+        var t = nextTrans(true).ease("cubic-in-out").duration(1000);
         renderState(t, "translation-s0");
 
         t = nextTrans().ease("cubic-in-out").duration(1000);
@@ -387,7 +387,7 @@ define(function (require) {
             shiftDuration = 500,
             t;
 
-        t = nextTrans().duration(newAADuration);
+        t = nextTrans(true).duration(newAADuration);
         renderState(t, "translation-step0", function (t) {
           t.selectAll(".bonds").ease("cubic");
           geneticEngine.translationStepStarted(codonIdx, 1.45 + codonIdx * 3 * nucleotides.WIDTH, 3.95,
@@ -416,7 +416,7 @@ define(function (require) {
             t;
 
         if (aaCount >= 1) {
-          t = nextTrans().duration(150);
+          t = nextTrans(true).duration(150);
           renderState(t, "translation-end-s0");
 
           t = nextTrans().duration(800);
@@ -429,10 +429,13 @@ define(function (require) {
           renderState(t, "translation-end-s2", function (t) {
             t.selectAll(".bonds").duration(150);
           });
-        }
 
-        t = nextTrans().duration(500);
-        renderState(t, "translation-end-s3");
+          t = nextTrans().duration(500);
+          renderState(t, "translation-end-s3");
+        } else {
+          t = nextTrans(true).duration(500);
+          renderState(t, "translation-end-s3");
+        }
 
         t = nextTrans().duration(300);
         renderState(t, "translation-end-s4");
