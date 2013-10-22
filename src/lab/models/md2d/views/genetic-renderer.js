@@ -399,14 +399,12 @@ define(function (require) {
           t.selectAll(".trna-neck").duration(150);
           geneticEngine.shiftAminoAcids(codonIdx, 2 * nucleotides.WIDTH, shiftDuration);
         });
-        t.each("end", function () {
-          geneticEngine.connectAminoAcid(codonIdx);
-        });
 
         // This will remove 3rd tRNA.
         if (codonIdx > 0) {
           t = nextTrans().duration(900);
           renderState(t, "translation", function (t) {
+            geneticEngine.connectAminoAcid(codonIdx);
             t.selectAll(".bonds").duration(150);
           });
         }
@@ -420,12 +418,10 @@ define(function (require) {
         if (aaCount >= 1) {
           t = nextTrans().duration(150);
           renderState(t, "translation-end-s0");
-          t.each("end.anim", function () {
-            geneticEngine.translationCompleted();
-          });
 
           t = nextTrans().duration(800);
           renderState(t, "translation-end-s1", function (t) {
+            geneticEngine.translationCompleted();
             t.selectAll(".bonds").duration(150);
           });
 
