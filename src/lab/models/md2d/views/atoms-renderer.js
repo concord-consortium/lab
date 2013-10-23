@@ -118,6 +118,8 @@ define(function(require) {
       model.addPropertiesListener(RENDERING_OPTIONS, function () {
         readRenderingOptions();
         api.setup();
+        // TODO: we shouldn't call .renderCanvas() here. E.g. when keShading is toggled, rendering
+        // will be triggered both by bonds renderer and atoms renderer.
         modelView.renderCanvas();
       });
     }

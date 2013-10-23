@@ -12,7 +12,7 @@ define(function (require) {
       console               = require('common/console'),
       PIXI                  = require('pixi'),
 
-      CANVAS_OVERSAMPLING = 1.5,
+      CANVAS_OVERSAMPLING = 2,
 
       MAX_Z_INDEX = 1000;
 
@@ -674,39 +674,39 @@ define(function (require) {
         The main difference is that it returns PIXI.DisplayObjectContainer object and related
         canvas (where container will be rendered) instead of SVG group element.
 
-        When passMouseMove argument is equal to true, mousemove events will be also passed to this
-        viewport.
+        Note that mousemove events will be always passed to this viewport.
        */
-      appendPixiViewport: function(passMouseMove) {
-        var pixiRenderer  = PIXI.autoDetectRenderer(cx * CANVAS_OVERSAMPLING,
-                                                    cy * CANVAS_OVERSAMPLING, null, true),
-            pixiStage     = new PIXI.Stage(null),
-            pixiContainer = new PIXI.DisplayObjectContainer();
+      appendPixiViewport: function() {
+         if (pixiRenderers.length === 0) {
+          // Assume that we can have *only one* Pixi renderer.
+          // This is caused by the Pixi bug: https://github.com/GoodBoyDigital/pixi.js/issues/181
+          var pixiRenderer  = PIXI.autoDetectRenderer(cx * CANVAS_OVERSAMPLING,
+                                                      cy * CANVAS_OVERSAMPLING, null, true),
+              pixiStage     = new PIXI.Stage(null);
 
-        pixiStage.addChild(pixiContainer);
+          node.appendChild(pixiRenderer.view);
+          d3.select(pixiRenderer.view)
+            .attr("class", "pixi-viewport")
+            .style("z-index", nextViewportZIndex())
+            .call(layeredOnTop);
 
-        node.appendChild(pixiRenderer.view);
-        d3.select(pixiRenderer.view)
-          .attr("class", "pixi-viewport")
-          .style("z-index", nextViewportZIndex())
-          .call(layeredOnTop);
+          pixiRenderers.push(pixiRenderer);
+          pixiStages.push(pixiStage);
 
-        pixiRenderers.push(pixiRenderer);
-        pixiStages.push(pixiStage);
-        pixiContainers.push(pixiContainer);
-
-        // Cascade events into this viewport.
-        hitTestingHelper.addLayer(pixiRenderer.view);
-
-        if (passMouseMove) {
+          // Cascade events into this viewport.
+          hitTestingHelper.addLayer(pixiRenderer.view);
           hitTestingHelper.passMouseMove(foregroundContainer.node(), pixiRenderers[0].view);
         }
+
+        var pixiContainer = new PIXI.DisplayObjectContainer();
+        pixiStages[0].addChild(pixiContainer);
+        pixiContainers.push(pixiContainer);
 
         // We return container instead of stage, as we can apply view port transformations to it.
         // Stage transformations seem to be ignored by the PIXI renderer.
         return {
           pixiContainer: pixiContainer,
-          canvas: pixiRenderer.view
+          canvas: pixiRenderers[0].view
         };
       },
 
