@@ -1,4 +1,4 @@
-/*global $, define: false, d3: false, Image */
+/*global $, define: false, d3: false, AUTHORING: false, Image */
 /*jshint loopfunc: true */
 
 // ------------------------------------------------------------
