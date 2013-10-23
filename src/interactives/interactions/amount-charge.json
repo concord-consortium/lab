@@ -26,7 +26,8 @@
       "onLoad": [
         "set('showElectricField',false);",
         "set('left-particle-charge',2);",
-        "set('right-particle-charge',-2);"
+        "set('right-particle-charge',-2);",
+        "start();"
       ]
     }
   ],

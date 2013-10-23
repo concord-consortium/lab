@@ -42,7 +42,8 @@ define(function (require) {
       // Lab Interactives scaling is based on the font-size of this div.
       var fontSize = $rc.css("font-size"),
           vertOffset = + parseFloat(fontSize) * 0.35,
-          $posTarget = $(target).closest("[title]");
+          // workaround jQueryUI tooltip issue; it removes title attribute on focus event
+          $posTarget = $(target).closest("[title], [aria-describedby]");
       $tooltip.css("font-size", fontSize);
       // Font-size of the top container changes also dimensions of various elements
       // that are defined in ems, so calculate correct position for tooltip.
@@ -69,11 +70,30 @@ define(function (require) {
       });
     }
 
+    function clearTooltipState() {
+      if ($tooltip) {
+        $tooltip.hide();
+      }
+      clearInterval(fadeInID);
+      clearInterval(fadeOutID);
+      wasShown = false;
+      $tooltip = null;
+    }
+
     $target.tooltip({
       show: false,
       hide: false,
       open: function (event, ui) {
         var delayVal = 3 * Math.min(500, Date.now() - lastClose);
+
+        // Ensure that only one tooltip is visible and tracked by $tooltip and the fadein/fadeout
+        // timeres at one time. (A focus event can cause a tooltip to be opened on the previously
+        // hovered element just before a tooltip is opened on the currently hovered element, without
+        // a close event in between.)
+        if ($tooltip !== null) {
+          clearTooltipState();
+        }
+
         $tooltip = ui.tooltip;
         position(event.originalEvent.target);
         // Custom delayed animation. Delay value is based on the last user actions.
@@ -86,14 +106,15 @@ define(function (require) {
           $tooltip.fadeOut();
         }, delayVal + 5000);
       },
-      close: function () {
-        $tooltip = null;
-        clearInterval(fadeInID);
-        clearInterval(fadeOutID);
+      close: function (event, ui) {
+        if (!$tooltip || ui.tooltip[0] !== $tooltip[0]) {
+          return;
+        }
+
         if (wasShown) {
           lastClose = Date.now();
-          wasShown = false;
         }
+        clearTooltipState();
       }
     });
   }

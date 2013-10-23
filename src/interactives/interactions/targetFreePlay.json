@@ -32,7 +32,6 @@
         "  addAtom({x: x, y: y, charge: get('chargeSign')*get('chargeMagnitude'), pinned: true});",
         "});",
         "callEvery(timeStepsPerTick, function() {",
-        "  console.log(getCurrentModelNamespace());",
         "  var target = getShapeProperties(2);",
         "  if (atomsWithinRect(target.x, target.y, target.width, target.height).length > 0) {",
         "    alert('You won!');",
@@ -129,7 +128,9 @@
       "id": "reset",
       "text": "Reset",
       "action": [
-        "reset();"
+        "reset({",
+        "  retainParameters: ['showElectricField', 'showForceVectors']",
+        "});"
       ]
     },
     {

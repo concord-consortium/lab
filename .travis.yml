@@ -1,8 +1,8 @@
-# whitelist
+# black list wip branches, however if pull requests are created for one then
+# travis should build it
 branches:
-  only:
-    - master
-    - pixijs-rendering
+  except:
+    - /^(wip|WIP)(-|_).*$/
 notifications:
   irc:
     channels:

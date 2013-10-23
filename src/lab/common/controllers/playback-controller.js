@@ -3,7 +3,11 @@
 define(function (require) {
 
   var inherit              = require('common/inherit'),
-      InteractiveComponent = require('common/controllers/interactive-component');
+      detectFontChange     = require('common/layout/detect-font-change'),
+      InteractiveComponent = require('common/controllers/interactive-component'),
+
+      // Font used by time display
+      FONT_SPEC = "bold 2em Lato";
 
   /**
    * Playback controller.
@@ -33,6 +37,11 @@ define(function (require) {
     this._scriptingAPI = null;
     /** @private */
     this._interactivesController = interactivesController;
+
+    detectFontChange({
+      font: FONT_SPEC,
+      onchange: $.proxy(this._showClockChanged, this)
+    });
   }
   inherit(PlaybackController, InteractiveComponent);
 
@@ -49,6 +58,13 @@ define(function (require) {
       this._$playPause = $('<button class="play-pause"><i class="icon-play"></i><i class="icon-pause"></i></button>').appendTo(this.$element);
       /** @private */
       this._$timeDisplay = $('<span class="time-display">').appendTo(this._$playPause);
+
+      // Canvas is much faster that native HTML text, especially on mobile devices. See:
+      // https://www.pivotaltracker.com/story/show/58879086
+      /** @private */
+      this._$timeCanvas = $('<canvas>').appendTo(this._$timeDisplay);
+      /** @private */
+      this._timeCtx = this._$timeCanvas[0].getContext("2d");
 
       /** @private */
       this._$stepBackward = $('<button class="step"><i class="icon-backward"></i></button>').insertBefore(this._$playPause);
@@ -175,7 +191,11 @@ define(function (require) {
     if (!this._showClock || this.controlButtonStyle !== 'video') {
       return;
     }
-    this._$timeDisplay.html(this._timeDesc.format(this._model.get("displayTime")));
+    // Canvas is much faster that native HTML text, especially on mobile devices. See:
+    // https://www.pivotaltracker.com/story/show/58879086
+    this._timeCtx.clearRect(0, 0, this._canvWidth, this._canvHeigth);
+    this._timeCtx.fillText(this._timeDesc.format(this._model.get("displayTime")),
+                           this._canvWidth, this._canvHeigth * 0.85);
   };
 
 
@@ -276,6 +296,28 @@ define(function (require) {
     this._controlButtonStyleChanged();
     this._controlButtonChoicesChanged();
     this._simulationStateChanged();
+    this._showClockChanged();
+  };
+
+  /**
+   * Implements optional callback supported by Interactive Controller.
+   */
+  PlaybackController.prototype.resize = function () {
+
+    if ( !this._$timeCanvas ) {
+      return;
+    }
+
+    // Oversample canvas, so text will look good on Retina-like displays.
+    this._canvWidth = this._$timeCanvas.width() * 2;
+    this._canvHeigth = this._$timeCanvas.height() * 2;
+    this._$timeCanvas.attr("width", this._canvWidth);
+    this._$timeCanvas.attr("height", this._canvHeigth);
+
+    this._timeCtx.font = FONT_SPEC;
+    this._timeCtx.fillStyle = "#939598";
+    this._timeCtx.textAlign = "right";
+
     this._showClockChanged();
   };
 

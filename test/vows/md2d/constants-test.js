@@ -1,7 +1,7 @@
 // Test physical constants against independently looked-up values using
 // hand-written unit conversions.
 
-var constants = require('../../../src/lab/md2d/models/engine/constants'),
+var constants = require('../../../src/lab/models/md2d/models/engine/constants'),
     unit = constants.unit,
 
     vows = require("vows"),

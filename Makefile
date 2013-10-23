@@ -15,7 +15,8 @@ R_OPTIMIZER = ./node_modules/.bin/r.js
 GENERATE_INTERACTIVE_INDEX = ruby src/helpers/process-interactives.rb
 
 LAB_SRC_FILES := $(shell find src/lab -type f ! -name '.*' -print)
-MD2D_SRC_FILES := $(shell find src/lab/md2d -type f ! -name '.*' -print)
+MD2D_SRC_FILES := $(shell find src/lab/models/md2d -type f ! -name '.*' -print)
+
 GRAPHER_SRC_FILES := $(shell find src/lab/grapher -type f ! -name '.*' -print)
 IMPORT_EXPORT_SRC_FILES := $(shell find src/lab/import-export -type f ! -name '.*' -print)
 IFRAME_PHONE_SRC_FILES := $(shell find src/lab/iframe-phone -type f ! -name '.*' -print)
@@ -199,7 +200,7 @@ test-src: test/layout.html \
 	public/vendor/jquery/jquery.min.js \
 	public/vendor/jquery-ui/jquery-ui.min.js \
 	public/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js \
-	public/vendor/jquery-selectBoxIt \
+	public/vendor/jquery-selectBoxIt/jquery.selectBoxIt.min.js \
 	public/vendor/jquery-context-menu \
 	src/lab/lab.version.js \
 	src/lab/lab.config.js
@@ -270,15 +271,11 @@ submodule-update-tags:
 # ------------------------------------------------
 
 node_modules: node_modules/d3 \
-	node_modules/jsdom \
 	node_modules/arrays
 	npm install
 
 node_modules/d3:
 	npm install vendor/d3
-
-node_modules/jsdom:
-	npm install test/vendor/jsdom
 
 node_modules/arrays:
 	npm install src/modules/arrays
@@ -377,11 +374,11 @@ public/lab:
 
 public/lab/lab.json: \
 	src/lab/common/controllers/interactive-metadata.js \
-	src/lab/energy2d/metadata.js \
-	src/lab/md2d/models/metadata.js \
-	src/lab/sensor/metadata.js \
-	src/lab/signal-generator/metadata.js \
-	src/lab/solar-system/models/metadata.js
+	src/lab/models/energy2d/metadata.js \
+	src/lab/models/md2d/models/metadata.js \
+	src/lab/models/sensor/metadata.js \
+	src/lab/models/signal-generator/metadata.js \
+	src/lab/models/solar-system/models/metadata.js
 	node src/helpers/lab.json.js
 
 public/lab/lab.js: \
@@ -449,7 +446,7 @@ public/vendor: \
 	public/vendor/jquery/jquery.min.js \
 	public/vendor/jquery-ui/jquery-ui.min.js \
 	public/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js \
-	public/vendor/jquery-selectBoxIt \
+	public/vendor/jquery-selectBoxIt/jquery.selectBoxIt.min.js \
 	public/vendor/tinysort/jquery.tinysort.js \
 	public/vendor/jquery-context-menu \
 	public/vendor/science.js \
@@ -486,16 +483,26 @@ public/vendor/d3-plugins:
 	cp vendor/d3-plugins/cie/README.md public/vendor/d3-plugins/cie/README.md
 
 public/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js: \
-	public/vendor/jquery-ui-touch-punch
+	public/vendor/jquery-ui-touch-punch \
+	vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js \
+	vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.js
 	cp vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js public/vendor/jquery-ui-touch-punch
+	cp vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.js public/vendor/jquery-ui-touch-punch
 
 public/vendor/jquery-ui-touch-punch:
 	mkdir -p public/vendor/jquery-ui-touch-punch
 
+public/vendor/jquery-selectBoxIt/jquery.selectBoxIt.min.js: \
+	vendor/jquery-selectBoxIt/src/javascripts/jquery.selectBoxIt.js \
+	vendor/jquery-selectBoxIt/src/javascripts/jquery.selectBoxIt.min.js \
+	vendor/jquery-selectBoxIt/src/stylesheets/jquery.selectBoxIt.css \
+	public/vendor/jquery-selectBoxIt
+	cp vendor/jquery-selectBoxIt/src/javascripts/jquery.selectBoxIt.js public/vendor/jquery-selectBoxIt
+	cp vendor/jquery-selectBoxIt/src/javascripts/jquery.selectBoxIt.min.js public/vendor/jquery-selectBoxIt
+	cp vendor/jquery-selectBoxIt/src/stylesheets/jquery.selectBoxIt.css public/vendor/jquery-selectBoxIt
+
 public/vendor/jquery-selectBoxIt:
 	mkdir -p public/vendor/jquery-selectBoxIt
-	cp vendor/jquery-selectBoxIt/src/javascripts/jquery.selectBoxIt.min.js public/vendor/jquery-selectBoxIt/jquery.selectBoxIt.min.js
-	cp vendor/jquery-selectBoxIt/src/stylesheets/jquery.selectBoxIt.css public/vendor/jquery-selectBoxIt/jquery.selectBoxIt.css
 
 public/vendor/jquery-context-menu:
 	mkdir -p public/vendor/jquery-context-menu

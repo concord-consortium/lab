@@ -3,7 +3,7 @@ assert  = require 'assert'
 helpers = require '../../helpers'
 helpers.setupBrowserEnvironment()
 
-Model      = requirejs 'md2d/models/modeler'
+Model      = requirejs 'models/md2d/models/modeler'
 arrayTypes = requirejs 'common/array-types'
 
 describe "MD2D modeler deserialization and serialization", ->

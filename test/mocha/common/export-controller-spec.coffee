@@ -16,7 +16,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
 
   requirejs.define 'import-export/dg-exporter', [], -> dgExporter
 
-  Model            = requirejs 'md2d/models/modeler'
+  Model            = requirejs 'models/md2d/models/modeler'
   ExportController = requirejs 'common/controllers/export-controller'
 
   class MockInteractivesController

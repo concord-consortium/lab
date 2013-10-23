@@ -3,7 +3,7 @@ helpers = require '../../helpers'
 simpleModel = helpers.getModel 'simple-model.json'
 helpers.setupBrowserEnvironment()
 
-Model = requirejs 'md2d/models/modeler'
+Model = requirejs 'models/md2d/models/modeler'
 
 describe "MD2D output properties", ->
   model = null

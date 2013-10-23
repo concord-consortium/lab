@@ -20,11 +20,11 @@
         "electricFieldDensity": 24,
         "electricFieldColor": "rgb(0,255,0)",
         "forceVectors": {
-          "length": 1.5
+          "length": 15
         }
       },
       "onLoad": [
-        "setAtomProperties(0,{charge: 3});",
+        "setAtomProperties(0,{charge: 2});",
         "set('showElectricField',true);"
       ]
     }
@@ -35,7 +35,7 @@
       "initialValue": false,
       "onChange": [
         "if (value) {",
-        "  setAtomProperties(1, {charge: 3, visible: true});",
+        "  setAtomProperties(1, {charge: 2, visible: true});",
         "} else {",
         "  setAtomProperties(1, {charge: 0, visible: false});",
         "}"
@@ -69,13 +69,13 @@
     {
       "type": "button",
       "id": "set-charge-negative",
-      "action": "setAtomProperties(0,{charge: -3});",
+      "action": "setAtomProperties(0,{charge: -2});",
       "text": "Negative (-)"
     },
     {
       "type": "button",
       "id": "set-charge-positive",
-      "action": "setAtomProperties(0,{charge: 3});",
+      "action": "setAtomProperties(0,{charge: 2});",
       "text": "Positive (+)"
     }
   ],
