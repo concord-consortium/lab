@@ -12,7 +12,7 @@ define(function (require) {
       console               = require('common/console'),
       PIXI                  = require('pixi'),
 
-      CANVAS_OVERSAMPLING = 1.5,
+      CANVAS_OVERSAMPLING = 2,
 
       MAX_Z_INDEX = 1000;
 
