@@ -1742,9 +1742,7 @@ define(function(require) {
         }
       },
 
-      bindModel: bindModel,
-      model2px: modelView.model2px,
-      model2pxInv: modelView.model2pxInv
+      bindModel: bindModel
     };
 
     return api;
