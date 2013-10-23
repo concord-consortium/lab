@@ -921,28 +921,34 @@ define(function(require) {
             container.selectAll("image").remove();
             container.selectAll("image")
               .data(positionOrder, function(d) {
-                return d["i"];
+                return d.i;
               })
               .enter().append("image")
               .attr("x", function(d) {
-                return getImageCoords(d["i"])[0];
+                return getImageCoords(d.i)[0];
               })
               .attr("y", function(d) {
-                return getImageCoords(d["i"])[1];
+                return getImageCoords(d.i)[1];
               })
               .attr("class", function(d) {
-                return "image_attach" + d["i"] + " draggable";
+                return "image_attach" + d.i;
               })
               .attr("xlink:href", function(d) {
-                return img[d["i"]].src;
+                return img[d.i].src;
               })
               .attr("width", function(d) {
-                return model2px(imageSizes[d["i"]][0]);
+                return model2px(imageSizes[d.i][0]);
               })
               .attr("height", function(d) {
-                return model2px(imageSizes[d["i"]][1]);
+                return model2px(imageSizes[d.i][1]);
               })
-              .attr("pointer-events", "none");
+              .attr("pointer-events", function(d) {
+                // Make images transparent for mouse events when they are attached to atoms or
+                // obstacles. In such case interactivity of image will be defined by the
+                // interactivity of the host object.
+                if (imageProp[d.i].imageHostType) return "none";
+                return "auto";
+              });
           };
         })(i);
       }
