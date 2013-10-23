@@ -1,4 +1,4 @@
-/*global $, define: false, d3: false, AUTHORING: false, Image */
+/*global $, define: false, d3: false, AUTHORING: false */
 /*jshint loopfunc: true */
 
 // ------------------------------------------------------------
@@ -16,7 +16,8 @@ define(function(require) {
     GeneticRenderer     = require('models/md2d/views/genetic-renderer'),
     wrapSVGText         = require('cs!common/layout/wrap-svg-text'),
     gradients           = require('common/views/gradients'),
-    color               = require('common/views/color');
+    color               = require('common/views/color'),
+    ImagesHelper        = require('./images-helper');
 
   return function MD2DView(modelView, model) {
     // Public API object to be returned.
@@ -116,12 +117,7 @@ define(function(require) {
       velVector,
       forceVector,
       efVector,
-      imageProp,
-      imageMapping,
-      modelImagePath,
-      imageSizes = [],
       textBoxes,
-      imagePath,
       drawAtomTrace,
       atomTraceId,
       atomTraceColor,
@@ -141,6 +137,37 @@ define(function(require) {
       // see https://connect.microsoft.com/IE/feedback/details/781964/
       hideLineMarkers = browser.browser === "MSIE" && Number(browser.version) >= 10;
 
+    // Provides a restricted set of closure variables to the ImagesHelper object.
+    var imagesHelper = new ImagesHelper({
+      imageContainerTop: imageContainerTop,
+      imageContainerBelow: imageContainerBelow,
+
+      get model2px() {
+        return model2px;
+      },
+      get model2pxInv() {
+        return model2pxInv;
+      },
+      get atoms() {
+        return modelAtoms;
+      },
+      get obstacles() {
+        return obstacles;
+      },
+      get imagesDescription() {
+        return model.properties.images;
+      },
+      get imageMapping() {
+        return model.properties.imageMapping;
+      },
+      get imagePath() {
+        if (model.properties.imagePath) {
+          return labConfig.actualRoot + model.properties.imagePath;
+        } else if (modelView.url) {
+          return labConfig.actualRoot + modelView.url.slice(0, modelView.url.lastIndexOf("/") + 1);
+        }
+      }
+    });
 
     // Pass in the signed 24-bit Integer used for Java MW elementColors
     // See: https://github.com/mbostock/d3/wiki/Colors
@@ -708,79 +735,7 @@ define(function(require) {
       vdwLines.exit().remove();
     }
 
-    function getImagePath(imgProp) {
-      return imagePath + (imageMapping[imgProp.imageUri] || imgProp.imageUri);
-    }
 
-    function drawImageAttachment() {
-      var img = [],
-        imglayer,
-        container,
-        i,
-        positionOrder,
-        positionOrderTop = [],
-        positionOrderBelow = [];
-
-      imageContainerTop.selectAll("image").remove();
-      imageContainerBelow.selectAll("image").remove();
-
-      if (!imageProp) return;
-
-      for (i = 0; i < imageProp.length; i++) {
-        img[i] = new Image();
-        img[i].src = getImagePath(imageProp[i]);
-        img[i].onload = (function(i) {
-          return function() {
-            imglayer = imageProp[i].imageLayer;
-            positionOrder = imglayer === 1 ? positionOrderTop : positionOrderBelow;
-            positionOrder.push({
-              i: i,
-              zOrder: ( !! imageProp[i].imageLayerPosition) ? imageProp[i].imageLayerPosition : 0
-            });
-            positionOrder.sort(function(a, b) {
-              return d3.ascending(a["zOrder"], b["zOrder"]);
-            });
-            // In Classic MW model size is defined in 0.1A.
-            // Model unit (0.1A) - pixel ratio is always 1. The same applies
-            // to images. We can assume that their pixel dimensions are
-            // in 0.1A also. So convert them to nm (* 0.01).
-            imageSizes[i] = [0.01 * img[i].width, 0.01 * img[i].height];
-            container = imglayer === 1 ? imageContainerTop : imageContainerBelow;
-            container.selectAll("image").remove();
-            container.selectAll("image")
-              .data(positionOrder, function(d) {
-                return d.i;
-              })
-              .enter().append("image")
-              .attr("x", function(d) {
-                return getImageCoords(d.i)[0];
-              })
-              .attr("y", function(d) {
-                return getImageCoords(d.i)[1];
-              })
-              .attr("class", function(d) {
-                return "image_attach" + d.i;
-              })
-              .attr("xlink:href", function(d) {
-                return img[d.i].src;
-              })
-              .attr("width", function(d) {
-                return model2px(imageSizes[d.i][0]);
-              })
-              .attr("height", function(d) {
-                return model2px(imageSizes[d.i][1]);
-              })
-              .attr("pointer-events", function(d) {
-                // Make images transparent for mouse events when they are attached to atoms or
-                // obstacles. In such case interactivity of image will be defined by the
-                // interactivity of the host object.
-                if (imageProp[d.i].imageHostType) return "none";
-                return "auto";
-              });
-          };
-        })(i);
-      }
-    }
 
     function getTextBoxCoords(d) {
       var x, y, hostX, hostY, textX, textY, frameX, frameY, calloutX, calloutY,
@@ -1383,42 +1338,6 @@ define(function(require) {
       });
     }
 
-    function getImageCoords(i) {
-      var props = imageProp[i],
-        x, y, img_width, img_height;
-      if (props.imageHostType) {
-        if (props.imageHostType === "Atom") {
-          x = modelAtoms[props.imageHostIndex].x;
-          y = modelAtoms[props.imageHostIndex].y;
-        } else if (props.imageHostType === "RectangularObstacle") {
-          x = obstacles.x[props.imageHostIndex] + (obstacles.width[props.imageHostIndex] / 2);
-          y = obstacles.y[props.imageHostIndex] + (obstacles.height[props.imageHostIndex] / 2);
-        }
-        img_width = imageSizes[i][0];
-        img_height = imageSizes[i][1];
-        x = x - img_width / 2;
-        y = y + img_height / 2;
-      } else {
-        x = props.imageX;
-        y = props.imageY;
-      }
-      return [model2px(x), model2pxInv(y)];
-    }
-
-    function updateImageAttachment() {
-      var numImages, imglayer, container, coords, i;
-      numImages = imageProp.length;
-      for (i = 0; i < numImages; i++) {
-        if (!imageSizes || !imageSizes[i]) continue;
-        coords = getImageCoords(i);
-        imglayer = imageProp[i].imageLayer;
-        container = imglayer === 1 ? imageContainerTop : imageContainerBelow;
-        container.selectAll("image.image_attach" + i)
-          .attr("x", coords[0])
-          .attr("y", coords[1]);
-      }
-    }
-
     function textDrag(d) {
       var dragDx = model2px.invert(d3.event.dx),
         dragDy = model2px.invert(d3.event.dy);
@@ -1473,15 +1392,6 @@ define(function(require) {
     }
 
     function setupRendererOptions() {
-      imageProp = model.get("images");
-      imageMapping = model.get("imageMapping");
-      modelImagePath = model.get('imagePath');
-      if (modelImagePath) {
-        imagePath = labConfig.actualRoot + modelImagePath;
-      } else if (modelView.url) {
-        imagePath = labConfig.actualRoot + modelView.url.slice(0, modelView.url.lastIndexOf("/") + 1);
-      }
-
       useQuantumDynamics = model.properties.useQuantumDynamics;
       if (useQuantumDynamics) {
         createExcitationGlow();
@@ -1607,7 +1517,7 @@ define(function(require) {
         modelView.renderCanvas();
       }));
       model.on('textBoxesChanged', redrawClickableObjects(drawTextBoxes));
-      model.on('imagesChanged', redrawClickableObjects(drawImageAttachment));
+      model.on('imagesChanged', redrawClickableObjects(imagesHelper.drawImageAttachment));
       model.on('addElectricField', setupElectricField);
       model.on('removeElectricField', setupElectricField);
       model.on('changeElectricField', setupElectricField);
@@ -1655,7 +1565,7 @@ define(function(require) {
       setupVectors();
       setupElectricField();
       setupAtomTrace();
-      drawImageAttachment();
+      imagesHelper.drawImageAttachment();
       drawTextBoxes();
       drawSymbolImages();
       setupFirefoxWarning();
@@ -1707,8 +1617,8 @@ define(function(require) {
       if (drawAtomTrace) {
         updateAtomTrace();
       }
-      if (imageProp && imageProp.length !== 0) {
-        updateImageAttachment();
+      if (model.properties.images && model.properties.images.length !== 0) {
+        imagesHelper.updateImageAttachment();
       }
       if (textBoxes && textBoxes.length > 0) {
         updateTextBoxes();
