@@ -86,16 +86,7 @@ define(function(require) {
       // Number of gradients used for Charge Shading (for both positive and negative charges).
       CHARGE_SHADING_STEPS = 25,
 
-      atomTooltipOn = false,
-
-      atomToolTip, atomToolTipPre,
-
       fontSizeInPixels,
-
-      modelTimeFormatter = d3.format("5.1f"),
-      timePrefix = "",
-      timeSuffix = "",
-
       obstacle,
       obstacles,
       mockObstaclesArray = [],
@@ -150,10 +141,6 @@ define(function(require) {
       // see https://connect.microsoft.com/IE/feedback/details/781964/
       hideLineMarkers = browser.browser === "MSIE" && Number(browser.version) >= 10;
 
-
-    function modelTimeLabel() {
-      return timePrefix + modelTimeFormatter(model.get('displayTime')) + timeSuffix;
-    }
 
     // Pass in the signed 24-bit Integer used for Java MW elementColors
     // See: https://github.com/mbostock/d3/wiki/Colors
@@ -1330,60 +1317,6 @@ define(function(require) {
       vdwLinesEnter();
     }
 
-    function moleculeMouseOver(d, i) {
-      if (model.get("enableAtomTooltips") && (atomTooltipOn === false)) {
-        renderAtomTooltip(i);
-      }
-    }
-
-    function moleculeMouseDown(d, i) {
-      modelView.node.focus();
-      if (model.get("enableAtomTooltips")) {
-        if (atomTooltipOn !== false) {
-          atomToolTip.style("opacity", 1e-6);
-          atomToolTip.style("display", "none");
-          atomTooltipOn = false;
-        } else {
-          if (d3.event.shiftKey) {
-            atomTooltipOn = i;
-          } else {
-            atomTooltipOn = false;
-          }
-          renderAtomTooltip(i);
-        }
-      }
-    }
-
-    function renderAtomTooltip(i) {
-      var pos = modelView.pos(),
-        left = pos.left + model2px(modelAtoms[i].x),
-        top = pos.top + model2pxInv(modelAtoms[i].y);
-
-      atomToolTip
-        .style("opacity", 1.0)
-        .style("display", "inline")
-        .style("background", "rgba(100%, 100%, 100%, 0.7)")
-        .style("left", left + "px")
-        .style("top", top + "px")
-        .style("zIndex", 100)
-        .transition().duration(250);
-
-      atomToolTipPre.text(
-        "atom: " + i + "\n" +
-        "time: " + modelTimeLabel() + "\n" +
-        "speed: " + d3.format("+6.3e")(modelAtoms[i].speed) + "\n" +
-        "vx:    " + d3.format("+6.3e")(modelAtoms[i].vx) + "\n" +
-        "vy:    " + d3.format("+6.3e")(modelAtoms[i].vy) + "\n" +
-        "ax:    " + d3.format("+6.3e")(modelAtoms[i].ax) + "\n" +
-        "ay:    " + d3.format("+6.3e")(modelAtoms[i].ay) + "\n"
-      );
-    }
-
-    function moleculeMouseOut() {
-      if (!atomTooltipOn && atomTooltipOn !== 0) {
-        atomToolTip.style("opacity", 1e-6).style("zIndex" - 1);
-      }
-    }
 
     function getVelVectorPath(d) {
       var x_pos = model2px(d.x),
@@ -1497,16 +1430,6 @@ define(function(require) {
         d.x = d.x + dragDx;
         d.y = d.y - dragDy;
         updateTextBoxes();
-      }
-    }
-
-    function setupToolTips() {
-      var mc = d3.select("#model-container");
-      if (atomToolTip === undefined && !mc.empty()) {
-        atomToolTip = mc.append("div")
-          .attr("class", "tooltip")
-          .style("opacity", 1e-6);
-        atomToolTipPre = atomToolTip.append("pre");
       }
     }
 
@@ -1630,8 +1553,6 @@ define(function(require) {
     //
 
     function setup() {
-      timeSuffix = " (" + model.getPropertyDescription('displayTime').getUnitAbbreviation() + ")";
-
       model2px = modelView.model2px;
       model2pxInv = modelView.model2pxInv;
 
@@ -1736,7 +1657,6 @@ define(function(require) {
       setupAtomTrace();
       drawImageAttachment();
       drawTextBoxes();
-      setupToolTips();
       drawSymbolImages();
       setupFirefoxWarning();
       if (useQuantumDynamics) {
