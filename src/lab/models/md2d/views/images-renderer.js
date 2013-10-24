@@ -1,29 +1,39 @@
 /* jshint loopfunc: true*/
-define(function() {
 
-  return function ImagesHelper(parentInterface) {
+define(function(require) {
+
+  var labConfig = require('lab.config');
+
+  return function ImagesRenderer(modelView, model, containers) {
     var imageSizes = [];
 
-    function getImagePath(imgProp) {
-      var imagePath = parentInterface.imagePath;
-      var imageMapping = parentInterface.imageMapping;
+    function getImagePath(imageDescription) {
+      var imageMapping = model.properties.imageMapping;
+      var basePath;
 
-      return imagePath + (imageMapping[imgProp.imageUri] || imgProp.imageUri);
+      if (model.properties.imagePath) {
+        basePath = labConfig.actualRoot + model.properties.imagePath;
+      } else if (modelView.url) {
+        basePath = labConfig.actualRoot + modelView.url.slice(0, modelView.url.lastIndexOf("/") + 1);
+      }
+
+      return basePath + (imageMapping[imageDescription.imageUri] || imageDescription.imageUri);
     }
 
     function getImageCoords(i) {
-      var imageProp = parentInterface.imagesDescription;
-      var modelAtoms = parentInterface.atoms;
-      var obstacles = parentInterface.obstacles;
-      var model2px = parentInterface.model2px;
-      var model2pxInv = parentInterface.model2pxInv;
+      var imagesDescription = model.properties.images;
+      var atoms = model.getAtoms();
+      var obstacles = model.get_obstacles();
+      var model2px = modelView.model2px;
+      var model2pxInv = modelView.model2pxInv;
 
-      var props = imageProp[i],
+      var props = imagesDescription[i],
         x, y, img_width, img_height;
+
       if (props.imageHostType) {
         if (props.imageHostType === "Atom") {
-          x = modelAtoms[props.imageHostIndex].x;
-          y = modelAtoms[props.imageHostIndex].y;
+          x = atoms[props.imageHostIndex].x;
+          y = atoms[props.imageHostIndex].y;
         } else if (props.imageHostType === "RectangularObstacle") {
           x = obstacles.x[props.imageHostIndex] + (obstacles.width[props.imageHostIndex] / 2);
           y = obstacles.y[props.imageHostIndex] + (obstacles.height[props.imageHostIndex] / 2);
@@ -39,11 +49,9 @@ define(function() {
       return [model2px(x), model2pxInv(y)];
     }
 
-    function drawImageAttachment() {
-      var imageProp = parentInterface.imagesDescription;
-      var model2px = parentInterface.model2px;
-      var imageContainerTop = parentInterface.imageContainerTop;
-      var imageContainerBelow = parentInterface.imageContainerBelow;
+    function setup() {
+      var imageProp = model.properties.images;
+      var model2px = modelView.model2px;
 
       var img = [],
         imglayer,
@@ -53,8 +61,8 @@ define(function() {
         positionOrderTop = [],
         positionOrderBelow = [];
 
-      imageContainerTop.selectAll("image").remove();
-      imageContainerBelow.selectAll("image").remove();
+      containers.above.selectAll("image").remove();
+      containers.below.selectAll("image").remove();
 
       if (!imageProp) return;
 
@@ -77,7 +85,7 @@ define(function() {
             // to images. We can assume that their pixel dimensions are
             // in 0.1A also. So convert them to nm (* 0.01).
             imageSizes[i] = [0.01 * img[i].width, 0.01 * img[i].height];
-            container = imglayer === 1 ? imageContainerTop : imageContainerBelow;
+            container = imglayer === 1 ? containers.above : containers.below;
             container.selectAll("image").remove();
             container.selectAll("image")
               .data(positionOrder, function(d) {
@@ -114,27 +122,30 @@ define(function() {
       }
     }
 
-    function updateImageAttachment() {
-      var imageContainerTop = parentInterface.imageContainerTop;
-      var imageContainerBelow = parentInterface.imageContainerBelow;
-      var imageProp = parentInterface.imagesDescription;
+    function update() {
+      var imagesDescription = model.properties.images;
 
       var numImages, imglayer, container, coords, i;
-      numImages = imageProp.length;
+      numImages = imagesDescription.length;
       for (i = 0; i < numImages; i++) {
         if (!imageSizes || !imageSizes[i]) continue;
         coords = getImageCoords(i);
-        imglayer = imageProp[i].imageLayer;
-        container = imglayer === 1 ? imageContainerTop : imageContainerBelow;
+        imglayer = imagesDescription[i].imageLayer;
+        container = imglayer === 1 ? containers.above : containers.below;
         container.selectAll("image.image_attach" + i)
           .attr("x", coords[0])
           .attr("y", coords[1]);
       }
     }
 
+    function bindModel(_model) {
+      model = _model;
+    }
+
     return {
-      drawImageAttachment: drawImageAttachment,
-      updateImageAttachment: updateImageAttachment
+      setup: setup,
+      update: update,
+      bindModel: bindModel
     };
   };
 });

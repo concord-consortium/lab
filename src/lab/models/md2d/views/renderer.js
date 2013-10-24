@@ -75,6 +75,10 @@ define(function(require) {
       // TODO: try to create new renderers in separate files for clarity and easier testing.
       atomsRenderer = new AtomsRenderer(modelView, model, atomsPixi.pixiContainer, atomsPixi.canvas),
       bondsRenderer = new BondsRenderer(modelView, model, bondsPixi.pixiContainer, atomsRenderer),
+      imagesRenderer = new ImagesRenderer(modelView, model, {
+        below: imageContainerBelow,
+        above: imageContainerTop
+      }),
       geneticRenderer,
 
       // Set of gradients used for Kinetic Energy Shading.
@@ -136,38 +140,6 @@ define(function(require) {
       // does not update line markers when svg lines are moved
       // see https://connect.microsoft.com/IE/feedback/details/781964/
       hideLineMarkers = browser.browser === "MSIE" && Number(browser.version) >= 10;
-
-    // Provides a restricted set of closure variables to the ImagesRenderer object.
-    var imagesRenderer = new ImagesRenderer({
-      imageContainerTop: imageContainerTop,
-      imageContainerBelow: imageContainerBelow,
-
-      get model2px() {
-        return model2px;
-      },
-      get model2pxInv() {
-        return model2pxInv;
-      },
-      get atoms() {
-        return modelAtoms;
-      },
-      get obstacles() {
-        return obstacles;
-      },
-      get imagesDescription() {
-        return model.properties.images;
-      },
-      get imageMapping() {
-        return model.properties.imageMapping;
-      },
-      get imagePath() {
-        if (model.properties.imagePath) {
-          return labConfig.actualRoot + model.properties.imagePath;
-        } else if (modelView.url) {
-          return labConfig.actualRoot + modelView.url.slice(0, modelView.url.lastIndexOf("/") + 1);
-        }
-      }
-    });
 
     // Pass in the signed 24-bit Integer used for Java MW elementColors
     // See: https://github.com/mbostock/d3/wiki/Colors
@@ -1517,7 +1489,7 @@ define(function(require) {
         modelView.renderCanvas();
       }));
       model.on('textBoxesChanged', redrawClickableObjects(drawTextBoxes));
-      model.on('imagesChanged', redrawClickableObjects(imagesRenderer.drawImageAttachment));
+      model.on('imagesChanged', redrawClickableObjects(imagesRenderer.setup));
       model.on('addElectricField', setupElectricField);
       model.on('removeElectricField', setupElectricField);
       model.on('changeElectricField', setupElectricField);
@@ -1533,6 +1505,7 @@ define(function(require) {
       model = newModel;
       atomsRenderer.bindModel(newModel);
       bondsRenderer.bindModel(newModel);
+      imagesRenderer.bindModel(newModel);
       setup();
     }
 
@@ -1565,7 +1538,7 @@ define(function(require) {
       setupVectors();
       setupElectricField();
       setupAtomTrace();
-      imagesRenderer.drawImageAttachment();
+      imagesRenderer.setup();
       drawTextBoxes();
       drawSymbolImages();
       setupFirefoxWarning();
@@ -1618,7 +1591,7 @@ define(function(require) {
         updateAtomTrace();
       }
       if (model.properties.images && model.properties.images.length !== 0) {
-        imagesRenderer.updateImageAttachment();
+        imagesRenderer.update();
       }
       if (textBoxes && textBoxes.length > 0) {
         updateTextBoxes();
