@@ -278,19 +278,19 @@ define(function(require) {
           atom = new PIXI.Sprite(getAtomTexture(i));
           atom.anchor.x = 0.5;
           atom.anchor.y = 0.5;
-
           atom.i = i;
+          viewAtoms.push(atom);
+          container.addChild(atom);
+        }
 
-          if (renderMode.keShading) {
+        if (renderMode.keShading) {
+          for (i = 0, len = modelAtoms.length; i < len; ++i) {
             keSprite = new PIXI.Sprite(getAtomTexture(i, KE_SHADING_MAX_COLORS));
             keSprite.anchor.x = 0.5;
             keSprite.anchor.y = 0.5;
-            atom.keSprite = keSprite;
-            atom.addChild(keSprite);
+            viewAtoms[i].keSprite = keSprite;
+            container.addChild(keSprite);
           }
-
-          viewAtoms.push(atom);
-          container.addChild(atom);
         }
 
         api.update();
@@ -316,6 +316,8 @@ define(function(require) {
 
           if (renderMode.keShading) {
             viewAtom.keSprite.alpha = Math.min(5 * model.getAtomKineticEnergy(i), 1);
+            viewAtom.keSprite.position.x = x;
+            viewAtom.keSprite.position.y = y;
           }
 
           if (model.properties.useQuantumDynamics) {
