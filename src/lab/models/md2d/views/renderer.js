@@ -17,7 +17,7 @@ define(function(require) {
     wrapSVGText         = require('cs!common/layout/wrap-svg-text'),
     gradients           = require('common/views/gradients'),
     color               = require('common/views/color'),
-    ImagesHelper        = require('./images-helper');
+    ImagesRenderer      = require('./images-renderer');
 
   return function MD2DView(modelView, model) {
     // Public API object to be returned.
@@ -137,8 +137,8 @@ define(function(require) {
       // see https://connect.microsoft.com/IE/feedback/details/781964/
       hideLineMarkers = browser.browser === "MSIE" && Number(browser.version) >= 10;
 
-    // Provides a restricted set of closure variables to the ImagesHelper object.
-    var imagesHelper = new ImagesHelper({
+    // Provides a restricted set of closure variables to the ImagesRenderer object.
+    var imagesRenderer = new ImagesRenderer({
       imageContainerTop: imageContainerTop,
       imageContainerBelow: imageContainerBelow,
 
@@ -1517,7 +1517,7 @@ define(function(require) {
         modelView.renderCanvas();
       }));
       model.on('textBoxesChanged', redrawClickableObjects(drawTextBoxes));
-      model.on('imagesChanged', redrawClickableObjects(imagesHelper.drawImageAttachment));
+      model.on('imagesChanged', redrawClickableObjects(imagesRenderer.drawImageAttachment));
       model.on('addElectricField', setupElectricField);
       model.on('removeElectricField', setupElectricField);
       model.on('changeElectricField', setupElectricField);
@@ -1565,7 +1565,7 @@ define(function(require) {
       setupVectors();
       setupElectricField();
       setupAtomTrace();
-      imagesHelper.drawImageAttachment();
+      imagesRenderer.drawImageAttachment();
       drawTextBoxes();
       drawSymbolImages();
       setupFirefoxWarning();
@@ -1618,7 +1618,7 @@ define(function(require) {
         updateAtomTrace();
       }
       if (model.properties.images && model.properties.images.length !== 0) {
-        imagesHelper.updateImageAttachment();
+        imagesRenderer.updateImageAttachment();
       }
       if (textBoxes && textBoxes.length > 0) {
         updateTextBoxes();
