@@ -1,11 +1,143 @@
-/* jshint loopfunc: true*/
-
 define(function(require) {
 
   var labConfig = require('lab.config');
+  var UPPER_LEFT = 0;
+  var CENTER = 1;
 
-  return function ImagesRenderer(modelView, model, containers) {
-    var imageSizes = [];
+  return function ImagesRenderer(modelView, model) {
+    // A collection of Image objects for each <image> src that has been seen by the renderer.
+    var imagesBySrc = {};
+
+    // Nested arrays of data about the requested images, ready to be joined to the d3 selection.
+    var imageData;
+
+    // In order to center and scale images correctly, we need their actual width and height.
+    // However, this information loads asynchronously, so the width and height adjustments may need
+    // to happen after we have completed setting up images.
+    // Therefore, call this method before creating an <image> element with the given src.
+    // It will create an Image object with that src, if we do not already have one, and when the
+    // Image finishes loading it will update the width and height of any images in the image
+    // container which have the same src.
+    function loadImage(src) {
+      if (imagesBySrc[src]) {
+        return;
+      }
+
+      var image = new Image();
+      image.src = src;
+      image.onload = function() {
+        // Resize and recenter any instances of this image currently in the DOM.
+        d3.select(modelView.node)
+          .selectAll('image').each(function() {
+            if (d3.select(this).attr('xlink:href') === src) {
+              d3.select(this)
+                .attr('width', scaleImageLength(image.width))
+                .attr('height', scaleImageLength(image.height))
+                .attr('transform', translateImage);
+            }
+          });
+
+        // This selector-based alternative to the .each() above actually works in Chrome, but other
+        // (conforming!) browsers require that 'src' be CSS escaped first
+        // (see http://mathiasbynens.be/notes/css-escapes)
+        //
+        // d3.select(modelView.node)
+        //   .selectAll('image[*|href="' + src + '"')
+        //   .attr(...)
+      };
+
+      imagesBySrc[src] = image;
+    }
+
+    // Images prepared for Classic MW have 1 pixel == 0.1 Angstrom (0.01 nm). Therefore, convert
+    // image dimension from "Classic MW pixels", to nm, to onscreen pixels.
+    function scaleImageLength(l) {
+      return modelView.model2px(0.01 * l);
+    }
+
+    // Sets 'imageData' to a nested array of information about the requested images which can be
+    // joined to the nested d3 selection in setup() in order to append the actual <image> elements.
+    function setupImageData() {
+      imageData = [[], []];
+
+      (model.properties.images || []).forEach(function(desc) {
+        var layer = desc.imageLayer === 1 ? imageData[1] : imageData[0];
+        var src = getImagePath(desc);
+        var referencePoint;
+        var capturesPointer;
+        var x;
+        var y;
+
+        if (desc.imageHostType) {
+          // imageHostType => image is "attached" to an atom or obstacle, and x and y specify the
+          // model coordinates of its center.
+          referencePoint = CENTER;
+          // Images attached to objects still allow the underlying object to be dragged.
+          capturesPointer = false;
+        } else {
+          // no imageHostType => image is at a fixed coordinate in the model space, and x and y
+          // specify the model coordinates of its upper left corner.
+          referencePoint = UPPER_LEFT;
+          // Unattached images prevent dragging of whatever is beneath them, in the usual way.
+          capturesPointer = true;
+          // Update x and y now; updateImageCoordinates will be a noop.
+          x = modelView.model2px(desc.imageX);
+          y = modelView.model2pxInv(desc.imageY);
+        }
+
+        loadImage(src);
+
+        layer.push({
+          imageDescription: desc,
+          src:              src,
+          x:                x,
+          y:                y,
+          referencePoint:   referencePoint,
+          capturesPointer:  capturesPointer,
+          zOrder:           desc.imageLayerPosition || 0
+        });
+      });
+
+      // Finally, because imageData for each layer is 1:1 with svg image elements, sort the
+      // imageData for each layer by the intended z order of the images.
+      imageData.forEach(function(layer) {
+        layer.sort(function(a, b) {
+          return d3.ascending(a.zOrder, b.zOrder);
+        });
+      });
+
+      updateImageCoordinates();
+    }
+
+    // Update just the x, y of each element in imageData (except for fixed elements)
+    function updateImageCoordinates() {
+      imageData.forEach(function(layer) {
+        layer.forEach(function(datum) {
+
+          var imageDescription = datum.imageDescription;
+          var hostType = imageDescription.imageHostType;
+          var index    = imageDescription.imageHostIndex;
+          var atoms;
+          var obstacles;
+          var x, y;
+
+          if (hostType === 'Atom') {
+            atoms = model.getAtoms();
+            x = atoms[index].x;
+            y = atoms[index].y;
+          } else if(hostType === 'RectangularObstacle') {
+            obstacles = model.get_obstacles();
+            x = obstacles.x[index] + obstacles.width[index] / 2;
+            y = obstacles.y[index] + obstacles.height[index] / 2;
+          }
+
+          if (x !== undefined) {
+            datum.x = modelView.model2px(x);
+            datum.y = modelView.model2pxInv(y);
+          }
+        });
+      });
+    }
 
     function getImagePath(imageDescription) {
       var imageMapping = model.properties.imageMapping;
@@ -20,123 +152,51 @@ define(function(require) {
       return basePath + (imageMapping[imageDescription.imageUri] || imageDescription.imageUri);
     }
 
-    function getImageCoords(i) {
-      var imagesDescription = model.properties.images;
-      var atoms = model.getAtoms();
-      var obstacles = model.get_obstacles();
-      var model2px = modelView.model2px;
-      var model2pxInv = modelView.model2pxInv;
-
-      var props = imagesDescription[i],
-        x, y, img_width, img_height;
-
-      if (props.imageHostType) {
-        if (props.imageHostType === "Atom") {
-          x = atoms[props.imageHostIndex].x;
-          y = atoms[props.imageHostIndex].y;
-        } else if (props.imageHostType === "RectangularObstacle") {
-          x = obstacles.x[props.imageHostIndex] + (obstacles.width[props.imageHostIndex] / 2);
-          y = obstacles.y[props.imageHostIndex] + (obstacles.height[props.imageHostIndex] / 2);
-        }
-        img_width = imageSizes[i][0];
-        img_height = imageSizes[i][1];
-        x = x - img_width / 2;
-        y = y + img_height / 2;
-      } else {
-        x = props.imageX;
-        y = props.imageY;
+    // A 2d translation that centers the image, if required.
+    function translateImage(d) {
+      if (d.referencePoint === UPPER_LEFT) {
+        return "";
       }
-      return [model2px(x), model2pxInv(y)];
+      var image = imagesBySrc[d.src];
+      return "translate(" + (-scaleImageLength(image.width/2)) + "," +
+                            (-scaleImageLength(image.height/2)) +")";
     }
 
+    // Called whenever the set of images or their ordering change in some way.
     function setup() {
-      var imageProp = model.properties.images;
-      var model2px = modelView.model2px;
+      setupImageData();
 
-      var img = [],
-        imglayer,
-        container,
-        i,
-        positionOrder,
-        positionOrderTop = [],
-        positionOrderBelow = [];
+      d3.select(modelView.node).selectAll('.image-container')
+        .data(imageData)
+        .each(function(d) {
+          var images = d3.select(this).selectAll('image').data(d);
+          images.enter().append('image');
+          images.attr({
+            'xlink:href': function(d) { return d.src; },
+            x: function(d) { return d.x; },
+            y: function(d) { return d.y; },
+            height: function (d) { return scaleImageLength(imagesBySrc[d.src].height); },
+            width:  function (d) { return scaleImageLength(imagesBySrc[d.src].width); },
+            transform: translateImage,
+            'pointer-events': function(d) { return d.capturesPointer ? 'auto' : 'none'; }
+          });
 
-      containers.above.selectAll("image").remove();
-      containers.below.selectAll("image").remove();
-
-      if (!imageProp) return;
-
-      for (i = 0; i < imageProp.length; i++) {
-        img[i] = new Image();
-        img[i].src = getImagePath(imageProp[i]);
-        img[i].onload = (function(i) {
-          return function() {
-            imglayer = imageProp[i].imageLayer;
-            positionOrder = imglayer === 1 ? positionOrderTop : positionOrderBelow;
-            positionOrder.push({
-              i: i,
-              zOrder: ( !! imageProp[i].imageLayerPosition) ? imageProp[i].imageLayerPosition : 0
-            });
-            positionOrder.sort(function(a, b) {
-              return d3.ascending(a["zOrder"], b["zOrder"]);
-            });
-            // In Classic MW model size is defined in 0.1A.
-            // Model unit (0.1A) - pixel ratio is always 1. The same applies
-            // to images. We can assume that their pixel dimensions are
-            // in 0.1A also. So convert them to nm (* 0.01).
-            imageSizes[i] = [0.01 * img[i].width, 0.01 * img[i].height];
-            container = imglayer === 1 ? containers.above : containers.below;
-            container.selectAll("image").remove();
-            container.selectAll("image")
-              .data(positionOrder, function(d) {
-                return d.i;
-              })
-              .enter().append("image")
-              .attr("x", function(d) {
-                return getImageCoords(d.i)[0];
-              })
-              .attr("y", function(d) {
-                return getImageCoords(d.i)[1];
-              })
-              .attr("class", function(d) {
-                return "image_attach" + d.i;
-              })
-              .attr("xlink:href", function(d) {
-                return img[d.i].src;
-              })
-              .attr("width", function(d) {
-                return model2px(imageSizes[d.i][0]);
-              })
-              .attr("height", function(d) {
-                return model2px(imageSizes[d.i][1]);
-              })
-              .attr("pointer-events", function(d) {
-                // Make images transparent for mouse events when they are attached to atoms or
-                // obstacles. In such case interactivity of image will be defined by the
-                // interactivity of the host object.
-                if (imageProp[d.i].imageHostType) return "none";
-                return "auto";
-              });
-          };
-        })(i);
-      }
+          images.exit().remove();
+        });
     }
 
+    // Called for every tick; just updates image coordinates.
     function update() {
-      var imagesDescription = model.properties.images;
+      updateImageCoordinates();
 
-      var numImages, imglayer, container, coords, i;
-      numImages = imagesDescription.length;
-      for (i = 0; i < numImages; i++) {
-        if (!imageSizes || !imageSizes[i]) continue;
-        coords = getImageCoords(i);
-        imglayer = imagesDescription[i].imageLayer;
-        container = imglayer === 1 ? containers.above : containers.below;
-        container.selectAll("image.image_attach" + i)
-          .attr("x", coords[0])
-          .attr("y", coords[1]);
-      }
-    }
+      // No need for a nested selection as all images are already bound to the correct data items.
+      // Just need to let d3 know it should reapply x, y because the data items have been updated.
+      d3.select(modelView.node).selectAll('.image-container image')
+        .attr({
+          x: function(d) { return d.x; },
+          y: function(d) { return d.y; },
+        });
+     }
 
     function bindModel(_model) {
       model = _model;
