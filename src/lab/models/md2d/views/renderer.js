@@ -52,7 +52,7 @@ define(function(require) {
       // "Containers" - G elements used to position layers of the final visualization.
       fieldVisualization   = belowAtomsViewport.append("g").attr("class", "field-visualization"),
       shapeContainerBelow  = belowAtomsViewport.append("g").attr("class", "shape-container-below"),
-      imageContainerBelow  = belowAtomsViewport.append("g").attr("class", "image-container-below"),
+      imageContainerBelow  = belowAtomsViewport.append("g").attr("class", "image-container image-container-below"),
       textContainerBelow   = belowAtomsViewport.append("g").attr("class", "text-container-below"),
       VDWLinesContainer    = belowAtomsViewport.append("g").attr("class", "vdw-lines-container"),
 
@@ -66,7 +66,7 @@ define(function(require) {
       aboveAtomsViewport = modelView.appendViewport().classed("above-atoms", true),
       shapeContainerTop  = aboveAtomsViewport.append("g").attr("class", "shape-container-top"),
       lineContainerTop   = aboveAtomsViewport.append("g").attr("class", "line-container-top"),
-      imageContainerTop  = aboveAtomsViewport.append("g").attr("class", "image-container-top"),
+      imageContainerTop  = aboveAtomsViewport.append("g").attr("class", "image-container image-container-top"),
       textContainerTop   = aboveAtomsViewport.append("g").attr("class", "text-container-top"),
 
       iconContainer = modelView.foregroundContainer.append("g").attr("class", "icon-container"),
@@ -75,10 +75,7 @@ define(function(require) {
       // TODO: try to create new renderers in separate files for clarity and easier testing.
       atomsRenderer = new AtomsRenderer(modelView, model, atomsPixi.pixiContainer, atomsPixi.canvas),
       bondsRenderer = new BondsRenderer(modelView, model, bondsPixi.pixiContainer, atomsRenderer),
-      imagesRenderer = new ImagesRenderer(modelView, model, {
-        below: imageContainerBelow,
-        above: imageContainerTop
-      }),
+      imagesRenderer = new ImagesRenderer(modelView, model),
       geneticRenderer,
 
       // Set of gradients used for Kinetic Energy Shading.
