@@ -40,7 +40,7 @@ define(function () {
             "pointer-events": "none" // !!!
           }).appendTo("body");
 
-          result = document.elementFromPoint(5, 5).className;
+          result = $(document.elementFromPoint(5, 5)).attr("class");
 
           $svg.remove();
           $div2.remove();
