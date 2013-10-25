@@ -16,9 +16,9 @@
   &:focus
     outline: none
   // Old browsers
-  background-color: $interactive-container-background
+  background-color: lighten($interactive-container-background-gradient-destination, 5%)
   $experimental-support-for-svg: true
-  @include background-image(radial-gradient(center, ellipse cover,  $interactive-container-background 12%,$interactive-container-background-gradient-destination 100%))
+  @include background-image(radial-gradient(center, ellipse cover, $interactive-container-background 12%, $interactive-container-background-gradient-destination 100%))
 
 .component-spacing
   margin: 0.3em 0.5em
