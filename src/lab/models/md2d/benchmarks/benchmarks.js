@@ -1,4 +1,4 @@
-/*global define, Lab, d3 */
+/*global define, d3 */
 
 define(function (require) {
 
@@ -8,15 +8,14 @@ define(function (require) {
       WARMUP_TIME = 1000;
 
   return function Benchmarks(controller) {
-    var model = controller.model,
-        startCounter;
+    var startCounter;
 
     return [
       {
         name: "atoms",
         numeric: true,
         run: function(done) {
-          done(model.getNumberOfAtoms());
+          done(controller.model.getNumberOfAtoms());
         }
       },
       {
@@ -24,7 +23,7 @@ define(function (require) {
         numeric: true,
         formatter: d3.format("5.1f"),
         run: function(done) {
-          done(model.get("temperature"));
+          done(controller.model.get("temperature"));
         }
       },
       {
@@ -33,18 +32,18 @@ define(function (require) {
         formatter: d3.format("5.1f"),
         run: function(done) {
           // warmup
-          model.start();
+          controller.model.start();
           setTimeout(function() {
-            model.stop();
+            controller.model.stop();
 
             performance.collectData(true);
-            startCounter = model.stepCounter();
+            startCounter = controller.model.stepCounter();
 
             setTimeout(function() {
               // actual fps calculation
-              model.start();
+              controller.model.start();
               setTimeout(function() {
-                model.stop();
+                controller.model.stop();
 
                 performance.collectData(false);
                 done(performance.getAvgTime("engine"));
@@ -83,7 +82,7 @@ define(function (require) {
         numeric: true,
         formatter: d3.format("5.1f"),
         run: function(done) {
-          done((model.stepCounter() - startCounter) * 1000 / TEST_TIME);
+          done((controller.model.stepCounter() - startCounter) * 1000 / TEST_TIME);
         }
       },
       {

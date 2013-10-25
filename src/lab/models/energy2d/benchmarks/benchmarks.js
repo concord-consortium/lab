@@ -1,4 +1,4 @@
-/*global define: false, Lab: false, d3: false */
+/*global define: false, d3: false */
 
 define(function () {
 
@@ -8,8 +8,7 @@ define(function () {
       WARMUP_TIME = 1000;
 
   return function Benchmarks(controller) {
-    var model = controller.model,
-        start;
+    var start;
 
     var benchmarks = [
       //
@@ -21,19 +20,19 @@ define(function () {
         formatter: d3.format("5.1f"),
         run: function(done) {
           // warmup
-          model.start();
+          controller.model.start();
           setTimeout(function() {
-            model.stop();
+            controller.model.stop();
 
-            model.properties.use_WebGL = false;
+            controller.model.properties.use_WebGL = false;
             performance.collectData(true);
-            start = model.get("time");
+            start = controller.model.get("time");
 
             setTimeout(function() {
               // actual fps calculation
-              model.start();
+              controller.model.start();
               setTimeout(function() {
-                model.stop();
+                controller.model.stop();
 
                 performance.collectData(false);
                 done(performance.getAvgTime("engine"));
@@ -72,8 +71,8 @@ define(function () {
         numeric: true,
         formatter: d3.format("5.1f"),
         run: function(done) {
-          var elapsedModelTime = model.get('time') - start;
-          done(elapsedModelTime / (model.get('timeStepsPerTick') * model.get('timeStep')) * 1000 / TEST_TIME);
+          var elapsedModelTime = controller.model.get('time') - start;
+          done(elapsedModelTime / (controller.model.get('timeStepsPerTick') * controller.model.get('timeStep')) * 1000 / TEST_TIME);
         }
       },
       //
@@ -85,19 +84,19 @@ define(function () {
         formatter: d3.format("5.1f"),
         run: function(done) {
           // warmup
-          model.start();
+          controller.model.start();
           setTimeout(function() {
-            model.stop();
+            controller.model.stop();
 
-            model.properties.use_WebGL = true;
+            controller.model.properties.use_WebGL = true;
             performance.collectData(true);
-            start = model.get("time");
+            start = controller.model.get("time");
 
             setTimeout(function() {
               // actual fps calculation
-              model.start();
+              controller.model.start();
               setTimeout(function() {
-                model.stop();
+                controller.model.stop();
 
                 performance.collectData(false);
                 done(performance.getAvgTime("engine"));
@@ -136,8 +135,8 @@ define(function () {
         numeric: true,
         formatter: d3.format("5.1f"),
         run: function(done) {
-          var elapsedModelTime = model.get('time') - start;
-          done(elapsedModelTime / (model.get('timeStepsPerTick') * model.get('timeStep')) * 1000 / TEST_TIME);
+          var elapsedModelTime = controller.model.get('time') - start;
+          done(elapsedModelTime / (controller.model.get('timeStepsPerTick') * controller.model.get('timeStep')) * 1000 / TEST_TIME);
         }
       },
 
