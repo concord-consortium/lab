@@ -13,6 +13,7 @@ define(function(require) {
     benchmark           = require('common/benchmark/benchmark'),
     AtomsRenderer       = require('models/md2d/views/atoms-renderer'),
     BondsRenderer       = require('models/md2d/views/bonds-renderer'),
+    VectorsRenderer     = require('models/md2d/views/vectors-renderer'),
     GeneticRenderer     = require('models/md2d/views/genetic-renderer'),
     wrapSVGText         = require('cs!common/layout/wrap-svg-text'),
     gradients           = require('common/views/gradients'),
@@ -61,7 +62,8 @@ define(function(require) {
       atomsContainer = atomsViewport.append("g").attr("class", "atoms-container"),
 
       bondsPixi = modelView.appendPixiViewport(),
-      atomsPixi = modelView.appendPixiViewport(true),
+      atomsPixi = modelView.appendPixiViewport(),
+      vectorsPixi = modelView.appendPixiViewport(),
 
       aboveAtomsViewport = modelView.appendViewport().classed("above-atoms", true),
       shapeContainerTop  = aboveAtomsViewport.append("g").attr("class", "shape-container-top"),
@@ -75,6 +77,7 @@ define(function(require) {
       // TODO: try to create new renderers in separate files for clarity and easier testing.
       atomsRenderer = new AtomsRenderer(modelView, model, atomsPixi.pixiContainer, atomsPixi.canvas),
       bondsRenderer = new BondsRenderer(modelView, model, bondsPixi.pixiContainer, atomsRenderer),
+      vectorsRenderer = new VectorsRenderer(modelView, model, vectorsPixi.pixiContainer),
       imagesRenderer = new ImagesRenderer(modelView, model, {
         below: imageContainerBelow,
         above: imageContainerTop
@@ -1154,19 +1157,15 @@ define(function(require) {
     }
 
     function setupVectors() {
-      atomsContainer.selectAll("path.vector-" + VELOCITY_STR).remove();
       atomsContainer.selectAll("path.vector-" + FORCE_STR).remove();
 
-      drawVelocityVectors = model.get("showVelocityVectors");
       drawForceVectors = model.get("showForceVectors");
-      if (drawVelocityVectors) {
-        velVector = atomsContainer.selectAll("path.vector-" + VELOCITY_STR).data(modelAtoms);
-        vectorEnter(velVector, getVelVectorPath, getVelVectorWidth, velocityVectorColor, VELOCITY_STR);
-      }
       if (drawForceVectors) {
         forceVector = atomsContainer.selectAll("path.vector-" + FORCE_STR).data(modelAtoms);
         vectorEnter(forceVector, getForceVectorPath, getForceVectorWidth, forceVectorColor, FORCE_STR);
       }
+
+      vectorsRenderer.setup();
     }
 
     function setupElectricField() {
@@ -1505,6 +1504,7 @@ define(function(require) {
       model = newModel;
       atomsRenderer.bindModel(newModel);
       bondsRenderer.bindModel(newModel);
+      vectorsRenderer.bindModel(newModel);
       imagesRenderer.bindModel(newModel);
       setup();
     }
@@ -1577,10 +1577,8 @@ define(function(require) {
 
       atomsRenderer.update();
       bondsRenderer.update();
+      vectorsRenderer.update();
 
-      if (drawVelocityVectors) {
-        updateVectors(velVector, getVelVectorPath, getVelVectorWidth);
-      }
       if (drawForceVectors) {
         updateVectors(forceVector, getForceVectorPath, getForceVectorWidth);
       }
