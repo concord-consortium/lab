@@ -369,6 +369,10 @@ define(function (require) {
         foregroundContainer = d3.select(node).append("svg")
           .attr("class", "root-layer container foreground-container svg-viewport")
           .style("z-index", MAX_Z_INDEX)
+          // IE bug: without background color the layer will be transparent for mouse events
+          // when there is some underlying canvas. See:
+          // https://www.pivotaltracker.com/story/show/58418116
+          .style("background-color", "rgba(0,0,0,0)")
           .on("contextmenu", function() {
             // Disable default context menu on foreground container, as otherwise it  covers all
             // possible context menu that can be used by layers beneath.

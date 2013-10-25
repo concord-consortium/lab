@@ -419,7 +419,7 @@ define(function (require) {
         // Return a cloned version of 'e' but with a different 'type', 'target' and 'relatedTarget'.
         function createMouseEvent(e, type, target, relatedTarget) {
           var clonedEvent = document.createEvent("MouseEvent");
-          clonedEvent.initMouseEvent(type, e.bubbles, e.cancelable, e.view, e.detail, e.screenX, e.screenY, e.clientX, e.clientY, e.ctrlKey, e.altKey, e.shiftKey, e.metaKey, e.button, relatedTarget);
+          clonedEvent.initMouseEvent(type, e.bubbles, e.cancelable, e.view, e.detail, e.screenX, e.screenY, e.clientX, e.clientY, e.ctrlKey, e.altKey, e.shiftKey, e.metaKey, e.button, relatedTarget || e.relatedTarget);
           clonedEvent.target = target;
           return clonedEvent;
         }
