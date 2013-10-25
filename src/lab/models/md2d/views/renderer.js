@@ -843,8 +843,10 @@ define(function(require) {
 
     function drawTextBoxes() {
       var size, layers, appendTextBoxes;
-      // Workaround for a rendering bug in Chrome on OS X; see http://crbug.com/309740
-      var shouldRoundTextBoxStrokeWidth = browser.browser === 'Chrome' && browser.oscpu.indexOf('OS X') > 0;
+      // Workaround for a rendering bug in Chrome on OS X and Windows (but not Linux or Android);
+      // see http://crbug.com/309740
+      var shouldRoundTextBoxStrokeWidth =
+        browser.browser === 'Chrome' && !!browser.oscpu.match(/Windows|Mac OS X/);
 
       textBoxes = model.get('textBoxes');
 
