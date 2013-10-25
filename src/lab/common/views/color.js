@@ -31,6 +31,15 @@ define(function () {
       // This simple algorithm is described here:
       // http://www.w3.org/TR/AERT#color-contrast
       return (bg.r * 299 + bg.g * 587 + bg.b * 114) / 1000 >= 128 ? '#000' : '#fff';
+    },
+
+    /**
+     * Converts color string to number.
+     * @param  {string} bg Web-compatible color definition (e.g. "red", "#ff0012", "#000").
+     * @return {number} Numeric value, e.g. 0xff000 when argument is "#f00", "#ff0000" or "red".
+     */
+    color2number: function (colorString) {
+      return parseInt(parseColor(colorString).toString().substr(1), 16);
     }
   };
 });
