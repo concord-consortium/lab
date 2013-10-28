@@ -43,11 +43,28 @@ define(function(require) {
     function getVelocityVectorTexture() {
       var canv = document.createElement("canvas"),
           ctx = canv.getContext("2d");
-
       canv.width = 1;
       canv.height = 1;
       ctx.fillStyle = renderMode.velocityVectors.color;
       ctx.fillRect(0, 0, 1, 1);
+
+      return new PIXI.Texture.fromCanvas(canv);
+    }
+
+    function getVelocityVectorArrowheadTexture() {
+      var canv = document.createElement("canvas"),
+          ctx = canv.getContext("2d"),
+          dim = m2px(3 * renderMode.velocityVectors.width);
+      canv.width = dim;
+      canv.height = dim;
+      ctx.fillStyle = renderMode.velocityVectors.color;
+
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(dim, 0);
+      ctx.lineTo(dim * 0.5, dim);
+      ctx.closePath();
+      ctx.fill();
 
       return new PIXI.Texture.fromCanvas(canv);
     }
@@ -60,13 +77,21 @@ define(function(require) {
     function renderVelocityVectorSprite(i) {
       var vec = viewVelocityVectors[i],
           atom = modelAtoms[i],
-          vx = atom.vx,
-          vy = atom.vy;
-
-      vec.position.x = m2px(atom.x);
-      vec.position.y = m2pxInv(atom.y);
-      vec.scale.y = m2px(Math.sqrt(vx * vx + vy * vy) * velocityVectorScale);
-      vec.rotation = Math.PI + Math.atan2(vx, vy);
+          x = atom.x,
+          y = atom.y,
+          vx = atom.vx * velocityVectorScale,
+          vy = atom.vy * velocityVectorScale,
+          rot = Math.PI + Math.atan2(vx, vy),
+          arrowHead = vec.arrowHead;
+      // Vector.
+      vec.position.x = m2px(x);
+      vec.position.y = m2pxInv(y);
+      vec.scale.y = m2px(Math.sqrt(vx * vx + vy * vy));
+      vec.rotation = rot;
+      // Arrowhead.
+      arrowHead.position.x = m2px(x + vx);
+      arrowHead.position.y = m2pxInv(y + vy);
+      arrowHead.rotation = rot;
     }
 
     function clear() {
@@ -87,7 +112,7 @@ define(function(require) {
         m2pxInv = modelView.model2canvasInv;
 
         if (USE_SPRITES) {
-          var i, len, vec, tex;
+          var i, len, vec, arrowHead, tex;
 
           viewVelocityVectors = [];
 
@@ -100,10 +125,19 @@ define(function(require) {
           tex = getVelocityVectorTexture();
           for (i = 0, len = modelAtoms.length; i < len; ++i) {
             vec = new PIXI.Sprite(tex);
-            vec.i = i;
+            vec.anchor.x = 0.5;
             vec.scale.x = m2px(renderMode.velocityVectors.width);
+            vec.i = i;
             viewVelocityVectors.push(vec);
             container.addChild(vec);
+          }
+          tex = getVelocityVectorArrowheadTexture();
+          for (i = 0, len = modelAtoms.length; i < len; ++i) {
+            arrowHead = new PIXI.Sprite(tex);
+            arrowHead.anchor.x = 0.5;
+            arrowHead.anchor.y = 0.5;
+            viewVelocityVectors[i].arrowHead = arrowHead;
+            container.addChild(arrowHead);
           }
         }
 
