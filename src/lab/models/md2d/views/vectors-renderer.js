@@ -3,10 +3,8 @@
 define(function(require) {
   // Dependencies.
   var PIXI         = require('pixi'),
-      color2number = require('common/views/color').color2number,
 
-      RENDERING_OPTIONS = ["showVelocityVectors", "velocityVectors"],
-      USE_SPRITES = true;
+      RENDERING_OPTIONS = ["showVelocityVectors", "velocityVectors"];
 
   return function VectorsRenderer(modelView, model, pixiContainer) {
     // Public API object to be returned.
@@ -21,9 +19,7 @@ define(function(require) {
         container,
         viewVelocityVectors,
 
-        renderMode = {},
-
-        graphics = new PIXI.Graphics();
+        renderMode = {};
 
     function init() {
       readRenderingOptions();
@@ -69,12 +65,7 @@ define(function(require) {
       return new PIXI.Texture.fromCanvas(canv);
     }
 
-    function renderVelocityVector(atom) {
-      graphics.moveTo(m2px(atom.x), m2pxInv(atom.y));
-      graphics.lineTo(m2px(atom.x + atom.vx * velocityVectorScale), m2pxInv(atom.y + atom.vy * velocityVectorScale));
-    }
-
-    function renderVelocityVectorSprite(i) {
+    function renderVelocityVector(i) {
       var vec = viewVelocityVectors[i],
           atom = modelAtoms[i],
           x = atom.x,
@@ -94,16 +85,17 @@ define(function(require) {
       arrowHead.rotation = rot;
     }
 
-    function clear() {
-      graphics.clear();
-    }
 
     api = {
       setup: function () {
-        if (!renderMode.showVelocityVectors) {
-          clear();
-          return;
+        if (container) {
+          pixiContainer.removeChild(container);
+          container = null;
         }
+        if (!renderMode.showVelocityVectors) return;
+
+        container = new PIXI.DisplayObjectContainer();
+        pixiContainer.addChild(container);
 
         modelAtoms = model.getAtoms();
         velocityVectorScale = renderMode.velocityVectors.length * 100;
@@ -111,34 +103,26 @@ define(function(require) {
         m2px = modelView.model2canvas;
         m2pxInv = modelView.model2canvasInv;
 
-        if (USE_SPRITES) {
-          var i, len, vec, arrowHead, tex;
+        var i, len, vec, arrowHead, tex;
 
-          viewVelocityVectors = [];
+        viewVelocityVectors = [];
 
-          if (container) {
-            pixiContainer.removeChild(container);
-          }
-          container = new PIXI.DisplayObjectContainer();
-          pixiContainer.addChild(container);
-
-          tex = getVelocityVectorTexture();
-          for (i = 0, len = modelAtoms.length; i < len; ++i) {
-            vec = new PIXI.Sprite(tex);
-            vec.anchor.x = 0.5;
-            vec.scale.x = m2px(renderMode.velocityVectors.width);
-            vec.i = i;
-            viewVelocityVectors.push(vec);
-            container.addChild(vec);
-          }
-          tex = getVelocityVectorArrowheadTexture();
-          for (i = 0, len = modelAtoms.length; i < len; ++i) {
-            arrowHead = new PIXI.Sprite(tex);
-            arrowHead.anchor.x = 0.5;
-            arrowHead.anchor.y = 0.5;
-            viewVelocityVectors[i].arrowHead = arrowHead;
-            container.addChild(arrowHead);
-          }
+        tex = getVelocityVectorTexture();
+        for (i = 0, len = modelAtoms.length; i < len; ++i) {
+          vec = new PIXI.Sprite(tex);
+          vec.anchor.x = 0.5;
+          vec.scale.x = m2px(renderMode.velocityVectors.width);
+          vec.i = i;
+          viewVelocityVectors.push(vec);
+          container.addChild(vec);
+        }
+        tex = getVelocityVectorArrowheadTexture();
+        for (i = 0, len = modelAtoms.length; i < len; ++i) {
+          arrowHead = new PIXI.Sprite(tex);
+          arrowHead.anchor.x = 0.5;
+          arrowHead.anchor.y = 0.5;
+          viewVelocityVectors[i].arrowHead = arrowHead;
+          container.addChild(arrowHead);
         }
 
         api.update();
@@ -146,31 +130,19 @@ define(function(require) {
 
       bindModel: function (newModel) {
         model = newModel;
-
         init();
       },
 
       update: function () {
         if (!renderMode.showVelocityVectors) return;
         var i, len;
-
-        if (USE_SPRITES) {
-          for (i = 0, len = viewVelocityVectors.length; i < len; ++i) {
-            renderVelocityVectorSprite(i);
-          }
-        } else {
-          graphics.clear();
-          graphics.lineStyle(m2px(renderMode.velocityVectors.width),
-                             color2number(renderMode.velocityVectors.color));
-          for (i = 0, len = modelAtoms.length; i < len; ++i) {
-            renderVelocityVector(modelAtoms[i]);
-          }
+        for (i = 0, len = viewVelocityVectors.length; i < len; ++i) {
+          renderVelocityVector(i);
         }
       }
     };
 
     init();
-    pixiContainer.addChild(graphics);
 
     return api;
   };
