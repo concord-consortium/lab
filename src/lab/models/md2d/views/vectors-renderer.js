@@ -2,11 +2,9 @@
 
 define(function(require) {
   // Dependencies.
-  var PIXI         = require('pixi'),
+  var PIXI = require('pixi');
 
-      RENDERING_OPTIONS = ["showVelocityVectors", "velocityVectors"];
-
-  return function VectorsRenderer(modelView, model, pixiContainer) {
+  return function VectorsRenderer(modelView, model, pixiContainer, config) {
     // Public API object to be returned.
     var api,
 
@@ -14,46 +12,54 @@ define(function(require) {
         m2pxInv,
 
         modelAtoms,
-        velocityVectorScale,
 
         container,
-        viewVelocityVectors,
+        viewVectors,
 
-        renderMode = {};
+        // Allows us to defer running actual renderer setup until layout system has determined our
+        // size.
+        isSetup = false,
+
+        // Visual vector properties.
+        show, length, width, color;
 
     function init() {
       readRenderingOptions();
-      model.addPropertiesListener(RENDERING_OPTIONS, function () {
+      model.addPropertiesListener([config.showOptName, config.paramsOptName], function () {
         readRenderingOptions();
-        api.setup();
-        modelView.renderCanvas();
+        if (isSetup) {
+          api.setup();
+          modelView.renderCanvas();
+        }
       });
     }
 
     function readRenderingOptions() {
-      RENDERING_OPTIONS.forEach(function (name) {
-        renderMode[name] = model.get(name);
-      });
+      var params = model.get(config.paramsOptName);
+      length = params.length;
+      width = params.width;
+      color = params.color;
+      show = model.get(config.showOptName);
     }
 
-    function getVelocityVectorTexture() {
+    function getVectorTexture() {
       var canv = document.createElement("canvas"),
           ctx = canv.getContext("2d");
       canv.width = 1;
       canv.height = 1;
-      ctx.fillStyle = renderMode.velocityVectors.color;
+      ctx.fillStyle = color;
       ctx.fillRect(0, 0, 1, 1);
 
       return new PIXI.Texture.fromCanvas(canv);
     }
 
-    function getVelocityVectorArrowheadTexture() {
+    function getVectorArrowheadTexture() {
       var canv = document.createElement("canvas"),
           ctx = canv.getContext("2d"),
-          dim = m2px(3 * renderMode.velocityVectors.width);
+          dim = m2px(3 * width);
       canv.width = dim;
       canv.height = dim;
-      ctx.fillStyle = renderMode.velocityVectors.color;
+      ctx.fillStyle = color;
 
       ctx.beginPath();
       ctx.moveTo(0, 0);
@@ -65,19 +71,29 @@ define(function(require) {
       return new PIXI.Texture.fromCanvas(canv);
     }
 
-    function renderVelocityVector(i) {
-      var vec = viewVelocityVectors[i],
+    function renderVector(i) {
+      var vec = viewVectors[i],
           atom = modelAtoms[i],
           x = atom.x,
           y = atom.y,
-          vx = atom.vx * velocityVectorScale,
-          vy = atom.vy * velocityVectorScale,
+          vx = config.vx(i) * length,
+          vy = config.vy(i) * length,
           rot = Math.PI + Math.atan2(vx, vy),
+          lenInPx = m2px(Math.sqrt(vx * vx + vy * vy)),
           arrowHead = vec.arrowHead;
+
+      if (lenInPx < 1) {
+        vec.alpha = 0;
+        arrowHead.alpha = 0;
+        return;
+      } else {
+        vec.alpha = 1;
+        arrowHead.alpha = 1;
+      }
       // Vector.
       vec.position.x = m2px(x);
       vec.position.y = m2pxInv(y);
-      vec.scale.y = m2px(Math.sqrt(vx * vx + vy * vy));
+      vec.scale.y = lenInPx;
       vec.rotation = rot;
       // Arrowhead.
       arrowHead.position.x = m2px(x + vx);
@@ -88,40 +104,40 @@ define(function(require) {
 
     api = {
       setup: function () {
+        isSetup = true;
         if (container) {
           pixiContainer.removeChild(container);
           container = null;
         }
-        if (!renderMode.showVelocityVectors) return;
+        if (!show) return;
 
         container = new PIXI.DisplayObjectContainer();
         pixiContainer.addChild(container);
 
         modelAtoms = model.getAtoms();
-        velocityVectorScale = renderMode.velocityVectors.length * 100;
 
         m2px = modelView.model2canvas;
         m2pxInv = modelView.model2canvasInv;
 
         var i, len, vec, arrowHead, tex;
 
-        viewVelocityVectors = [];
+        viewVectors = [];
 
-        tex = getVelocityVectorTexture();
+        tex = getVectorTexture();
         for (i = 0, len = modelAtoms.length; i < len; ++i) {
           vec = new PIXI.Sprite(tex);
           vec.anchor.x = 0.5;
-          vec.scale.x = m2px(renderMode.velocityVectors.width);
+          vec.scale.x = m2px(width);
           vec.i = i;
-          viewVelocityVectors.push(vec);
+          viewVectors.push(vec);
           container.addChild(vec);
         }
-        tex = getVelocityVectorArrowheadTexture();
+        tex = getVectorArrowheadTexture();
         for (i = 0, len = modelAtoms.length; i < len; ++i) {
           arrowHead = new PIXI.Sprite(tex);
           arrowHead.anchor.x = 0.5;
           arrowHead.anchor.y = 0.5;
-          viewVelocityVectors[i].arrowHead = arrowHead;
+          viewVectors[i].arrowHead = arrowHead;
           container.addChild(arrowHead);
         }
 
@@ -134,10 +150,10 @@ define(function(require) {
       },
 
       update: function () {
-        if (!renderMode.showVelocityVectors) return;
+        if (!show) return;
         var i, len;
-        for (i = 0, len = viewVelocityVectors.length; i < len; ++i) {
-          renderVelocityVector(i);
+        for (i = 0, len = viewVectors.length; i < len; ++i) {
+          renderVector(i);
         }
       }
     };

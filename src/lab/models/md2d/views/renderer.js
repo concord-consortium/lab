@@ -77,7 +77,12 @@ define(function(require) {
       // TODO: try to create new renderers in separate files for clarity and easier testing.
       atomsRenderer = new AtomsRenderer(modelView, model, atomsPixi.pixiContainer, atomsPixi.canvas),
       bondsRenderer = new BondsRenderer(modelView, model, bondsPixi.pixiContainer, atomsRenderer),
-      vectorsRenderer = new VectorsRenderer(modelView, model, vectorsPixi.pixiContainer),
+      vectorsRenderer = new VectorsRenderer(modelView, model, vectorsPixi.pixiContainer, {
+        showOptName: "showVelocityVectors",
+        paramsOptName: "velocityVectors",
+        vx: function (i) { return modelAtoms[i].vx * 100; },
+        vy: function (i) { return modelAtoms[i].vy * 100; }
+      }),
       imagesRenderer = new ImagesRenderer(modelView, model, {
         below: imageContainerBelow,
         above: imageContainerTop
