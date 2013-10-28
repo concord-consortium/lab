@@ -21,11 +21,15 @@ define(function(require) {
         isSetup = false,
 
         // Visual vector properties.
-        show, length, width, color;
+        show, length, width, color, dirOnly;
 
     function init() {
+      var options = [config.showOptName, config.paramsOptName];
+      if (config.dirOnlyOptName) {
+        options.push(config.dirOnlyOptName);
+      }
       readRenderingOptions();
-      model.addPropertiesListener([config.showOptName, config.paramsOptName], function () {
+      model.addPropertiesListener(options, function () {
         readRenderingOptions();
         if (isSetup) {
           api.setup();
@@ -40,6 +44,9 @@ define(function(require) {
       width = params.width;
       color = params.color;
       show = model.get(config.showOptName);
+      if (config.dirOnlyOptName) {
+        dirOnly = model.get(config.dirOnlyOptName);
+      }
     }
 
     function getVectorTexture() {
@@ -56,7 +63,7 @@ define(function(require) {
     function getVectorArrowheadTexture() {
       var canv = document.createElement("canvas"),
           ctx = canv.getContext("2d"),
-          dim = m2px(3 * width);
+          dim = m2px(3.5 * width);
       canv.width = dim;
       canv.height = dim;
       ctx.fillStyle = color;
@@ -78,10 +85,15 @@ define(function(require) {
           y = atom.y,
           vx = config.vx(i) * length,
           vy = config.vy(i) * length,
+          len = Math.sqrt(vx * vx + vy * vy),
           rot = Math.PI + Math.atan2(vx, vy),
-          lenInPx = m2px(Math.sqrt(vx * vx + vy * vy)),
           arrowHead = vec.arrowHead;
-
+      if (dirOnly) {
+        vx = 0.3 * vx / len;
+        vy = 0.3 * vy / len;
+        len = 0.3;
+      }
+      var lenInPx = m2px(len);
       if (lenInPx < 1) {
         vec.alpha = 0;
         arrowHead.alpha = 0;

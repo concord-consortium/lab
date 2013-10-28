@@ -77,11 +77,22 @@ define(function(require) {
       // TODO: try to create new renderers in separate files for clarity and easier testing.
       atomsRenderer = new AtomsRenderer(modelView, model, atomsPixi.pixiContainer, atomsPixi.canvas),
       bondsRenderer = new BondsRenderer(modelView, model, bondsPixi.pixiContainer, atomsRenderer),
-      vectorsRenderer = new VectorsRenderer(modelView, model, vectorsPixi.pixiContainer, {
+      velocityVectorsRenderer = new VectorsRenderer(modelView, model, vectorsPixi.pixiContainer, {
         showOptName: "showVelocityVectors",
         paramsOptName: "velocityVectors",
-        vx: function (i) { return modelAtoms[i].vx * 100; },
-        vy: function (i) { return modelAtoms[i].vy * 100; }
+        vx: function (i) {
+          return modelAtoms[i].vx * 100;
+        },
+        vy: function (i) {
+          return modelAtoms[i].vy * 100;
+        }
+      }),
+      forceVectorsRenderer = new VectorsRenderer(modelView, model, vectorsPixi.pixiContainer, {
+        showOptName: "showForceVectors",
+        paramsOptName: "forceVectors",
+        dirOnlyOptName: "forceVectorsDirectionOnly",
+        vx: function (i) { var a = modelAtoms[i]; return a.ax * a.mass * 100; },
+        vy: function (i) { var a = modelAtoms[i]; return a.ay * a.mass * 100; }
       }),
       imagesRenderer = new ImagesRenderer(modelView, model, {
         below: imageContainerBelow,
@@ -1161,18 +1172,6 @@ define(function(require) {
       vdwPairs.splice(vdwHash.count);
     }
 
-    function setupVectors() {
-      atomsContainer.selectAll("path.vector-" + FORCE_STR).remove();
-
-      drawForceVectors = model.get("showForceVectors");
-      if (drawForceVectors) {
-        forceVector = atomsContainer.selectAll("path.vector-" + FORCE_STR).data(modelAtoms);
-        vectorEnter(forceVector, getForceVectorPath, getForceVectorWidth, forceVectorColor, FORCE_STR);
-      }
-
-      vectorsRenderer.setup();
-    }
-
     function setupElectricField() {
       var density = model.get("electricFieldDensity"),
         show = model.get("showElectricField"),
@@ -1509,7 +1508,8 @@ define(function(require) {
       model = newModel;
       atomsRenderer.bindModel(newModel);
       bondsRenderer.bindModel(newModel);
-      vectorsRenderer.bindModel(newModel);
+      velocityVectorsRenderer.bindModel(newModel);
+      forceVectorsRenderer.bindModel(newModel);
       imagesRenderer.bindModel(newModel);
       setup();
     }
@@ -1540,7 +1540,8 @@ define(function(require) {
       setupShapes();
       setupLines();
       geneticRenderer.setup();
-      setupVectors();
+      velocityVectorsRenderer.setup();
+      forceVectorsRenderer.setup();
       setupElectricField();
       setupAtomTrace();
       imagesRenderer.setup();
@@ -1582,11 +1583,9 @@ define(function(require) {
 
       atomsRenderer.update();
       bondsRenderer.update();
-      vectorsRenderer.update();
+      velocityVectorsRenderer.update();
+      forceVectorsRenderer.update();
 
-      if (drawForceVectors) {
-        updateVectors(forceVector, getForceVectorPath, getForceVectorWidth);
-      }
       if (drawElectricForceField) {
         updateElectricForceField();
       }
