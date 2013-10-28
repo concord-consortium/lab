@@ -25,7 +25,7 @@ define(function(require) {
 
         downAtom,
         contextMenuAtom,
-        dragged;
+        dragging, dragged;
 
     //**********************************************************************************************
     // Event handlers related to particular atom:
@@ -85,7 +85,9 @@ define(function(require) {
       } else {
         mouseOutHandler(p.x, p.y, e);
       }
-      setCursorForAtom(atom);
+      if (!dragging) {
+        setCursorForAtom(atom);
+      }
     }
 
     function mouseUpCanvas(e) {
@@ -246,6 +248,7 @@ define(function(require) {
           } else if (atom.draggable) {
             model.liveDragStart(i);
           }
+          dragging = true;
           dragged = true;
         }
 
@@ -283,10 +286,9 @@ define(function(require) {
 
         // If user only clicked an atom (mousedown + mouseup, no mousemove), nothing to do.
         if (!dragged) return;
-
+        dragging = false;
         // Prevent accidental text selection or another unwanted action while dragging.
         e.preventDefault();
-
         // Pointer can be over atom or not (e.g. when user finished dragging below other object).
         setCursorFromEvent(e);
 
