@@ -78,16 +78,6 @@ define(function(require) {
       imagesRenderer = new ImagesRenderer(modelView, model),
       geneticRenderer,
 
-      // Set of gradients used for Kinetic Energy Shading.
-      gradientNameForKELevel = [],
-      // Number of gradients used for Kinetic Energy Shading.
-      KE_SHADING_STEPS = 25,
-      // Set of gradients used for Charge Energy Shading.
-      gradientNameForPositiveChargeLevel = [],
-      gradientNameForNegativeChargeLevel = [],
-      // Number of gradients used for Charge Shading (for both positive and negative charges).
-      CHARGE_SHADING_STEPS = 25,
-
       arrowHeadsCache,
       fontSizeInPixels,
       obstacle,
@@ -138,128 +128,6 @@ define(function(require) {
       // does not update line markers when svg lines are moved
       // see https://connect.microsoft.com/IE/feedback/details/781964/
       hideLineMarkers = browser.browser === "MSIE" && Number(browser.version) >= 10;
-
-    // Pass in the signed 24-bit Integer used for Java MW elementColors
-    // See: https://github.com/mbostock/d3/wiki/Colors
-
-    function createElementColorGradient(id, signedInt, mainContainer) {
-      var colorstr = (signedInt + Math.pow(2, 24)).toString(16),
-        color,
-        medColor,
-        lightColor,
-        darkColor,
-        i;
-
-      for (i = colorstr.length; i < 6; i++) {
-        colorstr = String(0) + colorstr;
-      }
-      color = d3.rgb("#" + colorstr);
-      medColor = color.toString();
-      lightColor = color.brighter(1).toString();
-      darkColor = color.darker(1).toString();
-      return gradients.createRadialGradient(id, lightColor, medColor, darkColor, mainContainer);
-    }
-
-    /**
-     * Setups set of gradient which can be changed by the user.
-     * They should be recreated during each reset / repaint operation.
-     * @private
-     */
-
-    function setupDynamicGradients() {
-      var i, color, lightColor, medColor, darkColor;
-
-      for (i = 0; i < 4; i++) {
-        // Use names defined in gradientNameForElement array!
-        createElementColorGradient("elem" + i + "-grad", modelElements.color[i], atomsContainer);
-      }
-
-      // "Marked" particle gradient.
-      medColor = model.get("markColor");
-      // Mark color defined in JSON defines medium color of a gradient.
-      color = d3.rgb(medColor);
-      lightColor = color.brighter(1).toString();
-      darkColor = color.darker(1).toString();
-      gradients.createRadialGradient("mark-grad", lightColor, medColor, darkColor, atomsContainer);
-    }
-
-    /**
-     * Creates set of gradient which cannot be changed, they are constant
-     * for each possible model. So, it is enough to setup them just once.
-     * @private
-     */
-
-    function createImmutableGradients() {
-      // Scale used for Kinetic Energy Shading gradients.
-      var medColorScale = d3.scale.linear()
-        .interpolate(d3.interpolateRgb)
-        .range(["#F2F2F2", "#FF8080"]),
-        // Scale used for Kinetic Energy Shading gradients.
-        darkColorScale = d3.scale.linear()
-          .interpolate(d3.interpolateRgb)
-          .range(["#A4A4A4", "#FF2020"]),
-        gradientName,
-        gradientUrl,
-        KELevel,
-        i;
-
-      // Kinetic Energy Shading gradients
-      for (i = 0; i < KE_SHADING_STEPS; i++) {
-        gradientName = "ke-shading-" + i;
-        KELevel = i / KE_SHADING_STEPS;
-        gradientUrl = gradients.createRadialGradient(gradientName, "#FFFFFF", medColorScale(KELevel),
-          darkColorScale(KELevel), atomsContainer);
-        gradientNameForKELevel[i] = gradientUrl;
-      }
-
-      // Scales used for Charge Shading gradients.
-      // Originally Positive:(ffefff,9abeff,767fbf) and Negative:(dfffff,fdadad,e95e5e)
-
-      gradients.createRadialGradient("neutral-grad", "#FFFFFF", "#f2f2f2", "#A4A4A4", atomsContainer);
-
-      var posLightColorScale = d3.scale.linear()
-        .interpolate(d3.interpolateRgb)
-        .range(["#FFFFFF", "#ffefff"]),
-        posMedColorScale = d3.scale.linear()
-          .interpolate(d3.interpolateRgb)
-          .range(["#f2f2f2", "#9090FF"]),
-        posDarkColorScale = d3.scale.linear()
-          .interpolate(d3.interpolateRgb)
-          .range(["#A4A4A4", "#3030FF"]),
-        negLightColorScale = d3.scale.linear()
-          .interpolate(d3.interpolateRgb)
-          .range(["#FFFFFF", "#dfffff"]),
-        negMedColorScale = d3.scale.linear()
-          .interpolate(d3.interpolateRgb)
-          .range(["#f2f2f2", "#FF8080"]),
-        negDarkColorScale = d3.scale.linear()
-          .interpolate(d3.interpolateRgb)
-          .range(["#A4A4A4", "#FF2020"]),
-        ChargeLevel;
-
-      // Charge Shading gradients
-      for (i = 1; i < CHARGE_SHADING_STEPS; i++) {
-        gradientName = "pos-charge-shading-" + i;
-        ChargeLevel = i / CHARGE_SHADING_STEPS;
-        gradientUrl = gradients.createRadialGradient(gradientName,
-          posLightColorScale(ChargeLevel),
-          posMedColorScale(ChargeLevel),
-          posDarkColorScale(ChargeLevel), atomsContainer);
-        gradientNameForPositiveChargeLevel[i] = gradientUrl;
-
-        gradientName = "neg-charge-shading-" + i;
-        ChargeLevel = i / CHARGE_SHADING_STEPS;
-        gradientUrl = gradients.createRadialGradient(gradientName,
-          negLightColorScale(ChargeLevel),
-          negMedColorScale(ChargeLevel),
-          negDarkColorScale(ChargeLevel), atomsContainer);
-        gradientNameForNegativeChargeLevel[i] = gradientUrl;
-      }
-
-      // Colored gradients, used for amino acids.
-      gradients.createRadialGradient("green-grad", "#dfffef", "#75a643", "#2a7216", atomsContainer);
-      gradients.createRadialGradient("orange-grad", "#F0E6D1", "#E0A21B", "#AD7F1C", atomsContainer);
-    }
 
     function createCustomArrowHead(i, path, start) {
       if(!path || path === "none"){
@@ -1377,7 +1245,6 @@ define(function(require) {
       }
 
       createSymbolImages();
-      createImmutableGradients();
 
       // Initialize renderers.
       geneticRenderer = new GeneticRenderer(modelView, model);
@@ -1534,7 +1401,6 @@ define(function(require) {
       fontSizeInPixels = modelView.getFontSizeInPixels();
 
       setupMiscOptions();
-      setupDynamicGradients();
       setupObstacles();
       setupVdwPairs();
       atomsRenderer.setup();
