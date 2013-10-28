@@ -151,8 +151,12 @@ define(function(require) {
       }
     }
 
+    var cursorVal;
     function setCursor(name) {
-      document.documentElement.style.cursor = name;
+      if (cursorVal !== name) {
+        cursorVal = name;
+        document.documentElement.style.cursor = name;
+      }
     }
 
     function init() {

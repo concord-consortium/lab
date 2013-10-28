@@ -88,6 +88,7 @@ define(function(require) {
       // Number of gradients used for Charge Shading (for both positive and negative charges).
       CHARGE_SHADING_STEPS = 25,
 
+      arrowHeadsCache,
       fontSizeInPixels,
       obstacle,
       obstacles,
@@ -264,30 +265,33 @@ define(function(require) {
       if(!path || path === "none"){
         return "none";
       }
-      // Create marker defs for _each_ path in order to account for differing path colors and visibility
-      var defs,
-        id = "Arrowhead-path" + i + '-' + path.toLowerCase().replace(/[^a-z0-9]/g,'') + (start ? "-start" : ""),
-        arrowHead;
-      defs = atomsContainer.select("defs");
-      if (defs.empty()) {
-        defs = atomsContainer.append("defs");
+
+      var id = "arrowhead-path" + path.toLowerCase().replace(/[^a-z0-9]/g, '') +
+               (start ? "start" : "") + lines.lineColor[i].toLowerCase().replace(/[^a-z0-9]/g, '');
+
+      if (!arrowHeadsCache[id]) {
+        var defs, arrowHead;
+        defs = atomsContainer.select("defs");
+        if (defs.empty()) {
+          defs = atomsContainer.append("defs");
+        }
+        arrowHead = defs.select("#" + id);
+        arrowHead = atomsContainer.append("marker")
+          .attr("id", id)
+          .attr("class", "custom-arrow-head")
+          .attr("viewBox", "0 0 10 10")
+          .attr("refX", "5")
+          .attr("refY", "5")
+          .attr("markerUnits", "strokeWidth")
+          .attr("markerWidth", "4")
+          .attr("markerHeight", "4")
+          .attr("orient", "auto");
+        arrowHead.append("path")
+          .attr("d", path)
+          .attr("fill", lines.lineColor[i])
+          .attr("transform", start ? "translate(10, 10) rotate(180)" : "");
+        arrowHeadsCache[id] = true;
       }
-      arrowHead = defs.select("#" + id);
-      // Must rerender markers to account for changes in line properties (e.g. visibility, color)
-      arrowHead.remove();
-      arrowHead = defs.append("marker")
-        .attr("id", id)
-        .attr("viewBox", "0 0 10 10")
-        .attr("refX", "5")
-        .attr("refY", "5")
-        .attr("markerUnits", "strokeWidth")
-        .attr("markerWidth", "4")
-        .attr("markerHeight", "4")
-        .attr("orient", "auto");
-      arrowHead.append("path")
-        .attr("d", path)
-        .attr("fill",lines.visible[i] ? lines.lineColor[i] : "transparent")
-        .attr("transform", start ? "translate(10, 10) rotate(180)" : "");
       return "url(#" + id + ")";
     }
 
@@ -624,39 +628,6 @@ define(function(require) {
           }
         });
       }
-    }
-
-    function lineEnter() {
-      lineTop.enter().append("line").attr({
-        "class": "line",
-        "x1": function(d, i) {
-          return model2px(lines.x1[i]);
-        },
-        "y1": function(d, i) {
-          return model2pxInv(lines.y1[i]);
-        },
-        "x2": function(d, i) {
-          return model2px(lines.x2[i]);
-        },
-        "y2": function(d, i) {
-          return model2pxInv(lines.y2[i]);
-        },
-        "stroke-width": function(d, i) {
-          return lines.lineWeight[i];
-        },
-        "stroke-dasharray": function(d, i) {
-          return lines.lineDashes[i];
-        },
-        "stroke": function(d, i) {
-          return lines.visible[i] ? lines.lineColor[i] : "transparent";
-        },
-        "marker-start": function(d,i){
-          return createCustomArrowHead(i, lines.beginStyle[i], true);
-        },
-        "marker-end": function(d,i){
-          return createCustomArrowHead(i, lines.endStyle[i]);
-        }
-      });
     }
 
     function vdwLinesEnter() {
@@ -1121,11 +1092,44 @@ define(function(require) {
 
     function setupLines() {
       lines = model.get_lines();
-      lineContainerTop.selectAll(".line").remove();
+      mockLinesTop.length = lines.x1.length;
+      lineTop = lineContainerTop.selectAll(".line").data(mockLinesTop);
+      lineTop.exit().remove();
       if (lines) {
-        mockLinesTop.length = lines.x1.length;
-        lineTop = lineContainerTop.selectAll(".line").data(mockLinesTop);
-        lineEnter();
+        lineTop.enter().append("line");
+        lineTop.attr({
+          "class": "line",
+          "x1": function(d, i) {
+            return model2px(lines.x1[i]);
+          },
+          "y1": function(d, i) {
+            return model2pxInv(lines.y1[i]);
+          },
+          "x2": function(d, i) {
+            return model2px(lines.x2[i]);
+          },
+          "y2": function(d, i) {
+            return model2pxInv(lines.y2[i]);
+          },
+          "stroke-width": function(d, i) {
+            return lines.lineWeight[i];
+          },
+          "stroke-dasharray": function(d, i) {
+            return lines.lineDashes[i];
+          },
+          "stroke": function(d, i) {
+            return lines.lineColor[i];
+          },
+          "marker-start": function(d, i){
+            return createCustomArrowHead(i, lines.beginStyle[i], true);
+          },
+          "marker-end": function(d, i){
+            return createCustomArrowHead(i, lines.endStyle[i]);
+          },
+          "visibility": function(d, i) {
+            return lines.visible[i] ? "visible" : "hidden";
+          }
+        });
       }
     }
 
@@ -1358,6 +1362,10 @@ define(function(require) {
 
       createVectorArrowHeads(velocityVectorColor, VELOCITY_STR);
       createVectorArrowHeads(forceVectorColor, FORCE_STR);
+
+      // Reset custom arrow heads.
+      arrowHeadsCache = {};
+      atomsContainer.selectAll(".custom-arrow-head").remove();
 
       atomTraceColor = model.get("atomTraceColor");
     }
