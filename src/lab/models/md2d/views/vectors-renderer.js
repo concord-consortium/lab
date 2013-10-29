@@ -14,12 +14,14 @@ define(function(require) {
         container,
         viewVectors,
 
+        // Vectors rendering enabled or disabled.
+        show,
         // Number of vectors to render.
         count,
         // Physical vector properties (functions!).
         x0, y0, x1, y1,
         // Visual vector properties.
-        show, length, width, color, dirOnly;
+        alpha, length, width, color, dirOnly;
 
     function readOptions() {
       count = config.count;
@@ -28,6 +30,7 @@ define(function(require) {
       y0 = config.y0;
       x1 = config.x1;
       y1 = config.y1;
+      alpha = config.alpha;
 
       show = config.show;
       length = config.length;
@@ -78,15 +81,19 @@ define(function(require) {
           rot = Math.PI + Math.atan2(vx, vy),
           arrowHead = vec.arrowHead;
       if (dirOnly) {
-        vx = 0.3 * vx / len;
-        vy = 0.3 * vy / len;
-        len = 0.3;
+        // 0.15 is a bit random, empirically set value to match previous rendering done by SVG.
+        vx = 0.15 * length * vx / len;
+        vy = 0.15 * length * vy / len;
+        len = 0.15 * length;
       }
       var lenInPx = m2px(len);
       if (lenInPx < 1) {
         vec.alpha = 0;
         arrowHead.alpha = 0;
         return;
+      } else if (alpha) {
+        vec.alpha = alpha(i);
+        arrowHead.alpha = alpha(i);
       } else {
         vec.alpha = 1;
         arrowHead.alpha = 1;
@@ -133,7 +140,6 @@ define(function(require) {
         for (i = 0; i < count; ++i) {
           arrowHead = new PIXI.Sprite(tex);
           arrowHead.anchor.x = 0.5;
-          arrowHead.anchor.y = 0.5;
           viewVectors[i].arrowHead = arrowHead;
           container.addChild(arrowHead);
         }
