@@ -19,18 +19,18 @@ define(function(require) {
         // Number of vectors to render.
         count,
         // Physical vector properties (functions!).
-        x0, y0, x1, y1,
+        xFunc, yFunc, vxFunc, vyFunc,
         // Visual vector properties.
-        alpha, length, width, color, dirOnly;
+        alphaFunc, length, width, color, dirOnly;
 
     function readOptions() {
       count = config.count;
 
-      x0 = config.x0;
-      y0 = config.y0;
-      x1 = config.x1;
-      y1 = config.y1;
-      alpha = config.alpha;
+      xFunc = config.x;
+      yFunc = config.y;
+      vxFunc = config.vx;
+      vyFunc = config.vy;
+      alphaFunc = config.alpha;
 
       show = config.show;
       length = config.length;
@@ -73,10 +73,10 @@ define(function(require) {
 
     function renderVector(i) {
       var vec = viewVectors[i],
-          x = x0(i),
-          y = y0(i),
-          vx = x1(i) * length,
-          vy = y1(i) * length,
+          x = xFunc(i),
+          y = yFunc(i),
+          vx = vxFunc(i) * length,
+          vy = vyFunc(i) * length,
           len = Math.sqrt(vx * vx + vy * vy),
           rot = Math.PI + Math.atan2(vx, vy),
           arrowHead = vec.arrowHead;
@@ -92,9 +92,9 @@ define(function(require) {
         vec.alpha = 0;
         arrowHead.alpha = 0;
         return;
-      } else if (alpha) {
-        vec.alpha = alpha(i);
-        arrowHead.alpha = alpha(i);
+      } else if (alphaFunc) {
+        vec.alpha = alphaFunc(i);
+        arrowHead.alpha = alphaFunc(i);
       } else {
         vec.alpha = 1;
         arrowHead.alpha = 1;
