@@ -77,22 +77,33 @@ define(function(require) {
       // TODO: try to create new renderers in separate files for clarity and easier testing.
       atomsRenderer = new AtomsRenderer(modelView, model, atomsPixi.pixiContainer, atomsPixi.canvas),
       bondsRenderer = new BondsRenderer(modelView, model, bondsPixi.pixiContainer, atomsRenderer),
-      velocityVectorsRenderer = new VectorsRenderer(modelView, model, vectorsPixi.pixiContainer, {
-        showOptName: "showVelocityVectors",
-        paramsOptName: "velocityVectors",
-        vx: function (i) {
-          return modelAtoms[i].vx * 100;
-        },
-        vy: function (i) {
-          return modelAtoms[i].vy * 100;
-        }
+      velocityVectorsRenderer = new VectorsRenderer(vectorsPixi.pixiContainer, {
+        get show() { return model.get("showVelocityVectors"); },
+        get length() { return model.get("velocityVectors").length; },
+        get width() { return model.get("velocityVectors").width; },
+        get color() { return model.get("velocityVectors").color; },
+        get dirOnly() { return false; },
+        get count() { return modelAtoms.length; },
+        x0: function (i) { return modelAtoms[i].x; },
+        y0: function (i) { return modelAtoms[i].y; },
+        x1: function (i) { return modelAtoms[i].vx * 100; },
+        y1: function (i) { return modelAtoms[i].vy * 100; },
+        m2px: modelView.model2canvas,
+        m2pxInv: modelView.model2canvasInv
       }),
-      forceVectorsRenderer = new VectorsRenderer(modelView, model, vectorsPixi.pixiContainer, {
-        showOptName: "showForceVectors",
-        paramsOptName: "forceVectors",
-        dirOnlyOptName: "forceVectorsDirectionOnly",
-        vx: function (i) { var a = modelAtoms[i]; return a.ax * a.mass * 100; },
-        vy: function (i) { var a = modelAtoms[i]; return a.ay * a.mass * 100; }
+      forceVectorsRenderer = new VectorsRenderer(vectorsPixi.pixiContainer, {
+        get show() { return model.get("showForceVectors"); },
+        get length() { return model.get("forceVectors").length; },
+        get width() { return model.get("forceVectors").width; },
+        get color() { return model.get("forceVectors").color; },
+        get dirOnly() { return model.get("forceVectorsDirectionOnly"); },
+        get count() { return modelAtoms.length; },
+        x0: function (i) { return modelAtoms[i].x; },
+        y0: function (i) { return modelAtoms[i].y; },
+        x1: function (i) { var a = modelAtoms[i]; return a.ax * a.mass * 100; },
+        y1: function (i) { var a = modelAtoms[i]; return a.ay * a.mass * 100; },
+        m2px: modelView.model2canvas,
+        m2pxInv: modelView.model2canvasInv
       }),
       imagesRenderer = new ImagesRenderer(modelView, model, {
         below: imageContainerBelow,
@@ -1475,6 +1486,16 @@ define(function(require) {
       model.addPropertiesListener(["electricFieldDensity", "showElectricField", "electricFieldColor"],
         setupElectricField);
 
+      model.addPropertiesListener(["showVelocityVectors", "velocityVectors"], function () {
+        velocityVectorsRenderer.setup();
+        modelView.renderCanvas();
+      });
+
+      model.addPropertiesListener(["showForceVectors", "forceVectors", "forceVectorsDirectionOnly"], function () {
+        forceVectorsRenderer.setup();
+        modelView.renderCanvas();
+      });
+
       model.on('addAtom', redrawClickableObjects(function () {
         atomsRenderer.setup();
         modelView.renderCanvas();
@@ -1508,8 +1529,6 @@ define(function(require) {
       model = newModel;
       atomsRenderer.bindModel(newModel);
       bondsRenderer.bindModel(newModel);
-      velocityVectorsRenderer.bindModel(newModel);
-      forceVectorsRenderer.bindModel(newModel);
       imagesRenderer.bindModel(newModel);
       setup();
     }

@@ -4,49 +4,39 @@ define(function(require) {
   // Dependencies.
   var PIXI = require('pixi');
 
-  return function VectorsRenderer(modelView, model, pixiContainer, config) {
+  return function VectorsRenderer(pixiContainer, config) {
     // Public API object to be returned.
     var api,
 
         m2px,
         m2pxInv,
 
-        modelAtoms,
-
         container,
         viewVectors,
 
-        // Allows us to defer running actual renderer setup until layout system has determined our
-        // size.
-        isSetup = false,
-
+        // Number of vectors to render.
+        count,
+        // Physical vector properties (functions!).
+        x0, y0, x1, y1,
         // Visual vector properties.
         show, length, width, color, dirOnly;
 
-    function init() {
-      var options = [config.showOptName, config.paramsOptName];
-      if (config.dirOnlyOptName) {
-        options.push(config.dirOnlyOptName);
-      }
-      readRenderingOptions();
-      model.addPropertiesListener(options, function () {
-        readRenderingOptions();
-        if (isSetup) {
-          api.setup();
-          modelView.renderCanvas();
-        }
-      });
-    }
+    function readOptions() {
+      count = config.count;
 
-    function readRenderingOptions() {
-      var params = model.get(config.paramsOptName);
-      length = params.length;
-      width = params.width;
-      color = params.color;
-      show = model.get(config.showOptName);
-      if (config.dirOnlyOptName) {
-        dirOnly = model.get(config.dirOnlyOptName);
-      }
+      x0 = config.x0;
+      y0 = config.y0;
+      x1 = config.x1;
+      y1 = config.y1;
+
+      show = config.show;
+      length = config.length;
+      width = config.width;
+      color = config.color;
+      dirOnly = config.dirOnly;
+
+      m2px = config.m2px;
+      m2pxInv = config.m2pxInv;
     }
 
     function getVectorTexture() {
@@ -80,11 +70,10 @@ define(function(require) {
 
     function renderVector(i) {
       var vec = viewVectors[i],
-          atom = modelAtoms[i],
-          x = atom.x,
-          y = atom.y,
-          vx = config.vx(i) * length,
-          vy = config.vy(i) * length,
+          x = x0(i),
+          y = y0(i),
+          vx = x1(i) * length,
+          vy = y1(i) * length,
           len = Math.sqrt(vx * vx + vy * vy),
           rot = Math.PI + Math.atan2(vx, vy),
           arrowHead = vec.arrowHead;
@@ -116,27 +105,23 @@ define(function(require) {
 
     api = {
       setup: function () {
-        isSetup = true;
+        readOptions();
+
         if (container) {
           pixiContainer.removeChild(container);
           container = null;
         }
-        if (!show) return;
+        if (!show || count === 0) return;
 
         container = new PIXI.DisplayObjectContainer();
         pixiContainer.addChild(container);
 
-        modelAtoms = model.getAtoms();
-
-        m2px = modelView.model2canvas;
-        m2pxInv = modelView.model2canvasInv;
-
-        var i, len, vec, arrowHead, tex;
+        var i, vec, arrowHead, tex;
 
         viewVectors = [];
 
         tex = getVectorTexture();
-        for (i = 0, len = modelAtoms.length; i < len; ++i) {
+        for (i = 0; i < count; ++i) {
           vec = new PIXI.Sprite(tex);
           vec.anchor.x = 0.5;
           vec.scale.x = m2px(width);
@@ -145,7 +130,7 @@ define(function(require) {
           container.addChild(vec);
         }
         tex = getVectorArrowheadTexture();
-        for (i = 0, len = modelAtoms.length; i < len; ++i) {
+        for (i = 0; i < count; ++i) {
           arrowHead = new PIXI.Sprite(tex);
           arrowHead.anchor.x = 0.5;
           arrowHead.anchor.y = 0.5;
@@ -156,21 +141,13 @@ define(function(require) {
         api.update();
       },
 
-      bindModel: function (newModel) {
-        model = newModel;
-        init();
-      },
-
       update: function () {
-        if (!show) return;
-        var i, len;
-        for (i = 0, len = viewVectors.length; i < len; ++i) {
+        if (!show || count === 0) return;
+        for (var i = 0; i < count; ++i) {
           renderVector(i);
         }
       }
     };
-
-    init();
 
     return api;
   };
