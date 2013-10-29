@@ -56,17 +56,6 @@
         ]
       },
       "onLoad": [
-        "onPropertyChange('atomInside', function(n) {",
-        "  setTextBoxProperties(3, {text: 'Atoms inside: ' + n}) ",
-        "});"
-      ]
-    }
-  ],
-  "outputs": [
-    {
-      "name": "atomInside",
-      "label": "Atoms inside balloon",
-      "value": [
         "var atomNum = 0;",
         "var obsX = getObstacleProperties(0).x;",
         "for (var i = 0; i < getNumberOfAtoms(); i++) {",
@@ -74,8 +63,16 @@
         "    atomNum++;",
         "  }",
         "}",
-        "return atomNum;"
+        "set('atomInside', atomNum);"
       ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "atomInside",
+      "label": "Atoms inside balloon",
+      "onChange": "setTextBoxProperties(3, {text: 'Atoms inside: ' + value})",
+      "initialValue": 0
     }
   ],
   "components": [
@@ -102,7 +99,12 @@
         "}",
         "avgVx /= atomNum;",
         "avgVy /= atomNum;",
-        "addAtom({ element: elemNum, x: (obsX - atomSigma) * Math.random()  , y: get('height') * Math.random(), vx: avgVx, vy: avgVy});"
+        "while(!addAtom({ element: elemNum,",
+        "                 x: (obsX - atomSigma) * Math.random(),",
+        "                 y: get('height') * Math.random(),",
+        "                 vx: avgVx,",
+        "                 vy: avgVy})) {}",
+        "set('atomInside', get('atomInside') + 1);"
       ]
     },
     {
@@ -116,6 +118,7 @@
         "  for (var i = 0; i < atomNum; i++) {",
         "    if (getAtomProperties(i).x < obsx) {",
         "      removeAtom(i);",
+        "      set('atomInside', get('atomInside') - 1);",
         "      break;",
         "    }",
         "  }",
