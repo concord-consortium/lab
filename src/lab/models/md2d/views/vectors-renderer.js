@@ -88,6 +88,7 @@ define(function(require) {
       }
       var lenInPx = m2px(len);
       if (lenInPx < 1) {
+        // Hide completely tiny vectors (< 1px).
         vec.alpha = 0;
         arrowHead.alpha = 0;
         return;
@@ -97,6 +98,11 @@ define(function(require) {
       } else {
         vec.alpha = 1;
         arrowHead.alpha = 1;
+      }
+      if (lenInPx > 1e6) {
+        // When vectors has enormous size, it can cause rendering artifacts. Limit it.
+        var s = lenInPx / 1e6;
+        vx /= s; vy /= s; len /= s; lenInPx /= s;
       }
       // Vector.
       vec.position.x = m2px(x);
