@@ -1273,10 +1273,16 @@ define(function(require) {
 
       model.on('addAtom', redrawClickableObjects(function () {
         atomsRenderer.setup();
+        velocityVectorsRenderer.setup();
+        forceVectorsRenderer.setup();
+        electricFieldRenderer.update();
         modelView.renderCanvas();
       }));
       model.on('removeAtom', redrawClickableObjects(function () {
         atomsRenderer.setup();
+        velocityVectorsRenderer.setup();
+        forceVectorsRenderer.setup();
+        electricFieldRenderer.update();
         modelView.renderCanvas();
       }));
       model.on('addRadialBond', redrawClickableObjects(function () {
