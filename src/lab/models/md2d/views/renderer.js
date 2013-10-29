@@ -32,6 +32,7 @@ define(function(require) {
       // This array is not garbage-collected so the view can be assured that
       // the latest modelAtoms will be in this array when the view is executing
       modelAtoms,
+      modelElectricField,
       modelElements,
       modelWidth,
       modelHeight,
@@ -51,7 +52,6 @@ define(function(require) {
       belowAtomsViewport = modelView.appendViewport().classed("below-atoms", true),
 
       // "Containers" - G elements used to position layers of the final visualization.
-      fieldVisualization   = belowAtomsViewport.append("g").attr("class", "field-visualization"),
       shapeContainerBelow  = belowAtomsViewport.append("g").attr("class", "shape-container-below"),
       imageContainerBelow  = belowAtomsViewport.append("g").attr("class", "image-container-below"),
       textContainerBelow   = belowAtomsViewport.append("g").attr("class", "text-container-below"),
@@ -61,9 +61,10 @@ define(function(require) {
       atomsViewport  = modelView.appendViewport().classed("atoms", true),
       atomsContainer = atomsViewport.append("g").attr("class", "atoms-container"),
 
+      vectorsBelowPixi = modelView.appendPixiViewport(),
       bondsPixi = modelView.appendPixiViewport(),
       atomsPixi = modelView.appendPixiViewport(),
-      vectorsPixi = modelView.appendPixiViewport(),
+      vectorsAbovePixi = modelView.appendPixiViewport(),
 
       aboveAtomsViewport = modelView.appendViewport().classed("above-atoms", true),
       shapeContainerTop  = aboveAtomsViewport.append("g").attr("class", "shape-container-top"),
@@ -77,7 +78,7 @@ define(function(require) {
       // TODO: try to create new renderers in separate files for clarity and easier testing.
       atomsRenderer = new AtomsRenderer(modelView, model, atomsPixi.pixiContainer, atomsPixi.canvas),
       bondsRenderer = new BondsRenderer(modelView, model, bondsPixi.pixiContainer, atomsRenderer),
-      velocityVectorsRenderer = new VectorsRenderer(vectorsPixi.pixiContainer, {
+      velocityVectorsRenderer = new VectorsRenderer(vectorsAbovePixi.pixiContainer, {
         get show() { return model.get("showVelocityVectors"); },
         get length() { return model.get("velocityVectors").length; },
         get width() { return model.get("velocityVectors").width; },
@@ -91,7 +92,7 @@ define(function(require) {
         m2px: modelView.model2canvas,
         m2pxInv: modelView.model2canvasInv
       }),
-      forceVectorsRenderer = new VectorsRenderer(vectorsPixi.pixiContainer, {
+      forceVectorsRenderer = new VectorsRenderer(vectorsAbovePixi.pixiContainer, {
         get show() { return model.get("showForceVectors"); },
         get length() { return model.get("forceVectors").length; },
         get width() { return model.get("forceVectors").width; },
@@ -102,6 +103,27 @@ define(function(require) {
         y0: function (i) { return modelAtoms[i].y; },
         x1: function (i) { var a = modelAtoms[i]; return a.ax * a.mass * 100; },
         y1: function (i) { var a = modelAtoms[i]; return a.ay * a.mass * 100; },
+        m2px: modelView.model2canvas,
+        m2pxInv: modelView.model2canvasInv
+      }),
+      electricFieldRenderer = new VectorsRenderer(vectorsBelowPixi.pixiContainer, {
+        get show() { return model.get("showElectricField"); },
+        get length() { return Math.sqrt(3 * model.get("width") / model.get("electricFieldDensity")); },
+        get width() { return 0.01; },
+        get color() {
+          var c = model.get("electricFieldColor");
+          return c !== "auto" ? c : color.contrastingColor(model.get("backgroundColor"));
+        },
+        get dirOnly() { return true; },
+        get count() { return modelElectricField.length; },
+        x0: function (i) { return modelElectricField[i].x; },
+        y0: function (i) { return modelElectricField[i].y; },
+        x1: function (i) { return modelElectricField[i].fx; },
+        y1: function (i) { return modelElectricField[i].fy; },
+        alpha: function (i) {
+          var d = modelElectricField[i];
+          return Math.min(1, Math.pow(d.fx * d.fx + d.fy * d.fy, 0.2) * 0.3);
+        },
         m2px: modelView.model2canvas,
         m2pxInv: modelView.model2canvasInv
       }),
@@ -1183,50 +1205,6 @@ define(function(require) {
       vdwPairs.splice(vdwHash.count);
     }
 
-    function setupElectricField() {
-      var density = model.get("electricFieldDensity"),
-        show = model.get("showElectricField"),
-        col, size;
-      drawElectricForceField = show && density > 0;
-      // Do full enter-update-remove cycle to reuse DOM elements.
-      efVector = fieldVisualization.selectAll(".vector-electric-field")
-        .data(show ? model.getElectricField() : []);
-      efVector.exit().remove();
-      if (drawElectricForceField) {
-        // Enter.
-        efVector.enter()
-          .append("g")
-          .attr("class", "vector-electric-field")
-          .append("g")
-          .attr("class", "rot-g")
-          .append("svg")
-          .attr("viewBox", "-5 -12 10 12")
-          .append("path")
-          .attr("d", "M0,0 L0,-8 L1,-8 L0,-10 L-1,-8, L0,-8");
-        // Update.
-        col = model.get("electricFieldColor");
-        if (col === "auto")
-          col = color.contrastingColor(model.get("backgroundColor"));
-
-        efVector
-          .attr("transform", function(d) {
-            return "translate(" + model2px(d.x) + ", " + model2pxInv(d.y) + ")";
-          })
-          .style("fill", col)
-          .style("stroke", col);
-        // Size update.
-        size = Math.sqrt(30 / density);
-        efVector.select("svg")
-          .attr("x", (-0.5 * size) + "em")
-          .attr("y", (-size) + "em")
-          .attr("width", size + "em")
-          .attr("height", size + "em");
-        // Cache selection + update rotation.
-        efVector = efVector.select(".rot-g");
-        updateElectricForceField();
-      }
-    }
-
     function updateElectricForceField() {
       var rad2deg = 180 / Math.PI;
       efVector
@@ -1455,6 +1433,7 @@ define(function(require) {
       fontSizeInPixels = modelView.getFontSizeInPixels();
 
       modelAtoms = model.getAtoms();
+      modelElectricField = model.getElectricField();
       modelElements = model.get_elements();
       modelWidth = model.get('width');
       modelHeight = model.get('height');
@@ -1474,6 +1453,11 @@ define(function(require) {
         };
       }
 
+      function setupElectricField() {
+        electricFieldRenderer.setup();
+        modelView.renderCanvas();
+      }
+
       // Redraw container each time when some visual-related property is changed.
       model.addPropertiesListener([
           "chargeShading", "showChargeSymbols", "useThreeLetterCode",
@@ -1483,14 +1467,14 @@ define(function(require) {
           "backgroundColor", "markColor", "forceVectorsDirectionOnly"
         ],
         redrawClickableObjects(repaint));
+
+      // Vectors:
       model.addPropertiesListener(["electricFieldDensity", "showElectricField", "electricFieldColor"],
         setupElectricField);
-
       model.addPropertiesListener(["showVelocityVectors", "velocityVectors"], function () {
         velocityVectorsRenderer.setup();
         modelView.renderCanvas();
       });
-
       model.addPropertiesListener(["showForceVectors", "forceVectors", "forceVectorsDirectionOnly"], function () {
         forceVectorsRenderer.setup();
         modelView.renderCanvas();
@@ -1561,7 +1545,7 @@ define(function(require) {
       geneticRenderer.setup();
       velocityVectorsRenderer.setup();
       forceVectorsRenderer.setup();
-      setupElectricField();
+      electricFieldRenderer.setup();
       setupAtomTrace();
       imagesRenderer.setup();
       drawTextBoxes();
@@ -1604,10 +1588,8 @@ define(function(require) {
       bondsRenderer.update();
       velocityVectorsRenderer.update();
       forceVectorsRenderer.update();
+      electricFieldRenderer.update();
 
-      if (drawElectricForceField) {
-        updateElectricForceField();
-      }
       if (drawAtomTrace) {
         updateAtomTrace();
       }
