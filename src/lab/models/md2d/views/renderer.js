@@ -14,6 +14,7 @@ define(function(require) {
     AtomsRenderer       = require('models/md2d/views/atoms-renderer'),
     BondsRenderer       = require('models/md2d/views/bonds-renderer'),
     VectorsRenderer     = require('models/md2d/views/vectors-renderer'),
+    VdwLinesRenderer    = require('./vdw-lines-renderer'),
     GeneticRenderer     = require('models/md2d/views/genetic-renderer'),
     wrapSVGText         = require('cs!common/layout/wrap-svg-text'),
     gradients           = require('common/views/gradients'),
@@ -61,6 +62,7 @@ define(function(require) {
       atomsContainer = atomsViewport.append("g").attr("class", "atoms-container"),
 
       vectorsBelowPixi = modelView.appendPixiViewport(),
+      vdwLinesPixi = modelView.appendPixiViewport(),
       bondsPixi = modelView.appendPixiViewport(),
       atomsPixi = modelView.appendPixiViewport(),
       vectorsAbovePixi = modelView.appendPixiViewport(),
@@ -77,6 +79,7 @@ define(function(require) {
       // TODO: try to create new renderers in separate files for clarity and easier testing.
       atomsRenderer = new AtomsRenderer(modelView, model, atomsPixi.pixiContainer, atomsPixi.canvas),
       bondsRenderer = new BondsRenderer(modelView, model, bondsPixi.pixiContainer, atomsRenderer),
+      vdwLinesRenderer = new VdwLinesRenderer(modelView, model, vdwLinesPixi.pixiContainer),
       velocityVectorsRenderer = new VectorsRenderer(vectorsAbovePixi.pixiContainer, {
         get show() { return model.get("showVelocityVectors"); },
         get length() { return model.get("velocityVectors").length; },
@@ -1222,6 +1225,7 @@ define(function(require) {
       model = newModel;
       atomsRenderer.bindModel(newModel);
       bondsRenderer.bindModel(newModel);
+      vdwLinesRenderer.bindModel(newModel);
       imagesRenderer.bindModel(newModel);
       setup();
     }
@@ -1247,6 +1251,7 @@ define(function(require) {
       setupObstacles();
       atomsRenderer.setup();
       bondsRenderer.setup();
+      vdwLinesRenderer.setup();
       setupShapes();
       setupLines();
       geneticRenderer.setup();
@@ -1289,6 +1294,7 @@ define(function(require) {
 
       atomsRenderer.update();
       bondsRenderer.update();
+      vdwLinesRenderer.update();
       velocityVectorsRenderer.update();
       forceVectorsRenderer.update();
       electricFieldRenderer.update();
