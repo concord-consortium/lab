@@ -138,11 +138,22 @@
     },
     {
       "type": "button",
+      "id": "try-again",
+      "text": "Try again",
+      "action": [
+        "if (getNumberOfAtoms() > 2) {",
+        "  untraceAtom(getNumberOfAtoms()-1);",
+        "  removeAtom(getNumberOfAtoms()-1);",
+        "}"
+      ]
+    },
+    {
+      "type": "button",
       "id": "reset",
       "text": "Reset",
       "action": [
         "reset({",
-        "  retainParameters: ['showElectricField', 'showForceVectors', 'object-a-charge', 'object-b-charge']",
+        "  retainParameters: ['showElectricField', 'showForceVectors']",
         "});"
       ]
     },
@@ -225,7 +236,7 @@
   ],
   "layout": {
     "bottom": [
-      ["add-atom", "reset", "select-level"],
+      ["add-atom", "try-again", "reset", "select-level"],
       ["select-object-a-charge", "select-object-b-charge"],
       ["select-show-electric-field", "select-show-force-vectors"]
     ]

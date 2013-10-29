@@ -137,13 +137,23 @@
     },
     {
       "type": "button",
-      "id": "reset",
-      "text": "Reset",
+      "id": "try-again",
+      "text": "Try again",
       "action": [
         "if (getNumberOfAtoms() > 2) {",
         "  untraceAtom(getNumberOfAtoms()-1);",
         "  removeAtom(getNumberOfAtoms()-1);",
         "}"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "reset",
+      "text": "Reset",
+      "action": [
+        "reset({",
+        "  retainParameters: ['electric-field', 'force-vectors']",
+        "});"
       ]
     },
     {
@@ -177,7 +187,7 @@
   ],
   "layout": {
     "bottom": [
-      ["add-atom", "reset", "select-level"],
+      ["add-atom", "try-again", "reset", "select-level"],
       ["select-show-electric-field", "select-show-force-vectors"]
     ]
   },
