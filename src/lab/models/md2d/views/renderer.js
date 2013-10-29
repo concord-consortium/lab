@@ -55,7 +55,6 @@ define(function(require) {
       shapeContainerBelow  = belowAtomsViewport.append("g").attr("class", "shape-container-below"),
       imageContainerBelow  = belowAtomsViewport.append("g").attr("class", "image-container image-container-below"),
       textContainerBelow   = belowAtomsViewport.append("g").attr("class", "text-container-below"),
-      VDWLinesContainer    = belowAtomsViewport.append("g").attr("class", "vdw-lines-container"),
 
       // TODO: remove it, as well as legacy code responsible for SVG atoms rendering.
       atomsViewport  = modelView.appendViewport().classed("atoms", true),
@@ -143,11 +142,8 @@ define(function(require) {
       lines,
       lineTop,
       mockLinesTop = [],
-      vdwPairs = [],
-      vdwLines,
       keShadingMode,
       useQuantumDynamics,
-      drawVdwLines,
       forceVectorColor,
       forceVectorWidth,
       textBoxes,
@@ -523,53 +519,6 @@ define(function(require) {
         });
       }
     }
-
-    function vdwLinesEnter() {
-      var strokeWidth = model2px(0.02),
-        strokeDasharray = model2px(0.03) + " " + model2px(0.02);
-      // update existing lines
-      vdwLines.attr({
-        "x1": function(d) {
-          return model2px(modelAtoms[d[0]].x);
-        },
-        "y1": function(d) {
-          return model2pxInv(modelAtoms[d[0]].y);
-        },
-        "x2": function(d) {
-          return model2px(modelAtoms[d[1]].x);
-        },
-        "y2": function(d) {
-          return model2pxInv(modelAtoms[d[1]].y);
-        }
-      });
-
-      // append new lines
-      vdwLines.enter().append('line')
-        .attr({
-          "class": "attractionforce",
-          "x1": function(d) {
-            return model2px(modelAtoms[d[0]].x);
-          },
-          "y1": function(d) {
-            return model2pxInv(modelAtoms[d[0]].y);
-          },
-          "x2": function(d) {
-            return model2px(modelAtoms[d[1]].x);
-          },
-          "y2": function(d) {
-            return model2pxInv(modelAtoms[d[1]].y);
-          }
-        })
-        .style({
-          "stroke-width": strokeWidth,
-          "stroke-dasharray": strokeDasharray
-        });
-
-      // remove old lines
-      vdwLines.exit().remove();
-    }
-
-
 
     function getTextBoxCoords(d) {
       var x, y, hostX, hostY, textX, textY, frameX, frameY, calloutX, calloutY,
@@ -1027,29 +976,6 @@ define(function(require) {
       }
     }
 
-    function setupVdwPairs() {
-      VDWLinesContainer.selectAll("line.attractionforce").remove();
-      updateVdwPairsArray();
-      drawVdwLines = model.get("showVDWLines");
-      if (drawVdwLines) {
-        vdwLines = VDWLinesContainer.selectAll("line.attractionforce").data(vdwPairs);
-        vdwLinesEnter();
-      }
-    }
-
-    // The vdw hash returned by md2d consists of typed arrays of length N*N-1/2
-    // To make these d3-friendly we turn them into an array of atom pairs, only
-    // as long as we need.
-
-    function updateVdwPairsArray() {
-      var vdwHash = model.get_vdw_pairs();
-      for (var i = 0; i < vdwHash.count; i++) {
-        vdwPairs[i] = [vdwHash.atom1[i], vdwHash.atom2[i]];
-      }
-      // if vdwPairs was longer at the previous tick, trim the end
-      vdwPairs.splice(vdwHash.count);
-    }
-
     function setupAtomTrace() {
       atomsContainer.selectAll("path.atomTrace").remove();
       atomTracePath = "";
@@ -1060,14 +986,6 @@ define(function(require) {
         atomTrace = atomsContainer.selectAll("path.atomTrace").data([modelAtoms[atomTraceId]]);
         atomTraceEnter();
       }
-    }
-
-    function updateVdwPairs() {
-      // Get new set of pairs from model.
-      updateVdwPairsArray();
-
-      vdwLines = VDWLinesContainer.selectAll("line.attractionforce").data(vdwPairs);
-      vdwLinesEnter();
     }
 
     function getAtomTracePath(d) {
@@ -1327,7 +1245,6 @@ define(function(require) {
 
       setupMiscOptions();
       setupObstacles();
-      setupVdwPairs();
       atomsRenderer.setup();
       bondsRenderer.setup();
       setupShapes();
@@ -1368,10 +1285,6 @@ define(function(require) {
         shapeBelow.attr("transform", function(d) {
           return "translate(" + model2px(shapes.x[d.index]) + " " + model2pxInv(shapes.y[d.index] + shapes.height[d.index]) + ")";
         });
-      }
-
-      if (drawVdwLines) {
-        updateVdwPairs();
       }
 
       atomsRenderer.update();
