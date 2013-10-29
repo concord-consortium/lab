@@ -160,28 +160,14 @@ define(function(require) {
       keShadingMode,
       useQuantumDynamics,
       drawVdwLines,
-      drawVelocityVectors,
-      drawElectricForceField,
-      velocityVectorColor,
-      velocityVectorWidth,
-      velocityVectorLength,
-      drawForceVectors,
       forceVectorColor,
       forceVectorWidth,
-      forceVectorLength,
-      forceVectorsDirectionOnly,
-      velVector,
-      forceVector,
-      efVector,
       textBoxes,
       drawAtomTrace,
       atomTraceId,
       atomTraceColor,
       atomTrace,
       atomTracePath,
-
-      VELOCITY_STR = "velocity",
-      FORCE_STR = "force",
 
       browser = benchmark.what_browser(),
 
@@ -489,18 +475,6 @@ define(function(require) {
       }
     }
 
-    function vectorEnter(vector, pathFunc, widthFunc, color, name) {
-      vector.enter().append("path")
-        .attr({
-          "class": "vector-" + name,
-          "marker-end": hideLineMarkers ? "" : "url(#Triangle-" + name + ")",
-          "d": pathFunc,
-          "stroke-width": widthFunc,
-          "stroke": color,
-          "fill": "none"
-        });
-    }
-
     function atomTraceEnter() {
       atomTrace.enter().append("path")
         .attr({
@@ -611,7 +585,7 @@ define(function(require) {
         // Finally, set common attributes and stying for both vertical and horizontal forces.
         obstacleGroupEl.selectAll("path.obstacle-force-hor, path.obstacle-force-vert")
           .attr({
-            "marker-end": hideLineMarkers ? "" : "url(#Triangle-" + FORCE_STR + ")",
+            "marker-end": hideLineMarkers ? "" : "url(#Triangle-force)",
             "stroke-width": model2px(forceVectorWidth),
             "stroke": forceVectorColor,
             "fill": "none"
@@ -1205,17 +1179,6 @@ define(function(require) {
       vdwPairs.splice(vdwHash.count);
     }
 
-    function updateElectricForceField() {
-      var rad2deg = 180 / Math.PI;
-      efVector
-        .attr("transform", function(d) {
-          return "rotate(" + (Math.atan2(d.fx, d.fy) * rad2deg) + ")";
-        })
-        .style("opacity", function(d) {
-          return Math.min(1, Math.pow(d.fx * d.fx + d.fy * d.fy, 0.2) * 0.3);
-        });
-    }
-
     function setupAtomTrace() {
       atomsContainer.selectAll("path.atomTrace").remove();
       atomTracePath = "";
@@ -1234,43 +1197,6 @@ define(function(require) {
 
       vdwLines = VDWLinesContainer.selectAll("line.attractionforce").data(vdwPairs);
       vdwLinesEnter();
-    }
-
-
-    function getVelVectorPath(d) {
-      var x_pos = model2px(d.x),
-        y_pos = model2pxInv(d.y),
-        path = "M " + x_pos + "," + y_pos,
-        scale = velocityVectorLength * 100;
-      return path + " L " + (x_pos + model2px(d.vx * scale)) + "," + (y_pos - model2px(d.vy * scale));
-    }
-
-    function getForceVectorPath(d) {
-      var xPos = model2px(d.x),
-        yPos = model2pxInv(d.y),
-        mass = d.mass,
-        scale = forceVectorLength * 100 * mass;
-      if (forceVectorsDirectionOnly) {
-        mass *= mass;
-        scale /= Math.sqrt(d.ax * d.ax * mass + d.ay * d.ay * mass) * 1e3 || 1;
-      }
-      return "M" + xPos + "," + yPos +
-        "L" + (xPos + model2px(d.ax * scale)) + "," + (yPos - model2px(d.ay * scale));
-    }
-
-    function getVelVectorWidth(d) {
-      return Math.abs(d.vx) + Math.abs(d.vy) > 1e-6 ? model2px(velocityVectorWidth) : 0;
-    }
-
-    function getForceVectorWidth(d) {
-      return Math.abs(d.ax) + Math.abs(d.ay) > 1e-8 ? model2px(forceVectorWidth) : 0;
-    }
-
-    function updateVectors(vector, pathFunc, widthFunc) {
-      vector.attr({
-        "d": pathFunc,
-        "stroke-width": widthFunc
-      });
     }
 
     function getAtomTracePath(d) {
@@ -1338,19 +1264,10 @@ define(function(require) {
     }
 
     function setupMiscOptions() {
-      // Note that vector options are specified in a very untypical way. They are nested objects.
-      velocityVectorColor = model.get("velocityVectors").color;
-      velocityVectorWidth = model.get("velocityVectors").width;
-      velocityVectorLength = model.get("velocityVectors").length;
-
+      // These options are still used by the obstacle force arrows.
       forceVectorColor = model.get("forceVectors").color;
       forceVectorWidth = model.get("forceVectors").width;
-      forceVectorLength = model.get("forceVectors").length;
-
-      forceVectorsDirectionOnly = model.get("forceVectorsDirectionOnly");
-
-      createVectorArrowHeads(velocityVectorColor, VELOCITY_STR);
-      createVectorArrowHeads(forceVectorColor, FORCE_STR);
+      createVectorArrowHeads(forceVectorColor, "force");
 
       atomTraceColor = model.get("atomTraceColor");
     }
