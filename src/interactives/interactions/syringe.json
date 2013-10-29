@@ -11,7 +11,7 @@
       "url": "imports/legacy-mw-content/converted/interactions/syringe/syringe$0.json",
       "importedFrom": "imports/legacy-mw-content/interactions/syringe/syringe$0.mml",
       "viewOptions": {
-        "controlButtons": "play_reset",
+        "controlButtons": "",
         "imageMapping": {
           "plunger.png": "plunger.svg",
           "nail.png": "nail.svg"
