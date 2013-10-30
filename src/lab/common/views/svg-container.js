@@ -25,8 +25,6 @@ define(function (require) {
 
         $el,
         node,
-        emsize,
-        fontSizeInPixels,
 
         plotContainer, backgroundContainer, foregroundContainer,
 
@@ -37,8 +35,8 @@ define(function (require) {
         hitTestingHelper,
         viewportZIndex = 0,
 
-        cx, cy,
-        padding, size, modelSize, viewport, viewPortZoom,
+        cx, cy, fontSizeInPixels,
+        viewport, viewPortZoom,
 
         model2canvas    = d3.scale.linear(),
         model2canvasInv = d3.scale.linear(),
@@ -78,42 +76,12 @@ define(function (require) {
       return parseFloat($el.css('font-size')) || 18;
     }
 
-    // Padding is based on the calculated font-size used for the model view container.
-    function updatePadding() {
-      fontSizeInPixels = getFontSizeInPixels();
-      // Convert value to "em", using 18px as a basic font size.
-      // It doesn't have to reflect true 1em value in current context.
-      // It just means, that we assume that for 18px font-size,
-      // padding and playback have scale 1.
-      emsize = fontSizeInPixels / 18;
-
-      padding = {
-         "top":    0 * emsize,
-         "right":  0 * emsize,
-         "bottom": 0 * emsize,
-         "left":   0 * emsize
-      };
-
-      if (model.get("xunits") || model.get("yunits")) {
-        padding.bottom += (fontSizeInPixels * 1.2);
-        padding.left +=   (fontSizeInPixels * 1.3);
-        padding.top +=    (fontSizeInPixels/2);
-        padding.right +=  (fontSizeInPixels/2);
-      }
-
-      if (model.get("xlabel") || model.get("ylabel")) {
-        padding.bottom += (fontSizeInPixels * 0.8);
-        padding.left +=   (fontSizeInPixels * 0.8);
-      }
-    }
-
     function scale() {
       var viewPortWidth = model.get("viewPortWidth"),
           viewPortHeight = model.get("viewPortHeight"),
           viewPortX = model.get("viewPortX"),
           viewPortY = model.get("viewPortY"),
-          aspectRatio,
-          width, height;
+          aspectRatio, modelSize;
 
       viewPortZoom = model.get("viewPortZoom") || 1;
 
@@ -142,43 +110,28 @@ define(function (require) {
 
       aspectRatio = viewport.width / viewport.height;
 
-      updatePadding();
-
       cx = $el.width();
-      width = cx - padding.left  - padding.right;
-      height = width / aspectRatio;
-      cy = height + padding.top  + padding.bottom;
+      cy = cx / aspectRatio;
       node.style.height = cy + "px";
-
-      // Plot size in px.
-      size = {
-        "width":  cx - padding.left - padding.right,
-        "height": cy - padding.top  - padding.bottom
-      };
-
-      size = {
-        "width":  width,
-        "height": height
-      };
 
       // Basic model2px scaling function for position.
       model2px
         .domain([0, viewport.width])
-        .range([0, size.width]);
+        .range([0, cx]);
 
       model2canvas
         .domain([0, viewport.scaledWidth])
-        .range([0, size.width * CANVAS_OVERSAMPLING]);
+        .range([0, cx * CANVAS_OVERSAMPLING]);
 
       // Inverted model2px scaling function for position (for y-coordinates, domain can be inverted).
       model2pxInv
         .domain([viewport.height, 0])
-        .range(origin === 'bottom-left' ? [0, size.height] : [size.height, 0]);
+        .range(origin === 'bottom-left' ? [0, cy] : [cy, 0]);
 
       model2canvasInv
         .domain([viewport.scaledHeight, 0])
-        .range(origin === 'bottom-left' ? [0, size.height * CANVAS_OVERSAMPLING] :
-                                          [size.height * CANVAS_OVERSAMPLING, 0]);
+        .range(origin === 'bottom-left' ? [0, cy * CANVAS_OVERSAMPLING] :
+                                          [cy * CANVAS_OVERSAMPLING, 0]);
 
       if (selectBrush) {
         // Update brush to use new scaling functions.
@@ -189,16 +142,22 @@ define(function (require) {
     }
 
     function redrawGridLinesAndLabels() {
+      var fsize = 0.7 * fontSizeInPixels,
           // Overwrite default model2px and model2pxInv to display correct units.
-      var model2px = d3.scale.linear().domain([viewport.x, viewport.x + viewport.scaledWidth]).range([0, size.width]),
-          model2pxInv = d3.scale.linear().domain([viewport.y, viewport.y - viewport.scaledHeight]).range([0, size.height]),
+          model2px = d3.scale.linear().domain([viewport.x + 0.07 * viewport.scaledWidth, viewport.x + viewport.scaledWidth]).range([0.07 * cx, cx]),
+          model2pxInv = d3.scale.linear().domain([viewport.y, viewport.y - 0.93 * viewport.scaledHeight]).range([0, 0.93 * cy]),
           tx = function(d) { return "translate(" + model2px(d) + ",0)"; },
           ty = function(d) { return "translate(0," + model2pxInv(d) + ")"; },
           stroke = function(d) { return d ? "#ccc" : "#666"; },
           fx = model2px.tickFormat(5),
           fy = model2pxInv.tickFormat(5),
           lengthUnits = model.getUnitDefinition ? model.getUnitDefinition('length') : "",
-          xlabel, ylabel;
+          drawXunits = model.get("xunits"),
+          drawYunits = model.get("yunits"),
+          drawXLabel = model.get("xlabel"),
+          drawYLabel = model.get("ylabel"),
+          xlabel,
+          ylabel;
 
       if (d3.event && d3.event.transform) {
         d3.event.transform(model2px, model2pxInv);
@@ -214,7 +173,7 @@ define(function (require) {
 
       gx.select("text").text(fx);
 
-      var gxe = gx.enter().insert("g", "a")
+      var gxe = gx.enter().append("g")
           .attr("class", "x")
           .attr("transform", tx);
 
@@ -222,36 +181,35 @@ define(function (require) {
         gxe.append("line")
             .attr("stroke", stroke)
             .attr("y1", 0)
-            .attr("y2", size.height);
+            .attr("y2", cy - (drawXLabel ? fsize : 0) - (drawXunits ? fsize : 0));
       } else {
         gxe.selectAll("line").remove();
       }
 
+      // x-axis label
+      xlabel = plotContainer.selectAll("text.xlabel").data(drawXLabel ? [lengthUnits.pluralName] : []);
+      xlabel.enter().append("text");
+      xlabel
+          .attr("class", "axis")
+          .attr("class", "xlabel")
+          .attr("x", cx / 2)
+          .attr("y", cy)
+          .attr("dy", "-0.1em")
+          .style("text-anchor", "middle")
+          .text(String);
+      xlabel.exit().remove();
+
       // x-axis units
-      if (model.get("xunits")) {
+      if (drawXunits) {
         gxe.append("text")
             .attr("class", "xunits")
-            .attr("y", size.height)
-            .attr("dy", fontSizeInPixels*0.8 + "px")
+            .attr("y", cy)
+            .attr("dy", model.get("xlabel") ? "-1em" : "-0.1em")
             .attr("text-anchor", "middle")
             .text(fx);
       } else {
         gxe.select("text.xunits").remove();
       }
-
-      gx.exit().remove();
-
-      // x-axis label
-      xlabel = plotContainer.selectAll("text.xlabel").data(model.get("xlabel") ? [lengthUnits.pluralName] : []);
-      xlabel.enter().append("text")
-          .attr("class", "axis")
-          .attr("class", "xlabel")
-          .attr("x", size.width / 2)
-          .attr("y", size.height)
-          .attr("dy", (fontSizeInPixels * 1.6) + "px")
-          .style("text-anchor", "middle");
-      xlabel.text(String);
-      xlabel.exit().remove();
 
       // Regenerate y-ticks…
       var gy = plotContainer.selectAll("g.y")
@@ -262,7 +220,7 @@ define(function (require) {
       gy.select("text")
           .text(fy);
 
-      var gye = gy.enter().insert("g", "a")
+      var gye = gy.enter().append("g")
           .attr("class", "y")
           .attr("transform", ty)
           .attr("background-fill", "#FFEEB6");
@@ -270,35 +228,34 @@ define(function (require) {
       if (model.get("gridLines")) {
         gye.append("line")
             .attr("stroke", stroke)
-            .attr("x1", 0)
-            .attr("x2", size.width);
+            .attr("x1", (drawYLabel ? fsize : 0) + (drawYunits ? 2 * fsize : 0))
+            .attr("x2", cx);
       } else {
         gye.selectAll("line").remove();
       }
 
+      // y-axis label
+      ylabel = plotContainer.selectAll("text.ylabel").data(drawYLabel ? [lengthUnits.pluralName] : []);
+      ylabel.enter().append("text");
+      ylabel
+          .attr("class", "axis")
+          .attr("class", "ylabel")
+          .attr("transform","translate(0 " + (cy * 0.5) + ") rotate(-90)")
+          .attr("dy", "0.75em")
+          .style("text-anchor","middle")
+          .text(String);
+      ylabel.exit().remove();
+
       // y-axis units
-      if (model.get("yunits")) {
+      if (drawYunits) {
         gye.append("text")
             .attr("class", "yunits")
-            .attr("x", "-0.3em")
-            .attr("dy", fontSizeInPixels/6 + "px")
-            .attr("text-anchor", "end")
+            .attr("dy", "0.34em")
+            .attr("dx", model.get("ylabel") ? "1em" : "0.1em")
             .text(fy);
       } else {
         gxe.select("text.yunits").remove();
       }
-
-      gy.exit().remove();
-
-      // y-axis label
-      ylabel = plotContainer.selectAll("text.ylabel").data(model.get("ylabel") ? [lengthUnits.pluralName] : []);
-      ylabel.enter().append("text")
-          .attr("class", "axis")
-          .attr("class", "ylabel")
-          .style("text-anchor","middle")
-          .attr("transform","translate(" + -fontSizeInPixels * 1.6 + " " + size.height / 2 + ") rotate(-90)");
-      ylabel.text(String);
-      ylabel.exit().remove();
     }
 
     // Setup background.
@@ -344,9 +301,6 @@ define(function (require) {
 
     function renderContainer() {
       var viewBox;
-
-      // Update cx, cy, size, viewport and modelSize variables.
-      scale();
 
       // Create container, or update properties if it already exists.
       if (plotContainer === undefined) {
@@ -405,13 +359,14 @@ define(function (require) {
         hitTestingHelper.addLayer(backgroundContainer.node());
       }
 
+      // Update cx, cy, size, viewport and modelSize variables.
+      scale();
+
       // Dimension/position of all the root layers
       d3.select(node).selectAll('.root-layer')
         .attr({
           width: cx,
-          height: cy,
-          left: padding.left,
-          top: padding.top
+          height: cy
         })
         // Update style values too, as otherwise SVG isn't clipped correctly e.g. in Safari.
         .style({
@@ -715,6 +670,8 @@ define(function (require) {
       },
 
       resize: function() {
+        fontSizeInPixels = getFontSizeInPixels();
+
         renderContainer();
         api.repaint();
 
@@ -749,8 +706,7 @@ define(function (require) {
 
       getHeightForWidth: function (width) {
         var aspectRatio = viewport.width / viewport.height;
-        width = width - padding.left  - padding.right;
-        return width / aspectRatio + padding.top + padding.bottom;
+        return width / aspectRatio;
       },
 
       bindModel: function(newModel, newModelUrl) {
