@@ -35,7 +35,7 @@ define(function (require) {
         hitTestingHelper,
         viewportZIndex = 0,
 
-        cx, cy, fontSizeInPixels,
+        cx, cy,
         viewport, viewPortZoom,
 
         model2canvas    = d3.scale.linear(),
@@ -142,7 +142,7 @@ define(function (require) {
     }
 
     function redrawGridLinesAndLabels() {
-      var fsize = 0.7 * fontSizeInPixels,
+      var fsize = 0.7 * getFontSizeInPixels(),
           // Overwrite default model2px and model2pxInv to display correct units.
           model2px = d3.scale.linear().domain([viewport.x + 0.07 * viewport.scaledWidth, viewport.x + viewport.scaledWidth]).range([0.07 * cx, cx]),
           model2pxInv = d3.scale.linear().domain([viewport.y, viewport.y - 0.93 * viewport.scaledHeight]).range([0, 0.93 * cy]),
@@ -670,8 +670,6 @@ define(function (require) {
       },
 
       resize: function() {
-        fontSizeInPixels = getFontSizeInPixels();
-
         renderContainer();
         api.repaint();
 
