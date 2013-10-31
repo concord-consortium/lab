@@ -1,23 +1,6 @@
 define(function(require) {
   'use strict';
-
-  var PIXI     = require('pixi');
-  var canvg    = require('canvg');
-  var mustache = require('mustache');
-
-  /*jshint -W043 */
-  var LINE_TEMPLATE =
-    '<svg x="0px" y="0px" width="{{ width }}px" height="{{ height }}px"> \
-       <line x1="{{ x1 }}" \
-             y1="{{ y1 }}" \
-             x2="{{ x2 }}" \
-             y2="{{ y2 }}" \
-             style="stroke: #aaa; \
-                    stroke-width: {{ strokeWidth }}px; \
-                    stroke-dasharray: {{ dashArrayLong }}px, {{ dashArrayShort }}px;"> \
-      </line> \
-    </svg>';
-  /*jshint +W043*/
+  var PIXI = require('pixi');
 
   var NUMBER_OF_SEGMENTS = 5;
 
@@ -44,25 +27,26 @@ define(function(require) {
     */
     function getLineTexture(strokeWidth) {
       var canvas = document.createElement('canvas');
+      var ctx = canvas.getContext('2d');
 
       var gapLength = modelView.model2canvas(0.02);
       var segmentLength = modelView.model2canvas(0.03);
       var length = NUMBER_OF_SEGMENTS * (segmentLength + gapLength) + segmentLength;
       var halfStroke = strokeWidth / 2;
 
-      var templateData = {
-        width: length,
-        height: strokeWidth,
-        x1: 0,
-        x2: length,
-        y1: halfStroke,
-        y2: halfStroke,
-        strokeWidth: strokeWidth,
-        dashArrayLong:  segmentLength,
-        dashArrayShort: gapLength
-      };
+      canvas.width = length;
+      canvas.height = strokeWidth;
+      ctx.strokeStyle = "#aaa";
+      ctx.lineWidth = strokeWidth;
 
-      canvg(canvas, mustache.render(LINE_TEMPLATE, templateData));
+      var x = 0;
+      for (var i = 0; i < NUMBER_OF_SEGMENTS; i++) {
+        ctx.moveTo(x, halfStroke);
+        ctx.lineTo(x + segmentLength, halfStroke);
+        ctx.stroke();
+        x += segmentLength + gapLength;
+      }
+
       return PIXI.Texture.fromCanvas(canvas);
     }
 
