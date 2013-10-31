@@ -1173,8 +1173,6 @@ define(function(require) {
       // Redraw container each time when some visual-related property is changed.
       model.addPropertiesListener([
           "chargeShading", "showChargeSymbols", "useThreeLetterCode",
-          "showVDWLines", "VDWLinesCutoff",
-          "showVelocityVectors", "showForceVectors",
           "showAtomTrace", "atomTraceId", "aminoAcidColorScheme",
           "backgroundColor", "markColor", "forceVectorsDirectionOnly"
         ],
@@ -1189,6 +1187,10 @@ define(function(require) {
       });
       model.addPropertiesListener(["showForceVectors", "forceVectors", "forceVectorsDirectionOnly"], function () {
         forceVectorsRenderer.setup();
+        modelView.renderCanvas();
+      });
+      model.addPropertiesListener(["showVDWLines", "VDWLinesCutoff"], function () {
+        vdwLinesRenderer.setup();
         modelView.renderCanvas();
       });
 
