@@ -164,11 +164,6 @@ jnlp-all: clean-jnlp \
 clean-jnlp:
 	rm -rf public/jnlp
 
-# create symbolic link to support references to old location for Interactives
-.PHONY: symbolic-links
-symbolic-links:
-	cd public/examples; if [ ! -L interactives ]; then ln -s ../ interactives; fi
-
 # ------------------------------------------------
 #
 #   Testing
