@@ -18,7 +18,7 @@ define(function(require) {
     GeneticRenderer     = require('models/md2d/views/genetic-renderer'),
     wrapSVGText         = require('cs!common/layout/wrap-svg-text'),
     gradients           = require('common/views/gradients'),
-    color               = require('common/views/color'),
+    contrastingColor    = require('common/views/color').contrastingColor,
     ImagesRenderer      = require('./images-renderer');
 
   return function MD2DView(modelView, model) {
@@ -114,7 +114,7 @@ define(function(require) {
         get width() { return 0.01; },
         get color() {
           var c = model.get("electricFieldColor");
-          return c !== "auto" ? c : color.contrastingColor(model.get("backgroundColor"));
+          return c !== "auto" ? c : contrastingColor(model.get("backgroundColor"));
         },
         get dirOnly() { return true; },
         get count() { return modelElectricField.length; },
