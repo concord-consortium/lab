@@ -150,6 +150,9 @@ define(function(require) {
       forceVectorColor,
       forceVectorWidth,
       textBoxes,
+      // Flag indicating whether there are some movable text boxes or not (e.g. attached to an atom
+      // or obstacle). Used for optimization.
+      onlyStaticTextBoxes = true,
       drawAtomTrace,
       atomTraceId,
       atomTraceColor,
@@ -531,6 +534,9 @@ define(function(require) {
       y = d.y;
 
       if (d.hostType) {
+        // Mark that at least one text box has a host - it means that we have to update text boxes
+        // each tick. Otherwise, we can follow a fast path and don't update them after creation.
+        onlyStaticTextBoxes = false;
         if (d.hostType === "Atom") {
           hostX = modelAtoms[d.hostIndex].x;
           hostY = modelAtoms[d.hostIndex].y;
@@ -1313,7 +1319,9 @@ define(function(require) {
       if (model.properties.images && model.properties.images.length !== 0) {
         imagesRenderer.update();
       }
-      if (textBoxes && textBoxes.length > 0) {
+      if (textBoxes && textBoxes.length > 0 && !onlyStaticTextBoxes) {
+        // Update text boxes properties only when at least one of them is attached to some movable
+        // object like atom or obstacle.
         updateTextBoxes();
       }
       if (useQuantumDynamics) {
