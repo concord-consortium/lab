@@ -15,6 +15,9 @@ define(function(require) {
     // Width of VdW lines in pixels
     var strokeWidth;
 
+    // Length of VdW line texture in pixels
+    var texLength;
+
     // Pixi sprites for each line
     var sprites = [];
 
@@ -31,10 +34,11 @@ define(function(require) {
 
       var gapLength = modelView.model2canvas(0.02);
       var segmentLength = modelView.model2canvas(0.03);
-      var length = NUMBER_OF_SEGMENTS * (segmentLength + gapLength) + segmentLength;
       var halfStroke = strokeWidth / 2;
 
-      canvas.width = length;
+      texLength = NUMBER_OF_SEGMENTS * (segmentLength + gapLength) + segmentLength;
+
+      canvas.width = texLength;
       canvas.height = strokeWidth;
       ctx.strokeStyle = "#aaa";
       ctx.lineWidth = strokeWidth;
@@ -111,18 +115,14 @@ define(function(require) {
 
       var vdwPairs = model.get_vdw_pairs();
       var atoms = model.getAtoms();
-      var halfStroke = strokeWidth / 2;
       var i;
       var atom1, atom2;
-      var dx, dy, length;
-      var angle;
+      var dx, dy;
       var x1, y1, x2, y2;
 
       for (i = sprites.length; i < vdwPairs.count; i++) {
         sprites[i] = new PIXI.Sprite(texture);
-        // The midpoint of the VdW line's left edge is placed at the atom's center; make sure that
-        // the atom center is also the fixed point of the rotation applied to the line.
-        sprites[i].pivot.x = strokeWidth / 2;
+        sprites[i].anchor.y = 0.5;
         container.addChild(sprites[i]);
       }
 
@@ -138,18 +138,15 @@ define(function(require) {
         dx = x2 - x1;
         dy = y2 - y1;
 
-        length = Math.ceil(Math.sqrt(dx * dx + dy * dy));
-        angle = Math.atan2(dy, dx);
-
         sprites[i].visible = true;
-        // stretches/shrinks the sprite to the desired length; appears to be just fine visually
-        sprites[i].width = length;
+        // stretches/shrinks the sprite to the desired length; appears to be just fine visually.
+        sprites[i].scale.x = Math.ceil(Math.sqrt(dx * dx + dy * dy)) / texLength;
         // Make sure the midpoint of the left edge is at (x1, y1); sprite.position.{x|t} refer to
         // the upper left corner instead. A little bit of math is required because Pixi appears to
         // apply the rotation before the translation.
-        sprites[i].position.x = x1 + halfStroke * Math.sin(angle);
-        sprites[i].position.y = y1 - halfStroke * Math.cos(angle);
-        sprites[i].rotation = angle;
+        sprites[i].position.x = x1;
+        sprites[i].position.y = y1;
+        sprites[i].rotation = Math.atan2(dy, dx);
       }
 
       // hide unused sprites, but don't delete them -- VdW lines come and go on each tick!
