@@ -562,6 +562,13 @@ define(function(require) {
           }
         },
 
+        normalizeAngle = function(t) {
+          t = t % TWO_PI;
+          if (t < 0 || t > TWO_PI)
+            return Math.abs((TWO_PI) - Math.abs(t));
+          return t;
+        }
+
         // Temporary implementation with hard-wired parameters.
         emitLightSourcePhotons = function() {
           var x = dimensions[0],
@@ -569,44 +576,67 @@ define(function(require) {
               w = dimensions[2] - x,
               h = dimensions[3] - y,
 
-              angle  = lightSource.angleOfIncidence,
+              angle  = normalizeAngle(lightSource.angleOfIncidence),
               energy = lightSource.frequency * PLANCK_CONSTANT,
               nBeams = lightSource.numberOfBeams,
+              spacing,
+              s, c, length, dx, dy, m, n, i;
 
-              // Lifted from AtomicModel.shootPhotons()
-              // https://github.com/concord-consortium/mw/blob/d3f621ba87825888737257a6cb9ac9e4e4f63f77/src/org/concord/mw2d/models/AtomicModel.java#L2534
-              s = Math.abs(Math.sin(angle)),
-              c = Math.abs(Math.cos(angle)),
-              length = s * h < c * w ? h / c : w / s,
-              spacing = length / nBeams,
-              dx = spacing / s,
-              dy = spacing / c,
-              m = Math.floor(w / dx),
-              n = Math.floor(h / dy),
-              i;
+          if (angle == 0) {
+            spacing = h / (nBeams + 1);
+            for (i = 1; i <= nBeams; i++) {
+              emitPhoton(x, y + spacing * i, angle, energy);
+            }
+          } else if (angle.toFixed(4) == (Math.PI/2).toFixed(4)) {
+            spacing = w / (nBeams + 1);
+            for (i = 1; i <= nBeams; i++) {
+              emitPhoton(x + spacing * i, y, angle, energy);
+            }
+          } else if (angle.toFixed(4) == (Math.PI).toFixed(4)) {
+            spacing = h / (nBeams + 1);
+            for (i = 1; i <= nBeams; i++) {
+              emitPhoton(x + w, y + spacing * i, angle, energy);
+            }
+          } else if (angle.toFixed(4) == (Math.PI*3/2).toFixed(4)) {
+            spacing = w / (nBeams + 1);
+            for (i = 1; i <= nBeams; i++) {
+              emitPhoton(x + spacing * i, y + h, angle, energy)
+            }
+          } else {
+            // Lifted from AtomicModel.shootPhotons()
+            // https://github.com/concord-consortium/mw/blob/d3f621ba87825888737257a6cb9ac9e4e4f63f77/src/org/concord/mw2d/models/AtomicModel.java#L2534
+            s = Math.abs(Math.sin(angle)),
+            c = Math.abs(Math.cos(angle)),
+            length = s * h < c * w ? h / c : w / s,
+            spacing = length / nBeams,
+            dx = spacing / s,
+            dy = spacing / c,
+            m = Math.floor(w / dx),
+            n = Math.floor(h / dy);
 
-          // Lifted from AtomicModel.shootAtAngle()
-          // https://github.com/concord-consortium/mw/blob/d3f621ba87825888737257a6cb9ac9e4e4f63f77/src/org/concord/mw2d/models/AtomicModel.java#L2471
-          if (angle >= 0 && angle < 0.5 * Math.PI) {
-            for (i = 1; i <= m; i++)
-              emitPhoton(x + dx * i, y, angle, energy);
-            for (i = 0; i <= n; i++)
-              emitPhoton(x, y + h - dy * i, angle, energy);
-          } else if (angle < 0 && angle >= -0.5 * Math.PI) {
-            for (i = 1; i <= m; i++)
-              emitPhoton(x + dx * i, y + h, angle, energy);
-            for (i = 0; i <= n; i++)
-              emitPhoton(x, y + dy * i, angle, energy);
-          } else if (angle < Math.PI && angle >= 0.5 * Math.PI) {
-            for (i = 0; i <= m; i++)
-              emitPhoton(x + w - dx * i, y, angle, energy);
-            for (i = 1; i <= n; i++)
-              emitPhoton(x + w, y + h - dy * i, angle, energy);
-          } else if (angle >= -Math.PI && angle < -0.5 * Math.PI) {
-            for (i = 0; i <= m; i++)
-              emitPhoton(x + w - dx * i, y + h, angle, energy);
-            for (i = 1; i <= n; i++)
-              emitPhoton(x + w, y + dy * i, angle, energy);
+            // Lifted from AtomicModel.shootAtAngle()
+            // https://github.com/concord-consortium/mw/blob/d3f621ba87825888737257a6cb9ac9e4e4f63f77/src/org/concord/mw2d/models/AtomicModel.java#L2471
+            if (angle >= 0 && angle < 0.5 * Math.PI) {
+              for (i = 1; i <= m; i++)
+                emitPhoton(x + dx * i, y, angle, energy);
+              for (i = 0; i <= n; i++)
+                emitPhoton(x, y + h - dy * i, angle, energy);
+            } else if (angle >= Math.PI*3/2) {
+              for (i = 1; i <= m; i++)
+                emitPhoton(x + dx * i, y + h, angle, energy);
+              for (i = 0; i <= n; i++)
+                emitPhoton(x, y + dy * i, angle, energy);
+            } else if (angle < Math.PI && angle >= 0.5 * Math.PI) {
+              for (i = 0; i <= m; i++)
+                emitPhoton(x + w - dx * i, y, angle, energy);
+              for (i = 1; i <= n; i++)
+                emitPhoton(x + w, y + h - dy * i, angle, energy);
+            } else if (angle >= Math.PI && angle < Math.PI*3/2) {
+              for (i = 0; i <= m; i++)
+                emitPhoton(x + w - dx * i, y + h, angle, energy);
+              for (i = 1; i <= n; i++)
+                emitPhoton(x + w, y + dy * i, angle, energy);
+            }
           }
         };
 
