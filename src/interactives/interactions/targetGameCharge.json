@@ -176,12 +176,18 @@
       "options": [
         {
           "text": "Level 1",
-          "loadModel": "level1",
+          "loadModel": {
+            "modelId": "level1",
+            "retain": ["showElectricField", "showForceVectors"]
+          },
           "selected": true
         },
         {
           "text": "Level 2",
-          "loadModel": "level2"
+          "loadModel": {
+            "modelId": "level2",
+            "retain": ["showElectricField", "showForceVectors"]
+          }
         }
       ]
     },
