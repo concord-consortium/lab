@@ -115,6 +115,7 @@ define(function(require) {
        '>',
           '<param name="MAYSCRIPT" value="true" />',
           '<param name="evalOnInit" value="' + this.listenerPath + '.appletIsReadyCallback()" />',
+          '<param name="permissions" value="all-permissions" />',
         '</applet>'
       ].join('');
     },
@@ -136,6 +137,7 @@ define(function(require) {
        '>',
           '<param name="MAYSCRIPT" value="true" />',
           '<param name="evalOnInit" value="' + this.listenerPath + '.testAppletIsReadyCallback()" />',
+          '<param name="permissions" value="all-permissions" />',
         '</applet>'
       ].join('');
     },
