@@ -22,7 +22,10 @@
       "url": "imports/legacy-mw-content/converted/sam-activities/chemical-reactions/original-interactives-in-pages/page2/page2$0.json",
       "importedFrom": "imports/legacy-mw-content/converted/sam-activities/chemical-reactions/original-interactives-in-pages/page2/page2$0.mml",
       "viewOptions": {
-        "controlButtons": "play_reset"
+        "controlButtons": "play_reset",
+        "imageMapping": {
+          "reactionGoalFlat.png": "reactionGoalFlat.svg"
+        }
       }
     }
   ],
