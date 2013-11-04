@@ -1,0 +1,127 @@
+{
+  "title": "Excited States and Photons: Page 2",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "aspectRatio": 1.75,
+  "models": [
+    {
+      "type": "md2d",
+      "id": "quantum-collision",
+      "url": "imports/legacy-mw-content/converted/sam-activities/light-matter/excited-states-and-photons/page2$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "showClock": false
+      },
+      "onLoad": [
+        "unfreeze('initialVelocityInMKS')",
+        "onPropertyChange('initialVelocityInMKS', function() {",
+        "  var vx = get('initialVelocity');",
+        "  var vxInMKS = get('initialVelocityInMKS');",
+        "  set('initialVelocity', vx);",
+        "  setTextBoxProperties(0,{text: 'initial speed = ' + vxInMKS + ' m/s'});",
+        "});",
+        "onStart(function() {",
+        "  freeze('initialVelocityInMKS');",
+        "});"
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "initialVelocity",
+      "unitType": "velocity",
+      "onChange": "setAtomProperties(1, { vx: value });",
+      "initialValue": 0
+    },
+    {
+      "name": "initialVelocityInMKS",
+      "onChange": "set('initialVelocity', get('initialVelocityInMKS') * 1e-6);",
+      "initialValue": 500
+    }
+  ],
+  "components": [
+    {
+      "type": "slider",
+      "id": "v-slider",
+      "min": 0,
+      "max": 2500,
+      "labels": [
+        {
+          "value": 0,
+          "label": "0"
+        },
+        {
+          "value": 500,
+          "label": "500"
+        },
+        {
+          "value": 1000,
+          "label": "1000"
+        },
+        {
+          "value": 1500,
+          "label": "1500"
+        },
+        {
+          "value": 2000,
+          "label": "2000"
+        },
+        {
+          "value": 2500,
+          "label": "2500"
+        }
+      ],
+      "steps": 25,
+      "title": "Initial speed of the blue atom (m/s)",
+      "displayValue": "return format('f')(value)",
+      "property": "initialVelocityInMKS",
+      "width": "18em"
+    },
+    {
+      "type": "graph",
+      "id": "graph",
+      "title": "Total Energy of the System",
+      "xlabel": "Model Time (fs)",
+      "ylabel": "eV",
+      "ymin": 0,
+      "ymax": 6,
+      "xmax": 10,
+      "xTickCount": 5,
+      "yTickCount": 5,
+      "xFormatter": ".2s",
+      "yFormatter": ".2s",
+      "properties": [
+        "totalEnergy"
+      ]
+    }
+  ],
+  "layout": {
+    "right": [
+      "graph"
+    ],
+    "bottom": [
+      "v-slider"
+    ]
+  },
+  "template": [
+    {
+      "id": "right",
+      "top": "model.top",
+      "left": "model.right",
+      "height": "model.height",
+      "padding-left": "1em",
+      "padding-right": "0.5em",
+      "width": "model.width",
+      "min-width": "6em"
+    },
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "left": "model.left",
+      "width": "interactive.width",
+      "padding-top": "0.5em",
+      "align": "center"
+    }
+  ]
+}
