@@ -3,12 +3,15 @@
   "publicationStatus": "public",
   "subtitle": "",
   "about": [
-    "A chemical reaction can occur in three different ways:\n",
-    "- A chemical bond is formed.\n",
-    "- A chemical bond is broken.\n",
-    "- One or more electrons are transferred between atoms or molecules.\n",
+    "A chemical reaction can occur in three different ways:",
+    "",
+    "- A chemical bond is formed.",
+    "- A chemical bond is broken.",
+    "- One or more electrons are transferred between atoms or molecules.",
+    "",
     "This activity will allow you to explore reactions in which chemical bonds are formed and",
-    "broken. In the model you can see both bond formation and bond breaking.\n",
+    "broken. In the model you can see both bond formation and bond breaking.",
+    "",
     "Run the model and try heating and cooling the chemicals to see how this affects the kind of",
     "reaction that may occur."
   ],
@@ -20,6 +23,18 @@
       "importedFrom": "imports/legacy-mw-content/converted/sam-activities/chemical-reactions/original-interactives-in-pages/page1/page1$0.mml",
       "viewOptions": {
         "controlButtons": "play_reset"
+      },
+      "modelOptions": {
+        "chemicalReactions": {
+          "bondEnergy": {
+            "1-1": 2,
+            "2-2": 4
+          },
+          "activationEnergy": {
+            "1+2-2": 0.02,
+            "2+1-1": 0.02
+          }
+        }
       }
     }
   ],
