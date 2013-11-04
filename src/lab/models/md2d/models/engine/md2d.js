@@ -37,6 +37,7 @@ define(function (require, exports) {
           T: K
       */
       convertKEtoT = function(totalKEinMWUnits, N) {
+        if (N === 0) return 0;
         var averageKEinMWUnits = totalKEinMWUnits / N,
             averageKEinJoules = constants.convert(averageKEinMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.JOULE });
         return averageKEinJoules / BOLTZMANN_CONSTANT_IN_JOULES;
