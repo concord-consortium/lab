@@ -27,7 +27,13 @@
         "imageMapping": {
           "reactionGoalFlat.png": "reactionGoalFlat.svg"
         }
-      }
+      },
+      "onLoad": [
+        "setComponentDisabled('temperature-slider', false);",
+        "onStart(function() {",
+        "  setComponentDisabled('temperature-slider', true);",
+        "});"
+      ]
     }
   ],
   "outputs": [
