@@ -109,11 +109,17 @@ define(function(require) {
       if (type === undefined) type = 1;
       switch(type) {
         case 1:
-        return bondEnergy[i + "-" + j] || bondEnergy[j + "-" + i] || bondEnergy["default"];
+        return bondEnergy[i + "-" + j] != null ? bondEnergy[i + "-" + j] :
+               bondEnergy[j + "-" + i] != null ? bondEnergy[j + "-" + i] :
+                                                 bondEnergy["default"];
         case 2:
-        return bondEnergy[i + "=" + j] || bondEnergy[j + "=" + i] || getBondEnergy(i, j, 1) * 2;
+        return bondEnergy[i + "=" + j] != null ? bondEnergy[i + "=" + j] :
+               bondEnergy[j + "=" + i] != null ? bondEnergy[j + "=" + i] :
+                                                 getBondEnergy(i, j, 1) * 2;
         case 3:
-        return bondEnergy[i + "=-" + j] || bondEnergy[j + "=-" + i] || getBondEnergy(i, j, 1) * 3;
+        return bondEnergy[i + "=-" + j] != null ? bondEnergy[i + "=-" + j] :
+               bondEnergy[j + "=-" + i] != null ? bondEnergy[j + "=-" + i] :
+                                                  getBondEnergy(i, j, 1) * 3;
       }
     }
 
