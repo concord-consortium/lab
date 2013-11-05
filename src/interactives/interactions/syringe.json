@@ -64,6 +64,7 @@
       "type": "button",
       "id": "plunger-pull-out",
       "text": "Pull plunger out ⇥",
+      "width": "14em",
       "action": [
         "setImageProperties(0,{imageX: 10});",
         "setObstacleProperties(get('index-plunger'), {externalAx: 0.0000005, mass: 5000});"
@@ -73,6 +74,7 @@
       "type": "button",
       "id": "plunger-push-in",
       "text": "Push plunger in ⇤",
+      "width": "14em",
       "action": [
         "setImageProperties(0,{imageX: 10});",
         "setObstacleProperties(get('index-plunger'), {externalAx: -0.0000005, mass: 5000});"
@@ -82,6 +84,7 @@
       "type": "button",
       "id": "plunger-lock",
       "text": "Lock plunger in place ⇎",
+      "width": "14em",
       "action": [
         "setObstacleProperties(get('index-plunger'), {externalAx: 0, vx: 0, mass: 999999999});",
         "setImageProperties(0,{imageX: 3.1});"
@@ -91,6 +94,7 @@
       "type": "button",
       "id": "plunger-release",
       "text": "Release plunger ⬄",
+      "width": "14em",
       "action": [
         "setObstacleProperties(get('index-plunger'), {externalAx: 0, vx: 0, mass: 5000});",
         "setImageProperties(0,{imageX: 10});"
@@ -100,6 +104,7 @@
       "type": "button",
       "id": "plug-remove",
       "text": "Remove stopper",
+      "width": "10em",
       "action": [
         "setShapeProperties(get('index-plug'), {y: -10});",
         "set('notPlugged',true);"
@@ -109,6 +114,7 @@
       "type": "button",
       "id": "plug-add",
       "text": "Add stopper",
+      "width": "10em",
       "action": [
         "if (get('notPlugged')) {",
         "  var moleculesInside = getAtomsWithinShape(1),",
@@ -131,36 +137,17 @@
     }
   ],
   "layout": {
-    "bottom-left": [
-      ["plunger-push-in"],
-      ["plunger-pull-out"]
-    ],
-    "bottom-right": [
-      ["plunger-lock"],
-      ["plunger-release"]
-    ],
-    "bottom-below": [
-      "plug-remove",
-      "plug-add"
+    "bottom": [
+      ["plunger-push-in", "plunger-lock"],
+      ["plunger-pull-out", "plunger-release"],
+      ["plug-remove", "plug-add"]
     ]
   },
   "template": [
     {
-      "id": "bottom-left",
+      "id": "bottom",
       "top": "model.bottom",
       "left": "model.left",
-      "align": "left"
-    },
-    {
-      "id": "bottom-right",
-      "top": "bottom-left.top",
-      "right": "model.right",
-      "align": "right"
-    },
-    {
-      "id": "bottom-below",
-      "top": "bottom-left.bottom",
-      "left": "bottom-left.left",
       "width": "model.width",
       "align": "center"
     }
