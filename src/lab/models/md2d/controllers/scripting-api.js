@@ -181,6 +181,20 @@ define(function (require) {
       },
 
       /**
+       * Chemical Reactions
+       */
+
+      /**
+       * Sets bond energy (dissociation energy) of a bond.
+       * @param {string} bondDescription e.g. "1-1" means single bond between element 1 and 1,
+       *                                 "1=2" means double bond between element 1 and 2 etc.
+       * @param {number} value           bond energy in eV..
+       */
+      setBondEnergy: function setBondEnergy(bondDescription, value) {
+        model.setBondEnergy(bondDescription, value);
+      },
+
+      /**
        * Returns array of atom indices within circular area,
        * optionally specifying an element of interest.
        * e.g. atomsWithinCircle(1, 1, 0.5) returns all atoms within 0.5 nm of position (1nm, 1nm).

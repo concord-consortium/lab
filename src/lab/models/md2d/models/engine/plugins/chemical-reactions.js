@@ -474,6 +474,16 @@ define(function(require) {
 
       processOutputState: function (state) {
         state.PE += getBondsChemicalPE();
+      },
+
+      /**
+       * Sets bond energy (dissociation energy) of a bond.
+       * @param {string} bondDescription e.g. "1-1" means single bond between element 1 and 1,
+       *                                 "1=2" means double bond between element 1 and 2 etc.
+       * @param {number} value           bond energy in eV..
+       */
+      setBondEnergy: function(bondDescription, value) {
+        bondEnergy[bondDescription] = value;
       }
     };
 

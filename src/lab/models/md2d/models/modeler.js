@@ -1627,6 +1627,10 @@ define(function(require) {
       engine.callPluginAccessor('setLightSourceNumber', [number]);
     };
 
+    model.setBondEnergy = function(bondDescription, value) {
+      engine.callPluginAccessor('setBondEnergy', [bondDescription, value]);
+    };
+
     /**
       Returns the total number of atoms, or else the number of atoms matching some criterion.
 
