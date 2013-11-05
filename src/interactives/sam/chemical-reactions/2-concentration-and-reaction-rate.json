@@ -26,7 +26,15 @@
         "imageMapping": {
           "reactionGoalFlat.png": "reactionGoalFlat.svg"
         }
-      }
+      },
+      "onLoad": [
+        "setComponentDisabled('add2', false);",
+        "setComponentDisabled('add10', false);",
+        "onStart(function() {",
+        "  setComponentDisabled('add2', true);",
+        "  setComponentDisabled('add10', true);",
+        "});"
+      ]
     }
   ],
   "outputs": [
