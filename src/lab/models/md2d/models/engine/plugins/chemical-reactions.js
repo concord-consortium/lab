@@ -103,6 +103,8 @@ define(function(require) {
       return type < 0 ? 1 : type;
     }
 
+    // TODO: (micro-)optimize functions below (?). They can be more elegant and require less work.
+
     // Returns bond chemical energy between elements i and j. Type indicates whether it's a single
     // (1 or undefined), double (2) or triple (3) bond.
     function getBondEnergy(i, j, type) {
@@ -125,9 +127,10 @@ define(function(require) {
 
     // Returns activation energy when element i collides with j-k pair.
     function getActivationEnergy(i, j, k) {
-      return activationEnergy[i + "+" + j + "-" + k] ||
-             activationEnergy[j + "+" + k + "-" + j] || // order of j-k pair doesn't matter.
-             activationEnergy["default"];
+            // order of j-k pair doesn't matter.
+      return activationEnergy[i + "+" + j + "-" + k] != null ? activationEnergy[i + "+" + j + "-" + k] :
+             activationEnergy[i + "+" + k + "-" + j] != null ? activationEnergy[i + "+" + k + "-" + j] :
+                                                               activationEnergy["default"];
     }
 
     // Returns energy needed to exchange bond between element i and j-k pair. So when collision
