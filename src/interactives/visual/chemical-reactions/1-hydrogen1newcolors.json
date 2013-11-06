@@ -20,11 +20,10 @@
       "url": "imports/legacy-mw-content/converted/visual/ChemicalReactions/hydrogen1newcolors$0.json",
       "viewOptions": {
         "controlButtons": "play_reset",
-        "gridLines": false,
-        "xunits": false,
-        "yunits": false
+        "showClock": true
       },
       "modelOptions": {
+        "timeStep": 0.1,
         "chemicalReactions": {
           "valenceElectrons": [
             1,
@@ -34,10 +33,10 @@
           ],
           "bondEnergy": {
             "default": 6,
-            "1-2": 5.2,
             "1-1": 4.52,
+            "2=2": 5.16,
             "2-2": 0.1,
-            "2=2": 5.16
+            "1-2": 5.2
           },
           "activationEnergy": {
             "default": 0.2,
@@ -58,6 +57,13 @@
       "value": "return get('temperature')/200;"
     }
   ],
+  "parameters": [
+    {
+      "name": "slowMotion",
+      "initialValue": false,
+      "onChange": "if (value) { set({timeStep: 0.01}) } else { set({timeStep: 0.1})};"
+    }
+  ],
   "filteredOutputs": [
     {
       "name": "filteredSimplifiedTemperature",
@@ -71,50 +77,44 @@
   "components": [
     {
       "type": "button",
-      "id": "start-button",
-      "text": "Start model",
-      "action": [
-        "if (isStopped()) {",
-        "  start();",
-        "}"
-      ]
-    },
-    {
-      "type": "button",
       "id": "spark-button",
       "text": "Spark",
       "action": [
-        "var atoms, index, atom1, atom2, rbonds, atom1props, atom2props;",
-        "if (isStopped()) {",
-        "  start();",
+        "var currentTime = get('time');",
+        "var props, a1Props, a2Props, dx, dy, slowMotionChanged;",
+        "for(var i = 0, len = getNumberOfRadialBonds(); i < len; i++) {",
+        "  props = getRadialBondProperties(i);",
+        "  a1Props = getAtomProperties(props.atom1);",
+        "  a2Props = getAtomProperties(props.atom2);",
+        "  if (a1Props.element === 1 &&",
+        "      a2Props.element === 1) {",
+        "    markAtoms([props.atom1, props.atom2]);",
+        "    if (!get('slowMotion')) { set('slowMotion', true); slowMotionChanged = true; }",
+        "    start();",
+        "    setComponentDisabled('slow-motion', true);",
+        "    setComponentDisabled('spark-button', true);",
+        "    dx = (a1Props.x - a2Props.x) * 1e-1;",
+        "    dy = (a1Props.y - a2Props.y) * 1e-1;",
+        "    setAtomProperties(props.atom1, { vx: dx, vy: dy });",
+        "    setAtomProperties(props.atom2, { vx: -dx, vy: -dy });",
+        "    removeRadialBond(i);",
+        "    callAt(currentTime + 100, function () {",
+        "      setComponentDisabled('slow-motion', false);",
+        "      setComponentDisabled('spark-button', false);",
+        "      unmarkAllAtoms();",
+        "      if (slowMotionChanged) set('slowMotion', false);",
+        "    });",
+        "    return;",
+        "  }",
         "}",
-        "atoms = atomsWithinRect(0.5, 0.5, 2, 2)",
-        "if (atoms.length === 0) return;",
-        "atoms = atoms.filter(function(i) { return getAtomProperties(i).element === 1; });",
-        "index = randomInteger(atoms.length);",
-        "atom1 = atoms[index];",
-        "rbonds = getRadialBondsForAtom(atom1);",
-        "while (rbonds.length == 0 && atoms.length > 0) {",
-        "  atoms.splice(index, 1);",
-        "  index = randomInteger(atoms.length);",
-        "  atom1 = atoms[index];",
-        "  rbonds = getRadialBondsForAtom(atom1);",
-        "}",
-        "if (atoms.length > 0) {",
-        "  atom2 = getMoleculeAtoms(atom1)[0];",
-        "  removeRadialBond(rbonds[0]);",
-        "  atom1props = getAtomProperties(atom1);",
-        "  atom2props = getAtomProperties(atom2);",
-        "  setAtomProperties(atom1, { vx: atom1props.vx *  5, vy: atom1props.vy *  2.5 });",
-        "  setAtomProperties(atom2, { vx: atom2props.vx * -5, vy: atom2props.vy *  2.5 });",
-        "}"
+        "setComponentDisabled('spark-button', true);"
       ]
     },
     {
       "type": "checkbox",
-      "id": "slow_motion",
+      "id": "slow-motion",
       "text": "Slow Motion",
-      "onClick": "if (value) { set({timeStep: 0.025}) } else { set({timeStep: 1})};"
+      "property": "slowMotion"
     },
     {
       "type": "barGraph",
@@ -152,13 +152,6 @@
       ]
     },
     {
-      "component": "start-button",
-      "text": [
-        "Start the model running.",
-        ""
-      ]
-    },
-    {
       "component": "spark-button",
       "text": [
         "Create a simulated **spark** in the model. This causes the bond between a randomly",
@@ -181,7 +174,7 @@
       ]
     },
     {
-      "component": "slow_motion",
+      "component": "slow-motion",
       "text": [
         "Once the combustion reaction has started and water is formed the atoms and molecules",
         "in the model are moving very fast because they are much hotter.",
@@ -193,13 +186,13 @@
   ],
   "layout": {
     "bottom": [
-      "start-button", "spark-button"
+      "spark-button"
     ],
     "right": [
       "bar-graph"
     ],
     "bottom-left": [
-      "slow_motion"
+      "slow-motion"
     ],
     "bottom-right": [
       "temperature-output"
@@ -211,7 +204,8 @@
       "top": "model.top",
       "left": "model.right",
       "height": "model.height",
-      "padding-left": "0.5em"
+      "padding-left": "0.5em",
+      "padding-right": "0.5em"
     },
     {
       "id": "bottom",
@@ -233,6 +227,8 @@
       "top": "model.bottom",
       "left": "model.right",
       "padding-top": "0.5em",
+      "padding-left": "0.5em",
+      "padding-right": "0.5em",
       "align": "center"
     }
   ]
