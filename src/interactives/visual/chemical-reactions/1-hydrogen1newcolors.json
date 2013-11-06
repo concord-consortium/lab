@@ -20,9 +20,7 @@
       "url": "imports/legacy-mw-content/converted/visual/ChemicalReactions/hydrogen1newcolors$0.json",
       "viewOptions": {
         "controlButtons": "play_reset",
-        "gridLines": false,
-        "xunits": false,
-        "yunits": false
+        "showClock": true
       },
       "modelOptions": {
         "chemicalReactions": {
@@ -114,7 +112,7 @@
       "type": "checkbox",
       "id": "slow_motion",
       "text": "Slow Motion",
-      "onClick": "if (value) { set({timeStep: 0.025}) } else { set({timeStep: 1})};"
+      "onClick": "if (value) { set({timeStep: 0.025}) } else { set({timeStep: 0.2})};"
     },
     {
       "type": "barGraph",
