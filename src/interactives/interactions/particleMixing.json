@@ -15,6 +15,9 @@
         "controlButtons": ""
       },
       "onLoad": [
+        "setComponentDisabled('add-columnB',false);",
+        "setComponentDisabled('add-columnA',false);",
+        "setComponentDisabled('cap-and-shake',true);",
         "setTextBoxProperties(1, {x: 3.5});",
         "setTextBoxProperties(3, {x: 1.225});",
         "setTextBoxProperties(4, {x: 2.425});",
@@ -75,6 +78,9 @@
         "controlButtons": ""
       },
       "onLoad": [
+        "setComponentDisabled('add-columnB',false);",
+        "setComponentDisabled('add-columnA',false);",
+        "setComponentDisabled('cap-and-shake',true);",
         "set('indicesColumnA',[1,0]);",
         "set('indicesColumnB',[9,2]);",
         "set('indicesColumnC',[5,6,7]);",
@@ -134,6 +140,9 @@
         "controlButtons": ""
       },
       "onLoad": [
+        "setComponentDisabled('add-columnB',false);",
+        "setComponentDisabled('add-columnA',false);",
+        "setComponentDisabled('cap-and-shake',true);",
         "set('indicesColumnA',[1,0]);",
         "set('indicesColumnB',[2,3]);",
         "set('indicesColumnC',[6,7,8]);",
@@ -344,11 +353,7 @@
       "id": "reset",
       "text": "Reset",
       "action": [
-        "reset();",
-        "setComponentDisabled('add-columnB',false);",
-        "setComponentDisabled('add-columnA',false);",
-        "setComponentDisabled('cap-and-shake',true);",
-        "start()"
+        "reload();"
       ]
     },
     {
