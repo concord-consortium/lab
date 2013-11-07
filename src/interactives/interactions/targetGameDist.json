@@ -19,6 +19,8 @@
         "electricFieldColor": "rgb(0,255,0)"
       },
       "onLoad": [
+        "set('loadedLevelID','level1');",
+        "set('selectedLevelID','level1');",
         "setAtomProperties(0, {draggable: true});",
         "setAtomProperties(1, {draggable: true});",
         "setShapeProperties(3, {lineColor: 'rgb(255,0,0)', lineWeight: 7});",
@@ -63,6 +65,8 @@
         "electricFieldColor": "rgb(0,255,0)"
       },
       "onLoad": [
+        "set('loadedLevelID','level2');",
+        "set('selectedLevelID','level2');",
         "setAtomProperties(0, {draggable: true});",
         "setAtomProperties(1, {draggable: true});",
         "setShapeProperties(3, {lineColor: 'rgb(255,0,0)', lineWeight: 7});",
@@ -108,16 +112,17 @@
   ],
   "parameters":[
     {
-      "name":"electric-field",
-      "label": "electridField",
-      "onChange": "set('showElectricField', value);",
-      "initialValue": false
+      "name": "loadedLevelID",
+      "initialValue": null
     },
     {
-      "name":"force-vectors",
-      "label": "forceVectors",
-      "onChange": "set('showForceVectors', value);",
-      "initialValue": false
+      "name": "selectedLevelID",
+      "initialValue": null,
+      "onChange":  [
+        "if (value !== get('loadedLevelID')) {",
+        "  loadModel(value, ['showElectricField', 'showForceVectors']);",
+        "}"
+      ]
     }
   ],
   "components": [
@@ -160,27 +165,27 @@
       "type": "checkbox",
       "id": "select-show-force-vectors",
       "text": "Show force on objects",
-      "property": "force-vectors"
+      "property": "showForceVectors"
     },
     {
       "type": "checkbox",
       "id": "select-show-electric-field",
       "text": "Show electric field",
-      "property": "electric-field"
+      "property": "showElectricField"
     },
     {
       "type": "radio",
       "id": "select-level",
       "orientation": "horizontal",
+      "property": "selectedLevelID",
       "options": [
         {
           "text": "Level 1",
-          "loadModel": "level1",
-          "selected": true
+          "value": "level1"
         },
         {
           "text": "Level 2",
-          "loadModel": "level2"
+          "value": "level2"
         }
       ]
     }

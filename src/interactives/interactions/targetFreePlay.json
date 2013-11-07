@@ -24,6 +24,8 @@
         }
       },
       "onLoad": [
+        "set('loadedLevelID', 'level1');",
+        "set('selectedLevelID', 'level1');",
         "setShapeProperties(3, {lineColor: 'rgb(255,0,0)', lineWeight: 7});",
         "set('atomTraceColor','yellow');",
         "set('atomIndices',[]);",
@@ -67,6 +69,8 @@
         }
       },
       "onLoad": [
+        "set('loadedLevelID', 'level2');",
+        "set('selectedLevelID', 'level2');",
         "setShapeProperties(3, {lineColor: 'rgb(255,0,0)', lineWeight: 7});",
         "set('atomTraceColor','yellow');",
         "set('atomIndices',[]);",
@@ -124,6 +128,19 @@
         "    setAtomProperties(i, {charge: sign[j] * get('chargeMagnitude')});",
         "  }",
         "});"
+      ]
+    },
+    {
+      "name": "loadedLevelID",
+      "initialValue": "level1"
+    },
+    {
+      "name": "selectedLevelID",
+      "initialValue": "level1",
+      "onChange": [
+        "if (value !== get('loadedLevelID')) {",
+        "  loadModel(value, ['showElectricField', 'showForceVectors'])",
+        "}"
       ]
     }
   ],
@@ -200,15 +217,15 @@
       "type": "radio",
       "id": "select-level",
       "orientation": "horizontal",
+      "property": "selectedLevelID",
       "options": [
         {
           "text": "Level 1",
-          "loadModel": "level1",
-          "selected": true
+          "value": "level1"
         },
         {
           "text": "Level 2",
-          "loadModel": "level2"
+          "value": "level2"
         }
       ]
     },
