@@ -127,6 +127,10 @@ define(function (require) {
             return model.unfreeze.apply(model, arguments);
           },
 
+          // optional 'parameters' list of values to pass into the loaded model
+          //
+          // TODO remove optional parameter list when interactives have parameters that
+          //      exist beyond model loading
           loadModel: function loadModel(modelId, parameters) {
             model.stop();
             interactivesController.loadModel(modelId, null, parameters);

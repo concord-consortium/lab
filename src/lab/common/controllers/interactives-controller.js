@@ -551,6 +551,7 @@ define(function (require) {
 
       @param: modelId.
       @optionalParam modelObject
+      @optionalParam parameters   parameter values to copy to the loaded model
     */
     function loadModel(id, modelConfig, parameters) {
       var modelDefinition = getModelDefinition(id),
@@ -558,6 +559,8 @@ define(function (require) {
           interactiveModelOptions,
           parameterValues = [];
 
+      // TODO remove this "feature" when interactives can maintain their own
+      //      interactive level parameters (see loadModel in scriptingAPI too)
       if (parameters) {
         for (var i = 0; i < parameters.length; i++) {
           parameterValues.push({
