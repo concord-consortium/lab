@@ -27,6 +27,8 @@ define(function (require) {
       lastClose = 0;
 
   function tooltip($target) {
+    // Disable tooltips completely, it's an intermim hack to test behavior on Safari 6.1.
+    return;
     // Disable custom tooltips on mobile devices, as e.g. on iPad they cause that
     // user have to tap each component twice as first tap only opens a tooltip.
     if (benchmark.isMobile) return;
