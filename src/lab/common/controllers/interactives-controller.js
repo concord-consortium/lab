@@ -552,10 +552,20 @@ define(function (require) {
       @param: modelId.
       @optionalParam modelObject
     */
-    function loadModel(id, modelConfig, parameterValues) {
+    function loadModel(id, modelConfig, parameters) {
       var modelDefinition = getModelDefinition(id),
           interactiveViewOptions,
-          interactiveModelOptions;
+          interactiveModelOptions,
+          parameterValues = [];
+
+      if (parameters) {
+        for (var i = 0; i < parameters.length; i++) {
+          parameterValues.push({
+            "name": parameters[i],
+            "value": model.get(parameters[i])
+          });
+        }
+      }
 
       modelId = id;
       isModelLoaded = false;
@@ -737,7 +747,7 @@ define(function (require) {
 
       // update the parameterValues if values have been provided, e.g. if some parameter values
       // were retained when loading a model using a radio controller
-      if( parameterValues ) {
+      if (parameterValues) {
         for (i = 0; i < parameterValues.length; i++) {
           model.set(parameterValues[i].name, parameterValues[i].value);
         }

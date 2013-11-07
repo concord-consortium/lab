@@ -127,19 +127,9 @@ define(function (require) {
             return model.unfreeze.apply(model, arguments);
           },
 
-          loadModel: function loadModel(modelId, retainParameterValues) {
+          loadModel: function loadModel(modelId, parameters) {
             model.stop();
-            var values;
-            if (retainParameterValues) {
-              values = [];
-              for( var i = 0; i < retainParameterValues.length; i++ ) {
-                values.push({
-                  "name": retainParameterValues[i],
-                  "value": model.get(retainParameterValues[i])
-                });
-              }
-            }
-            interactivesController.loadModel(modelId, null, values);
+            interactivesController.loadModel(modelId, null, parameters);
           },
 
           getLoadedModelId: function getLoadedModel() {
