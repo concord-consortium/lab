@@ -32,9 +32,7 @@ define(function () {
 
       for (i = 0, len = options.length; i < len; i++) {
         if (options[i].value === undefined && !options[i].loadModel) return;
-        if ((options[i].value !== undefined && options[i].value === value)
-            || options[i].loadModel === modelId
-            || (typeof(options[i].loadModel) === "object" && options[i].loadModel.modelId === modelId)) {
+        if ((options[i].value !== undefined && options[i].value === value) || options[i].loadModel === modelId) {
           $options[i].attr("checked", true);
           $fakeCheckables[i].addClass('checked');
         } else {
@@ -154,19 +152,7 @@ define(function () {
               scriptingAPI.makeFunctionInScriptContext(option.action)();
             } else if (option.loadModel){
               model.stop();
-              if( typeof(option.loadModel) === "string" ) {
-                interactivesController.loadModel(option.loadModel);
-              } else if( typeof(option.loadModel) === "object" ) {
-                var values = [],
-                    retain = option.loadModel.retain;
-                for (var i = 0; i < retain.length; i++) {
-                  values.push({
-                    "name": retain[i],
-                    "value": model.get(retain[i])
-                  });
-                }
-                interactivesController.loadModel(option.loadModel.modelId, undefined, values);
-              }
+              interactivesController.loadModel(option.loadModel);
             } else if (option.value !== undefined) {
               model.set(component.property, option.value);
             }
