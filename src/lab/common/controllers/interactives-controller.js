@@ -44,6 +44,7 @@ define(function (require) {
         'solar-system':     require('models/solar-system/controllers/controller'),
         'signal-generator': require('models/signal-generator/controller'),
         'sensor':           require('models/sensor/controller'),
+        'dual-sensor':      require('models/dual-sensor/controller'),
         'energy2d':         require('models/energy2d/controllers/controller')
       },
 
