@@ -141,6 +141,17 @@ clean-finish:
 	# an older version of jshint is installed
 	if [ -d vendor/jquery/node_modules/grunt-contrib-jshint ]; then rm -rf vendor/jquery/node_modules/grunt-contrib-jshint; fi
 	if [ -d vendor/jquery-ui/node_modules/grunt-contrib-jshint ]; then rm -rf vendor/jquery-ui/node_modules/grunt-contrib-jshint; fi
+	$(MAKE) install-shutterbug
+
+.PHONY: install-shutterbug
+install-shutterbug:
+	# copy shutterbug out gem so it can be included directly in minimized js and available
+	# to static site
+	mkdir -p vendor/shutterbug
+	cp `bundle show shutterbug`/lib/shutterbug/shutterbug.js vendor/shutterbug
+	cp `bundle show shutterbug`/README.md vendor/shutterbug
+	cp `bundle show shutterbug`/LICENSE.md vendor/shutterbug
+	sed -i '' s'/CONVERT_PATH/shutterbug\/make_snapshot/' vendor/shutterbug/shutterbug.js
 
 # public dir cleanup.
 .PHONY: clean-public
@@ -611,6 +622,12 @@ public/vendor/fingerprintjs:
 	mkdir -p public/vendor/fingerprintjs
 	cp vendor/fingerprintjs/fingerprint.min.js public/vendor/fingerprintjs
 	cp vendor/fingerprintjs/README.md public/vendor/fingerprintjs
+
+public/vendor/shutterbug:
+	mkdir -p public/vendor/shutterbug
+	cp vendor/shutterbug/shutterbug.js public/vendor/shutterbug.js
+	cp vendor/shutterbug/README.md public/vendor/README.md
+	cp vendor/shutterbug/LICENSE.md public/vendor/LICENSE.md
 
 public/favicon.ico:
 	cp -f src/favicon.ico public/favicon.ico

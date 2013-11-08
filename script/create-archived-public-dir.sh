@@ -55,8 +55,8 @@ git checkout -b static
 fi
 git merge public
 cd ..
-LAB_DISABLE_SHUTTERBUG=true LAB_DISABLE_MODEL_LIST=true  bin/haml -r ./script/setup.rb src/interactives.html.haml public/interactives.html
-LAB_DISABLE_SHUTTERBUG=true LAB_DISABLE_MODEL_LIST=true  bin/haml -r ./script/setup.rb src/embeddable.html.haml public/embeddable.html
+LAB_DISABLE_MODEL_LIST=true  bin/haml -r ./script/setup.rb src/interactives.html.haml public/interactives.html
+LAB_DISABLE_MODEL_LIST=true  bin/haml -r ./script/setup.rb src/embeddable.html.haml public/embeddable.html
 rm -f src/lab/lab.config.js; make public/lab/lab.js STATIC=true
 make public/lab/lab.min.js
 cd public

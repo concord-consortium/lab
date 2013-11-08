@@ -27,11 +27,9 @@ cd public
 git fetch
 git reset --hard origin/gh-pages
 cd ..
-export LAB_DISABLE_SHUTTERBUG=1
 export LAB_DISABLE_MODEL_LIST=1
 make clean; make
 rm -f src/lab/lab.config.js; make public/lab/lab.js STATIC=true
-unset LAB_DISABLE_SHUTTERBUG
 unset LAB_DISABLE_MODEL_LIST
 cd public
 git add --all .
