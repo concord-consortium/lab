@@ -155,11 +155,21 @@ define(function (require) {
    * @private
    */
   PlaybackController.prototype._simulationStateChanged = function () {
-    this._modelStopped = this._model.isStopped();
+    var modelStopped = this._model.isStopped();
     // Coerce undefined to *true* for models that don't have isPlayable property
-    this._modelPlayable = this._model.properties.isPlayable === false ? false : true;
+    var modelPlayable = this._model.properties.isPlayable === false ? false : true;
 
-    this._updateButtonStatesFor[this.controlButtonStyle].call(this);
+    // Update button states only if modelStopped/modelPlayable actually changed. (Since they're
+    // model properties, we are called every tick, unfortunately -- the optimization assumption
+    // made by PropertySupport is that all model properties are *physics* properties which are
+    // almost certain to change every tick, so it doesn't check to see if they really changed.)
+    // update-button-states adds and removes classes, which at the very least adds a distracting
+    // entry to Dev Tools timeline view every tick.
+    if (modelStopped !== this._modelStopped || modelPlayable !== this._modelPlayable) {
+      this._modelStopped = modelStopped;
+      this._modelPlayable = modelPlayable;
+      this._updateButtonStatesFor[this.controlButtonStyle].call(this);
+    }
   };
 
   /**
