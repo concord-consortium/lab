@@ -151,7 +151,6 @@ install-shutterbug:
 	cp `bundle show shutterbug`/lib/shutterbug/shutterbug.js vendor/shutterbug
 	cp `bundle show shutterbug`/README.md vendor/shutterbug
 	cp `bundle show shutterbug`/LICENSE.md vendor/shutterbug
-	sed -i '' s'/CONVERT_PATH/shutterbug\/make_snapshot/' vendor/shutterbug/shutterbug.js
 
 # public dir cleanup.
 .PHONY: clean-public
@@ -467,6 +466,7 @@ public/vendor: \
 	public/vendor/text \
 	public/vendor/domReady \
 	public/vendor/fingerprintjs \
+	public/vendor/shutterbug \
 	public/favicon.ico
 
 public/vendor/dsp.js:
@@ -625,9 +625,9 @@ public/vendor/fingerprintjs:
 
 public/vendor/shutterbug:
 	mkdir -p public/vendor/shutterbug
-	cp vendor/shutterbug/shutterbug.js public/vendor/shutterbug.js
-	cp vendor/shutterbug/README.md public/vendor/README.md
-	cp vendor/shutterbug/LICENSE.md public/vendor/LICENSE.md
+	sed -e s'/CONVERT_PATH/shutterbug\/make_snapshot/' vendor/shutterbug/shutterbug.js > public/vendor/shutterbug/shutterbug.js
+	cp vendor/shutterbug/README.md public/vendor/shutterbug/README.md
+	cp vendor/shutterbug/LICENSE.md public/vendor/shutterbug/LICENSE.md
 
 public/favicon.ico:
 	cp -f src/favicon.ico public/favicon.ico
