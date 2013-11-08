@@ -448,6 +448,12 @@ define(function (require) {
       if (scriptingAPI) {
         // If Scripting API already exists, just bind the new model.
         scriptingAPI.bindModel(model);
+        // FIXME: this doesn't seem like a necessary step. However, without it md2d-scripting-api
+        // tests fail, but only when all tests are run (e.g. make test-src)! When you run just this
+        // single test everything works (e.g. mocha test/md2d/md2d-scripting-api). It looks like
+        // window.script variable references some old API instance and seems to be related to the
+        // test environment setup. Temporarily put this call here for safety.
+        scriptingAPI.exposeScriptingAPI();
         return;
       }
       // Only create scripting API after model is loaded.
