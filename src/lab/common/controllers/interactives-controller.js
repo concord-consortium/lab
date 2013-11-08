@@ -444,17 +444,20 @@ define(function (require) {
       return $interactiveContainer.parent().parent().prop("nodeName") === "BODY";
     }
 
-    function createScriptingAPI() {
+    function createOrUpdateScriptingAPI() {
+      if (scriptingAPI) {
+        // If Scripting API already exists, just bind the new model.
+        scriptingAPI.bindModel(model);
+        return;
+      }
       // Only create scripting API after model is loaded.
-      scriptingAPI = new ScriptingAPI(controller);
-      // Expose API to global namespace (prototyping / testing using the browser console).
-      scriptingAPI.exposeScriptingAPI();
-
+      scriptingAPI = new ScriptingAPI(controller, model);
       // Extend universal Interactive scriptingAPI with optional model-specific scripting API
       if (modelController.ScriptingAPI) {
         scriptingAPI.extend(modelController.ScriptingAPI);
-        scriptingAPI.exposeScriptingAPI();
       }
+      // Expose API to global namespace (prototyping / testing using the browser console).
+      scriptingAPI.exposeScriptingAPI();
     }
 
     /**
@@ -541,7 +544,7 @@ define(function (require) {
 
         // setup fake model definition
         controller.currentModel = {};
-        createScriptingAPI();
+        createOrUpdateScriptingAPI();
         finishLoadingInteractive();
       }
     }
@@ -732,7 +735,7 @@ define(function (require) {
 
       model = modelController.model;
 
-      createScriptingAPI();
+      createOrUpdateScriptingAPI();
       initializeModelOutputsAndParameters();
 
       onLoadScripts = [];
@@ -850,7 +853,7 @@ define(function (require) {
       var i;
 
       model = modelController.model;
-      createScriptingAPI();
+      createOrUpdateScriptingAPI();
 
       initializeModelOutputsAndParameters();
 

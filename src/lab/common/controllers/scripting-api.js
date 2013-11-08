@@ -46,8 +46,7 @@ define(function (require) {
   // script context; and scripts are run in strict mode so they don't
   // accidentally expose or read globals.
   //
-  return function ScriptingAPI (interactivesController) {
-    var model;
+  return function ScriptingAPI (interactivesController, model) {
 
     // Note. Normally, scripting API methods should not create event listeners to be added to the
     // interactivesController, because doing so from an onLoad script results in adding a new event
@@ -492,6 +491,20 @@ define(function (require) {
       }()),
 
       /**
+       * Current model.
+       */
+      get model() {
+        return model;
+      },
+
+      /**
+       * Bind a new model to Scripting API.
+       */
+      bindModel: function (newModel) {
+        model = newModel;
+      },
+
+      /**
         Freeze Scripting API
         Make the scripting API immutable once defined
       */
@@ -503,7 +516,7 @@ define(function (require) {
         Extend Scripting API
       */
       extend: function (ModelScriptingAPI) {
-        $.extend(this.api, new ModelScriptingAPI(this.api, model));
+        $.extend(this.api, new ModelScriptingAPI(this));
       },
 
       /**
@@ -580,15 +593,6 @@ define(function (require) {
         };
       }
     };
-
-    // Since this first-draft iteration of the scripting api has no real support for multiple
-    // models, we can freely stash the single model locally.
-    function cacheModel() {
-      model = interactivesController.getModel();
-    }
-
-    cacheModel();
-    interactivesController.on('modelLoaded', cacheModel);
 
     return controller;
   };
