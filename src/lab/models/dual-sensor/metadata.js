@@ -5,10 +5,13 @@ define(function() {
   return {
     mainProperties: {
       type: {
-        defaultValue: "sensor",
+        defaultValue: "dual-sensor",
         immutable: true
       },
       sensorType: {
+        defaultValue: null
+      },
+      sensorType2: {
         defaultValue: null
       },
       samplesPerSecond: {
@@ -18,6 +21,9 @@ define(function() {
         defaultValue: null
       },
       tareValue: {
+        defaultValue: 0
+      },
+      tareValue2: {
         defaultValue: 0
       }
     },

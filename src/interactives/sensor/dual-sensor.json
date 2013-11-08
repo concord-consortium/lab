@@ -17,6 +17,7 @@
       "onLoad": [
         "function setGraphRange() {",
         "  syncAxisRangesToPropertyRanges('propertiesGraph');",
+        "  syncAxisRangesToPropertyRanges('propertiesGraph2');",
         "}",
         "function setButtonState() {",
         "  setComponentDisabled('start-button', !get('isPlayable'));",
@@ -30,6 +31,12 @@
         "setButtonState();",
         "onPropertyChange('sensorType', function() {",
         "  if (get('sensorType') && !get('isNewRunInProgress')) {",
+        "    setGraphRange();",
+        "    setComponentDisabled('start-button', false);",
+        "  }",
+        "});",
+        "onPropertyChange('sensorType2', function() {",
+        "  if (get('sensorType2') && !get('isNewRunInProgress')) {",
         "    setGraphRange();",
         "    setComponentDisabled('start-button', false);",
         "  }",
@@ -76,6 +83,22 @@
       "yFormatter": ".2s",
       "properties": [
         "sensorReading"
+      ],
+      "resetAxesOnReset": false
+    },
+    {
+      "type": "graph",
+      "id": "propertiesGraph2",
+      "title": "Sensor Reading",
+      "xlabel": "Time (s)",
+      "ymin": 0,
+      "ymax": 6,
+      "xmax": 30,
+      "xTickCount": 6,
+      "xFormatter": ".2s",
+      "yFormatter": ".2s",
+      "properties": [
+        "sensorReading2"
       ],
       "resetAxesOnReset": false
     },
@@ -129,13 +152,16 @@
       "tooltip": "Set up a new experiment run.",
       "action": [
         "var tareValue = get('tareValue');",
+        "var tareValue2 = get('tareValue2');",
         "set('isNewRunInProgress', true);",
         "reset({",
-        "  retainParameters: ['sensorType','experimentDuration', 'durationEnabled'],",
+        "  retainParameters: ['sensorType','sensorType2','experimentDuration', 'durationEnabled'],",
         "  cause: 'new-run'",
         "});",
         "set('tareValue', tareValue);",
+        "set('tareValue2', tareValue2);",
         "scrollXAxisToZero('propertiesGraph');",
+        "scrollXAxisToZero('propertiesGraph2');",
         "set('isNewRunInProgress', false);"
       ]
     },
@@ -151,8 +177,11 @@
     }
   ],
   "layout": {
-    "below-model": [
+    "sensor1-graph": [
       "propertiesGraph"
+    ],
+    "sensor2-graph": [
+      "propertiesGraph2"
     ],
     "container-bottom": [
       "start-button",
@@ -164,17 +193,26 @@
     ]
   },
   "exports": {
-    "perRun": ["sensorType"],
-    "perTick": ["sensorReading"]
+    "perRun": ["sensorType","sensorType2"],
+    "perTick": ["sensorReading","sensorReading2"]
   },
   "template": [
     {
-      "id": "below-model",
+      "id": "sensor1-graph",
       "top": "model.bottom",
+      "padding-top": "0.3em",
+      "padding-bottom": "2em",
+      "width": "interactive.width",
+      "padding-right": "1em"
+    },
+    {
+      "id": "sensor2-graph",
+      "top": "sensor1-graph.bottom",
       "padding-top": "0.3em",
       "bottom": "container-bottom.top",
       "padding-bottom": "2em",
       "width": "interactive.width",
+      "height": "sensor1-graph.height",
       "padding-right": "1em"
     },
     {
@@ -185,7 +223,7 @@
     },
     {
       "id": "container-bottom",
-      "width": "below-model.width",
+      "width": "sensor2-graph.width",
       "bottom": "interactive.bottom"
     }
   ]

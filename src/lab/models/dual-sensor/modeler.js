@@ -50,6 +50,7 @@ define(function(require) {
                                'stepBack', 'seek', 'invalidation'),
         initialSensorType,
         sensorType,
+        sensorType2,
         applet,
         isSensorReady = false,
         isSensorInitializing = false,
@@ -58,6 +59,7 @@ define(function(require) {
         samplesPerSecond,
         time,
         rawSensorValue,
+        rawSensorValue2,
         stepCounter,
         didCollectData,
         isTaring,
@@ -277,8 +279,10 @@ define(function(require) {
         } else {
           makeInvalidatingChange(function() {
             rawSensorValue = values[0];
+            rawSensorValue2 = values[1];
             if (isTaring) {
               model.properties.tareValue = rawSensorValue;
+              model.properties.tareValue2 = rawSensorValue2;
               isTaring = false;
             }
           });
@@ -300,13 +304,31 @@ define(function(require) {
       stepCounter = 0;
       time = 0;
       rawSensorValue = undefined;
+      rawSensorValue2 = undefined;
       didCollectData = false;
       isSensorTareable = false;
       isTaring = false;
     }
 
+    function setupApplet() {
+      if (sensorType && sensorType2) {
+        var sensorDefinition  = sensorDefinitions[sensorType],
+            sensorDefinition2 = sensorDefinitions[sensorType2],
+            AppletClass = appletClasses[sensorDefinition.appletClass];
+
+        applet = window.Lab.sensor[sensorType+sensorType2] = new AppletClass({
+          listenerPath: 'Lab.sensor.' + sensorType + sensorType2,
+          sensorDefinitions: [sensorDefinition, sensorDefinition2],
+          appletId: sensorType+sensorType2+'-sensor',
+          codebase: labConfig.actualRoot + "jnlp"
+        });
+
+        appendApplet();
+      }
+
+    }
+
     function setSensorType(_sensorType) {
-      var AppletClass;
       var sensorDefinition;
       var description;
       var measurementType;
@@ -331,17 +353,9 @@ define(function(require) {
         sensorDefinition = sensorDefinitions[sensorType];
         samplesPerSecond = sensorDefinition.samplesPerSecond;
         measurementType = sensorDefinition.measurementType;
-        AppletClass = appletClasses[sensorDefinition.appletClass];
         isSensorTareable = sensorDefinition.tareable;
 
-        applet = window.Lab.sensor[sensorType] = new AppletClass({
-          listenerPath: 'Lab.sensor.' + sensorType,
-          sensorDefinitions: [sensorDefinition],
-          appletId: sensorType+'-sensor',
-          codebase: labConfig.actualRoot + "jnlp"
-        });
-
-        appendApplet();
+        setupApplet(sensorDefinition);
 
         // Update the description of the main 'sensorReading' output
         description = new PropertyDescription(unitsDefinition, {
@@ -364,6 +378,56 @@ define(function(require) {
       }
     }
 
+    function setSensorType2(_sensorType) {
+      var sensorDefinition;
+      var description;
+      var measurementType;
+
+      if (sensorType2 === _sensorType) {
+        return;
+      }
+
+      if (sensorType2) {
+        // drop the tare value if we're changing from one sensor type to another!
+        model.properties.tareValue2 = 0;
+      }
+
+      sensorType2 = _sensorType;
+      rawSensorValue2 = undefined;
+
+      if (applet) {
+        removeApplet();
+      }
+
+      if (sensorType2) {
+        sensorDefinition = sensorDefinitions[sensorType2];
+        samplesPerSecond = sensorDefinition.samplesPerSecond;
+        measurementType = sensorDefinition.measurementType;
+        isSensorTareable = sensorDefinition.tareable;
+
+        setupApplet(sensorDefinition);
+
+        // Update the description of the main 'sensorReading' output
+        description = new PropertyDescription(unitsDefinition, {
+          label: sensorDefinition.measurementName,
+          unitType: measurementType,
+          min: sensorDefinition.minReading,
+          max: sensorDefinition.maxReading
+        });
+
+        propertySupport.setPropertyDescription('sensorReading2', description);
+
+        // Override collectionTime  only if it wasn't set on the model definition
+        if (model.properties.collectionTime == null) {
+          model.properties.collectionTime = sensorDefinition.maxSeconds;
+        }
+      } else if (model.properties.hasOwnProperty('sensorReading2')) {
+        // no sensor type
+        description = new PropertyDescription(unitsDefinition, defaultSensorReadingDescriptionHash);
+        propertySupport.setPropertyDescription('sensorReading2', description);
+      }
+    }
+
     function appletDataCallback(d) {
       stepCounter++;
 
@@ -375,9 +439,11 @@ define(function(require) {
       window.__bizarreSafariFix = 1;
 
       rawSensorValue = d[0];
+      rawSensorValue2 = d[1];
       // Once we collect data for a given sensor, don't allow changingn the sensor typea
       if (!didCollectData) {
         model.freeze('sensorType');
+        model.freeze('sensorType2');
       }
 
       didCollectData = true;
@@ -411,7 +477,7 @@ define(function(require) {
             });
             dispatch.play();
           }
-        })
+        });
       },
 
       stop: function() {
@@ -429,8 +495,9 @@ define(function(require) {
         if (!isStopped) {
           throw new Error("Sensor model: tare() called on a non-stopped model.");
         }
-        if (sensorPollingIntervalID != null && rawSensorValue != null) {
+        if (sensorPollingIntervalID != null && rawSensorValue != null && rawSensorValue2 != null) {
           model.properties.tareValue = rawSensorValue;
+          model.properties.tareValue2 = rawSensorValue2;
         } else {
           makeInvalidatingChange(function() {
             isTaring = true;
@@ -448,8 +515,11 @@ define(function(require) {
 
         initializeStateVariables();
         model.properties.tareValue = initialTareValue;
+        model.properties.tareValue2 = initialTareValue;
         model.unfreeze('sensorType');
+        model.unfreeze('sensorType2');
         model.properties.sensorType = initialSensorType;
+        model.properties.sensorType2 = initialSensorType;
 
         dispatch.reset();
       },
@@ -556,7 +626,8 @@ define(function(require) {
     propertySupport.mixInto(model);
 
     customSetters = {
-      sensorType: setSensorType
+      sensorType: setSensorType,
+      sensorType2: setSensorType2
     };
 
     mainProperties = validator.validateCompleteness(metadata.mainProperties, initialProperties);
@@ -598,6 +669,13 @@ define(function(require) {
       return rawSensorValue - model.properties.tareValue;
     });
 
+    model.defineOutput('sensorReading2', defaultSensorReadingDescriptionHash, function() {
+      if (rawSensorValue2 == null) {
+        return rawSensorValue2;
+      }
+      return rawSensorValue2 - model.properties.tareValue2;
+    });
+
     // TODO. Need a better way for the model to be able to have a property which it can set the
     // value of at arbitrary times, but which is read-only to client code. Outputs aren't quite
     // the right solution because the invalidation stuff is really about time and physics-based
@@ -609,10 +687,22 @@ define(function(require) {
       return sensorDefinitions[sensorType].sensorName;
     });
 
+    model.defineOutput('sensorName2', {
+      label: "Sensor Name"
+    }, function() {
+      return sensorDefinitions[sensorType2].sensorName;
+    });
+
     model.defineOutput('deviceName', {
       label: "Sensor Interface Device Name"
     }, function() {
       return sensorDefinitions[sensorType].deviceName;
+    });
+
+    model.defineOutput('deviceName2', {
+      label: "Sensor Interface Device Name"
+    }, function() {
+      return sensorDefinitions[sensorType2].deviceName;
     });
 
     model.defineOutput('isStopped', {
@@ -681,6 +771,7 @@ define(function(require) {
 
     // Kick things off by doing this explicitly:
     setSensorType(model.properties.sensorType);
+    setSensorType2(model.properties.sensorType2);
 
     return model;
   };

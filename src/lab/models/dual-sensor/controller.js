@@ -3,8 +3,8 @@
 define(function (require) {
   // Dependencies.
   var ModelController   = require('common/controllers/model-controller'),
-      Model             = require('models/sensor/modeler'),
-      ModelContainer    = require('models/sensor/view'),
+      Model             = require('models/dual-sensor/modeler'),
+      ModelContainer    = require('models/dual-sensor/view'),
       ScriptingAPI      = function() {},
       Benchmarks        = function() {};
 
@@ -35,22 +35,37 @@ define(function (require) {
         }
       });
 
+      model.addObserver('sensorReading2', function() {
+        // if the model is running, the tick handler will take care of it
+        if (model.isStopped()) {
+          controller.updateView();
+        }
+      });
+
       model.addObserver('needsReload', function() {
         if (model.properties.needsReload) {
           controller.reload();
         }
       });
 
+      // TODO This will have to handle have 2 different units...
       model.addPropertyDescriptionObserver('sensorReading', function() {
         var description = model.getPropertyDescription('sensorReading');
         var view = controller.modelContainer;
 
         view.updateUnits(description.getUnitAbbreviation());
       });
+
+      model.addPropertyDescriptionObserver('sensorReading2', function() {
+        var description = model.getPropertyDescription('sensorReading2');
+        var view = controller.modelContainer;
+
+        view.updateUnits2(description.getUnitAbbreviation());
+      });
     }
 
     setupModelObservers();
-    controller.on('modelLoaded.sensor-model-controller', setupModelObservers);
+    controller.on('modelLoaded.dual-sensor-model-controller', setupModelObservers);
 
     return controller;
   };
