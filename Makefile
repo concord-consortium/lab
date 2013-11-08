@@ -644,7 +644,7 @@ public/lab/lab.mw-helpers.js: src/mw-helpers/*.coffee
 test/%.html: test/%.html.haml
 	haml $< $@
 
-public/%.html: src/%.html.haml
+public/%.html: src/%.html.haml script/setup.rb
 	haml -r ./script/setup.rb $< $@
 
 public/%.html: src/%.html
