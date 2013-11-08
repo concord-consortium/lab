@@ -12,6 +12,12 @@ define(function (require) {
   // (see makeFunctionInScriptContext).
   var shadowedGlobals = {};
 
+  function errorForKey(key) {
+    return function() {
+      throw new ReferenceError(key + " is not defined");
+    };
+  }
+
   // Make shadowedGlobals contain keys for all globals (properties of 'window').
   // Also make set and get of any such property throw a ReferenceError exactly like
   // reading or writing an undeclared variable in strict mode.
@@ -25,9 +31,7 @@ define(function (require) {
     for (i = 0, len = keys.length; i < len; i++) {
       key = keys[i];
       if (!shadowedGlobals.hasOwnProperty(key)) {
-        err = (function(key) {
-          return function() { throw new ReferenceError(key + " is not defined"); };
-        }(key));
+        err = errorForKey(key);
 
         Object.defineProperty(shadowedGlobals, key, {
           set: err,
