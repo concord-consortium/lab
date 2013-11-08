@@ -6,6 +6,37 @@ define(function (require) {
   var alert = require('common/alert');
   var namespaceCount = 0;
 
+  // This object is the outer context in which each script function is executed. This prevents at
+  // least inadvertent reliance by the script on unintentinally exposed globals. Note that this
+  // object is shared by the all instances of functions created in Scripting API context
+  // (see makeFunctionInScriptContext).
+  var shadowedGlobals = {};
+
+  // Make shadowedGlobals contain keys for all globals (properties of 'window').
+  // Also make set and get of any such property throw a ReferenceError exactly like
+  // reading or writing an undeclared variable in strict mode.
+  function setShadowedGlobals() {
+    var keys = Object.getOwnPropertyNames(window),
+        key,
+        i,
+        len,
+        err;
+
+    for (i = 0, len = keys.length; i < len; i++) {
+      key = keys[i];
+      if (!shadowedGlobals.hasOwnProperty(key)) {
+        err = (function(key) {
+          return function() { throw new ReferenceError(key + " is not defined"); };
+        }(key));
+
+        Object.defineProperty(shadowedGlobals, key, {
+          set: err,
+          get: err
+        });
+      }
+    }
+  }
+
   //
   // Define the scripting API used by 'action' scripts on interactive elements.
   //
@@ -505,16 +536,8 @@ define(function (require) {
         what scripting API and semantics we want to support.
       */
       makeFunctionInScriptContext: function () {
-
-            // This object is the outer context in which the script is executed. Every time the script
-            // is executed, it contains the value 'undefined' for all the currently defined globals.
-            // This prevents at least inadvertent reliance by the script on unintentinally exposed
-            // globals.
-
-        var shadowedGlobals = {},
-
             // First n-1 arguments to this function are the names of the arguments to the script.
-            argumentsToScript = Array.prototype.slice.call(arguments, 0, arguments.length - 1),
+        var argumentsToScript = Array.prototype.slice.call(arguments, 0, arguments.length - 1),
 
             // Last argument is the function body of the script, as a string or array of strings.
             scriptSource = arguments[arguments.length - 1],
@@ -524,31 +547,6 @@ define(function (require) {
             scriptFunction;
 
         if (typeof scriptSource !== 'string') scriptSource = scriptSource.join('      \n');
-
-        // Make shadowedGlobals contain keys for all globals (properties of 'window')
-        // Also make set and get of any such property throw a ReferenceError exactly like
-        // reading or writing an undeclared variable in strict mode.
-        function setShadowedGlobals() {
-          var keys = Object.getOwnPropertyNames(window),
-              key,
-              i,
-              len,
-              err;
-
-          for (i = 0, len = keys.length; i < len; i++) {
-            key = keys[i];
-            if (!shadowedGlobals.hasOwnProperty(key)) {
-              err = (function(key) {
-                return function() { throw new ReferenceError(key + " is not defined"); };
-              }(key));
-
-              Object.defineProperty(shadowedGlobals, key, {
-                set: err,
-                get: err
-              });
-            }
-          }
-        }
 
         scriptFunctionMakerSource =
           "with (shadowedGlobals) {\n" +
