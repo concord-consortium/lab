@@ -2,8 +2,10 @@
   "title": "Dual Sensor",
   "publicationStatus": "draft",
   "subtitle": "Testing the Dual Sensor model type",
+  "aspectRatio": 1.3,
+  "helpOnLoad": false,
   "about": "",
-  "fontscale": 0.9,
+  "fontScale": 0.9,
   "models": [
     {
       "type": "dual-sensor",
@@ -201,19 +203,15 @@
       "id": "sensor1-graph",
       "top": "model.bottom",
       "padding-top": "0.3em",
-      "padding-bottom": "2em",
       "width": "interactive.width",
-      "height": "interactive.height * 0.47",
+      "height": "(interactive.height - model.height - container-bottom.height) * 0.5",
       "padding-right": "1em"
     },
     {
       "id": "sensor2-graph",
       "top": "sensor1-graph.bottom",
-      "padding-top": "0.3em",
-      "bottom": "container-bottom.top",
-      "padding-bottom": "2em",
       "width": "interactive.width",
-      "height": "interactive.height * 0.47",
+      "height": "(interactive.height - (model.height + container-bottom.height)) * 0.5",
       "padding-right": "1em"
     },
     {
