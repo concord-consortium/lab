@@ -21,8 +21,11 @@
 
 
     .config
-      %p
+      %span
         Select interactive categories to test:
+      %label
+        %input{:type => "checkbox", :class => "category", :value => "MD2D_only", :checked => true}
+        MD2D only
       %label
         %input{:type => "checkbox", :class => "category", :value => "Benchmarks", :checked => true}
         Benchmarks
@@ -33,10 +36,11 @@
         %input{:type => "checkbox", :class => "category", :value => "Curriculum"}
         Curriculum
 
-      %button{:id => "start"}
-        Start benchmark
-      %button{:id => "stop"}
-        Stop
+      %div
+        %button{:id => "start"}
+          Start benchmark
+        %button{:id => "stop"}
+          Stop
 
       #info
 
@@ -45,6 +49,7 @@
 
     %script{:src => "vendor/jquery/jquery.min.js", :type => "text/javascript"}
     %script{:src => "vendor/fingerprintjs/fingerprint.min.js", :type => "text/javascript"}
-    %script{:src => "lab/lab.iframe-phone.min.js", :type => "text/javascript"}
+    %script{:src => "vendor/d3/d3.min.js", :type => "text/javascript"}
+    %script{:src => "lab/lab.min.js", :type => "text/javascript"}
     %script{:src => "benchmark.js", :type => "text/javascript"}
 

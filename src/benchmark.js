@@ -1,7 +1,7 @@
 /*global Lab, Fingerprint, alert*/
 
 $(function () {
-  var ALLOWED_CATEGORIES = null;
+  var categories = null;
   var interactivesJSON = null;
 
   var benchamrkEnabled = false;
@@ -30,15 +30,15 @@ $(function () {
     $("#stop").prop("disabled", true);
     $("#start").prop("disabled", false);
     $(".category").prop("disabled", false);
-    info("Benchmark stopped by user.");
+    info("Benchmark stopped (the test that is currently running won't be canceled).");
   }
 
   function readCategories() {
-    ALLOWED_CATEGORIES = {};
+    categories = {};
     $(".category").each(function() {
       var $checkbox = $(this);
       if ($checkbox.prop("checked")) {
-        ALLOWED_CATEGORIES[$checkbox.val()] = true;
+        categories[$checkbox.val()] = true;
       }
     }).prop("disabled", true);
     processInteractivesJSON(interactivesJSON);
@@ -47,15 +47,30 @@ $(function () {
   function processInteractivesJSON(result) {
     var interactivesDesc = result.interactives;
     var groups = result.groups;
+    var MD2DOnly = categories["MD2D_only"];
     var groupKeyAllowed = {};
 
     groups.forEach(function (g) {
-      if (g.category in ALLOWED_CATEGORIES) {
+      if (g.category in categories) {
         groupKeyAllowed[g.path] = true;
       }
     });
+
+    function modelTypeCheck(i) {
+      // Metadata doesn't contain information about model type, so do some ugly tests.
+      if (MD2DOnly) {
+        var k = i.groupKey;
+        if (k.indexOf("solar-system") === -1 && k.indexOf("energy2d") === -1) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+      return true;
+    }
+
     interactivesDesc.forEach(function (i) {
-      if (i.groupKey in groupKeyAllowed && i.publicationStatus !== "draft") {
+      if (i.groupKey in groupKeyAllowed && i.publicationStatus !== "draft" && modelTypeCheck(i)) {
         interactives.push(i.path);
       }
     });
@@ -71,7 +86,8 @@ $(function () {
       info("Benchmark has finished, all interactives have been tested.");
       return;
     }
-    info("Testing: " + interactives[interactiveID]);
+    console.log("Loading a new interactive");
+    info("Testing " + (interactiveID + 1) + "/" + interactives.length + ": " + interactives[interactiveID]);
     var newPath = "/embeddable.html#" + interactives[interactiveID];
     if ($iframe.attr("src") === newPath) {
       // Reload iframe to trigger interactiveLoaded callback.
@@ -83,10 +99,10 @@ $(function () {
   }
 
   function interactiveLoaded() {
-    console.log("Connected to Lab iframe");
+    console.log("Interactive loaded");
     $("#run-benchmark").prop("disabled", false);
     if (benchamrkEnabled) {
-      console.log("Starting benchmark...");
+      console.log("Starting benchmark");
       iframePhone.post({ type: "runBenchmarks" });
     }
   }
@@ -105,14 +121,16 @@ $(function () {
       data[key] = val;
     });
     console.log("Sending results:\n", data);
-
+    $.ajax({
+      type: "POST",
+      url: Lab.config.benchmarkAPIurl,
+      data: data
+    });
     // Automatically switch to a new interactive if benchmark is running.
     if (benchamrkEnabled) {
-      console.log("Requesting a new interactive");
       nextInteractive();
     }
   }
-
 
   // 1. Setup start / stop buttons.
   $("#start").on("click", start).prop("disabled", true);
