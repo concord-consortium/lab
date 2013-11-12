@@ -439,8 +439,8 @@ define(function(require) {
         for (var sampleIndex = 0; sampleIndex < count; sampleIndex++) {
           for (var i = 0; i < numberOfSensors; i++) {
             dataSample[i] = data[sampleIndex*numberOfSensors + i];
-            self.emit('data', dataSample);
           }
+          self.emit('data', dataSample);
         }
       }, 5);
     },
