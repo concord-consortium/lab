@@ -64,6 +64,7 @@ define(function(require) {
         didCollectData,
         isTaring,
         isSensorTareable,
+        isSensorTareable2,
         initialTareValue,
         invalidatingChangeNestingLevel = 0,
         filteredOutputs = [],
@@ -307,6 +308,7 @@ define(function(require) {
       rawSensorValue2 = undefined;
       didCollectData = false;
       isSensorTareable = false;
+      isSensorTareable2 = false;
       isTaring = false;
     }
 
@@ -403,7 +405,7 @@ define(function(require) {
         sensorDefinition = sensorDefinitions[sensorType2];
         samplesPerSecond = sensorDefinition.samplesPerSecond;
         measurementType = sensorDefinition.measurementType;
-        isSensorTareable = sensorDefinition.tareable;
+        isSensorTareable2 = sensorDefinition.tareable;
 
         setupApplet(sensorDefinition);
 
@@ -745,7 +747,7 @@ define(function(require) {
     model.defineOutput('canTare', {
       label: "Can set a tare value?"
     }, function() {
-      return isStopped && !didCollectData && isSensorTareable && !isTaring;
+      return isStopped && !didCollectData && isSensorTareable && isSensorTareable2 && !isTaring;
     });
 
     model.defineOutput('needsReload', {
