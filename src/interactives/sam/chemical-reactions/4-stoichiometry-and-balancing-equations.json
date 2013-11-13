@@ -3,24 +3,15 @@
   "publicationStatus": "public",
   "subtitle": "Getting the ratios right.",
   "about": [
-    "In writing a chemical reaction you must satisfy these two laws of chemistry:",
+    "When writing a chemical reaction you must satisfy these two laws of chemistry:",
     "",
-    "1. **The law of conservation of mass**: The mass of the reactants must equal the mass of the",
-    "products.",
-    "2. **The law of definite proportions**: When making a certain chemical there is only one",
-    "right ratio of reactants. When making peanut butter cookies one might use different",
-    "ingredients or different amounts of the same ingredients. When making hydrogen chloride or",
-    "any other chemical there is only one correct recipe or ratio of reactants.",
+    "1. **The law of conservation of mass**: The mass of the reactants must equal the mass of the products.",
+    "2. **The law of definite proportions**: When making a certain chemical there is only one correct ratio of reactants.",
     "",
-    "**The chemical equation should be written using the simplest ratios**: An equation gives the",
-    "basic recipe. There are several ratios of hydrogen to chlorine that will satisfy the above",
-    "two laws. However, they all can be simplified to the 1:1:2 ratio you see in the balanced",
-    "equation:",
-    "",
-    "H2 + Cl2 => 2 HCl",
-    "",
-    "Try several different ratios to see which ones form a complete reaction with nothing left",
-    "over."
+    "To make hydrogen chloride or any other chemical there is only one ratio of reactants that works ",
+    "so that all of the hydrogen and oxygen are used to make hydrogen chloride. Try several different ratios ",
+    "to see which ones form a complete reaction with nothing left over. What is the simplest ratio of hydrogen ",
+    "to chlorine for forming hydrogen chloride?"
   ],
   "models": [
     {
@@ -192,6 +183,7 @@
       "property": "reactionComplete",
       "title": "Reaction Complete",
       "labels": 10,
+      "labelFormat": ".0f",
       "units": true,
       "min": 0,
       "max": 100

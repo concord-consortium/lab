@@ -9,11 +9,9 @@
     "- A chemical bond is broken.",
     "- One or more electrons are transferred between atoms or molecules.",
     "",
-    "This activity will allow you to explore reactions in which chemical bonds are formed and",
-    "broken. In the model you can see both bond formation and bond breaking.",
-    "",
-    "Run the model and try heating and cooling the chemicals to see how this affects the kind of",
-    "reaction that may occur."
+    "Explore reactions in which chemical bonds are formed and broken with this model.",
+    "Press run, then try heating and cooling the atoms to see how temperature affects ",
+    "the balance between bond formation and breaking."
   ],
   "models": [
     {

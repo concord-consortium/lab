@@ -3,17 +3,17 @@
   "publicationStatus": "public",
   "subtitle": "How does concentration affect reaction rate?",
   "about": [
-    "You will do a reaction in which two atoms are bonded together to make a molecule. Experiment",
-    "with changing the concentration of the atoms in order to see how this affects the reaction",
-    "rate (the speed the reaction happens).",
+    "In this model, two atoms can form a bond to make a molecule. ",
+    "Experiment with changing the concentration of the atoms in order to see ",
+    "how this affects the reaction rate (the speed at which the reaction occurs).",
     "",
     "Follow these steps:",
     "",
-    "1. Add some atoms (press buttons multiple times to add more).",
+    "1. Add some atoms. (You can add atoms by pressing the buttons multiple times).",
     "2. Run the model.",
     "3. Reset the model and try a different concentration.",
     "",
-    "Gauge the reaction speed by using the graph to see when the reaction reaches 80% completion."
+    "Gauge the reaction rate by using the graph to see when the reaction reaches 80% completion."
   ],
   "models": [
     {
@@ -83,6 +83,7 @@
       "property": "reactionComplete",
       "title": "Reaction Complete",
       "labels": 10,
+      "labelFormat": ".0f",
       "units": true,
       "min": 0,
       "max": 100
