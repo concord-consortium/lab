@@ -75,7 +75,7 @@
     {
       "type": "graph",
       "id": "propertiesGraph",
-      "title": "Sensor Reading",
+      "title": " ",
       "xlabel": "Time (s)",
       "ymin": 0,
       "ymax": 6,
@@ -91,7 +91,7 @@
     {
       "type": "graph",
       "id": "propertiesGraph2",
-      "title": "Sensor Reading",
+      "title": " ",
       "xlabel": "Time (s)",
       "ymin": 0,
       "ymax": 6,
@@ -197,17 +197,16 @@
   "template": [
     {
       "id": "sensor1-graph",
-      "top": "model.bottom",
-      "padding-top": "0.3em",
+      "top": "model.bottom * 0.7",
       "width": "interactive.width",
-      "height": "(interactive.height - model.height - container-bottom.height) * 0.5",
+      "height": "(interactive.height - model.height - container-bottom.height) * 0.55",
       "padding-right": "1em"
     },
     {
       "id": "sensor2-graph",
-      "top": "sensor1-graph.bottom",
+      "top": "sensor1-graph.bottom * 0.95",
       "width": "interactive.width",
-      "height": "(interactive.height - (model.height + container-bottom.height)) * 0.5",
+      "height": "(interactive.height - (model.height + container-bottom.height)) * 0.55",
       "padding-right": "1em"
     },
     {
