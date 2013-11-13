@@ -516,8 +516,6 @@ define(function(require) {
         removeApplet();
 
         initializeStateVariables();
-        model.properties.tareValue = initialTareValue;
-        model.properties.tareValue2 = initialTareValue;
         model.unfreeze('sensorType');
         model.unfreeze('sensorType2');
         model.properties.sensorType = initialSensorType;
