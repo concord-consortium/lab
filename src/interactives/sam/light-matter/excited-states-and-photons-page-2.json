@@ -11,7 +11,8 @@
       "url": "imports/legacy-mw-content/converted/sam-activities/light-matter/excited-states-and-photons/page2$0.json",
       "viewOptions": {
         "controlButtons": "play_reset_step",
-        "showClock": false
+        "showClock": false,
+        "showVelocityVectors": false
       },
       "onLoad": [
         "unfreeze('initialVelocityInMKS')",
