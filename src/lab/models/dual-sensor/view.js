@@ -115,7 +115,7 @@ define(function() {
       },
 
       getHeightForWidth: function() {
-        return "2.6em";
+        return "4.8em";
       },
 
       // called once we're in the DOM
@@ -135,7 +135,9 @@ define(function() {
           units: model.getPropertyDescription('sensorReading2').getUnitAbbreviation()
         });
 
-        var $selectBox  = sensorTypeView.render(this.$el),
+        var $row1 = $("<div></div>"),
+            $row2 = $("<div></div>"),
+            $selectBox  = sensorTypeView.render(this.$el),
             $selectBox2 = sensorType2View.render(this.$el),
             $zeroButton = $("<div><button>Zero</button></div>"),
             $sensorReading  = sensorReadingView.render(),
@@ -148,11 +150,13 @@ define(function() {
         $sensorReading2.addClass('numeric-output component horizontal component-spacing');
 
         this.$el.css('zIndex', 4);
-        this.$el.append($selectBox);
-        this.$el.append($sensorReading);
-        this.$el.append($selectBox2);
-        this.$el.append($sensorReading2);
-        this.$el.append($zeroButton);
+        this.$el.append($row1);
+        this.$el.append($row2);
+        $row1.append($selectBox);
+        $row1.append($sensorReading);
+        $row1.append($zeroButton);
+        $row2.append($selectBox2);
+        $row2.append($sensorReading2);
 
         this.$zeroButton = $zeroButton;
         this.$selectBox = $selectBox;
