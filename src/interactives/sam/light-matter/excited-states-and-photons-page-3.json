@@ -10,7 +10,7 @@
       "id": "quantum-emission",
       "url": "models/md2d/sam/light-matter/excited-states-and-photons/page3.json",
       "viewOptions": {
-        "controlButtons": "play_reset",
+        "controlButtons": "play_reset_step",
         "showClock": false
       },
       "onLoad": [
