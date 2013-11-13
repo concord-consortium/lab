@@ -158,6 +158,9 @@ define(function() {
         this.$selectBox = $selectBox;
         this.$selectBox2 = $selectBox2;
 
+        sensorReadingView.resize();
+        sensorReading2View.resize();
+
         setupModelObservers();
 
         $zeroButton.on('click', 'button', function() {
@@ -189,7 +192,15 @@ define(function() {
         this.$progressbarContainer.hide();
       },
 
-      resize: function() {},
+      resize: function() {
+        if (sensorReadingView) {
+          sensorReadingView.resize();
+        }
+
+        if (sensorReading2View) {
+          sensorReading2View.resize();
+        }
+      },
 
       repaint: function() {},
 
