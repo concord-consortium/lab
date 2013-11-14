@@ -23,6 +23,14 @@ $(function () {
   var iframePhone;
   var fingerprint = new Fingerprint().get();
 
+  var resultsKeys = (function () {
+    var keys = [];
+    $("#results th").each(function() {
+      keys.push($(this).text());
+    });
+    return keys;
+  }());
+
   function start() {
     readHost();
     // Download interactives.json (interactives list + short description) and connect
@@ -41,6 +49,7 @@ $(function () {
       // Setup UI.
       $("#start").prop("disabled", true);
       $("#stop").prop("disabled", false);
+      $("#results tbody").empty();
       info("");
       // Load the first interactive to test.
       nextInteractive();
@@ -181,6 +190,16 @@ $(function () {
       type: "POST",
       url: Lab.config.benchmarkAPIurl,
       data: data
+    });
+    // Put results into table.
+    var $row = $("<tr>").appendTo("#results tbody");
+    resultsKeys.forEach(function(key) {
+      var val = data[key];
+      if (key === "interactive") {
+        // Make interactive name shorter.
+        val = val.substr(val.lastIndexOf("/") + 1);
+      }
+      $row.append("<td>" + val + "</td>");
     });
     // Automatically switch to a new interactive if benchmark is running.
     if (benchamrkEnabled) {

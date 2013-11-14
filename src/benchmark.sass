@@ -11,6 +11,15 @@ html
 body
   margin: 0
 
+label
+  display: block
+
+table
+  border-collapse: collapse
+  td, th
+    border: 1px solid #ddd
+    padding: 2px
+
 #header
   @include linear-gradient($header-background-color1, $header-background-color2, $fallback: $header-background-color1)
   color: $header-font-color
@@ -29,22 +38,28 @@ body
     top: 1em
     right: 1em
 
+.column
+  display: inline-block
+  vertical-align: top
+  margin-left: 2em
+  margin-top: 1em
+
+.config-col
+  display: inline-block
+  vertical-align: top
+  margin-right: 2em
+
+#start, #stop
+  font-size: 16px
+  margin-top: 1em
+
 #iframe-wrapper
   width: 565px
   height: 435px
-  margin-left: 2em
-
-.config
-  margin-top: 0.5em
-  margin-left: 2em
-
-label
-  display: block
 
 #info
   margin-top: 1em
   font-family: monospace
 
-#start, #stop
-  font-size: 16px
-  margin-top: 1em
+#results
+  font-size: 0.7em
