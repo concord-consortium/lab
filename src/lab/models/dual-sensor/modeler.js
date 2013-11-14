@@ -362,7 +362,7 @@ define(function(require) {
         measurementType = sensorDefinition.measurementType;
         isSensorTareable = sensorDefinition.tareable;
 
-        setupApplet(sensorDefinition);
+        setupApplet();
 
         // Update the description of the main 'sensorReading' output
         description = new PropertyDescription(unitsDefinition, {
@@ -412,7 +412,7 @@ define(function(require) {
         measurementType = sensorDefinition.measurementType;
         isSensorTareable2 = sensorDefinition.tareable;
 
-        setupApplet(sensorDefinition);
+        setupApplet();
 
         // Update the description of the main 'sensorReading' output
         description = new PropertyDescription(unitsDefinition, {
