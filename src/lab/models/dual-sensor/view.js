@@ -73,6 +73,22 @@ define(function() {
       }
     }
 
+    function setIsTaringState2() {
+      if (model.properties.isTaring2) {
+        view.$zeroButton2.find('button').html("Zeroing...");
+      } else {
+        view.$zeroButton2.find('button').html("Zero");
+      }
+    }
+
+    function setCanTareState2() {
+      if (model.properties.canTare2) {
+        viewState.enableView(view.$zeroButton2);
+      } else {
+        viewState.disableView(view.$zeroButton2);
+      }
+    }
+
     function setSensorTypeDisabledState() {
       var description = model.getPropertyDescription('sensorType');
       if (description.getFrozen()) {
@@ -93,10 +109,14 @@ define(function() {
 
     function setupModelObservers() {
       model.addObserver('isTaring', setIsTaringState);
+      model.addObserver('isTaring2', setIsTaringState2);
       setIsTaringState();
+      setIsTaringState2();
 
       model.addObserver('canTare', setCanTareState);
+      model.addObserver('canTare2', setCanTareState2);
       setCanTareState();
+      setCanTareState2();
 
       model.addPropertyDescriptionObserver('sensorType', setSensorTypeDisabledState);
       setSensorTypeDisabledState();
@@ -140,12 +160,14 @@ define(function() {
             $selectBox  = sensorTypeView.render(this.$el),
             $selectBox2 = sensorType2View.render(this.$el),
             $zeroButton = $("<div><button>Zero</button></div>"),
+            $zeroButton2 = $("<div><button>Zero</button></div>"),
             $sensorReading  = sensorReadingView.render(),
             $sensorReading2 = sensorReading2View.render();
 
         $selectBox.addClass('interactive-pulldown component component-spacing');
         $selectBox2.addClass('interactive-pulldown component component-spacing');
         $zeroButton.addClass('interactive-button component component-spacing');
+        $zeroButton2.addClass('interactive-button component component-spacing');
         $sensorReading.addClass('numeric-output component horizontal component-spacing');
         $sensorReading2.addClass('numeric-output component horizontal component-spacing');
 
@@ -157,8 +179,10 @@ define(function() {
         $row1.append($zeroButton);
         $row2.append($selectBox2);
         $row2.append($sensorReading2);
+        $row2.append($zeroButton2);
 
         this.$zeroButton = $zeroButton;
+        this.$zeroButton2 = $zeroButton2;
         this.$selectBox = $selectBox;
         this.$selectBox2 = $selectBox2;
 
@@ -169,6 +193,9 @@ define(function() {
 
         $zeroButton.on('click', 'button', function() {
           model.tare();
+        });
+        $zeroButton2.on('click', 'button', function() {
+          model.tare2();
         });
       },
 

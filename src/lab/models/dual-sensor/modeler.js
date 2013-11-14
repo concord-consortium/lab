@@ -63,6 +63,7 @@ define(function(require) {
         stepCounter,
         didCollectData,
         isTaring,
+        isTaring2,
         isSensorTareable,
         isSensorTareable2,
         initialTareValue,
@@ -283,8 +284,11 @@ define(function(require) {
             rawSensorValue2 = values[1];
             if (isTaring) {
               model.properties.tareValue = rawSensorValue;
-              model.properties.tareValue2 = rawSensorValue2;
               isTaring = false;
+            }
+            if (isTaring2) {
+              model.properties.tareValue2 = rawSensorValue2;
+              isTaring2 = false;
             }
           });
         }
@@ -310,6 +314,7 @@ define(function(require) {
       isSensorTareable = false;
       isSensorTareable2 = false;
       isTaring = false;
+      isTaring2 = false;
     }
 
     function setupApplet() {
@@ -497,12 +502,24 @@ define(function(require) {
         if (!isStopped) {
           throw new Error("Sensor model: tare() called on a non-stopped model.");
         }
-        if (sensorPollingIntervalID != null && rawSensorValue != null && rawSensorValue2 != null) {
+        if (sensorPollingIntervalID != null && rawSensorValue != null) {
           model.properties.tareValue = rawSensorValue;
-          model.properties.tareValue2 = rawSensorValue2;
         } else {
           makeInvalidatingChange(function() {
             isTaring = true;
+          });
+        }
+      },
+
+      tare2: function() {
+        if (!isStopped) {
+          throw new Error("Sensor model: tare() called on a non-stopped model.");
+        }
+        if (sensorPollingIntervalID != null && rawSensorValue2 != null) {
+          model.properties.tareValue2 = rawSensorValue2;
+        } else {
+          makeInvalidatingChange(function() {
+            isTaring2 = true;
           });
         }
       },
@@ -742,10 +759,22 @@ define(function(require) {
       return isTaring;
     });
 
+    model.defineOutput('isTaring2', {
+      label: "Waiting for a tare value?"
+    }, function() {
+      return isTaring2;
+    });
+
     model.defineOutput('canTare', {
       label: "Can set a tare value?"
     }, function() {
-      return isStopped && !didCollectData && isSensorTareable && isSensorTareable2 && !isTaring;
+      return isStopped && !didCollectData && isSensorTareable && !isTaring;
+    });
+
+    model.defineOutput('canTare2', {
+      label: "Can set a tare value?"
+    }, function() {
+      return isStopped && !didCollectData && isSensorTareable2 && !isTaring2;
     });
 
     model.defineOutput('needsReload', {
