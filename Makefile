@@ -31,6 +31,7 @@ COMMON_SRC_FILES += src/lab/lab.config.js
 FONT_FOLDERS := $(shell find vendor/fonts -mindepth 1 -maxdepth 1)
 
 SASS_LAB_LIBRARY_FILES := $(shell find src/sass/lab -name '*.sass')
+SHUTTERBUG_GEM := $(shell bundle show shutterbug)
 
 # targets
 
@@ -60,13 +61,15 @@ LAB_JS_FILES = \
 	public/lab/lab.iframe-phone.js \
 	public/lab/lab.sensor-applet.js
 
-# default target executed when running make
+# default target executed when running make. Run the $(MAKE) public task rather than simply
+# declaring a dependency on 'public' because 'bundle install' and 'npm install' might update some
+# sources, and we want to recompute stale dependencies after that.
 .PHONY: all
 all: \
 	vendor/d3/d3.js \
 	node_modules \
-	bin \
-	public
+	bin
+	$(MAKE) public
 
 # install Ruby Gem development dependencies
 .PHONY: bin
@@ -141,16 +144,6 @@ clean-finish:
 	# an older version of jshint is installed
 	if [ -d vendor/jquery/node_modules/grunt-contrib-jshint ]; then rm -rf vendor/jquery/node_modules/grunt-contrib-jshint; fi
 	if [ -d vendor/jquery-ui/node_modules/grunt-contrib-jshint ]; then rm -rf vendor/jquery-ui/node_modules/grunt-contrib-jshint; fi
-	$(MAKE) install-shutterbug
-
-.PHONY: install-shutterbug
-install-shutterbug:
-	# copy shutterbug out gem so it can be included directly in minimized js and available
-	# to static site
-	mkdir -p vendor/shutterbug
-	cp `bundle show shutterbug`/lib/shutterbug/handlers/shutterbug.js vendor/shutterbug
-	cp `bundle show shutterbug`/README.md vendor/shutterbug
-	cp `bundle show shutterbug`/LICENSE.md vendor/shutterbug
 
 # public dir cleanup.
 .PHONY: clean-public
@@ -466,8 +459,11 @@ public/vendor: \
 	public/vendor/text \
 	public/vendor/domReady \
 	public/vendor/fingerprintjs \
-	public/vendor/shutterbug \
+	public/vendor/shutterbug/shutterbug.js \
+	public/vendor/shutterbug/README.md \
+	public/vendor/shutterbug/LICENSE.md \
 	public/favicon.ico
+
 
 public/vendor/dsp.js:
 	mkdir -p public/vendor/dsp.js
@@ -625,9 +621,18 @@ public/vendor/fingerprintjs:
 
 public/vendor/shutterbug:
 	mkdir -p public/vendor/shutterbug
+
+public/vendor/shutterbug/shutterbug.js: public/vendor/shutterbug \
+	vendor/shutterbug/shutterbug.js
 	sed -e s'/CONVERT_PATH/shutterbug\/make_snapshot/' vendor/shutterbug/shutterbug.js > public/vendor/shutterbug/shutterbug.js
-	cp vendor/shutterbug/README.md public/vendor/shutterbug/README.md
-	cp vendor/shutterbug/LICENSE.md public/vendor/shutterbug/LICENSE.md
+
+public/vendor/shutterbug/README.md: public/vendor/shutterbug \
+	vendor/shutterbug/README.md
+	cp vendor/shutterbug/README.md public/vendor/shutterbug
+
+public/vendor/shutterbug/LICENSE.md: public/vendor/shutterbug \
+	vendor/shutterbug/LICENSE.md
+	cp vendor/shutterbug/LICENSE.md public/vendor/shutterbug
 
 public/favicon.ico:
 	cp -f src/favicon.ico public/favicon.ico
@@ -647,6 +652,21 @@ vendor/jquery-ui/dist/jquery-ui.min.js: vendor/jquery-ui
 
 vendor/jquery-ui:
 	git submodule update --init --recursive
+
+vendor/shutterbug:
+	mkdir -p vendor/shutterbug
+
+vendor/shutterbug/shutterbug.js: vendor/shutterbug \
+	$(SHUTTERBUG_GEM)/lib/shutterbug/handlers/shutterbug.js
+	cp $(SHUTTERBUG_GEM)/lib/shutterbug/handlers/shutterbug.js vendor/shutterbug
+
+vendor/shutterbug/README.md: vendor/shutterbug \
+	$(SHUTTERBUG_GEM)/README.md
+	cp $(SHUTTERBUG_GEM)/README.md vendor/shutterbug
+
+vendor/shutterbug/LICENSE.md: vendor/shutterbug \
+	$(SHUTTERBUG_GEM)/LICENSE.md
+	cp $(SHUTTERBUG_GEM)/LICENSE.md vendor/shutterbug
 
 # ------------------------------------------------
 #
