@@ -56,7 +56,7 @@ define(function(require) {
         isSensorInitializing = false,
         sensorPollsPerSecond = 1,
         sensorPollingIntervalID,
-        samplesPerSecond,
+        samplesPerSecond = 10,
         time,
         rawSensorValue,
         rawSensorValue2,
@@ -335,6 +335,15 @@ define(function(require) {
 
     }
 
+    function updateSamplesPerSecond() {
+      if (sensorType && sensorType2) {
+        var sensorDefinition  = sensorDefinitions[sensorType],
+            sensorDefinition2 = sensorDefinitions[sensorType2];
+
+        samplesPerSecond = Math.max(sensorDefinition.samplesPerSecond, sensorDefinition2.samplesPerSecond);
+      }
+    }
+
     function setSensorType(_sensorType) {
       var sensorDefinition;
       var description;
@@ -358,9 +367,9 @@ define(function(require) {
 
       if (sensorType) {
         sensorDefinition = sensorDefinitions[sensorType];
-        samplesPerSecond = sensorDefinition.samplesPerSecond;
         measurementType = sensorDefinition.measurementType;
         isSensorTareable = sensorDefinition.tareable;
+        updateSamplesPerSecond();
 
         setupApplet();
 
@@ -408,9 +417,9 @@ define(function(require) {
 
       if (sensorType2) {
         sensorDefinition = sensorDefinitions[sensorType2];
-        samplesPerSecond = sensorDefinition.samplesPerSecond;
         measurementType = sensorDefinition.measurementType;
         isSensorTareable2 = sensorDefinition.tareable;
+        updateSamplesPerSecond();
 
         setupApplet();
 
