@@ -148,7 +148,7 @@ install-shutterbug:
 	# copy shutterbug out gem so it can be included directly in minimized js and available
 	# to static site
 	mkdir -p vendor/shutterbug
-	cp `bundle show shutterbug`/lib/shutterbug/shutterbug.js vendor/shutterbug
+	cp `bundle show shutterbug`/lib/shutterbug/handlers/shutterbug.js vendor/shutterbug
 	cp `bundle show shutterbug`/README.md vendor/shutterbug
 	cp `bundle show shutterbug`/LICENSE.md vendor/shutterbug
 
