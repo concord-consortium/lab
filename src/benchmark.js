@@ -1,8 +1,18 @@
 /*global Lab, Fingerprint, alert*/
 
+/**
+ * IMPORTANT: to test a specific Lab version, you have to ensure that interactives.json file
+ * from that version is available at [current host]/version/x.y.z/interactives.json!
+ * We can't just use lab.concord.org/version/x.y.z/interactives.json due to CORS issues.
+ * On the lab.dev sever these files were put in the right directory manually. If you want to test
+ * versions other than current locally, you have to do the same. E.g.:
+ * curl lab.concord.org/version/0.5.12/interactives.json >> public/version/0.5.12/interactives.json
+ */
 $(function () {
+  var PRODUCTION_SERV = "http://lab.concord.org";
+  var root = null;
+  var interactivesJSONRoot = null;
   var categories = null;
-  var interactivesJSON = null;
 
   var benchamrkEnabled = false;
   var interactiveID = 0;
@@ -14,23 +24,64 @@ $(function () {
   var fingerprint = new Fingerprint().get();
 
   function start() {
-    interactiveID = 0;
-    benchamrkEnabled = true;
-    interactives = [];
-    readCategories();
-    $("#start").prop("disabled", true);
-    $("#stop").prop("disabled", false);
-    $(".category").prop("disabled", true);
-    info("");
-    nextInteractive();
+    readHost();
+    // Download interactives.json (interactives list + short description) and connect
+    // to the iframe using Lab.IFramePhone.
+    $.get(interactivesJSONRoot + "interactives.json").done(function(results) {
+      if (typeof results === 'string') {
+        results = JSON.parse(results);
+      }
+      // Reset state.
+      interactiveID = 0;
+      benchamrkEnabled = true;
+      interactives = [];
+      // Process options.
+      readCategories();
+      processInteractivesJSON(results);
+      // Setup UI.
+      $("#start").prop("disabled", true);
+      $("#stop").prop("disabled", false);
+      info("");
+      // Load the first interactive to test.
+      nextInteractive();
+    }).fail(function () {
+      var mesg = "Failed to retrieve interactives.json";
+      mesg += "\n";
+      mesg += "\nNote: Some browser prevent loading content directly";
+      mesg += "\nfrom the file system.";
+      mesg += "\n";
+      mesg += "\nOne solution is to start a simple local web";
+      mesg += "\nserver using Python in the same directory where";
+      mesg += "\nthe static resources are located";
+      mesg += "\n";
+      mesg += "\n    python -m SimpleHTTPServer";
+      mesg += "\n";
+      mesg += "\nNow open this page in your browser:";
+      mesg += "\n";
+      mesg += "\n    http://localhost:8000/benchmark.html";
+      mesg += "\n";
+      console.log(mesg);
+      alert(mesg);
+    });
   }
 
   function stop() {
     benchamrkEnabled = false;
     $("#stop").prop("disabled", true);
     $("#start").prop("disabled", false);
-    $(".category").prop("disabled", false);
+    $(".category, .host").prop("disabled", false);
     info("Benchmark stopped (the test that is currently running won't be canceled).");
+  }
+
+  function readHost() {
+    var version = $("input[name=host]:checked").val();
+    if (version === "current") {
+      root = interactivesJSONRoot = "/";
+    } else {
+      root = PRODUCTION_SERV + "/version/" + version + "/";
+      interactivesJSONRoot = "/version/" + version + "/";
+    }
+    $(".host").prop("disabled", true);
   }
 
   function readCategories() {
@@ -41,7 +92,6 @@ $(function () {
         categories[$checkbox.val()] = true;
       }
     }).prop("disabled", true);
-    processInteractivesJSON(interactivesJSON);
   }
 
   function processInteractivesJSON(result) {
@@ -69,8 +119,15 @@ $(function () {
       return true;
     }
 
+    function publicationStatusCheck(i) {
+      if (i.publicationStatus === "public" || i.publicationStatus === "sample") {
+        return true;
+      }
+      return false;
+    }
+
     interactivesDesc.forEach(function (i) {
-      if (i.groupKey in groupKeyAllowed && i.publicationStatus !== "draft" && modelTypeCheck(i)) {
+      if (i.groupKey in groupKeyAllowed && publicationStatusCheck(i) && modelTypeCheck(i)) {
         interactives.push(i.path);
       }
     });
@@ -88,7 +145,7 @@ $(function () {
     }
     console.log("Loading a new interactive");
     info("Testing " + (interactiveID + 1) + "/" + interactives.length + ": " + interactives[interactiveID]);
-    var newPath = "/embeddable.html#" + interactives[interactiveID];
+    var newPath = root + "embeddable.html#" + interactives[interactiveID];
     if ($iframe.attr("src") === newPath) {
       // Reload iframe to trigger interactiveLoaded callback.
       $iframe[0].contentWindow.location.reload(true);
@@ -100,7 +157,6 @@ $(function () {
 
   function interactiveLoaded() {
     console.log("Interactive loaded");
-    $("#run-benchmark").prop("disabled", false);
     if (benchamrkEnabled) {
       console.log("Starting benchmark");
       iframePhone.post({ type: "runBenchmarks" });
@@ -133,41 +189,9 @@ $(function () {
   }
 
   // 1. Setup start / stop buttons.
-  $("#start").on("click", start).prop("disabled", true);
+  $("#start").on("click", start);
   $("#stop").on("click", stop).prop("disabled", true);
-
-  // 2. Download interactives.json (interactives list + short description) and connect
-  // to the iframe using Lab.IFramePhone.
-  $.get('interactives.json').done(function(results) {
-    if (typeof results === 'string') {
-      results = JSON.parse(results);
-    }
-    interactivesJSON = results;
-    // It would be nice if the line below isn't necessary. Unfortunately, we can't connect
-    // to empty "embeddable.html" page to load desired interactive later. So, initialize random
-    // interactive to establish iframe communication.
-    $iframe.attr("src", "/embeddable.html#interactives/samples/1-oil-and-water-shake.json");
-    iframePhone = new Lab.IFramePhone($iframe[0], interactiveLoaded);
-    iframePhone.addListener("returnBenchmarks", benchmarkResultsReceived);
-    // Let user start benchmark.
-    $("#start").prop("disabled", false);
-  }).fail(function(){
-    var mesg = "Failed to retrieve interactives.json";
-    mesg += "\n";
-    mesg += "\nNote: Some browser prevent loading content directly";
-    mesg += "\nfrom the file system.";
-    mesg += "\n";
-    mesg += "\nOne solution is to start a simple local web";
-    mesg += "\nserver using Python in the same directory where";
-    mesg += "\nthe static resources are located";
-    mesg += "\n";
-    mesg += "\n    python -m SimpleHTTPServer";
-    mesg += "\n";
-    mesg += "\nNow open this page in your browser:";
-    mesg += "\n";
-    mesg += "\n    http://localhost:8000/benchmark.html";
-    mesg += "\n";
-    console.log(mesg);
-    alert(mesg);
-  });
+  // 2. Setup IFramePhone. Note that we have to do it just once.
+  iframePhone = new Lab.IFramePhone($iframe[0], interactiveLoaded);
+  iframePhone.addListener("returnBenchmarks", benchmarkResultsReceived);
 });
