@@ -18,7 +18,10 @@ define(function(require) {
         1: 101, // single bond
         2: 107, // double bond
         3: 108  // tripe bond
-      };
+      },
+
+      // Chemical reaction calculations will be performed every <INTERVAL> fs.
+      INTERAVAL = 10; // fs
 
   // Dot product of [x1, y1] and [x2, y2] vectors.
   function dot(x1, y1, x2, y2) {
@@ -464,8 +467,14 @@ define(function(require) {
       },
 
       performActionWithinIntegrationLoop: function (neighborList, dt, time) {
-        if ((time / dt) % 50 === 0) {
-          // Perform action every 50 timesteps.
+        // Below there is a stateless way to check if we should perform calculations or not.
+        // Calculations should be performed every <INTERVAL> femtoseconds. In theory we could just
+        // remember the last time we did calculations and then check if the current time is larger
+        // (or equal) than the last + INTERVAL. However, due to tick history seeking, we can't make
+        // an assumption that time value will be always bigger than during the previous function
+        // execution.
+        var mod = time % INTERAVAL;
+        if (mod === 0 || (mod < dt && Math.floor(time / INTERAVAL) === Math.round(time / INTERAVAL))) {
           validateSharedElectronsCount();
           destroyBonds();
           // Update bondToExchange array after .destroyBonds() call! bondToExchange array is used
