@@ -377,7 +377,7 @@ define(function (require) {
             if (!component) {
               throw new Error("Component " + componentID + " not found.");
             }
-            if (!component.syncAxisRangesToPropertyRanges) {
+            if (!component.scrollXAxisToZero) {
               throw new Error("Component " + componentID + " does not support scrollXAxisToZero.");
             }
 
