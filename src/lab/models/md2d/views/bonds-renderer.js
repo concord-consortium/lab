@@ -86,8 +86,9 @@ define(function(require) {
           dy = y2 - y1,
           len = Math.sqrt(dx * dx + dy * dy);
 
-      // Fast path if bond is invisible anyway.
-      if (len - r1 - r2 <= 0) return;
+      // Fast path if bond is invisible anyway. Use 1.1 ratio, because when length is exactly equal
+      // to r1 and r2 sum, double and triple bonds can be still visible (they are wide enough).
+      if (1.1 * len - r1 - r2 <= 0) return;
 
       var midRatio = 0.5 * (len + r1 - r2) / len,
           xMid = x1 + midRatio * dx,
