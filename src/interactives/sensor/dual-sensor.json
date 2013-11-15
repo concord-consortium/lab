@@ -18,8 +18,18 @@
       },
       "onLoad": [
         "function setGraphRange() {",
-        "  syncAxisRangesToPropertyRanges('propertiesGraph');",
-        "  syncAxisRangesToPropertyRanges('propertiesGraph2');",
+        "  if (!get('isNewRunInProgress')) {",
+        "    syncAxisRangesToPropertyRanges('propertiesGraph');",
+        "  }",
+        "}",
+        "function setGraphRange2() {",
+        "  if (!get('isNewRunInProgress')) {",
+        "    syncAxisRangesToPropertyRanges('propertiesGraph2');",
+        "  }",
+        "}",
+        "function setGraphRanges() {",
+        "  setGraphRange();",
+        "  setGraphRange2();",
         "}",
         "function setButtonState() {",
         "  setComponentDisabled('start-button', !get('isPlayable'));",
@@ -39,7 +49,7 @@
         "});",
         "onPropertyChange('sensorType2', function() {",
         "  if (get('sensorType2') && !get('isNewRunInProgress')) {",
-        "    setGraphRange();",
+        "    setGraphRange2();",
         "    if (get('sensorType')) { setComponentDisabled('start-button', false); }",
         "  }",
         "});",
@@ -49,9 +59,9 @@
         "     setComponentDisabled('start-button',true);",
         "   }",
         "});",
-        "onPropertyChange('collectionTime', setGraphRange);",
+        "onPropertyChange('collectionTime', setGraphRanges);",
         "onPropertyChange('durationEnabled', function(){ setComponentDisabled('duration-slider', !(get('durationEnabled'))); });",
-        "setGraphRange();"
+        "setGraphRanges();"
       ]
     }
   ],

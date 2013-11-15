@@ -16,7 +16,9 @@
       },
       "onLoad": [
         "function setGraphRange() {",
-        "  syncAxisRangesToPropertyRanges('propertiesGraph');",
+        "  if (!get('isNewRunInProgress')) {",
+        "    syncAxisRangesToPropertyRanges('propertiesGraph');",
+        "  }",
         "}",
         "function setButtonState() {",
         "  setComponentDisabled('start-button', !get('isPlayable'));",
