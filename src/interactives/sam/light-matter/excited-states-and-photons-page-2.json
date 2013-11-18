@@ -1,8 +1,15 @@
 {
-  "title": "Excited States and Photons: Page 2",
-  "publicationStatus": "draft",
-  "subtitle": "",
-  "about": "",
+  "title": "Excited Electrons",
+  "publicationStatus": "public",
+  "subtitle": "Investigate how an electron becomes excited.",
+  "about": [
+    "An atom's electrons have energy, but they are restricted to very specific energy levels. If an electron has the lowest possible energy ",
+    "it is considered to be in the **ground state**. An electron is called **excited** if it has higher energy than the ground state. In this ",
+    "model an excited electron is shown by a yellow halo around the atom.",
+    "",
+    "**How does an electron become excited?** Try colliding the atoms together at different velocities. Do electrons always get excited? Where ",
+    "does the energy come from when electrons go from the ground state to an excited state?"
+  ],
   "aspectRatio": 1.75,
   "models": [
     {
@@ -82,18 +89,18 @@
     {
       "type": "graph",
       "id": "graph",
-      "title": "Total Energy of the System",
-      "xlabel": "Model Time (fs)",
-      "ylabel": "eV",
+      "title": "Kinetic Energy of the System",
+      "xlabel": "Model time (fs)",
+      "ylabel": "Kinetic energy (eV)",
       "ymin": 0,
-      "ymax": 6,
+      "ymax": 2,
       "xmax": 10,
       "xTickCount": 5,
       "yTickCount": 5,
       "xFormatter": ".2s",
       "yFormatter": ".2s",
       "properties": [
-        "totalEnergy"
+        "kineticEnergy"
       ]
     }
   ],

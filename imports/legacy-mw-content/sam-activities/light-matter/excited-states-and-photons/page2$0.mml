@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?> 
-<java version="1.6.0_11" class="java.beans.XMLDecoder"> 
+<java version="1.6.0_65" class="java.beans.XMLDecoder"> 
  <object id="Element0" class="org.concord.mw2d.models.Element"> 
+  <void property="epsilon"> 
+   <double>0.009999999776482582</double> 
+  </void> 
   <void property="sigma"> 
    <double>7.0</double> 
   </void> 
@@ -29,7 +32,7 @@
    </void> 
   </void> 
   <void property="epsilon"> 
-   <double>0.5</double> 
+   <double>0.009999999776482582</double> 
   </void> 
   <void property="mass"> 
    <double>83.33333333333333</double> 
@@ -94,6 +97,9 @@
     </void> 
    </void> 
   </void> 
+  <void property="epsilon"> 
+   <double>0.009999999776482582</double> 
+  </void> 
   <void property="mass"> 
    <double>0.4166666666666667</double> 
   </void> 
@@ -112,7 +118,7 @@
       <object idref="Element3"/> 
      </void> 
     </object> 
-    <double>0.1</double> 
+    <double>0.009999999776482582</double> 
    </void> 
    <void method="put"> 
     <object id="Pair1" class="org.concord.mw2d.models.Pair"> 
@@ -308,7 +314,7 @@
   <void property="sigma"> 
    <void method="put"> 
     <object idref="Pair0"/> 
-    <double>24.24871130596428</double> 
+    <double>30.0</double> 
    </void> 
    <void method="put"> 
     <object idref="Pair1"/> 
@@ -409,20 +415,20 @@
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1233250936375</long> 
+     <long>1384731269000</long> 
     </object> 
    </void> 
    <void method="put"> 
     <string>url</string> 
-    <string>C:\home\mw\public\part2\photon\page2$0.mml</string> 
+    <string>/Users/ddamelin/Development/lab/imports/legacy-mw-content/sam-activities/light-matter/excited-states-and-photons/page2$0.mml</string> 
    </void> 
    <void method="put"> 
     <string>size</string> 
-    <long>14674</long> 
+    <long>15015</long> 
    </void> 
    <void method="put"> 
     <string>codebase</string> 
-    <string>C:\home\mw\public\part2\photon</string> 
+    <string>/Users/ddamelin/Development/lab/imports/legacy-mw-content/sam-activities/light-matter/excited-states-and-photons</string> 
    </void> 
   </void> 
   <void property="quantumRule"> 

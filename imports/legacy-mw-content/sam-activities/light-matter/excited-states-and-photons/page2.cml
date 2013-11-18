@@ -117,7 +117,7 @@
         &lt;/td&gt;
         &lt;td&gt;
           &lt;p&gt;
-            &lt;input script=&quot;script:page:0:message controllerPanel.html&quot; value=&quot;How to use simulation controls&quot; name=&quot;submit&quot; type=&quot;submit&quot;&gt;
+            &lt;input script=&quot;script:page:0:message controllerPanel.html&quot; value=&quot;How to use simulation controls&quot; type=&quot;submit&quot; name=&quot;submit&quot;&gt;
           &lt;/p&gt;
         &lt;/td&gt;
       &lt;/tr&gt;
@@ -248,12 +248,12 @@ set textbox[0].text &lt;t&gt;Initial speed=formatvar(%4.0f, &quot;%val*100&quot;
 <paragraph start="25" end="26">
 <Alignment>1</Alignment>
 <content start="25" end="26">
-<size>14</size><foreground>0 102 51</foreground><bold>true</bold></content>
+<foreground>0 102 51</foreground><size>14</size><bold>true</bold></content>
 
 </paragraph>
 <paragraph start="26" end="27">
 <content start="26" end="27">
-<size>14</size><foreground>0 102 51</foreground><bold>true</bold></content>
+<foreground>0 102 51</foreground><size>14</size><bold>true</bold></content>
 
 </paragraph>
 <paragraph start="27" end="28">
