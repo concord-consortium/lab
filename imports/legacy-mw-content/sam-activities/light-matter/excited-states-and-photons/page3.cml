@@ -127,7 +127,7 @@ set atom[0].vx %v1;
 <component><class>org.concord.modeler.PageSlider</class>
 <modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
 <model>0</model>
-<value>10.0</value>
+<value>14.0</value>
 <minimum>0.0</minimum>
 <maximum>30.0</maximum>
 <nstep>30</nstep>

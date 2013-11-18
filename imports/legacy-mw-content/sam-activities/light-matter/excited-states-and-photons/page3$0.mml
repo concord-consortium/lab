@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?> 
-<java version="1.6.0_07" class="java.beans.XMLDecoder"> 
+<java version="1.6.0_65" class="java.beans.XMLDecoder"> 
  <object id="Element0" class="org.concord.mw2d.models.Element"> 
   <void property="electronicStructure"> 
    <void property="energyLevels"> 
@@ -19,6 +19,9 @@
      </object> 
     </void> 
    </void> 
+  </void> 
+  <void property="epsilon"> 
+   <double>0.009999999776482582</double> 
   </void> 
   <void property="mass"> 
    <double>0.4166666666666667</double> 
@@ -50,6 +53,9 @@
     </void> 
    </void> 
   </void> 
+  <void property="epsilon"> 
+   <double>0.009999999776482582</double> 
+  </void> 
   <void property="mass"> 
    <double>0.4166666666666667</double> 
   </void> 
@@ -80,6 +86,9 @@
     </void> 
    </void> 
   </void> 
+  <void property="epsilon"> 
+   <double>0.009999999776482582</double> 
+  </void> 
   <void property="mass"> 
    <double>0.4166666666666667</double> 
   </void> 
@@ -90,6 +99,9 @@
  <object id="Element3" class="org.concord.mw2d.models.Element"> 
   <void property="ID"> 
    <int>3</int> 
+  </void> 
+  <void property="epsilon"> 
+   <double>0.009999999776482582</double> 
   </void> 
   <void property="mass"> 
    <double>0.6666666666666666</double> 
@@ -142,7 +154,7 @@
       <object idref="Element2"/> 
      </void> 
     </object> 
-    <double>0.1</double> 
+    <double>0.009999999776482582</double> 
    </void> 
    <void method="put"> 
     <object id="Pair4" class="org.concord.mw2d.models.Pair"> 
@@ -153,7 +165,7 @@
       <object idref="Element2"/> 
      </void> 
     </object> 
-    <double>0.1</double> 
+    <double>0.009999999776482582</double> 
    </void> 
    <void method="put"> 
     <object id="Pair5" class="org.concord.mw2d.models.Pair"> 
@@ -233,11 +245,11 @@
    </void> 
    <void method="put"> 
     <object idref="Pair3"/> 
-    <boolean>true</boolean> 
+    <boolean>false</boolean> 
    </void> 
    <void method="put"> 
     <object idref="Pair4"/> 
-    <boolean>true</boolean> 
+    <boolean>false</boolean> 
    </void> 
    <void method="put"> 
     <object idref="Pair5"/> 
@@ -317,11 +329,11 @@
    </void> 
    <void method="put"> 
     <object idref="Pair3"/> 
-    <double>12.12435565298214</double> 
+    <double>30.0</double> 
    </void> 
    <void method="put"> 
     <object idref="Pair4"/> 
-    <double>17.146428199482248</double> 
+    <double>30.0</double> 
    </void> 
    <void method="put"> 
     <object idref="Pair5"/> 
@@ -401,20 +413,20 @@
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1227635898511</long> 
+     <long>1384730688000</long> 
     </object> 
    </void> 
    <void method="put"> 
     <string>url</string> 
-    <string>C:\home\mw\public\part2\photon\page3$0.mml</string> 
+    <string>/Users/ddamelin/Development/lab/imports/legacy-mw-content/sam-activities/light-matter/excited-states-and-photons/page3$0.mml</string> 
    </void> 
    <void method="put"> 
     <string>size</string> 
-    <long>17143</long> 
+    <long>17483</long> 
    </void> 
    <void method="put"> 
     <string>codebase</string> 
-    <string>C:\home\mw\public\part2\photon</string> 
+    <string>/Users/ddamelin/Development/lab/imports/legacy-mw-content/sam-activities/light-matter/excited-states-and-photons</string> 
    </void> 
   </void> 
   <void property="quantumRule"> 
@@ -507,10 +519,10 @@ define %v2 1000;</string>
        <string>A</string> 
       </void> 
       <void property="x"> 
-       <double>102.0</double> 
+       <double>100.5</double> 
       </void> 
       <void property="y"> 
-       <double>61.5</double> 
+       <double>61.0</double> 
       </void> 
      </object> 
     </void> 
@@ -538,10 +550,10 @@ define %v2 1000;</string>
        <string>B</string> 
       </void> 
       <void property="x"> 
-       <double>101.0</double> 
+       <double>101.5</double> 
       </void> 
       <void property="y"> 
-       <double>136.5</double> 
+       <double>136.0</double> 
       </void> 
      </object> 
     </void> 
@@ -569,10 +581,10 @@ define %v2 1000;</string>
        <string>C</string> 
       </void> 
       <void property="x"> 
-       <double>251.0</double> 
+       <double>250.5</double> 
       </void> 
       <void property="y"> 
-       <double>61.5</double> 
+       <double>61.0</double> 
       </void> 
      </object> 
     </void> 
@@ -600,10 +612,10 @@ define %v2 1000;</string>
        <string>D</string> 
       </void> 
       <void property="x"> 
-       <double>251.0</double> 
+       <double>250.0</double> 
       </void> 
       <void property="y"> 
-       <double>136.5</double> 
+       <double>136.0</double> 
       </void> 
      </object> 
     </void> 
@@ -635,7 +647,7 @@ define %v2 1000;</string>
    <double>150.0</double> 
   </void> 
   <void property="vx"> 
-   <double>0.09999999747378752</double> 
+   <double>0.13999999646330252</double> 
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.Atom"> 

@@ -1,8 +1,20 @@
 {
-  "title": "Excited States and Photons: Page 3",
-  "publicationStatus": "draft",
-  "subtitle": "",
-  "about": "",
+  "title": "Different Excited States for Different Elements",
+  "publicationStatus": "public",
+  "subtitle": "Exploring different excited states.",
+  "about": [
+    "An electron is called **excited** if it has higher energy than the ground state - its lowest energy state. In this ",
+    "model an excited electron is shown by a yellow halo around the atom.",
+    "",
+    "Change the speed (thus the kinetic energy) of the blue atoms (A and B) and determine the minimum energy ",
+    "needed to excite the green atom (C) and the yellow atom (D).",
+    "",
+    "Hints:",
+    "-  Focus on one atom at a time by setting the speed of the other one to zero.",
+    "-  Press the Reset button before changing the speed.",
+    "",
+    "Is the minimum energy needed to excite atoms C and D the same? Why?"
+  ],
   "aspectRatio": 1.4,
   "models": [
     {
@@ -142,18 +154,18 @@
     {
       "type": "graph",
       "id": "graph",
-      "title": "Total Energy of the System",
-      "xlabel": "Model Time (fs)",
-      "ylabel": "eV",
+      "title": "Kinetic Energy of the System",
+      "xlabel": "Model time (fs)",
+      "ylabel": "Kinetic energy (eV)",
       "ymin": 0,
-      "ymax": 6,
+      "ymax": 5,
       "xmax": 10,
       "xTickCount": 5,
       "yTickCount": 5,
       "xFormatter": ".2s",
       "yFormatter": ".2s",
       "properties": [
-        "totalEnergy"
+        "kineticEnergy"
       ]
     }
   ],
