@@ -50,6 +50,10 @@ define(function(require) {
         // free radical in case of collision.
         bondToExchange   = [],
 
+        // Flag indicating whether bonds were changed during last calculations. If so, forces
+        // recalculation should be triggered.
+        bondsChanged = false,
+
         atoms,
         elements,
         radialBonds;
@@ -154,6 +158,21 @@ define(function(require) {
       }
     }
 
+    function addRadialBond(props) {
+      engine.addRadialBond(props);
+      bondsChanged = true;
+    }
+
+    function removeRadialBond(i) {
+      engine.removeRadialBond(i);
+      bondsChanged = true;
+    }
+
+    function setRadialBondProperties(i, props) {
+      engine.setRadialBondProperties(i, props);
+      bondsChanged = true;
+    }
+
     // TODO: we shouldn't have to do it explicitely at each step. Perhaps we should just modify add
     // and remove radial bond operations to make sure that sharedElectron count is always correct
     // (e.g. listen on approprieate events, but it's impossible at the moment).
@@ -209,7 +228,7 @@ define(function(require) {
             // LJ potential will now be calculated, take it into account.
             dpot += engine.ljCalculator[el1][el2].potentialFromSquaredDistance(ijsq);
             if (conserveEnergy(dpot, a1, a2)) {
-              engine.removeRadialBond(i);
+              removeRadialBond(i);
               // Update shared electrons count.
               atoms.sharedElectrons[a1] -= bondType;
               atoms.sharedElectrons[a2] -= bondType;
@@ -303,7 +322,7 @@ define(function(require) {
       dpot -= engine.ljCalculator[el1][el2].potentialFromSquaredDistance(ijsq);
 
       if (conserveEnergy(dpot, a1, a2)) {
-        engine.addRadialBond({
+        addRadialBond({
           atom1: a1,
           atom2: a2,
           length: length,
@@ -384,7 +403,7 @@ define(function(require) {
 
         if (conserveEnergy(dpot, a1, a2, a3)) {
           // Update bond, change it from a2-d3 to a1-a2.
-          engine.setRadialBondProperties(bondIdx, {
+          setRadialBondProperties(bondIdx, {
             atom1: a1,
             atom2: a2,
             length: newLength,
@@ -475,12 +494,17 @@ define(function(require) {
         // execution.
         var mod = time % INTERAVAL;
         if (mod === 0 || (mod < dt && Math.floor(time / INTERAVAL) === Math.round(time / INTERAVAL))) {
+          bondsChanged = false;
           validateSharedElectronsCount();
           destroyBonds();
           // Update bondToExchange array after .destroyBonds() call! bondToExchange array is used
           // only by .createBonds() function anyway.
           updateBondToExchangeArray();
           createBonds(neighborList);
+          if (bondsChanged) {
+            // Update forces coming from new bonds configuration (!).
+            engine.updateParticlesAccelerations();
+          }
         }
       },
 
