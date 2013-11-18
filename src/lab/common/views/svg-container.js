@@ -7,6 +7,7 @@
 define(function (require) {
   // Dependencies.
   var performance           = require('common/performance'),
+      benchmark             = require('common/benchmark/benchmark'),
       getNextTabIndex       = require('common/views/tab-index'),
       HitTestingHelper      = require('common/views/hit-testing-helper'),
       console               = require('common/console'),
@@ -637,12 +638,29 @@ define(function (require) {
         Note that mousemove events will be always passed to this viewport.
        */
       appendPixiViewport: function() {
-         if (pixiRenderers.length === 0) {
+        var pixiRenderer, pixiStage;
+        var browser;
+        var newRenderer;
+
+        if (pixiRenderers.length === 0) {
+          browser = benchmark.browser;
+
+          if (browser.browser === 'Firefox' && browser.oscpu.match(/Mac OS X 10.6/)) {
+            // Work around GPU driver brokenness on some hardware running OS X 10.6 by not using
+            // WebGL. Note Chrome automatically disables WebGL when using the problematic driver.
+            // (Note that sometimes the separator between 10 and 6 is a '.' and sometimes a '_' so
+            // use of the '.' matcher works is required)
+            newRenderer = function(w, h, view, transparent) {
+              return new PIXI.CanvasRenderer(w, h, view, transparent);
+            };
+          } else {
+            newRenderer = PIXI.autoDetectRenderer;
+          }
+
           // Assume that we can have *only one* Pixi renderer.
           // This is caused by the Pixi bug: https://github.com/GoodBoyDigital/pixi.js/issues/181
-          var pixiRenderer  = PIXI.autoDetectRenderer(cx * CANVAS_OVERSAMPLING,
-                                                      cy * CANVAS_OVERSAMPLING, null, true),
-              pixiStage     = new PIXI.Stage(null);
+          pixiRenderer = newRenderer(cx * CANVAS_OVERSAMPLING, cy * CANVAS_OVERSAMPLING, null, true);
+          pixiStage= new PIXI.Stage(null);
 
           node.appendChild(pixiRenderer.view);
           d3.select(pixiRenderer.view)
