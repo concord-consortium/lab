@@ -163,14 +163,12 @@
       "text": "New Run",
       "tooltip": "Set up a new experiment run.",
       "action": [
-        "set('isNewRunInProgress', true);",
         "reset({",
         "  retainParameters: ['sensorType','sensorType2','experimentDuration', 'durationEnabled', 'tareValue', 'tareValue2'],",
         "  cause: 'new-run'",
         "});",
         "scrollXAxisToZero('propertiesGraph');",
-        "scrollXAxisToZero('propertiesGraph2');",
-        "set('isNewRunInProgress', false);"
+        "scrollXAxisToZero('propertiesGraph2');"
       ]
     },
     {
