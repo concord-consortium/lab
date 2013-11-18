@@ -4,7 +4,8 @@ define(function (require) {
   // Dependencies.
   var axis = require('grapher/core/axis'),
       tooltips = {
-        autoscale: "Show all data (autoscale)"
+        autoscale: "Show all data (autoscale)",
+        selection: "Select data for export"
       };
 
   return function Graph(idOrElement, options, message, tabindex) {
@@ -75,6 +76,7 @@ define(function (require) {
         // Div created and placed with z-index above all other graph layers that holds
         // graph action/mode buttons.
         buttonLayer,
+        selectionButton,
 
         // Div created and placed with z-index under all other graph layers
         background,
@@ -247,6 +249,8 @@ define(function (require) {
 
           enableAutoScaleButton: true,
           enableAxisScaling: true,
+
+          enableSelectionButton: false,
 
           //
           // dataType can be either 'points or 'samples'
@@ -796,6 +800,19 @@ define(function (require) {
             })
             .append("i")
               .attr("class", "icon-picture");
+      }
+
+      if (options.enableSelectionButton) {
+        selectionButton = buttonLayer.append('a');
+        selectionButton.attr({
+              "class": "selection-button",
+              "title": tooltips.selection
+            })
+            .on("click", function() {
+              toggleSelection();
+            })
+            .append("i")
+              .attr("class", "icon-cut");
       }
 
       resizeButtonLayer();
@@ -1646,6 +1663,26 @@ define(function (require) {
     //
     // ------------------------------------------------------------
 
+    function toggleSelection() {
+      if (!selectionVisible()) {
+        // The graph model defaults to visible=false and enabled=true.
+        // Reset these so that this first click turns on selection correctly.
+        selectionEnabled(false);
+        selectionVisible(true);
+      }
+      if (!!selectionEnabled()) {
+        if (selectionDomain() === []) {
+          selectionDomain = null;
+        }
+        selectionEnabled(false);
+      } else {
+        if (selectionDomain() == null) {
+          selectionDomain([]);
+        }
+        selectionEnabled(true);
+      }
+    }
+
     /**
       Set or get the selection domain (i.e., the range of x values that are selected).
 
@@ -1754,6 +1791,15 @@ define(function (require) {
       val = !!val;
       if (selection_enabled !== val) {
         selection_enabled = val;
+
+        if (selectionButton) {
+          if (val) {
+            selectionButton.attr("style", "color: #aa0000;");
+          } else {
+            selectionButton.attr("style", "");
+          }
+        }
+
         updateBrushElement();
       }
       return api;

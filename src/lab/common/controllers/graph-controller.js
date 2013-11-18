@@ -12,6 +12,7 @@ define(function (require) {
         title: 'title',
         enableAutoScaleButton: 'enableAutoScaleButton',
         enableAxisScaling: 'enableAxisScaling',
+        enableSelectionButton: 'enableSelectionButton',
         dataPoints: 'dataPoints',
         markAllDataPoints: 'markAllDataPoints',
         showRulersOnSelection: 'showRulersOnSelection',

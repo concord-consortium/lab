@@ -741,6 +741,9 @@ define(function() {
       enableAxisScaling: {
         defaultValue: true
       },
+      enableSelectionButton: {
+        defaultValue: false
+      },
       dataPoints: {
         defaultValue: []
       },
