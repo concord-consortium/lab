@@ -177,6 +177,10 @@ define(function() {
     },
 
     exports: {
+      selectionComponents: {
+        required: false,
+        defaultValue: []
+      },
       perRun: {
         required: false,
         defaultValue: []

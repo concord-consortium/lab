@@ -201,6 +201,7 @@
     ]
   },
   "exports": {
+    "selectionComponents": ["propertiesGraph","propertiesGraph2"],
     "perRun": ["sensorType","sensorType2"],
     "perTick": ["sensorReading","sensorReading2"]
   },

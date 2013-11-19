@@ -361,6 +361,13 @@ define(function (require) {
         }
       },
 
+      selectionDomain: function(a) {
+        if (grapher) {
+          return grapher.selectionDomain(a);
+        }
+        return null;
+      },
+
       /**
         Returns serialized component definition.
       */
