@@ -1,9 +1,10 @@
 {
   "title": "Target Game (Free Play)",
-  "publicationStatus": "draft",
+  "publicationStatus": "public",
   "subtitle": "Can you steer a charged particle to a target by using charged objects?",
-  "aspectRatio": 1.12,
-  "fontScale": 0.95,
+  "aspectRatio": 1.27,
+  "fontScale": 0.65,
+  "helpOnLoad": true,
   "about": [
     "Use the *Launch a positive particle* button to shoot a positive particle across the game board.",
     "Place any number of charged objects in any location to steer the positive particle to the target.",
@@ -31,9 +32,11 @@
         "var timeStepsPerTick = get('timeStepsPerTick'),",
         "    collisionPadding = 0.075;",
         "onClick('background', function(x, y, d, i) {",
-        "  if( addAtom({x: x, y: y, charge: get('chargeSign')*get('chargeMagnitude'), pinned: true}) ) {",
-        "    get('atomIndices').push( getNumberOfAtoms()-1 );",
-        "    get('atomOriginalSign').push( get('chargeSign') );",
+        "  if (get('chargeSign') !== -99) {",
+        "    if( addAtom({x: x, y: y, charge: get('chargeSign')*get('chargeMagnitude'), pinned: true}) ) {",
+        "      get('atomIndices').push( getNumberOfAtoms()-1 );",
+        "      get('atomOriginalSign').push( get('chargeSign') );",
+        "    }",
         "  }",
         "});",
         "callEvery(timeStepsPerTick, function() {",
@@ -49,8 +52,7 @@
         "      stop();",
         "    }",
         "  }",
-        "});",
-        "start();"
+        "});"
       ]
     },
     {
@@ -100,7 +102,17 @@
   "parameters": [
     {
       "name": "chargeSign",
-      "initialValue": 1
+      "initialValue": 1,
+      "onChange": [
+        "if (value === -99) {",
+        "   onClick('atom', function(x, y, d, i) {",
+        "     removeAtom(i);",
+        "   });",
+        "}",
+        "else {",
+        "   onClick('atom', function () {});",
+        "}"
+      ]
     },
     {
       "name": "atomOriginalSign",
@@ -187,12 +199,16 @@
       "property": "chargeSign",
       "options": [
         {
-          "text": "Negative",
+          "text": "Add negative",
           "value": -1
         },
         {
-          "text": "Positive",
+          "text": "Add positive",
           "value": 1
+        },
+        {
+          "text": "Delete object",
+          "value": -99
         }
       ]
     },
@@ -238,7 +254,7 @@
     {
       "type": "text",
       "id": "label-charge-place-toggle",
-      "text": "**Add object with that with charge:**"
+      "text": "**Click in game to:**"
     },
     {
       "type": "text",
@@ -246,10 +262,33 @@
       "text": "**Set charge amount on placed objects:**"
     }
   ],
+  "helpTips": [
+    {
+      "text": [
+        "Win this game by guiding a positive particle to the target using other charged objects."
+      ]
+    },
+    {
+      "component": "select-add-atom-type",
+      "text": [
+        "Select *Add negative* or *Add positive* to add charged objects into the game. Once the ",
+        "charged objects are there you can drag them around, or select *Delete objects* and click ",
+        "on a charged object to remove it."
+      ]
+    },
+    {
+      "component": "try-again",
+      "text": "Use *Try again* to keep objects for another try."
+    },
+    {
+      "component": "reset",
+      "text": "Use *Reset* to remove all charged objects and reset controls."
+    }
+  ],
   "layout": {
     "bottom": [
       ["label-charge-place-toggle", "select-add-atom-type"],
-      ["add-atom", "try-again", "reset", "select-level"],
+      ["add-atom", "try-again", "select-level", "reset"],
       ["label-select-placed-object-charge", "select-charge-magnitude"],
       ["select-show-electric-field", "select-show-force-vectors"]
     ]
