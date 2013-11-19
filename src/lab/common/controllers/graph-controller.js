@@ -361,16 +361,16 @@ define(function (require) {
         }
       },
 
-      selectionDomain: function(a) {
+      selectionDomain: function() {
         if (grapher) {
-          return grapher.selectionDomain(a);
+          return grapher.selectionDomain.apply(grapher, arguments);
         }
         return null;
       },
 
-      selectionEnabled: function(b) {
+      selectionEnabled: function() {
         if (grapher) {
-          return grapher.selectionEnabled(b);
+          return grapher.selectionEnabled.apply(grapher, arguments);
         }
         return null;
       },
