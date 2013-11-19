@@ -54,6 +54,9 @@ define(function(require) {
         // recalculation should be triggered.
         bondsChanged = false,
 
+        // Set of modified atoms, so atoms that have bonds added or removed.
+        modifiedAtoms = {},
+
         atoms,
         elements,
         radialBonds;
@@ -158,19 +161,61 @@ define(function(require) {
       }
     }
 
-    function addRadialBond(props) {
+    function addRadialBond(props, a1, a2, bondType) {
+      props.atom1 = a1;
+      props.atom2 = a2;
+      props.type = BOND_TYPE[bondType];
       engine.addRadialBond(props);
       bondsChanged = true;
+      modifiedAtoms[a1] = true;
+      modifiedAtoms[a2] = true;
+      // Update shared electrons count.
+      atoms.sharedElectrons[a1] += bondType;
+      atoms.sharedElectrons[a2] += bondType;
+      // In theory we can update bondToExchange with the newly created bond. However if we don't
+      // do it, we won't exchange the bond in the same step we created it. It makes sense - things
+      // will be clearer when e.g. user observes simulation in slow motion and tries to analyze
+      // single step of chemical reaction.
     }
 
-    function removeRadialBond(i) {
+    function removeRadialBond(i, a1, a2, bondType) {
       engine.removeRadialBond(i);
       bondsChanged = true;
+      modifiedAtoms[a1] = true;
+      modifiedAtoms[a2] = true;
+      // Update shared electrons count.
+      atoms.sharedElectrons[a1] -= bondType;
+      atoms.sharedElectrons[a2] -= bondType;
     }
 
-    function setRadialBondProperties(i, props) {
+    function transferRadialBond(i, props, a1, a2, a3, newType, oldType) {
+      props.atom1 = a1;
+      props.atom2 = a2;
+      props.type = BOND_TYPE[newType];
       engine.setRadialBondProperties(i, props);
       bondsChanged = true;
+      modifiedAtoms[a1] = true;
+      modifiedAtoms[a2] = true;
+      modifiedAtoms[a3] = true;
+      // Update shared electrons count.
+      atoms.sharedElectrons[a1] += newType;
+      atoms.sharedElectrons[a2] += newType - oldType;
+      atoms.sharedElectrons[a3] -= oldType;
+      // a3 is no longer connected to bond with ID = bondIdx.
+      if (bondToExchange[a3] === i) bondToExchange[a3] = undefined;
+      // a2 is still connected to bond with ID = bondIdx, however if we set bondToExchange[a2]
+      // to undefined, the same bond won't be transfered again during this step. It's not
+      // necessary, but it will limit number of reactions during single step, making things
+      // easier to observe and follow (otherwise the bond can exchanged multiple times during
+      // one step, what can be confusing for users that will see only the final result).
+      bondToExchange[a2] = undefined;
+    }
+
+    function cleanupModifiedAtomsAndFlags() {
+      bondsChanged = false;
+      Object.keys(modifiedAtoms).forEach(function (key) {
+        delete modifiedAtoms[key];
+      });
     }
 
     // TODO: we shouldn't have to do it explicitely at each step. Perhaps we should just modify add
@@ -228,10 +273,7 @@ define(function(require) {
             // LJ potential will now be calculated, take it into account.
             dpot += engine.ljCalculator[el1][el2].potentialFromSquaredDistance(ijsq);
             if (conserveEnergy(dpot, a1, a2)) {
-              removeRadialBond(i);
-              // Update shared electrons count.
-              atoms.sharedElectrons[a1] -= bondType;
-              atoms.sharedElectrons[a2] -= bondType;
+              removeRadialBond(i, a1, a2, bondType);
             }
           }
         }
@@ -323,21 +365,9 @@ define(function(require) {
 
       if (conserveEnergy(dpot, a1, a2)) {
         addRadialBond({
-          atom1: a1,
-          atom2: a2,
           length: length,
-          strength: strength,
-          type: BOND_TYPE[bondType]
-        });
-
-        // Update shared electrons count.
-        atoms.sharedElectrons[a1] += bondType;
-        atoms.sharedElectrons[a2] += bondType;
-
-        // In theory we can update bondToExchange with the newly created bond. However if we don't
-        // do it, we won't exchange the bond in the same step we created it. It makes sense - things
-        // will be clearer when e.g. user observes simulation in slow motion and tries to analyze
-        // single step of chemical reaction.
+          strength: strength
+        }, a1, a2, bondType);
       }
     }
 
@@ -403,26 +433,10 @@ define(function(require) {
 
         if (conserveEnergy(dpot, a1, a2, a3)) {
           // Update bond, change it from a2-d3 to a1-a2.
-          setRadialBondProperties(bondIdx, {
-            atom1: a1,
-            atom2: a2,
+          transferRadialBond(bondIdx, {
             length: newLength,
-            strength: newStrength,
-            type: BOND_TYPE[newType]
-          });
-
-          atoms.sharedElectrons[a1] += newType;
-          atoms.sharedElectrons[a2] += newType - oldType;
-          atoms.sharedElectrons[a3] -= oldType;
-
-          // a3 is no longer connected to bond with ID = bondIdx.
-          if (bondToExchange[a3] === bondIdx) bondToExchange[a3] = undefined;
-          // a2 is still connected to bond with ID = bondIdx, however if we set bondToExchange[a2]
-          // to undefined, the same bond won't be transfered again during this step. It's not
-          // necessary, but it will limit number of reactions during single step, making things
-          // easier to observe and follow (otherwise the bond can exchanged multiple times during
-          // one step, what can be confusing for users that will see only the final result).
-          bondToExchange[a2] = undefined;
+            strength: newStrength
+          }, a1, a2, a3, newType, oldType);
         }
       }
     }
@@ -494,7 +508,7 @@ define(function(require) {
         // execution.
         var mod = time % INTERAVAL;
         if (mod === 0 || (mod < dt && Math.floor(time / INTERAVAL) === Math.round(time / INTERAVAL))) {
-          bondsChanged = false;
+          cleanupModifiedAtomsAndFlags();
           validateSharedElectronsCount();
           destroyBonds();
           // Update bondToExchange array after .destroyBonds() call! bondToExchange array is used
