@@ -368,6 +368,13 @@ define(function (require) {
         return null;
       },
 
+      selectionEnabled: function(b) {
+        if (grapher) {
+          return grapher.selectionEnabled(b);
+        }
+        return null;
+      },
+
       /**
         Returns serialized component definition.
       */

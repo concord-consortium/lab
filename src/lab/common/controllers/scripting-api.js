@@ -384,6 +384,23 @@ define(function (require) {
             component.scrollXAxisToZero();
           },
 
+          resetGraphSelection: function resetGraphSelectionDomain(componentID) {
+            var component = interactivesController.getComponent(componentID);
+
+            if (!component) {
+              throw new Error("Component " + componentID + " not found.");
+            }
+            if (!component.selectionDomain) {
+              throw new Error("Component " + componentID + " does not support selectionDomain.");
+            }
+            if (!component.selectionEnabled) {
+              throw new Error("Component " + componentID + " does not support selectionEnabled.");
+            }
+
+            component.selectionDomain(null);
+            component.selectionEnabled(false);
+          },
+
           start: function start() {
             model.start();
             trackEvent('Interactive', "Start", "Starting interactive: " + interactivesController.get('title') );
