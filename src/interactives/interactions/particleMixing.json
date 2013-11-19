@@ -1,8 +1,13 @@
 {
   "title": "Mixing Liquids",
-  "publicationStatus": "draft",
+  "publicationStatus": "public",
   "subtitle": "Explore how liquids mix at the molecular level.",
-  "about": "",
+  "about": [
+    "How is it possible to mix two liquids together and for them to take up less volume than ",
+    "when they are separated? Does it always happen that the mixture takes up less space? How ",
+    "does thinking about liquids as being made of small particles help us understand our observations?"
+  ],
+  "helpOnLoad": true,
   "aspectRatio": 0.9325,
   "fontScale": 0.9,
   "models": [
@@ -380,6 +385,35 @@
           "loadModel": "particleMixingDoubleWater$0"
         }
       ]
+    }
+  ],
+  "helpTips": [
+    {
+      "text": [
+        "#Mixing Liquids",
+        "- - -",
+        "Experiment with mixing liquids and observing the volume (amount of space) they take up."
+      ]
+    },
+    {
+      "component": "select-model",
+      "text":  "First select a pair of liquids to combine, and then note the volume of each liquid."
+    },
+    {
+      "component": "add-columnA",
+      "text": "Add one liquid to the mixing cylinder."
+    },
+    {
+      "component": "add-columnB",
+      "text": "Then add the second liquid to the mixing cylinder and note the volume."
+    },
+    {
+      "component": "cap-and-shake",
+      "text": "Shake the liquids up."
+    },
+    {
+      "component": "stop-shaking",
+      "text": "Then stop mixing the liquids and note the volume."
     }
   ],
   "layout": {
