@@ -1,8 +1,14 @@
 {
   "title": "Gas Pressure in a Syringe",
-  "publicationStatus": "draft",
-  "subtitle": "",
-  "about": "",
+  "publicationStatus": "public",
+  "subtitle": "Explore the particulate model of gasses.",
+  "about": [
+    "Why is it hard to pull back on a capped syringe, and why does the plunger move back in if you let go? ",
+    "Why can you compress a capped syringe that has air in it, but you can only compress it to a certain point? ",
+    "Why is there a sound as you press or pull on an open syringe?",
+    "",
+    "Use this simulation and match it to the behavior of a real one if you can."
+  ],
   "aspectRatio": 1.31625,
   "models": [
     {
