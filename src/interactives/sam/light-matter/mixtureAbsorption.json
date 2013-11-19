@@ -1,0 +1,143 @@
+{
+  "title": "Absoprtion Spectra (Variable Light Frequency)",
+  "publicationStatus": "draft",
+  "subtitle": "Explore how light of varying frequency interacts with mixtures of elements",
+  "about": "",
+  "aspectRatio": 1.6,
+  "fontScale": 0.8,
+  "models": [
+    {
+      "type": "md2d",
+      "id": "elementA",
+      "url": "imports/legacy-mw-content/converted/sam-activities/light-matter/absorption/elementA.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      },
+      "onLoad": [
+        "setLightSourceAngle(0);",
+        "setLightSourceFrequency(get('lightSourceFrequency'));",
+        "setLightSourceNumber(5);",
+        "setLightSourcePeriod(500);",
+        "setTemperatureOfAtoms(atomsWithinRect(0,0,get('width'),get('height')),300);",
+        "set('timeStepsPerTick',10);"
+      ]
+    },
+    {
+      "type": "md2d",
+      "id": "elementB",
+      "url": "imports/legacy-mw-content/converted/sam-activities/light-matter/absorption/elementB.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      },
+      "onLoad": [
+        "setLightSourceAngle(0);",
+        "setLightSourceFrequency(get('lightSourceFrequency'));",
+        "setLightSourceNumber(5);",
+        "setLightSourcePeriod(500);",
+        "setTemperatureOfAtoms(atomsWithinRect(0,0,get('width'),get('height')),300);",
+        "set('timeStepsPerTick',10);"
+      ]
+    },
+    {
+      "type": "md2d",
+      "id": "elementC",
+      "url": "imports/legacy-mw-content/converted/sam-activities/light-matter/absorption/elementC.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      },
+      "onLoad": [
+        "setLightSourceAngle(0);",
+        "setLightSourceFrequency(get('lightSourceFrequency'));",
+        "setLightSourceNumber(5);",
+        "setLightSourcePeriod(500);",
+        "setTemperatureOfAtoms(atomsWithinRect(0,0,get('width'),get('height')),300);",
+        "set('timeStepsPerTick',10);"
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "lightSourceEnabled",
+      "initialValue": false,
+      "onChange": [
+        "if (value) {",
+        "  if (isStopped()) start();",
+        "  turnOnLightSource();",
+        "} else {",
+        "  turnOffLightSource();",
+        "}"
+      ]
+    },
+    {
+      "name": "lightSourceFrequency",
+      "initialValue": 3,
+      "onChange": "setLightSourceFrequency(value);"
+    }
+  ],
+  "components": [
+    {
+      "type": "text",
+      "id": "text-select-model",
+      "text": "**Choose a substance to load**"
+    },
+    {
+      "type": "radio",
+      "id": "select-model",
+      "options": [
+        {
+          "text": "Mixture A",
+          "loadModel": "elementA"
+        },
+        {
+          "text": "Mixture B",
+          "loadModel": "elementB"
+        },
+        {
+          "text": "Mixture C",
+          "loadModel": "elementC"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "enable-light-source",
+      "text": "Shine light on mixture",
+      "textOn": "right",
+      "property": "lightSourceEnabled"
+    },
+    {
+      "type": "slider",
+      "id": "select-light-source-frequency",
+      "min": 1,
+      "max": 13,
+      "steps": 12,
+      "property": "lightSourceFrequency",
+      "labels": [
+        {
+          "value": 1,
+          "label": "Low"
+        },
+        {
+          "value": 13,
+          "label": "Hi"
+        }
+      ],
+      "title": "Frequency of light source"
+    }
+  ],
+  "layout": {
+    "left": [
+      [
+        "text-select-model"
+      ],
+      [
+        "select-model"
+      ]
+    ],
+    "bottom": [
+      ["select-light-source-frequency"],
+      ["enable-light-source"]
+    ]
+  },
+  "template": "left-right-bottom"
+}
