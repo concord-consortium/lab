@@ -20,8 +20,8 @@
         "textBoxes": [
           {
             "text": "50",
-            "x": 6.25,
-            "y": 1.6,
+            "x": 6.30,
+            "y": 0.4,
             "layer": 2,
             "width": 0.25,
             "textAlign": "center",
