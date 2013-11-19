@@ -1,9 +1,9 @@
 {
   "title": "Target Game (Charge Magnitude / Force Relationship)",
-  "publicationStatus": "draft",
+  "publicationStatus": "public",
   "subtitle": "Can you manipulate the amount of charge on charged objects to steer a charged particle to a target?",
-  "aspectRatio": 1.175,
-  "fontScale": 0.95,
+  "aspectRatio": 1.32,
+  "fontScale": 0.65,
   "about": [
     "Use the *Launch a positive particle* button to shoot a positive particle across the game board.",
     "Adjust the amount of charge on objects **A** and **B** to steer the moving particle to the target.",
@@ -24,20 +24,8 @@
         }
       },
       "onLoad": [
-        "setAtomProperties(0,{draggable: true});",
-        "setAtomProperties(1,{draggable: true});",
         "setShapeProperties(3, {lineColor: 'rgb(255,0,0)', lineWeight: 7});",
         "set('atomTraceColor','yellow');",
-        "onDrag('atom', function (x, y, d, i) {",
-        "  if (i === 0) {",
-        "    y = Math.max(2.5, Math.min(3.5, y));",
-        "    x = 2.312;",
-        "  } else if (i === 1) {",
-        "    x = Math.max(4, Math.min(5, x));",
-        "    y = 3.3595;",
-        "  }",
-        "  setAtomProperties(i, {x: x, y: y});",
-        "});",
         "var timePerTick = get('timePerTick'),",
         "    collisionPadding = 0.075;",
         "callEvery(timePerTick, function() {",
@@ -148,16 +136,6 @@
       ]
     },
     {
-      "type": "button",
-      "id": "reset",
-      "text": "Reset",
-      "action": [
-        "reset({",
-        "  retainParameters: ['showElectricField', 'showForceVectors']",
-        "});"
-      ]
-    },
-    {
       "type": "checkbox",
       "id": "select-show-force-vectors",
       "text": "Show force on objects",
@@ -236,7 +214,7 @@
   ],
   "layout": {
     "bottom": [
-      ["add-atom", "try-again", "reset", "select-level"],
+      ["add-atom", "try-again", "select-level"],
       ["select-object-a-charge", "select-object-b-charge"],
       ["select-show-electric-field", "select-show-force-vectors"]
     ]
