@@ -1,13 +1,13 @@
 {
   "title": "Target Game (Charge Magnitude / Force Relationship)",
   "publicationStatus": "public",
-  "subtitle": "Can you manipulate the amount of charge on charged objects to steer a charged particle to a target?",
+  "subtitle": "Can you manipulate the amount of charge on objects to steer another charged particle to a target?",
   "aspectRatio": 1.32,
   "fontScale": 0.65,
   "about": [
     "Use the *Launch a positive particle* button to shoot a positive particle across the game board.",
-    "Adjust the amount of charge on objects **A** and **B** to steer the moving particle to the target.",
-    "Can you get the charged particle into the target?"
+    "Adjust the amount of charge on objects **A** and **B** to steer the moving particle around the barrier.",
+    "Can you get the charged particle to hit the target?"
   ],
   "models": [
     {
@@ -31,13 +31,13 @@
         "callEvery(timePerTick, function() {",
         "  var target = getShapeProperties(2);",
         "  if (atomsWithinRect(target.x, target.y, target.width, target.height).length > 0) {",
-        "    alert('You won!');",
+        "    alert('Congratulations! You hit the target.');",
         "    stop();",
         "  }",
         "  for (var i = 0; i < 6; i++) {",
         "    target = getObstacleProperties(i);",
         "    if (atomsWithinRect(target.x - collisionPadding, target.y - collisionPadding, target.width + 2*collisionPadding, target.height + 2*collisionPadding).length > 0) {",
-        "      alert('You lose!');",
+        "      alert('You hit a barrier. Try again.');",
         "      stop();",
         "    }",
         "  }",
@@ -78,13 +78,13 @@
         "callEvery(timePerTick, function() {",
         "  var target = getShapeProperties(2);",
         "  if (atomsWithinRect(target.x, target.y, target.width, target.height).length > 0) {",
-        "    alert('you won!');",
+        "    alert('Congratulations! You hit the target.');",
         "    stop();",
         "  }",
         "  for (var i = 0; i < 6; i++) {",
         "    target = getObstacleProperties(i);",
         "    if (atomsWithinRect(target.x - collisionPadding, target.y - collisionPadding, target.width + 2*collisionPadding, target.height + 2*collisionPadding).length > 0) {",
-        "      alert('you lose!');",
+        "      alert('You hit a barrier. Try again.');",
         "      stop();",
         "    }",
         "  }",

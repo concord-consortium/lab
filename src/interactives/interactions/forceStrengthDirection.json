@@ -6,8 +6,8 @@
   "fontScale": 1.018018018018018,
   "about": [
     "One way to represent an electric field is through a map of vectors that show ",
-    "the force felt by a positive charge in that field. In this simulation force ",
-    "can be indicated by the length of the vector or its color intensity. Try making your ",
+    "the force felt by a positive charge in that field. Force ",
+    "is shown by the length of the vector or its color intensity. Try making your ",
     "own mapping of the electric field by tracing force vectors."
   ],
   "models": [
@@ -188,17 +188,17 @@
     {
       "type": "text",
       "id": "label-forces",
-      "text": "**Magnitude of force shown by**"
+      "text": "**Magnitude of force shown by:**"
     },
     {
       "type": "text",
       "id": "label-tracing",
-      "text": "**Vector tracing**"
+      "text": "**Vector tracing:**"
     },
     {
       "type": "text",
       "id": "label-direction",
-      "text": "**Charge on stationary object**"
+      "text": "**Charge on stationary object:**"
     },
     {
       "type": "radio",

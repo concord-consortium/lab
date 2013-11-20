@@ -4,8 +4,8 @@
   "subtitle": "Explore the direction of an electric force between charged objects.",
   "aspectRatio": 1.6,
   "about": [
-    "Charged objects attract or repel each other. Try changing the charge of the central object and ",
-    "dragging around the other one. Then observe how the force arrows behave. Use the *trace force vectors* ",
+    "Charged objects attract or repel each other. Try changing the charge of the central, stationary object and ",
+    "dragging around the other one. Then observe how the force arrows behave. Use the *Trace force vectors* ",
     "checkbox to create a map of electric forces felt by charged objects around the center object."
     ],
   "models": [
@@ -141,7 +141,7 @@
     {
       "type": "text",
       "id": "label-direction",
-      "text": "**Set charge on stationary object**"
+      "text": "**Set charge on stationary object:**"
     },
     {
       "type": "radio",

@@ -1,13 +1,13 @@
 {
   "title": "Direction of Force Around a VDG (Negatively Charged)",
   "publicationStatus": "public",
-  "subtitle": "Exlore the forces between a charged object and a Van der Graaf generator.",
+  "subtitle": "Explore the forces between a charged object and a Van der Graaf generator.",
   "aspectRatio": 1.5677966101694916,
   "fontScale": 1.018018018018018,
   "about": [
-    "The colored arrow indicates the direction of force between the charged object and the VDG.",
+    "The arrow indicates the direction of force between the charged object and the Van der Graff generator.",
     "How does the orientation of the arrow change as the charged object is moved around?",
-    "Use the *trace force vectors* checkbox to help characterize the direction of force arrow when the charged object is in different positions"
+    "Use the *Trace force vectors* checkbox to help characterize the direction of force arrow when the charged object is in different positions."
   ],
   "models": [
     {

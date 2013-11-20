@@ -4,7 +4,7 @@
   "subtitle": "Explore how electric fields relate to forces on charged objects.",
   "aspectRatio": 1.18,
   "about": [
-    "Control the polarity of the stationary charged object and observe how it affects the electric field around the charged object.",
+    "Control the polarity of the stationary charged object and observe how the charge affects the electric field around it.",
     "Add a second charged object and move it around the stationary object.",
     "Observe how the strength and direction of the forces depends on the charges and distance between the two objects."
   ],
