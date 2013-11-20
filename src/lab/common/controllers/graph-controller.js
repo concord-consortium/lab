@@ -324,7 +324,7 @@ define(function (require) {
         var xmin = grapher.xmin();
         var xmax = grapher.xmax();
 
-        if (0 < xmin || xmax < 0) {
+        if (xmin !== 0) {
           grapher.xDomain([0, xmax - xmin]);
         }
       },
