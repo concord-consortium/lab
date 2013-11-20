@@ -1081,6 +1081,10 @@ define(function (require) {
       vis.selectAll("g.x").remove();
       vis.selectAll("g.y").remove();
 
+      if (has_selection && selection_visible) {
+        updateBrushElement();
+      }
+
       updateMarkers();
       updateRulers();
       resizeCanvas();
