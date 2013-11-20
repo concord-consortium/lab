@@ -561,11 +561,24 @@ define(function (require) {
 
       @param: modelId.
       @optionalParam modelObject
+      @optionalParam parameters   parameter values to copy to the loaded model
     */
-    function loadModel(id, modelConfig) {
+    function loadModel(id, modelConfig, parameters) {
       var modelDefinition = getModelDefinition(id),
           interactiveViewOptions,
-          interactiveModelOptions;
+          interactiveModelOptions,
+          parameterValues = [];
+
+      // TODO remove this "feature" when interactives can maintain their own
+      //      interactive level parameters (see loadModel in scriptingAPI too)
+      if (parameters) {
+        for (var i = 0; i < parameters.length; i++) {
+          parameterValues.push({
+            "name": parameters[i],
+            "value": model.get(parameters[i])
+          });
+        }
+      }
 
       modelId = id;
       isModelLoaded = false;
@@ -585,13 +598,13 @@ define(function (require) {
       }
 
       if (modelConfig) {
-        finishWithLoadedModel(modelDefinition.url, modelConfig);
+        finishWithLoadedModel(modelDefinition.url, modelConfig, parameterValues);
       } else {
         if (modelDefinition.url) {
           $.get(labConfig.actualRoot + modelDefinition.url).done(function(modelConfig) {
             // Deal with the servers that return the json as text/plain
             modelConfig = typeof modelConfig === 'string' ? JSON.parse(modelConfig) : modelConfig;
-            finishWithLoadedModel(modelDefinition.url, modelConfig);
+            finishWithLoadedModel(modelDefinition.url, modelConfig, parameterValues);
           }).fail(function() {
             modelConfig = {
               "type": "md2d",
@@ -630,11 +643,11 @@ define(function (require) {
                 ]
               }
             };
-            finishWithLoadedModel(modelDefinition.url, modelConfig);
+            finishWithLoadedModel(modelDefinition.url, modelConfig, parameterValues);
           });
         } else {
           modelConfig = modelDefinition.model;
-          finishWithLoadedModel("", modelConfig);
+          finishWithLoadedModel("", modelConfig, parameterValues);
         }
       }
 
@@ -690,7 +703,7 @@ define(function (require) {
         return modelOptions;
       }
 
-      function finishWithLoadedModel(modelUrl, modelConfig) {
+      function finishWithLoadedModel(modelUrl, modelConfig, parameterValues) {
         var modelOptions = processOptions(modelConfig, interactiveModelOptions, interactiveViewOptions);
 
         if (modelController) {
@@ -706,7 +719,7 @@ define(function (require) {
         setupModelPlayerKeyboardHandler();
 
 
-        finishLoadingInteractive();
+        finishLoadingInteractive(parameterValues);
       }
 
       function createModelController(type, modelUrl, modelOptions) {
@@ -724,7 +737,7 @@ define(function (require) {
       }
     }
 
-    function finishLoadingInteractive() {
+    function finishLoadingInteractive(parameterValues) {
       var componentJsons,
           i, len;
 
@@ -744,6 +757,14 @@ define(function (require) {
 
       createOrUpdateScriptingAPI();
       initializeModelOutputsAndParameters();
+
+      // update the parameterValues if values have been provided, e.g. if some parameter values
+      // were retained when loading a model using a radio controller
+      if (parameterValues) {
+        for (i = 0; i < parameterValues.length; i++) {
+          model.set(parameterValues[i].name, parameterValues[i].value);
+        }
+      }
 
       onLoadScripts = [];
       if (controller.currentModel.onLoad) {

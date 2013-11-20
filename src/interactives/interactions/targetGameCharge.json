@@ -24,8 +24,22 @@
         }
       },
       "onLoad": [
+        "set('loadedLevelID', 'level1');",
+        "set('selectedLevelID', 'level1');",
+        "setAtomProperties(0,{draggable: true});",
+        "setAtomProperties(1,{draggable: true});",
         "setShapeProperties(3, {lineColor: 'rgb(255,0,0)', lineWeight: 7});",
         "set('atomTraceColor','yellow');",
+        "onDrag('atom', function (x, y, d, i) {",
+        "  if (i === 0) {",
+        "    y = Math.max(2.5, Math.min(3.5, y));",
+        "    x = 2.312;",
+        "  } else if (i === 1) {",
+        "    x = Math.max(4, Math.min(5, x));",
+        "    y = 3.3595;",
+        "  }",
+        "  setAtomProperties(i, {x: x, y: y});",
+        "});",
         "var timePerTick = get('timePerTick'),",
         "    collisionPadding = 0.075;",
         "callEvery(timePerTick, function() {",
@@ -59,6 +73,8 @@
         }
       },
       "onLoad": [
+        "set('loadedLevelID', 'level2');",
+        "set('selectedLevelID', 'level2');",
         "setAtomProperties(0,{draggable: true});",
         "setAtomProperties(1,{draggable: true});",
         "setShapeProperties(3, {lineColor: 'rgb(255,0,0)', lineWeight: 7});",
@@ -107,6 +123,19 @@
       "onChange": [
         "setAtomProperties(0, {charge: value});"
       ]
+    },
+    {
+      "name": "loadedLevelID",
+      "initialValue": "level1"
+    },
+    {
+      "name": "selectedLevelID",
+      "initialValue": "level1",
+      "onChange": [
+        "if (value !== get('loadedLevelID')) {",
+        "  loadModel(value, ['showElectricField', 'showForceVectors', 'object-a-charge', 'object-b-charge']);",
+        "}"
+      ]
     }
   ],
   "components": [
@@ -151,15 +180,15 @@
       "type": "radio",
       "id": "select-level",
       "orientation": "horizontal",
+      "property": "selectedLevelID",
       "options": [
         {
           "text": "Level 1",
-          "loadModel": "level1",
-          "selected": true
+          "value": "level1"
         },
         {
           "text": "Level 2",
-          "loadModel": "level2"
+          "value": "level2"
         }
       ]
     },
