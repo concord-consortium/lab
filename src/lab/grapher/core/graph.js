@@ -1676,7 +1676,7 @@ define(function (require) {
       }
       if (!!selectionEnabled()) {
         if (selectionDomain() === []) {
-          selectionDomain = null;
+          selectionDomain(null);
         }
         selectionEnabled(false);
       } else {
