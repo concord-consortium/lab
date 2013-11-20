@@ -4,12 +4,11 @@ define(function() {
   var DEFAULTS = {
     timeout: 3000,
     interval: 250,
-    onchange: function() {}
+    onchange: null
   };
 
   var fontLoaded = {};
-  var pollingInterval = {};
-  var bitmaps = {};
+  var loading = {};
 
   function getBitmap(font) {
     var dim = Math.ceil(1.5 * parseFloat(font.match(/[\d\.]+px/), 10));
@@ -27,17 +26,18 @@ define(function() {
   }
 
   function stopChecking(font) {
-    window.clearInterval(pollingInterval[font]);
-    delete pollingInterval[font];
-    delete bitmaps[font];
+    window.clearInterval(loading[font].pollingInterval);
+    delete loading[font];
   }
 
-  function fontChecker(font, startTime, timeout, changeCallback) {
-    bitmaps[font] = getBitmap(font);
+  function fontChecker(font, startTime, timeout) {
+    loading[font].bitmap = getBitmap(font);
 
     return function() {
-      if (getBitmap(font) !== bitmaps[font]) {
-        changeCallback();
+      if (getBitmap(font) !== loading[font].bitmap) {
+        loading[font].changeCallbacks.forEach(function (cb) {
+          cb();
+        });
         fontLoaded[font] = true;
         stopChecking(font);
         return;
@@ -64,21 +64,26 @@ define(function() {
       onchange: A function to be called when we detect a change to the way the font renders. This is
                 not a promise-style callback that indicates the font is loaded; it is only called
                 when we detect a difference in the bitmap created when rendering canvas fillText
-                using this font. Furthermore if we have decided that this font has already loaded,
-                then we wont' call onchange.
+                using this font. It will be called if this method returns true and the font-checking
+                does not timeout. It is always called asynchronously (i.e, in a later event loop.)
+
+    returns:
+      true, if the font has not yet loaded
+      false, if the font is already loaded
 
     semantics:
 
       for a given font specifier
         if it has been loaded already
-          return valse
+          return false
         if it has not loaded
           and we are not already polling for changes to that font:
+            add 'onchange' to the list of onchange listeners
             return true
           else:
             begin polling every interval milliseconds, for at most 'timeout' milliseconds
               if it changes during that interval
-               call onchange function
+               call onchange listeners
                cancel polling interval
             return true
   */
@@ -98,15 +103,24 @@ define(function() {
       return false;
     }
 
-    if (pollingInterval[font]) {
-      // We're already checking the font.
-      return true;
+    if ( ! loading[font] ) {
+      loading[font] = {
+        bitmap: null,
+        pollingInterval: null,
+        changeCallbacks: []
+      };
     }
 
-    pollingInterval[font] = window.setInterval(
-      fontChecker(font, Date.now(), options.timeout, options.onchange),
-      options.interval
-    );
+    if (options.onchange) {
+      loading[font].changeCallbacks.push(options.onchange);
+    }
+
+    if ( ! loading[font].pollingInterval ) {
+      loading[font].pollingInterval = window.setInterval(
+        fontChecker(font, Date.now(), options.timeout),
+        options.interval
+      );
+    }
 
     return true;
   };

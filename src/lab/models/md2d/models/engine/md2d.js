@@ -37,6 +37,7 @@ define(function (require, exports) {
           T: K
       */
       convertKEtoT = function(totalKEinMWUnits, N) {
+        if (N === 0) return 0;
         var averageKEinMWUnits = totalKEinMWUnits / N,
             averageKEinJoules = constants.convert(averageKEinMWUnits, { from: unit.MW_ENERGY_UNIT, to: unit.JOULE });
         return averageKEinJoules / BOLTZMANN_CONSTANT_IN_JOULES;
@@ -200,10 +201,6 @@ define(function (require, exports) {
         // An object that contains references to the above radial-bond-property arrays.
         // Left undefined if there are no radial bonds.
         radialBonds,
-
-        // radialBondMatrix[i][j] === true when atoms i and j are "radially bonded"
-        // radialBondMatrix[i][j] === undefined otherwise
-        radialBondMatrix,
 
         // Number of actual radial bonds (may be smaller than the length of the property arrays).
         N_radialBonds = 0,
@@ -442,8 +439,6 @@ define(function (require, exports) {
 
           // Custom pairwise properties.
           pairwiseLJProperties = new PairwiseLJProperties(engine);
-
-          radialBondMatrix = [];
         },
 
         // Throws an informative error if a developer tries to use the setCoefficients method of an
@@ -566,23 +561,6 @@ define(function (require, exports) {
             neighborList.reinitialize(N, computeNeighborListMaxDisplacement());
           }
         },
-
-        // Calculates radial bond matrix using existing radial bonds.
-        calculateRadialBondMatrix = function () {
-          var i, atom1, atom2;
-
-          radialBondMatrix = [];
-
-          for (i = 0; i < N_radialBonds; i++) {
-            atom1 = radialBondAtom1Index[i];
-            atom2 = radialBondAtom2Index[i];
-            radialBondMatrix[atom1] = radialBondMatrix[atom1] || [];
-            radialBondMatrix[atom1][atom2] = true;
-            radialBondMatrix[atom2] = radialBondMatrix[atom2] || [];
-            radialBondMatrix[atom2][atom1] = true;
-          }
-        },
-
 
         /**
           Set up "shortcut" references, e.g., x = atoms.x
@@ -2321,6 +2299,24 @@ define(function (require, exports) {
       this.length = j;
     };
 
+    // radialBondMatrix[i][j] === true when atoms i and j are "radially bonded"
+    // radialBondMatrix[i][j] === undefined otherwise
+    var radialBondMatrix = [];
+    radialBondMatrix.reset = function () {
+      var i, atom1, atom2;
+
+      this.length = 0;
+
+      for (i = 0; i < N_radialBonds; i++) {
+        atom1 = radialBondAtom1Index[i];
+        atom2 = radialBondAtom2Index[i];
+        this[atom1] = this[atom1] || [];
+        this[atom1][atom2] = true;
+        this[atom2] = this[atom2] || [];
+        this[atom2][atom1] = true;
+      }
+    };
+
     // ####################################################################
     // ####################################################################
 
@@ -2790,7 +2786,7 @@ define(function (require, exports) {
         }
 
         // Recalculate radial bond matrix, as indices have changed.
-        calculateRadialBondMatrix();
+        radialBondMatrix.reset();
 
         // (Re)initialize helper structures for optimizations.
         initializeCellList();
@@ -2897,7 +2893,7 @@ define(function (require, exports) {
         N_radialBonds--;
 
         // Recalculate radial bond matrix.
-        calculateRadialBondMatrix();
+        radialBondMatrix.reset();
 
         radialBondsChanged = true;
       },
@@ -4151,6 +4147,7 @@ define(function (require, exports) {
               N_springForces = state.N_springForces;
 
               neighborList.invalidate();
+              radialBondMatrix.reset();
               chargedAtomsList.reset();
             }
           }

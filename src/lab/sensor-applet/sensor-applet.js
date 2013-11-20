@@ -115,6 +115,7 @@ define(function(require) {
        '>',
           '<param name="MAYSCRIPT" value="true" />',
           '<param name="evalOnInit" value="' + this.listenerPath + '.appletIsReadyCallback()" />',
+          '<param name="permissions" value="all-permissions" />',
         '</applet>'
       ].join('');
     },
@@ -136,6 +137,7 @@ define(function(require) {
        '>',
           '<param name="MAYSCRIPT" value="true" />',
           '<param name="evalOnInit" value="' + this.listenerPath + '.testAppletIsReadyCallback()" />',
+          '<param name="permissions" value="all-permissions" />',
         '</applet>'
       ].join('');
     },
@@ -154,14 +156,14 @@ define(function(require) {
             callback.call(self, false);
           } else {
             nextCallback = function() {
-              var attachedSensors = self.appletInstance.getCachedAttachedSensors();
+              var attachedSensors = JSON.parse(self.appletInstance.getCachedAttachedSensors());
               if (attachedSensors) {
                 // FIXME we should use the applet configure method to check if the right sensors are attached
                 // instead of doing this comparison here
                 // For now this is skipped if there is more than one sensorDefinition
                 if(self.sensorDefinitions.length === 1) {
                   for (var i = 0; i < attachedSensors.length; i++) {
-                    if (self.appletInstance.getTypeConstantName(attachedSensors[i].getType()) ===
+                    if (self.appletInstance.getTypeConstantName(attachedSensors[i].type) ===
                           self.sensorDefinitions[0].typeConstantName) {
                       callback.call(self, true);
                       return;
@@ -437,8 +439,8 @@ define(function(require) {
         for (var sampleIndex = 0; sampleIndex < count; sampleIndex++) {
           for (var i = 0; i < numberOfSensors; i++) {
             dataSample[i] = data[sampleIndex*numberOfSensors + i];
-            self.emit('data', dataSample);
           }
+          self.emit('data', dataSample);
         }
       }, 5);
     },

@@ -31,6 +31,7 @@ COMMON_SRC_FILES += src/lab/lab.config.js
 FONT_FOLDERS := $(shell find vendor/fonts -mindepth 1 -maxdepth 1)
 
 SASS_LAB_LIBRARY_FILES := $(shell find src/sass/lab -name '*.sass')
+SHUTTERBUG_GEM := $(shell bundle show shutterbug)
 
 # targets
 
@@ -60,13 +61,15 @@ LAB_JS_FILES = \
 	public/lab/lab.iframe-phone.js \
 	public/lab/lab.sensor-applet.js
 
-# default target executed when running make
+# default target executed when running make. Run the $(MAKE) public task rather than simply
+# declaring a dependency on 'public' because 'bundle install' and 'npm install' might update some
+# sources, and we want to recompute stale dependencies after that.
 .PHONY: all
 all: \
 	vendor/d3/d3.js \
 	node_modules \
-	bin \
-	public
+	bin
+	$(MAKE) public
 
 # install Ruby Gem development dependencies
 .PHONY: bin
@@ -456,7 +459,11 @@ public/vendor: \
 	public/vendor/text \
 	public/vendor/domReady \
 	public/vendor/fingerprintjs \
+	public/vendor/shutterbug/shutterbug.js \
+	public/vendor/shutterbug/README.md \
+	public/vendor/shutterbug/LICENSE.md \
 	public/favicon.ico
+
 
 public/vendor/dsp.js:
 	mkdir -p public/vendor/dsp.js
@@ -612,6 +619,21 @@ public/vendor/fingerprintjs:
 	cp vendor/fingerprintjs/fingerprint.min.js public/vendor/fingerprintjs
 	cp vendor/fingerprintjs/README.md public/vendor/fingerprintjs
 
+public/vendor/shutterbug:
+	mkdir -p public/vendor/shutterbug
+
+public/vendor/shutterbug/shutterbug.js: public/vendor/shutterbug \
+	vendor/shutterbug/shutterbug.js
+	sed -e s'/CONVERT_PATH/shutterbug\/make_snapshot/' vendor/shutterbug/shutterbug.js > public/vendor/shutterbug/shutterbug.js
+
+public/vendor/shutterbug/README.md: public/vendor/shutterbug \
+	vendor/shutterbug/README.md
+	cp vendor/shutterbug/README.md public/vendor/shutterbug
+
+public/vendor/shutterbug/LICENSE.md: public/vendor/shutterbug \
+	vendor/shutterbug/LICENSE.md
+	cp vendor/shutterbug/LICENSE.md public/vendor/shutterbug
+
 public/favicon.ico:
 	cp -f src/favicon.ico public/favicon.ico
 
@@ -631,6 +653,21 @@ vendor/jquery-ui/dist/jquery-ui.min.js: vendor/jquery-ui
 vendor/jquery-ui:
 	git submodule update --init --recursive
 
+vendor/shutterbug:
+	mkdir -p vendor/shutterbug
+
+vendor/shutterbug/shutterbug.js: vendor/shutterbug \
+	$(SHUTTERBUG_GEM)/lib/shutterbug/handlers/shutterbug.js
+	cp $(SHUTTERBUG_GEM)/lib/shutterbug/handlers/shutterbug.js vendor/shutterbug
+
+vendor/shutterbug/README.md: vendor/shutterbug \
+	$(SHUTTERBUG_GEM)/README.md
+	cp $(SHUTTERBUG_GEM)/README.md vendor/shutterbug
+
+vendor/shutterbug/LICENSE.md: vendor/shutterbug \
+	$(SHUTTERBUG_GEM)/LICENSE.md
+	cp $(SHUTTERBUG_GEM)/LICENSE.md vendor/shutterbug
+
 # ------------------------------------------------
 #
 #   targets for generating html, js, and css resources
@@ -644,7 +681,7 @@ public/lab/lab.mw-helpers.js: src/mw-helpers/*.coffee
 test/%.html: test/%.html.haml
 	haml $< $@
 
-public/%.html: src/%.html.haml
+public/%.html: src/%.html.haml script/setup.rb
 	haml -r ./script/setup.rb $< $@
 
 public/%.html: src/%.html

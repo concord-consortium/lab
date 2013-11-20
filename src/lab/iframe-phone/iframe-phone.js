@@ -4,11 +4,14 @@ define(function (require){
   var structuredClone = require('iframe-phone/structured-clone');
 
   return function IFramePhone(iframe, afterConnectedCallback) {
-    var iframeOrigin = iframe.src.match(/(.*?\/\/.*?)\//)[1],
-        selfOrigin   = window.location.href.match(/(.*?\/\/.*?)\//)[1],
+    var selfOrigin   = window.location.href.match(/(.*?\/\/.*?)\//)[1],
         postMessageQueue = [],
         connected = false,
         handlers = {};
+
+    function getIframeOrigin() {
+      return iframe.src.match(/(.*?\/\/.*?)\//)[1];
+    }
 
     function post(message) {
       if (connected) {
@@ -18,9 +21,9 @@ define(function (require){
         //     https://github.com/Modernizr/Modernizr/issues/388
         //     http://jsfiddle.net/ryanseddon/uZTgD/2/
         if (structuredClone.supported()) {
-          iframe.contentWindow.postMessage(message, iframeOrigin);
+          iframe.contentWindow.postMessage(message, getIframeOrigin());
         } else {
-          iframe.contentWindow.postMessage(JSON.stringify(message), iframeOrigin);
+          iframe.contentWindow.postMessage(JSON.stringify(message), getIframeOrigin());
         }
       } else {
         // else queue up the messages to send after connection complete.
@@ -56,7 +59,7 @@ define(function (require){
     function receiveMessage(message) {
       var messageData;
 
-      if (message.source === iframe.contentWindow && message.origin === iframeOrigin) {
+      if (message.source === iframe.contentWindow && message.origin === getIframeOrigin()) {
         messageData = message.data;
         if (typeof messageData === 'string') {
           messageData = JSON.parse(messageData);

@@ -18,7 +18,10 @@ define(function(require) {
         1: 101, // single bond
         2: 107, // double bond
         3: 108  // tripe bond
-      };
+      },
+
+      // Chemical reaction calculations will be performed every <INTERVAL> fs.
+      INTERAVAL = 10; // fs
 
   // Dot product of [x1, y1] and [x2, y2] vectors.
   function dot(x1, y1, x2, y2) {
@@ -46,6 +49,13 @@ define(function(require) {
         // more), one of them (random) will be stored in this array. It will be exchanged with
         // free radical in case of collision.
         bondToExchange   = [],
+
+        // Flag indicating whether bonds were changed during last calculations. If so, forces
+        // recalculation should be triggered.
+        bondsChanged = false,
+
+        // Set of modified atoms, so atoms that have bonds added or removed.
+        modifiedAtoms = {},
 
         atoms,
         elements,
@@ -103,25 +113,34 @@ define(function(require) {
       return type < 0 ? 1 : type;
     }
 
+    // TODO: (micro-)optimize functions below (?). They can be more elegant and require less work.
+
     // Returns bond chemical energy between elements i and j. Type indicates whether it's a single
     // (1 or undefined), double (2) or triple (3) bond.
     function getBondEnergy(i, j, type) {
       if (type === undefined) type = 1;
       switch(type) {
         case 1:
-        return bondEnergy[i + "-" + j] || bondEnergy[j + "-" + i] || bondEnergy["default"];
+        return bondEnergy[i + "-" + j] != null ? bondEnergy[i + "-" + j] :
+               bondEnergy[j + "-" + i] != null ? bondEnergy[j + "-" + i] :
+                                                 bondEnergy["default"];
         case 2:
-        return bondEnergy[i + "=" + j] || bondEnergy[j + "=" + i] || getBondEnergy(i, j, 1) * 2;
+        return bondEnergy[i + "=" + j] != null ? bondEnergy[i + "=" + j] :
+               bondEnergy[j + "=" + i] != null ? bondEnergy[j + "=" + i] :
+                                                 getBondEnergy(i, j, 1) * 2;
         case 3:
-        return bondEnergy[i + "=-" + j] || bondEnergy[j + "=-" + i] || getBondEnergy(i, j, 1) * 3;
+        return bondEnergy[i + "=-" + j] != null ? bondEnergy[i + "=-" + j] :
+               bondEnergy[j + "=-" + i] != null ? bondEnergy[j + "=-" + i] :
+                                                  getBondEnergy(i, j, 1) * 3;
       }
     }
 
     // Returns activation energy when element i collides with j-k pair.
     function getActivationEnergy(i, j, k) {
-      return activationEnergy[i + "+" + j + "-" + k] ||
-             activationEnergy[j + "+" + k + "-" + j] || // order of j-k pair doesn't matter.
-             activationEnergy["default"];
+            // order of j-k pair doesn't matter.
+      return activationEnergy[i + "+" + j + "-" + k] != null ? activationEnergy[i + "+" + j + "-" + k] :
+             activationEnergy[i + "+" + k + "-" + j] != null ? activationEnergy[i + "+" + k + "-" + j] :
+                                                               activationEnergy["default"];
     }
 
     // Returns energy needed to exchange bond between element i and j-k pair. So when collision
@@ -140,6 +159,63 @@ define(function(require) {
         // difference.
         return getActivationEnergy(i, j, k) + oldEnergy - newEnergy;
       }
+    }
+
+    function addRadialBond(props, a1, a2, bondType) {
+      props.atom1 = a1;
+      props.atom2 = a2;
+      props.type = BOND_TYPE[bondType];
+      engine.addRadialBond(props);
+      bondsChanged = true;
+      modifiedAtoms[a1] = true;
+      modifiedAtoms[a2] = true;
+      // Update shared electrons count.
+      atoms.sharedElectrons[a1] += bondType;
+      atoms.sharedElectrons[a2] += bondType;
+      // In theory we can update bondToExchange with the newly created bond. However if we don't
+      // do it, we won't exchange the bond in the same step we created it. It makes sense - things
+      // will be clearer when e.g. user observes simulation in slow motion and tries to analyze
+      // single step of chemical reaction.
+    }
+
+    function removeRadialBond(i, a1, a2, bondType) {
+      engine.removeRadialBond(i);
+      bondsChanged = true;
+      modifiedAtoms[a1] = true;
+      modifiedAtoms[a2] = true;
+      // Update shared electrons count.
+      atoms.sharedElectrons[a1] -= bondType;
+      atoms.sharedElectrons[a2] -= bondType;
+    }
+
+    function transferRadialBond(i, props, a1, a2, a3, newType, oldType) {
+      props.atom1 = a1;
+      props.atom2 = a2;
+      props.type = BOND_TYPE[newType];
+      engine.setRadialBondProperties(i, props);
+      bondsChanged = true;
+      modifiedAtoms[a1] = true;
+      modifiedAtoms[a2] = true;
+      modifiedAtoms[a3] = true;
+      // Update shared electrons count.
+      atoms.sharedElectrons[a1] += newType;
+      atoms.sharedElectrons[a2] += newType - oldType;
+      atoms.sharedElectrons[a3] -= oldType;
+      // a3 is no longer connected to bond with ID = bondIdx.
+      if (bondToExchange[a3] === i) bondToExchange[a3] = undefined;
+      // a2 is still connected to bond with ID = bondIdx, however if we set bondToExchange[a2]
+      // to undefined, the same bond won't be transfered again during this step. It's not
+      // necessary, but it will limit number of reactions during single step, making things
+      // easier to observe and follow (otherwise the bond can exchanged multiple times during
+      // one step, what can be confusing for users that will see only the final result).
+      bondToExchange[a2] = undefined;
+    }
+
+    function cleanupModifiedAtomsAndFlags() {
+      bondsChanged = false;
+      Object.keys(modifiedAtoms).forEach(function (key) {
+        delete modifiedAtoms[key];
+      });
     }
 
     // TODO: we shouldn't have to do it explicitely at each step. Perhaps we should just modify add
@@ -197,10 +273,7 @@ define(function(require) {
             // LJ potential will now be calculated, take it into account.
             dpot += engine.ljCalculator[el1][el2].potentialFromSquaredDistance(ijsq);
             if (conserveEnergy(dpot, a1, a2)) {
-              engine.removeRadialBond(i);
-              // Update shared electrons count.
-              atoms.sharedElectrons[a1] -= bondType;
-              atoms.sharedElectrons[a2] -= bondType;
+              removeRadialBond(i, a1, a2, bondType);
             }
           }
         }
@@ -291,22 +364,10 @@ define(function(require) {
       dpot -= engine.ljCalculator[el1][el2].potentialFromSquaredDistance(ijsq);
 
       if (conserveEnergy(dpot, a1, a2)) {
-        engine.addRadialBond({
-          atom1: a1,
-          atom2: a2,
+        addRadialBond({
           length: length,
-          strength: strength,
-          type: BOND_TYPE[bondType]
-        });
-
-        // Update shared electrons count.
-        atoms.sharedElectrons[a1] += bondType;
-        atoms.sharedElectrons[a2] += bondType;
-
-        // In theory we can update bondToExchange with the newly created bond. However if we don't
-        // do it, we won't exchange the bond in the same step we created it. It makes sense - things
-        // will be clearer when e.g. user observes simulation in slow motion and tries to analyze
-        // single step of chemical reaction.
+          strength: strength
+        }, a1, a2, bondType);
       }
     }
 
@@ -372,26 +433,10 @@ define(function(require) {
 
         if (conserveEnergy(dpot, a1, a2, a3)) {
           // Update bond, change it from a2-d3 to a1-a2.
-          engine.setRadialBondProperties(bondIdx, {
-            atom1: a1,
-            atom2: a2,
+          transferRadialBond(bondIdx, {
             length: newLength,
-            strength: newStrength,
-            type: BOND_TYPE[newType]
-          });
-
-          atoms.sharedElectrons[a1] += newType;
-          atoms.sharedElectrons[a2] += newType - oldType;
-          atoms.sharedElectrons[a3] -= oldType;
-
-          // a3 is no longer connected to bond with ID = bondIdx.
-          if (bondToExchange[a3] === bondIdx) bondToExchange[a3] = undefined;
-          // a2 is still connected to bond with ID = bondIdx, however if we set bondToExchange[a2]
-          // to undefined, the same bond won't be transfered again during this step. It's not
-          // necessary, but it will limit number of reactions during single step, making things
-          // easier to observe and follow (otherwise the bond can exchanged multiple times during
-          // one step, what can be confusing for users that will see only the final result).
-          bondToExchange[a2] = undefined;
+            strength: newStrength
+          }, a1, a2, a3, newType, oldType);
         }
       }
     }
@@ -455,14 +500,25 @@ define(function(require) {
       },
 
       performActionWithinIntegrationLoop: function (neighborList, dt, time) {
-        if ((time / dt) % 50 === 0) {
-          // Perform action every 50 timesteps.
+        // Below there is a stateless way to check if we should perform calculations or not.
+        // Calculations should be performed every <INTERVAL> femtoseconds. In theory we could just
+        // remember the last time we did calculations and then check if the current time is larger
+        // (or equal) than the last + INTERVAL. However, due to tick history seeking, we can't make
+        // an assumption that time value will be always bigger than during the previous function
+        // execution.
+        var mod = time % INTERAVAL;
+        if (mod === 0 || (mod < dt && Math.floor(time / INTERAVAL) === Math.round(time / INTERAVAL))) {
+          cleanupModifiedAtomsAndFlags();
           validateSharedElectronsCount();
           destroyBonds();
           // Update bondToExchange array after .destroyBonds() call! bondToExchange array is used
           // only by .createBonds() function anyway.
           updateBondToExchangeArray();
           createBonds(neighborList);
+          if (bondsChanged) {
+            // Update forces coming from new bonds configuration (!).
+            engine.updateParticlesAccelerations();
+          }
         }
       },
 
@@ -474,6 +530,16 @@ define(function(require) {
 
       processOutputState: function (state) {
         state.PE += getBondsChemicalPE();
+      },
+
+      /**
+       * Sets bond energy (dissociation energy) of a bond.
+       * @param {string} bondDescription e.g. "1-1" means single bond between element 1 and 1,
+       *                                 "1=2" means double bond between element 1 and 2 etc.
+       * @param {number} value           bond energy in eV..
+       */
+      setBondEnergy: function(bondDescription, value) {
+        bondEnergy[bondDescription] = value;
       }
     };
 

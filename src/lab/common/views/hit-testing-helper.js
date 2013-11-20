@@ -103,6 +103,7 @@ define(function (require) {
       var clonedEvent = document.createEvent("MouseEvent");
       clonedEvent.initMouseEvent(e.type, e.bubbles, e.cancelable, e.view, e.detail, e.screenX, e.screenY, e.clientX, e.clientY, e.ctrlKey, e.altKey, e.shiftKey, e.metaKey, e.button, e.relatedTarget);
       clonedEvent.target = target;
+      clonedEvent.forwardedTouchEvent = e.forwardedTouchEvent;
       return clonedEvent;
     }
 
@@ -235,6 +236,8 @@ define(function (require) {
       function createMouseEvent(touch, type) {
         var mouseEvent = document.createEvent("MouseEvent");
         mouseEvent.initMouseEvent(type, true, true, window, 1, touch.screenX, touch.screenY, touch.clientX, touch.clientY, false, false, false, false, 0, null);
+        // This flag prevents FastClick from trying to pre-emptively cancel the event
+        mouseEvent.forwardedTouchEvent = true;
         return mouseEvent;
       }
 

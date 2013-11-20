@@ -1,8 +1,18 @@
 {
   "title": "Simplest Free Radical Reaction",
-  "publicationStatus": "draft",
+  "publicationStatus": "public",
   "subtitle": "",
-  "about": "",
+  "about": [
+    "Observe the energy graph. Total energy should be always constant, however you should notice",
+    "kinetic energy increase and potential energy drop when the reaction happens.",
+    "",
+    "You can also adjust atom's velocity. When it's high enough, the bond energy can be too weak",
+    "to keep atoms together all the time.",
+    "",
+    "Heat bath will change the energy graph. If you turn it on, you will notice that there is",
+    "total energy drop when a new bond is formed. Play with target temperature and test what",
+    "value breaks the bond."
+  ],
   "models": [
     {
       "type": "md2d",

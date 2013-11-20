@@ -94,6 +94,11 @@ define(function () {
         return $element;
       },
 
+      resize: function() {
+        view.resize();
+        renderValue();
+      },
+
       // Returns serialized component definition.
       serialize: function () {
         // Return the initial component definition.

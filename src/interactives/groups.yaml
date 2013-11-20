@@ -26,6 +26,10 @@
   :name: "Science of Atoms and Molecules: Light and Matter"
   :category: Curriculum
 
+- :path: sam/chemical-reactions
+  :name: "Science of Atoms and Molecules: Chemical Reactions"
+  :category: Curriculum
+
 - :path: inquiry-examples/pendulum
   :name: "Inquiry Examples: Pendulums"
   :category: Curriculum

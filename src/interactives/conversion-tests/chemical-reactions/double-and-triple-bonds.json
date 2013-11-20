@@ -1,8 +1,26 @@
 {
   "title": "Various Types of Bonds",
-  "publicationStatus": "draft",
+  "publicationStatus": "public",
   "subtitle": "",
-  "about": "",
+  "about": [
+    "This interactive presents that chemical reactions can form various types of bonds:",
+    "",
+    "- single",
+    "- double",
+    "- triple",
+    "",
+    "The type of bond is determined by valence electron count of the atoms that are reacting.",
+    "E.g. when both atoms have only 1 valence electron and limit of 2, they will form a single",
+    "bond. Atoms that have 6 valence electrons and limit of 8 will form a double bond.",
+    "Finally atoms that have 5 valence electrons and limit of 8 will form a triple bond.",
+    "",
+    "Bond type is determined by the minimum free slots count of both atoms. So when one atom",
+    "could form a double bond, but the second atom could form only a single bond, the single bond",
+    "will be created.",
+    "",
+    "If an atom still have a free slot after forming a bond, it can create a bond again during",
+    "another chemical reaction."
+  ],
   "models": [
     {
       "type": "md2d",

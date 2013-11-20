@@ -1,11 +1,11 @@
 {
-  "title": "Sunlight, Infrared, CO2 and the Ground",
-  "publicationStatus": "draft",
-  "subtitle": "Explore how light interacts with both the ground and CO2",
+  "title": "Sunlight, Infrared, CO₂ and the Ground",
+  "publicationStatus": "public",
+  "subtitle": "Explore how light interacts with both the ground and CO₂.",
   "aspectRatio": 1.7,
   "fontScale": 0.8,
   "helpOnLoad": false,
-  "about": "",
+  "about": "Note: When loading the *Infrared on CO₂* model the infrared coming from the bottom of the model is emitted from the ground.",
   "models": [
     {
       "type": "md2d",

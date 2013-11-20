@@ -1,14 +1,13 @@
 {
-  "title": "Direction of Force in Electric Fields",
-  "publicationStatus": "draft",
-  "subtitle": "How is the direction of force oriented between charged objects?",
+  "title": "Direction of Force on Charged Objects",
+  "publicationStatus": "public",
+  "subtitle": "Explore the direction of an electric force between charged objects.",
   "aspectRatio": 1.6,
   "about": [
-    "An electric field is produced by the stationary object in this simulation.",
-    "How does the force on the draggable object change when it is moved around the stationary object?",
-    "How the force affected by the polarity of the charge on the stationary object?",
-    "Use the *trace force vectors* checkbox to help characterize the direction of force arrow when the charged object is in different positions."
-  ],
+    "Charged objects attract or repel each other. Try changing the charge of the central, stationary object and ",
+    "dragging around the other one. Then observe how the force arrows behave. Use the *Trace force vectors* ",
+    "checkbox to create a map of electric forces felt by charged objects around the center object."
+    ],
   "models": [
     {
       "type": "md2d",
@@ -19,35 +18,38 @@
         "controlButtons": "reset"
       },
       "onLoad": [
+          "function updateVectors() {",
+          "  var dragAtomProps   = getAtomProperties(0);",
+          "  var targetAtomProps = getAtomProperties(1);",
+          "  var dx = targetAtomProps.x - dragAtomProps.x;",
+          "  var dy = targetAtomProps.y - dragAtomProps.y;",
+          "  var L = Math.sqrt(dx*dx + dy*dy);",
+          "  var targetX = dragAtomProps.x - 0.4/L*dx;",
+          "  var targetY = dragAtomProps.y - 0.4/L*dy;",
+          "  setLineProperties(0, {x1: dragAtomProps.x, y1: dragAtomProps.y, x2: targetX, y2: targetY});",
+          "  if ( get('trace-force-vectors') ) {",
+          "    var tNow = getCurrentComputerTime();",
+          "    if ( tNow - get('last-trace-time') > 250 ) {",
+          "      var traceidx = get('trace-idx');",
+          "      setLineProperties(2 + traceidx, {x1: dragAtomProps.x, y1: dragAtomProps.y, x2: targetX, y2: targetY, visible: true});",
+          "      set('trace-idx', (traceidx+1)%96);",
+          "      set('last-trace-time', tNow);",
+          "    }",
+          "  }",
+          "  targetX = targetAtomProps.x + 0.4/L*dx;",
+          "  targetY = targetAtomProps.y + 0.4/L*dy;",
+          "  setLineProperties(1, {x1: targetAtomProps.x, y1: targetAtomProps.y, x2: targetX, y2: targetY});",
+          "};",
           "onDrag('atom', function(x, y, d, i) {",
           "  if (getNumberOfTextBoxes() > 0) { removeTextBox(0); }",
-          "  if( i === 0 ) {",
-          "    var forceDirection = get('object-charge');",
-          "    var dragAtomProps   = getAtomProperties(0);",
-          "    var targetAtomProps = getAtomProperties(1);",
-          "    var dx = targetAtomProps.x - dragAtomProps.x;",
-          "    var dy = targetAtomProps.y - dragAtomProps.y;",
-          "    var L = Math.sqrt(dx*dx + dy*dy);",
-          "    var targetX = dragAtomProps.x + forceDirection * 0.4/L*dx;",
-          "    var targetY = dragAtomProps.y + forceDirection * 0.4/L*dy;",
-          "    setLineProperties(0, {x1: dragAtomProps.x, y1: dragAtomProps.y, x2: targetX, y2: targetY});",
-          "    if( get('trace-force-vectors') ){",
-          "      var tNow = getCurrentComputerTime();",
-          "      if( tNow - get('last-trace-time') > 250 ) {",
-          "        var traceidx = get('trace-idx');",
-          "        setLineProperties(2 + traceidx, {x1: dragAtomProps.x, y1: dragAtomProps.y, x2: targetX, y2: targetY, visible: true});",
-          "        set('trace-idx', (traceidx+1)%96);",
-          "        set('last-trace-time', tNow);",
-          "      }",
-          "    }",
-          "    targetX = targetAtomProps.x - forceDirection * 0.4/L*dx;",
-          "    targetY = targetAtomProps.y - forceDirection * 0.4/L*dy;",
-          "    setLineProperties(1, {x1: targetAtomProps.x, y1: targetAtomProps.y, x2: targetX, y2: targetY});",
+          "  if (i === 0) {",
+          "    batch(updateVectors);",
           "  }",
-          "});"
+          "});",
+          "updateVectors();"
         ]
     }
-  ],
+ ],
   "parameters": [
     {
       "name": "last-trace-time",
@@ -85,11 +87,11 @@
         "var dx = targetAtomProps.x - dragAtomProps.x;",
         "var dy = targetAtomProps.y - dragAtomProps.y;",
         "var L = Math.sqrt(dx*dx + dy*dy);",
-        "var targetX = dragAtomProps.x + forceDirection * 0.4/L*dx;",
-        "var targetY = dragAtomProps.y + forceDirection * 0.4/L*dy;",
+        "var targetX = dragAtomProps.x - forceDirection * 0.4/L*dx;",
+        "var targetY = dragAtomProps.y - forceDirection * 0.4/L*dy;",
         "setLineProperties(0, {x1: dragAtomProps.x, y1: dragAtomProps.y, x2: targetX, y2: targetY});",
-        "targetX = targetAtomProps.x - forceDirection * 0.4/L*dx;",
-        "targetY = targetAtomProps.y - forceDirection * 0.4/L*dy;",
+        "targetX = targetAtomProps.x + forceDirection * 0.4/L*dx;",
+        "targetY = targetAtomProps.y + forceDirection * 0.4/L*dy;",
         "setLineProperties(1, {x1: targetAtomProps.x, y1: targetAtomProps.y, x2: targetX, y2: targetY});",
         "batch( function() { ",
         "  for( var i = 2; i < 98; setLineProperties(i++, {visible: false})); // clear traces",
@@ -139,7 +141,7 @@
     {
       "type": "text",
       "id": "label-direction",
-      "text": "**Set charge on stationary object**"
+      "text": "**Set charge on stationary object:**"
     },
     {
       "type": "radio",

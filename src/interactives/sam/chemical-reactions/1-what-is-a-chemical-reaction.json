@@ -1,0 +1,124 @@
+{
+  "title": "What is a Chemical Reaction?",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": [
+    "A chemical reaction can occur in three different ways:",
+    "",
+    "- A chemical bond is formed.",
+    "- A chemical bond is broken.",
+    "- One or more electrons are transferred between atoms or molecules.",
+    "",
+    "Explore reactions in which chemical bonds are formed and broken with this model.",
+    "Press run, then try heating and cooling the atoms to see how temperature affects ",
+    "the balance between bond formation and breaking."
+  ],
+  "models": [
+    {
+      "type": "md2d",
+      "id": "page1$0",
+      "url": "imports/legacy-mw-content/converted/sam-activities/chemical-reactions/original-interactives-in-pages/page1/page1$0.json",
+      "importedFrom": "imports/legacy-mw-content/converted/sam-activities/chemical-reactions/original-interactives-in-pages/page1/page1$0.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "imageMapping": {
+          "reactionsExplanationFlat.png": "reactionsExplanationFlat.svg"
+        }
+      },
+      "modelOptions": {
+        "chemicalReactions": {
+          "bondEnergy": {
+            "1-1": 2,
+            "2-2": 4
+          },
+          "activationEnergy": {
+            "1+2-2": 0.02,
+            "2+1-1": 0.02
+          }
+        }
+      }
+    }
+  ],
+  "filteredOutputs": [
+    {
+      "name": "filteredTemperature",
+      "property": "temperature"
+    }
+  ],
+  "components": [
+    {
+      "id": "heat",
+      "type": "button",
+      "action": [
+        "if (get('temperature') > 100000) {",
+        "  setComponentDisabled('heat', true);",
+        "  return;",
+        "}",
+        "batch(function () {",
+        "  var props;",
+        "  for (var i = 0, len = getNumberOfAtoms(); i < len; i++) {",
+        "    props = getAtomProperties(i);",
+        "    setAtomProperties(i, {vx: props.vx * 1.1, vy: props.vy * 1.1});",
+        "  }",
+        "});"
+      ],
+      "text": "Heat"
+    },
+    {
+      "id": "cool",
+      "type": "button",
+      "action": [
+        "batch(function () {",
+        "  var props;",
+        "  for (var i = 0, len = getNumberOfAtoms(); i < len; i++) {",
+        "    props = getAtomProperties(i);",
+        "    setAtomProperties(i, {vx: props.vx * 0.9, vy: props.vy * 0.9});",
+        "  }",
+        "});",
+        "if (get('temperature') < 100000) {",
+        "  setComponentDisabled('heat', false);",
+        "}"
+      ],
+      "text": "Cool"
+    },
+    {
+      "id": "thermometer",
+      "type": "barGraph",
+      "property": "filteredTemperature",
+      "title": "Temperature",
+      "labels": [
+        {
+          "value": 0,
+          "label": "low"
+        },
+        {
+          "value": 100000,
+          "label": "high"
+        }
+      ],
+      "min": 0,
+      "max": 100000
+    }
+  ],
+  "template": [
+    {
+      "id": "right-lower",
+      "left": "model.right",
+      "right": "interactive.right",
+      "bottom": "model.bottom",
+      "align": "center"
+    },
+    {
+      "id": "right-upper",
+      "top": "model.top",
+      "left": "model.right",
+      "right": "interactive.right",
+      "bottom": "right-lower.top",
+      "align": "center"
+    }
+  ],
+  "layout": {
+    "right-upper": ["thermometer"],
+    "right-lower": ["heat", "cool"]
+  }
+}

@@ -24,12 +24,25 @@
 define(function (require) {
 
   var benchmark = require("common/benchmark/benchmark"),
-      lastClose = 0;
+      lastClose = 0,
+
+      customTooltipsEnabled = (function () {
+        // Disable custom tooltips on mobile devices, as e.g. on iPad they cause that
+        // user have to tap each component twice as first tap only opens a tooltip.
+        if (benchmark.isMobile) return false;
+        // Disable tooltips in all Safari version older than 7. They are causing weird issues there.
+        // See the related PT story and more precise problem description:
+        // https://www.pivotaltracker.com/s/projects/442903/stories/59910282
+        var browser = benchmark.browser.browser;
+        // parseInt() will convert e.g. "7.0/537.71" just to 7.
+        var version = parseInt(benchmark.browser.version, 10);
+        if (browser === "Safari" && version < 7) return false;
+        // Tooltips are enabled by default.
+        return true;
+      }());
 
   function tooltip($target) {
-    // Disable custom tooltips on mobile devices, as e.g. on iPad they cause that
-    // user have to tap each component twice as first tap only opens a tooltip.
-    if (benchmark.isMobile) return;
+    if (!customTooltipsEnabled) return;
 
     var $rc = $("#responsive-content"),
         $tooltip = null,

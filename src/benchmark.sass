@@ -1,0 +1,65 @@
+$header-background-color1: rgba(58, 135, 139, 1.0)
+$header-background-color2: rgba(140, 187, 184, 1.0)
+$header-font-color: #f8f8f8
+
+@import 'sass/bourbon/bourbon'
+@import 'sass/neat/neat'
+
+html
+  font-family: Lato, Verdana, Geneva, sans-serif
+
+body
+  margin: 0
+
+label
+  display: block
+
+table
+  border-collapse: collapse
+  td, th
+    border: 1px solid #ddd
+    padding: 2px
+
+#header
+  @include linear-gradient($header-background-color1, $header-background-color2, $fallback: $header-background-color1)
+  color: $header-font-color
+  padding: 1.5em 1em
+  position: relative
+  min-height: 5em
+  h1
+    display: inline-block
+    margin: 0em 1em 0em 0em
+    a
+      color: $header-font-color
+      text-decoration: none
+
+  #logo
+    position: absolute
+    top: 1em
+    right: 1em
+
+.column
+  display: inline-block
+  vertical-align: top
+  margin-left: 2em
+  margin-top: 1em
+
+.config-col
+  display: inline-block
+  vertical-align: top
+  margin-right: 2em
+
+#start, #stop
+  font-size: 16px
+  margin-top: 1em
+
+#iframe-wrapper
+  width: 565px
+  height: 435px
+
+#info
+  margin-top: 1em
+  font-family: monospace
+
+#results
+  font-size: 0.7em

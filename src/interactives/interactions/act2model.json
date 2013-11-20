@@ -1,13 +1,12 @@
 {
-  "title": "Distance and Force Magnitude",
-  "publicationStatus": "draft",
-  "subtitle": "Explore the relationship between the electric field around an object and the forces on charged objects.",
+  "title": "Visualizing Electric Fields and Forces",
+  "publicationStatus": "public",
+  "subtitle": "Explore how electric fields relate to forces on charged objects.",
   "aspectRatio": 1.18,
   "about": [
-    "Control the polarity of the stationary charged object and observe how it affects the electric field around the charged object.",
+    "Control the polarity of the stationary charged object and observe how the charge affects the electric field around it.",
     "Add a second charged object and move it around the stationary object.",
-    "Observe how the strength and direction of the forces depends on the charges and distance between the two objects.",
-    "Turn the force and electric field visualizations on and off to see their interactions."
+    "Observe how the strength and direction of the forces depends on the charges and distance between the two objects."
   ],
   "models": [
     {
@@ -20,7 +19,7 @@
         "electricFieldDensity": 24,
         "electricFieldColor": "rgb(0,255,0)",
         "forceVectors": {
-          "length": 15
+          "length": 9
         }
       },
       "onLoad": [

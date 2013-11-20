@@ -42,4 +42,14 @@ AUTHORING = false;
     }
   });
 
+  // When Shutterbug wants to take a snapshot of the page, it first emits a 'shutterbug-
+  // saycheese' event. By default, any WebGL canvas will return a blank image when Shutterbug
+  // calls .toDataURL on it, However, if we ask Pixi to render to the canvas during the
+  // Shutterbug event loop (remember synthetic events such as 'shutterbug-saycheese' are
+  // handled synchronously) the rendered image will still be in the WebGL drawing buffer where
+  // Shutterbug can see it.
+  $(window).on('shutterbug-saycheese', function() {
+    window.script.repaint();
+  });
+
 }());

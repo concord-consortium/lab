@@ -1,13 +1,12 @@
 {
-  "title": "Charge Intensity and Electric Field Force Magnitude",
-  "publicationStatus": "draft",
-  "subtitle": "Manipulate the charge on objects to explore the relationship between the electric field around objects and the forces on objects.",
+  "title": "Charge Intensity and Electric Force",
+  "publicationStatus": "public",
+  "subtitle": "Manipulate the charge on objects to explore the relationship between charge, electric field and forces on objects.",
   "aspectRatio": 1.31,
   "about": [
-    "Control the amount of chrage on two objects an observe how it affects ",
+    "Control the amount of charge on two objects an observe how it affects ",
     "(1) the electric fields around the charged objects and ",
-    "(2) the strength and direction of the forces acting between the two objects.",
-    "Turn the force and electric field visualizations on and off to see their interactions."
+    "(2) the strength of the forces acting between the two objects."
   ],
   "models": [
     {
@@ -20,7 +19,7 @@
         "electricFieldDensity": 24,
         "electricFieldColor": "rgb(0,255,0)",
         "forceVectors": {
-          "length": 15
+          "length": 17
         }
       },
       "onLoad": [
@@ -51,7 +50,7 @@
       "min": -3,
       "max": 3,
       "steps": 6,
-      "title": "Left Particle",
+      "title": "Left particle",
       "displayValue": "return format('d')(value)",
       "labels": [
         {
@@ -75,7 +74,7 @@
       "min": -3,
       "max": 3,
       "steps": 6,
-      "title": "Right Particle",
+      "title": "Right particle",
       "displayValue": "return format('d')(value)",
       "labels": [
         {

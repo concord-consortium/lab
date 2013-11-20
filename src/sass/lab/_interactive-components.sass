@@ -73,12 +73,7 @@
   white-space: normal
   margin: 0
   padding: 0
-  -webkit-user-select: none
-  -khtml-user-select: none
-  -moz-user-select: none
-  -ms-user-select: none
-  -o-user-select: none
-  user-select: none
+  @include user-select(none)
   -webkit-tap-highlight-color: rgba(0,0,0,0)
 
   &.clickable
@@ -247,6 +242,7 @@
 .numeric-output
   padding: 0.3em 0.2em 0.3em 0.7em
   span.output
+    white-space: nowrap
     background-color: white
     border-radius: 0.4em
     padding: 0.15em 0 0.15em 0

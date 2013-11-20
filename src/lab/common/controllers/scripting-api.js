@@ -6,6 +6,41 @@ define(function (require) {
   var alert = require('common/alert');
   var namespaceCount = 0;
 
+  // This object is the outer context in which each script function is executed. This prevents at
+  // least inadvertent reliance by the script on unintentinally exposed globals. Note that this
+  // object is shared by the all instances of functions created in Scripting API context
+  // (see makeFunctionInScriptContext).
+  var shadowedGlobals = {};
+
+  function errorForKey(key) {
+    return function() {
+      throw new ReferenceError(key + " is not defined");
+    };
+  }
+
+  // Make shadowedGlobals contain keys for all globals (properties of 'window').
+  // Also make set and get of any such property throw a ReferenceError exactly like
+  // reading or writing an undeclared variable in strict mode.
+  function setShadowedGlobals() {
+    var keys = Object.getOwnPropertyNames(window),
+        key,
+        i,
+        len,
+        err;
+
+    for (i = 0, len = keys.length; i < len; i++) {
+      key = keys[i];
+      if (!shadowedGlobals.hasOwnProperty(key)) {
+        err = errorForKey(key);
+
+        Object.defineProperty(shadowedGlobals, key, {
+          set: err,
+          get: err
+        });
+      }
+    }
+  }
+
   //
   // Define the scripting API used by 'action' scripts on interactive elements.
   //
@@ -15,8 +50,7 @@ define(function (require) {
   // script context; and scripts are run in strict mode so they don't
   // accidentally expose or read globals.
   //
-  return function ScriptingAPI (interactivesController) {
-    var model;
+  return function ScriptingAPI (interactivesController, model) {
 
     // Note. Normally, scripting API methods should not create event listeners to be added to the
     // interactivesController, because doing so from an onLoad script results in adding a new event
@@ -347,11 +381,28 @@ define(function (require) {
             if (!component) {
               throw new Error("Component " + componentID + " not found.");
             }
-            if (!component.syncAxisRangesToPropertyRanges) {
+            if (!component.scrollXAxisToZero) {
               throw new Error("Component " + componentID + " does not support scrollXAxisToZero.");
             }
 
             component.scrollXAxisToZero();
+          },
+
+          resetGraphSelection: function resetGraphSelectionDomain(componentID) {
+            var component = interactivesController.getComponent(componentID);
+
+            if (!component) {
+              throw new Error("Component " + componentID + " not found.");
+            }
+            if (!component.selectionDomain) {
+              throw new Error("Component " + componentID + " does not support selectionDomain.");
+            }
+            if (!component.selectionEnabled) {
+              throw new Error("Component " + componentID + " does not support selectionEnabled.");
+            }
+
+            component.selectionDomain(null);
+            component.selectionEnabled(false);
           },
 
           start: function start() {
@@ -465,6 +516,20 @@ define(function (require) {
       }()),
 
       /**
+       * Current model.
+       */
+      get model() {
+        return model;
+      },
+
+      /**
+       * Bind a new model to Scripting API.
+       */
+      bindModel: function (newModel) {
+        model = newModel;
+      },
+
+      /**
         Freeze Scripting API
         Make the scripting API immutable once defined
       */
@@ -476,7 +541,7 @@ define(function (require) {
         Extend Scripting API
       */
       extend: function (ModelScriptingAPI) {
-        $.extend(this.api, new ModelScriptingAPI(this.api, model));
+        $.extend(this.api, new ModelScriptingAPI(this));
       },
 
       /**
@@ -509,16 +574,8 @@ define(function (require) {
         what scripting API and semantics we want to support.
       */
       makeFunctionInScriptContext: function () {
-
-            // This object is the outer context in which the script is executed. Every time the script
-            // is executed, it contains the value 'undefined' for all the currently defined globals.
-            // This prevents at least inadvertent reliance by the script on unintentinally exposed
-            // globals.
-
-        var shadowedGlobals = {},
-
             // First n-1 arguments to this function are the names of the arguments to the script.
-            argumentsToScript = Array.prototype.slice.call(arguments, 0, arguments.length - 1),
+        var argumentsToScript = Array.prototype.slice.call(arguments, 0, arguments.length - 1),
 
             // Last argument is the function body of the script, as a string or array of strings.
             scriptSource = arguments[arguments.length - 1],
@@ -528,31 +585,6 @@ define(function (require) {
             scriptFunction;
 
         if (typeof scriptSource !== 'string') scriptSource = scriptSource.join('      \n');
-
-        // Make shadowedGlobals contain keys for all globals (properties of 'window')
-        // Also make set and get of any such property throw a ReferenceError exactly like
-        // reading or writing an undeclared variable in strict mode.
-        function setShadowedGlobals() {
-          var keys = Object.getOwnPropertyNames(window),
-              key,
-              i,
-              len,
-              err;
-
-          for (i = 0, len = keys.length; i < len; i++) {
-            key = keys[i];
-            if (!shadowedGlobals.hasOwnProperty(key)) {
-              err = (function(key) {
-                return function() { throw new ReferenceError(key + " is not defined"); };
-              }(key));
-
-              Object.defineProperty(shadowedGlobals, key, {
-                set: err,
-                get: err
-              });
-            }
-          }
-        }
 
         scriptFunctionMakerSource =
           "with (shadowedGlobals) {\n" +
@@ -586,15 +618,6 @@ define(function (require) {
         };
       }
     };
-
-    // Since this first-draft iteration of the scripting api has no real support for multiple
-    // models, we can freely stash the single model locally.
-    function cacheModel() {
-      model = interactivesController.getModel();
-    }
-
-    cacheModel();
-    interactivesController.on('modelLoaded', cacheModel);
 
     return controller;
   };

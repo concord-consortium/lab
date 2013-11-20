@@ -1,6 +1,6 @@
-/*global define model */
+/*global define */
 
-define(function (require) {
+define(function () {
 
   /**
     Define the model-specific SolarSystem scripting API used by 'action' scripts on interactive elements.
@@ -11,16 +11,14 @@ define(function (require) {
     Javascript builtins) will be unavailable in the script context; and scripts
     are run in strict mode so they don't accidentally expose or read globals.
 
-    @param: api
+    @param: parent Scripting API
   */
-
-
-  return function SolarSystemScriptingAPI (api) {
+  return function SolarSystemScriptingAPI (parent) {
 
     return {
       /* Returns number of bodies in the system. */
       getNumberOfBodies: function getNumberOfBodies() {
-        return model.get_num_bodies();
+        return parent.model.get_num_bodies();
       },
 
       addBody: function addBody(props, options) {
@@ -31,7 +29,7 @@ define(function (require) {
           // Scripting API users.
           options.supressEvent = true;
         }
-        return model.addBody(props, options);
+        return parent.model.addBody(props, options);
       },
 
       /*
@@ -47,7 +45,7 @@ define(function (require) {
           delete options.supressRepaint;
         }
         try {
-          model.removeBody(i, options);
+          parent.model.removeBody(i, options);
         } catch (e) {
           if (!options || !options.silent)
             throw e;
@@ -55,20 +53,20 @@ define(function (require) {
       },
 
       addRandomBody: function addRandomBody() {
-        return model.addRandomBody.apply(model, arguments);
+        return parent.model.addRandomBody.apply(parent.model, arguments);
       },
 
       /** returns a list of integers corresponding to bodies in the system */
       randomBodies: function randomBodies(n) {
-        var numBodies = model.get_num_bodies();
+        var numBodies = parent.model.get_num_bodies();
 
-        if (n === null) n = 1 + api.randomInteger(numBodies-1);
+        if (n === null) n = 1 + parent.api.randomInteger(numBodies-1);
 
-        if (!api.isInteger(n)) throw new Error("randomBodies: number of bodies requested, " + n + ", is not an integer.");
+        if (!parent.api.isInteger(n)) throw new Error("randomBodies: number of bodies requested, " + n + ", is not an integer.");
         if (n < 0) throw new Error("randomBodies: number of bodies requested, " + n + ", was less be greater than zero.");
 
         if (n > numBodies) n = numBodies;
-        return api.choose(n, numBodies);
+        return parent.api.choose(n, numBodies);
       },
 
       /**
@@ -83,35 +81,35 @@ define(function (require) {
         if (arguments.length === 0) return;
 
         // allow passing an array instead of a list of planet indices
-        if (api.isArray(arguments[0])) {
+        if (parent.api.isArray(arguments[0])) {
           return markBodies.apply(null, arguments[0]);
         }
 
-        api.unmarkAllBodies();
+        parent.api.unmarkAllBodies();
 
         // mark the requested bodies
         for (i = 0, len = arguments.length; i < len; i++) {
-          model.setBodyProperties(arguments[i], {marked: 1});
+          parent.model.setBodyProperties(arguments[i], {marked: 1});
         }
-        api.repaint();
+        parent.api.repaint();
       },
 
       unmarkAllBodies: function unmarkAllBodies() {
-        for (var i = 0, len = model.get_num_bodies(); i < len; i++) {
-          model.setBodyProperties(i, {marked: 0});
+        for (var i = 0, len = parent.model.get_num_bodies(); i < len; i++) {
+          parent.model.setBodyProperties(i, {marked: 0});
         }
-        api.repaint();
+        parent.api.repaint();
       },
 
       traceBody: function traceBody(i) {
         if (i === null) return;
 
-        model.set({bodyTraceId: i});
-        model.set({showBodyTrace: true});
+        parent.model.set({bodyTraceId: i});
+        parent.model.set({showBodyTrace: true});
       },
 
       untraceBody: function untraceBody() {
-        model.set({showBodyTrace: false});
+        parent.model.set({showBodyTrace: false});
       },
 
       /**
@@ -119,9 +117,9 @@ define(function (require) {
         e.g. setBodyProperties(5, {x: 1, y: 0.5, charge: 1})
       */
       setBodyProperties: function setBodyProperties(i, props, checkLocation, moveBody, options) {
-        model.setBodyProperties(i, props, checkLocation, moveBody);
+        parent.model.setBodyProperties(i, props, checkLocation, moveBody);
         if (!(options && options.supressRepaint)) {
-          api.repaint();
+          parent.api.repaint();
         }
       },
 
@@ -130,19 +128,19 @@ define(function (require) {
         e.g. getBodyProperties(5) --> {x: 1, y: 0.5, charge: 1, ... }
       */
       getBodyProperties: function getBodyProperties(i) {
-        return model.getBodyProperties(i);
+        return parent.model.getBodyProperties(i);
       },
 
       addTextBox: function(props) {
-        model.addTextBox(props);
+        parent.model.addTextBox(props);
       },
 
       removeTextBox: function(i) {
-        model.removeTextBox(i);
+        parent.model.removeTextBox(i);
       },
 
       setTextBoxProperties: function(i, props) {
-        model.setTextBoxProperties(i, props);
+        parent.model.setTextBoxProperties(i, props);
       }
 
     };

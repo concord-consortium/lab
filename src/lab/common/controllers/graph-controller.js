@@ -12,6 +12,8 @@ define(function (require) {
         title: 'title',
         enableAutoScaleButton: 'enableAutoScaleButton',
         enableAxisScaling: 'enableAxisScaling',
+        enableSelectionButton: 'enableSelectionButton',
+        clearSelectionOnLeavingSelectMode: 'clearSelectionOnLeavingSelectMode',
         dataPoints: 'dataPoints',
         markAllDataPoints: 'markAllDataPoints',
         showRulersOnSelection: 'showRulersOnSelection',
@@ -322,7 +324,7 @@ define(function (require) {
         var xmin = grapher.xmin();
         var xmax = grapher.xmax();
 
-        if (0 < xmin || xmax < 0) {
+        if (xmin !== 0) {
           grapher.xDomain([0, xmax - xmin]);
         }
       },
@@ -358,6 +360,20 @@ define(function (require) {
         if (grapher) {
           grapher.update();
         }
+      },
+
+      selectionDomain: function() {
+        if (grapher) {
+          return grapher.selectionDomain.apply(grapher, arguments);
+        }
+        return null;
+      },
+
+      selectionEnabled: function() {
+        if (grapher) {
+          return grapher.selectionEnabled.apply(grapher, arguments);
+        }
+        return null;
       },
 
       /**
