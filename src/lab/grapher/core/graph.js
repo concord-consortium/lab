@@ -251,6 +251,7 @@ define(function (require) {
           enableAxisScaling: true,
 
           enableSelectionButton: false,
+          clearSelectionOnLeavingSelectMode: false,
 
           //
           // dataType can be either 'points or 'samples'
@@ -1675,7 +1676,7 @@ define(function (require) {
         selectionVisible(true);
       }
       if (!!selectionEnabled()) {
-        if (selectionDomain() === []) {
+        if (options.clearSelectionOnLeavingSelectMode || selectionDomain() === []) {
           selectionDomain(null);
         }
         selectionEnabled(false);

@@ -748,6 +748,9 @@ define(function() {
       enableSelectionButton: {
         defaultValue: false
       },
+      clearSelectionOnLeavingSelectMode: {
+        defaultValue: false
+      },
       dataPoints: {
         defaultValue: []
       },

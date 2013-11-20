@@ -99,6 +99,7 @@
         "sensorReading"
       ],
       "enableSelectionButton": true,
+      "clearSelectionOnLeavingSelectMode": true,
       "resetAxesOnReset": false
     },
     {
@@ -116,6 +117,7 @@
         "sensorReading2"
       ],
       "enableSelectionButton": true,
+      "clearSelectionOnLeavingSelectMode": true,
       "resetAxesOnReset": false
     },
     {

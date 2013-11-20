@@ -13,6 +13,7 @@ define(function (require) {
         enableAutoScaleButton: 'enableAutoScaleButton',
         enableAxisScaling: 'enableAxisScaling',
         enableSelectionButton: 'enableSelectionButton',
+        clearSelectionOnLeavingSelectMode: 'clearSelectionOnLeavingSelectMode',
         dataPoints: 'dataPoints',
         markAllDataPoints: 'markAllDataPoints',
         showRulersOnSelection: 'showRulersOnSelection',
