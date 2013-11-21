@@ -300,7 +300,7 @@ define(function(require) {
           // Important: set position to (atom.x, atom.y), not (x, y)! Note that custom drag handler
           // could be executed and it could change actual position!
           if (!setAtomPosition(i, atom.x, atom.y, true, true)) {
-            alert("You can't drop the atom there");
+            alert("You can't drop the object there.");
             setAtomPosition(i, originX, originY, false, true);
             modelView.update();
           }
