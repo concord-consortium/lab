@@ -62,6 +62,10 @@
   :name: "ITSI: Dissolving"
   :category: Curriculum
 
+- :path: itsi/diffusion
+  :name: "ITSI: Diffusion and Osmosis"
+  :category: Curriculum
+
 - :path: itsi/energy2d
   :name: "ITSI: Energy2D"
   :category: Curriculum
