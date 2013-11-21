@@ -3,6 +3,7 @@
   "publicationStatus": "draft",
   "subtitle": "",
   "about": "",
+  "aspectRatio": 1.06,
   "models": [
     {
       "type": "md2d",
@@ -10,14 +11,166 @@
       "url": "imports/legacy-mw-content/converted/interactions/rutherford-experiment/rutherford$0.json",
       "importedFrom": "imports/legacy-mw-content/interactions/rutherford-experiment/rutherford$0.mml",
       "viewOptions": {
-        "controlButtons": "play_reset"
-      }
+        "controlButtons": "play_reset",
+        "electricFieldDensity": 24,
+        "electricFieldColor": "rgb(0,128,0)"
+      },
+      "onLoad": [
+        "setAtomProperties(0, {charge: 0.5});",
+        "set('atomTraceColor','yellow');",
+        "set('timeStepsPerTick',15);",
+        "var height  = get('height'),",
+        "    offset  = 0.1,",
+        "    yBottom = offset,",
+        "    yTop    = get('height') - offset,",
+        "    xLeft   = offset,",
+        "    xRight  = get('width') - offset,",
+        "    xCenter = getAtomProperties(0).x,",
+        "    yCenter = getAtomProperties(0).y,",
+        "    tbdx    = [],",
+        "    tbdy    = [];",
+        "for (var i = 0, props; i < 9; i++) {",
+        "  props = getTextBoxProperties(i);",
+        "  tbdx.push( props.x - xCenter);",
+        "  tbdy.push( props.y - yCenter);",
+        "}",
+        "set('tbdx',tbdx);",
+        "set('tbdy',tbdy);",
+        "callEvery(500, function(){",
+        "  var y = offset + randomFloat() * (height - 2*offset);",
+        "  addAtom({x: offset, y: y, element: 0, vx: 0.003, vy: 0, charge: 0.5});",
+        "  traceAtom(getNumberOfAtoms()-1);",
+        "});",
+        "onPropertyChange('time', function(){",
+        "  var scaledRadius = get('chargeRadius');",
+        "  // absorb particles that crossed the boundary offsets",
+        "  // note atom[0] is the positive particle in the center",
+        "  // and this takes advantage that the engine does not modify",
+        "  // the atoms N < i when removing atom i",
+        "  var props, dx, dy, distanceFromCenter;",
+        "  for (var i = getNumberOfAtoms() - 1; i > 0; i--) {",
+        "    props = getAtomProperties(i);",
+        "    if (props.x > xRight) {",
+        "      untraceAtom(i);",
+        "      removeAtom(i);",
+        "      break;",
+        "    } else if (props.y < yBottom) {",
+        "      untraceAtom(i);",
+        "      removeAtom(i);",
+        "      break;",
+        "    } else if (props.y > yTop) {",
+        "      untraceAtom(i);",
+        "      removeAtom(i);",
+        "      break;",
+        "    } else if (props.x < xLeft) {",
+        "      untraceAtom(i);",
+        "      removeAtom(i);",
+        "      break;",
+        "    }",
+        "    // now remove charge if within radius, or add charge back if outside again",
+        "    dx = props.x - xCenter;",
+        "    dy = props.y - yCenter;",
+        "    distanceFromCenter = Math.sqrt(dx*dx + dy*dy);",
+        "    if (props.charge > 0 && distanceFromCenter < scaledRadius) {",
+        "      setAtomProperties(i, {charge: 0});",
+        "    } else if (props.charge === 0 && distanceFromCenter > scaledRadius) {",
+        "      setAtomProperties(i, {charge: 0.5});",
+        "    }",
+        "  }",
+        "});"
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "chargeRadius",
+      "initialValue": 1.5,
+      "onChange": [
+        "var xCenter = getAtomProperties(0).x,",
+        "    yCenter = getAtomProperties(0).y,",
+        "    x = xCenter - value,",
+        "    y = yCenter - value,",
+        "    d = 2*value,",
+        "    tbdx = get('tbdx'),",
+        "    tbdy = get('tbdy');",
+        "setShapeProperties(4,{x: x, y: y, width: d, height: d});",
+        "for( var i = 0; i < 9; i++) {",
+        "  setTextBoxProperties(i,{",
+        "    x: xCenter + tbdx[i] * value / 1.5 + (1 - 1.5/value)*0.01,",
+        "    y: yCenter + tbdy[i] * value / 1.5 - (1 - 1.5/value)*0.01",
+        "  });",
+        "}"
+      ]
+    },
+    {
+      "name": "tbdx",
+      "initialValue": [],
+      "onChange": []
+    },
+    {
+      "name": "tbdy",
+      "initialValue": [],
+      "onChange": []
     }
   ],
   "components": [
+    {
+      "type": "button",
+      "id": "shoot-alpha-particles",
+      "text": "Shoot alpha particles",
+      "action": "start();"
+    },
+    {
+      "type": "button",
+      "id": "stop-alpha-particles",
+      "text": "Stop",
+      "action": "stop();"
+    },
+    {
+      "type": "button",
+      "id": "reset",
+      "text": "Reset",
+      "action": "reset();"
+    },
+    {
+      "type": "slider",
+      "id": "select-radius",
+      "title": "Set Spread of Positive Charge",
+      "min": 0.1,
+      "max": 1.5,
+      "steps": 30,
+      "property": "chargeRadius",
+      "labels": [
+        {
+          "value": 0.1,
+          "label": "concentrated"
+        },
+        {
+          "value": 1.5,
+          "label": "diffuse"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "select-show-electric-field",
+      "property": "showElectricField",
+      "text": "Show electric field"
+    }
   ],
   "layout": {
     "bottom": [
+      ["shoot-alpha-particles", "stop-alpha-particles", "reset", "select-show-electric-field"],
+      ["select-radius"]
     ]
-  }
+  },
+  "template": [
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "left": "model.left",
+      "width": "model.width",
+      "align": "center"
+    }
+  ]
 }
