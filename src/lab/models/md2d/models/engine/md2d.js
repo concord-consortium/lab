@@ -2331,7 +2331,12 @@ define(function (require, exports) {
           // plugins can update the data arrays as needed so we pass in the arrays.
           // we do this as an object, so we can add new arrays as needed by the plugins
           // without needing to update all existing plugins
-          plugin.initialize({atoms: atoms, elements: elements, radialBonds: radialBonds});
+          plugin.initialize({
+            atoms: atoms,
+            elements: elements,
+            radialBonds: radialBonds,
+            angularBonds: angularBonds
+          });
         }
 
         pluginController.registerPlugin(plugin);
@@ -2864,10 +2869,11 @@ define(function (require, exports) {
         // indexed as 6).
         i = 0;
         while (i < N_angularBonds) {
-          // Remove angular bond only when one of atoms is the CENTRAL atom of the given angular bond.
-          // It means that this radial bond creates given angular bond.
-          // Atom3Index is index of central atom in angular bonds.
-          if (angularBondAtom3Index[i] === atom1 || angularBondAtom3Index[i] === atom2)
+          // Remove related angular bonds.
+          if ((angularBondAtom1Index[i] === atom1 && angularBondAtom3Index[i] === atom2) ||
+              (angularBondAtom1Index[i] === atom2 && angularBondAtom3Index[i] === atom1) ||
+              (angularBondAtom2Index[i] === atom1 && angularBondAtom3Index[i] === atom2) ||
+              (angularBondAtom2Index[i] === atom2 && angularBondAtom3Index[i] === atom1))
             engine.removeAngularBond(i);
           else
             i++;
