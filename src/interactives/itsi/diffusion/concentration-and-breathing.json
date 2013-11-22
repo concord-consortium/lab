@@ -11,7 +11,7 @@
     {
       "type": "md2d",
       "id": "model1",
-      "url": "models/md2d/itsi/diffusion/concentration-and-breathing.json",
+      "url": "models/md2d/itsi/diffusion/concentration-and-breathing/concentration-and-breathing.json",
       "viewOptions": {
         "controlButtons": "play_reset",
         "imageMapping": { }

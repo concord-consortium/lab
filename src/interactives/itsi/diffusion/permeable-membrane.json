@@ -15,7 +15,7 @@
     {
       "type": "md2d",
       "id": "model1",
-      "url": "models/md2d/itsi/diffusion/permeable-membrane.json",
+      "url": "models/md2d/itsi/diffusion/permeable-membrane/permeable-membrane.json",
       "viewOptions": {
         "controlButtons": "play_reset",
         "imageMapping": {
