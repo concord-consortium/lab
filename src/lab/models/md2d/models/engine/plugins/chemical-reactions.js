@@ -26,6 +26,13 @@ define(function(require) {
         2: 107, // double bond
         3: 108  // tripe bond
       },
+      BOND_TYPE_INV = (function() {
+        var result = {};
+        Object.keys(BOND_TYPE).forEach(function (key) {
+          result[BOND_TYPE[key]] = key;
+        });
+        return result;
+      }()),
 
       // Chemical reaction calculations will be performed every <INTERVAL> fs.
       INTERAVAL = 10, // fs
@@ -71,10 +78,7 @@ define(function(require) {
     function isRadical(i) {
       var v = valenceElectrons[atoms.element[i]],
           s = atoms.sharedElectrons[i];
-
-      // First case handles Helium which has only one valence electron and can accept just
-      // one shared electron. Other atoms just try to reach 8 valence electrons.
-      return !(v === 1 && s === 1) && (v + s < 8);
+      return (s < v) && (v + s < 8);
     }
 
     function getUnpairedElectrons(i) {
@@ -160,11 +164,6 @@ define(function(require) {
         // difference.
         return getActivationEnergy(i, j, k) + oldEnergy - newEnergy;
       }
-    }
-
-    function getAngleOfTriplet(a1, a2, a3) {
-      // Temporarily return a constant value.
-      return 1.91;
     }
 
     function addRadialBond(props, a1, a2, bondType) {
@@ -501,13 +500,50 @@ define(function(require) {
       }
     }
 
+    function getMoleculeAngle(valenceElectrons, sharedElectrons, bondsCount) {
+      // Angle depends on number of regions of electric charge around atom. A region of electric
+      // charge could be either an unshared pair of electrons or a shared pair (in a bond).
+      // The regions of electron density will repel each other to minimize energy, so the following
+      // angles are associated with regions of electron density:
+      //
+      // 4 regions = 90 degree angle
+      // 3 regions = 120 degree angle
+      // 2 regions = 180 degree angle
+      //
+      // There calculation about regions of electron density needs to consider the valence setting
+      // for the central atom in a triplet grouping. Assuming single bonds this is what we get:
+      // valence 1 = n/a (can't be a central atom in a triplet)
+      // valence 2 = 2 regions
+      // valence 3 = 3 regions
+      // valence 4 = 4 regions
+      // valence 5 = 4 regions (Two electrons will pair to become a shared pair and not bond. Three bonds possible.)
+      // valence 6 = 4 regions (Two pairs of unshared electrons will occur. Two bonds possible.)
+      // valence 7 = n/a (can't be a central atom in a triplet)
+      // valence 8 = n/a (no bonds can form - this is a noble gas element)
+      //
+      // If double or triple bonds form then regions of electron density become merged, reducing
+      // the total number of regions. Only atoms with valence 3 - 5 could be central atoms and
+      // form double or triple bonds.
+      // valence 3 with one double bond = 2 regions of electron density
+      // valence 4 with one double bond = 3 regions of electron density
+      // valence 4 with two double bonds = 2 regions of electron density
+      // valence 4 with one triple bond = 2 regions of electron density
+      // valence 5 with one double bond = 3 regions of electron density
+      //
+      // See related PT story: https://www.pivotaltracker.com/story/show/58090710
+      //
+      // Actually we can implement the whole algorithm using this simple formula:
+      return 2 * Math.PI / Math.min(4, valenceElectrons) - (sharedElectrons - bondsCount);
+    }
+
     function setupNewAngularBonds() {
-      var i, len, a1, a2, a3, dpot, angle;
+      var i, len, a1, a2, a3, type, dpot, angle;
       // Construct helper structure containing bonded atoms.
       var bondedAtoms = [];
       for (i = 0, len = engine.getNumberOfRadialBonds(); i < len; i++) {
         a1 = radialBonds.atom1[i];
         a2 = radialBonds.atom2[i];
+        type = BOND_TYPE_INV[radialBonds.type];
         if (modifiedAtoms[a1]) {
           if (!bondedAtoms[a1]) {
             bondedAtoms[a1] = [a2];
@@ -530,11 +566,12 @@ define(function(require) {
         ba = bondedAtoms[i];
         if (!ba || ba.length < 2) continue;
 
+        angle = getMoleculeAngle(valenceElectrons[atoms.element[i]], atoms.sharedElectrons[i], ba.length);
+
         if (ba.length === 2) {
           a1 = ba[0];
           a2 = ba[1];
           a3 = i;
-          angle = getAngleOfTriplet(a1, a2, a3);
           props = {
             atom1: a1,
             atom2: a2,
