@@ -6,53 +6,48 @@
   "models": [
     {
       "type": "md2d",
-      "id": "simplest-reaction$0",
+      "id": "model1",
       "onLoad": [
-        "// addRandomAtom(1); addRandomAtom(2); addRandomAtom(1);"
+        "for(var i = 0; i < 30; i++) addRandomAtom(i % 2);"
       ],
       "model": {
         "useChemicalReactions": true,
+        "targetTemperature": 4000,
         "chemicalReactions": {
           "valenceElectrons": [
             1,
-            1,
             6,
-            7
+            4
           ],
           "bondEnergy": {
-            "1-2": 3,
-            "1-1": 0.1,
-            "2-2": 0.1
+            "0-0": 0.01,
+            "0=0": 0.01,
+            "1-1": 0.01,
+            "1=1": 0.01,
+            "0-1": 0.01,
+            "0-2": 10,
+            "0=2": 10,
+            "1-2": 10,
+            "1=2": 10
           }
         },
         "timeStep": 0.5,
         "width": 10,
-        "height": 4,
+        "height": 6,
         "atoms": {
           "x": [
-            1,
-            2,
-            3,
-            5,
-            6
+            4
           ],
           "y": [
-            2.01,
-            1.99,
-            2.01,
-            3,
             2
           ],
           "vx": [
-            0.001,
-            0,
-            0.0007
+            0.001
+          ],
+          "vy": [
+            0.001
           ],
           "element": [
-            1,
-            2,
-            1,
-            1,
             2
           ]
         },
@@ -60,45 +55,82 @@
           "mass": [
             120,
             24,
-            36,
-            480,
-            600
+            36
           ],
           "sigma": [
-            0.16,
-            0.37863,
-            0.35,
-            0.18,
-            0.3
+            0.30,
+            0.37,
+            0.50
           ],
           "epsilon": [
-            -0.1,
-            -0.1,
             -0.1,
             -0.1,
             -0.1
           ],
           "color": [
-            -855310,
+            -13159,
             -9066941,
-            -9092186,
-            -2539040,
-            -855310
+            -9092186
           ]
         }
       },
       "viewOptions": {
-        "controlButtons": "play_reset",
-        "atomNumbers": true
+        "controlButtons": "play_reset"
       }
+    }
+  ],
+  "parameters": [
+    {
+      "name": "yellowAtomsValence",
+      "initialValue": 1,
+      "onChange": "setValenceElectrons(0, value);"
+    },
+    {
+      "name": "greenAtomsValence",
+      "initialValue": 6,
+      "onChange": "setValenceElectrons(1, value);"
+    },
+    {
+      "name": "purpleAtomsValence",
+      "initialValue": 4,
+      "onChange": "setValenceElectrons(2, value);"
     }
   ],
   "components": [
     {
-      "type": "checkbox",
-      "id": "heat-bath",
-      "property": "temperatureControl",
-      "text": "Heat bath"
+      "type": "text",
+      "id": "label",
+      "text": "Valence electrons count:"
+    },
+    {
+      "type": "slider",
+      "id": "yellow-slider",
+      "property": "yellowAtomsValence",
+      "min": 1,
+      "max": 8,
+      "steps": 7,
+      "title": "yellow atoms",
+      "displayValue": "return value"
+    },
+    {
+      "type": "slider",
+      "id": "green-slider",
+      "property": "greenAtomsValence",
+      "min": 1,
+      "max": 8,
+      "steps": 7,
+      "title": "green atoms",
+      "displayValue": "return value"
+    },
+    {
+      "type": "slider",
+      "id": "pruple-slider",
+      "property": "purpleAtomsValence",
+      "min": 1,
+      "max": 8,
+      "steps": 7,
+      "title": "purple atoms",
+      "displayValue": "return value"
     },
     {
       "type": "graph",
@@ -106,9 +138,9 @@
       "title": "Energy (KE:red, PE:green, TE:blue)",
       "xlabel": "Time (ps)",
       "ylabel": "Energy (eV)",
-      "ymin": -15,
-      "ymax": 2,
-      "xmax": 30,
+      "ymin": -8,
+      "ymax": 8,
+      "xmax": 20,
       "xTickCount": 10,
       "yTickCount": 10,
       "xFormatter": ".2r",
@@ -135,9 +167,9 @@
     },
     {
       "id": "bottom",
-      "top": "model.bottom",
+      "top": "right.bottom",
       "width": "interactive.width",
-      "height": "1.7 * model.height",
+      "bottom": "interactive.bottom",
       "padding-top": "0.5em"
     }
   ],
@@ -146,7 +178,10 @@
       "energy-graph"
     ],
     "right": [
-      "heat-bath"
+      ["label"],
+      ["yellow-slider"],
+      ["green-slider"],
+      ["pruple-slider"]
     ]
   }
 }
