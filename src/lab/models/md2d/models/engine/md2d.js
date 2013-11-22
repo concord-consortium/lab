@@ -2852,7 +2852,7 @@ define(function (require, exports) {
         radialBondsChanged = true;
       },
 
-      removeRadialBond: function(idx) {
+      removeRadialBond: function(idx, conserveAngularBondsEnergy) {
         var i, prop, atom1, atom2;
 
         if (idx >= N_radialBonds) {
@@ -2874,7 +2874,7 @@ define(function (require, exports) {
               (angularBondAtom1Index[i] === atom2 && angularBondAtom3Index[i] === atom1) ||
               (angularBondAtom2Index[i] === atom1 && angularBondAtom3Index[i] === atom2) ||
               (angularBondAtom2Index[i] === atom2 && angularBondAtom3Index[i] === atom1))
-            engine.removeAngularBond(i);
+            engine.removeAngularBond(i, conserveAngularBondsEnergy);
           else
             i++;
         }
@@ -2940,11 +2940,21 @@ define(function (require, exports) {
         engine.setAngularBondProperties(N_angularBonds - 1, props);
       },
 
-      removeAngularBond: function(idx) {
-        var i, prop;
+      removeAngularBond: function(idx, conserveEnergy) {
+        var i, prop, a1, a2, a3, angleDiff;
 
         if (idx >= N_angularBonds) {
           throw new Error("Angular bond " + idx + " doesn't exist, so it can't be removed.");
+        }
+
+        if (conserveEnergy) {
+          a1 = angularBondAtom1Index[idx];
+          a2 = angularBondAtom2Index[idx];
+          a3 = angularBondAtom3Index[idx];
+          angleDiff = angularBondAngle[idx] - math.getAngleBetweenVec(x[a1], y[a1],
+                                                                      x[a2], y[a2],
+                                                                      x[a3], y[a3]);
+          engine.addKEToAtoms(0.5 * angularBondStrength[idx] * angleDiff * angleDiff, a1, a2, a3);
         }
 
         // Shift angular bonds properties and zero last element.
@@ -3905,6 +3915,47 @@ define(function (require, exports) {
 
           return PE;
         };
+      },
+
+
+      // Adds a kinetic energy (defined in eV) to a group of atoms (2 or 3).
+      // Returns false when it's impossible (e.g. it can happen when provided energy is negative
+      // and atoms can't be cooled down more), true othrwise.
+      addKEToAtoms: function(energyChange, a1, a2, a3) {
+        var oldKE = engine.getAtomKineticEnergy(a1) +
+                    engine.getAtomKineticEnergy(a2) +
+                    (a3 !== undefined ? engine.getAtomKineticEnergy(a3) : 0),
+            newKE = oldKE + energyChange,
+            ratio;
+
+        if (newKE <= 0) {
+          // Energy can't be conserved using these 2 (or 3) atoms.
+          return false;
+        }
+        if (oldKE === 0) {
+          vx[a1] = Math.random() * 2 - 1 * 1e-5;
+          vy[a1] = Math.random() * 2 - 1 * 1e-5;
+          oldKE = engine.getAtomKineticEnergy(a1);
+        }
+
+        ratio = Math.sqrt(newKE / oldKE);
+        vx[a1] *= ratio;
+        vy[a1] *= ratio;
+        vx[a2] *= ratio;
+        vy[a2] *= ratio;
+        // TODO: probably we shouldn't store (px, py) at all, but calculate it when needed.
+        px[a1] *= ratio;
+        py[a1] *= ratio;
+        px[a2] *= ratio;
+        py[a2] *= ratio;
+        if (a3 !== undefined) {
+          vx[a3] *= ratio;
+          vy[a3] *= ratio;
+          px[a3] *= ratio;
+          py[a3] *= ratio;
+        }
+        // Energy is conserved.
+        return true;
       },
 
       /**
