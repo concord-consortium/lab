@@ -3928,43 +3928,52 @@ define(function (require, exports) {
       },
 
 
-      // Adds a kinetic energy (defined in eV) to a group of atoms (2 or 3).
+      // Adds a kinetic energy (defined in eV) to a group of atoms defined as optional arguments.
+      // e.g. .addKEToAtoms(2, 1, 2, 3) will add 2eV to atoms 1, 2 and 3. When no atom index is
+      // specified, the function will use all available atoms.
       // Returns false when it's impossible (e.g. it can happen when provided energy is negative
-      // and atoms can't be cooled down more), true othrwise.
-      addKEToAtoms: function(energyChange, a1, a2, a3) {
-        var oldKE = engine.getAtomKineticEnergy(a1) +
-                    engine.getAtomKineticEnergy(a2) +
-                    (a3 !== undefined ? engine.getAtomKineticEnergy(a3) : 0),
-            newKE = oldKE + energyChange,
-            ratio;
+      // and atoms can't be cooled down more), true otherwise.
+      addKEToAtoms: function(energyChange) {
+        var atoms = Array.prototype.slice.call(arguments, 1),
+            oldKE = 0,
+            newKE,
+            ratio,
+            i, len, idx;
+
+        if (atoms.length === 0) {
+          for (i = 0; i < N; i++) {
+            atoms.push(i);
+          }
+        }
+
+        for (i = 0, len = atoms.length; i < len; i++) {
+          oldKE += engine.getAtomKineticEnergy(atoms[i]);
+        }
+
+        newKE = oldKE + energyChange;
 
         if (newKE <= 0) {
-          // Energy can't be conserved using these 2 (or 3) atoms.
+          // Energy can't be conserved using a given set of atoms.
           return false;
         }
         if (oldKE === 0) {
-          vx[a1] = Math.random() * 2 - 1 * 1e-5;
-          vy[a1] = Math.random() * 2 - 1 * 1e-5;
-          oldKE = engine.getAtomKineticEnergy(a1);
+          idx = atoms[0];
+          vx[idx] = Math.random() * 2 - 1 * 1e-5;
+          vy[idx] = Math.random() * 2 - 1 * 1e-5;
+          oldKE = engine.getAtomKineticEnergy(idx);
         }
 
         ratio = Math.sqrt(newKE / oldKE);
-        vx[a1] *= ratio;
-        vy[a1] *= ratio;
-        vx[a2] *= ratio;
-        vy[a2] *= ratio;
-        // TODO: probably we shouldn't store (px, py) at all, but calculate it when needed.
-        px[a1] *= ratio;
-        py[a1] *= ratio;
-        px[a2] *= ratio;
-        py[a2] *= ratio;
-        if (a3 !== undefined) {
-          vx[a3] *= ratio;
-          vy[a3] *= ratio;
-          px[a3] *= ratio;
-          py[a3] *= ratio;
+
+        for (i = 0, len = atoms.length; i < len; i++) {
+          idx = atoms[i];
+          vx[idx] *= ratio;
+          vy[idx] *= ratio;
+          // TODO: probably we shouldn't store (px, py) at all, but calculate it when needed.
+          px[idx] *= ratio;
+          py[idx] *= ratio;
         }
-        // Energy is conserved.
+
         return true;
       },
 
