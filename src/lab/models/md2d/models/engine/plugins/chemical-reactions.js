@@ -11,8 +11,15 @@
 */
 
 define(function(require) {
+  var arrays             = require('arrays'),
+      arrayTypes         = require('common/array-types'),
+      metadata           = require('models/md2d/models/metadata'),
+      validator          = require('common/validator'),
+      constants          = require('models/md2d/models/engine/constants/index'),
+      getAngleBetweenVec = require('models/md2d/models/engine/math/utils').getAngleBetweenVec,
+      unit               = constants.unit,
 
-  var BOND_LEN_RATIO = 0.6, // follows Classic MW constant.
+      BOND_LEN_RATIO = 0.6, // follows Classic MW constant.
       // Based on the Classic MW constants defining bond style.
       BOND_TYPE = {
         1: 101, // single bond
@@ -21,7 +28,9 @@ define(function(require) {
       },
 
       // Chemical reaction calculations will be performed every <INTERVAL> fs.
-      INTERAVAL = 10; // fs
+      INTERAVAL = 10, // fs
+
+      ANGULAR_BOND_STRENGTH = 50; // follows Classic MW default value.
 
   // Dot product of [x1, y1] and [x2, y2] vectors.
   function dot(x1, y1, x2, y2) {
@@ -29,18 +38,9 @@ define(function(require) {
   }
 
   return function ChemicalReactions(engine, _properties) {
-
-    var arrays           = require('arrays'),
-        arrayTypes       = require('common/array-types'),
-        metadata         = require('models/md2d/models/metadata'),
-        validator        = require('common/validator'),
-        constants        = require('models/md2d/models/engine/constants/index'),
-        unit             = constants.unit,
+    var api,
 
         properties       = validator.validateCompleteness(metadata.chemicalReactions, _properties),
-
-        api,
-
         valenceElectrons = properties.valenceElectrons,
         bondEnergy       = properties.bondEnergy,
         activationEnergy = properties.activationEnergy,
@@ -59,7 +59,8 @@ define(function(require) {
 
         atoms,
         elements,
-        radialBonds;
+        radialBonds,
+        angularBonds;
 
     function updateAtomsTable() {
       var length = atoms.x.length;
@@ -161,6 +162,11 @@ define(function(require) {
       }
     }
 
+    function getAngleOfTriplet(a1, a2, a3) {
+      // Temporarily return a constant value.
+      return 1.91;
+    }
+
     function addRadialBond(props, a1, a2, bondType) {
       props.atom1 = a1;
       props.atom2 = a2;
@@ -179,7 +185,7 @@ define(function(require) {
     }
 
     function removeRadialBond(i, a1, a2, bondType) {
-      engine.removeRadialBond(i);
+      engine.removeRadialBond(i, true);
       bondsChanged = true;
       modifiedAtoms[a1] = true;
       modifiedAtoms[a2] = true;
@@ -192,7 +198,7 @@ define(function(require) {
       props.atom1 = a1;
       props.atom2 = a2;
       props.type = BOND_TYPE[newType];
-      engine.setRadialBondProperties(i, props);
+      engine.setRadialBondProperties(i, props, true);
       bondsChanged = true;
       modifiedAtoms[a1] = true;
       modifiedAtoms[a2] = true;
@@ -209,6 +215,16 @@ define(function(require) {
       // easier to observe and follow (otherwise the bond can exchanged multiple times during
       // one step, what can be confusing for users that will see only the final result).
       bondToExchange[a2] = undefined;
+    }
+
+    function addAngularBond(props) {
+      engine.addAngularBond(props);
+      bondsChanged = true;
+    }
+
+    function setAngularBondProperties(i, props) {
+      engine.setAngularBondProperties(i, props);
+      bondsChanged = true;
     }
 
     function cleanupModifiedAtomsAndFlags() {
@@ -272,7 +288,7 @@ define(function(require) {
             dpot -= chemEnergy;
             // LJ potential will now be calculated, take it into account.
             dpot += engine.ljCalculator[el1][el2].potentialFromSquaredDistance(ijsq);
-            if (conserveEnergy(dpot, a1, a2)) {
+            if (engine.addKEToAtoms(dpot, a1, a2)) {
               removeRadialBond(i, a1, a2, bondType);
             }
           }
@@ -363,7 +379,7 @@ define(function(require) {
       //    interaction between bonded particles) .
       dpot -= engine.ljCalculator[el1][el2].potentialFromSquaredDistance(ijsq);
 
-      if (conserveEnergy(dpot, a1, a2)) {
+      if (engine.addKEToAtoms(dpot, a1, a2)) {
         addRadialBond({
           length: length,
           strength: strength
@@ -431,7 +447,7 @@ define(function(require) {
         // 3. LJ potential between particles.
         dpot += engine.ljCalculator[el2][el3].potentialFromSquaredDistance(ijsq);
 
-        if (conserveEnergy(dpot, a1, a2, a3)) {
+        if (engine.addKEToAtoms(dpot, a1, a2, a3)) {
           // Update bond, change it from a2-d3 to a1-a2.
           transferRadialBond(bondIdx, {
             length: newLength,
@@ -441,39 +457,102 @@ define(function(require) {
       }
     }
 
-    // Conserves energy. Returns false when it's impossible, so parent function should handle such
-    // situation and perhaps doesn't execute operation that leads to such energy change.
-    function conserveEnergy(energyChange, a1, a2, a3) {
-      var oldKE = engine.getAtomKineticEnergy(a1) +
-                  engine.getAtomKineticEnergy(a2) +
-                  (a3 !== undefined ? engine.getAtomKineticEnergy(a3) : 0),
-          newKE = oldKE + energyChange,
-          ratio;
+    function removeAngularBondOfModfiedAtoms() {
+      // Remove all angular bonds that have modified atoms as a central atom (atom3 prop).
+      // Use such "strange" form of loop, as while removing one bonds, other change their indexing.
+      // So, after removal of bond 5, we should check bond 5 again, as it would be another bond
+      // (previously indexed as 6).
+      var i = 0;
+      while (i < engine.getNumberOfAngularBonds()) {
+        if (modifiedAtoms[angularBonds.atom3[i]]) {
+          engine.removeAngularBond(i, true);
+        } else {
+          i++;
+        }
+      }
+    }
 
-      if (newKE <= 0) {
-        // Energy can't be conserved using these 2 (or 3) atoms.
-        return false;
+    function tryToMakeAngularBondsStronger() {
+      var i, len, a1, a2, a3, dpot;
+      // Try to make angular bonds with strength equal to 0 stronger (if we can conserve energy).
+      // Such bonds were added earlier when kinetic energy of atoms was too small to compensate
+      // potential energy of angular bond. It's very likely to happen when bond between atoms is
+      // much smaller or bigger than expected.
+      for (i = 0, len = engine.getNumberOfAngularBonds(); i < len; i++) {
+        if (angularBonds.strength[i] === 0) {
+          a1 = angularBonds.atom1[i];
+          a2 = angularBonds.atom2[i];
+          a3 = angularBonds.atom3[i];
+          dpot = angularBonds.angle[i] - getAngleBetweenVec(atoms.x[a1], atoms.y[a1],
+                                                            atoms.x[a2], atoms.y[a2],
+                                                            atoms.x[a3], atoms.y[a3]);
+          dpot = -0.5 * ANGULAR_BOND_STRENGTH * dpot * dpot;
+
+          if (engine.addKEToAtoms(dpot, a1, a2, a3)) {
+            setAngularBondProperties(i, {
+              strength: ANGULAR_BOND_STRENGTH
+            });
+          }
+        }
+      }
+    }
+
+    function setupNewAngularBonds() {
+      var i, len, a1, a2, a3, dpot, angle;
+      // Construct helper structure containing bonded atoms.
+      var bondedAtoms = [];
+      for (i = 0, len = engine.getNumberOfRadialBonds(); i < len; i++) {
+        a1 = radialBonds.atom1[i];
+        a2 = radialBonds.atom2[i];
+        if (modifiedAtoms[a1]) {
+          if (!bondedAtoms[a1]) {
+            bondedAtoms[a1] = [a2];
+          } else {
+            bondedAtoms[a1].push(a2);
+          }
+        }
+        if (modifiedAtoms[a2]) {
+          if (!bondedAtoms[a2]) {
+            bondedAtoms[a2] = [a1];
+          } else {
+            bondedAtoms[a2].push(a1);
+          }
+        }
       }
 
-      ratio = Math.sqrt(newKE / oldKE);
-      atoms.vx[a1] *= ratio;
-      atoms.vy[a1] *= ratio;
-      atoms.vx[a2] *= ratio;
-      atoms.vy[a2] *= ratio;
-      // TODO: probably we shouldn't store (px, py) at all, but calculate it when needed.
-      atoms.px[a1] *= ratio;
-      atoms.py[a1] *= ratio;
-      atoms.px[a2] *= ratio;
-      atoms.py[a2] *= ratio;
-      if (a3 !== undefined) {
-        atoms.vx[a3] *= ratio;
-        atoms.vy[a3] *= ratio;
-        atoms.px[a3] *= ratio;
-        atoms.py[a3] *= ratio;
-      }
+      // Finally construct new angular bonds.
+      var ba, props;
+      for (i = 0, len = bondedAtoms.length; i < len; i++) {
+        ba = bondedAtoms[i];
+        if (!ba || ba.length < 2) continue;
 
-      // Energy is conserved.
-      return true;
+        if (ba.length === 2) {
+          a1 = ba[0];
+          a2 = ba[1];
+          a3 = i;
+          angle = getAngleOfTriplet(a1, a2, a3);
+          props = {
+            atom1: a1,
+            atom2: a2,
+            atom3: a3,
+            angle: angle
+          };
+          // Calculate potential energy of angular bond.
+          dpot = angle - getAngleBetweenVec(atoms.x[a1], atoms.y[a1],
+                                            atoms.x[a2], atoms.y[a2],
+                                            atoms.x[a3], atoms.y[a3]);
+          dpot = -0.5 * ANGULAR_BOND_STRENGTH * dpot * dpot;
+          // If we can't conserve energy, add a "fake" angular bond with strength equal to 0.
+          // During next steps we will try to make it stronger when the angular bond potential
+          // energy will be smaller of kinetic energy of atoms bigger.
+          if(engine.addKEToAtoms(dpot, a1, a2, a3)) {
+            props.strength = ANGULAR_BOND_STRENGTH;
+          } else {
+            props.strength = 0;
+          }
+          addAngularBond(props);
+        }
+      }
     }
 
     // Gets chemical potential energy stored in radial bonds.
@@ -493,9 +572,10 @@ define(function(require) {
     // Public API.
     api = {
       initialize: function (dataTables) {
-        atoms       = dataTables.atoms;
-        elements    = dataTables.elements;
-        radialBonds = dataTables.radialBonds;
+        atoms        = dataTables.atoms;
+        elements     = dataTables.elements;
+        radialBonds  = dataTables.radialBonds;
+        angularBonds = dataTables.angularBonds;
         updateAtomsTable();
       },
 
@@ -515,6 +595,18 @@ define(function(require) {
           // only by .createBonds() function anyway.
           updateBondToExchangeArray();
           createBonds(neighborList);
+
+          if (Object.keys(modifiedAtoms).length > 0) {
+            // Some reaction took place, update angular bonds.
+            removeAngularBondOfModfiedAtoms();
+            tryToMakeAngularBondsStronger();
+            setupNewAngularBonds();
+          } else {
+            // In fact this call can be placed before the whole if-else statement. However this
+            // is a small optimization, as we can setup optimal order of function calls.
+            tryToMakeAngularBondsStronger();
+          }
+
           if (bondsChanged) {
             // Update forces coming from new bonds configuration (!).
             engine.updateParticlesAccelerations();
