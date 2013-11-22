@@ -1,0 +1,152 @@
+{
+  "title": "Angular Bonds",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "simplest-reaction$0",
+      "onLoad": [
+        "// addRandomAtom(1); addRandomAtom(2); addRandomAtom(1);"
+      ],
+      "model": {
+        "useChemicalReactions": true,
+        "chemicalReactions": {
+          "valenceElectrons": [
+            1,
+            1,
+            6,
+            7
+          ],
+          "bondEnergy": {
+            "1-2": 3,
+            "1-1": 0.1,
+            "2-2": 0.1
+          }
+        },
+        "timeStep": 0.5,
+        "width": 10,
+        "height": 4,
+        "atoms": {
+          "x": [
+            1,
+            2,
+            3,
+            5,
+            6
+          ],
+          "y": [
+            2.01,
+            1.99,
+            2.01,
+            3,
+            2
+          ],
+          "vx": [
+            0.001,
+            0,
+            0.0007
+          ],
+          "element": [
+            1,
+            2,
+            1,
+            1,
+            2
+          ]
+        },
+        "elements": {
+          "mass": [
+            120,
+            24,
+            36,
+            480,
+            600
+          ],
+          "sigma": [
+            0.16,
+            0.37863,
+            0.35,
+            0.18,
+            0.3
+          ],
+          "epsilon": [
+            -0.1,
+            -0.1,
+            -0.1,
+            -0.1,
+            -0.1
+          ],
+          "color": [
+            -855310,
+            -9066941,
+            -9092186,
+            -2539040,
+            -855310
+          ]
+        }
+      },
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "atomNumbers": true
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "checkbox",
+      "id": "heat-bath",
+      "property": "temperatureControl",
+      "text": "Heat bath"
+    },
+    {
+      "type": "graph",
+      "id": "energy-graph",
+      "title": "Energy (KE:red, PE:green, TE:blue)",
+      "xlabel": "Time (ps)",
+      "ylabel": "Energy (eV)",
+      "ymin": -15,
+      "ymax": 2,
+      "xmax": 30,
+      "xTickCount": 10,
+      "yTickCount": 10,
+      "xFormatter": ".2r",
+      "yFormatter": ".2s",
+      "properties": [
+        "kineticEnergy",
+        "potentialEnergy",
+        "totalEnergy"
+      ]
+    }
+  ],
+  "template": [
+    {
+      "id": "right",
+      "top": "model.top",
+      "left": "model.right",
+      "padding-left": "1em"
+    },
+    {
+      "id": "left",
+      "top": "model.top",
+      "right": "model.left",
+      "padding-left": "3em"
+    },
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "width": "interactive.width",
+      "height": "1.7 * model.height",
+      "padding-top": "0.5em"
+    }
+  ],
+  "layout": {
+    "bottom": [
+      "energy-graph"
+    ],
+    "right": [
+      "heat-bath"
+    ]
+  }
+}
