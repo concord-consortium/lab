@@ -486,9 +486,7 @@ define(function(require) {
           a1 = angularBonds.atom1[i];
           a2 = angularBonds.atom2[i];
           a3 = angularBonds.atom3[i];
-          dpot = angularBonds.angle[i] - getAngleBetweenVec(atoms.x[a1], atoms.y[a1],
-                                                            atoms.x[a2], atoms.y[a2],
-                                                            atoms.x[a3], atoms.y[a3]);
+          dpot = angularBonds.angle[i] - getAngleBetweenAtoms(a1, a2, a3);
           dpot = -0.5 * ANGULAR_BOND_STRENGTH * dpot * dpot;
 
           if (engine.addKEToAtoms(dpot, a1, a2, a3)) {
@@ -498,6 +496,13 @@ define(function(require) {
           }
         }
       }
+    }
+
+    // Returns angle between a1-a3 and a2-a3 vectors.
+    function getAngleBetweenAtoms(a1, a2, a3) {
+      return getAngleBetweenVec(atoms.x[a1], atoms.y[a1],
+                                atoms.x[a2], atoms.y[a2],
+                                atoms.x[a3], atoms.y[a3]);
     }
 
     function getMoleculeAngle(valenceElectrons, sharedElectrons, bondsCount) {
@@ -533,11 +538,11 @@ define(function(require) {
       // See related PT story: https://www.pivotaltracker.com/story/show/58090710
       //
       // Actually we can implement the whole algorithm using this simple formula:
-      return 2 * Math.PI / Math.min(4, valenceElectrons) - (sharedElectrons - bondsCount);
+      return 2 * Math.PI / (Math.min(4, valenceElectrons) - (sharedElectrons - bondsCount));
     }
 
     function setupNewAngularBonds() {
-      var i, len, a1, a2, a3, type, dpot, angle;
+      var i, len, a1, a2, type, angle, ba, possibleBonds;
       // Construct helper structure containing bonded atoms.
       var bondedAtoms = [];
       for (i = 0, len = engine.getNumberOfRadialBonds(); i < len; i++) {
@@ -561,7 +566,6 @@ define(function(require) {
       }
 
       // Finally construct new angular bonds.
-      var ba, props;
       for (i = 0, len = bondedAtoms.length; i < len; i++) {
         ba = bondedAtoms[i];
         if (!ba || ba.length < 2) continue;
@@ -569,31 +573,83 @@ define(function(require) {
         angle = getMoleculeAngle(valenceElectrons[atoms.element[i]], atoms.sharedElectrons[i], ba.length);
 
         if (ba.length === 2) {
+          // e.g. A -- B -- A
           a1 = ba[0];
           a2 = ba[1];
-          a3 = i;
-          props = {
-            atom1: a1,
-            atom2: a2,
-            atom3: a3,
-            angle: angle
-          };
-          // Calculate potential energy of angular bond.
-          dpot = angle - getAngleBetweenVec(atoms.x[a1], atoms.y[a1],
-                                            atoms.x[a2], atoms.y[a2],
-                                            atoms.x[a3], atoms.y[a3]);
-          dpot = -0.5 * ANGULAR_BOND_STRENGTH * dpot * dpot;
-          // If we can't conserve energy, add a "fake" angular bond with strength equal to 0.
-          // During next steps we will try to make it stronger when the angular bond potential
-          // energy will be smaller of kinetic energy of atoms bigger.
-          if(engine.addKEToAtoms(dpot, a1, a2, a3)) {
-            props.strength = ANGULAR_BOND_STRENGTH;
-          } else {
-            props.strength = 0;
+          addAngularBondBetween(a1, a2, i, angle);
+        } else {
+          possibleBonds = [];
+          if (ba.length === 3) {
+            // e.g. A -- B -- A
+            //           |
+            //           A
+            pushPossibleBond(possibleBonds, ba[0], ba[1], i);
+            pushPossibleBond(possibleBonds, ba[0], ba[2], i);
+            pushPossibleBond(possibleBonds, ba[1], ba[2], i);
+          } else if (ba.length === 4) {
+            // e.g.      A
+            //           |
+            //      A -- B -- A
+            //           |
+            //           A
+            pushPossibleBond(possibleBonds, ba[0], ba[1], i);
+            pushPossibleBond(possibleBonds, ba[0], ba[2], i);
+            pushPossibleBond(possibleBonds, ba[0], ba[3], i);
+            pushPossibleBond(possibleBonds, ba[1], ba[2], i);
+            pushPossibleBond(possibleBonds, ba[1], ba[3], i);
+            pushPossibleBond(possibleBonds, ba[2], ba[3], i);
           }
-          addAngularBond(props);
+          possibleBonds.sort(comparePossibleBonds);
+          createFirstNPossibleBonds(possibleBonds, ba.length - 1, angle);
         }
       }
+    }
+
+    function pushPossibleBond(arr, a1, a2, aCentral) {
+      arr.push({
+        angle: getAngleBetweenAtoms(a1, a2, aCentral),
+        a1: a1,
+        a2: a2,
+        aCentral: aCentral
+      });
+    }
+
+    function comparePossibleBonds(a, b) {
+      if (a.angle < b.angle) return -1;
+      if (a.angle > b.angle) return 1;
+      return 0;
+    }
+
+    function createFirstNPossibleBonds(array, N, bondAngle) {
+      var i, bondDef;
+      for (i = 0; i < N; i++) {
+        bondDef = array[i];
+        addAngularBondBetween(bondDef.a1, bondDef.a2, bondDef.aCentral, bondAngle, bondDef.angle);
+      }
+    }
+
+    function addAngularBondBetween(a1, a2, aCentral, bondAngle, currentAngle) {
+      if (!currentAngle) {
+        currentAngle = getAngleBetweenAtoms(a1, a2, aCentral);
+      }
+      var props = {
+        atom1: a1,
+        atom2: a2,
+        atom3: aCentral,
+        angle: bondAngle
+      };
+      // Calculate potential energy of angular bond.
+      var dpot = bondAngle - currentAngle;
+      dpot = -0.5 * ANGULAR_BOND_STRENGTH * dpot * dpot;
+      // If we can't conserve energy, add a "fake" angular bond with strength equal to 0.
+      // During next steps we will try to make it stronger when the angular bond potential
+      // energy will be smaller of kinetic energy of atoms bigger.
+      if (engine.addKEToAtoms(dpot, a1, a2, aCentral)) {
+        props.strength = ANGULAR_BOND_STRENGTH;
+      } else {
+        props.strength = 0;
+      }
+      addAngularBond(props);
     }
 
     // Gets chemical potential energy stored in radial bonds.
