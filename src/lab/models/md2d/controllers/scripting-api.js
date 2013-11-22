@@ -188,10 +188,20 @@ define(function (require) {
        * Sets bond energy (dissociation energy) of a bond.
        * @param {string} bondDescription e.g. "1-1" means single bond between element 1 and 1,
        *                                 "1=2" means double bond between element 1 and 2 etc.
-       * @param {number} value           bond energy in eV..
+       * @param {number} value           bond energy in eV
        */
       setBondEnergy: function setBondEnergy(bondDescription, value) {
         parent.model.setBondEnergy(bondDescription, value);
+      },
+
+      /**
+       * Sets valence electrons count of the given element.
+       * @param {number} element
+       * @param {number} value
+       */
+      setValenceElectrons: function setVelenceElectrons(element, value) {
+        parent.model.setValenceElectrons(element, value);
+        parent.api.repaintIfReady();
       },
 
       /**

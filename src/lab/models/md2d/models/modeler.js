@@ -1631,6 +1631,10 @@ define(function(require) {
       engine.callPluginAccessor('setBondEnergy', [bondDescription, value]);
     };
 
+    model.setValenceElectrons = function(element, value) {
+      engine.callPluginAccessor('setValenceElectrons', [element, value]);
+    };
+
     /**
       Returns the total number of atoms, or else the number of atoms matching some criterion.
 

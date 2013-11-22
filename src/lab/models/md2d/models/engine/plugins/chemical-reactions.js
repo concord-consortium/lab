@@ -258,12 +258,16 @@ define(function(require) {
       }
     }
 
-    function destroyBonds() {
-      var i, len,
-          a1, a2, el1, el2, dpot,
-          xij, yij, ijsq, bondLen, bondType, chemEnergy;
+    // When forcedCleanup equals to true, all bonds will be removed.
+    function destroyBonds(forcedCleanup) {
+      var i, a1, a2, el1, el2, dpot,
+          xij, yij, ijsq, bondLen, bondType, chemEnergy,
+          bondRemoved;
 
-      for (i = 0, len = engine.getNumberOfRadialBonds(); i < len; ++i) {
+      i = 0;
+      while (i < engine.getNumberOfRadialBonds()) {
+        bondRemoved = false;
+
         a1 = radialBonds.atom1[i];
         a2 = radialBonds.atom2[i];
         bondLen = radialBonds.length[i];
@@ -274,7 +278,7 @@ define(function(require) {
 
         dpot = Math.sqrt(ijsq) - bondLen;
 
-        if (dpot > 0) {
+        if (dpot > 0 || forcedCleanup) {
           // Bond is longer than its basic length, there is potential energy.
           dpot = 0.5 * radialBonds.strength[i] * dpot * dpot;
           // Bond chemical energy.
@@ -282,16 +286,26 @@ define(function(require) {
           el2 = atoms.element[a2];
           bondType = getBondType(i);
           chemEnergy = getBondEnergy(el1, el2, bondType);
-          if (dpot > chemEnergy) {
+          if (dpot > chemEnergy || forcedCleanup) {
             // Potential energy is larger than chemical energy, destroy bond.
             dpot -= chemEnergy;
             // LJ potential will now be calculated, take it into account.
             dpot += engine.ljCalculator[el1][el2].potentialFromSquaredDistance(ijsq);
             if (engine.addKEToAtoms(dpot, a1, a2)) {
               removeRadialBond(i, a1, a2, bondType);
+              bondRemoved = true;
+            } else if (forcedCleanup) {
+              // If it is impossible to add given amount of KE to just two atoms, try to add it
+              // to all atoms. It's best what we can do to try to conserve energy during forced
+              // cleanup.
+              engine.addKEToAtoms(dpot);
+              removeRadialBond(i, a1, a2, bondType);
+              bondRemoved = true;
             }
           }
         }
+        // After bond removal, all other bonds are re-indexed!
+        if (!bondRemoved) i++;
       }
     }
 
@@ -729,6 +743,18 @@ define(function(require) {
        */
       setBondEnergy: function(bondDescription, value) {
         bondEnergy[bondDescription] = value;
+      },
+
+      /**
+       * Sets valence electrons count of the given element.
+       * @param {number} element
+       * @param {number} value
+       */
+      setValenceElectrons: function(element, value) {
+        valenceElectrons[element] = value;
+        // Cleanup all bonds.
+        destroyBonds(true);
+        validateSharedElectronsCount();
       }
     };
 
