@@ -388,10 +388,14 @@ define(function(require) {
     }
 
     function tryToExchangeBond(a1, a2, bondIdx, xij, yij, ijsq) {
-      var a3 = radialBonds.atom1[bondIdx] !== a2 ?
-               radialBonds.atom1[bondIdx] : radialBonds.atom2[bondIdx],
-          el1 = atoms.element[a1],
+      var el1 = atoms.element[a1],
           el2 = atoms.element[a2],
+          a1Old = radialBonds.atom1[bondIdx],
+          a2Old = radialBonds.atom2[bondIdx],
+          el1Old = atoms.element[a1Old],
+          el2Old = atoms.element[a2Old],
+          // Atom that can lose the bond, it has to be different from a1 and a2.
+          a3 = a1Old !== a1 && a1Old !== a2 ? a1Old : a2Old,
           el3 = atoms.element[a3],
 
           oldType = getBondType(bondIdx),
@@ -436,16 +440,16 @@ define(function(require) {
         dpot -= engine.ljCalculator[el1][el2].potentialFromSquaredDistance(ijsq);
 
         // Old bond configuration.
-        xij = atoms.x[a2] - atoms.x[a3];
-        yij = atoms.y[a2] - atoms.y[a3];
+        xij = atoms.x[a1Old] - atoms.x[a2Old];
+        yij = atoms.y[a1Old] - atoms.y[a2Old];
         ijsq = xij * xij + yij * yij;
         // 1. Radial bond potential energy.
         lenDiff = Math.sqrt(ijsq) - oldLength;
         dpot -= -0.5 * oldStrength * lenDiff * lenDiff;
         // 2. Bond chemical energy.
-        dpot -= getBondEnergy(el2, el3, oldType);
+        dpot -= getBondEnergy(el1Old, el2Old, oldType);
         // 3. LJ potential between particles.
-        dpot += engine.ljCalculator[el2][el3].potentialFromSquaredDistance(ijsq);
+        dpot += engine.ljCalculator[el1Old][el2Old].potentialFromSquaredDistance(ijsq);
 
         if (engine.addKEToAtoms(dpot, a1, a2, a3)) {
           // Update bond, change it from a2-d3 to a1-a2.
