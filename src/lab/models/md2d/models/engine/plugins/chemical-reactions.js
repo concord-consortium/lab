@@ -82,14 +82,10 @@ define(function(require) {
     }
 
     function getUnpairedElectrons(i) {
+      // Don't support quadruple bonds, as they are unrealistic and can cause problems
+      // (e.g. there is :C=C:, but not C==C).
       var v = valenceElectrons[atoms.element[i]];
-      if (v === 1) {
-        return 1 - atoms.sharedElectrons[i]; // = 2 - 1 valence electron - sharedElectrons
-      } else {
-        // Don't support quadruple bonds, as they are unrealistic and can cause problems
-        // (e.g. there is :C=C:, but not C==C).
-        return Math.min(3, 8 - v - atoms.sharedElectrons[i]);
-      }
+      return Math.min(3, Math.min(8 - v, v) - atoms.sharedElectrons[i]);
     }
 
     // Returns length of bond between elements i and j.
