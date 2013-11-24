@@ -76,3 +76,6 @@
 [submodule "vendor/fastclick"]
 	path = vendor/fastclick
 	url = https://github.com/ftlabs/fastclick.git
+[submodule "submodules/lab-grapher"]
+	path = submodules/lab-grapher
+	url = git@github.com:pjanik/lab-grapher.git
