@@ -1,7 +1,7 @@
 /*global define, $*/
 
 define(function (require) {
-  var Graph = require('grapher/core/graph'),
+  var Graph = require('lab-grapher'),
       metadata  = require('common/controllers/interactive-metadata'),
       validator = require('common/validator'),
 
