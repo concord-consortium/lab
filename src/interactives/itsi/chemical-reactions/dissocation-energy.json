@@ -1,0 +1,90 @@
+{
+  "title": "Making and Breaking Bonds: Dissociation Energy - A₂ <--> A + A",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": [
+    "A chemical reaction can occur in three different ways:",
+    "",
+    "- A chemical bond is formed.",
+    "- A chemical bond is broken.",
+    "- One or more electrons are transferred between atoms or molecules.",
+    "",
+    "Explore reactions in which chemical bonds are formed and broken with this model.",
+    "Press run, then try heating and cooling the atoms to see how temperature affects ",
+    "the balance between bond formation and breaking."
+  ],
+  "models": [
+    {
+      "type": "md2d",
+      "id": "making-breaking.json",
+      "url": "models/md2d/itsi/chemical-reactions/dissociation-energy.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      },
+      "modelOptions": {}
+    }
+  ],
+  "parameters": [
+    {
+      "name": "dissociationEnergy",
+      "initialValue": 0.094,
+      "onChange": [
+        "setBondEnergy('1-1', get('dissociationEnergy'));"
+      ]
+    }
+  ],
+  "components": [
+    {
+      "type": "slider",
+      "id": "temperature-slider",
+      "min": 200,
+      "max": 10200,
+      "labels": [
+        {
+          "value": 200,
+          "label": "Low"
+        },
+        {
+          "value": 10200,
+          "label": "High"
+        }
+      ],
+      "steps": 1000,
+      "title": "Temperature",
+      "width": "100%",
+      "property": "targetTemperature"
+    },
+    {
+      "type": "slider",
+      "id": "dissociation-slider",
+      "min": 0,
+      "max": 0.2,
+      "labels": [
+        {
+          "value": 0,
+          "label": "Low"
+        },
+        {
+          "value": 0.2,
+          "label": "High"
+        }
+      ],
+      "steps": 200,
+      "title": "Dissociation Energy",
+      "width": "100%",
+      "property": "dissociationEnergy"
+    }
+  ],
+  "template": [
+    {
+      "id": "below",
+      "top": "model.bottom",
+      "left": "model.left",
+      "width": "model.width",
+      "align": "center"
+    }
+  ],
+  "layout": {
+    "below": [["temperature-slider"],["dissociation-slider"]]
+  }
+}
