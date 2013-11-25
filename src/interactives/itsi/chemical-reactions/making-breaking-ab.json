@@ -1,0 +1,28 @@
+{
+  "title": "Making and Breaking Bonds: A + B -> AB",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": [
+    "A chemical reaction can occur in three different ways:",
+    "",
+    "- A chemical bond is formed.",
+    "- A chemical bond is broken.",
+    "- One or more electrons are transferred between atoms or molecules.",
+    "",
+    "Explore reactions in which chemical bonds are formed and broken with this model."
+  ],
+  "models": [
+    {
+      "type": "md2d",
+      "id": "making-breaking-ab.json",
+      "url": "models/md2d/itsi/chemical-reactions/making-breaking-ab.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      },
+      "modelOptions": {}
+    }
+  ],
+  "components": [],
+  "template": [],
+  "layout": {}
+}
