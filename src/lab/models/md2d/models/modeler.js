@@ -1238,6 +1238,10 @@ define(function(require) {
       return engine.getRadialBondsForAtom(i);
     };
 
+    model.getBondedAtoms = function(i) {
+      return engine.getBondedAtoms(i);
+    };
+
     model.getAngularBondsForAtom = function(i) {
       return engine.getAngularBondsForAtom(i);
     };

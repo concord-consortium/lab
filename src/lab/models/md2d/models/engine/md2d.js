@@ -2338,6 +2338,43 @@ define(function (require, exports) {
       }
     };
 
+    // bondedAtoms[i] contains a list of atoms bonded to atom "i".
+    var bondedAtoms = [];
+    bondedAtoms.reset = function () {
+      var i, atom1, atom2;
+
+      this.length = 0;
+
+      for (i = 0; i < N_radialBonds; i++) {
+        atom1 = radialBondAtom1Index[i];
+        atom2 = radialBondAtom2Index[i];
+        this[atom1] = this[atom1] || [];
+        this[atom1].push(atom2);
+        this[atom2] = this[atom2] || [];
+        this[atom2].push(atom1);
+      }
+    };
+    bondedAtoms.unset = function(atom1, atom2) {
+      if (this[atom1]) {
+        var atom1Idx = this[atom2].indexOf(atom1);
+        var atom2Idx = this[atom1].indexOf(atom2);
+        if (atom1Idx !== -1) {
+          this[atom1].splice(atom2Idx, 1);
+          this[atom2].splice(atom1Idx, 1);
+        }
+      }
+    };
+    bondedAtoms.set = function(atom1, atom2) {
+      if (this[atom1] == null) {
+        this[atom1] = [];
+      }
+      if (this[atom2] == null) {
+        this[atom2] = [];
+      }
+      this[atom1].push(atom2);
+      this[atom2].push(atom1);
+    };
+
     // ####################################################################
     // ####################################################################
 
@@ -2574,6 +2611,8 @@ define(function (require, exports) {
         if (radialBondMatrix[atom2] && radialBondMatrix[atom2][atom1])
           radialBondMatrix[atom2][atom1] = false;
 
+        bondedAtoms.unset(atom1, atom2);
+
         // If atom1 or atom2 properties are changed, remove related angular bonds.
         if ((props.atom1 !== undefined && props.atom1 !== atom1) ||
             (props.atom2 !== undefined && props.atom2 !== atom2)) {
@@ -2594,6 +2633,8 @@ define(function (require, exports) {
         radialBondMatrix[atom1][atom2] = true;
         if (!radialBondMatrix[atom2]) radialBondMatrix[atom2] = [];
         radialBondMatrix[atom2][atom1] = true;
+
+        bondedAtoms.set(atom1, atom2);
       },
 
       setAngularBondProperties: function(i, props) {
@@ -2817,8 +2858,9 @@ define(function (require, exports) {
           }
         }
 
-        // Recalculate radial bond matrix, as indices have changed.
+        // Recalculate radial bond matrix and bonded atoms lists, as indices have changed.
         radialBondMatrix.reset();
+        bondedAtoms.reset();
 
         // (Re)initialize helper structures for optimizations.
         initializeCellList();
@@ -2889,6 +2931,9 @@ define(function (require, exports) {
         // Start from removing angular bonds.
         removeAngularBondsContaining(radialBondAtom1Index[idx], radialBondAtom2Index[idx], conserveAngularBondsEnergy);
 
+        // Update optimization structure.
+        bondedAtoms.unset(radialBondAtom1Index[idx], radialBondAtom2Index[idx]);
+
         // Shift radial bonds properties and zero last element.
         // It can be optimized by just replacing the last
         // radial bond with radial bond 'i', however this approach
@@ -2908,7 +2953,7 @@ define(function (require, exports) {
 
         N_radialBonds--;
 
-        // Recalculate radial bond matrix.
+        // Recalculate radial bond matrix as bond indices have changed.
         radialBondMatrix.reset();
 
         radialBondsChanged = true;
@@ -4065,20 +4110,7 @@ define(function (require, exports) {
         Returns all atoms directly bonded to atom i
       */
       getBondedAtoms: function(i) {
-        var bondedAtoms = [],
-            j, jj;
-        if (radialBonds) {
-          for (j = 0, jj = N_radialBonds; j < jj; j++) {
-            // console.log("looking at bond from "+radialBonds)
-            if (radialBondAtom1Index[j] === i) {
-              bondedAtoms.push(radialBondAtom2Index[j]);
-            }
-            if (radialBondAtom2Index[j] === i) {
-              bondedAtoms.push(radialBondAtom1Index[j]);
-            }
-          }
-        }
-        return bondedAtoms;
+        return bondedAtoms[i] || [];
       },
 
       getCoulombForceAt: function(testX, testY, resultObj) {
@@ -4224,6 +4256,7 @@ define(function (require, exports) {
 
               neighborList.invalidate();
               radialBondMatrix.reset();
+              bondedAtoms.reset();
               chargedAtomsList.reset();
             }
           }
