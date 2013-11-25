@@ -29,6 +29,82 @@ describe "MD2D modeler", ->
     atomData.y.should.equal data.y[1]
 
 
+  it "should provide a way to get atoms directly bonded together", ->
+    model.addAtom x: 1, y: 2
+    model.addAtom x: 2, y: 3
+    model.addAtom x: 3, y: 4
+
+    bondedAtoms = model.getBondedAtoms 0
+    bondedAtoms.length.should.equal 0
+
+    # Add radial bond
+    model.addRadialBond atom1: 0, atom2: 1, length: 2, strength: 3
+
+    bondedAtoms = model.getBondedAtoms 0
+    bondedAtoms.length.should.equal 1
+    bondedAtoms.should.contain 1
+
+    bondedAtoms = model.getBondedAtoms 1
+    bondedAtoms.length.should.equal 1
+    bondedAtoms.should.contain 0
+
+    # Add next radial bond
+    model.addRadialBond atom1: 2, atom2: 0, length: 2, strength: 3
+
+    bondedAtoms = model.getBondedAtoms 0
+    bondedAtoms.length.should.equal 2
+    bondedAtoms.should.contain 1
+    bondedAtoms.should.contain 2
+
+    bondedAtoms = model.getBondedAtoms 1
+    bondedAtoms.length.should.equal 1
+    bondedAtoms.should.contain 0
+
+    bondedAtoms = model.getBondedAtoms 2
+    bondedAtoms.length.should.equal 1
+    bondedAtoms.should.contain 0
+
+    # Remove one radial bond
+    model.removeRadialBond 0
+
+    bondedAtoms = model.getBondedAtoms 0
+    bondedAtoms.length.should.equal 1
+    bondedAtoms.should.contain 2
+
+    bondedAtoms = model.getBondedAtoms 1
+    bondedAtoms.length.should.equal 0
+
+    bondedAtoms = model.getBondedAtoms 2
+    bondedAtoms.length.should.equal 1
+    bondedAtoms.should.contain 0
+
+    # Move radial bond to another pair
+    model.setRadialBondProperties 0, {atom1: 0, atom2: 1}
+
+    bondedAtoms = model.getBondedAtoms 0
+    bondedAtoms.length.should.equal 1
+    bondedAtoms.should.contain 1
+
+    bondedAtoms = model.getBondedAtoms 1
+    bondedAtoms.length.should.equal 1
+    bondedAtoms.should.contain 0
+
+    bondedAtoms = model.getBondedAtoms 2
+    bondedAtoms.length.should.equal 0
+
+    # Add next radial bond and remove one of the atoms
+    model.addRadialBond atom1: 2, atom2: 0, length: 2, strength: 3
+    model.removeAtom 1
+
+    bondedAtoms = model.getBondedAtoms 0
+    bondedAtoms.length.should.equal 1
+    bondedAtoms.should.contain 1
+
+    bondedAtoms = model.getBondedAtoms 1
+    bondedAtoms.length.should.equal 1
+    bondedAtoms.should.contain 0
+
+
   describe "when addAtom() is called", ->
     describe "and the properties are correct", ->
       it "should add a new atom", ->
