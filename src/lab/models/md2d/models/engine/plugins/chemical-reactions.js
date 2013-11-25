@@ -44,6 +44,23 @@ define(function(require) {
     return x1 * x2 + y1 * y2;
   }
 
+  // Returns true if array1 and array2 have at least one common element, false otherwise.
+  function commonElement(array1, array2) {
+    var len1 = array1.length,
+        len2 = array2.length,
+        i, j, el1;
+    // It's a brutal force approach, but note that maximum length of the array is 4. We use that
+    // function to compare if two atoms have a common bonded atom. In chemical reactions, only
+    // 4 bonds can be formed per atom.
+    for (i = 0; i < len1; i++) {
+      el1 = array1[i];
+      for (j = 0; j < len2; j++) {
+        if (el1 === array2[j]) return true;
+      }
+    }
+    return false;
+  }
+
   return function ChemicalReactions(engine, _properties) {
     var api,
 
@@ -349,19 +366,29 @@ define(function(require) {
     }
 
     function collide(a1, a2, xij, yij, ijsq) {
-      var a1Radical, a2Radical;
+      var a1Radical, a2Radical, bothRadical, a1a2Exchange, a2a1Exchange;
 
       if (willCollide(a1, a2, xij, yij)) {
         a1Radical = isRadical(a1);
         a2Radical = isRadical(a2);
+        bothRadical = a1Radical && a2Radical;
+        a1a2Exchange = a1Radical && bondToExchange[a2] !== undefined;
+        a2a1Exchange = a2Radical && bondToExchange[a1] !== undefined;
 
-        if (a1Radical && a2Radical) {
-          // Simple case, two radicals, just create a new bond.
-          makeBond(a1, a2, ijsq);
-        } else if (a1Radical && bondToExchange[a2] !== undefined) {
-          tryToExchangeBond(a1, a2, bondToExchange[a2], xij, yij, ijsq);
-        } else if (a2Radical && bondToExchange[a1] !== undefined) {
-          tryToExchangeBond(a2, a1, bondToExchange[a1], xij, yij, ijsq);
+        if (bothRadical || a1a2Exchange || a2a1Exchange) {
+          // Check if there is a common element in directly bonded atoms. If so, don't let the
+          // chemical reaction happen, as we don't want to form triangles. Note that we defer
+          // this check as much as it's possible, as it can be little bit expensive.
+          if (commonElement(engine.getBondedAtoms(a1), engine.getBondedAtoms(a2))) return;
+
+          if (bothRadical) {
+            // Simple case, two radicals, just create a new bond.
+            makeBond(a1, a2, ijsq);
+          } else if (a1a2Exchange) {
+            tryToExchangeBond(a1, a2, bondToExchange[a2], xij, yij, ijsq);
+          } else if (a2a1Exchange) {
+            tryToExchangeBond(a2, a1, bondToExchange[a1], xij, yij, ijsq);
+          }
         }
       }
     }
