@@ -1,0 +1,61 @@
+{
+  "title": "Making and Breaking Bonds: A + A -> A₂",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": [
+    "A chemical reaction can occur in three different ways:",
+    "",
+    "- A chemical bond is formed.",
+    "- A chemical bond is broken.",
+    "- One or more electrons are transferred between atoms or molecules.",
+    "",
+    "Explore reactions in which chemical bonds are formed and broken with this model.",
+    "Press run, then try heating and cooling the atoms to see how temperature affects ",
+    "the balance between bond formation and breaking."
+  ],
+  "models": [
+    {
+      "type": "md2d",
+      "id": "making-breaking.json",
+      "url": "models/md2d/itsi/bonds/making-breaking.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      },
+      "modelOptions": {}
+    }
+  ],
+  "components": [
+    {
+      "type": "slider",
+      "id": "temperature-slider",
+      "min": 200,
+      "max": 10200,
+      "labels": [
+        {
+          "value": 200,
+          "label": "Low"
+        },
+        {
+          "value": 10200,
+          "label": "High"
+        }
+      ],
+      "steps": 1000,
+      "title": "Temperature",
+      "width": "100%",
+      "property": "targetTemperature"
+    }
+  ],
+  "template": [
+    {
+      "id": "below",
+      "top": "model.bottom",
+      "left": "model.left",
+      "width": "model.width",
+      "align": "center"
+    }
+  ],
+  "layout": {
+    "below": ["temperature-slider"]
+  }
+}
