@@ -1,0 +1,69 @@
+{
+  "title": "Activation Energy 1: A + B₂ -> AB + B",
+  "publicationStatus": "draft",
+  "subtitle": "Energy Exchange in Collision and, perhaps, a Reaction",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "activation-energy-1.json",
+      "url": "models/md2d/itsi/chemical-reactions/activation-energy-1.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      },
+      "modelOptions": {}
+    }
+  ],
+  "components": [
+    {
+      "id": "ke-bar-graph",
+      "type": "barGraph",
+      "property": "kineticEnergy",
+      "min": 0,
+      "max": 8,
+      "title": "Kinetic Energy",
+      "titleOn": "right",
+      "labels": 0,
+      "units": false,
+      "gridLines": 10,
+      "labelFormat": "0.1f",
+      "averagePeriod": 2500,
+      "barWidth": "1.5em",
+      "height": "100%",
+      "barColor": "#e23c34",
+      "fillColor": "#fff",
+      "tooltip": ""
+    },
+    {
+      "id": "pe-bar-graph",
+      "type": "barGraph",
+      "property": "potentialEnergy",
+      "min": -8,
+      "max": 0,
+      "title": "Potential Energy",
+      "titleOn": "right",
+      "labels": 0,
+      "units": false,
+      "gridLines": 10,
+      "labelFormat": "0.1f",
+      "averagePeriod": 2500,
+      "barWidth": "1.5em",
+      "height": "100%",
+      "barColor": "#e23c34",
+      "fillColor": "#fff",
+      "tooltip": ""
+    }
+  ],
+  "template": [
+    {
+      "id": "on-right",
+      "left": "model.right",
+      "top": "model.top",
+      "height": "model.height",
+      "align": "center"
+    }
+  ],
+  "layout": {
+    "on-right": ["ke-bar-graph", "pe-bar-graph"]
+  }
+}
