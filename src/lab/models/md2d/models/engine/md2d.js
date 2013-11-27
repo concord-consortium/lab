@@ -4073,44 +4073,38 @@ define(function (require, exports) {
         return res[1];
       },
 
-      atomsInMolecule: [],
-      depth: 0,
-
       /**
-        Returns all atoms in the same molecule as atom i
-        (not including i itself)
+        Returns all atoms in the same molecule as atom idx
+        (not including idx itself)
       */
-      getMoleculeAtoms: function(i) {
-        this.atomsInMolecule.push(i);
+      getMoleculeAtoms: function(idx) {
+        // Use simple DFS algorithm.
+        var result = [];
+        var stack = [];
+        var visited = {};
+        var bondedAtoms, bondedAtom, i, len;
 
-        var moleculeAtoms = [],
-            bondedAtoms = this.getBondedAtoms(i),
-            depth = this.depth,
-            j, jj,
-            atomNo;
-
-        this.depth++;
-
-        for (j=0, jj=bondedAtoms.length; j<jj; j++) {
-          atomNo = bondedAtoms[j];
-          if (!~this.atomsInMolecule.indexOf(atomNo)) {
-            moleculeAtoms = moleculeAtoms.concat(this.getMoleculeAtoms(atomNo)); // recurse
+        stack.push(idx);
+        visited[idx] = true;
+        while (stack.length > 0) {
+          bondedAtoms = engine.getBondedAtoms(stack.pop());
+          for (i = 0, len = bondedAtoms.length; i < len; i++) {
+            bondedAtom = bondedAtoms[i];
+            if (!visited[bondedAtom]) {
+              visited[bondedAtom] = true;
+              stack.push(bondedAtom);
+              result.push(bondedAtom);
+            }
           }
         }
-        if (depth === 0) {
-          this.depth = 0;
-          this.atomsInMolecule = [];
-        } else {
-          moleculeAtoms.push(i);
-        }
-        return moleculeAtoms;
+        return result;
       },
 
       /**
-        Returns all atoms directly bonded to atom i
+        Returns all atoms directly bonded to atom idx
       */
-      getBondedAtoms: function(i) {
-        return bondedAtoms[i] || [];
+      getBondedAtoms: function(idx) {
+        return bondedAtoms[idx] || [];
       },
 
       getCoulombForceAt: function(testX, testY, resultObj) {
