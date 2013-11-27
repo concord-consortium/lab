@@ -68,7 +68,8 @@
     'fastclick': '../../vendor/fastclick/lib/fastclick',
     'backbone': '../../node_modules/backbone/backbone',
     'mustache': '../../node_modules/mustache/mustache',
-    'markdown': '../../node_modules/markdown/lib/markdown'
+    'markdown': '../../node_modules/markdown/lib/markdown',
+    'sensor-applet': '../../vendor/lab-sensor-applet-interface/dist/sensor-applet-interface'
   },
 
   // Protect global namespace and call export of API.

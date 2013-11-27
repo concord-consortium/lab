@@ -76,3 +76,6 @@
 [submodule "vendor/fastclick"]
 	path = vendor/fastclick
 	url = https://github.com/ftlabs/fastclick.git
+[submodule "vendor/lab-sensor-applet-interface"]
+	path = vendor/lab-sensor-applet-interface
+	url = git://github.com/concord-consortium/lab-sensor-applet-interface.git

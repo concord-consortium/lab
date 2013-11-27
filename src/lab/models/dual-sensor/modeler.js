@@ -7,10 +7,9 @@ define(function(require) {
       RunningAverageFilter = require('cs!common/filters/running-average-filter'),
       validator            = require('common/validator'),
       metadata             = require('./metadata'),
-      unitsDefinition      = require('sensor-applet/units-definition'),
-      appletClasses        = require('sensor-applet/applet-classes'),
-      appletErrors         = require('sensor-applet/errors'),
-      sensorDefinitions    = require('sensor-applet/sensor-definitions'),
+      sensorApplet         = require('sensor-applet'),
+      unitsDefinition      = sensorApplet.unitsDefinition,
+      sensorDefinitions    = sensorApplet.sensorDefinitions,
       labConfig            = require('lab.config'),
       BasicDialog          = require('common/controllers/basic-dialog'),
       ExportController     = require('common/controllers/export-controller');
@@ -199,11 +198,11 @@ define(function(require) {
         applet.append($('body'),function(error) {
 
           if (error) {
-            if (error instanceof appletErrors.JavaLoadError) {
+            if (error instanceof sensorApplet.JavaLoadError) {
               handleLoadingFailure("It appears that Java applets cannot run in your browser. If you are able to fix this, reload the page to use the sensor");
-            } else if (error instanceof appletErrors.AppletInitializationError) {
+            } else if (error instanceof sensorApplet.AppletInitializationError) {
               handleLoadingFailure("The sensor applet appears not to be loading. If you are able to fix this, reload the page to use the sensor");
-            } else if (error instanceof appletErrors.SensorConnectionError) {
+            } else if (error instanceof sensorApplet.SensorConnectionError) {
               handleSensorConnectionError();
             } else {
               handleLoadingFailure("There was an unexpected error when connecting to the sensor.");
@@ -269,9 +268,9 @@ define(function(require) {
       }
       var handleSensorValues = function(error, values) {
         if (error) {
-          if (error instanceof appletErrors.AlreadyReadingError) {
+          if (error instanceof sensorApplet.AlreadyReadingError) {
             // Don't worry about it -- we just overlapped another call to readSensor
-          } else if(error instanceof appletErrors.SensorConnectionError){
+          } else if(error instanceof sensorApplet.SensorConnectionError){
             clearInterval(sensorPollingIntervalID);
             handleSensorConnectionError();
           } else {
@@ -321,7 +320,7 @@ define(function(require) {
       if (sensorType && sensorType2) {
         var sensorDefinition  = sensorDefinitions[sensorType],
             sensorDefinition2 = sensorDefinitions[sensorType2],
-            AppletClass = appletClasses[sensorDefinition.appletClass];
+            AppletClass = sensorApplet[sensorDefinition.appletClass];
 
         applet = window.Lab.sensor[sensorType+sensorType2] = new AppletClass({
           listenerPath: 'Lab.sensor.' + sensorType + sensorType2,
@@ -484,7 +483,7 @@ define(function(require) {
 
         applet.start(function(error, isStarted) {
           if (error) {
-            if (error instanceof appletErrors.SensorConnectionError) {
+            if (error instanceof sensorApplet.SensorConnectionError) {
               handleSensorConnectionError();
             }
           } else if (isStarted) {
