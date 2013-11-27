@@ -28,7 +28,6 @@ describe "MD2D modeler", ->
     atomData.x.should.equal data.x[1]
     atomData.y.should.equal data.y[1]
 
-
   it "should provide a way to get atoms directly bonded together", ->
     model.addAtom x: 1, y: 2
     model.addAtom x: 2, y: 3
@@ -44,9 +43,15 @@ describe "MD2D modeler", ->
     bondedAtoms.length.should.equal 1
     bondedAtoms.should.contain 1
 
+    moleculeAtoms = model.getMoleculeAtoms 0
+    moleculeAtoms.should.eql bondedAtoms
+
     bondedAtoms = model.getBondedAtoms 1
     bondedAtoms.length.should.equal 1
     bondedAtoms.should.contain 0
+
+    moleculeAtoms = model.getMoleculeAtoms 1
+    moleculeAtoms.should.eql bondedAtoms
 
     # Add next radial bond
     model.addRadialBond atom1: 2, atom2: 0, length: 2, strength: 3
@@ -56,13 +61,26 @@ describe "MD2D modeler", ->
     bondedAtoms.should.contain 1
     bondedAtoms.should.contain 2
 
+    moleculeAtoms = model.getMoleculeAtoms 0
+    moleculeAtoms.should.eql bondedAtoms
+
     bondedAtoms = model.getBondedAtoms 1
     bondedAtoms.length.should.equal 1
     bondedAtoms.should.contain 0
 
+    moleculeAtoms = model.getMoleculeAtoms 1
+    moleculeAtoms.length.should.equal 2
+    moleculeAtoms.should.contain 0
+    moleculeAtoms.should.contain 2
+
     bondedAtoms = model.getBondedAtoms 2
     bondedAtoms.length.should.equal 1
     bondedAtoms.should.contain 0
+
+    moleculeAtoms = model.getMoleculeAtoms 2
+    moleculeAtoms.length.should.equal 2
+    moleculeAtoms.should.contain 0
+    moleculeAtoms.should.contain 1
 
     # Remove one radial bond
     model.removeRadialBond 0
@@ -71,12 +89,21 @@ describe "MD2D modeler", ->
     bondedAtoms.length.should.equal 1
     bondedAtoms.should.contain 2
 
+    moleculeAtoms = model.getMoleculeAtoms 0
+    moleculeAtoms.should.eql bondedAtoms
+
     bondedAtoms = model.getBondedAtoms 1
     bondedAtoms.length.should.equal 0
+
+    moleculeAtoms = model.getMoleculeAtoms 1
+    moleculeAtoms.should.eql bondedAtoms
 
     bondedAtoms = model.getBondedAtoms 2
     bondedAtoms.length.should.equal 1
     bondedAtoms.should.contain 0
+
+    moleculeAtoms = model.getMoleculeAtoms 2
+    moleculeAtoms.should.eql bondedAtoms
 
     # Move radial bond to another pair
     model.setRadialBondProperties 0, {atom1: 0, atom2: 1}
@@ -85,12 +112,21 @@ describe "MD2D modeler", ->
     bondedAtoms.length.should.equal 1
     bondedAtoms.should.contain 1
 
+    moleculeAtoms = model.getMoleculeAtoms 0
+    moleculeAtoms.should.eql bondedAtoms
+
     bondedAtoms = model.getBondedAtoms 1
     bondedAtoms.length.should.equal 1
     bondedAtoms.should.contain 0
 
+    moleculeAtoms = model.getMoleculeAtoms 1
+    moleculeAtoms.should.eql bondedAtoms
+
     bondedAtoms = model.getBondedAtoms 2
     bondedAtoms.length.should.equal 0
+
+    moleculeAtoms = model.getMoleculeAtoms 2
+    moleculeAtoms.should.eql bondedAtoms
 
     # Add next radial bond and remove one of the atoms
     model.addRadialBond atom1: 2, atom2: 0, length: 2, strength: 3
@@ -100,9 +136,15 @@ describe "MD2D modeler", ->
     bondedAtoms.length.should.equal 1
     bondedAtoms.should.contain 1
 
+    moleculeAtoms = model.getMoleculeAtoms 0
+    moleculeAtoms.should.eql bondedAtoms
+
     bondedAtoms = model.getBondedAtoms 1
     bondedAtoms.length.should.equal 1
     bondedAtoms.should.contain 0
+
+    moleculeAtoms = model.getMoleculeAtoms 1
+    moleculeAtoms.should.eql bondedAtoms
 
 
   describe "when addAtom() is called", ->
