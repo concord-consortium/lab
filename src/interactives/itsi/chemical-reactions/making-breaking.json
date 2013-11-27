@@ -17,7 +17,7 @@
     {
       "type": "md2d",
       "id": "making-breaking.json",
-      "url": "models/md2d/itsi/bonds/making-breaking.json",
+      "url": "models/md2d/itsi/chemical-reactions/making-breaking.json",
       "viewOptions": {
         "controlButtons": "play_reset"
       },
