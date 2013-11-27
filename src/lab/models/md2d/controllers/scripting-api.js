@@ -124,10 +124,21 @@ define(function (require) {
       },
 
       /**
-       Scales the velocity of a group of atoms to the desired temperature T
+       * Scales the velocity of a group of atoms to the desired temperature T.
+       * @param {array}  atomIndices
+       * @param {number} T           defined in K
        */
       setTemperatureOfAtoms: function setTemperatureOfAtoms(atomIndices, T) {
-        parent.model.setTemperatureOfAtoms(atomIndices,T);
+        parent.model.setTemperatureOfAtoms(atomIndices, T);
+      },
+
+      /**
+       * Adds energy defined in eV to a group of atoms.
+       * @param {number} energy      defined in eV
+       * @param {array}  atomIndices optional, if undefined, KE will be added to all atoms
+       */
+      addKEToAtoms: function addKEToAtoms(energy, atomIndices) {
+        parent.model.addKEToAtoms(energy, atomIndices);
       },
 
       getTemperatureOfAtoms: function getTemperatureOfAtoms(atomIndices) {
