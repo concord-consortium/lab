@@ -728,6 +728,12 @@ define(function() {
     },
 
     chemicalReactions: {
+      createAngularBonds: {
+        // When this option is set to true, the algorithm will add angular bonds between triplet
+        // of atoms. Angle calculation is based on the energy minimization and valence electrons
+        // count.
+        defaultValue: true
+      },
       valenceElectrons: {
         defaultValue: [1, 1, 7, 7],
         immutable: true

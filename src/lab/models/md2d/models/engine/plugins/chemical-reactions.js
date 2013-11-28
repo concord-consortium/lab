@@ -64,10 +64,11 @@ define(function(require) {
   return function ChemicalReactions(engine, _properties) {
     var api,
 
-        properties       = validator.validateCompleteness(metadata.chemicalReactions, _properties),
-        valenceElectrons = properties.valenceElectrons,
-        bondEnergy       = properties.bondEnergy,
-        activationEnergy = properties.activationEnergy,
+        properties         = validator.validateCompleteness(metadata.chemicalReactions, _properties),
+        createAngularBonds = properties.createAngularBonds,
+        valenceElectrons   = properties.valenceElectrons,
+        bondEnergy         = properties.bondEnergy,
+        activationEnergy   = properties.activationEnergy,
 
         // Helper array used only during bonds exchange process. When atom has radial bonds (one or
         // more), one of them (random) will be stored in this array. It will be exchanged with
@@ -730,15 +731,17 @@ define(function(require) {
           updateBondToExchangeArray();
           createBonds(neighborList);
 
-          if (Object.keys(modifiedAtoms).length > 0) {
-            // Some reaction took place, update angular bonds.
-            removeAngularBondOfModfiedAtoms();
-            tryToMakeAngularBondsStronger();
-            setupNewAngularBonds();
-          } else {
-            // In fact this call can be placed before the whole if-else statement. However this
-            // is a small optimization, as we can setup optimal order of function calls.
-            tryToMakeAngularBondsStronger();
+          if (createAngularBonds) {
+            if (Object.keys(modifiedAtoms).length > 0) {
+              // Some reaction took place, update angular bonds.
+              removeAngularBondOfModfiedAtoms();
+              tryToMakeAngularBondsStronger();
+              setupNewAngularBonds();
+            } else {
+              // In fact this call can be placed before the whole if-else statement. However this
+              // is a small optimization, as we can setup optimal order of function calls.
+              tryToMakeAngularBondsStronger();
+            }
           }
 
           if (bondsChanged) {
