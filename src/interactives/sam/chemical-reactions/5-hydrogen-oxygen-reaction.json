@@ -42,7 +42,7 @@
     {
       "name": "slow-motion",
       "initialValue": false,
-      "onChange": "if (value) set('timeStep', 0.02); else set('timeStep', 0.08);"
+      "onChange": "if (value) set('timeStep', 0.025); else set('timeStep', 0.15);"
     }
   ],
   "components": [
