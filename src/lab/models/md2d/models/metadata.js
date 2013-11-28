@@ -734,6 +734,12 @@ define(function() {
         // count.
         defaultValue: true
       },
+      noLoops: {
+        // If this option is enabled, the algorithm will ensure that no molecule will form a loop.
+        // Note that it can have impact on performance and in many cases won't be possible due to
+        // valence electrons configuration anyway.
+        defaultValue: false
+      },
       valenceElectrons: {
         defaultValue: [1, 1, 7, 7],
         immutable: true

@@ -66,6 +66,7 @@ define(function(require) {
 
         properties         = validator.validateCompleteness(metadata.chemicalReactions, _properties),
         createAngularBonds = properties.createAngularBonds,
+        noLoops            = properties.noLoops,
         valenceElectrons   = properties.valenceElectrons,
         bondEnergy         = properties.bondEnergy,
         activationEnergy   = properties.activationEnergy,
@@ -408,6 +409,8 @@ define(function(require) {
           // chemical reaction happen, as we don't want to form triangles. Note that we defer
           // this check as much as it's possible, as it can be little bit expensive.
           if (commonElement(engine.getBondedAtoms(a1), engine.getBondedAtoms(a2))) return;
+          // If "noLoops" mode is enabled, check whether a1 is a part of the same molecule as a2.
+          if (noLoops && (a1 in engine.getMoleculeAtoms(a2))) return;
 
           if (bothRadical) {
             // Simple case, two radicals, just create a new bond.
