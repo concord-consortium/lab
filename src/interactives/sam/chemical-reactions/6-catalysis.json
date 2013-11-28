@@ -1,6 +1,6 @@
 {
   "title": "Catalysis",
-  "publicationStatus": "draft",
+  "publicationStatus": "public",
   "subtitle": "",
   "about": [
     "Below is a model containing reactants which will form the reaction:",
@@ -54,6 +54,12 @@
             "2+1-3": 0.01
           }
         }
+      },
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "imageMapping": {
+          "formulaA2andB2to2AB.gif": "formulaA2andB2to2AB.svg"
+        }
       }
     }
   ],
@@ -101,6 +107,18 @@
       "type": "checkbox",
       "text": "Slow motion",
       "property": "slowMotion"
+    }
+  ],
+  "helpTips": [
+    {
+      "text": [
+        "##Experimenting with the model##",
+        "",
+        "1. Run the model to observe what happens without a catalyst.",
+        "2. Pause the model.",
+        "3. Add a few (3 - 4) catalyst atoms to the container by clicking the background area.",
+        "4. Run the model again, and observe how the catalyst affects the reaction."
+      ]
     }
   ],
   "layout": {
