@@ -410,7 +410,7 @@ define(function(require) {
           // this check as much as it's possible, as it can be little bit expensive.
           if (commonElement(engine.getBondedAtoms(a1), engine.getBondedAtoms(a2))) return;
           // If "noLoops" mode is enabled, check whether a1 is a part of the same molecule as a2.
-          if (noLoops && (a1 in engine.getMoleculeAtoms(a2))) return;
+          if (noLoops && engine.getMoleculeAtoms(a2).indexOf(a1) !== -1) return;
 
           if (bothRadical) {
             // Simple case, two radicals, just create a new bond.
