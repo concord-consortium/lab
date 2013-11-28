@@ -99,13 +99,6 @@ define(function(require) {
       return (s < v) && (v + s < 8);
     }
 
-    function getUnpairedElectrons(i) {
-      // Don't support quadruple bonds, as they are unrealistic and can cause problems
-      // (e.g. there is :C=C:, but not C==C).
-      var v = valenceElectrons[atoms.element[i]];
-      return Math.min(3, Math.min(8 - v, v) - atoms.sharedElectrons[i]);
-    }
-
     // Returns length of bond between elements i and j.
     function getBondLength(i, j) {
       return BOND_LEN_RATIO * (elements.sigma[i] + elements.sigma[j]);
@@ -118,10 +111,44 @@ define(function(require) {
       return 2e4 * Math.sqrt(elements.epsilon[i] * elements.epsilon[j]);
     }
 
+    function getUnpairedElectrons(i) {
+      // Don't support quadruple bonds, as they are unrealistic and can cause problems
+      // (e.g. there is :C=C:, but not C==C).
+      var v = valenceElectrons[atoms.element[i]];
+      return Math.min(Math.min(8 - v, v) - atoms.sharedElectrons[i]);
+    }
+
     // Returns a number indicating whether a bond between atoms atom1 and atom2 would be
     // a single (1), double (2) or triple (3) bond.
-    function getPossibleBondType(atom1, atom2) {
-      return Math.min(getUnpairedElectrons(atom1), getUnpairedElectrons(atom2));
+    // Bond type will be based on two factors:
+    // - available electron slots,
+    // - stability of the configuration (if e.g. either single and double bond can be created,
+    //   the bond type with bigger chemical energy will be chosen).
+    // The last argument lets you modify unpaired electrons count of the second atom. It is useful
+    // during bond exchange when we have to take into account that existing bond will be transfered.
+    function getPossibleBondType(atom1, atom2, atom2Mod) {
+      if (atom2Mod === undefined) atom2Mod = 0;
+      var maxType = Math.min(3, getUnpairedElectrons(atom1), getUnpairedElectrons(atom2) + atom2Mod);
+      // Only single bond is possible or no bond at all. No need to compare bond energies.
+      if (maxType < 2) {
+        return maxType;
+      }
+      // More complicated case. Compare energies of single, double and triple bonds and choose the
+      // most stable configuration (the highest bond energy).
+      var bondEnergy,
+          mostStableType,
+          el1, el2;
+      if (maxType >= 2) {
+        el1 = atoms.element[atom1];
+        el2 = atoms.element[atom2];
+        bondEnergy = {1: getBondEnergy(el1, el2, 1), 2: getBondEnergy(el1, el2, 2)};
+        mostStableType = bondEnergy[1] > bondEnergy[2] ? 1 : 2;
+      }
+      if (maxType === 2) {
+        return mostStableType;
+      } else if (maxType === 3) {
+        return bondEnergy[mostStableType] > getBondEnergy(el1, el2, 3) ? mostStableType : 3;
+      }
     }
 
     // Returns a number indicating type of existing radial bond.
@@ -436,8 +463,8 @@ define(function(require) {
           el3 = atoms.element[a3],
 
           oldType = getBondType(bondIdx),
-          // Take into account that a2 shared electron count is now affected by old bond.
-          newType = Math.min(getUnpairedElectrons(a1), getUnpairedElectrons(a2) + oldType),
+          // Take into account that a2 shared electron count is now affected by old bond!
+          newType = getPossibleBondType(a1, a2, oldType),
 
           minCollisionEnergy = getEnergyForBondExchange(el1, el2, el3, oldType, newType),
 
