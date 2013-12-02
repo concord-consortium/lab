@@ -131,20 +131,11 @@
       "text": "Start removing heat",
       "action": [
         "if (isStopped()) {",
-        "  setComponentDisabled('start-cooling', true);",
         "  start();",
         "}",
+        "setComponentDisabled('start-cooling', true);",
         "set('timeExperimentStarted', get('time'));",
         "set('experimentRunning', true);"
-      ]
-    },
-    {
-      "type": "button",
-      "id": "reset-experiment",
-      "text": "Reset experiment",
-      "action": [
-        "reload();",
-        "set('experimentRunning', false);"
       ]
     },
     {
@@ -183,7 +174,7 @@
       "temperature-energy-graph"
     ],
     "bottom": [
-      "start-cooling", "reset-experiment", "experiment-time"
+      "start-cooling", "experiment-time"
     ]
   },
   "template": [
