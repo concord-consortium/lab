@@ -6,7 +6,7 @@
   "models": [
     {
       "type": "md2d",
-      "id": "activation-energy-1.json",
+      "id": "activation-energy-2.json",
       "url": "models/md2d/itsi/chemical-reactions/activation-energy-2.json",
       "viewOptions": {
         "controlButtons": "play_reset"
