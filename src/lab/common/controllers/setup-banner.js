@@ -129,7 +129,7 @@ define(function () {
       });
     }
 
-    if (controller.helpSystem) {
+    if (interactive.helpTips.length > 0) {
       createElementInContainer(
       {
         "type": "div",
@@ -158,6 +158,7 @@ define(function () {
         "aboveOthers": true
       });
 
+      // Note that help system has to be initialized before we setup banner!
       controller.helpSystem.on("start.icon", function () {
         var $icon = $("#help-icon > i");
         $icon.addClass("icon-remove-sign active");

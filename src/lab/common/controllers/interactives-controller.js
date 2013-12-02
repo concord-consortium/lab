@@ -531,6 +531,33 @@ define(function (require) {
         }
       }
 
+      // Setup help system if help tips are defined.
+      if (interactive.helpTips.length > 0) {
+        helpSystem = new HelpSystem(interactive.helpTips, $interactiveContainer);
+        controller.on("interactiveRendered", function () {
+          function hashCode(string) {
+            var hash = 0, len = string.length, i, c;
+            if (len === 0) return hash;
+            for (i = 0; i < len; i++) {
+              c = string.charCodeAt(i);
+              hash = ((hash<<5) - hash) + c;
+              hash = hash & hash;
+            }
+            return hash;
+          }
+          var hash = hashCode(JSON.stringify(interactive));
+          // When displayOnLoad is set to true, the help mode will be automatically shown,
+          // but only when user opens interactive for the first time.
+          if (interactive.helpOnLoad && !cookies.hasItem("lab-help-" + hash)) {
+            helpSystem.start();
+            cookies.setItem("lab-help-" + hash, true);
+          }
+        });
+      }
+
+      // Replace native tooltips with custom, styled and responsive tooltips.
+      tooltip($interactiveContainer);
+
       // Create interactive components
       var componentJsons = def.components || [];
       // Clear component instances.
@@ -791,48 +818,27 @@ define(function (require) {
         }
       }
 
+      // We call component loaded callbacks before onLoad scripts because some onLoad scripts
+      // may require that components are already initialized. Unfortunately some components
+      // fully initialize themselves only when model is provided (the issue is visible when
+      // experiment controller is being used).
+      // TODO FIXME: components should be fully functional even before model is loaded for
+      // the first time.
+      for(i = 0; i < componentModelLoadedCallbacks.length; i++) {
+        componentModelLoadedCallbacks[i](model, scriptingAPI);
+      }
+
       onLoadScripts = [];
       if (controller.currentModel.onLoad) {
         onLoadScripts.push( scriptingAPI.makeFunctionInScriptContext( getStringFromArray(controller.currentModel.onLoad) ) );
       }
 
-      // Setup help system if help tips are defined.
-      if (interactive.helpTips.length > 0) {
-        helpSystem = new HelpSystem(interactive.helpTips, $interactiveContainer);
-        controller.on("interactiveRendered", function () {
-          function hashCode(string) {
-            var hash = 0, len = string.length, i, c;
-            if (len === 0) return hash;
-            for (i = 0; i < len; i++) {
-              c = string.charCodeAt(i);
-              hash = ((hash<<5) - hash) + c;
-              hash = hash & hash;
-            }
-            return hash;
-          }
-          var hash = hashCode(JSON.stringify(interactive));
-          // When displayOnLoad is set to true, the help mode will be automatically shown,
-          // but only when user opens interactive for the first time.
-          if (interactive.helpOnLoad && !cookies.hasItem("lab-help-" + hash)) {
-            helpSystem.start();
-            cookies.setItem("lab-help-" + hash, true);
-          }
-        });
-      }
-
-      // Call component callbacks *when* the layout is created.
-      // Some callbacks require that their views are already attached to the DOM, e.g. (bar graph uses
-      //getBBox() which in Firefox works only when element is visible and rendered).
-      for(i = 0; i < componentModelLoadedCallbacks.length; i++) {
-        componentModelLoadedCallbacks[i](model, scriptingAPI);
+      for(i = 0; i < onLoadScripts.length; i++) {
+        onLoadScripts[i]();
       }
 
       // setup messaging with embedding parent window
       parentMessageAPI = new ParentMessageAPI(model, modelController.modelContainer, controller);
-
-      for(i = 0; i < onLoadScripts.length; i++) {
-        onLoadScripts[i]();
-      }
 
       // Setup experimentController, if defined...
       if (interactive.experiment) {
@@ -847,9 +853,6 @@ define(function (require) {
       }
 
       isModelLoaded = true;
-
-      // Replace native tooltips with custom, styled and responsive tooltips.
-      tooltip($interactiveContainer);
 
       // This will attach model container to DOM.
       semanticLayout.setupModel(modelController);
