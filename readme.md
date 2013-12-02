@@ -399,7 +399,7 @@ Copy the sample project configuration file to `config/config.yml` (you can exami
 
 #### Create a git post-commit hook
 
-Create a git `post-commit` hook by creating the file `.git/hooks/post-commit` and adding this content:
+After every commit `src/lab/lab.version.js` should be updated to include recent version and build information for Lab's distrobution. To do this make a git `post-commit` hook by creating the file `.git/hooks/post-commit` with this content:
 
     #!/bin/sh
     (cd ../.. && ./script/update-git-commit-and-branch.rb)
@@ -439,6 +439,7 @@ When `make everything` is run on a freshly cloned repository it performs the fol
 5.  Generates the Java resources in the `public/jnlp` directory:
 
 You should now be able to open the file: `public/index.html` in a browser and run some of the examples.
+On Chrome browsers you will need to start a server, using `bin/rackup` (see below) or `python -m SimpleHTTPServer` from the lab root directory.
 
 #### Automatic build processing using Guard
 
