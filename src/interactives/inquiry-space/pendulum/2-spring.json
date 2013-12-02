@@ -119,7 +119,7 @@
       "label": "Ball mass",
       "unitAbbreviation": "g",
       "onChange": "setElementProperties(3, { mass: value/1000 });",
-      "initialValue": 250
+      "initialValue": 100
     },
     {
       "name": "springConstant",
@@ -172,7 +172,7 @@
       "tooltip": "Set up a new experiment run.",
       "action": [
         "reset({",
-        "  retainParameters: ['gravity', 'rodLength', 'startingAngle', 'ballMass', 'damping','experimentDuration', 'durationEnabled'],",
+        "  retainParameters: ['gravity', 'ballMass', 'springConstant', 'startingDisplacement', 'damping','experimentDuration', 'durationEnabled'],",
         "  cause: 'new-run'",
         "});"
       ]
@@ -236,13 +236,13 @@
     {
       "type": "slider",
       "id": "spring-constant-slider",
-      "min": 1,
+      "min": 3,
       "max": 30,
       "displayValue": "return format('.1f')(value)",
       "labels": [
         {
-          "value": 1,
-          "label": "1"
+          "value": 3,
+          "label": "3"
         },
         {
           "value": 30,
@@ -278,7 +278,7 @@
       "type": "slider",
       "id": "mass-slider",
       "min": 10,
-      "max": 400,
+      "max": 250,
       "displayValue": "return format('f')(value)",
       "labels": [
         {
@@ -286,8 +286,8 @@
           "label": "10"
         },
         {
-          "value": 400,
-          "label": "400"
+          "value": 250,
+          "label": "250"
         }
       ],
       "steps": 39,
