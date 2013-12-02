@@ -912,8 +912,10 @@ define(function (require) {
     // DOM element.
     node = $el[0];
 
-
-    init();
+    // REF TODO ugly
+    if (model) {
+      init();
+    }
     renderer = new Renderer(api, model);
 
     return api;

@@ -491,6 +491,8 @@ define(function (require) {
           modelHash[modelDefinitions[i].id] = modelDefinitions[i];
         }
         loadModelFirstBeforeCompletingInteractive();
+
+        initializeInteractive();
       }
       if (typeof newInteractive === "string") {
         $.get(newInteractive).done(function(results) {
@@ -508,6 +510,31 @@ define(function (require) {
         controller.interactive = newInteractive;
         nextStep();
       }
+    }
+
+    function initializeInteractive() {
+      var def = controller.interactive;
+
+      var modelDef = def.models[0];
+      modelController = createModelController(modelDef.type, modelDef.modelUrl, null);
+      // also be sure to get notified when the underlying model changes
+      // (this catches reloads)
+      modelController.on('modelLoaded', modelLoadedHandler);
+      modelController.on('modelReset', modelResetHandler);
+    }
+
+    function createModelController(type, modelUrl, modelOptions) {
+      // set default model type to "md2d"
+      var modelType = type || "md2d";
+      var modelController;
+
+      if (ModelControllerFor[modelType] === null) {
+        throw new Error("Couldn't understand modelType '" + modelType + "'!");
+      }
+
+      modelController = new ModelControllerFor[modelType](modelUrl, modelOptions, controller);
+
+      return modelController;
     }
 
     function loadModelFirstBeforeCompletingInteractive() {
@@ -709,31 +736,12 @@ define(function (require) {
         if (modelController) {
           modelController.reload(modelUrl, modelOptions, true);
         } else {
-          modelController = createModelController(modelConfig.type, modelUrl, modelOptions);
-          // also be sure to get notified when the underlying model changes
-          // (this catches reloads)
-          modelController.on('modelLoaded', modelLoadedHandler);
-          modelController.on('modelReset', modelResetHandler);
+          throw new Error("REF something went wrong");
         }
 
         setupModelPlayerKeyboardHandler();
 
-
         finishLoadingInteractive(parameterValues);
-      }
-
-      function createModelController(type, modelUrl, modelOptions) {
-        // set default model type to "md2d"
-        var modelType = type || "md2d";
-        var modelController;
-
-        if (ModelControllerFor[modelType] === null) {
-          throw new Error("Couldn't understand modelType '" + modelType + "'!");
-        }
-
-        modelController = new ModelControllerFor[modelType](modelUrl, modelOptions, controller);
-
-        return modelController;
       }
     }
 
