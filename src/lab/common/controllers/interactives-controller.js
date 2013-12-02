@@ -510,6 +510,27 @@ define(function (require) {
       // Expose API to global namespace (prototyping / testing using the browser console).
       scriptingAPI.exposeScriptingAPI();
 
+
+      // Setup exporter, if any...
+      if (interactive.exports) {
+        // Regardless of whether or not we are able to export data to an enclosing container,
+        // setup export controller so you can debug exports by typing script.exportData() in the
+        // console.
+        exportController = new ExportController(interactive.exports, controller);
+        componentModelLoadedCallbacks.push(exportController.modelLoadedCallback);
+
+        // If there is an enclosing container we can export data to (e.g., we're iframed into
+        // DataGames) then add an "Analyze Data" button the bottom position of the interactive
+        if (ExportController.canExportData() && !interactive.hideExportDataControl) {
+          createComponent({
+            "type": "button",
+            "text": "Analyze Data",
+            "id": "-lab-analyze-data",
+            "action": "exportData();"
+          });
+        }
+      }
+
       // Create interactive components
       var componentJsons = def.components || [];
       // Clear component instances.
@@ -773,26 +794,6 @@ define(function (require) {
       onLoadScripts = [];
       if (controller.currentModel.onLoad) {
         onLoadScripts.push( scriptingAPI.makeFunctionInScriptContext( getStringFromArray(controller.currentModel.onLoad) ) );
-      }
-
-      // Setup exporter, if any...
-      if (interactive.exports) {
-        // Regardless of whether or not we are able to export data to an enclosing container,
-        // setup export controller so you can debug exports by typing script.exportData() in the
-        // console.
-        exportController = new ExportController(interactive.exports, controller, model);
-        componentModelLoadedCallbacks.push(exportController.modelLoadedCallback);
-
-        // If there is an enclosing container we can export data to (e.g., we're iframed into
-        // DataGames) then add an "Analyze Data" button the bottom position of the interactive
-        if (ExportController.canExportData() && !interactive.hideExportDataControl) {
-          createComponent({
-            "type": "button",
-            "text": "Analyze Data",
-            "id": "-lab-analyze-data",
-            "action": "exportData();"
-          });
-        }
       }
 
       // Setup help system if help tips are defined.

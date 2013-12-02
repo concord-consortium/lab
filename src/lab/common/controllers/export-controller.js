@@ -269,12 +269,6 @@ define(function (require) {
       return ret;
     }
 
-    // Initialization.
-
-    model = interactivesController.getModel();
-
-    registerInteractiveListeners();
-
     return controller = {
 
       modelLoadedCallback: function() {
