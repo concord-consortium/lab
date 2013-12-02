@@ -16,6 +16,11 @@
   ],
   "components": [
     {
+      "type": "text",
+      "id": "title",
+      "text": "A + B₂ --> AB + B"
+    },
+    {
       "id": "ke-bar-graph",
       "type": "barGraph",
       "property": "kineticEnergy",
@@ -30,7 +35,7 @@
       "averagePeriod": 2500,
       "barWidth": "1.5em",
       "height": "100%",
-      "barColor": "#e23c34",
+      "barColor": "#ff0000",
       "fillColor": "#fff",
       "tooltip": ""
     },
@@ -49,12 +54,19 @@
       "averagePeriod": 2500,
       "barWidth": "1.5em",
       "height": "100%",
-      "barColor": "#e23c34",
+      "barColor": "#00ff00",
       "fillColor": "#fff",
       "tooltip": ""
     }
   ],
   "template": [
+    {
+      "id": "above",
+      "bottom": "model.top",
+      "left": "model.left",
+      "width": "model.width",
+      "align": "center"
+    },
     {
       "id": "on-right",
       "left": "model.right",
@@ -64,6 +76,7 @@
     }
   ],
   "layout": {
+    "above": ["title"],
     "on-right": ["ke-bar-graph", "pe-bar-graph"]
   }
 }
