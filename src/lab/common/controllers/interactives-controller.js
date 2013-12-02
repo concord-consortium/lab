@@ -445,28 +445,6 @@ define(function (require) {
       return $interactiveContainer.parent().parent().prop("nodeName") === "BODY";
     }
 
-    function createOrUpdateScriptingAPI() {
-      if (scriptingAPI) {
-        // If Scripting API already exists, just bind the new model.
-        scriptingAPI.bindModel(model);
-        // FIXME: this doesn't seem like a necessary step. However, without it md2d-scripting-api
-        // tests fail, but only when all tests are run (e.g. make test-src)! When you run just this
-        // single test everything works (e.g. mocha test/md2d/md2d-scripting-api). It looks like
-        // window.script variable references some old API instance and seems to be related to the
-        // test environment setup. Temporarily put this call here for safety.
-        scriptingAPI.exposeScriptingAPI();
-        return;
-      }
-      // Only create scripting API after model is loaded.
-      scriptingAPI = new ScriptingAPI(controller, model);
-      // Extend universal Interactive scriptingAPI with optional model-specific scripting API
-      if (modelController.ScriptingAPI) {
-        scriptingAPI.extend(modelController.ScriptingAPI);
-      }
-      // Expose API to global namespace (prototyping / testing using the browser console).
-      scriptingAPI.exposeScriptingAPI();
-    }
-
     /**
       The main method called when this controller is created.
 
@@ -521,6 +499,31 @@ define(function (require) {
       // (this catches reloads)
       modelController.on('modelLoaded', modelLoadedHandler);
       modelController.on('modelReset', modelResetHandler);
+
+
+      // Create Scripting API
+      scriptingAPI = new ScriptingAPI(controller, null);
+      // Extend universal Interactive scriptingAPI with optional model-specific scripting API
+      if (modelController.ScriptingAPI) {
+        scriptingAPI.extend(modelController.ScriptingAPI);
+      }
+      // Expose API to global namespace (prototyping / testing using the browser console).
+      scriptingAPI.exposeScriptingAPI();
+
+
+      // Create interactive components
+      var componentJsons = def.components || [];
+
+
+      // Clear component instances.
+      componentList = [];
+      componentByID = {};
+      // And their onLoad callbacks (TODO REFACTOR ME)
+      componentModelLoadedCallbacks = [];
+
+      for (var i = 0, len = componentJsons.length; i < len; i++) {
+        createComponent(componentJsons[i]);
+      }
     }
 
     function createModelController(type, modelUrl, modelOptions) {
@@ -575,10 +578,8 @@ define(function (require) {
           initializeView: function() {}
         };
         model = modelController.model;
-
         // setup fake model definition
         controller.currentModel = {};
-        createOrUpdateScriptingAPI();
         finishLoadingInteractive();
       }
     }
@@ -739,32 +740,27 @@ define(function (require) {
           throw new Error("REF something went wrong");
         }
 
+        model = modelController.model;
+
         setupModelPlayerKeyboardHandler();
+
+        // Update model references in various objects.
+        scriptingAPI.bindModel(model);
+        // FIXME: this doesn't seem like a necessary step. However, without it md2d-scripting-api
+        // tests fail, but only when all tests are run (e.g. make test-src)! When you run just this
+        // single test everything works (e.g. mocha test/md2d/md2d-scripting-api). It looks like
+        // window.script variable references some old API instance and seems to be related to the
+        // test environment setup. Temporarily put this call here for safety.
+        scriptingAPI.exposeScriptingAPI();
+
+        initializeModelOutputsAndParameters();
 
         finishLoadingInteractive(parameterValues);
       }
     }
 
     function finishLoadingInteractive(parameterValues) {
-      var componentJsons,
-          i, len;
-
-      componentModelLoadedCallbacks = [];
-
-      // Prepare interactive components.
-      componentJsons = interactive.components || [];
-
-      // Clear component instances.
-      componentList = [];
-      componentByID = {};
-
-      // Setup model and notify observers that model was loaded.
-      // modelLoadedHandler(ModelController.LOAD_CAUSE.INITIAL_LOAD);
-
-      model = modelController.model;
-
-      createOrUpdateScriptingAPI();
-      initializeModelOutputsAndParameters();
+      var i;
 
       // update the parameterValues if values have been provided, e.g. if some parameter values
       // were retained when loading a model using a radio controller
@@ -777,10 +773,6 @@ define(function (require) {
       onLoadScripts = [];
       if (controller.currentModel.onLoad) {
         onLoadScripts.push( scriptingAPI.makeFunctionInScriptContext( getStringFromArray(controller.currentModel.onLoad) ) );
-      }
-
-      for (i = 0, len = componentJsons.length; i < len; i++) {
-        createComponent(componentJsons[i]);
       }
 
       // Setup exporter, if any...

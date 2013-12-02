@@ -68,10 +68,10 @@ define(function () {
           if (option.action) {
             scriptingAPI.makeFunctionInScriptContext(option.action)();
           } else if (option.loadModel) {
-            model.stop();
+            scriptingAPI.api.stop();
             interactivesController.loadModel(option.loadModel);
           } else if (option.value !== undefined) {
-            model.properties[component.property] = option.value;
+            scriptingAPI.api.set(component.property, option.value);
           }
         }
       });
