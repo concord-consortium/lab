@@ -497,7 +497,6 @@ define(function (require) {
       modelController = createModelController(modelDef.type, modelDef.modelUrl, null);
       // also be sure to get notified when the underlying model changes
       // (this catches reloads)
-      modelController.on('modelLoaded', modelLoadedHandler);
       modelController.on('modelReset', modelResetHandler);
 
 
@@ -572,6 +571,9 @@ define(function (require) {
 
       // When all components are created, we can initialize semantic layout.
       setupLayout();
+
+      // setup messaging with embedding parent window
+      parentMessageAPI = new ParentMessageAPI(controller);
     }
 
     function createModelController(type, modelUrl, modelOptions) {
@@ -801,6 +803,8 @@ define(function (require) {
         // test environment setup. Temporarily put this call here for safety.
         scriptingAPI.exposeScriptingAPI();
 
+        parentMessageAPI.bindModel(model);
+
         initializeModelOutputsAndParameters();
 
         finishLoadingInteractive(parameterValues);
@@ -837,9 +841,6 @@ define(function (require) {
         onLoadScripts[i]();
       }
 
-      // setup messaging with embedding parent window
-      parentMessageAPI = new ParentMessageAPI(model, modelController.modelContainer, controller);
-
       // Setup experimentController, if defined...
       if (interactive.experiment) {
         experimentController = new ExperimentController(interactive.experiment, controller, onLoadScripts);
@@ -875,7 +876,7 @@ define(function (require) {
     /**
       Call this after the model loads, to process any queued resize and update events
       that depend on the model's properties, then draw the screen.
-    */
+
     function modelLoadedHandler(cause) {
       var i;
 
@@ -900,7 +901,7 @@ define(function (require) {
       }
 
       // setup messaging with embedding parent window
-      parentMessageAPI = new ParentMessageAPI(model, modelController.modelContainer, controller);
+      parentMessageAPI = new ParentMessageAPI(controller);
 
       for(i = 0; i < onLoadScripts.length; i++) {
         onLoadScripts[i]();
@@ -911,6 +912,7 @@ define(function (require) {
       }
       isModelLoaded = true;
     }
+    */
 
     function modelResetHandler(cause) {
       if ( !ignoreModelResetEvent ) {
