@@ -58,6 +58,7 @@ define(function (require) {
       Note: newModelConfig, newinteractiveViewConfig are optional. Calling this without
       arguments will simply reload the current model.
     */
+    // REF TODO rename to load
     function reload(newModelUrl, newModelOptions, suppressEvents) {
       // Since we won't call model.reset() (instead, we will discard the model) we need to make sure
       // that the model knows to dispatch a willReset event.

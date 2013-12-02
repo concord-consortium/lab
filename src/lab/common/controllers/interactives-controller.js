@@ -244,7 +244,7 @@ define(function (require) {
       // Banner hash containing components, layout containers and layout deinition
       // (components location). Keep it in a separate structure, because we do not
       // expect these objects to be serialized!
-      banner = setupBanner(controller, interactive, model, creditsDialog, aboutDialog, shareDialog);
+      banner = setupBanner(controller, interactive, creditsDialog, aboutDialog, shareDialog);
       // Register callbacks of banner components.
       components = banner.components;
       for (comp in components) {
@@ -510,11 +510,8 @@ define(function (require) {
       // Expose API to global namespace (prototyping / testing using the browser console).
       scriptingAPI.exposeScriptingAPI();
 
-
       // Create interactive components
       var componentJsons = def.components || [];
-
-
       // Clear component instances.
       componentList = [];
       componentByID = {};
@@ -524,6 +521,9 @@ define(function (require) {
       for (var i = 0, len = componentJsons.length; i < len; i++) {
         createComponent(componentJsons[i]);
       }
+
+      // When all components are created, we can initialize semantic layout.
+      setupLayout();
     }
 
     function createModelController(type, modelUrl, modelOptions) {
@@ -819,12 +819,6 @@ define(function (require) {
         });
       }
 
-      // When all components are created, we can initialize semantic layout.
-      setupLayout();
-
-      // This will attach model container to DOM.
-      semanticLayout.setupModel(modelController);
-
       // Call component callbacks *when* the layout is created.
       // Some callbacks require that their views are already attached to the DOM, e.g. (bar graph uses
       //getBBox() which in Firefox works only when element is visible and rendered).
@@ -856,13 +850,14 @@ define(function (require) {
       // Replace native tooltips with custom, styled and responsive tooltips.
       tooltip($interactiveContainer);
 
+      // This will attach model container to DOM.
+      semanticLayout.setupModel(modelController);
       layoutInteractive();
 
       modelController.initializeView();
 
       // notify observers that interactive is rendered.
       interactiveRendered();
-
     }
 
     function initializeModelOutputsAndParameters() {
