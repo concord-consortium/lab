@@ -131,6 +131,11 @@ define(function () {
 
       disablable(controller, component);
 
+      // Prevent keyboard control of slider from stepping the model backwards and forwards
+      $sliderHandle.on('keydown.slider-handle', function(event) {
+          event.stopPropagation();
+      });
+
       // Apply custom width and height settings.
       // Also not that we set dimensions of the most outer container, not slider.
       // Slider itself will always follow dimensions of container DIV.
