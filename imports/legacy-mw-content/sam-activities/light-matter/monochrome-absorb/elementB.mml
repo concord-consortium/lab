@@ -78,20 +78,15 @@
   </void>
   <void property="electronicStructure">
    <void property="energyLevels">
-    <void method="clear"/>
-    <void method="add">
-     <object class="org.concord.mw2d.models.EnergyLevel">
-      <void property="energy">
-       <float>-4.0</float>
-      </void>
-     </object>
+    <void index="1">
+     <void property="energy">
+      <float>-3.65</float>
+     </void>
     </void>
-    <void method="add">
-     <object class="org.concord.mw2d.models.EnergyLevel">
-      <void property="energy">
-       <float>-2.075</float>
-      </void>
-     </object>
+    <void index="2">
+     <void property="energy">
+      <float>-1.0250001</float>
+     </void>
     </void>
    </void>
   </void>
@@ -708,7 +703,7 @@
    <void method="put">
     <string>date</string>
     <object class="java.util.Date">
-     <long>1386098939000</long>
+     <long>1386105029000</long>
     </object>
    </void>
    <void method="put">
@@ -717,7 +712,7 @@
    </void>
    <void method="put">
     <string>size</string>
-    <long>49184</long>
+    <long>49068</long>
    </void>
    <void method="put">
     <string>codebase</string>

@@ -14,7 +14,7 @@
     <void method="add">
      <object class="org.concord.mw2d.models.EnergyLevel">
       <void property="energy">
-       <float>-3.79</float>
+       <float>-2.25</float>
       </void>
      </object>
     </void>
@@ -661,7 +661,7 @@
    <void method="put">
     <string>date</string>
     <object class="java.util.Date">
-     <long>1386097515000</long>
+     <long>1386105775000</long>
     </object>
    </void>
    <void method="put">
@@ -670,7 +670,7 @@
    </void>
    <void method="put">
     <string>size</string>
-    <long>44446</long>
+    <long>44630</long>
    </void>
    <void method="put">
     <string>codebase</string>
