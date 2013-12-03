@@ -6,7 +6,7 @@ define(function (require) {
       Dataset   = require('common/models/dataset'),
       experimentControllerCount = 0;
 
-  return function ExperimentController(experimentDefinition, interactivesController, onLoadScripts) {
+  return function ExperimentController(experimentDefinition, interactivesController) {
         // Public API.
     var controller,
         model,
@@ -45,9 +45,6 @@ define(function (require) {
       destinations  = experimentDefinition.destinations;
       stateButtons  = experimentDefinition.stateButtons;
       onResetScript = experimentDefinition.onReset;
-      if (onLoadScripts.length > 0) {
-        onLoadFunc  = onLoadScripts[0];
-      }
       timeSeriesDatasets = [];
     }
 
@@ -234,6 +231,12 @@ define(function (require) {
         model = interactivesController.getModel();
         registerModelListeners();
         setup();
+      },
+
+      setOnLoadScripts: function(onLoadScripts) {
+        if (onLoadScripts.length > 0) {
+          onLoadFunc  = onLoadScripts[0];
+        }
       },
 
       // Returns serialized component definition.

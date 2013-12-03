@@ -530,6 +530,11 @@ define(function (require) {
         }
       }
 
+      // Setup experimentController, if defined.
+      if (interactive.experiment) {
+        experimentController = new ExperimentController(interactive.experiment, controller);
+      }
+
       // Setup help system if help tips are defined.
       if (interactive.helpTips.length > 0) {
         helpSystem = new HelpSystem(interactive.helpTips, $interactiveContainer);
@@ -841,10 +846,9 @@ define(function (require) {
         onLoadScripts[i]();
       }
 
-      // Setup experimentController, if defined...
-      if (interactive.experiment) {
-        experimentController = new ExperimentController(interactive.experiment, controller, onLoadScripts);
-        modelLoadedCallbacks.push(experimentController.modelLoadedCallback);
+      if (experimentController) {
+        experimentController.setOnLoadScripts(onLoadScripts);
+        experimentController.modelLoadedCallback();
       }
 
       modelController.modelSetupComplete();
