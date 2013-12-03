@@ -120,9 +120,6 @@ define(function (require) {
     function createContainers() {
       var container, id, prop, i, ii;
 
-      // Cleanup interactive container.
-      $interactiveContainer.empty();
-
       $containerByID = {};
       containerSpecByID = {};
 

@@ -427,7 +427,7 @@ define(function (require) {
           },
 
           reload: function reload() {
-            interactivesController.reloadModel();
+            interactivesController.reloadInteractive();
           },
 
           stepForward: function stepForward() {

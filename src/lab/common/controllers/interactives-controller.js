@@ -98,6 +98,7 @@ define(function (require) {
 
     var interactive = {},
         controller = {},
+        initialInteractiveReference,
         experimentController,
         experimentDefinition,
         modelController,
@@ -483,6 +484,7 @@ define(function (require) {
       }
 
       if (typeof newInteractive === "string") {
+        initialInteractiveReference = newInteractive;
         $.get(newInteractive).done(function(results) {
           if (typeof results === 'string') results = JSON.parse(results);
           controller.interactive = results;
@@ -494,6 +496,7 @@ define(function (require) {
           nextStep();
         });
       } else {
+        initialInteractiveReference = $.extend(true, {}, newInteractive);
         // we were passed an interactive object
         controller.interactive = newInteractive;
         nextStep();
@@ -644,8 +647,12 @@ define(function (require) {
         interactiveModelOptions = $.extend(true, {}, modelDefinition.modelOptions);
       }
 
+      // Load provided modelConfig (highest priority), model definition placed directly inside
+      // interactive JSON or model defined by URL.
       if (modelConfig) {
         finishWithLoadedModel(modelDefinition.url, modelConfig, parameterValues);
+      } if (modelDefinition.model) {
+        finishWithLoadedModel(modelDefinition.url, modelDefinition.model, parameterValues);
       } else if (modelDefinition.url) {
         $.get(labConfig.actualRoot + modelDefinition.url).done(function(modelConfig) {
           // Deal with the servers that return the json as text/plain
@@ -829,47 +836,6 @@ define(function (require) {
       // to exist during its definition.
       setupCustomOutputs("filtered", controller.currentModel.filteredOutputs, interactive.filteredOutputs);
     }
-
-    /**
-      Call this after the model loads, to process any queued resize and update events
-      that depend on the model's properties, then draw the screen.
-
-    function modelLoadedHandler(cause) {
-      var i;
-
-      model = modelController.model;
-      createOrUpdateScriptingAPI();
-
-      initializeModelOutputsAndParameters();
-
-      modelController.modelSetupComplete();
-      modelController.initializeView();
-
-      onLoadScripts = [];
-      if (controller.currentModel.onLoad) {
-        onLoadScripts.push( scriptingAPI.makeFunctionInScriptContext( getStringFromArray(controller.currentModel.onLoad) ) );
-      }
-
-      // Call component callbacks *when* the layout is created.
-      // Some callbacks require that their views are already attached to the DOM, e.g. (bar graph uses
-      //getBBox() which in Firefox works only when element is visible and rendered).
-      for(i = 0; i < componentModelLoadedCallbacks.length; i++) {
-        componentModelLoadedCallbacks[i](model, scriptingAPI);
-      }
-
-      // setup messaging with embedding parent window
-      parentMessageAPI = new ParentMessageAPI(controller);
-
-      for(i = 0; i < onLoadScripts.length; i++) {
-        onLoadScripts[i]();
-      }
-
-      for(i = 0; i < modelLoadedCallbacks.length; i++) {
-        modelLoadedCallbacks[i](model, cause);
-      }
-      isModelLoaded = true;
-    }
-    */
 
     function modelResetHandler(cause) {
       if ( !ignoreModelResetEvent ) {
@@ -1130,10 +1096,10 @@ define(function (require) {
 
       getNextTabIndex: getNextTabIndex,
 
-      reloadModel: function() {
+      reloadInteractive: function() {
         model.stop();
         notifyWillResetModelAnd(function() {
-          modelController.reload();
+          controller.loadInteractive(initialInteractiveReference);
         });
       },
 
