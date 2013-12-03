@@ -3208,7 +3208,7 @@ define(function (require, exports) {
         // It can be optimized by just replacing the last
         // shape with shape 'i', however this approach
         //  preserves more expectable lines indexing.
-        for (i = idx; i < N_shapes; i++) {
+        for (i = idx; i < N_lines; i++) {
           for (prop in lines) {
             if (lines.hasOwnProperty(prop)) {
               lines[prop][i] = lines[prop][i + 1];
@@ -3216,9 +3216,11 @@ define(function (require, exports) {
           }
         }
 
+        N_lines--;
+
         // FIXME: This shouldn't be necessary, however various modules
         // (e.g. views) use lines.x1.length as the real number of lines.
-        utils.extendArrays(lines, N_shapes);
+        utils.extendArrays(lines, N_lines);
         assignShortcutReferences.lines();
       },
 
