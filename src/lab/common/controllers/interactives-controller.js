@@ -286,9 +286,7 @@ define(function (require) {
         setTimeout(controller.resize, 50);
       };
       document.addEventListener("fullscreenchange", resizeAfterFullscreen, false);
-
       document.addEventListener("mozfullscreenchange", resizeAfterFullscreen, false);
-
       document.addEventListener("webkitfullscreenchange", resizeAfterFullscreen, false);
     }
 
@@ -456,22 +454,34 @@ define(function (require) {
         hash representing the interactive specification or string representing path or full url
     */
     function loadInteractive(newInteractive) {
+      // Cleanup container!
+      $interactiveContainer.empty();
       isModelLoaded = false;
       isInteractiveRendered = false;
+
       function nextStep() {
         // Validate interactive.
         controller.interactive = validateInteractive(controller.interactive);
         interactive = controller.interactive;
-
         // Set up the list of possible modelDefinitions.
         modelDefinitions = interactive.models;
         for (var i = 0, len = modelDefinitions.length; i < len; i++) {
           modelHash[modelDefinitions[i].id] = modelDefinitions[i];
         }
-        loadModelFirstBeforeCompletingInteractive();
-
-        initializeInteractive();
+        // Try to load the first model (in order) and initialize interactive.
+        var firstModel = modelDefinitions[0];
+        if (firstModel && firstModel.url) {
+          // Model has to be downloaded, it's async operation so start with it.
+          loadModel(firstModel.id);
+          initializeInteractive();
+        } else if (firstModel && firstModel.model) {
+          // Model is provided inside Interactive JSON, so setup interactive first and then
+          // load a model.
+          initializeInteractive();
+          loadModel(firstModel.id, firstModel.model);
+        }
       }
+
       if (typeof newInteractive === "string") {
         $.get(newInteractive).done(function(results) {
           if (typeof results === 'string') results = JSON.parse(results);
@@ -499,7 +509,6 @@ define(function (require) {
       // (this catches reloads)
       modelController.on('modelReset', modelResetHandler);
 
-
       // Create Scripting API
       scriptingAPI = new ScriptingAPI(controller, null);
       // Extend universal Interactive scriptingAPI with optional model-specific scripting API
@@ -508,7 +517,6 @@ define(function (require) {
       }
       // Expose API to global namespace (prototyping / testing using the browser console).
       scriptingAPI.exposeScriptingAPI();
-
 
       // Setup exporter, if any...
       if (interactive.exports) {
@@ -595,50 +603,6 @@ define(function (require) {
       return modelController;
     }
 
-    function loadModelFirstBeforeCompletingInteractive() {
-      // There is a performance issue, it makes sense to start the ajax request
-      // for the model definition as soon as the Interactive Controller can.
-      //
-      // Load first model in modelDefinitions array
-      if (modelDefinitions && modelDefinitions.length > 0) {
-        loadModel(modelDefinitions[0].id);
-      } else {
-        // Setup proxy modelController object with a 0x0 px view for semantic layout system
-        modelController = {
-          getViewContainer: function() {
-            var $el = $("<div>")
-              .attr({
-                "id": "model-container",
-                "class": "container",
-                "tabindex": getNextTabIndex
-              })
-              // Set initial dimensions.
-              .css({
-                "width": "0px",
-                "height": "0px"
-              });
-            return $el;
-          },
-          getHeightForWidth: function() { return 0; },
-          resize: function() {},
-          model: {
-            on: function() {},
-            isStopped: function() {},
-            set: function() {},
-            get: function() {},
-            addObserver: function() {},
-            properties: {}
-          },
-          modelSetupComplete: function() {},
-          initializeView: function() {}
-        };
-        model = modelController.model;
-        // setup fake model definition
-        controller.currentModel = {};
-        finishLoadingInteractive();
-      }
-    }
-
     /**
       Load the model from the model definitions hash.
 
@@ -682,56 +646,51 @@ define(function (require) {
 
       if (modelConfig) {
         finishWithLoadedModel(modelDefinition.url, modelConfig, parameterValues);
-      } else {
-        if (modelDefinition.url) {
-          $.get(labConfig.actualRoot + modelDefinition.url).done(function(modelConfig) {
-            // Deal with the servers that return the json as text/plain
-            modelConfig = typeof modelConfig === 'string' ? JSON.parse(modelConfig) : modelConfig;
-            finishWithLoadedModel(modelDefinition.url, modelConfig, parameterValues);
-          }).fail(function() {
-            modelConfig = {
-              "type": "md2d",
-              "width": 2.5,
-              "height": 1.5,
-              "viewOptions": {
-                "backgroundColor": "rgba(245,200,200,255)",
-                "showClock": false,
-                "textBoxes": [
-                  {
-                    "text": "Model could not be loaded:",
-                    "x": 0.0,
-                    "y": 1.0,
-                    "width": 2.5,
-                    "height": 0.25,
-                    "fontScale": 1.4,
-                    "layer": 1,
-                    "frame": "rectangle",
-                    "textAlign": "center",
-                    "strokeOpacity": 0,
-                    "backgroundColor": "rgb(232,231,231)"
-                  },
-                  {
-                    "text": modelDefinition.url,
-                    "x": 0.0,
-                    "y": 0.8,
-                    "width": 2.5,
-                    "height": 0.25,
-                    "fontScale": 0.9,
-                    "layer": 1,
-                    "frame": "rectangle",
-                    "textAlign": "center",
-                    "strokeOpacity": 0,
-                    "backgroundColor": "rgb(232,231,231)"
-                  }
-                ]
-              }
-            };
-            finishWithLoadedModel(modelDefinition.url, modelConfig, parameterValues);
-          });
-        } else {
-          modelConfig = modelDefinition.model;
-          finishWithLoadedModel("", modelConfig, parameterValues);
-        }
+      } else if (modelDefinition.url) {
+        $.get(labConfig.actualRoot + modelDefinition.url).done(function(modelConfig) {
+          // Deal with the servers that return the json as text/plain
+          modelConfig = typeof modelConfig === 'string' ? JSON.parse(modelConfig) : modelConfig;
+          finishWithLoadedModel(modelDefinition.url, modelConfig, parameterValues);
+        }).fail(function() {
+          modelConfig = {
+            "type": "md2d",
+            "width": 2.5,
+            "height": 1.5,
+            "viewOptions": {
+              "backgroundColor": "rgba(245,200,200,255)",
+              "showClock": false,
+              "textBoxes": [
+                {
+                  "text": "Model could not be loaded:",
+                  "x": 0.0,
+                  "y": 1.0,
+                  "width": 2.5,
+                  "height": 0.25,
+                  "fontScale": 1.4,
+                  "layer": 1,
+                  "frame": "rectangle",
+                  "textAlign": "center",
+                  "strokeOpacity": 0,
+                  "backgroundColor": "rgb(232,231,231)"
+                },
+                {
+                  "text": modelDefinition.url,
+                  "x": 0.0,
+                  "y": 0.8,
+                  "width": 2.5,
+                  "height": 0.25,
+                  "fontScale": 0.9,
+                  "layer": 1,
+                  "frame": "rectangle",
+                  "textAlign": "center",
+                  "strokeOpacity": 0,
+                  "backgroundColor": "rgb(232,231,231)"
+                }
+              ]
+            }
+          };
+          finishWithLoadedModel(modelDefinition.url, modelConfig, parameterValues);
+        });
       }
 
       function processOptions(modelConfig, interactiveModelConfig, interactiveViewConfig) {
@@ -812,61 +771,55 @@ define(function (require) {
 
         initializeModelOutputsAndParameters();
 
-        finishLoadingInteractive(parameterValues);
-      }
-    }
-
-    function finishLoadingInteractive(parameterValues) {
-      var i;
-
-      // update the parameterValues if values have been provided, e.g. if some parameter values
-      // were retained when loading a model using a radio controller
-      if (parameterValues) {
-        for (i = 0; i < parameterValues.length; i++) {
-          model.set(parameterValues[i].name, parameterValues[i].value);
+        // update the parameterValues if values have been provided, e.g. if some parameter values
+        // were retained when loading a model using a radio controller
+        if (parameterValues) {
+          for (i = 0; i < parameterValues.length; i++) {
+            model.set(parameterValues[i].name, parameterValues[i].value);
+          }
         }
+
+        // We call component loaded callbacks before onLoad scripts because some onLoad scripts
+        // may require that components are already initialized. Unfortunately some components
+        // fully initialize themselves only when model is provided (the issue is visible when
+        // experiment controller is being used).
+        // TODO FIXME: components should be fully functional even before model is loaded for
+        // the first time.
+        for(i = 0; i < componentModelLoadedCallbacks.length; i++) {
+          componentModelLoadedCallbacks[i](model, scriptingAPI);
+        }
+
+        onLoadScripts = [];
+        if (controller.currentModel.onLoad) {
+          onLoadScripts.push( scriptingAPI.makeFunctionInScriptContext( getStringFromArray(controller.currentModel.onLoad) ) );
+        }
+
+        for(i = 0; i < onLoadScripts.length; i++) {
+          onLoadScripts[i]();
+        }
+
+        if (experimentController) {
+          experimentController.setOnLoadScripts(onLoadScripts);
+          experimentController.modelLoadedCallback();
+        }
+
+        modelController.modelSetupComplete();
+
+        for(i = 0; i < modelLoadedCallbacks.length; i++) {
+          modelLoadedCallbacks[i](model);
+        }
+
+        isModelLoaded = true;
+
+        // This will attach model container to DOM.
+        semanticLayout.setupModel(modelController);
+        layoutInteractive();
+
+        modelController.initializeView();
+
+        // notify observers that interactive is rendered.
+        interactiveRendered();
       }
-
-      // We call component loaded callbacks before onLoad scripts because some onLoad scripts
-      // may require that components are already initialized. Unfortunately some components
-      // fully initialize themselves only when model is provided (the issue is visible when
-      // experiment controller is being used).
-      // TODO FIXME: components should be fully functional even before model is loaded for
-      // the first time.
-      for(i = 0; i < componentModelLoadedCallbacks.length; i++) {
-        componentModelLoadedCallbacks[i](model, scriptingAPI);
-      }
-
-      onLoadScripts = [];
-      if (controller.currentModel.onLoad) {
-        onLoadScripts.push( scriptingAPI.makeFunctionInScriptContext( getStringFromArray(controller.currentModel.onLoad) ) );
-      }
-
-      for(i = 0; i < onLoadScripts.length; i++) {
-        onLoadScripts[i]();
-      }
-
-      if (experimentController) {
-        experimentController.setOnLoadScripts(onLoadScripts);
-        experimentController.modelLoadedCallback();
-      }
-
-      modelController.modelSetupComplete();
-
-      for(i = 0; i < modelLoadedCallbacks.length; i++) {
-        modelLoadedCallbacks[i](model);
-      }
-
-      isModelLoaded = true;
-
-      // This will attach model container to DOM.
-      semanticLayout.setupModel(modelController);
-      layoutInteractive();
-
-      modelController.initializeView();
-
-      // notify observers that interactive is rendered.
-      interactiveRendered();
     }
 
     function initializeModelOutputsAndParameters() {
