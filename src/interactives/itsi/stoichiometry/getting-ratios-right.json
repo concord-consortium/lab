@@ -4,20 +4,199 @@
   "subtitle": "",
   "about": "",
   "models": [
+  {
+      "type": "md2d",
+      "id": "instructions",
+      "url": "imports/legacy-mw-content/converted/itsi/stoichiometry/getting-ratios-right$0.json",
+      "importedFrom": "imports/legacy-mw-content/converted/itsi/stoichiometry/getting-ratios-right$0.mml",
+      "viewOptions": {
+        "controlButtons": "",
+        "textBoxes": [
+          {
+            "text": "Select a ratio from the menu next to the model.",
+            "x": 0.1,
+            "y": 1.65,
+            "width": 2.15,
+            "fontSize": 0.17,
+            "backgroundColor": "#fafafa"
+          }
+        ]
+      }
+    },
     {
       "type": "md2d",
-      "id": "getting-ratios-right$0",
-      "url": "imports/legacy-mw-content/converted/itsi/stoichiometry/getting-ratios-right$0.json",
-      "importedFrom": "imports/legacy-mw-content/itsi/stoichiometry/getting-ratios-right$0.mml",
+      "id": "oneToOne",
+      "url": "imports/legacy-mw-content/converted/itsi/stoichiometry/oneToOne.json",
+      "importedFrom": "imports/legacy-mw-content/converted/itsi/stoichiometry/oneToOne.mml",
+      "onLoad": "start();",
       "viewOptions": {
         "controlButtons": "play_reset"
+      },
+      "modelOptions": {
+        "timeStep": 0.5,
+        "chemicalReactions": {
+          "bondEnergy": {
+            "default": 6,
+            "1-1": 1,
+            "2-2": 1
+          },
+          "activationEnergy": {
+            "default": 0.2,
+            "1+2-2": 0.02,
+            "2+1-1": 0.02
+          }
+        }
+      }
+    },
+    {
+      "type": "md2d",
+      "id": "twoToOne",
+      "url": "imports/legacy-mw-content/converted/itsi/stoichiometry/twoToOne.json",
+      "importedFrom": "imports/legacy-mw-content/converted/itsi/stoichiometry/twoToOne.mml",
+      "onLoad": "start();",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      },
+      "modelOptions": {
+        "timeStep": 0.5,
+        "chemicalReactions": {
+          "bondEnergy": {
+            "default": 6,
+            "1-1": 1,
+            "2-2": 1
+          },
+          "activationEnergy": {
+            "default": 0.2,
+            "1+2-2": 0.02,
+            "2+1-1": 0.02
+          }
+        }
+      }
+    },
+    {
+      "type": "md2d",
+      "id": "twoToTwo",
+      "url": "imports/legacy-mw-content/converted/itsi/stoichiometry/twoToTwo.json",
+      "importedFrom": "imports/legacy-mw-content/converted/itsi/stoichiometry/twoToTwo.mml",
+      "onLoad": "start();",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      },
+      "modelOptions": {
+        "timeStep": 0.5,
+        "chemicalReactions": {
+          "bondEnergy": {
+            "default": 6,
+            "1-1": 1,
+            "2-2": 1
+          },
+          "activationEnergy": {
+            "default": 0.2,
+            "1+2-2": 0.02,
+            "2+1-1": 0.02
+          }
+        }
+      }
+    },
+    {
+      "type": "md2d",
+      "id": "twoToThree",
+      "url": "imports/legacy-mw-content/converted/itsi/stoichiometry/twoToThree.json",
+      "importedFrom": "imports/legacy-mw-content/converted/itsi/stoichiometry/twoToThree.mml",
+      "onLoad": "start();",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      },
+      "modelOptions": {
+        "timeStep": 0.5,
+        "chemicalReactions": {
+          "bondEnergy": {
+            "default": 6,
+            "1-1": 1,
+            "2-2": 1
+          },
+          "activationEnergy": {
+            "default": 0.2,
+            "1+2-2": 0.02,
+            "2+1-1": 0.02
+          }
+        }
+      }
+    },
+    {
+      "type": "md2d",
+      "id": "fourToFour",
+      "url": "imports/legacy-mw-content/converted/itsi/stoichiometry/fourToFour.json",
+      "importedFrom": "imports/legacy-mw-content/converted/itsi/stoichiometry/fourToFour.mml",
+      "onLoad": "start();",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      },
+      "modelOptions": {
+        "timeStep": 0.5,
+        "chemicalReactions": {
+          "bondEnergy": {
+            "default": 6,
+            "1-1": 1,
+            "2-2": 1
+          },
+          "activationEnergy": {
+            "default": 0.2,
+            "1+2-2": 0.02,
+            "2+1-1": 0.02
+          }
+        }
       }
     }
   ],
   "components": [
+    {
+      "id": "model-pulldown",
+      "type": "pulldown",
+      "label": "",
+      "labelOn": "top",
+      "options": [
+        {
+          "text": "Select a ratio",
+          "selected": true,
+          "loadModel": "instructions"
+        },
+        {
+          "text": "1 hydrogen : 1 chlorine",
+          "loadModel": "oneToOne"
+        },
+        {
+          "text": "2 hydrogen : 1 chlorine",
+          "loadModel": "twoToOne"
+        },
+        {
+          "text": "2 hydrogen : 2 chlorine",
+          "loadModel": "twoToTwo"
+        },
+        {
+          "text": "2 hydrogen : 3 chlorine",
+          "loadModel": "twoToThree"
+        },
+        {
+          "text": "4 hydrogen : 4 chlorine",
+          "loadModel": "fourToFour"
+        }
+      ],
+      "disabled": false,
+      "tooltip": ""
+    }
+  ],
+  "template": [
+    {
+      "id": "right",
+      "left": "model.right",
+      "top": "model.top + model.height/2",
+      "height": "model.height/2"
+    }
   ],
   "layout": {
-    "bottom": [
+    "right": [
+      "model-pulldown"
     ]
   }
 }
