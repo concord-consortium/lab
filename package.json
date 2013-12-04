@@ -25,7 +25,7 @@
     "coffee-script": ">=1.6.3",
     "requirejs": ">=2.1.8",
     "amdefine": ">=0.0.8",
-    "mustache": ">=0.7.2",
+    "mustache": "~0.7.2",
     "backbone": ">=1.0.0",
     "underscore": ">=1.5.1",
     "uglify-js": ">=2.4.0",

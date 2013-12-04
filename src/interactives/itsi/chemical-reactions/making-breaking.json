@@ -26,6 +26,22 @@
   ],
   "components": [
     {
+      "type": "text",
+      "id": "title",
+      "text": "Making and Breaking Bonds: A + A --> A₂"
+    },
+    {
+      "id": "ke-shading",
+      "type": "checkbox",
+      "text": "KE shading",
+      "textOn": "right",
+      "width": "auto",
+      "height": "auto",
+      "property": "keShading",
+      "disabled": false,
+      "tooltip": ""
+    },
+    {
       "type": "slider",
       "id": "temperature-slider",
       "min": 200,
@@ -48,6 +64,13 @@
   ],
   "template": [
     {
+      "id": "above",
+      "bottom": "model.top",
+      "left": "model.left",
+      "width": "model.width",
+      "align": "center"
+    },
+    {
       "id": "below",
       "top": "model.bottom",
       "left": "model.left",
@@ -56,6 +79,10 @@
     }
   ],
   "layout": {
-    "below": ["temperature-slider"]
+    "above": ["title"],
+    "below": [
+      ["temperature-slider"],
+      ["ke-shading"]
+    ]
   }
 }

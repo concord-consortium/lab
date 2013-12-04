@@ -105,6 +105,16 @@
       "text": "Outside"
     },
     {
+      "type": "text",
+      "id": "disclaimer",
+      "text": "Note: Real red blood cells are not shaped like a square. This shape was used for technical reasons to make the model easier to construct."
+    },
+    {
+      "type": "text",
+      "id": "empty",
+      "text": ""
+    },
+    {
       "type": "barGraph",
       "id": "outside-concentration-O2",
       "min": 0,
@@ -140,11 +150,11 @@
       "labels": [
         {
           "value": 0,
-          "label": "Low"
+          "label": "Low<br/><span style='font-size: 0.9em;'>distant tissue</span>"
         },
         {
           "value": 300,
-          "label": "High"
+          "label": "High<br/><span style='font-size: 0.9em;'>near lung</span>"
         }
       ],
       "steps": 26,
@@ -170,7 +180,9 @@
       ]
     ],
     "below": [
-      "select-outside-concentration-o2"
+      ["select-outside-concentration-o2"],
+      ["empty"],
+      ["disclaimer"]
     ],
     "above-center": [
       "cell-above-label"
@@ -194,15 +206,15 @@
       "align": "center"
     },
     {
-      "id": "right-inside",
+      "id": "right-outside",
       "left": "model.right",
       "top": "above-center.top",
       "height": "model.height",
       "align": "center"
     },
     {
-      "id": "right-outside",
-      "left": "right-inside.right",
+      "id": "right-inside",
+      "left": "right-outside.right",
       "top": "above-center.top",
       "height": "model.height",
       "align": "center"

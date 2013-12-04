@@ -1,5 +1,5 @@
 {
-  "title": "Making and Breaking Bonds: Dissociation Energy - A₂ <--> A + A",
+  "title": "Making and Breaking Bonds: Dissociation Energy A2 <--> 2A",
   "publicationStatus": "draft",
   "subtitle": "",
   "about": [
@@ -34,6 +34,22 @@
     }
   ],
   "components": [
+    {
+      "type": "text",
+      "id": "title",
+      "text": "Making and Breaking Bonds: Dissociation Energy A2 <--> 2A"
+    },
+    {
+      "id": "ke-shading",
+      "type": "checkbox",
+      "text": "KE shading",
+      "textOn": "right",
+      "width": "auto",
+      "height": "auto",
+      "property": "keShading",
+      "disabled": false,
+      "tooltip": ""
+    },
     {
       "type": "slider",
       "id": "temperature-slider",
@@ -77,6 +93,13 @@
   ],
   "template": [
     {
+      "id": "above",
+      "bottom": "model.top",
+      "left": "model.left",
+      "width": "model.width",
+      "align": "center"
+    },
+    {
       "id": "below",
       "top": "model.bottom",
       "left": "model.left",
@@ -85,6 +108,11 @@
     }
   ],
   "layout": {
-    "below": [["temperature-slider"],["dissociation-slider"]]
+    "above": ["title"],
+    "below": [
+      ["temperature-slider"],
+      ["dissociation-slider"],
+      ["ke-shading"]
+    ]
   }
 }

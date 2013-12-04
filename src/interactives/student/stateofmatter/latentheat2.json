@@ -36,6 +36,7 @@
       "id": "latentheat2$0",
       "url": "imports/legacy-mw-content/converted/student/stateofmatter/latentheat2$0.json",
       "viewOptions": {
+        "showClock": false,
         "controlButtons": "play_reset_step"
       },
       "modelOptions": {
@@ -127,20 +128,11 @@
       "text": "Start adding heat",
       "action": [
         "if (isStopped()) {",
-        "  setComponentDisabled('start-heating', true);",
         "  start();",
         "}",
+        "setComponentDisabled('start-heating', true);",
         "set('timeExperimentStarted', get('time'));",
         "set('experimentRunning', true);"
-      ]
-    },
-    {
-      "type": "button",
-      "id": "reset-experiment",
-      "text": "Reset experiment",
-      "action": [
-        "reload();",
-        "set('experimentRunning', false);"
       ]
     },
     {
@@ -179,7 +171,7 @@
       "temperature-energy-graph"
     ],
     "bottom": [
-      "start-heating", "reset-experiment", "experiment-time"
+      "start-heating", "experiment-time"
     ]
   },
   "template": [

@@ -56,7 +56,7 @@
     "yunits": false,
     "controlButtons": "play",
     "gridLines": false,
-    "atomNumbers": false,
+    "atomNumbers": true,
     "enableAtomTooltips": false,
     "enableKeyboardHandlers": true,
     "atomTraceColor": "#6913c5",

@@ -24,7 +24,18 @@
     }
   ],
   "components": [
-      {
+    {
+      "id": "ke-shading",
+      "type": "checkbox",
+      "text": "KE shading",
+      "textOn": "right",
+      "width": "auto",
+      "height": "auto",
+      "property": "keShading",
+      "disabled": false,
+      "tooltip": ""
+    },
+    {
       "type": "slider",
       "id": "temperature-slider",
       "min": 0,
@@ -45,7 +56,7 @@
       "width": "100%",
       "displayValue": "return format('.0f')(value)"
     },
-        {
+    {
       "type": "slider",
       "id": "dissociation-slider",
       "min": 0,
@@ -72,13 +83,15 @@
       "id": "bottom",
       "top": "model.bottom",
       "left": "model.left",
-      "width": "model.width"
+      "width": "model.width",
+      "align": "center"
     }
   ],
   "layout": {
     "bottom": [
       ["temperature-slider"],
-      ["dissociation-slider"]
+      ["dissociation-slider"],
+      ["ke-shading"]
     ]
   }
 }

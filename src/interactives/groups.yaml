@@ -54,6 +54,10 @@
   :name: "ITSI: Heat Transfer"
   :category: Curriculum
 
+- :path: itsi/heat-and-temperature
+  :name: "ITSI: Heat and Temperature"
+  :category: Curriculum
+
 - :path: itsi/stoichiometry
   :name: "ITSI: Stoichiometry"
   :category: Curriculum

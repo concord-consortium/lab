@@ -22,7 +22,42 @@
       "modelOptions": {}
     }
   ],
-  "components": [],
-  "template": [],
-  "layout": {}
+  "components": [
+    {
+      "type": "text",
+      "id": "title",
+      "text": "Making and Breaking Bonds: A + B --> AB"
+    },
+    {
+      "id": "ke-shading",
+      "type": "checkbox",
+      "text": "KE shading",
+      "textOn": "right",
+      "width": "auto",
+      "height": "auto",
+      "property": "keShading",
+      "disabled": false,
+      "tooltip": ""
+    }
+  ],
+  "template": [
+    {
+      "id": "above",
+      "bottom": "model.top",
+      "left": "model.left",
+      "width": "model.width",
+      "align": "center"
+    },
+    {
+      "id": "below",
+      "top": "model.bottom",
+      "left": "model.left",
+      "width": "model.width",
+      "align": "center"
+    }
+  ],
+  "layout": {
+    "above": ["title"],
+    "below": ["ke-shading"]
+  }
 }

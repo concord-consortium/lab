@@ -1,13 +1,13 @@
 {
-  "title": "Activation Energy 1: A + B₂ -> AB + B",
+  "title": "Activation Energy 2: More Activation Energy",
   "publicationStatus": "draft",
   "subtitle": "Energy Exchange in Collision and, perhaps, a Reaction",
   "about": "",
   "models": [
     {
       "type": "md2d",
-      "id": "activation-energy-1.json",
-      "url": "models/md2d/itsi/chemical-reactions/activation-energy-1.json",
+      "id": "activation-energy-2.json",
+      "url": "models/md2d/itsi/chemical-reactions/activation-energy-2.json",
       "viewOptions": {
         "controlButtons": "play_reset"
       },
@@ -43,7 +43,7 @@
       "id": "pe-bar-graph",
       "type": "barGraph",
       "property": "potentialEnergy",
-      "min": -8,
+      "min": -9,
       "max": 0,
       "title": "Potential Energy",
       "titleOn": "right",
