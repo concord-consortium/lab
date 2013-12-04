@@ -5,8 +5,6 @@ define(function () {
   var defOptions = {
     autoOpen: false,
     dialogClass: "interactive-dialog",
-    // Ensure that font is being scaled dynamically!
-    appendTo: "#responsive-content",
     width: "80%"
   };
 

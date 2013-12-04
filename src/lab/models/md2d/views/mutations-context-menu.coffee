@@ -50,8 +50,8 @@ define (require) ->
     $.contextMenu
       # Selector defines DOM elements which can trigger this menu.
       selector: selector
-      # Append to "#responsive-content" to enable dynamic font-scaling.
-      appendTo: "#responsive-content"
+      # Append to ".lab-responsive-content" to enable dynamic font-scaling.
+      appendTo: ".lab-responsive-content"
       # Class of the menu.
       className: "mutations-menu"
       # Left click.

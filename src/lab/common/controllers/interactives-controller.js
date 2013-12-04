@@ -98,7 +98,7 @@ define(function (require) {
 
     var interactive = {},
         controller = {},
-        initialInteractiveReference,
+        initialInteractiveConfig,
         experimentController,
         experimentDefinition,
         modelController,
@@ -438,10 +438,10 @@ define(function (require) {
 
       TODO: make more robust
       This function makes a simplifying assumption that the Interactive is the
-      only content on the page if the parent of the parent is the <body> element
+      only content on the page if the parent is the <body> element
     */
     function onlyElementOnPage() {
-      return $interactiveContainer.parent().parent().prop("nodeName") === "BODY";
+      return $interactiveContainer.parent().prop("nodeName") === "BODY";
     }
 
     /**
@@ -457,10 +457,17 @@ define(function (require) {
     function loadInteractive(newInteractive) {
       // Cleanup container!
       $interactiveContainer.empty();
+
+      creditsDialog = new CreditsDialog(viewSelector);
+      aboutDialog = new AboutDialog(viewSelector);
+      shareDialog = new ShareDialog(viewSelector);
+
       isModelLoaded = false;
       isInteractiveRendered = false;
 
       function nextStep() {
+        // Save initial interactive config for reload method.
+        initialInteractiveConfig = $.extend(true, {}, controller.interactive);
         // Validate interactive.
         controller.interactive = validateInteractive(controller.interactive);
         interactive = controller.interactive;
@@ -484,7 +491,6 @@ define(function (require) {
       }
 
       if (typeof newInteractive === "string") {
-        initialInteractiveReference = newInteractive;
         $.get(newInteractive).done(function(results) {
           if (typeof results === 'string') results = JSON.parse(results);
           controller.interactive = results;
@@ -496,7 +502,6 @@ define(function (require) {
           nextStep();
         });
       } else {
-        initialInteractiveReference = $.extend(true, {}, newInteractive);
         // we were passed an interactive object
         controller.interactive = newInteractive;
         nextStep();
@@ -1099,7 +1104,7 @@ define(function (require) {
       reloadInteractive: function() {
         model.stop();
         notifyWillResetModelAnd(function() {
-          controller.loadInteractive(initialInteractiveReference);
+          controller.loadInteractive(initialInteractiveConfig);
         });
       },
 
@@ -1414,13 +1419,11 @@ define(function (require) {
     controller.interactiveContainer = $interactiveContainer;
     // Initialize semantic layout.
     semanticLayout = new SemanticLayout($interactiveContainer);
-    creditsDialog = new CreditsDialog();
-    aboutDialog = new AboutDialog();
-    shareDialog = new ShareDialog();
-    controller.on("resize", $.proxy(shareDialog.updateIframeSize, shareDialog));
-    // Run this when controller is created.
-    loadInteractive(interactiveReference);
+    controller.on("resize", function () {
+      shareDialog.updateIframeSize();
+    });
 
+    loadInteractive(interactiveReference);
     return controller;
   };
 });

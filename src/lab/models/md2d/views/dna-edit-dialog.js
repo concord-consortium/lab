@@ -21,7 +21,7 @@ define(function () {
           $dialogDiv.dialog({
             dialogClass: "dna-edit-dialog",
             // Ensure that font is being scaled dynamically.
-            appendTo: "#responsive-content",
+            appendTo: ".lab-responsive-content",
             title: "DNA Code on Sense Strand",
             autoOpen: false,
             width: "35em",

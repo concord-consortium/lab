@@ -181,7 +181,7 @@ AUTHORING = false;
     $iframeWrapper = $('<div id="iframe-wrapper" class="ui-widget-content ' + $selectInteractiveSize.val() + '"></div>');
     $iframe = $('<iframe id="iframe-interactive" width="100%" height="100%" frameborder="no" scrolling="no" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" src="' + embeddableUrl + '"></iframe>');
     $content.append($iframeWrapper);
-    $("#responsive-content").hide();
+    $("#interactive-container").hide();
     selectInteractiveSizeHandler();
     $selectInteractiveSize.removeAttr('disabled');
     $iframeWrapper.append($iframe);
@@ -321,7 +321,7 @@ AUTHORING = false;
         resize: controller.resize
       });
       if (typeof Shutterbug !== 'undefined') {
-        shutterbug = new Shutterbug('#responsive-content','#image_output');
+        shutterbug = new Shutterbug('#interactive-container', '#image_output');
       }
     } else {
       // Interactive Browser with Interactive embedding in iframe

@@ -2,7 +2,7 @@
 
 /**
  * Lab-compatible tooltips based on jQuery-UI tooltips. The custom styling is used and tooltips
- * scale themselves according to the font-size of #responsive-content div.
+ * scale themselves according to the font-size of parent div.
  *
  * There is also a special algorithm for delaying tooltips. When you hover over element with
  * tooltip, it will be shown after 2 seconds. Then if you move mouse pointer fast to another
@@ -41,19 +41,18 @@ define(function (require) {
         return true;
       }());
 
-  function tooltip($target) {
+  function tooltip($parent) {
     if (!customTooltipsEnabled) return;
 
-    var $rc = $("#responsive-content"),
-        $tooltip = null,
+    var $tooltip = null,
         fadeInID = null,
         fadeOutID = null,
         wasShown = false;
 
     function position(target) {
-      // Update font-size using #responsive-content div font-size.
+      // Update font-size using $parent div font-size.
       // Lab Interactives scaling is based on the font-size of this div.
-      var fontSize = $rc.css("font-size"),
+      var fontSize = $parent.css("font-size"),
           vertOffset = + parseFloat(fontSize) * 0.35,
           // workaround jQueryUI tooltip issue; it removes title attribute on focus event
           $posTarget = $(target).closest("[title], [aria-describedby]");
@@ -67,7 +66,7 @@ define(function (require) {
       $tooltip.position({
         of: $posTarget,
         collision: "flipfit flipfit",
-        within: $rc,
+        within: $parent,
         // Arrow's height depends on font-size (as it's defined in ems).
         my: "center top+" + vertOffset,
         at: "center bottom",
@@ -93,7 +92,7 @@ define(function (require) {
       $tooltip = null;
     }
 
-    $target.tooltip({
+    $parent.tooltip({
       show: false,
       hide: false,
       open: function (event, ui) {
