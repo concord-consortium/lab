@@ -337,7 +337,7 @@
    <void method="put">
     <string>date</string>
     <object class="java.util.Date">
-     <long>1386184178000</long>
+     <long>1386184253000</long>
     </object>
    </void>
    <void method="put">
@@ -555,131 +555,6 @@ endif;</string>
     </object>
    </void>
   </void>
-  <void property="rectangles">
-   <array class="org.concord.mw2d.models.RectangleComponent$Delegate" length="4">
-    <void index="0">
-     <object class="org.concord.mw2d.models.RectangleComponent$Delegate">
-      <void property="fillMode">
-       <object class="org.concord.modeler.draw.FillMode$ColorFill">
-        <void property="color">
-         <object class="java.awt.Color" id="Color1">
-          <int>0</int>
-          <int>0</int>
-          <int>0</int>
-          <int>255</int>
-         </object>
-        </void>
-       </object>
-      </void>
-      <void property="height">
-       <float>15.0</float>
-      </void>
-      <void property="layer">
-       <int>1</int>
-      </void>
-      <void property="layerPosition">
-       <byte>10</byte>
-      </void>
-      <void property="width">
-       <float>600.0</float>
-      </void>
-      <void property="x">
-       <double>1.0</double>
-      </void>
-      <void property="y">
-       <double>0.0</double>
-      </void>
-     </object>
-    </void>
-    <void index="1">
-     <object class="org.concord.mw2d.models.RectangleComponent$Delegate">
-      <void property="fillMode">
-       <object class="org.concord.modeler.draw.FillMode$ColorFill">
-        <void property="color">
-         <object idref="Color1"/>
-        </void>
-       </object>
-      </void>
-      <void property="height">
-       <float>398.0</float>
-      </void>
-      <void property="layer">
-       <int>1</int>
-      </void>
-      <void property="layerPosition">
-       <byte>11</byte>
-      </void>
-      <void property="width">
-       <float>16.0</float>
-      </void>
-      <void property="x">
-       <double>586.0</double>
-      </void>
-      <void property="y">
-       <double>0.0</double>
-      </void>
-     </object>
-    </void>
-    <void index="2">
-     <object class="org.concord.mw2d.models.RectangleComponent$Delegate">
-      <void property="fillMode">
-       <object class="org.concord.modeler.draw.FillMode$ColorFill">
-        <void property="color">
-         <object idref="Color1"/>
-        </void>
-       </object>
-      </void>
-      <void property="height">
-       <float>14.0</float>
-      </void>
-      <void property="layer">
-       <int>1</int>
-      </void>
-      <void property="layerPosition">
-       <byte>12</byte>
-      </void>
-      <void property="width">
-       <float>599.0</float>
-      </void>
-      <void property="x">
-       <double>1.0</double>
-      </void>
-      <void property="y">
-       <double>384.0</double>
-      </void>
-     </object>
-    </void>
-    <void index="3">
-     <object class="org.concord.mw2d.models.RectangleComponent$Delegate">
-      <void property="fillMode">
-       <object class="org.concord.modeler.draw.FillMode$ColorFill">
-        <void property="color">
-         <object idref="Color1"/>
-        </void>
-       </object>
-      </void>
-      <void property="height">
-       <float>397.0</float>
-      </void>
-      <void property="layer">
-       <int>1</int>
-      </void>
-      <void property="layerPosition">
-       <byte>13</byte>
-      </void>
-      <void property="width">
-       <float>10.0</float>
-      </void>
-      <void property="x">
-       <double>1.0</double>
-      </void>
-      <void property="y">
-       <double>2.0</double>
-      </void>
-     </object>
-    </void>
-   </array>
-  </void>
   <void property="showClock">
    <boolean>false</boolean>
   </void>
@@ -701,7 +576,7 @@ endif;</string>
        </object>
       </void>
       <void property="foregroundColor">
-       <object class="java.awt.Color" id="Color2">
+       <object class="java.awt.Color" id="Color1">
         <int>255</int>
         <int>255</int>
         <int>255</int>
@@ -734,7 +609,7 @@ endif;</string>
        <object idref="Font0"/>
       </void>
       <void property="foregroundColor">
-       <object idref="Color2"/>
+       <object idref="Color1"/>
       </void>
       <void property="layer">
        <int>1</int>
@@ -762,7 +637,7 @@ endif;</string>
        <object idref="Font0"/>
       </void>
       <void property="foregroundColor">
-       <object idref="Color2"/>
+       <object idref="Color1"/>
       </void>
       <void property="layer">
        <int>1</int>
@@ -790,7 +665,7 @@ endif;</string>
        <object idref="Font0"/>
       </void>
       <void property="foregroundColor">
-       <object idref="Color2"/>
+       <object idref="Color1"/>
       </void>
       <void property="layer">
        <int>1</int>
@@ -818,7 +693,7 @@ endif;</string>
        <object idref="Font0"/>
       </void>
       <void property="foregroundColor">
-       <object idref="Color2"/>
+       <object idref="Color1"/>
       </void>
       <void property="layer">
        <int>1</int>
@@ -846,7 +721,7 @@ endif;</string>
        <object idref="Font0"/>
       </void>
       <void property="foregroundColor">
-       <object idref="Color2"/>
+       <object idref="Color1"/>
       </void>
       <void property="layer">
        <int>1</int>
@@ -874,7 +749,7 @@ endif;</string>
        <object idref="Font0"/>
       </void>
       <void property="foregroundColor">
-       <object idref="Color2"/>
+       <object idref="Color1"/>
       </void>
       <void property="layer">
        <int>1</int>
@@ -902,7 +777,7 @@ endif;</string>
        <object idref="Font0"/>
       </void>
       <void property="foregroundColor">
-       <object idref="Color2"/>
+       <object idref="Color1"/>
       </void>
       <void property="layer">
        <int>1</int>
@@ -930,7 +805,7 @@ endif;</string>
        <object idref="Font0"/>
       </void>
       <void property="foregroundColor">
-       <object idref="Color2"/>
+       <object idref="Color1"/>
       </void>
       <void property="layer">
        <int>1</int>
