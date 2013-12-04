@@ -789,6 +789,10 @@ define(function (require) {
         return parent.model.getNumberOfLines();
       },
 
+      getNumberOfShapes: function() {
+        return parent.model.getNumberOfShapes();
+      },
+
       getImageProperties: function(i) {
         return parent.model.getImageProperties(i);
       },
