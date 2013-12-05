@@ -1,6 +1,7 @@
 {
-  "title": "Dissociation (rites copy)",
+  "title": "Dissociation Energy",
   "publicationStatus": "draft",
+  "aspectRatio": 1.725,
   "subtitle": "",
   "about": "",
   "models": [
@@ -80,15 +81,16 @@
   ],
   "template": [
     {
-      "id": "bottom",
-      "top": "model.bottom",
-      "left": "model.left",
-      "width": "model.width",
+      "id": "right",
+      "top": "model.top",
+      "left": "model.right",
+      "height": "model.height",
+      "padding-right": "2em",
       "align": "center"
     }
   ],
   "layout": {
-    "bottom": [
+    "right": [
       ["temperature-slider"],
       ["dissociation-slider"],
       ["ke-shading"]
