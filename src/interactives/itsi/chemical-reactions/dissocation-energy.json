@@ -1,5 +1,5 @@
 {
-  "title": "Making and Breaking Bonds: Dissociation Energy A2 <--> 2A",
+  "title": "Making and Breaking Bonds: Dissociation Energy A₂ <--> 2A",
   "publicationStatus": "draft",
   "subtitle": "",
   "about": [
@@ -13,6 +13,7 @@
     "Press run, then try heating and cooling the atoms to see how temperature affects ",
     "the balance between bond formation and breaking."
   ],
+  "aspectRatio": 1.725,
   "models": [
     {
       "type": "md2d",
@@ -37,7 +38,7 @@
     {
       "type": "text",
       "id": "title",
-      "text": "Making and Breaking Bonds: Dissociation Energy A2 <--> 2A"
+      "text": "Dissociation Energy: A₂ <--> 2A"
     },
     {
       "id": "ke-shading",
@@ -100,16 +101,16 @@
       "align": "center"
     },
     {
-      "id": "below",
-      "top": "model.bottom",
-      "left": "model.left",
-      "width": "model.width",
+      "id": "right",
+      "top": "model.top",
+      "left": "model.right",
+      "height": "model.height",
       "align": "center"
     }
   ],
   "layout": {
     "above": ["title"],
-    "below": [
+    "right": [
       ["temperature-slider"],
       ["dissociation-slider"],
       ["ke-shading"]
