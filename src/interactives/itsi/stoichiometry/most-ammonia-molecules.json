@@ -16,12 +16,12 @@
       "modelOptions": {
         "timeStep": 0.2,
         "chemicalReactions": {
-          "createAngularBonds": false,
+          "createAngularBonds": true,
           "valenceElectrons": [
             1,
             1,
             1,
-            5
+            3
           ],
           "bondEnergy": {
             "default": 6,
