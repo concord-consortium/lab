@@ -202,7 +202,7 @@ define(function (require) {
       model.set('experimentCleared', false);
       interactivesController.resetModel({retainParameters: inputs});
       unfreezeInputParameters();
-      if (onResetFunc) {
+      if (onResetFunc && onLoadFunc) {
         onLoadFunc.apply(onResetFunc, null);
       }
       addOlderRunsToGraph();
@@ -233,10 +233,8 @@ define(function (require) {
         setup();
       },
 
-      setOnLoadScripts: function(onLoadScripts) {
-        if (onLoadScripts.length > 0) {
-          onLoadFunc  = onLoadScripts[0];
-        }
+      setOnLoadScript: function(onLoadScript) {
+        onLoadFunc = onLoadScript;
       },
 
       // Returns serialized component definition.

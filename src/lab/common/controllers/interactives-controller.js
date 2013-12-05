@@ -109,7 +109,6 @@ define(function (require) {
         modelDefinitions = [],
         modelHash = {},
         componentModelLoadedCallbacks = [],
-        onLoadScripts = [],
         resizeCallbacks = [],
         modelLoadedCallbacks = [],
         modelResetCallbacks = [],
@@ -802,17 +801,14 @@ define(function (require) {
           componentModelLoadedCallbacks[i](model, scriptingAPI);
         }
 
-        onLoadScripts = [];
+        var onLoadScript = null;
         if (controller.currentModel.onLoad) {
-          onLoadScripts.push( scriptingAPI.makeFunctionInScriptContext( getStringFromArray(controller.currentModel.onLoad) ) );
-        }
-
-        for(i = 0; i < onLoadScripts.length; i++) {
-          onLoadScripts[i]();
+          onLoadScript = scriptingAPI.makeFunctionInScriptContext(getStringFromArray(controller.currentModel.onLoad));
+          onLoadScript();
         }
 
         if (experimentController) {
-          experimentController.setOnLoadScripts(onLoadScripts);
+          experimentController.setOnLoadScript(onLoadScript);
           experimentController.modelLoadedCallback();
         }
 
@@ -1093,14 +1089,14 @@ define(function (require) {
       getModelController: function () {
         return modelController;
       },
+
       getComponent: function (id) {
         return componentByID[id];
       },
-      pushOnLoadScript: function (callback) {
-        onLoadScripts.push(callback);
-      },
 
       getNextTabIndex: getNextTabIndex,
+
+      loadInteractive: loadInteractive,
 
       reloadInteractive: function() {
         model.stop();
@@ -1108,6 +1104,8 @@ define(function (require) {
           controller.loadInteractive(initialInteractiveConfig);
         });
       },
+
+      loadModel: loadModel,
 
       /**
         Reset the model to its initial state, restoring or retaining model parameters according to
@@ -1394,10 +1392,7 @@ define(function (require) {
         return modelId;
       },
 
-      // Make these private variables and functions available
-      loadInteractive: loadInteractive,
       validateInteractive: validateInteractive,
-      loadModel: loadModel,
       interactiveNotFound: interactiveNotFound
     };
 
