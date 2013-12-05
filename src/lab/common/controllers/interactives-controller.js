@@ -114,9 +114,7 @@ define(function (require) {
         modelResetCallbacks = [],
         willResetModelCallbacks = [],
         ignoreModelResetEvent = false,
-        isModelLoaded = false,
         interactiveRenderedCallbacks = [],
-        isInteractiveRendered = false,
 
         // Hash of instantiated components.
         // Key   - component ID.
@@ -341,7 +339,6 @@ define(function (require) {
       for(i = 0; i < interactiveRenderedCallbacks.length; i++) {
         interactiveRenderedCallbacks[i]();
       }
-      isInteractiveRendered = true;
     }
 
     /**
@@ -461,9 +458,6 @@ define(function (require) {
       creditsDialog = new CreditsDialog(viewSelector);
       aboutDialog = new AboutDialog(viewSelector);
       shareDialog = new ShareDialog(viewSelector);
-
-      isModelLoaded = false;
-      isInteractiveRendered = false;
 
       function nextStep() {
         // Save initial interactive config for reload method.
@@ -636,7 +630,6 @@ define(function (require) {
       }
 
       modelId = id;
-      isModelLoaded = false;
       controller.currentModel = modelDefinition;
 
       if (modelDefinition.viewOptions) {
@@ -768,6 +761,9 @@ define(function (require) {
 
         model = modelController.model;
 
+        // This will attach model container to DOM.
+        semanticLayout.setupModel(modelController);
+        layoutInteractive();
         setupModelPlayerKeyboardHandler();
 
         // Update model references in various objects.
@@ -778,7 +774,6 @@ define(function (require) {
         // window.script variable references some old API instance and seems to be related to the
         // test environment setup. Temporarily put this call here for safety.
         scriptingAPI.exposeScriptingAPI();
-
         parentMessageAPI.bindModel(model);
 
         initializeModelOutputsAndParameters();
@@ -812,17 +807,11 @@ define(function (require) {
           experimentController.modelLoadedCallback();
         }
 
-        modelController.modelSetupComplete();
-
         for(i = 0; i < modelLoadedCallbacks.length; i++) {
           modelLoadedCallbacks[i](model);
         }
 
-        isModelLoaded = true;
-
-        // This will attach model container to DOM.
-        semanticLayout.setupModel(modelController);
-        layoutInteractive();
+        if (model.ready) model.ready();
 
         modelController.initializeView();
 
@@ -1361,12 +1350,7 @@ define(function (require) {
 
         return result;
       },
-      modelLoaded: function () {
-        return isModelLoaded;
-      },
-      interactiveRendered: function () {
-        return isInteractiveRendered;
-      },
+
       benchmarks: [
         {
           name: "layout (iterations)",

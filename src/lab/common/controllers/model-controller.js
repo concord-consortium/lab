@@ -166,21 +166,7 @@ define(function (require) {
 
       enableKeyboardHandlers: function () {
         return model.get("enableKeyboardHandlers");
-      },
-
-      /**
-        Call this method once all post-load setup of the model object has been completed. It will
-        cause the model to execute any post-load setup and issue its 'ready' event, if any.
-
-        In general, this method must be called in order to put the model in a runnable state.
-      */
-      modelSetupComplete: function() {
-        if (model.ready) {
-          model.ready();
-        }
-        dispatch.modelSetupComplete();
       }
-
     };
 
     // ------------------------------------------------------------
