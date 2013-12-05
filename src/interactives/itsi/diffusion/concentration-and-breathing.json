@@ -5,7 +5,7 @@
   "about": [
     ""
   ],
-  "aspectRatio": 1.6,
+  "aspectRatio": 1.725,
   "fontScale": 0.8,
   "models": [
     {
@@ -96,13 +96,8 @@
     },
     {
       "type": "text",
-      "id": "inside-right-label",
-      "text": "Inside"
-    },
-    {
-      "type": "text",
-      "id": "outside-right-label",
-      "text": "Outside"
+      "id": "bar-label",
+      "text": "O₂ Conc."
     },
     {
       "type": "text",
@@ -120,11 +115,11 @@
       "min": 0,
       "max": 100,
       "labels": 0,
-      "barColor": "rgb(242,234,27)",
-      "fillColor": "rgb(225,243,253)",
-      "title": "O₂",
+      "barColor": "#a2b5ff",
+      "fillColor": "#fff",
+      "title": "Out",
       "titleOn": "top",
-      "height": "15em",
+      "height": "13em",
       "barWidth": "1em",
       "property": "outsideConcentrationO2"
     },
@@ -134,11 +129,11 @@
       "min": 0,
       "max": 100,
       "labels": 0,
-      "barColor": "rgb(242,234,27)",
-      "fillColor": "rgb(243,222,223)",
-      "title": "O₂",
+      "barColor": "#ffafaf",
+      "fillColor": "#fff",
+      "title": "In",
       "titleOn": "top",
-      "height": "15em",
+      "height": "13em",
       "barWidth": "1em",
       "property": "insideConcentrationO2"
     },
@@ -163,26 +158,19 @@
     }
   ],
   "layout": {
-    "right-inside": [
-      [
-        "inside-right-label"
-      ],
-      [
-        "inside-concentration-O2"
-      ]
-    ],
     "right-outside": [
       [
-        "outside-right-label"
+        "bar-label"
       ],
       [
-        "outside-concentration-O2"
+        "outside-concentration-O2","inside-concentration-O2"
       ]
     ],
     "below": [
-      ["select-outside-concentration-o2"],
-      ["empty"],
-      ["disclaimer"]
+      ["select-outside-concentration-o2"]
+    ],
+    "below-right": [
+      "disclaimer"
     ],
     "above-center": [
       "cell-above-label"
@@ -194,7 +182,15 @@
       "top": "model.bottom",
       "left": "model.left",
       "width": "model.width",
-      "padding-top": "1em",
+      "padding-top": "0.7em",
+      "align": "center"
+    },
+    {
+      "id": "below-right",
+      "top": "model.bottom",
+      "right": "interactive.right",
+      "width": "14em",
+      "padding-top": "0.7em",
       "align": "center"
     },
     {
@@ -202,7 +198,7 @@
       "width": "model.width",
       "left": "model.left",
       "bottom": "model.top",
-      "height": "2em",
+      "height": "1.5em",
       "align": "center"
     },
     {
@@ -210,13 +206,7 @@
       "left": "model.right",
       "top": "above-center.top",
       "height": "model.height",
-      "align": "center"
-    },
-    {
-      "id": "right-inside",
-      "left": "right-outside.right",
-      "top": "above-center.top",
-      "height": "model.height",
+      "width": "13em",
       "align": "center"
     }
   ]
