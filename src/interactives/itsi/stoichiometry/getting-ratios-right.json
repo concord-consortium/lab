@@ -1,28 +1,10 @@
 {
-  "title": "getting-ratios-right",
+  "title": "Getting Ratios Right",
   "publicationStatus": "draft",
+  "aspectRatio": 1.725,
   "subtitle": "",
   "about": "",
   "models": [
-  {
-      "type": "md2d",
-      "id": "instructions",
-      "url": "imports/legacy-mw-content/converted/itsi/stoichiometry/getting-ratios-right$0.json",
-      "importedFrom": "imports/legacy-mw-content/converted/itsi/stoichiometry/getting-ratios-right$0.mml",
-      "viewOptions": {
-        "controlButtons": "",
-        "textBoxes": [
-          {
-            "text": "Select a ratio from the menu next to the model.",
-            "x": 0.1,
-            "y": 1.65,
-            "width": 2.15,
-            "fontSize": 0.17,
-            "backgroundColor": "#fafafa"
-          }
-        ]
-      }
-    },
     {
       "type": "md2d",
       "id": "oneToOne",
@@ -83,6 +65,8 @@
         "controlButtons": "play_reset"
       },
       "modelOptions": {
+        "width": 3.45,
+        "height": 2.8,
         "timeStep": 0.5,
         "chemicalReactions": {
           "bondEnergy": {
@@ -151,18 +135,15 @@
   ],
   "components": [
     {
-      "id": "model-pulldown",
-      "type": "pulldown",
-      "label": "",
+      "id": "model-ratios",
+      "type": "radio",
+      "orientation": "vertical",
+      "label": "Select a ratio:",
       "labelOn": "top",
       "options": [
         {
-          "text": "Select a ratio",
-          "selected": true,
-          "loadModel": "instructions"
-        },
-        {
           "text": "1 hydrogen : 1 chlorine",
+          "selected": true,
           "loadModel": "oneToOne"
         },
         {
@@ -190,13 +171,14 @@
     {
       "id": "right",
       "left": "model.right",
-      "top": "model.top + model.height/2",
-      "height": "model.height/2"
+      "top": "model.top",
+      "height": "model.height",
+      "padding-left": "0.5em"
     }
   ],
   "layout": {
     "right": [
-      "model-pulldown"
+      "model-ratios"
     ]
   }
 }

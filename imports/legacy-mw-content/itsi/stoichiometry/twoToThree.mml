@@ -296,12 +296,12 @@
     </void> 
     <void property="viewSize"> 
      <object class="java.awt.Dimension"> 
-      <int>245</int> 
+      <int>345</int> 
       <int>280</int> 
      </object> 
     </void> 
     <void property="width"> 
-     <double>245.0</double> 
+     <double>345.0</double> 
     </void> 
    </object> 
   </void> 
