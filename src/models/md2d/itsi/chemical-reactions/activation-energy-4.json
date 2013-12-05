@@ -1,7 +1,7 @@
 {
   "type": "md2d",
   "imagePath": "",
-  "width": 2,
+  "width": 4,
   "height": 2,
   "unitsScheme": "md2d",
   "lennardJonesForces": true,
@@ -25,7 +25,7 @@
   "useQuantumDynamics": false,
   "useChemicalReactions": true,
   "viewOptions": {
-    "viewPortWidth": 2,
+    "viewPortWidth": 4,
     "viewPortHeight": 2,
     "viewPortZoom": 1,
     "viewPortX": 0,

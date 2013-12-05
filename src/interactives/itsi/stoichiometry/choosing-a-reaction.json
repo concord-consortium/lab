@@ -1,6 +1,7 @@
 {
-  "title": "choosing-a-reaction",
+  "title": "Choosing a Reaction",
   "publicationStatus": "draft",
+  "aspectRatio": 1.725,
   "subtitle": "",
   "about": "",
   "models": [
@@ -104,7 +105,7 @@
       "id": "select-reaction",
       "type": "radio",
       "orientation": "vertical",
-      "label": "Choose a Reaction",
+      "label": "Choose a reaction:",
       "labelOn": "top",
       "options": [
         {
@@ -149,21 +150,20 @@
     {
       "id": "right",
       "left": "model.right",
-      "top": "model.top + model.height/2",
-      "height": "model.height/2",
+      "top": "model.top + model.height/4",
+      "height": "model.height*3/4",
       "width": "15em",
       "padding-left": "1em"
     },
     {
-      "id": "bottom",
-      "left": "model.left",
-      "top": "model.bottom",
-      "width": "model.width",
+      "id": "right-bottom",
+      "left": "model.right",
+      "bottom": "model.bottom",
       "align": "center"
     }
   ],
   "layout": {
     "right": ["select-reaction"],
-    "bottom": ["heat-button","cool-button"]
+    "right-bottom": ["heat-button","cool-button"]
   }
 }

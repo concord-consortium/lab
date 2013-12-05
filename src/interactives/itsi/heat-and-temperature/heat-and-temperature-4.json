@@ -1,6 +1,8 @@
 {
   "title": "Heat and Temperature 4: Mixing hot and cold",
   "publicationStatus": "draft",
+  "aspectRatio": 1.725,
+  "fontScale": 0.8,
   "subtitle": "Heat and Temperature 4: Mixing hot and cold",
   "about": "",
   "models": [
@@ -62,25 +64,25 @@
     {
       "type": "button",
       "id": "heat-left-button",
-      "text": "Heat the left chamber",
+      "text": "Heat the left",
       "action": "addKEToAtoms(1, atomsWithinRect(0, 0, get('width')/2, get('height')));"
     },
     {
       "type": "button",
       "id": "cool-left-button",
-      "text": "Cool the left chamber",
+      "text": "Cool the left",
       "action": "addKEToAtoms(-1, atomsWithinRect(0, 0, get('width')/2, get('height')));"
     },
     {
       "type": "button",
       "id": "heat-right-button",
-      "text": "Heat the right chamber",
+      "text": "Heat the right",
       "action": "addKEToAtoms(1, atomsWithinRect(get('width')/2, 0, get('width')/2, get('height')));"
     },
     {
       "type": "button",
       "id": "cool-right-button",
-      "text": "Cool the right chamber",
+      "text": "Cool the right",
       "action": "addKEToAtoms(-1, atomsWithinRect(get('width')/2, 0, get('width')/2, get('height')));"
     },
     {
@@ -94,8 +96,8 @@
       "labels": 6,
       "units": false,
       "gridLines": 6,
-      "labelFormat": "0.1f",
-      "barWidth": "1.5em",
+      "labelFormat": "0f",
+      "barWidth": "1em",
       "height": "100%",
       "barColor": "#ff0000",
       "fillColor": "#fff",
@@ -112,8 +114,8 @@
       "labels": 6,
       "units": false,
       "gridLines": 6,
-      "labelFormat": "0.1f",
-      "barWidth": "1.5em",
+      "labelFormat": "0f",
+      "barWidth": "1em",
       "height": "100%",
       "barColor": "#ff0000",
       "fillColor": "#fff",
@@ -124,16 +126,18 @@
     {
       "id": "below-left",
       "top": "model.bottom",
-      "left": "model.left",
-      "width": "model.width/2",
-      "align": "center"
+      "left": "interactive.left",
+      "width": "interactive.width/2",
+      "padding-right": "2em",
+      "align": "right"
     },
     {
       "id": "below-right",
       "top": "model.bottom",
-      "right": "model.right",
-      "width": "model.width/2",
-      "align": "center"
+      "right": "interactive.right",
+      "width": "interactive.width/2",
+      "padding-left": "2em",
+      "align": "left"
     },
     {
       "id": "on-left",
@@ -152,13 +156,11 @@
   ],
   "layout": {
     "below-left": [
-      ["heat-left-button"],
-      ["cool-left-button"],
+      ["heat-left-button","cool-left-button"],
       ["ke-shading"]
     ],
     "below-right": [
-      ["heat-right-button"],
-      ["cool-right-button"]
+      ["heat-right-button","cool-right-button"]
     ],
     "on-right": ["right-temp"],
     "on-left":  ["left-temp"]

@@ -1,6 +1,7 @@
 {
   "title": "Making and Breaking Bonds: A + A -> A₂",
   "publicationStatus": "draft",
+  "aspectRatio": 1.725,
   "subtitle": "",
   "about": [
     "A chemical reaction can occur in three different ways:",
@@ -71,16 +72,16 @@
       "align": "center"
     },
     {
-      "id": "below",
-      "top": "model.bottom",
-      "left": "model.left",
-      "width": "model.width",
+      "id": "right",
+      "top": "model.top",
+      "left": "model.right",
+      "height": "model.height",
       "align": "center"
     }
   ],
   "layout": {
     "above": ["title"],
-    "below": [
+    "right": [
       ["temperature-slider"],
       ["ke-shading"]
     ]
