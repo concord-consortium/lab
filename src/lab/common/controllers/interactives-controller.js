@@ -110,7 +110,6 @@ define(function (require) {
         modelHash = {},
         componentModelLoadedCallbacks = [],
         resizeCallbacks = [],
-        modelLoadedCallbacks = [],
         modelResetCallbacks = [],
         willResetModelCallbacks = [],
         ignoreModelResetEvent = false,
@@ -145,9 +144,7 @@ define(function (require) {
         semanticLayout,
         getNextTabIndex,
 
-        // This is not the complete list of events, as we have custom hacks to maintain lists of
-        // event listeners.
-        dispatch = new DispatchSupport('layoutUpdated');
+        dispatch = new DispatchSupport("modelLoaded", "interactiveRendered", "modelReset", "resize");
 
     // simple tabindex support, also exposed via api.getNextTabIndex()
     getNextTabIndex = function () {
@@ -173,7 +170,6 @@ define(function (require) {
         return;
       }
       semanticLayout.layoutInteractive();
-      dispatch.layoutUpdated();
     }
 
     // ------------------------------------------------------------
@@ -761,9 +757,6 @@ define(function (require) {
 
         model = modelController.model;
 
-        // This will attach model container to DOM.
-        semanticLayout.setupModel(modelController);
-        layoutInteractive();
         setupModelPlayerKeyboardHandler();
 
         // Update model references in various objects.
@@ -807,11 +800,16 @@ define(function (require) {
           experimentController.modelLoadedCallback();
         }
 
-        for(i = 0; i < modelLoadedCallbacks.length; i++) {
-          modelLoadedCallbacks[i](model);
-        }
+        dispatch.modelLoaded();
 
+        // Call .ready *after* all previous operations. Note that it will trigger e.g. tick
+        // history push of an initial state. It should include all modifications applied
+        // by on load scripts and callbacks.
         if (model.ready) model.ready();
+
+        // This will attach model container to DOM.
+        semanticLayout.setupModel(modelController);
+        layoutInteractive();
 
         modelController.initializeView();
 
@@ -1238,9 +1236,6 @@ define(function (require) {
         switch(type) {
           case "resize":
             resizeCallbacks = resizeCallbacks.concat(callbacks);
-            break;
-          case "modelLoaded":
-            modelLoadedCallbacks = modelLoadedCallbacks.concat(callbacks);
             break;
           case "modelReset":
             modelResetCallbacks = modelResetCallbacks.concat(callbacks);

@@ -164,7 +164,7 @@ AUTHORING = false;
       // On all the other versions of this page we need to create an
       // instance of the Interactive now.
       controller = new Lab.InteractivesController(interactiveUrl, '#interactive-container');
-      controller.on("modelLoaded", function() {
+      controller.on("modelLoaded.application", function() {
         model = controller.getModel();
         interactive = controller.serialize();
         setupFullPage();

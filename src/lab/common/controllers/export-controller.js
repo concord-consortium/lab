@@ -201,13 +201,12 @@ define(function (require) {
     }
 
     function registerInteractiveListeners() {
+      interactivesController.on('modelLoaded.exportController', function(cause) {
+        handleModelInitialization('modelLoaded', cause);
+      });
       // Currently there is no need to namespace these particular listeners, because interactive
       // controller uses a *special* on() method that doesn't just delegate to d3.dispatch; in fact
       // it doesn't understand namespacing!
-      interactivesController.on('modelLoaded', function(cause) {
-        handleModelInitialization('modelLoaded', cause);
-      });
-
       interactivesController.on('modelReset', function(cause) {
         handleModelInitialization('modelReset', cause);
       });

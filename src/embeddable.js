@@ -29,7 +29,7 @@ AUTHORING = false;
   if (hash) {
     interactiveUrl = hash.substr(1, hash.length);
     controller = new Lab.InteractivesController(interactiveUrl, '#interactive-container');
-    controller.on("modelLoaded", function() {
+    controller.on("modelLoaded.application", function() {
       interactive = controller.interactive;
       document.title = "Lab Interactive: " + interactive.title;
       sendGAPageview();
