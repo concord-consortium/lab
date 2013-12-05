@@ -273,8 +273,8 @@ define(function (require) {
       // We are rendering in embeddable mode if only element on page
       // so resize when window resizes.
       if (onlyElementOnPage()) {
-        $(window).unbind('resize');
-        $(window).on('resize', function() {
+        $(window).off("resize.lab-resize-handler");
+        $(window).on("resize.lab-resize-handler", function() {
           controller.resize();
         });
       }
@@ -286,9 +286,10 @@ define(function (require) {
         controller.resize();
         setTimeout(controller.resize, 50);
       };
-      document.addEventListener("fullscreenchange", resizeAfterFullscreen, false);
-      document.addEventListener("mozfullscreenchange", resizeAfterFullscreen, false);
-      document.addEventListener("webkitfullscreenchange", resizeAfterFullscreen, false);
+      $(document).off(".lab-fullscreen-change");
+      $(document).on("fullscreenchange.lab-fullscreen-change", resizeAfterFullscreen)
+                 .on("mozfullscreenchange.lab-fullscreen-change", resizeAfterFullscreen)
+                 .on("webkitfullscreenchange.lab-fullscreen-change", resizeAfterFullscreen);
     }
 
     function createComponent(component) {
