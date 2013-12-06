@@ -141,10 +141,10 @@ exports.withIsolatedRequireJSAndViewsMocked = function(continuation) {
           resize: function() {},
           repaint: function() {},
           yLabel: function() {},
-          getXDomain: function() {
+          xDomain: function() {
             return [0, 10];
           },
-          getYDomain: function() {
+          yDomain: function() {
             return [0, 10];
           }
         };
