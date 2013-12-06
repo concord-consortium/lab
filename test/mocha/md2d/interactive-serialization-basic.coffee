@@ -29,9 +29,6 @@ helpers.withIsolatedRequireJSAndViewsMocked (requirejs) ->
       queue = fs.readdirSync path
       # Use only absolute paths.
       queue = queue.map (file) -> "#{path}/#{file}"
-      interactive = null
-      controller = null
-      model = null
 
       while queue.length > 0
         inputFile = queue.pop()
