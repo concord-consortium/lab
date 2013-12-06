@@ -59,5 +59,50 @@ helpers.withIsolatedRequireJSAndViewsMocked (requirejs) ->
                 helpers.withModel modelObject, ->
                   controller = interactivesController interactive, 'body'
               else
-                modelObject = interactive.models[0].model
+                # model definition is inside interactive JSON, no need to use helper.withModel
+                controller = interactivesController interactive, 'body'
 
+              # This direct call to validate is necessary to provide all default values
+              # and allow to compare this object with serialized version using simple 'should.eql'.
+              validatedInteractive = controller.validateInteractive(interactive)
+              serializedInteractive = controller.serialize()
+
+              # Helper.
+              deleteProp = (i, name) ->
+                delete serializedInteractive.components[i][name]
+                delete validatedInteractive.components[i][name]
+
+              # Sliders initial values need a special way to check their correctness.
+              # Due to min, max and step properties, initialValue provided by author / user
+              # is very often adjusted to fit stepping of the slider.
+              compareSliders = (i) ->
+                sliderA = validatedInteractive.components[i]
+                if sliderA.initialValue?
+                  sliderB = serializedInteractive.components[i]
+                  stepLen = (sliderA.max - sliderA.min) / sliderA.steps
+
+                  min = sliderA.initialValue - stepLen
+                  max = sliderA.initialValue + stepLen
+                  sliderB.initialValue.should.be.within min, max
+
+              # Handle special cases for sliders and graphs.
+              for comp, i in serializedInteractive.components
+                if comp.type == "slider"
+                  # Compare initial values of sliders.
+                  compareSliders i
+                  # Now delete these property, as otherwise should.eql call will fail.
+                  deleteProp i, "initialValue"
+                if comp.type == "graph"
+                  # Graph options are now strongly connected with SVG and D3 internals.
+                  # This is not supported in JSDOM environment. Because of that, do not
+                  # test serialization of some graph properties.
+                  # TODO: prepare special test for graphs.
+                  deleteProp i, "xmin"
+                  deleteProp i, "xmax"
+                  deleteProp i, "ymin"
+                  deleteProp i, "ymax"
+
+              # Standard comparison of two objects.
+              # Note that initial values of sliders and some properties
+              # or graphs are deleted above.
+              serializedInteractive.should.eql validatedInteractive
