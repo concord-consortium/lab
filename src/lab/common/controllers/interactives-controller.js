@@ -255,6 +255,9 @@ define(function (require) {
       // So interactive definition specified by the author won't be affected.
       // This is important for serialization correctness.
       template = banner.template.concat(template);
+      template.forEach(function (container, idx) {
+        template[idx] = $.extend({}, container);
+      });
       layout = $.extend({}, layout, banner.layout);
       components = $.extend({}, componentByID, banner.components);
 

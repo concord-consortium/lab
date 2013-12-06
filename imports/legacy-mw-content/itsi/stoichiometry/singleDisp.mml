@@ -359,6 +359,17 @@
   </void> 
  </object> 
  <object class="org.concord.mw2d.AtomisticView$State"> 
+  <void property="elementColors"> 
+   <void index="1"> 
+    <int>-9066941</int> 
+   </void> 
+   <void index="2"> 
+    <int>-16776961</int> 
+   </void> 
+   <void index="3"> 
+    <int>-2539040</int> 
+   </void> 
+  </void>
   <void property="colorCode"> 
    <string>None</string> 
   </void> 
@@ -1079,6 +1090,9 @@
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.RadialBond$Delegate"> 
+  <void property="atom1"> 
+   <int>0</int> 
+  </void> 
   <void property="atom2"> 
    <int>1</int> 
   </void> 
@@ -1195,161 +1209,11 @@
   </void> 
  </object> 
  <object class="org.concord.mw2d.models.RadialBond$Delegate"> 
-  <void property="atom2"> 
-   <int>1</int> 
-  </void> 
-  <void property="bondLength"> 
-   <double>16.80000066757202</double> 
-  </void> 
-  <void property="bondStrength"> 
-   <double>0.2</double> 
-  </void> 
-  <void property="chemicalEnergy"> 
-   <double>0.1</double> 
-  </void> 
- </object> 
- <object class="org.concord.mw2d.models.RadialBond$Delegate"> 
-  <void property="atom1"> 
-   <int>2</int> 
-  </void> 
-  <void property="atom2"> 
-   <int>3</int> 
-  </void> 
-  <void property="bondLength"> 
-   <double>16.80000066757202</double> 
-  </void> 
-  <void property="bondStrength"> 
-   <double>0.2</double> 
-  </void> 
-  <void property="chemicalEnergy"> 
-   <double>0.1</double> 
-  </void> 
- </object> 
- <object class="org.concord.mw2d.models.RadialBond$Delegate"> 
-  <void property="atom1"> 
-   <int>4</int> 
-  </void> 
-  <void property="atom2"> 
-   <int>5</int> 
-  </void> 
-  <void property="bondLength"> 
-   <double>16.80000066757202</double> 
-  </void> 
-  <void property="bondStrength"> 
-   <double>0.2</double> 
-  </void> 
-  <void property="chemicalEnergy"> 
-   <double>0.1</double> 
-  </void> 
- </object> 
- <object class="org.concord.mw2d.models.RadialBond$Delegate"> 
-  <void property="atom1"> 
-   <int>6</int> 
-  </void> 
-  <void property="atom2"> 
-   <int>7</int> 
-  </void> 
-  <void property="bondLength"> 
-   <double>16.80000066757202</double> 
-  </void> 
-  <void property="bondStrength"> 
-   <double>0.2</double> 
-  </void> 
-  <void property="chemicalEnergy"> 
-   <double>0.1</double> 
-  </void> 
- </object> 
- <object class="org.concord.mw2d.models.RadialBond$Delegate"> 
-  <void property="atom1"> 
-   <int>8</int> 
-  </void> 
-  <void property="atom2"> 
-   <int>9</int> 
-  </void> 
-  <void property="bondLength"> 
-   <double>16.80000066757202</double> 
-  </void> 
-  <void property="bondStrength"> 
-   <double>0.2</double> 
-  </void> 
-  <void property="chemicalEnergy"> 
-   <double>0.1</double> 
-  </void> 
- </object> 
- <object class="org.concord.mw2d.models.RadialBond$Delegate"> 
-  <void property="atom1"> 
-   <int>10</int> 
-  </void> 
-  <void property="atom2"> 
-   <int>11</int> 
-  </void> 
-  <void property="bondLength"> 
-   <double>16.80000066757202</double> 
-  </void> 
-  <void property="bondStrength"> 
-   <double>0.2</double> 
-  </void> 
-  <void property="chemicalEnergy"> 
-   <double>0.1</double> 
-  </void> 
- </object> 
- <object class="org.concord.mw2d.models.RadialBond$Delegate"> 
-  <void property="atom1"> 
-   <int>12</int> 
-  </void> 
-  <void property="atom2"> 
-   <int>13</int> 
-  </void> 
-  <void property="bondLength"> 
-   <double>16.80000066757202</double> 
-  </void> 
-  <void property="bondStrength"> 
-   <double>0.2</double> 
-  </void> 
-  <void property="chemicalEnergy"> 
-   <double>0.1</double> 
-  </void> 
- </object> 
- <object class="org.concord.mw2d.models.RadialBond$Delegate"> 
   <void property="atom1"> 
    <int>14</int> 
   </void> 
   <void property="atom2"> 
    <int>15</int> 
-  </void> 
-  <void property="bondLength"> 
-   <double>16.80000066757202</double> 
-  </void> 
-  <void property="bondStrength"> 
-   <double>0.2</double> 
-  </void> 
-  <void property="chemicalEnergy"> 
-   <double>0.1</double> 
-  </void> 
- </object> 
- <object class="org.concord.mw2d.models.RadialBond$Delegate"> 
-  <void property="atom1"> 
-   <int>14</int> 
-  </void> 
-  <void property="atom2"> 
-   <int>15</int> 
-  </void> 
-  <void property="bondLength"> 
-   <double>16.80000066757202</double> 
-  </void> 
-  <void property="bondStrength"> 
-   <double>0.2</double> 
-  </void> 
-  <void property="chemicalEnergy"> 
-   <double>0.1</double> 
-  </void> 
- </object> 
- <object class="org.concord.mw2d.models.RadialBond$Delegate"> 
-  <void property="atom1"> 
-   <int>16</int> 
-  </void> 
-  <void property="atom2"> 
-   <int>17</int> 
   </void> 
   <void property="bondLength"> 
    <double>16.80000066757202</double> 
@@ -1397,129 +1261,10 @@
  </object> 
  <object class="org.concord.mw2d.models.RadialBond$Delegate"> 
   <void property="atom1"> 
-   <int>18</int> 
-  </void> 
-  <void property="atom2"> 
-   <int>19</int> 
-  </void> 
-  <void property="bondLength"> 
-   <double>16.80000066757202</double> 
-  </void> 
-  <void property="bondStrength"> 
-   <double>0.2</double> 
-  </void> 
-  <void property="chemicalEnergy"> 
-   <double>0.1</double> 
-  </void> 
- </object> 
- <object class="org.concord.mw2d.models.RadialBond$Delegate"> 
-  <void property="atom1"> 
    <int>20</int> 
   </void> 
   <void property="atom2"> 
    <int>21</int> 
-  </void> 
-  <void property="bondLength"> 
-   <double>16.80000066757202</double> 
-  </void> 
-  <void property="bondStrength"> 
-   <double>0.2</double> 
-  </void> 
-  <void property="chemicalEnergy"> 
-   <double>0.1</double> 
-  </void> 
- </object> 
- <object class="org.concord.mw2d.models.RadialBond$Delegate"> 
-  <void property="atom1"> 
-   <int>20</int> 
-  </void> 
-  <void property="atom2"> 
-   <int>21</int> 
-  </void> 
-  <void property="bondLength"> 
-   <double>16.80000066757202</double> 
-  </void> 
-  <void property="bondStrength"> 
-   <double>0.2</double> 
-  </void> 
-  <void property="chemicalEnergy"> 
-   <double>0.1</double> 
-  </void> 
- </object> 
- <object class="org.concord.mw2d.models.RadialBond$Delegate"> 
-  <void property="atom1"> 
-   <int>14</int> 
-  </void> 
-  <void property="atom2"> 
-   <int>15</int> 
-  </void> 
-  <void property="bondLength"> 
-   <double>16.80000066757202</double> 
-  </void> 
-  <void property="bondStrength"> 
-   <double>0.019999999552965164</double> 
-  </void> 
-  <void property="chemicalEnergy"> 
-   <double>0.1</double> 
-  </void> 
- </object> 
- <object class="org.concord.mw2d.models.RadialBond$Delegate"> 
-  <void property="atom1"> 
-   <int>16</int> 
-  </void> 
-  <void property="atom2"> 
-   <int>17</int> 
-  </void> 
-  <void property="bondLength"> 
-   <double>16.80000066757202</double> 
-  </void> 
-  <void property="bondStrength"> 
-   <double>0.019999999552965164</double> 
-  </void> 
-  <void property="chemicalEnergy"> 
-   <double>0.1</double> 
-  </void> 
- </object> 
- <object class="org.concord.mw2d.models.RadialBond$Delegate"> 
-  <void property="atom1"> 
-   <int>18</int> 
-  </void> 
-  <void property="atom2"> 
-   <int>19</int> 
-  </void> 
-  <void property="bondLength"> 
-   <double>16.80000066757202</double> 
-  </void> 
-  <void property="bondStrength"> 
-   <double>0.019999999552965164</double> 
-  </void> 
-  <void property="chemicalEnergy"> 
-   <double>0.1</double> 
-  </void> 
- </object> 
- <object class="org.concord.mw2d.models.RadialBond$Delegate"> 
-  <void property="atom1"> 
-   <int>20</int> 
-  </void> 
-  <void property="atom2"> 
-   <int>21</int> 
-  </void> 
-  <void property="bondLength"> 
-   <double>16.80000066757202</double> 
-  </void> 
-  <void property="bondStrength"> 
-   <double>0.019999999552965164</double> 
-  </void> 
-  <void property="chemicalEnergy"> 
-   <double>0.1</double> 
-  </void> 
- </object> 
- <object class="org.concord.mw2d.models.RadialBond$Delegate"> 
-  <void property="atom1"> 
-   <int>33</int> 
-  </void> 
-  <void property="atom2"> 
-   <int>34</int> 
   </void> 
   <void property="bondLength"> 
    <double>16.80000066757202</double> 

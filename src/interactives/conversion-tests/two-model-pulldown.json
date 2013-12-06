@@ -28,7 +28,8 @@
       "options": [
         {
           "text": "Gas1",
-          "loadModel": "gas1"
+          "loadModel": "gas1",
+          "selected": true
         },
         {
           "text": "Gas2",

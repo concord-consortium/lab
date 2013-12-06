@@ -459,10 +459,10 @@ store 1 %tke2;</string>
        <string>Substance 1</string> 
       </void> 
       <void property="x"> 
-       <double>7.0</double> 
+       <double>40.0</double> 
       </void> 
       <void property="y"> 
-       <double>5.0</double> 
+       <double>6.0</double> 
       </void> 
      </object> 
     </void> 
