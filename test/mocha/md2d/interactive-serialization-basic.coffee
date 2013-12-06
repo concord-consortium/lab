@@ -43,13 +43,21 @@ helpers.withIsolatedRequireJSAndViewsMocked (requirejs) ->
           queue = queue.concat subdir
 
         else if endsWith inputFile, ".json"
-          # Process JSON file.
-          it "testing: #{inputFile}", ->
-            interactiveJSON = fs.readFileSync(inputFile).toString()
-            interactive = JSON.parse interactiveJSON
+          do (inputFile) ->
+            console.log inputFile
+            # Process JSON file.
+            it "testing: #{inputFile}", ->
+              interactiveJSON = fs.readFileSync(inputFile).toString()
+              interactive = JSON.parse interactiveJSON
 
-            modelObject = helpers.getModel "../../../public/#{interactive.models[0].url}"
+              if interactive.models[0].url
+                try
+                  modelObject = helpers.getModel "../../../public/#{interactive.models[0].url}"
+                catch
+                  # In some cases model can be unavailable (there is one such test interactive)
+                  modelObject = {}
+                helpers.withModel modelObject, ->
+                  controller = interactivesController interactive, 'body'
+              else
+                modelObject = interactive.models[0].model
 
-            helpers.withModel modelObject, ->
-              controller = interactivesController interactive, 'body'
-            model = controller.modelController.model

@@ -117,7 +117,17 @@ exports.withIsolatedRequireJSAndViewsMocked = function(continuation) {
           updateBar: function() {},
           getParentHeight: function() {},
           getParentWidth: function() {},
-          modelChanged: function() {}
+          modelChanged: function() {},
+          $el: $("div")
+        };
+      },
+      NumericOutputView = function() {
+        return {
+          render: function() { return $("div"); },
+          resize: function() {},
+          update: function() {},
+          updateLabel: function() {},
+          updateUnits: function() {}
         };
       },
       Graph = function() {
@@ -127,7 +137,10 @@ exports.withIsolatedRequireJSAndViewsMocked = function(continuation) {
           updateOrRescale: function() {},
           showMarker: function() {},
           reset: function() {},
+          resetPoints: function() {},
           resize: function() {},
+          repaint: function() {},
+          yLabel: function() {},
           getXDomain: function() {
             return [0, 10];
           },
@@ -170,6 +183,7 @@ exports.withIsolatedRequireJSAndViewsMocked = function(continuation) {
   // Mock dependencies.
   requirejs.define('grapher/core/graph', [], function() { return Graph; });
   requirejs.define('grapher/bar-graph/bar-graph-view', [], function() { return BarGraphView; });
+  requirejs.define('common/views/numeric-output-view', [], function() { return NumericOutputView; });
   requirejs.define('models/md2d/views/renderer', [], function() { return Renderer; });
   requirejs.define('common/views/svg-container', [], function() { return SVGContainer; });
   requirejs.define('fastclick', [], function() { return FastClick; });
