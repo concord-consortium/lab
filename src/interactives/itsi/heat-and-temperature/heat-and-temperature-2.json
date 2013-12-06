@@ -52,20 +52,20 @@
       "id": "select-mass",
       "options": [
         {
-          "text": "Substance 1 (atom mass = m₁)",
+          "text": "Substance m₁",
           "loadModel": "mass1",
           "selected": true
         },
         {
-          "text": "Substance 2 (atom mass = m₂)",
+          "text": "Substance m₂",
           "loadModel": "mass2"
         },
         {
-          "text": "Substance 3 (atom mass = m₃)",
+          "text": "Substance m₃",
           "loadModel": "mass3"
         },
         {
-          "text": "Substance 4 (atom mass = m₄)",
+          "text": "Substance m₄",
           "loadModel": "mass4"
         }
       ]
