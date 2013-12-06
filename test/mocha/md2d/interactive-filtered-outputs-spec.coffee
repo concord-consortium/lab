@@ -40,12 +40,12 @@ helpers.withIsolatedRequireJSAndViewsMocked (requirejs) ->
             "title": "Test Interactive",
             "models": [
               {
-                "type": "generic-model",
+                "type": "md2d",
                 "id": "model1",
                 "url": "model1",
               },
               {
-                "type": "generic-model",
+                "type": "md2d",
                 "id": "model2",
                 "url": "model2",
               }
