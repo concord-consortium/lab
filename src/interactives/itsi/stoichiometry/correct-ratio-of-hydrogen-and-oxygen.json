@@ -14,7 +14,7 @@
       "viewOptions": {
         "viewPortWidth": 3,
         "viewPortHeight": 2,
-        "controlButtons": "play_reset,",
+        "controlButtons": "play_reset",
         "textBoxes": [
           {
             "text": "First choose your starting ratio of\nhydrogen to oxygen, then make a prediction\nabout how much water will be produced.",
