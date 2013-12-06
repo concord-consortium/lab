@@ -127,6 +127,24 @@ define(function (require) {
         parent.api.repaintIfReady();
       },
 
+      /*
+        Adds radial bond with properties 'props'.
+      */
+      addRadialBond: function addRadialBond(props) {
+        parent.model.addRadialBond(props);
+
+        parent.api.repaintIfReady();
+      },
+
+      /*
+        Adds angular bond with properties 'props'.
+      */
+      addAngularBond: function addAngularBond(props) {
+        parent.model.addAngularBond(props);
+
+        parent.api.repaintIfReady();
+      },
+
       addRandomAtom: function addRandomAtom() {
         return parent.model.addRandomAtom.apply(parent.model, arguments);
       },
