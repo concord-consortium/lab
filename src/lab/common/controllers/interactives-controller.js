@@ -1383,10 +1383,14 @@ define(function (require) {
         // Copy basic properties from the initial definition, as they are immutable.
         // FIXME: this should be based on enumerating properties in the metadata. The issue is properties
         // added to the metadata like "importedFrom" have to be then manually added here.
+        // NP: +1 on enumerating the metadata props here.
         result = {
           title: interactive.title,
           publicationStatus: interactive.publicationStatus,
           subtitle: interactive.subtitle,
+          category: interactive.category,
+          subCategory: interactive.subCategory,
+          screenshot: interactive.screenshot,
           aspectRatio: interactive.aspectRatio,
           fontScale: interactive.fontScale,
           helpOnLoad: interactive.helpOnLoad,

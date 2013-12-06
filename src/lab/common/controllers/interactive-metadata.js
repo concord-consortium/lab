@@ -23,6 +23,21 @@ define(function() {
         defaultValue: ""
       },
 
+      // optional: used by activity finder (pt: http://bit.ly/IGmyks)
+      category: {
+        defaultValue: ""
+      },
+
+      // optional: used by activity finder (pt: http://bit.ly/IGmyks)
+      subCategory: {
+        defaultValue: ""
+      },
+
+      // optional: used by activity finder (pt: http://bit.ly/IGpo96)
+      screenshot: {
+        defaultValue: ""
+      },
+
       // optional: holds path of html or cml page this Interactive was imported from
       importedFrom: {},
 
