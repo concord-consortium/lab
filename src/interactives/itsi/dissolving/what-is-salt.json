@@ -1,5 +1,5 @@
 {
-  "title": "what-is-salt",
+  "title": "What is a Salt?",
   "publicationStatus": "draft",
   "subtitle": "",
   "about": "",
@@ -15,9 +15,28 @@
     }
   ],
   "components": [
+    {
+      "id": "remove-charge",
+      "type": "button",
+      "action": "batch(function() { for (var i = 0; i < getNumberOfAtoms(); i++) { setAtomProperties(i, {charge: 0}); } });",
+      "text": "What if there is no charge on ions?",
+      "disabled": false,
+      "tooltip": ""
+    }
+  ],
+  "template": [
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "left": "model.left",
+      "width": "model.width",
+      "padding-top": "1em",
+      "align": "center"
+    }
   ],
   "layout": {
     "bottom": [
+      "remove-charge"
     ]
   }
 }
