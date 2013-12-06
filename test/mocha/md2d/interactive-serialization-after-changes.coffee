@@ -173,3 +173,19 @@ helpers.withIsolatedRequireJSAndViewsMocked (requirejs) ->
 
         serializedInteractive = controller.serialize()
         serializedInteractive.should.eql validatedInteractive
+
+      it "radio should be updated correctly", ->
+        setupControllerAndModel()
+        validatedInteractive = controller.validateInteractive(interactive)
+
+        # Change value of the radio buttons set.
+        $radios = $("input:radio[name=radio1]")
+        $radios.removeAttr "checked"
+        $radios.eq(1).attr "checked", true
+        # Manually trigger change event.
+        $radios.eq(1).trigger "change"
+        delete validatedInteractive.components[3].options[0].selected
+        validatedInteractive.components[3].options[1].selected = true
+
+        serializedInteractive = controller.serialize()
+        serializedInteractive.should.eql validatedInteractive
