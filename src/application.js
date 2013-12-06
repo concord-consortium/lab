@@ -852,7 +852,6 @@ AUTHORING = false;
       }
     }).change();
     if(interactive.screenshot) {
-      console.log(interactive.screenshot);
       $('#authored_screenshot_img').attr('src',interactive.screenshot);
       $('#authored_screenshot_img').show();
     }
