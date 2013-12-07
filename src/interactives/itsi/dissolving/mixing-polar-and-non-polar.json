@@ -1,6 +1,7 @@
 {
-  "title": "mixing-polar-and-non-polar",
+  "title": "Mixing polar and non-polar",
   "publicationStatus": "draft",
+  "aspectRatio": 1.725,
   "subtitle": "",
   "about": "",
   "models": [
@@ -15,9 +16,28 @@
     }
   ],
   "components": [
+    {
+      "id": "remove-charge",
+      "type": "button",
+      "action": "batch(function() { for (var i = 0; i < getNumberOfAtoms(); i++) { setAtomProperties(i, {charge: 0}); }});",
+      "text": "Remove the charges from the polar atoms (atoms with color).",
+      "disabled": false,
+      "tooltip": ""
+    }
+  ],
+  "template": [
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "left": "model.left",
+      "width": "model.width",
+      "padding-top": "1em",
+      "align": "center"
+    }
   ],
   "layout": {
     "bottom": [
+      "remove-charge"
     ]
   }
 }
