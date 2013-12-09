@@ -25,8 +25,8 @@ helpers.withIsolatedRequireJS (requirejs) ->
       @modelLoadedCallbacks = []
 
     on: (event, callback) ->
-      if event is 'modelReset' then @modelResetCallbacks.push(callback)
-      if event is 'modelLoaded' then @modelLoadedCallbacks.push(callback)
+      if event.indexOf('modelReset') == 0 then @modelResetCallbacks.push(callback)
+      if event.indexOf('modelLoaded') == 0 then @modelLoadedCallbacks.push(callback)
 
     loadModel: ->
       @model = loadModel()

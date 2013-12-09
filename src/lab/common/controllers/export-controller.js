@@ -268,6 +268,8 @@ define(function (require) {
       return ret;
     }
 
+    registerInteractiveListeners();
+
     return controller = {
 
       modelLoadedCallback: function() {
