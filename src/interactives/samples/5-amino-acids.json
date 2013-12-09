@@ -1,6 +1,9 @@
 {
   "title": "Protein Folding",
   "publicationStatus": "public",
+  "category": "Biology",
+  "subCategory": "Molecular biology",
+  "screenshot": "http://screenshots.lab.concord.org/5-amino-acids.png",
   "subtitle": "How do peptides fold into stable conformations?",
   "fontScale": 0.6,
   "about": [

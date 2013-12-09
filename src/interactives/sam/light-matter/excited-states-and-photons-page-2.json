@@ -2,6 +2,9 @@
   "title": "Excited Electrons",
   "publicationStatus": "public",
   "subtitle": "Investigate how an electron becomes excited.",
+  "category": "Physics",
+  "subCategory": "Light and sound",
+  "screenshot": "http://screenshots.lab.concord.org/excited-states-and-photons-page-2.png",
   "about": [
     "An atom's electrons have energy, but they are restricted to very specific energy levels. If an electron has the lowest possible energy ",
     "it is considered to be in the **ground state**. An electron is called **excited** if it has higher energy than the ground state. In this ",
