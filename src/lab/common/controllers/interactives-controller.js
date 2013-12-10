@@ -109,7 +109,6 @@ define(function (require) {
         modelDefinitions = [],
         modelHash = {},
         componentModelLoadedCallbacks = [],
-        resizeCallbacks = [],
         modelResetCallbacks = [],
         willResetModelCallbacks = [],
         ignoreModelResetEvent = false,
@@ -1198,10 +1197,7 @@ define(function (require) {
       */
       resize: function () {
         layoutInteractive();
-        // TODO: use events!
-        for(var i = 0; i < resizeCallbacks.length; i++) {
-          resizeCallbacks[i]();
-        }
+        dispatch.resize();
       },
       /**
        * Adds an event listener for the specified type. Supported events:
@@ -1237,9 +1233,6 @@ define(function (require) {
         }
 
         switch(type) {
-          case "resize":
-            resizeCallbacks = resizeCallbacks.concat(callbacks);
-            break;
           case "modelReset":
             modelResetCallbacks = modelResetCallbacks.concat(callbacks);
             break;
@@ -1397,7 +1390,7 @@ define(function (require) {
     controller.interactiveContainer = $interactiveContainer;
     // Initialize semantic layout.
     semanticLayout = new SemanticLayout($interactiveContainer);
-    controller.on("resize", function () {
+    controller.on("resize.share-dialog", function () {
       shareDialog.updateIframeSize();
     });
 
