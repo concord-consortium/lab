@@ -2,6 +2,9 @@
   "title": "Specific Heat and Latent Heat in Condensation",
   "publicationStatus": "public",
   "subtitle": "Seeing Specific Heat and Latent Heat in a Condensation Experiment",
+  "category": "Chemistry",
+  "subCategory": "States of mater",
+  "screenshot": "http://screenshots.lab.concord.org/latentheat3.png",
   "aspectRatio": 2.1,
   "fontScale": 0.8,
   "about": [
@@ -37,13 +40,15 @@
       "url": "imports/legacy-mw-content/converted/student/stateofmatter/latentheat3$0.json",
       "viewOptions": {
         "showClock": false,
-        "controlButtons": "play_reset_step"
+        "controlButtonStyle": "text",
+        "controlButtons": "reset"
       },
       "modelOptions": {
         "timeStep": 2.5
       },
       "onLoad": [
         "setComponentDisabled('start-cooling', false);",
+        "setComponentDisabled('stop-cooling', true);",
         "callEvery(200, function() {",
         "  if (get('experimentRunning')) {",
         "    var numAtoms, i, props, vx2, vy2, newVx, newVy, ratio, vXConstant, vYConstant;",
@@ -135,8 +140,23 @@
         "  start();",
         "}",
         "setComponentDisabled('start-cooling', true);",
+        "setComponentDisabled('stop-cooling', false);",
         "set('timeExperimentStarted', get('time'));",
         "set('experimentRunning', true);"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "stop-cooling",
+      "text": "Stop removing heat",
+      "disabled": true,
+      "action": [
+        "set('experimentRunning', false);",
+        "if (isStopped()) {",
+        "  start();",
+        "}",
+        "setComponentDisabled('start-cooling', false);",
+        "setComponentDisabled('stop-cooling', true);"
       ]
     },
     {
@@ -175,7 +195,7 @@
       "temperature-energy-graph"
     ],
     "bottom": [
-      "start-cooling", "experiment-time"
+      "start-cooling", "stop-cooling", "experiment-time"
     ]
   },
   "template": [
