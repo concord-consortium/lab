@@ -70,6 +70,7 @@ define(function(require) {
         valenceElectrons   = properties.valenceElectrons,
         bondEnergy         = properties.bondEnergy,
         activationEnergy   = properties.activationEnergy,
+        bondProbability    = properties.bondProbability,
 
         // Helper array used only during bonds exchange process. When atom has radial bonds (one or
         // more), one of them (random) will be stored in this array. It will be exchanged with
@@ -123,32 +124,37 @@ define(function(require) {
     // a single (1), double (2) or triple (3) bond.
     // Bond type will be based on two factors:
     // - available electron slots,
-    // - stability of the configuration (if e.g. either single and double bond can be created,
-    //   the bond type with bigger chemical energy will be chosen).
-    // The last argument lets you modify unpaired electrons count of the second atom. It is useful
-    // during bond exchange when we have to take into account that existing bond will be transfered.
+    // - probability, e.g. it's more likely than single bond will be formed instead of double or
+    //   triple (see: bondProbability option)
     function getPossibleBondType(atom1, atom2, atom2Mod) {
       if (atom2Mod === undefined) atom2Mod = 0;
       var maxType = Math.min(3, getUnpairedElectrons(atom1), getUnpairedElectrons(atom2) + atom2Mod);
-      // Only single bond is possible or no bond at all. No need to compare bond energies.
-      if (maxType < 2) {
+      // Only single bond is possible or no bond at all.
+      if (maxType <= 1) {
         return maxType;
-      }
-      // More complicated case. Compare energies of single, double and triple bonds and choose the
-      // most stable configuration (the highest bond energy).
-      var bondEnergy,
-          mostStableType,
-          el1, el2;
-      if (maxType >= 2) {
-        el1 = atoms.element[atom1];
-        el2 = atoms.element[atom2];
-        bondEnergy = {1: getBondEnergy(el1, el2, 1), 2: getBondEnergy(el1, el2, 2)};
-        mostStableType = bondEnergy[1] > bondEnergy[2] ? 1 : 2;
-      }
-      if (maxType === 2) {
-        return mostStableType;
-      } else if (maxType === 3) {
-        return bondEnergy[mostStableType] > getBondEnergy(el1, el2, 3) ? mostStableType : 3;
+      } else {
+        // Use probabilistic approach to choose a bond type.
+        var prob = getBondTypeProbability(atoms.element[atom1], atoms.element[atom2]),
+            randomValue = Math.random();
+
+        if (maxType === 3) {
+          if (randomValue < prob[0]) {
+            return 1;
+          } else if (randomValue < prob[0] + prob[1]) {
+            return 2;
+          } else {
+            return 3;
+          }
+        } else { // maxType === 2
+          // Note that when only single or double bond can be created, we add triple bond
+          // likelihood to single bond likelihood! So for default 80% - 15% - 5% configuration,
+          // we will end up with 85% for single bond and 15% for double bond.
+          if (randomValue < prob[0] + prob[2]) {
+            return 1;
+          } else {
+            return 2;
+          }
+        }
       }
     }
 
@@ -189,6 +195,15 @@ define(function(require) {
              activationEnergy[i + "+" + k + "-" + j] != null ? activationEnergy[i + "+" + k + "-" + j] :
                                                                activationEnergy["default"];
     }
+
+    // Returns bond probability when element i collides with j.
+    function getBondTypeProbability(i, j) {
+            // order of j-k pair doesn't matter.
+      return bondProbability[i + "-" + j] != null ? bondProbability[i + "-" + j] :
+             bondProbability[j + "-" + i] != null ? bondProbability[j + "+" + i] :
+                                                    bondProbability["default"];
+    }
+
 
     // Returns energy needed to exchange bond between element i and j-k pair. So when collision
     // has bigger energy than returned value, bond should transform from j-k to i-j.
