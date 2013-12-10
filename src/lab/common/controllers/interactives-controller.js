@@ -109,7 +109,6 @@ define(function (require) {
         modelDefinitions = [],
         modelHash = {},
         componentModelLoadedCallbacks = [],
-        modelResetCallbacks = [],
         willResetModelCallbacks = [],
         ignoreModelResetEvent = false,
         interactiveRenderedCallbacks = [],
@@ -838,9 +837,7 @@ define(function (require) {
       Notify observers that a model was reset, passing along the cause of the reset event.
     */
     function notifyModelResetCallbacks(cause) {
-      modelResetCallbacks.forEach(function(cb) {
-        cb(cause);
-      });
+      dispatch.modelReset(cause);
     }
 
     /**
@@ -1233,9 +1230,6 @@ define(function (require) {
         }
 
         switch(type) {
-          case "modelReset":
-            modelResetCallbacks = modelResetCallbacks.concat(callbacks);
-            break;
           case "willResetModel":
             willResetModelCallbacks = willResetModelCallbacks.concat(callbacks);
             break;

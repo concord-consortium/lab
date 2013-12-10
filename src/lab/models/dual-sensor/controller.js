@@ -67,7 +67,7 @@ define(function (require) {
     setupModelObservers();
     controller.on('modelLoaded.dual-sensor-model-controller', setupModelObservers);
 
-    interactiveController.on('modelReset', function() {
+    interactiveController.on('modelReset.dual-sensor-model-controller', function() {
       controller.model.set('isNewRunInProgress', false);
     });
 
