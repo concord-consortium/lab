@@ -90,7 +90,7 @@ Here is a list of projects and resources included in the in the `vendor/` direct
 29. [pixi.js](https://github.com/GoodBoyDigital/pixi.js): [MIT](http://www.opensource.org/licenses/MIT)
 30. [canvg](https://code.google.com/p/canvg): [MIT](http://www.opensource.org/licenses/MIT)
 31. [fastclick](https://github.com/ftlabs/fastclick): [MIT](http://www.opensource.org/licenses/MIT)
-
+32. [seedrandom](http://davidbau.com/encode/seedrandom.js) [BSD](http://www.opensource.org/licenses/BSD-2-Clause)
 In addition there are three fontface directories in `vendor/fonts` that are distributed
 under compatible open source licenses:
 
