@@ -33,7 +33,10 @@
       },
       "modelOptions": {
         "chemicalReactions": {
-          "valenceElectrons": [1, 1, 6, 5]
+          "valenceElectrons": [1, 1, 6, 5],
+          "bondProbability": {
+            "default": [0.8, 0.15, 0.05]
+          }
         }
       }
     }
