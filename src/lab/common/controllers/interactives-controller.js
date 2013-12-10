@@ -2,6 +2,7 @@
 
 define(function (require) {
   // Dependencies.
+                                require('seedrandom');
   var labConfig               = require('lab.config'),
       arrays                  = require('arrays'),
       FastClick               = require('fastclick'),
@@ -1481,6 +1482,16 @@ define(function (require) {
     //
     // Initialization.
     //
+
+    // Use seedrandom library (see vendor/seedrandom) that substitutes an explicitly seeded
+    // RC4-based algorithm for Math.random(). It ensures that simulations will look the same for
+    // different users even if physics engines use random values.
+    // TODO: of course this solution is pretty naive.
+    // What if user reloads a model a few times?
+    // What if he uses a tick history and then plays the simulation again?
+    // Such scenarios will break predictable simulations, so we should carefully consider where
+    // and when the seed should be set.
+    Math.seedrandom("Lab!");
 
     // Select interactive container.
     // TODO: controller rather should create it itself to follow pattern of other components.
