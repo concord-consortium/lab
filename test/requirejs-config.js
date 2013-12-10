@@ -8,7 +8,7 @@ exports.labConfig = {
     'cs': '../../vendor/require-cs/cs',
       // Plugin for loading plain text files (GLSL sources).
     'text': '../../vendor/text/text',
-    'sensor-applet': '../../vendor/lab-sensor-applet-interface/dist/sensor-applet-interface',
+    'sensor-applet': '../../vendor/lab-sensor-applet-interface-dist/sensor-applet-interface',
     'seedrandom': '../../vendor/seedrandom/seedrandom'
   }
 };

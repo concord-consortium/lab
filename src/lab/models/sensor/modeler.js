@@ -337,7 +337,7 @@ define(function(require) {
           listenerPath: 'Lab.sensor.' + sensorType,
           sensorDefinitions: [sensorDefinition],
           appletId: sensorType+'-sensor',
-          codebase: labConfig.actualRoot + "jnlp"
+          codebase: labConfig.actualRoot + "vendor/lab-sensor-applet-interface-dist/jars"
         });
 
         appendApplet();
