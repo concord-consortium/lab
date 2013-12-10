@@ -58,6 +58,10 @@
   :name: "ITSI: Heat and Temperature"
   :category: Curriculum
 
+- :path: itsi/heats-of-reaction
+  :name: "ITSI: Heats of Reaction"
+  :category: Curriculum
+
 - :path: itsi/stoichiometry
   :name: "ITSI: Stoichiometry"
   :category: Curriculum
