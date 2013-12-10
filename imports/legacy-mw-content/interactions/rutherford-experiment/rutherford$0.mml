@@ -337,7 +337,7 @@
    <void method="put">
     <string>date</string>
     <object class="java.util.Date">
-     <long>1386184253000</long>
+     <long>1386363462000</long>
     </object>
    </void>
    <void method="put">
@@ -346,7 +346,7 @@
    </void>
    <void method="put">
     <string>size</string>
-    <long>24677</long>
+    <long>21394</long>
    </void>
    <void method="put">
     <string>codebase</string>
@@ -481,6 +481,11 @@ endif;</string>
   </void>
   <void property="colorCode">
    <string>None</string>
+  </void>
+  <void property="elementColors">
+   <void index="0">
+    <int>-13618945</int>
+   </void>
   </void>
   <void property="ellipses">
    <array class="org.concord.mw2d.models.EllipseComponent$Delegate" length="1">
