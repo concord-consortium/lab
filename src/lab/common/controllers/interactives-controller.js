@@ -1203,28 +1203,16 @@ define(function (require) {
        * sequence than 'regular' modelLoadedCallbacks.)
        */
       on: function (type, callback) {
-        var callbacks;
-
-        if (typeof callback === "function") {
-          callbacks = [callback];
-        } else if (Array.isArray(callback)) {
-          callbacks = callback;
-          if (callbacks.some(function (cb) { return typeof cb !== 'function'; })) {
-            throw new Error("Invalid callback, must be an array of functions.");
-          }
-        } else {
-          throw new Error("Invalid callback, must be a function or array of functions.");
+        if (typeof callback !== "function") {
+          throw new Error("Invalid callback, must be a function.");
         }
-
-        switch(type) {
-          case "willResetModel":
-            willResetModelCallbacks = willResetModelCallbacks.concat(callbacks);
-            break;
-          default:
-            if (typeof callback !== "function") {
-              throw new Error("Event type " + type + " does not support multiple callbacks in one call to .on()");
-            }
-            dispatch.on(type, callback);
+        // Note that we can't use DispatchSupport as willResetModel event is a special one.
+        // We have know number of objects interested in this event and we have to let them cancel
+        // reset operation.
+        if (type === "willResetModel") {
+          willResetModelCallbacks = willResetModelCallbacks.push(callback);
+        } else {
+          dispatch.on(type, callback);
         }
       },
 
