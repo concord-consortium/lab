@@ -111,7 +111,6 @@ define(function (require) {
         componentModelLoadedCallbacks = [],
         willResetModelCallbacks = [],
         ignoreModelResetEvent = false,
-        interactiveRenderedCallbacks = [],
 
         // Hash of instantiated components.
         // Key   - component ID.
@@ -327,17 +326,6 @@ define(function (require) {
       return str.join('\n');
     }
 
-
-    /**
-      Call this after the Interactive renders to process any callbacks.
-    */
-    function interactiveRendered() {
-      var i;
-      for(i = 0; i < interactiveRenderedCallbacks.length; i++) {
-        interactiveRenderedCallbacks[i]();
-      }
-    }
-
     /**
       Validates interactive definition.
 
@@ -545,7 +533,7 @@ define(function (require) {
       // Setup help system if help tips are defined.
       if (interactive.helpTips.length > 0) {
         helpSystem = new HelpSystem(interactive.helpTips, $interactiveContainer);
-        controller.on("interactiveRendered", function () {
+        controller.on("interactiveRendered.helpSystem", function () {
           function hashCode(string) {
             var hash = 0, len = string.length, i, c;
             if (len === 0) return hash;
@@ -814,8 +802,7 @@ define(function (require) {
 
         modelController.initializeView();
 
-        // notify observers that interactive is rendered.
-        interactiveRendered();
+        dispatch.interactiveRendered();
       }
     }
 
@@ -1232,9 +1219,6 @@ define(function (require) {
         switch(type) {
           case "willResetModel":
             willResetModelCallbacks = willResetModelCallbacks.concat(callbacks);
-            break;
-          case "interactiveRendered":
-            interactiveRenderedCallbacks = interactiveRenderedCallbacks.concat(callbacks);
             break;
           default:
             if (typeof callback !== "function") {
