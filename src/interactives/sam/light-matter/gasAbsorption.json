@@ -14,6 +14,8 @@
         "controlButtons": "play_reset"
       },
       "onLoad": [
+        "set('loadedModelID','elementA');",
+        "set('selectedModelID','elementA');",
         "setLightSourceAngle(0);",
         "setLightSourceFrequency(get('lightSourceFrequency'));",
         "setLightSourceNumber(5);",
@@ -30,6 +32,8 @@
         "controlButtons": "play_reset"
       },
       "onLoad": [
+        "set('loadedModelID','elementB');",
+        "set('selectedModelID','elementB');",
         "setLightSourceAngle(0);",
         "setLightSourceFrequency(get('lightSourceFrequency'));",
         "setLightSourceNumber(5);",
@@ -46,6 +50,26 @@
         "controlButtons": "play_reset"
       },
       "onLoad": [
+        "set('loadedModelID','elementC');",
+        "set('selectedModelID','elementC');",
+        "setLightSourceAngle(0);",
+        "setLightSourceFrequency(get('lightSourceFrequency'));",
+        "setLightSourceNumber(5);",
+        "setLightSourcePeriod(500);",
+        "setTemperatureOfAtoms(atomsWithinRect(0,0,get('width'),get('height')),300);",
+        "set('timeStepsPerTick',20);"
+      ]
+    },
+    {
+      "type": "md2d",
+      "id": "mixture",
+      "url": "imports/legacy-mw-content/converted/sam-activities/light-matter/monochrome-absorb/mixture.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      },
+      "onLoad": [
+        "set('loadedModelID','mixture');",
+        "set('selectedModelID','mixture');",
         "setLightSourceAngle(0);",
         "setLightSourceFrequency(get('lightSourceFrequency'));",
         "setLightSourceNumber(5);",
@@ -60,6 +84,19 @@
       "name": "lightSourceFrequency",
       "initialValue": 3,
       "onChange": "setLightSourceFrequency(value);"
+    },
+    {
+      "name": "loadedModelID",
+      "initialValue": null
+    },
+    {
+      "name": "selectedModelID",
+      "initialValue": null,
+      "onChange": [
+        "if (value !== get('loadedModelID')) {",
+        "  loadModel(value, ['lightSourceFrequency']);",
+        "}"
+      ]
     }
   ],
   "components": [
@@ -71,18 +108,23 @@
     {
       "type": "radio",
       "id": "select-model",
+      "property": "selectedModelID",
       "options": [
         {
           "text": "Gas A",
-          "loadModel": "elementA"
+          "value": "elementA"
         },
         {
           "text": "Gas B",
-          "loadModel": "elementB"
+          "value": "elementB"
         },
         {
           "text": "Gas C",
-          "loadModel": "elementC"
+          "value": "elementC"
+        },
+        {
+          "text": "Mixture",
+          "value": "mixture"
         }
       ]
     },
@@ -111,8 +153,8 @@
       "type": "slider",
       "id": "select-light-source-frequency",
       "min": 1,
-      "max": 14,
-      "steps": 13,
+      "max": 15,
+      "steps": 14,
       "property": "lightSourceFrequency",
       "labels": [
         {
