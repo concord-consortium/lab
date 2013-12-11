@@ -38,6 +38,10 @@
   :name: "Inquiry Space: Pendulums"
   :category: Curriculum
 
+- :path: itsi/atoms-and-energy
+  :name: "ITSI: Atoms and Energy"
+  :category: Curriculum
+
 - :path: itsi/crystal
   :name: "ITSI: Crystals"
   :category: Curriculum
