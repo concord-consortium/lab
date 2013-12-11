@@ -44,13 +44,33 @@ define(function(require) {
     return x1 * x2 + y1 * y2;
   }
 
+  // Returns true if array1 and array2 have at least one common element, false otherwise.
+  function commonElement(array1, array2) {
+    var len1 = array1.length,
+        len2 = array2.length,
+        i, j, el1;
+    // It's a brutal force approach, but note that maximum length of the array is 4. We use that
+    // function to compare if two atoms have a common bonded atom. In chemical reactions, only
+    // 4 bonds can be formed per atom.
+    for (i = 0; i < len1; i++) {
+      el1 = array1[i];
+      for (j = 0; j < len2; j++) {
+        if (el1 === array2[j]) return true;
+      }
+    }
+    return false;
+  }
+
   return function ChemicalReactions(engine, _properties) {
     var api,
 
-        properties       = validator.validateCompleteness(metadata.chemicalReactions, _properties),
-        valenceElectrons = properties.valenceElectrons,
-        bondEnergy       = properties.bondEnergy,
-        activationEnergy = properties.activationEnergy,
+        properties         = validator.validateCompleteness(metadata.chemicalReactions, _properties),
+        createAngularBonds = properties.createAngularBonds,
+        noLoops            = properties.noLoops,
+        valenceElectrons   = properties.valenceElectrons,
+        bondEnergy         = properties.bondEnergy,
+        activationEnergy   = properties.activationEnergy,
+        bondProbability    = properties.bondProbability,
 
         // Helper array used only during bonds exchange process. When atom has radial bonds (one or
         // more), one of them (random) will be stored in this array. It will be exchanged with
@@ -81,13 +101,6 @@ define(function(require) {
       return (s < v) && (v + s < 8);
     }
 
-    function getUnpairedElectrons(i) {
-      // Don't support quadruple bonds, as they are unrealistic and can cause problems
-      // (e.g. there is :C=C:, but not C==C).
-      var v = valenceElectrons[atoms.element[i]];
-      return Math.min(3, Math.min(8 - v, v) - atoms.sharedElectrons[i]);
-    }
-
     // Returns length of bond between elements i and j.
     function getBondLength(i, j) {
       return BOND_LEN_RATIO * (elements.sigma[i] + elements.sigma[j]);
@@ -100,10 +113,49 @@ define(function(require) {
       return 2e4 * Math.sqrt(elements.epsilon[i] * elements.epsilon[j]);
     }
 
+    function getUnpairedElectrons(i) {
+      // Don't support quadruple bonds, as they are unrealistic and can cause problems
+      // (e.g. there is :C=C:, but not C==C).
+      var v = valenceElectrons[atoms.element[i]];
+      return Math.min(Math.min(8 - v, v) - atoms.sharedElectrons[i]);
+    }
+
     // Returns a number indicating whether a bond between atoms atom1 and atom2 would be
     // a single (1), double (2) or triple (3) bond.
-    function getPossibleBondType(atom1, atom2) {
-      return Math.min(getUnpairedElectrons(atom1), getUnpairedElectrons(atom2));
+    // Bond type will be based on two factors:
+    // - available electron slots,
+    // - probability, e.g. it's more likely than single bond will be formed instead of double or
+    //   triple (see: bondProbability option)
+    function getPossibleBondType(atom1, atom2, atom2Mod) {
+      if (atom2Mod === undefined) atom2Mod = 0;
+      var maxType = Math.min(3, getUnpairedElectrons(atom1), getUnpairedElectrons(atom2) + atom2Mod);
+      // Only single bond is possible or no bond at all.
+      if (maxType <= 1) {
+        return maxType;
+      } else {
+        // Use probabilistic approach to choose a bond type.
+        var prob = getBondTypeProbability(atoms.element[atom1], atoms.element[atom2]),
+            randomValue = Math.random();
+
+        if (maxType === 3) {
+          if (randomValue < prob[0]) {
+            return 1;
+          } else if (randomValue < prob[0] + prob[1]) {
+            return 2;
+          } else {
+            return 3;
+          }
+        } else { // maxType === 2
+          // Note that when only single or double bond can be created, we add triple bond
+          // likelihood to single bond likelihood! So for default 80% - 15% - 5% configuration,
+          // we will end up with 85% for single bond and 15% for double bond.
+          if (randomValue < prob[0] + prob[2]) {
+            return 1;
+          } else {
+            return 2;
+          }
+        }
+      }
     }
 
     // Returns a number indicating type of existing radial bond.
@@ -143,6 +195,15 @@ define(function(require) {
              activationEnergy[i + "+" + k + "-" + j] != null ? activationEnergy[i + "+" + k + "-" + j] :
                                                                activationEnergy["default"];
     }
+
+    // Returns bond probability when element i collides with j.
+    function getBondTypeProbability(i, j) {
+            // order of j-k pair doesn't matter.
+      return bondProbability[i + "-" + j] != null ? bondProbability[i + "-" + j] :
+             bondProbability[j + "-" + i] != null ? bondProbability[j + "+" + i] :
+                                                    bondProbability["default"];
+    }
+
 
     // Returns energy needed to exchange bond between element i and j-k pair. So when collision
     // has bigger energy than returned value, bond should transform from j-k to i-j.
@@ -349,19 +410,31 @@ define(function(require) {
     }
 
     function collide(a1, a2, xij, yij, ijsq) {
-      var a1Radical, a2Radical;
+      var a1Radical, a2Radical, bothRadical, a1a2Exchange, a2a1Exchange;
 
       if (willCollide(a1, a2, xij, yij)) {
         a1Radical = isRadical(a1);
         a2Radical = isRadical(a2);
+        bothRadical = a1Radical && a2Radical;
+        a1a2Exchange = a1Radical && bondToExchange[a2] !== undefined;
+        a2a1Exchange = a2Radical && bondToExchange[a1] !== undefined;
 
-        if (a1Radical && a2Radical) {
-          // Simple case, two radicals, just create a new bond.
-          makeBond(a1, a2, ijsq);
-        } else if (a1Radical && bondToExchange[a2] !== undefined) {
-          tryToExchangeBond(a1, a2, bondToExchange[a2], xij, yij, ijsq);
-        } else if (a2Radical && bondToExchange[a1] !== undefined) {
-          tryToExchangeBond(a2, a1, bondToExchange[a1], xij, yij, ijsq);
+        if (bothRadical || a1a2Exchange || a2a1Exchange) {
+          // Check if there is a common element in directly bonded atoms. If so, don't let the
+          // chemical reaction happen, as we don't want to form triangles. Note that we defer
+          // this check as much as it's possible, as it can be little bit expensive.
+          if (commonElement(engine.getBondedAtoms(a1), engine.getBondedAtoms(a2))) return;
+          // If "noLoops" mode is enabled, check whether a1 is a part of the same molecule as a2.
+          if (noLoops && engine.getMoleculeAtoms(a2).indexOf(a1) !== -1) return;
+
+          if (bothRadical) {
+            // Simple case, two radicals, just create a new bond.
+            makeBond(a1, a2, ijsq);
+          } else if (a1a2Exchange) {
+            tryToExchangeBond(a1, a2, bondToExchange[a2], xij, yij, ijsq);
+          } else if (a2a1Exchange) {
+            tryToExchangeBond(a2, a1, bondToExchange[a1], xij, yij, ijsq);
+          }
         }
       }
     }
@@ -408,8 +481,8 @@ define(function(require) {
           el3 = atoms.element[a3],
 
           oldType = getBondType(bondIdx),
-          // Take into account that a2 shared electron count is now affected by old bond.
-          newType = Math.min(getUnpairedElectrons(a1), getUnpairedElectrons(a2) + oldType),
+          // Take into account that a2 shared electron count is now affected by old bond!
+          newType = getPossibleBondType(a1, a2, oldType),
 
           minCollisionEnergy = getEnergyForBondExchange(el1, el2, el3, oldType, newType),
 
@@ -703,15 +776,17 @@ define(function(require) {
           updateBondToExchangeArray();
           createBonds(neighborList);
 
-          if (Object.keys(modifiedAtoms).length > 0) {
-            // Some reaction took place, update angular bonds.
-            removeAngularBondOfModfiedAtoms();
-            tryToMakeAngularBondsStronger();
-            setupNewAngularBonds();
-          } else {
-            // In fact this call can be placed before the whole if-else statement. However this
-            // is a small optimization, as we can setup optimal order of function calls.
-            tryToMakeAngularBondsStronger();
+          if (createAngularBonds) {
+            if (Object.keys(modifiedAtoms).length > 0) {
+              // Some reaction took place, update angular bonds.
+              removeAngularBondOfModfiedAtoms();
+              tryToMakeAngularBondsStronger();
+              setupNewAngularBonds();
+            } else {
+              // In fact this call can be placed before the whole if-else statement. However this
+              // is a small optimization, as we can setup optimal order of function calls.
+              tryToMakeAngularBondsStronger();
+            }
           }
 
           if (bondsChanged) {

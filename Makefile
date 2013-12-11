@@ -20,7 +20,6 @@ MD2D_SRC_FILES := $(shell find src/lab/models/md2d -type f ! -name '.*' -print)
 GRAPHER_SRC_FILES := $(shell find src/lab/grapher -type f ! -name '.*' -print)
 IMPORT_EXPORT_SRC_FILES := $(shell find src/lab/import-export -type f ! -name '.*' -print)
 IFRAME_PHONE_SRC_FILES := $(shell find src/lab/iframe-phone -type f ! -name '.*' -print)
-SENSOR_APPLET_SRC_FILES := $(shell find src/lab/sensor-applet -type f ! -name '.*' -print)
 
 COMMON_SRC_FILES := $(shell find src/lab/common -type f ! -name '.*' -print)
 
@@ -58,8 +57,7 @@ LAB_JS_FILES = \
 	public/lab/lab.js \
 	public/lab/lab.grapher.js \
 	public/lab/lab.import-export.js \
-	public/lab/lab.iframe-phone.js \
-	public/lab/lab.sensor-applet.js
+	public/lab/lab.iframe-phone.js
 
 # default target executed when running make. Run the $(MAKE) public task rather than simply
 # declaring a dependency on 'public' because 'bundle install' and 'npm install' might update some
@@ -425,10 +423,6 @@ public/lab/lab.iframe-phone.js: \
 	$(IFRAME_PHONE_SRC_FILES)
 	$(R_OPTIMIZER) -o src/lab/iframe-phone/iframe-phone.build.js
 
-public/lab/lab.sensor-applet.js: \
-	$(SENSOR_APPLET_SRC_FILES)
-	$(R_OPTIMIZER) -o src/lab/sensor-applet/sensor-applet.build.js
-
 # ------------------------------------------------
 #
 #   public/vendor
@@ -462,6 +456,7 @@ public/vendor: \
 	public/vendor/shutterbug/shutterbug.js \
 	public/vendor/shutterbug/README.md \
 	public/vendor/shutterbug/LICENSE.md \
+	public/vendor/lab-sensor-applet-interface/sensor-applet-interface.js \
 	public/favicon.ico
 
 
@@ -633,6 +628,13 @@ public/vendor/shutterbug/README.md: public/vendor/shutterbug \
 public/vendor/shutterbug/LICENSE.md: public/vendor/shutterbug \
 	vendor/shutterbug/LICENSE.md
 	cp vendor/shutterbug/LICENSE.md public/vendor/shutterbug
+
+public/vendor/lab-sensor-applet-interface/sensor-applet-interface.js: \
+	public/vendor/lab-sensor-applet-interface
+	cp vendor/lab-sensor-applet-interface/dist/sensor-applet-interface.js public/vendor/lab-sensor-applet-interface
+
+public/vendor/lab-sensor-applet-interface:
+	mkdir -p public/vendor/lab-sensor-applet-interface
 
 public/favicon.ico:
 	cp -f src/favicon.ico public/favicon.ico

@@ -9,13 +9,13 @@
     "",
     "Set up the model with high oxygen and low carbon dioxide outside the cell and low oxygen and high carbon dioxide inside the cell. In which direction do the oxygen and carbon dioxide molecules move?"
   ],
-  "aspectRatio": 1.6,
+  "aspectRatio": 1.725,
   "fontScale": 0.8,
   "models": [
     {
       "type": "md2d",
       "id": "model1",
-      "url": "models/md2d/itsi/diffusion/permeable-membrane.json",
+      "url": "models/md2d/itsi/diffusion/permeable-membrane/permeable-membrane.json",
       "viewOptions": {
         "controlButtons": "play_reset",
         "imageMapping": {

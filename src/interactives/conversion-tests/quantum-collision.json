@@ -28,7 +28,7 @@
       "name": "initialVelocity",
       "unitType": "velocity",
       "onChange": "setAtomProperties(1, { vx: value });",
-      "initialValue": 0
+      "initialValue": 0.0005
     },
     {
       "name": "initialVelocityInMKS",

@@ -1,0 +1,58 @@
+@charset "UTF-8";
+body {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+body.mainidea {
+	margin-top: 5px;
+}
+body.subhead {
+	background-image:subHeadingBackground.png;
+}
+body.question {
+	background-color: #e6e6e6;
+	margin-bottom: 5px;
+	margin-top: 5px;
+	margin-left: 5px;
+	margin-bottom: 5px;
+}
+p {
+	font-size:11px;
+}
+table p {
+	font-size: 11px;
+	margin-top: 11px;
+}
+.firstp {
+	font-size: 11px;
+	margin: 0px;
+}
+.pagetitle {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	color: #FFFFFF;
+	margin: 0px;
+}
+.mainidea {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	margin: 0px;
+}
+.subhead {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	color: #a65d2c;
+	margin: 0px;
+	font-weight: bold;
+}
+.question {
+	font-family:Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-weight:bold;
+	margin: 0px;
+}
+li {
+	font-size:11px;
+}
+ul {
+	list-style-image:url(listBullet.png);	
+}

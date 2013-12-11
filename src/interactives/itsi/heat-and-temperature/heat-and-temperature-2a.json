@@ -1,0 +1,98 @@
+{
+  "title": "Heat and Temperature 2a: Mass and Kinetic Energy",
+  "publicationStatus": "draft",
+  "aspectRatio": 1.725,
+  "subtitle": "Heat and Temperature 2a: Mass and Kinetic Energy",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "page2a$0.json",
+      "url": "imports/legacy-mw-content/converted/itsi/heatv2/heat_itsi_models/page2a$0.json",
+      "importedFrom": "imports/legacy-mw-content/itsi/heatv2/heat_itsi_models/page2a$0.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      },
+      "modelOptions": {}
+    }
+  ],
+  "outputs": [
+    {
+      "name": "element0KE",
+      "value": "return atomsKe(atomsWithinRect(0,0,get('width'),get('height'),0));"
+    },
+    {
+      "name": "element1KE",
+      "value": "return atomsKe(atomsWithinRect(0,0,get('width'),get('height'),3));"
+    }
+  ],
+  "components": [
+    {
+      "id": "ke-shading",
+      "type": "checkbox",
+      "text": "KE shading",
+      "textOn": "right",
+      "width": "auto",
+      "height": "auto",
+      "property": "keShading",
+      "disabled": false,
+      "tooltip": ""
+    },
+    {
+      "id": "elem-0-bar",
+      "type": "barGraph",
+      "property": "element0KE",
+      "min": 0,
+      "max": 6,
+      "title": "Total K.E. of less massive atoms (eV)",
+      "titleOn": "right",
+      "labels": 7,
+      "units": false,
+      "gridLines": 13,
+      "labelFormat": "0.1f",
+      "barWidth": "1em",
+      "height": "100%",
+      "barColor": "#ffff00",
+      "fillColor": "#fff",
+      "tooltip": ""
+    },
+    {
+      "id": "elem-1-bar",
+      "type": "barGraph",
+      "property": "element1KE",
+      "min": 0,
+      "max": 6,
+      "title": "Total K.E. of more massive atoms (eV)",
+      "titleOn": "right",
+      "labels": 7,
+      "units": false,
+      "gridLines": 13,
+      "labelFormat": "0.1f",
+      "barWidth": "1em",
+      "height": "100%",
+      "barColor": "#ffccff",
+      "fillColor": "#fff",
+      "tooltip": ""
+    }
+  ],
+  "template": [
+    {
+      "id": "below",
+      "left": "model.left",
+      "top": "model.bottom",
+      "width": "model.width",
+      "align": "center"
+    },
+    {
+      "id": "on-right",
+      "left": "model.right",
+      "top": "model.top",
+      "height": "model.height",
+      "align": "center"
+    }
+  ],
+  "layout": {
+    "below": ["ke-shading"],
+    "on-right":  ["elem-0-bar", "elem-1-bar"]
+  }
+}

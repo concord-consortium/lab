@@ -356,6 +356,17 @@
   </void> 
  </object> 
  <object class="org.concord.mw2d.AtomisticView$State"> 
+  <void property="elementColors"> 
+   <void index="1"> 
+    <int>-9066941</int> 
+   </void> 
+   <void index="2"> 
+    <int>-16776961</int> 
+   </void> 
+   <void index="3"> 
+    <int>-2539040</int> 
+   </void> 
+  </void>
   <void property="colorCode"> 
    <string>None</string> 
   </void> 

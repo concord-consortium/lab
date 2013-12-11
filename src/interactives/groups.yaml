@@ -54,6 +54,14 @@
   :name: "ITSI: Heat Transfer"
   :category: Curriculum
 
+- :path: itsi/heat-and-temperature
+  :name: "ITSI: Heat and Temperature"
+  :category: Curriculum
+
+- :path: itsi/heats-of-reaction
+  :name: "ITSI: Heat of Reactions"
+  :category: Curriculum
+
 - :path: itsi/stoichiometry
   :name: "ITSI: Stoichiometry"
   :category: Curriculum
@@ -64,6 +72,14 @@
 
 - :path: itsi/diffusion
   :name: "ITSI: Diffusion and Osmosis"
+  :category: Curriculum
+
+- :path: itsi/chemical-reactions
+  :name: "ITSI: Chemical Reactions"
+  :category: Curriculum
+
+- :path: itsi/reaction-kinetics
+  :name: "ITSI: Reaction Kinetics"
   :category: Curriculum
 
 - :path: itsi/energy2d

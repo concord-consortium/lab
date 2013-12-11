@@ -1,0 +1,99 @@
+{
+  "title": "Dissociation Energy",
+  "publicationStatus": "draft",
+  "aspectRatio": 1.725,
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "dissociation-edited$0",
+      "url": "models/md2d/itsi/chemical-reactions/dissociation-rites.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "parameters": [
+    {
+      "name": "dissociationEnergy",
+      "initialValue": 2.133,
+      "onChange": [
+        "setBondEnergy('1-1', value);"
+      ],
+      "unitAbbreviation": "eV"
+    }
+  ],
+  "components": [
+    {
+      "id": "ke-shading",
+      "type": "checkbox",
+      "text": "KE shading",
+      "textOn": "right",
+      "width": "auto",
+      "height": "auto",
+      "property": "keShading",
+      "disabled": false,
+      "tooltip": ""
+    },
+    {
+      "type": "slider",
+      "id": "temperature-slider",
+      "min": 0,
+      "max": 10000,
+      "labels": [
+        {
+          "value": 0,
+          "label": "0 K"
+        },
+        {
+          "value": 10000,
+          "label": "10000 K"
+        }
+      ],
+      "steps": 1000,
+      "title": "Temperature",
+      "property": "targetTemperature",
+      "width": "100%",
+      "displayValue": "return format('.0f')(value)"
+    },
+    {
+      "type": "slider",
+      "id": "dissociation-slider",
+      "min": 0,
+      "max": 4,
+      "labels": [
+        {
+          "value": 0,
+          "label": "0 eV"
+        },
+        {
+          "value": 4,
+          "label": "4 eV"
+        }
+      ],
+      "steps": 100,
+      "title": "Dissociation Energy",
+      "property": "dissociationEnergy",
+      "width": "100%",
+      "displayValue": "return format('.3f')(value)"
+    }
+  ],
+  "template": [
+    {
+      "id": "right",
+      "top": "model.top",
+      "left": "model.right",
+      "height": "model.height",
+      "padding-right": "2em",
+      "align": "center"
+    }
+  ],
+  "layout": {
+    "right": [
+      ["temperature-slider"],
+      ["dissociation-slider"],
+      ["ke-shading"]
+    ]
+  }
+}

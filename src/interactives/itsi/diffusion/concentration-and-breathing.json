@@ -5,13 +5,13 @@
   "about": [
     ""
   ],
-  "aspectRatio": 1.6,
+  "aspectRatio": 1.725,
   "fontScale": 0.8,
   "models": [
     {
       "type": "md2d",
       "id": "model1",
-      "url": "models/md2d/itsi/diffusion/concentration-and-breathing.json",
+      "url": "models/md2d/itsi/diffusion/concentration-and-breathing/concentration-and-breathing.json",
       "viewOptions": {
         "controlButtons": "play_reset",
         "imageMapping": { }
@@ -96,13 +96,18 @@
     },
     {
       "type": "text",
-      "id": "inside-right-label",
-      "text": "Inside"
+      "id": "bar-label",
+      "text": "O₂ Conc."
     },
     {
       "type": "text",
-      "id": "outside-right-label",
-      "text": "Outside"
+      "id": "disclaimer",
+      "text": "Note: Real red blood cells are not shaped like a square. This shape was used for technical reasons to make the model easier to construct."
+    },
+    {
+      "type": "text",
+      "id": "empty",
+      "text": ""
     },
     {
       "type": "barGraph",
@@ -110,11 +115,11 @@
       "min": 0,
       "max": 100,
       "labels": 0,
-      "barColor": "rgb(242,234,27)",
-      "fillColor": "rgb(225,243,253)",
-      "title": "O₂",
+      "barColor": "#a2b5ff",
+      "fillColor": "#fff",
+      "title": "Out",
       "titleOn": "top",
-      "height": "15em",
+      "height": "13em",
       "barWidth": "1em",
       "property": "outsideConcentrationO2"
     },
@@ -124,11 +129,11 @@
       "min": 0,
       "max": 100,
       "labels": 0,
-      "barColor": "rgb(242,234,27)",
-      "fillColor": "rgb(243,222,223)",
-      "title": "O₂",
+      "barColor": "#ffafaf",
+      "fillColor": "#fff",
+      "title": "In",
       "titleOn": "top",
-      "height": "15em",
+      "height": "13em",
       "barWidth": "1em",
       "property": "insideConcentrationO2"
     },
@@ -140,11 +145,11 @@
       "labels": [
         {
           "value": 0,
-          "label": "Low"
+          "label": "Low<br/><span style='font-size: 0.9em;'>distant tissue</span>"
         },
         {
           "value": 300,
-          "label": "High"
+          "label": "High<br/><span style='font-size: 0.9em;'>near lung</span>"
         }
       ],
       "steps": 26,
@@ -153,24 +158,19 @@
     }
   ],
   "layout": {
-    "right-inside": [
-      [
-        "inside-right-label"
-      ],
-      [
-        "inside-concentration-O2"
-      ]
-    ],
     "right-outside": [
       [
-        "outside-right-label"
+        "bar-label"
       ],
       [
-        "outside-concentration-O2"
+        "outside-concentration-O2","inside-concentration-O2"
       ]
     ],
     "below": [
-      "select-outside-concentration-o2"
+      ["select-outside-concentration-o2"]
+    ],
+    "below-right": [
+      "disclaimer"
     ],
     "above-center": [
       "cell-above-label"
@@ -182,7 +182,15 @@
       "top": "model.bottom",
       "left": "model.left",
       "width": "model.width",
-      "padding-top": "1em",
+      "padding-top": "0.7em",
+      "align": "center"
+    },
+    {
+      "id": "below-right",
+      "top": "model.bottom",
+      "right": "interactive.right",
+      "width": "14em",
+      "padding-top": "0.7em",
       "align": "center"
     },
     {
@@ -190,21 +198,15 @@
       "width": "model.width",
       "left": "model.left",
       "bottom": "model.top",
-      "height": "2em",
-      "align": "center"
-    },
-    {
-      "id": "right-inside",
-      "left": "model.right",
-      "top": "above-center.top",
-      "height": "model.height",
+      "height": "1.5em",
       "align": "center"
     },
     {
       "id": "right-outside",
-      "left": "right-inside.right",
+      "left": "model.right",
       "top": "above-center.top",
       "height": "model.height",
+      "width": "13em",
       "align": "center"
     }
   ]

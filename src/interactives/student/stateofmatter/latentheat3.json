@@ -2,6 +2,9 @@
   "title": "Specific Heat and Latent Heat in Condensation",
   "publicationStatus": "public",
   "subtitle": "Seeing Specific Heat and Latent Heat in a Condensation Experiment",
+  "category": "Chemistry",
+  "subCategory": "States of mater",
+  "screenshot": "http://screenshots.lab.concord.org/latentheat3.png",
   "aspectRatio": 2.1,
   "fontScale": 0.8,
   "about": [
@@ -36,36 +39,20 @@
       "id": "latentheat3$0",
       "url": "imports/legacy-mw-content/converted/student/stateofmatter/latentheat3$0.json",
       "viewOptions": {
-        "controlButtons": "play_reset_step"
+        "showClock": false,
+        "controlButtonStyle": "text",
+        "controlButtons": "reset"
       },
       "modelOptions": {
         "timeStep": 2.5
       },
       "onLoad": [
         "setComponentDisabled('start-cooling', false);",
-        "callEvery(200, function() {",
+        "setComponentDisabled('stop-cooling', true);",
+        "callEvery(300, function() {",
         "  if (get('experimentRunning')) {",
-        "    var numAtoms, i, props, vx2, vy2, newVx, newVy, ratio, vXConstant, vYConstant;",
-        "    batch(function(){",
-        "      numAtoms = getNumberOfAtoms()",
-        "      for(i=0; i<numAtoms; i++){",
-        "        // The idea here is to subtract the same amount of KE from every atom, and to keep",
-        "        // the direction of the velocity the same",
-        "        props = getAtomProperties(i);",
-        "        vx2 = props.vx * props.vx;",
-        "        vy2 = props.vy * props.vy;",
-        "        if (vx2*vy2) {",
-        "          ratio = vx2/vy2;",
-        "          vXConstant = 0.000000002*ratio/(1+ratio);",
-        "          vYConstant = 0.000000002 - vXConstant;",
-        "          if(props.vx >= 0) newVx =  Math.sqrt(Math.max(0, vx2-vXConstant));",
-        "          if(props.vx < 0) newVx = - Math.sqrt(Math.max(0, vx2-vXConstant));",
-        "          if(props.vy >= 0) newVy =  Math.sqrt(Math.max(0, vy2-vYConstant));",
-        "          if(props.vy < 0) newVy = - Math.sqrt(Math.max(0, vy2-vYConstant));",
-        "          setAtomProperties(i, {vx:newVx, vy:newVy});",
-        "        }",
-        "      }",
-        "    });",
+        "    var energy_to_add = -0.35;",
+        "    addKEToAtoms(energy_to_add);",
         "    var runningTime = get('time') - get('timeExperimentStarted');",
         "    set('experimentTime', runningTime);",
         "    if (runningTime > 150000) stop();",
@@ -131,20 +118,26 @@
       "text": "Start removing heat",
       "action": [
         "if (isStopped()) {",
-        "  setComponentDisabled('start-cooling', true);",
         "  start();",
         "}",
+        "setComponentDisabled('start-cooling', true);",
+        "setComponentDisabled('stop-cooling', false);",
         "set('timeExperimentStarted', get('time'));",
         "set('experimentRunning', true);"
       ]
     },
     {
       "type": "button",
-      "id": "reset-experiment",
-      "text": "Reset experiment",
+      "id": "stop-cooling",
+      "text": "Stop removing heat",
+      "disabled": true,
       "action": [
-        "reload();",
-        "set('experimentRunning', false);"
+        "set('experimentRunning', false);",
+        "if (isStopped()) {",
+        "  start();",
+        "}",
+        "setComponentDisabled('start-cooling', false);",
+        "setComponentDisabled('stop-cooling', true);"
       ]
     },
     {
@@ -183,7 +176,7 @@
       "temperature-energy-graph"
     ],
     "bottom": [
-      "start-cooling", "reset-experiment", "experiment-time"
+      "start-cooling", "stop-cooling", "experiment-time"
     ]
   },
   "template": [

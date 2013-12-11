@@ -40,6 +40,18 @@ define(function (require) {
       parent.api.repaintIfReady();
     };
 
+    function createModelAdder(method) {
+      return function modelAdder(props, options) {
+        try {
+          method.call(parent.model, props);
+        } catch (e) {
+          if (!options || !options.silent)
+            throw e;
+        }
+        parent.api.repaintIfReady();
+      };
+    };
+
     return {
 
       getCurrentComputerTime: function() {
@@ -115,6 +127,24 @@ define(function (require) {
         parent.api.repaintIfReady();
       },
 
+      /*
+        Adds radial bond with properties 'props'.
+      */
+      addRadialBond: function addRadialBond(props) {
+        parent.model.addRadialBond(props);
+
+        parent.api.repaintIfReady();
+      },
+
+      /*
+        Adds angular bond with properties 'props'.
+      */
+      addAngularBond: function addAngularBond(props) {
+        parent.model.addAngularBond(props);
+
+        parent.api.repaintIfReady();
+      },
+
       addRandomAtom: function addRandomAtom() {
         return parent.model.addRandomAtom.apply(parent.model, arguments);
       },
@@ -124,10 +154,21 @@ define(function (require) {
       },
 
       /**
-       Scales the velocity of a group of atoms to the desired temperature T
+       * Scales the velocity of a group of atoms to the desired temperature T.
+       * @param {array}  atomIndices
+       * @param {number} T           defined in K
        */
       setTemperatureOfAtoms: function setTemperatureOfAtoms(atomIndices, T) {
-        parent.model.setTemperatureOfAtoms(atomIndices,T);
+        parent.model.setTemperatureOfAtoms(atomIndices, T);
+      },
+
+      /**
+       * Adds energy defined in eV to a group of atoms.
+       * @param {number} energy      defined in eV
+       * @param {array}  atomIndices optional, if undefined, KE will be added to all atoms
+       */
+      addKEToAtoms: function addKEToAtoms(energy, atomIndices) {
+        parent.model.addKEToAtoms(energy, atomIndices);
       },
 
       getTemperatureOfAtoms: function getTemperatureOfAtoms(atomIndices) {
@@ -440,18 +481,12 @@ define(function (require) {
       },
 
       /**
-        Adds an obstacle using human-readable hash of properties.
+        Adds an obstacle/shape/line using human-readable hash of properties.
         e.g. addObstacle({x: 1, y: 0.5, width: 1, height: 1})
       */
-      addObstacle: function addObstacle(props, options) {
-        try {
-          parent.model.addObstacle(props);
-        } catch (e) {
-          if (!options || !options.silent)
-            throw e;
-        }
-        parent.api.repaintIfReady();
-      },
+      addObstacle: createModelAdder(parent.model.addObstacle),
+      addShape: createModelAdder(parent.model.addShape),
+      addLine: createModelAdder(parent.model.addLine),
 
       /**
         Sets individual obstacle properties using human-readable hash.
@@ -770,6 +805,10 @@ define(function (require) {
 
       getNumberOfLines: function() {
         return parent.model.getNumberOfLines();
+      },
+
+      getNumberOfShapes: function() {
+        return parent.model.getNumberOfShapes();
       },
 
       getImageProperties: function(i) {

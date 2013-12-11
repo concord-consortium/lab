@@ -1163,6 +1163,19 @@ define(function(require) {
       propertySupport.invalidatingChangePostHook();
     };
 
+    model.addKEToAtoms = function(energy, atomIndices) {
+      propertySupport.invalidatingChangePreHook();
+
+      if (atomIndices == null) {
+        engine.addKEToAtoms(energy);
+      } else {
+        // This function inside engine has a slightly different API.
+        engine.addKEToAtoms.apply(engine, [energy].concat(atomIndices));
+      }
+
+      propertySupport.invalidatingChangePostHook();
+    };
+
     model.getTemperatureOfAtoms = function(atomIndices) {
       return engine.getTemperatureOfAtoms(atomIndices);
     };
@@ -1236,6 +1249,10 @@ define(function(require) {
 
     model.getRadialBondsForAtom = function(i) {
       return engine.getRadialBondsForAtom(i);
+    };
+
+    model.getBondedAtoms = function(i) {
+      return engine.getBondedAtoms(i);
     };
 
     model.getAngularBondsForAtom = function(i) {

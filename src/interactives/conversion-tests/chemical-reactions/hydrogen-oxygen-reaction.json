@@ -1,8 +1,12 @@
 {
   "title": "Hydrogen-Oxygen Reaction",
-  "publicationStatus": "draft",
+  "publicationStatus": "public",
   "subtitle": "",
-  "about": "",
+  "about": [
+    "This model presents Hydrogen-Oxygen reaction without a heat bath.",
+    "It means that the total energy should be conserved, but you should be able to see a rapid",
+    "growth of the kinetic energy."
+  ],
   "models": [
     {
       "type": "md2d",

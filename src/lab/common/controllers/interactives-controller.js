@@ -2,6 +2,7 @@
 
 define(function (require) {
   // Dependencies.
+                                require('seedrandom');
   var labConfig               = require('lab.config'),
       arrays                  = require('arrays'),
       FastClick               = require('fastclick'),
@@ -261,6 +262,9 @@ define(function (require) {
       // So interactive definition specified by the author won't be affected.
       // This is important for serialization correctness.
       template = banner.template.concat(template);
+      template.forEach(function (container, idx) {
+        template[idx] = $.extend({}, container);
+      });
       layout = $.extend({}, layout, banner.layout);
       components = $.extend({}, componentByID, banner.components);
 
@@ -1380,10 +1384,14 @@ define(function (require) {
         // Copy basic properties from the initial definition, as they are immutable.
         // FIXME: this should be based on enumerating properties in the metadata. The issue is properties
         // added to the metadata like "importedFrom" have to be then manually added here.
+        // NP: +1 on enumerating the metadata props here.
         result = {
           title: interactive.title,
           publicationStatus: interactive.publicationStatus,
           subtitle: interactive.subtitle,
+          category: interactive.category,
+          subCategory: interactive.subCategory,
+          screenshot: interactive.screenshot,
           aspectRatio: interactive.aspectRatio,
           fontScale: interactive.fontScale,
           helpOnLoad: interactive.helpOnLoad,
@@ -1474,6 +1482,16 @@ define(function (require) {
     //
     // Initialization.
     //
+
+    // Use seedrandom library (see vendor/seedrandom) that substitutes an explicitly seeded
+    // RC4-based algorithm for Math.random(). It ensures that simulations will look the same for
+    // different users even if physics engines use random values.
+    // TODO: of course this solution is pretty naive.
+    // What if user reloads a model a few times?
+    // What if he uses a tick history and then plays the simulation again?
+    // Such scenarios will break predictable simulations, so we should carefully consider where
+    // and when the seed should be set.
+    Math.seedrandom("Lab!");
 
     // Select interactive container.
     // TODO: controller rather should create it itself to follow pattern of other components.

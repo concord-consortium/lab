@@ -1,0 +1,400 @@
+{
+  "title": "Osmosis",
+  "publicationStatus": "draft",
+  "subtitle": "Osmotic pressure and salt concentration across a cell membrane",
+  "about": [
+    "TBD"
+  ],
+  "aspectRatio": 1.725,
+  "fontScale": 0.8,
+  "models": [
+    {
+      "type": "md2d",
+      "id": "model1",
+      "url": "models/md2d/itsi/diffusion/osmosis/osmosis.json",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "imageMapping": {
+        }
+      },
+      "onLoad": [
+        "var x,y,vx,vy,i,atoms;",
+        "function addNewAtom(cx, cy, width, height, type, num) {",
+        "  while (num > 0) {",
+        "    x = randomFloat(width) + cx;",
+        "    y = randomFloat(height) + cy;",
+        "    vx = randomFloat(0.002)-0.001;",
+        "    vy = randomFloat(0.002)-0.001;",
+        "    if (addAtom({x: x, y: y, vx: vx, vy: vy, element: type}) ) num--;",
+        "  }",
+        "}",
+        "function removeAtomFrom(cx, cy, width, height, type, num) {",
+        "  atoms = atomsWithinRect(cx, cy, width, height, type).sort(function(a,b){return b-a});",
+        "  for (i = 0; i < num; i++) {",
+        "    removeAtom(atoms[i]);",
+        "  }",
+        "}",
+        "function updateArea(cx, cy, width, height, num) {",
+        "  stop();",
+        "  var nAtomsToAdd = num - atomsWithinRect(cx,cy,width,height,0).length;",
+        "  if (nAtomsToAdd > 0) {",
+        "    addNewAtom(cx,cy,width,height,0,nAtomsToAdd);",
+        "    addNewAtom(cx,cy,width,height,1,nAtomsToAdd);",
+        "  }",
+        "  if (nAtomsToAdd < 0) {",
+        "    removeAtomFrom(cx,cy,width,height,0,Math.abs(nAtomsToAdd));",
+        "    removeAtomFrom(cx,cy,width,height,1,Math.abs(nAtomsToAdd));",
+        "  }",
+        "  nAtomsToAdd = 100 - (num*2 + atomsWithinRect(cx,cy,width,height,2).length);",
+        "  if (nAtomsToAdd > 0) {",
+        "    addNewAtom(cx,cy,width,height,2,nAtomsToAdd);",
+        "  }",
+        "  if (nAtomsToAdd < 0) {",
+        "    removeAtomFrom(cx,cy,width,height,2,Math.abs(nAtomsToAdd));",
+        "  }",
+        "  set('targetTemperature',2000);",
+        "}",
+        "function updateOutsideSalt() {",
+        "  var h = get('height'),",
+        "      w = getObstacleProperties(0).x,",
+        "      num = get('initialOutsideSalt');",
+        "  console.log('There are ' + getNumberOfTextBoxes() + ' text boxes.');",
+        "  if (getNumberOfTextBoxes() > 1) {",
+        "    removeTextBox(0);",
+        "    removeTextBox(0);",
+        "  }",
+        "  updateArea(0,0,w,h,num);",
+        "}",
+        "function updateInsideSalt() {",
+        "  var h = get('height'),",
+        "      x = getObstacleProperties(0).x + getObstacleProperties(0).width,",
+        "      w = get('width') - x,",
+        "      num = get('initialInsideSalt'),",
+        "      tbs = getNumberOfTextBoxes();",
+        "  if (tbs == 1 || tbs == 3) {",
+        "    removeTextBox(tbs - 1);",
+        "  }",
+        "  updateArea(x,0,w,h,num);",
+        "}",
+        "onPropertyChange('initialInsideSalt', updateInsideSalt);",
+        "onPropertyChange('initialOutsideSalt', updateOutsideSalt);",
+        "onPropertyChange('movableMembrane', function() {",
+        "  if (get('movableMembrane')) {",
+        "    var props = getObstacleProperties(0);",
+        "    props.mass = 20;",
+        "    setObstacleProperties(0, {mass: 80});",
+        "  } else {",
+        "    var props = getObstacleProperties(0);",
+        "    props.mass = Infinity;",
+        "    setObstacleProperties(0, {mass: Infinity});",
+        "  }",
+        "});"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "name": "outsidePressure",
+      "value": [
+        "var w,h,salt,water;",
+        "w = getObstacleProperties(0).x;",
+        "h = get('height');",
+        "salt = atomsWithinRect(0, 0, w, h, 0).length;",
+        "water = atomsWithinRect(0, 0, w, h, 2).length;",
+        "return (salt*2 + water/5)/(w*h);"
+      ]
+    },
+    {
+      "name": "insidePressure",
+      "value": [
+        "var x,w,h,salt,water;",
+        "x = getObstacleProperties(0).x;",
+        "w = get('width') - x;",
+        "h = get('height');",
+        "salt = atomsWithinRect(x, 0, w, h, 0).length;",
+        "water = atomsWithinRect(x, 0, w, h, 2).length;",
+        "return (salt*2 + water/5)/(w*h);"
+      ]
+    },
+    {
+      "name": "outsideConcentration",
+      "value": [
+        "var w,h,salt;",
+        "w = getObstacleProperties(0).x;",
+        "h = get('height');",
+        "salt = atomsWithinRect(0, 0, w, h, 0).length;",
+        "return (salt*2)/(w*h);"
+      ]
+    },
+    {
+      "name": "insideConcentration",
+      "value": [
+        "var x,w,h,salt;",
+        "x = getObstacleProperties(0).x;",
+        "w = get('width') - x;",
+        "h = get('height');",
+        "salt = atomsWithinRect(x, 0, w, h, 0).length;",
+        "return (salt*2)/(w*h);"
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "setCountTrigger",
+      "initialValue": 0,
+      "onChange": [
+      ]
+    },
+    {
+      "name": "initialInsideSalt",
+      "initialValue": 0
+    },
+    {
+      "name": "initialOutsideSalt",
+      "initialValue": 0
+    },
+    {
+      "name": "movableMembrane",
+      "initialValue": false
+    }
+  ],
+  "components": [
+    {
+      "type": "text",
+      "id": "inside-above-label",
+      "text": "Inside cell"
+    },
+    {
+      "type": "text",
+      "id": "outside-above-label",
+      "text": "Outside cell"
+    },
+    {
+      "type": "text",
+      "id": "membrane-above-label",
+      "text": "Membrane"
+    },
+    {
+      "type": "text",
+      "id": "pressure-right-label",
+      "text": "Osmotic Pres."
+    },
+    {
+      "type": "text",
+      "id": "concentration-right-label",
+      "text": "Salt conc."
+    },
+    {
+      "type": "barGraph",
+      "id": "outside-pressure-bar",
+      "fontScale": 0.5,
+      "min": 0,
+      "max": 10,
+      "labels": 0,
+      "barColor": "rgb(143,113,178)",
+      "fillColor": "rgb(225,243,253)",
+      "title": "Out",
+      "titleOn": "top",
+      "height": "15em",
+      "barWidth": "1em",
+      "property": "outsidePressure"
+    },
+    {
+      "type": "barGraph",
+      "id": "outside-concentration-bar",
+      "min": 0,
+      "max": 10,
+      "labels": 0,
+      "barColor": "rgb(242,234,27)",
+      "fillColor": "rgb(225,243,253)",
+      "title": "Out",
+      "titleOn": "top",
+      "height": "15em",
+      "barWidth": "1em",
+      "property": "outsideConcentration"
+    },
+    {
+      "type": "barGraph",
+      "id": "inside-pressure-bar",
+      "min": 0,
+      "max": 10,
+      "labels": 0,
+      "barColor": "rgb(143,113,178)",
+      "fillColor": "rgb(243,222,223)",
+      "title": "In",
+      "titleOn": "top",
+      "height": "15em",
+      "barWidth": "1em",
+      "property": "insidePressure"
+    },
+    {
+      "type": "barGraph",
+      "id": "inside-concentration-bar",
+      "min": 0,
+      "max": 10,
+      "labels": 0,
+      "barColor": "rgb(242,234,27)",
+      "fillColor": "rgb(243,222,223)",
+      "title": "In",
+      "titleOn": "top",
+      "height": "15em",
+      "barWidth": "1em",
+      "property": "insideConcentration"
+    },
+    {
+      "type": "pulldown",
+      "id": "select-outside-salt",
+      "property": "initialOutsideSalt",
+      "label": "Salt concentration",
+      "labelOn": "top",
+      "options": [
+        {
+          "text": "None",
+          "value": 0
+        },
+        {
+          "text": "Low",
+          "value": 7
+        },
+        {
+          "text": "High",
+          "value": 25
+        }
+      ]
+    },
+    {
+      "type": "pulldown",
+      "id": "select-inside-salt",
+      "property": "initialInsideSalt",
+      "label": "Salt concentration",
+      "labelOn": "top",
+      "options": [
+        {
+          "text": "None",
+          "value": 0
+        },
+        {
+          "text": "Low",
+          "value": 7
+        },
+        {
+          "text": "High",
+          "value": 25
+        }
+      ]
+    },
+    {
+      "id": "membrane-movable-checkbox",
+      "type": "checkbox",
+      "text": "Moveable membrane",
+      "textOn": "right",
+      "width": "auto",
+      "height": "auto",
+      "property": "movableMembrane",
+      "disabled": false,
+      "tooltip": ""
+    }
+  ],
+  "layout": {
+    "right-pressure": [
+      [
+        "pressure-right-label"
+      ],
+      [
+        "outside-pressure-bar",
+        "inside-pressure-bar"
+      ]
+    ],
+    "right-concentration": [
+      [
+        "concentration-right-label"
+      ],
+      [
+        "outside-concentration-bar",
+        "inside-concentration-bar"
+      ]
+    ],
+    "bottom-left": [
+      "select-outside-salt"
+    ],
+    "bottom-right": [
+      "select-inside-salt"
+    ],
+    "below": [
+      "membrane-movable-checkbox"
+    ],
+    "above-left": [
+      "outside-above-label"
+    ],
+    "above-right": [
+      "inside-above-label"
+    ],
+    "above-center": [
+      "membrane-above-label"
+    ]
+  },
+  "template": [
+    {
+      "id": "bottom-left",
+      "top": "model.bottom",
+      "left": "model.left",
+      "width": "model.width*0.4",
+      "padding-top": "1em",
+      "align": "center"
+    },
+    {
+      "id": "bottom-right",
+      "top": "model.bottom",
+      "right": "model.right",
+      "width": "model.width*0.4",
+      "padding-top": "1em",
+      "align": "center"
+    },
+    {
+      "id": "below",
+      "top": "bottom-left.bottom",
+      "left": "model.left",
+      "width": "model.width",
+      "height": "2em",
+      "align": "center"
+    },
+    {
+      "id": "above-left",
+      "left": "model.left",
+      "bottom": "model.top",
+      "width": "model.width/3",
+      "height": "2em",
+      "align": "left"
+    },
+    {
+      "id": "above-right",
+      "right": "model.right",
+      "bottom": "model.top",
+      "width": "model.width/3",
+      "height": "2em",
+      "align": "right"
+    },
+    {
+      "id": "above-center",
+      "right": "above-right.left",
+      "left": "above-left.right",
+      "bottom": "model.top",
+      "height": "2em",
+      "align": "center"
+    },
+    {
+      "id": "right-pressure",
+      "left": "model.right",
+      "top": "above-right.top",
+      "height": "model.height",
+      "align": "center"
+    },
+    {
+      "id": "right-concentration",
+      "left": "right-pressure.right",
+      "top": "above-right.top",
+      "height": "model.height",
+      "align": "center"
+    }
+  ]
+}

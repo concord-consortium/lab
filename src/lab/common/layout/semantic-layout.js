@@ -7,8 +7,7 @@
 
 define(function (require) {
 
-  var labConfig    = require('lab.config'),
-      layoutConfig = require('common/layout/semantic-layout-config'),
+  var layoutConfig = require('common/layout/semantic-layout-config'),
       arrays       = require('arrays'),
       console      = require('common/console'),
       alert        = require('common/alert');
@@ -105,16 +104,6 @@ define(function (require) {
       // TODO: #responsive-content ID is hardcoded, change it?
       $("#responsive-content").css("font-size", font + "em");
       fontSizeChanged = true;
-    }
-
-    function setupBackground() {
-      var colors = layoutConfig.containerColors,
-          id, i, len;
-
-      for (i = 0, len = containerSpecList.length; i < len; i++) {
-        id = containerSpecList[i].id;
-        $containerByID[id].css("background", labConfig.authoring ? colors[i % colors.length] : "");
-      }
     }
 
     function createContainers() {
@@ -539,9 +528,6 @@ define(function (require) {
             componentByID[id].resize();
           }
         }
-
-        // 3. Set / remove colors of containers depending on the value of Lab.config.authoring
-        setupBackground();
 
         console.timeEnd('[layout] update');
 

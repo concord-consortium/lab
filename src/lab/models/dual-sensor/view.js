@@ -2,7 +2,7 @@ define(function() {
 
   var SelectBoxView = require('common/views/select-box-view'),
       NumericOutputView = require('common/views/numeric-output-view'),
-      sensorDefinitions = require('sensor-applet/sensor-definitions'),
+      sensorDefinitions = require('sensor-applet').sensorDefinitions,
       viewState = require('common/views/view-state');
 
   return function(model, modelUrl) {

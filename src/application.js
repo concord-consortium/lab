@@ -851,7 +851,14 @@ AUTHORING = false;
         $snapshotContent.hide(100);
       }
     }).change();
-
+    if(interactive.screenshot) {
+      $('#authored_screenshot_img').attr('src',interactive.screenshot);
+      $('#authored_screenshot_img').show();
+    }
+    else {
+      $('#authored_screenshot_img').attr('src','');
+      $('#authored_screenshot_img').hide();
+    }
     $('#export_interactive').on('click', function(e) {
       e.preventDefault();
       if (typeof shutterbug !== 'undefined') {

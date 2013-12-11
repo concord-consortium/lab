@@ -1,6 +1,7 @@
 {
-  "title": "temperature-affects-dissolving",
+  "title": "Temperature Affects Dissolving",
   "publicationStatus": "draft",
+  "aspectRatio": 1.725,
   "subtitle": "",
   "about": "",
   "models": [
@@ -15,9 +16,44 @@
     }
   ],
   "components": [
+    {
+      "type": "slider",
+      "id": "temperature-slider",
+      "min": 500,
+      "max": 1000,
+      "labels": [
+        {
+          "value": 500,
+          "label": "Low"
+        },
+        {
+          "value": 750,
+          "label": "Medium"
+        },
+        {
+          "value": 1000,
+          "label": "High"
+        }
+      ],
+      "steps": 2,
+      "title": "Temperature",
+      "property": "targetTemperature",
+      "width": "100%"
+    }
+  ],
+  "template": [
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "left": "model.left",
+      "width": "model.width",
+      "padding-top": "1em",
+      "align": "center"
+    }
   ],
   "layout": {
     "bottom": [
+      "temperature-slider"
     ]
   }
 }

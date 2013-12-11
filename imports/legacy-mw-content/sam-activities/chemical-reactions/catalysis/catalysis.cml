@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Chemical Reactions: Catalysis</page_title>
+<bg_color><Red>227</Red><Green>223</Green><Blue>152</Blue></bg_color>
+<text>
+Reaction Rates, Catalysis, and Energy: Catalysis.
+
+ 
+
+Below is a model containing reactants which will form the reaction: A2 + B2 --&gt; 2 AB. In this case the model has been set so the activation energy is high. Try running the reaction with and without a catalyst to see the effect catalysts have on chemical reactions.
+
+EXPERIMENTING WITH THE MODEL
+1. Run the model to observe what happens without a catalyst.
+2. Pause   the model.
+3. Add a few (3 - 4) catalyst atoms to the container by pressing the   button and then clicking inside the model container.
+4. Run the model again, and observe how the catalyst affects the reaction. 
+
+      
+
+ 
+
+ 
+
+ 
+
+       
+page 1 of 1
+
+
+
+</text>
+<section start="0" end="675">
+<paragraph start="0" end="1">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="51">
+<Alignment>1</Alignment>
+<content start="1" end="39">
+<size>18</size><bold>true</bold></content>
+
+<content start="39" end="50">
+<size>16</size><bold>true</bold></content>
+
+<content start="50" end="51">
+</content>
+
+</paragraph>
+<paragraph start="51" end="52">
+<Alignment>1</Alignment>
+<content start="51" end="52">
+</content>
+
+</paragraph>
+<paragraph start="52" end="54">
+<Alignment>1</Alignment>
+<content start="52" end="53">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>600.0</width>
+<height>190.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginwidth=&quot;8&quot; marginheight=&quot;8&quot;&gt;
+    &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;It turns out 
+    that &lt;strong&gt;almost all of the reactions we need to keep us alive would 
+    not happen fast enough at body temperature&lt;/strong&gt;, because the 
+    activation energy is too high. However, nature has found a way around this 
+    problem - catalysts. &lt;strong&gt;Catalysts help a reaction to happen faster.&lt;/strong&gt;&lt;br&gt;&lt;br&gt;Our 
+    own body makes some catalysts called enzymes, which are just proteins that 
+    help reactions happen faster. Some diseases are caused by the inability of 
+    a person&apos;s body to make the right enzyme (&lt;em&gt;i.e.&lt;/em&gt; catalyst) for an 
+    important reaction. &lt;a href=&quot;http://www.ygyh.org/pku/cause.htm&quot;&gt;Phenylketonuria&lt;/a&gt; 
+    is one of those diseases.&lt;/font&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-47292a</bgcolor>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="53" end="54">
+</content>
+
+</paragraph>
+<paragraph start="54" end="55">
+<Alignment>1</Alignment>
+<content start="54" end="55">
+<bold>true</bold></content>
+
+</paragraph>
+<paragraph start="55" end="320">
+<LeftIndent>60.0</LeftIndent>
+<content start="55" end="319">
+</content>
+
+<content start="319" end="320">
+<bold>true</bold></content>
+
+</paragraph>
+<paragraph start="320" end="321">
+<LeftIndent>60.0</LeftIndent>
+<content start="320" end="321">
+<bold>true</bold></content>
+
+</paragraph>
+<paragraph start="321" end="350">
+<LeftIndent>60.0</LeftIndent>
+<content start="321" end="350">
+<bold>true</bold></content>
+
+</paragraph>
+<paragraph start="350" end="411">
+<LeftIndent>100.0</LeftIndent>
+<content start="350" end="352">
+<bold>true</bold></content>
+
+<content start="352" end="411">
+</content>
+
+</paragraph>
+<paragraph start="411" end="433">
+<LeftIndent>100.0</LeftIndent>
+<content start="411" end="413">
+<bold>true</bold></content>
+
+<content start="413" end="420">
+</content>
+
+<content start="420" end="421">
+<icon>pause.gif</icon></content>
+
+<content start="421" end="433">
+</content>
+
+</paragraph>
+<paragraph start="433" end="557">
+<LeftIndent>100.0</LeftIndent>
+<content start="433" end="435">
+<bold>true</bold></content>
+
+<content start="435" end="502">
+</content>
+
+<content start="502" end="503">
+<icon>dropAtom4.gif</icon></content>
+
+<content start="503" end="557">
+</content>
+
+</paragraph>
+<paragraph start="557" end="633">
+<LeftIndent>100.0</LeftIndent>
+<content start="557" end="559">
+<bold>true</bold></content>
+
+<content start="559" end="633">
+</content>
+
+</paragraph>
+<paragraph start="633" end="634">
+<LeftIndent>40.0</LeftIndent>
+<content start="633" end="634">
+</content>
+
+</paragraph>
+<paragraph start="634" end="641">
+<Alignment>1</Alignment>
+<content start="634" end="635">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>335.0</width>
+<height>240.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;img src=&quot;movieControl.gif&quot;&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-242425</bgcolor>
+<border>Raised Etched</border>
+</component></content>
+
+<content start="635" end="636">
+</content>
+
+<content start="636" end="637">
+<component><class>org.concord.mw2d.activity.ChemContainer</class>
+<resource>catalysis$0.mml</resource><menubar>false</menubar><button>Add Ck</button></component></content>
+
+<content start="637" end="639">
+</content>
+
+<content start="639" end="640">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<model>4</model>
+<timeseries>Mole Fraction AB(%)</timeseries>
+<description>% AB formed</description>
+<max_fraction_digits>0</max_fraction_digits>
+<width>75</width>
+<height>200</height>
+<tick>true</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>true</label>
+<title>true</title>
+<minimum>0.0</minimum>
+<maximum>100.0</maximum>
+<value>0.0</value>
+</component></content>
+
+<content start="640" end="641">
+</content>
+
+</paragraph>
+<paragraph start="641" end="642">
+<Alignment>1</Alignment>
+<content start="641" end="642">
+</content>
+
+</paragraph>
+<paragraph start="642" end="644">
+<Alignment>1</Alignment>
+<content start="642" end="643">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>600</width>
+<height>95</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;strong&gt;&lt;font face=&quot;Times,serif&quot; size=&quot;4&quot;&gt;Describe your observations of 
+    how a catalyst participates in the reaction. Why does the the formation of 
+    A-B only happen when the catalyst is added?&lt;/font&gt;&lt;/strong&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-1c2068</bgcolor>
+</component></content>
+
+<content start="643" end="644">
+</content>
+
+</paragraph>
+<paragraph start="644" end="645">
+<Alignment>1</Alignment>
+<content start="644" end="645">
+</content>
+
+</paragraph>
+<paragraph start="645" end="647">
+<Alignment>1</Alignment>
+<content start="645" end="646">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>600</width>
+<height>111</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;strong&gt;&lt;font face=&quot;Times,serif&quot; size=&quot;4&quot;&gt;If you could adjust the bond 
+    strengths of A-A, or B-B, how would you change them to speed up the 
+    reaction?&lt;/font&gt;&lt;/strong&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-1c2068</bgcolor>
+</component></content>
+
+<content start="646" end="647">
+</content>
+
+</paragraph>
+<paragraph start="647" end="648">
+<Alignment>1</Alignment>
+<content start="647" end="648">
+</content>
+
+</paragraph>
+<paragraph start="648" end="650">
+<Alignment>1</Alignment>
+<content start="648" end="649">
+<component><class>org.concord.modeler.PageTextArea</class>
+<width>600</width>
+<height>111</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;strong&gt;&lt;font face=&quot;Times,serif&quot; size=&quot;4&quot;&gt;It is often said that catalysts 
+    work by lowering the activation energy (energy needed to get a reaction 
+    started). What do you see that seems to support that idea?&lt;/font&gt;&lt;/strong&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-1c2068</bgcolor>
+</component></content>
+
+<content start="649" end="650">
+</content>
+
+</paragraph>
+<paragraph start="650" end="651">
+<Alignment>1</Alignment>
+<content start="650" end="651">
+</content>
+
+</paragraph>
+<paragraph start="651" end="659">
+<Alignment>1</Alignment>
+<content start="651" end="652">
+<href>TOC.cml</href><icon>upBackSmall.gif</icon></content>
+
+<content start="652" end="654">
+</content>
+
+<content start="654" end="655">
+<href>TOC.cml</href><icon>upContents.gif</icon></content>
+
+<content start="655" end="657">
+</content>
+
+<content start="657" end="658">
+<href>TOC.cml</href><icon>upArrowSmall.gif</icon></content>
+
+<content start="658" end="659">
+</content>
+
+</paragraph>
+<paragraph start="659" end="671">
+<Alignment>1</Alignment>
+<content start="659" end="671">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="671" end="672">
+<Alignment>1</Alignment>
+<LeftIndent>20.0</LeftIndent>
+<content start="671" end="672">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="672" end="673">
+<Alignment>1</Alignment>
+<LeftIndent>40.0</LeftIndent>
+<content start="672" end="673">
+</content>
+
+</paragraph>
+<paragraph start="673" end="674">
+<content start="673" end="674">
+</content>
+
+</paragraph>
+<paragraph start="674" end="675">
+</paragraph>
+</section>
+</document>
