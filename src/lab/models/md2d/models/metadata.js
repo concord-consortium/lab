@@ -716,6 +716,9 @@ define(function() {
       strokeOpacity: {
         defaultValue: 1.0
       },
+      strokeColor: {
+        defaultValue: "#000000"
+      },
       rotate: {
         defaultValue: 0
       },
