@@ -14,7 +14,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
       reset:           sinon.spy()
       repaint:         sinon.spy()
 
-  requirejs.define 'grapher/core/graph', [], ->
+  requirejs.define 'lab-grapher', [], ->
     # Just a function that calls through to mock.Graph, while allowing mock.Graph to
     # be replaced with a stub or spy at any time.
     (-> mock.Graph(arguments...))

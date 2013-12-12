@@ -181,7 +181,7 @@ exports.withIsolatedRequireJSAndViewsMocked = function(continuation) {
       };
 
   // Mock dependencies.
-  requirejs.define('grapher/core/graph', [], function() { return Graph; });
+  requirejs.define('lab-grapher', [], function() { return Graph; });
   requirejs.define('grapher/bar-graph/bar-graph-view', [], function() { return BarGraphView; });
   requirejs.define('common/views/numeric-output-view', [], function() { return NumericOutputView; });
   requirejs.define('models/md2d/views/renderer', [], function() { return Renderer; });
