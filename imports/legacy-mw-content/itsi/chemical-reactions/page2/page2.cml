@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Chemical Reactions and Stoichiometry: Concentration and reaction rate.</page_title>
+<bg_color><Red>240</Red><Green>233</Green><Blue>207</Blue></bg_color>
+<text>
+ 
+         
+</text>
+<section start="0" end="14">
+<paragraph start="0" end="1">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="3">
+<SpaceBelow>5.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="1" end="2">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>65.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;chemStyles.css&quot; type=&quot;text/css&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p class=&quot;firstp&quot;&gt;
+      You will do a reaction in which two atoms are bonded together to make a 
+      molecule. Experiment with changing &lt;a href=&quot;script:page:0:message concentration.html&quot;&gt;the 
+      concentration&lt;/a&gt; of the atoms in order to see how this affects the 
+      reaction rate (the speed the reaction happens).
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="2" end="3">
+</content>
+
+</paragraph>
+<paragraph start="3" end="13">
+<Alignment>1</Alignment>
+<content start="3" end="4">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>250.0</width>
+<height>275.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;10&quot; marginwidth=&quot;10&quot;&gt;
+    &lt;table border=&quot;0&quot; width=&quot;100%&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;&lt;strong&gt;Follow 
+          these steps:&lt;/strong&gt;&lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;1. Add 
+          some atoms (press multiple times to add more):&lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;center&quot;&gt;
+          &lt;input type=&quot;submit&quot; name=&quot;Submit&quot; script=&quot;
+		script:mw:1:
+		define %anum %number_of_atoms+2; 
+		if (%anum &lt;= 50); 
+		   while (%number_of_atoms &lt; %anum); 
+		      add atom 1 (rand()*%width, rand()*%height); 
+		   endwhile; 
+		else;
+		   message &lt;t&gt;Maximum Number of Atoms Reached&lt;/t&gt;;
+		endif;&quot; value=&quot;add 2&quot;&gt;
+          &amp;#160; &lt;input type=&quot;submit&quot; name=&quot;Submit2&quot; script=&quot;
+		script:mw:1:define %anum %number_of_atoms+10; 
+		if (%anum &lt;= 50); 
+		   while (%number_of_atoms &lt; %anum); 
+		      add atom 1 (rand()*%width, rand()*%height); 
+		   endwhile; 
+		else;
+		   message &lt;t&gt;Maximum Number of Atoms Reached&lt;/t&gt;;
+		endif;&quot; value=&quot;add 10&quot;&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;&lt;br&gt;
+          2. Run &lt;img src=&quot;play.gif&quot; width=&quot;7&quot; height=&quot;12&quot;&gt; the model. &lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;font size=&quot;4&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;&lt;br&gt;
+          3. Reset &lt;img src=&quot;reset.gif&quot; width=&quot;9&quot; height=&quot;12&quot;&gt; the model and 
+          try a different concentration.&lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;
+          &lt;font size=&quot;3&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot;&gt;&lt;br&gt;
+          &lt;/font&gt;&lt;font size=&quot;3&quot; face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; color=&quot;#990000&quot;&gt;Gauge 
+          the reaction speed by using the graph to see when the reaction 
+          reaches 80% completion. &lt;/font&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-131415</bgcolor>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="4" end="7">
+</content>
+
+<content start="7" end="8">
+<component><class>org.concord.mw2d.activity.ChemContainer</class>
+<resource>page2$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="8" end="11">
+</content>
+
+<content start="11" end="12">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<modelclass>org.concord.mw2d.models.ReactionModel</modelclass>
+<model>4</model>
+<timeseries>Mole Fraction A2(%)</timeseries>
+<description>% reaction complete</description>
+<datatype>1</datatype>
+<samplingpoints>10</samplingpoints>
+<max_fraction_digits>0</max_fraction_digits>
+<width>80</width>
+<height>270</height>
+<tick>true</tick>
+<major_tick>5</major_tick>
+<nstep>10</nstep>
+<label>true</label>
+<title>true</title>
+<bgcolor>-1a1a1b</bgcolor>
+<fgcolor>-59a2d4</fgcolor>
+<minimum>0.0</minimum>
+<maximum>100.0</maximum>
+<value>0.0</value>
+</component></content>
+
+<content start="12" end="13">
+</content>
+
+</paragraph>
+<paragraph start="13" end="14">
+<Alignment>1</Alignment>
+</paragraph>
+</section>
+</document>

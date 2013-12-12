@@ -1,0 +1,117 @@
+{
+  "title": "Heat and Temperature 1: Introduction to heat and molecular movement - Seasons",
+  "publicationStatus": "draft",
+  "aspectRatio": 1.725,
+  "fontScale": 0.8,
+  "subtitle": "Heat and Temperature 1: Introduction to heat and molecular movement - Seasons",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "page1$0",
+      "url": "imports/legacy-mw-content/converted/itsi/heatv2/heat_itsi_models/page1$0.json",
+      "importedFrom": "imports/legacy-mw-content/itsi/heatv2/heat_itsi_models/page1$0.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      },
+      "modelOptions": {}
+    }
+  ],
+  "components": [
+    {
+      "type": "text",
+      "id": "disclaimer",
+      "text": "Note that the temperature difference in the four seasons above may not be accurate."
+    },
+    {
+      "id": "spring-button",
+      "type": "button",
+      "action": "set('targetTemperature', 500);",
+      "text": "<img src='imports/legacy-mw-content/itsi/heatv2/heat_itsi_models/spring2.gif' width='100%' />",
+      "width": "6.5em",
+      "height": "6.5em",
+      "disabled": false,
+      "tooltip": ""
+    },
+    {
+      "id": "autumn-button",
+      "type": "button",
+      "action": "set('targetTemperature', 500);",
+      "text": "<img src='imports/legacy-mw-content/itsi/heatv2/heat_itsi_models/autumn2.gif' width='100%' />",
+      "width": "6.5em",
+      "height": "6.5em",
+      "disabled": false,
+      "tooltip": ""
+    },
+    {
+      "id": "summer-button",
+      "type": "button",
+      "action": "set('targetTemperature', 1500);",
+      "text": "<img src='imports/legacy-mw-content/itsi/heatv2/heat_itsi_models/summer2.gif' width='100%' />",
+      "width": "6.5em",
+      "height": "6.5em",
+      "disabled": false,
+      "tooltip": ""
+    },
+    {
+      "id": "winter-button",
+      "type": "button",
+      "action": "set('targetTemperature', 100);",
+      "text": "<img src='imports/legacy-mw-content/itsi/heatv2/heat_itsi_models/winter2.gif' width='100%' />",
+      "width": "6.5em",
+      "height": "6.5em",
+      "disabled": false,
+      "tooltip": ""
+    },
+    {
+      "id": "temp-bar",
+      "type": "barGraph",
+      "property": "temperature",
+      "min": 0,
+      "max": 1000,
+      "title": "",
+      "titleOn": "right",
+      "labels": 0,
+      "units": false,
+      "gridLines": 10,
+      "labelFormat": "0.1f",
+      "barWidth": "1em",
+      "height": "100%",
+      "barColor": "#ff0000",
+      "fillColor": "#fff",
+      "tooltip": ""
+    }
+  ],
+  "template": [
+    {
+      "id": "on-left",
+      "right": "model.left",
+      "top": "model.top",
+      "height": "model.height",
+      "width": "15em",
+      "align": "left"
+    },
+    {
+      "id": "on-right",
+      "left": "model.right",
+      "top": "model.top",
+      "height": "model.height",
+      "align": "center"
+    },
+    {
+      "id": "below",
+      "left": "model.left",
+      "top": "model.bottom",
+      "width": "model.width",
+      "align": "left"
+    }
+  ],
+  "layout": {
+    "on-right": ["temp-bar"],
+    "on-left":  [
+      ["spring-button","summer-button"],
+      ["autumn-button","winter-button"]
+    ],
+    "below": ["disclaimer"]
+  }
+}

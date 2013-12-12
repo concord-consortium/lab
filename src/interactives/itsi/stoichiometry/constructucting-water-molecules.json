@@ -1,6 +1,7 @@
 {
-  "title": "constructucting-water-molecules",
+  "title": "Constructucting Water Molecules",
   "publicationStatus": "draft",
+  "aspectRatio": 1.725,
   "subtitle": "",
   "about": "",
   "models": [
@@ -10,7 +11,7 @@
       "url": "imports/legacy-mw-content/converted/itsi/stoichiometry/constructucting-water-molecules$0.json",
       "importedFrom": "imports/legacy-mw-content/itsi/stoichiometry/constructucting-water-molecules$0.mml",
       "viewOptions": {
-        "controlButtons": "play_reset"
+        "controlButtons": ""
       }
     }
   ],

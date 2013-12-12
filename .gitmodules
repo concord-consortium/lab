@@ -79,3 +79,6 @@
 [submodule "vendor/lab-sensor-applet-interface"]
 	path = vendor/lab-sensor-applet-interface
 	url = git://github.com/concord-consortium/lab-sensor-applet-interface.git
+[submodule "vendor/seedrandom"]
+	path = vendor/seedrandom
+	url = https://github.com/davidbau/seedrandom.git

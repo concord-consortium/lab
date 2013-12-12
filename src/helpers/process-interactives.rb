@@ -29,7 +29,10 @@ Dir.chdir(INTERACTIVE_EXAMPLES_PATH) do
       :groupKey => groupKey,
       :subtitle => interactive['subtitle'] || "",
       :about => interactive['about'] || "",
-      :publicationStatus => interactive['publicationStatus'] || 'draft'
+      :publicationStatus => interactive['publicationStatus'] || "draft",
+      :category => interactive['category'] || "",
+      :subCategory => interactive['subCategory'] || "",
+      :screenshot => interactive['screenshot'] || ""
     }
     meta[:aspectRatio] = interactive['aspectRatio'] if interactive['aspectRatio']
     interactives << meta

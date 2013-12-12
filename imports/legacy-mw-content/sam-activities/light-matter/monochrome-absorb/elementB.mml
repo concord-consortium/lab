@@ -80,12 +80,12 @@
    <void property="energyLevels">
     <void index="1">
      <void property="energy">
-      <float>-3.65</float>
+      <float>-3.825</float>
      </void>
     </void>
     <void index="2">
      <void property="energy">
-      <float>-1.0250001</float>
+      <float>-1.2</float>
      </void>
     </void>
    </void>
@@ -703,7 +703,7 @@
    <void method="put">
     <string>date</string>
     <object class="java.util.Date">
-     <long>1386105029000</long>
+     <long>1386703494000</long>
     </object>
    </void>
    <void method="put">
@@ -712,7 +712,7 @@
    </void>
    <void method="put">
     <string>size</string>
-    <long>49068</long>
+    <long>49183</long>
    </void>
    <void method="put">
     <string>codebase</string>

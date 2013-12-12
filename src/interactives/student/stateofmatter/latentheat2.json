@@ -2,6 +2,9 @@
   "title": "Seeing Specific Heat and Latent Heat",
   "publicationStatus": "public",
   "subtitle": "Seeing Specific Heat and Latent Heat in a Melting Experiment",
+  "category": "Chemistry",
+  "subCategory": "States of mater",
+  "screenshot": "http://screenshots.lab.concord.org/latentheat2.png",
   "aspectRatio": 2.1,
   "fontScale": 0.8,
   "about": [
@@ -37,32 +40,19 @@
       "url": "imports/legacy-mw-content/converted/student/stateofmatter/latentheat2$0.json",
       "viewOptions": {
         "showClock": false,
-        "controlButtons": "play_reset_step"
+        "controlButtonStyle": "text",
+        "controlButtons": "reset"
       },
       "modelOptions": {
         "timeStep": 2.5
       },
       "onLoad": [
         "setComponentDisabled('start-heating', false);",
-        "callEvery(200, function() {",
+        "setComponentDisabled('stop-heating', true);",
+        "callEvery(300, function() {",
         "  if (get('experimentRunning')) {",
-        "    var numAtoms, i, props, newVx, newVy, ratio, vXConstant, vYConstant;",
-        "    batch(function(){",
-        "      numAtoms = getNumberOfAtoms()",
-        "      for(i=0; i<numAtoms; i++){",
-        "        // The idea here is to add the same amount of KE to every atom, and to keep",
-        "        // the direction of the velocity the same",
-        "        props = getAtomProperties(i);",
-        "        ratio = props.vx*props.vx/(props.vy*props.vy);",
-        "        vXConstant = 0.000000002*ratio/(1+ratio);",
-        "        vYConstant = 0.000000002 - vXConstant;",
-        "        if(props.vx >= 0) newVx =  Math.sqrt(vXConstant+props.vx*props.vx);",
-        "        if(props.vx < 0) newVx = - Math.sqrt(vXConstant+props.vx*props.vx);",
-        "        if(props.vy >= 0) newVy =  Math.sqrt(vYConstant+props.vy*props.vy);",
-        "        if(props.vy < 0) newVy = - Math.sqrt(vYConstant+props.vy*props.vy);",
-        "        setAtomProperties(i, {vx:newVx, vy:newVy});",
-        "      }",
-        "    });",
+        "    var energy_to_add = 0.35;",
+        "    addKEToAtoms(energy_to_add);",
         "    var runningTime = get('time') - get('timeExperimentStarted');",
         "    set('experimentTime', runningTime);",
         "    if (runningTime > 150000) stop();",
@@ -131,8 +121,23 @@
         "  start();",
         "}",
         "setComponentDisabled('start-heating', true);",
+        "setComponentDisabled('stop-heating', false);",
         "set('timeExperimentStarted', get('time'));",
         "set('experimentRunning', true);"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "stop-heating",
+      "text": "Stop adding heat",
+      "disabled": true,
+      "action": [
+        "set('experimentRunning', false);",
+        "if (isStopped()) {",
+        "  start();",
+        "}",
+        "setComponentDisabled('start-heating', false);",
+        "setComponentDisabled('stop-heating', true);"
       ]
     },
     {
@@ -171,7 +176,7 @@
       "temperature-energy-graph"
     ],
     "bottom": [
-      "start-heating", "experiment-time"
+      "start-heating", "stop-heating", "experiment-time"
     ]
   },
   "template": [

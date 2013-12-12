@@ -699,8 +699,9 @@ define(function(require) {
             "style": function(d) {
               var backgroundColor = d.backgroundColor,
                 strokeWidth = d.strokeWidthEms * fontSizeInPixels,
-                strokeOpacity = d.strokeOpacity;
-              return "fill:" + backgroundColor + ";opacity:1.0;fill-opacity:1;stroke:#000000;stroke-width:" + (strokeWidth * 2) + ";stroke-opacity:" + strokeOpacity;
+                strokeOpacity = d.strokeOpacity,
+                strokeColor = d.strokeColor;
+              return "fill:" + backgroundColor + ";opacity:1.0;fill-opacity:1;stroke:" + strokeColor + ";stroke-width:" + (strokeWidth * 2) + ";stroke-opacity:" + strokeOpacity;
             },
             "callout-location-data": function(d) {
               var pos = getTextBoxCoords(d);
@@ -727,7 +728,8 @@ define(function(require) {
             "style": function(d) {
               var backgroundColor = d.backgroundColor,
                 strokeWidth = d.strokeWidthEms * fontSizeInPixels,
-                strokeOpacity = d.strokeOpacity;
+                strokeOpacity = d.strokeOpacity,
+                strokeColor = d.strokeColor;
 
               if (shouldRoundTextBoxStrokeWidth && strokeWidth < 1) {
                 // Workaround for ghosting artifact left when stroke-width < 1 in Chrome on OS X.
@@ -736,7 +738,7 @@ define(function(require) {
                 strokeWidth = 1;
               }
 
-              return "fill:" + backgroundColor + ";opacity:1.0;fill-opacity:1;stroke:#000000;stroke-width:" + strokeWidth + ";stroke-opacity:" + strokeOpacity;
+              return "fill:" + backgroundColor + ";opacity:1.0;fill-opacity:1;stroke:" + strokeColor + ";stroke-width:" + strokeWidth + ";stroke-opacity:" + strokeOpacity;
             },
             "width": 0,
             "height": 0,

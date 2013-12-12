@@ -1,7 +1,7 @@
 {
   "title": "Absoprtion Spectra (Variable Light Frequency)",
   "publicationStatus": "draft",
-  "subtitle": "Explore how light of varying frequency interacts with mixtures of elements",
+  "subtitle": "Explore how monochrome light of varying frequency interacts with mixtures of elements",
   "about": "",
   "aspectRatio": 1.4,
   "fontScale": 0.8,
@@ -112,7 +112,7 @@
       "id": "select-light-source-frequency",
       "min": 1,
       "max": 15,
-      "steps": 27,
+      "steps": 14,
       "property": "lightSourceFrequency",
       "labels": [
         {

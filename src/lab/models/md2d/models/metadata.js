@@ -716,6 +716,9 @@ define(function() {
       strokeOpacity: {
         defaultValue: 1.0
       },
+      strokeColor: {
+        defaultValue: "#000000"
+      },
       rotate: {
         defaultValue: 0
       },
@@ -741,8 +744,7 @@ define(function() {
         defaultValue: false
       },
       valenceElectrons: {
-        defaultValue: [1, 1, 7, 7],
-        immutable: true
+        defaultValue: [1, 1, 7, 7]
       },
       bondEnergy: {
         defaultValue: {
@@ -755,8 +757,7 @@ define(function() {
           "1-1": 4,
           "2-2": 4,
           "3-3": 4
-        },
-        immutable: true
+        }
       },
       activationEnergy: {
         defaultValue: {
@@ -771,8 +772,27 @@ define(function() {
           // description.
           "default": 0.2
 
+        }
+      },
+      bondProbability: {
+        defaultValue: {
+          // This configuration means that when two colliding atoms have 3 unpaired electrons
+          // (e.g. their valence electron count is equal to 5), there is 80% chances that
+          // single bond will be formed between them, 15% that double and 5% that triple.
+          // If you need custom probability for a specific elements configuration, you can add e.g:
+          // "1-2": [0.6, 0.3, 0.1]
+          // what has analogical meaning, but these values are limited only to elements 1 and 2.
+          "default": [0.8, 0.15, 0.05]
         },
-        immutable: true
+        validate: function (value) {
+          Object.keys(value).forEach(function (key) {
+            var p = value[key];
+            if (Math.abs(p[0] + p[1] + p[2] - 1) > 1e-3) {
+              throw new Error("Bond type probability values should sum to one.");
+            }
+          });
+          return value;
+        }
       }
     },
 

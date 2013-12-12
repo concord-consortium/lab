@@ -66,6 +66,7 @@
     'canvg': '../../vendor/canvg-1.3/canvg',
     'rgbcolor': '../../vendor/canvg-1.3/rgbcolor',
     'fastclick': '../../vendor/fastclick/lib/fastclick',
+    'seedrandom': '../../vendor/seedrandom/seedrandom',
     'backbone': '../../node_modules/backbone/backbone',
     'mustache': '../../node_modules/mustache/mustache',
     'markdown': '../../node_modules/markdown/lib/markdown',
