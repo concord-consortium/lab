@@ -764,6 +764,9 @@ parseMML = (mmlString) ->
       $x = parseFloat $textBoxNode.find("[property=x]>double").text() || 0.001
       $y = parseFloat $textBoxNode.find("[property=y]>double").text() || 0
       layer = parseInt($textBoxNode.find("[property=layer]>int").text()) || 1
+      angle = parseFloat $textBoxNode.find("[property=angle]>float").text() || 0
+      if angle < 0
+        angle = 360 - (Math.abs(angle) % 360)
       textHostIndex = parseInt $textBoxNode.find("[property=hostIndex]>int").text()
       if (isNaN(textHostIndex))
         textHostIndex = 0
@@ -811,6 +814,7 @@ parseMML = (mmlString) ->
 
       # default anchor is upper-left when importing from Java MW
       textBox.anchor = "upper-left"
+      textBox.rotate = angle if angle != 0
       textBox
 
     $textBoxesArray = $mml "[property=textBoxes]>array"
