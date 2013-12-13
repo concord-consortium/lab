@@ -148,15 +148,6 @@ group :build do
       watch(/^(public\/).+\.(css|js|html|json)/)
     end
   end
-
-  guard 'markdown', :kram_ops => { :toc_levels => [2,3,4,5] } do
-    watch "readme.md" do |m|
-      "readme.md|public/readme.html|src/layouts/readme.html.erb"
-    end
-    watch "license.md" do |m|
-      "license.md|public/license.html|src/layouts/license.html.erb"
-    end
-  end
 end
 
 group :test do
