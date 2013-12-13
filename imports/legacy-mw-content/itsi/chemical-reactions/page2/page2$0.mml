@@ -383,7 +383,7 @@ set image[0].y %goalY;</string>
        <string>reactionGoalFlat.png</string> 
       </void> 
       <void property="layer"> 
-       <int>1</int> 
+       <int>2</int> 
       </void> 
       <void property="x"> 
        <double>83.0</double> 
