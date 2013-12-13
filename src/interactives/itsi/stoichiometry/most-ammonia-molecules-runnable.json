@@ -1,5 +1,5 @@
 {
-  "title": "Ammonia Molecules",
+  "title": "Ammonia Molecules (runnable)",
   "publicationStatus": "draft",
   "aspectRatio": 1.725,
   "subtitle": "",
@@ -11,7 +11,7 @@
       "url": "imports/legacy-mw-content/converted/itsi/stoichiometry/most-ammonia-molecules$0.json",
       "importedFrom": "imports/legacy-mw-content/itsi/stoichiometry/most-ammonia-molecules$0.mml",
       "viewOptions": {
-        "controlButtons": ""
+        "controlButtons": "play_reset"
       },
       "modelOptions": {
         "timeStep": 0.2,
