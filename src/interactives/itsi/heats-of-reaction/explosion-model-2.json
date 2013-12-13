@@ -55,6 +55,24 @@
       "action": "addKEToAtoms(-5);"
     },
     {
+      "id": "temp-bar",
+      "type": "barGraph",
+      "property": "temperature",
+      "min": 0,
+      "max": 20000,
+      "title": "",
+      "titleOn": "right",
+      "labels": 0,
+      "units": false,
+      "gridLines": 10,
+      "labelFormat": "0.1f",
+      "barWidth": "1em",
+      "height": "100%",
+      "barColor": "#ff0000",
+      "fillColor": "#fff",
+      "tooltip": ""
+    },
+    {
       "id": "ke-shading",
       "type": "checkbox",
       "text": "KE shading",
@@ -84,9 +102,18 @@
       "top": "model.bottom",
       "width": "model.width",
       "align": "center"
+    },
+    {
+      "id": "right",
+      "left": "model.right",
+      "top": "model.top",
+      "height": "model.height",
+      "width": "3em",
+      "align": "center"
     }
   ],
   "layout": {
+    "right": ["temp-bar"],
     "below": ["heat-button","cool-button","ke-shading","show-index"]
   }
 }
