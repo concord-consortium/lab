@@ -311,6 +311,13 @@
     </void> 
    </object> 
   </void> 
+  <void property="heatBath"> 
+   <object class="org.concord.mw2d.models.HeatBath"> 
+    <void property="expectedTemperature"> 
+     <double>1500.0</double> 
+    </void> 
+   </object> 
+  </void> 
   <void property="lightSource"> 
    <object class="org.concord.mw2d.models.LightSource"/> 
   </void> 
