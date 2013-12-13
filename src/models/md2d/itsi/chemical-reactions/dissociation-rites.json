@@ -6,7 +6,7 @@
   "unitsScheme": "md2d",
   "lennardJonesForces": true,
   "coulombForces": true,
-  "temperatureControl": true,
+  "temperatureControl": false,
   "targetTemperature": 2400,
   "gravitationalField": false,
   "timeStep": 0.4000000059604645,
