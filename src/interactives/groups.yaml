@@ -58,6 +58,10 @@
   :name: "ITSI: Dissolving"
   :category: Curriculum
 
+- :path: itsi/electrostatics
+  :name: "ITSI: Electrostatics"
+  :category: Curriculum
+
 - :path: itsi/energy2d
   :name: "ITSI: Energy2D"
   :category: Curriculum
