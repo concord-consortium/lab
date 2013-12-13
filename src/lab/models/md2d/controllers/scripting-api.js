@@ -154,6 +154,18 @@ define(function (require) {
       },
 
       /**
+       * Scales the velocity of all atoms to the desired temperature T.
+       * @param {number} T           defined in K
+       */
+      setTemperatureOfAllAtoms: function setTemperatureOfAllAtoms(T) {
+        var atomIndices = [];
+        for (var i = 0; i < parent.model.getNumberOfAtoms(); i++) {
+          atomIndices.push(i);
+        }
+        parent.model.setTemperatureOfAtoms(atomIndices, T);
+      },
+
+      /**
        * Scales the velocity of a group of atoms to the desired temperature T.
        * @param {array}  atomIndices
        * @param {number} T           defined in K
@@ -169,6 +181,14 @@ define(function (require) {
        */
       addKEToAtoms: function addKEToAtoms(energy, atomIndices) {
         parent.model.addKEToAtoms(energy, atomIndices);
+      },
+
+      getTemperatureOfAllAtoms: function getTemperatureOfAllAtoms() {
+        var atomIndices = [];
+        for (var i = 0; i < parent.model.getNumberOfAtoms(); i++) {
+          atomIndices.push(i);
+        }
+        return parent.model.getTemperatureOfAtoms(atomIndices);
       },
 
       getTemperatureOfAtoms: function getTemperatureOfAtoms(atomIndices) {
