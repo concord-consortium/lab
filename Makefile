@@ -50,8 +50,8 @@ COFFEESCRIPT_FILES += $(shell find src/examples -name '*.coffee' -exec echo {} \
 COFFEESCRIPT_FILES += $(shell find src/experiments -name '*.coffee' -exec echo {} \; | sed s'/src\/\(.*\)\.coffee/public\/\1.js/' )
 vpath %.coffee src
 
-MARKDOWN_FILES := $(shell find src -name '*.md' -and -not -path "src/sass/*" -exec echo {} \; | grep -v vendor | sed s'/src\/\(.*\)\.md/public\/\1.html/' )
-vpath %.md src
+MARKDOWN_FILES := $(patsubst %.md, public/%.html, $(wildcard *.md))
+DEV_MARKDOWN_FILES := $(patsubst %.md, public/%.html, $(wildcard developer-doc/*.md))
 
 LAB_JS_FILES = \
 	public/lab/lab.js \
@@ -84,6 +84,7 @@ everything:
 .PHONY: src
 src: \
 	$(MARKDOWN_FILES) \
+	$(DEV_MARKDOWN_FILES) \
 	$(LAB_JS_FILES) \
 	$(LAB_JS_FILES:.js=.min.js) \
 	$(HAML_FILES) \
@@ -289,6 +290,7 @@ public: \
 	public/resources \
 	public/examples \
 	public/doc \
+	public/developer-doc \
 	public/experiments \
 	public/imports \
 	public/jnlp
@@ -313,6 +315,9 @@ public/doc/interactives:
 
 public/doc/models:
 	mkdir -p public/doc/models
+
+public/developer-doc:
+	mkdir -p public/developer-doc
 
 .PHONY: public/experiments
 public/experiments:
@@ -712,9 +717,13 @@ public/%.js: %.coffee
 	@rm -f $@
 	$(COFFEESCRIPT_COMPILER) --compile --print $< > $@
 
+public/developer-doc/%.html: developer-doc/%.md
+	@rm -f $@
+	$(MARKDOWN_COMPILER) -i GFM $< --template src/layouts/developer-doc.html.erb > $@
+
 public/%.html: %.md
 	@rm -f $@
-	$(MARKDOWN_COMPILER) $< --toc-levels 2..6 --template src/layouts/$*.html.erb > $@
+	$(MARKDOWN_COMPILER) $< --toc-levels 2..6 --template src/layouts/top-level.html.erb > $@
 
 public/interactives/%.json: src/interactives/%.json
 	@cp $< $@
