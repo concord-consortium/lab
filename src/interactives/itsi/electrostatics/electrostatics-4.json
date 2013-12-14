@@ -56,6 +56,7 @@
       "type": "button",
       "id": "shoot-electron",
       "text": "Shoot an electron",
+      "width": "11em",
       "action": [
         "setTextBoxProperties(11, {text: ''});",
         "if (getNumberOfAtoms() > 1) {",
