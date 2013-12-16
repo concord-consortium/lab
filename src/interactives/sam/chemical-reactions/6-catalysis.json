@@ -2,6 +2,7 @@
   "title": "Catalysis",
   "publicationStatus": "public",
   "subtitle": "",
+  "helpOnLoad": true,
   "about": [
     "Below is a model containing reactants which will form the reaction:",
     "",
