@@ -130,7 +130,6 @@ define(function (require) {
         }
 
         return {
-
           isInteger: isInteger,
           isArray: isArray,
           randomInteger: randomInteger,
@@ -193,8 +192,9 @@ define(function (require) {
            * e.g. callAt(23, ...) in MD2D model context will be executed at time 50,
            * if timeStepsPerTick = 50 and timeStep = 1.
            *
-           * callAt action will only occur the first time the model reaches the specified time,
-           * but not after the model is scrubbed forward and backward (using tick history).
+           * callAt action will occur when the model reaches the specified time and the simulation
+           * is running at the moment. Note that just stepping forward and backward in time won't
+           * trigger action again, but if you step back and start the simulation, then it will.
            *
            * @param  {number} time     Time defined in model native time unit (e.g. fs for MD2D).
            * @param  {function} action Function containing user-defined script.
@@ -216,7 +216,17 @@ define(function (require) {
               model.removeObserver('time', checkTime);
             }
 
+            function onStartHandler() {
+              // This callback handles situation in which user moved back in time using tick
+              // history and clicked play again. Setup checking again. Note that startChecking()
+              // is idempotent so we can call it many times.
+              if (model.properties.time < time) {
+                startChecking();
+              }
+            }
+
             onModelReset(startChecking);
+            this.onStart(onStartHandler);
             startChecking();
           },
 
@@ -232,8 +242,9 @@ define(function (require) {
            * if timeStepsPerTick = 50 and timeStep = 1.
            *
            * callEvery action for time N * interval (for any integer N >= 1) will only be called
-           * the first time the model time exceeds N * interval time. After the model is scrubbed
-           * forward and backward using (using tick history), action *won't* be called again.
+           * when the model time exceeds N * interval time. Note that just stepping forward and
+           * backward in time won't trigger action again, but if you step back and start the
+           * simulation, then it will.
            *
            * @param {number}   interval Interval on how often to execute the script,
            *                            defined in model native time unit (e.g. fs for MD2D).
@@ -253,8 +264,17 @@ define(function (require) {
               lastCall = 0;
             }
 
+            function onStartHandler() {
+              // This callback handles situation in which user moved back in time using tick
+              // history and clicked play again.
+              while (lastCall > model.properties.time) {
+                lastCall -= interval;
+              }
+            }
+
             model.addObserver('time', checkTime);
             onModelReset(resetState);
+            this.onStart(onStartHandler);
           },
 
           /**
@@ -411,7 +431,7 @@ define(function (require) {
           },
 
           onStart: function onStart(handler) {
-            model.on("play.custom-script", handler);
+            model.on("play.custom-script" + (namespaceCount++), handler);
           },
 
           stop: function stop() {
