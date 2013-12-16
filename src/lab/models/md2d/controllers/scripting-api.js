@@ -394,8 +394,6 @@ define(function (require) {
         for (i = 0, len = indices.length; i < len; i++) {
           parent.model.setAtomProperties(indices[i], {marked: 1});
         }
-
-        parent.api.repaintIfReady();
       },
 
       unmarkAllAtoms: function unmarkAllAtoms() {
