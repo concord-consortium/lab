@@ -11,7 +11,10 @@
       "url": "models/md2d/itsi/chemical-reactions/dissociation-rites.json",
       "viewOptions": {
         "controlButtons": "play_reset"
-      }
+      },
+      "onLoad": [
+        "setTemperatureOfAllAtoms(get('targetT'));"
+      ]
     }
   ],
   "parameters": [
@@ -22,6 +25,11 @@
         "setBondEnergy('1-1', value);"
       ],
       "unitAbbreviation": "eV"
+    },
+    {
+     "name": "targetT",
+     "initialValue": 3000,
+     "onChange": "setTemperatureOfAllAtoms(get('targetT'));"
     }
   ],
   "components": [
@@ -39,23 +47,22 @@
     {
       "type": "slider",
       "id": "temperature-slider",
-      "min": 0,
-      "max": 10000,
+      "min": 100,
+      "max": 10100,
       "labels": [
         {
-          "value": 0,
-          "label": "0 K"
+          "value": 100,
+          "label": "Low"
         },
         {
-          "value": 10000,
-          "label": "10000 K"
+          "value": 10100,
+          "label": "High"
         }
       ],
       "steps": 1000,
       "title": "Temperature",
-      "property": "targetTemperature",
-      "width": "100%",
-      "displayValue": "return format('.0f')(value)"
+      "property": "targetT",
+      "width": "100%"
     },
     {
       "type": "slider",
@@ -65,18 +72,17 @@
       "labels": [
         {
           "value": 0,
-          "label": "0 eV"
+          "label": "Low"
         },
         {
           "value": 4,
-          "label": "4 eV"
+          "label": "High"
         }
       ],
       "steps": 100,
       "title": "Dissociation Energy",
       "property": "dissociationEnergy",
-      "width": "100%",
-      "displayValue": "return format('.3f')(value)"
+      "width": "100%"
     }
   ],
   "template": [

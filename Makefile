@@ -456,7 +456,7 @@ public/vendor: \
 	public/vendor/shutterbug/shutterbug.js \
 	public/vendor/shutterbug/README.md \
 	public/vendor/shutterbug/LICENSE.md \
-	public/vendor/lab-sensor-applet-interface/sensor-applet-interface.js \
+	public/vendor/lab-sensor-applet-interface-dist \
 	public/favicon.ico
 
 
@@ -629,12 +629,9 @@ public/vendor/shutterbug/LICENSE.md: public/vendor/shutterbug \
 	vendor/shutterbug/LICENSE.md
 	cp vendor/shutterbug/LICENSE.md public/vendor/shutterbug
 
-public/vendor/lab-sensor-applet-interface/sensor-applet-interface.js: \
-	public/vendor/lab-sensor-applet-interface
-	cp vendor/lab-sensor-applet-interface/dist/sensor-applet-interface.js public/vendor/lab-sensor-applet-interface
-
-public/vendor/lab-sensor-applet-interface:
-	mkdir -p public/vendor/lab-sensor-applet-interface
+public/vendor/lab-sensor-applet-interface-dist: vendor/lab-sensor-applet-interface-dist
+	mkdir -p public/vendor/lab-sensor-applet-interface-dist
+	cp -r vendor/lab-sensor-applet-interface-dist/* public/vendor/lab-sensor-applet-interface-dist/
 
 public/favicon.ico:
 	cp -f src/favicon.ico public/favicon.ico
@@ -653,6 +650,9 @@ vendor/jquery-ui/dist/jquery-ui.min.js: vendor/jquery-ui
 	./node_modules/grunt-cli/bin/grunt build
 
 vendor/jquery-ui:
+	git submodule update --init --recursive
+
+vendor/lab-sensor-applet-interface-dist:
 	git submodule update --init --recursive
 
 vendor/shutterbug:

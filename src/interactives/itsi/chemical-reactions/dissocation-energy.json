@@ -22,16 +22,23 @@
       "viewOptions": {
         "controlButtons": "play_reset"
       },
-      "modelOptions": {}
+      "onLoad": [
+        "setTemperatureOfAtoms([0,1,2,3,4,5,6,7,8,9], get('targetT'));"
+      ]
     }
   ],
   "parameters": [
     {
       "name": "dissociationEnergy",
-      "initialValue": 0.094,
+      "initialValue": 0.94,
       "onChange": [
         "setBondEnergy('1-1', get('dissociationEnergy'));"
       ]
+    },
+    {
+     "name": "targetT",
+     "initialValue": 3000,
+     "onChange": "setTemperatureOfAtoms([0,1,2,3,4,5,6,7,8,9], get('targetT'));"
     }
   ],
   "components": [
@@ -69,20 +76,20 @@
       "steps": 1000,
       "title": "Temperature",
       "width": "100%",
-      "property": "targetTemperature"
+      "property": "targetT"
     },
     {
       "type": "slider",
       "id": "dissociation-slider",
       "min": 0,
-      "max": 0.2,
+      "max": 3,
       "labels": [
         {
           "value": 0,
           "label": "Low"
         },
         {
-          "value": 0.2,
+          "value": 3,
           "label": "High"
         }
       ],

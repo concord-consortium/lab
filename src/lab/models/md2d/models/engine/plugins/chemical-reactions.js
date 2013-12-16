@@ -182,8 +182,8 @@ define(function(require) {
                bondEnergy[j + "=" + i] != null ? bondEnergy[j + "=" + i] :
                                                  getBondEnergy(i, j, 1) * 2;
         case 3:
-        return bondEnergy[i + "=-" + j] != null ? bondEnergy[i + "=-" + j] :
-               bondEnergy[j + "=-" + i] != null ? bondEnergy[j + "=-" + i] :
+        return bondEnergy[i + "#" + j] != null ? bondEnergy[i + "#" + j] :
+               bondEnergy[j + "#" + i] != null ? bondEnergy[j + "#" + i] :
                                                   getBondEnergy(i, j, 1) * 3;
       }
     }

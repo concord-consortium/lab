@@ -1,0 +1,41 @@
+{
+  "title": "Randomness Example",
+  "publicationStatus": "public",
+  "subtitle": "Math.random() in Lab is not truly random - simulations are repeatable",
+  "about": [
+    "Click play and observe which atoms are being marked every 7ps. Note that each time you reload",
+    "the whole page, the atom placement and marking sequence will be exactly the same.",
+    "",
+    "The *model reload* will generate a new basic seed, so the simulation will be different than",
+    "the first run. However each time you reload the model e.g. 3 times, you will see exactly",
+    "the same simulation progress. The seed generated during model reload is sequential and",
+    "not truly random too.",
+    "",
+    "You can open browser console where you will see marked atoms indices."
+  ],
+  "models": [
+    {
+      "type": "md2d",
+      "id": "simple",
+      "model": {
+        "width": 5,
+        "height": 3
+      },
+      "onLoad": [
+        "for (var i = 0; i < 10; i++) addRandomAtom(0);",
+        "function markRandomAtom() {",
+        "  var randomIndex = Math.floor(Math.random() * 10);",
+        "  markAtoms([randomIndex]);",
+        "  console.log('random index: ' + randomIndex);",
+        "}",
+        "callEvery(7000, markRandomAtom);",
+        "markRandomAtom();"
+      ],
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "backgroundColor": "#777",
+        "atomNumbers": true
+      }
+    }
+  ]
+}

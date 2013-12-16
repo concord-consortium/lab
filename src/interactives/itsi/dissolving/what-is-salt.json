@@ -1,6 +1,8 @@
 {
   "title": "What is a Salt?",
   "publicationStatus": "draft",
+  "aspectRatio": 1.725,
+  "fontScale": 0.8,
   "subtitle": "",
   "about": "",
   "models": [
@@ -26,16 +28,15 @@
   ],
   "template": [
     {
-      "id": "bottom",
-      "top": "model.bottom",
-      "left": "model.left",
-      "width": "model.width",
-      "padding-top": "1em",
+      "id": "right",
+      "top": "model.top + model.height*0.45",
+      "left": "model.right",
+      "padding-left": "1em",
       "align": "center"
     }
   ],
   "layout": {
-    "bottom": [
+    "right": [
       "remove-charge"
     ]
   }
