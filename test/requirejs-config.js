@@ -9,7 +9,7 @@ exports.labConfig = {
       // Plugin for loading plain text files (GLSL sources).
     'text': '../../vendor/text/text',
     'sensor-applet': '../../vendor/lab-sensor-applet-interface/dist/sensor-applet-interface',
-    'lab-grapher': '../../submodules/lab-grapher/lab.grapher',
+    'lab-grapher': '../../submodules/lab-grapher/dist/lab-grapher',
     'seedrandom': '../../vendor/seedrandom/seedrandom'
   }
 };
