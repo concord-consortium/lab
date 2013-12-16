@@ -8,9 +8,6 @@ gem 'i18n',               "~> 0.6.4"
 gem "gitlab-grit",        "~> 2.6.0"
 gem "shutterbug",         "~> 0.1.2"
 
-# beta gem lets sass files inline-include css via "@include 'CSS:cssfile'"
-gem "sass-css-importer"
-
 group :app do
   gem "rack",               "~> 1.5.2"
   gem "rake",               "~> 10.1.0"

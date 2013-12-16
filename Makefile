@@ -10,7 +10,7 @@ MARKDOWN_COMPILER = bin/kramdown
 VOWS = find test/vows -type f -name '*.js' -o -name '*.coffee' ! -name '.*' | xargs ./node_modules/.bin/vows --isolate --dot-matrix
 MOCHA = find test/mocha -type f -name '*.js' -o -name '*.coffee' ! -name '.*' | xargs node_modules/.bin/mocha --reporter dot
 
-SASS_COMPILER = bundle exec sass -I src -r sass-css-importer -r ./src/helpers/sass/lab_fontface.rb
+SASS_COMPILER = ./bin/sass -I src -I public -r ./src/helpers/sass/lab_fontface.rb
 R_OPTIMIZER = ./node_modules/.bin/r.js
 GENERATE_INTERACTIVE_INDEX = ruby src/helpers/process-interactives.rb
 
@@ -694,14 +694,17 @@ public/%.css: src/%.css
 
 public/grapher.css: src/grapher.sass \
 	src/sass/lab/_colors.sass \
-	src/sass/lab/_bar_graph.sass \
-    submodules/lab-grapher/css/lab-grapher.css
+	src/sass/lab/_bar_graph.sass
 	$(SASS_COMPILER) src/grapher.sass public/grapher.css
 
 public/%.css: %.scss
 	$(SASS_COMPILER) $< $@
 
-public/%.css: %.sass $(SASS_LAB_LIBRARY_FILES)
+public/lab-grapher.scss:
+	cp submodules/lab-grapher/css/lab-grapher.css public/lab-grapher.scss
+
+public/%.css: %.sass $(SASS_LAB_LIBRARY_FILES) \
+	public/lab-grapher.scss
 	@echo $($<)
 	$(SASS_COMPILER) $< $@
 
