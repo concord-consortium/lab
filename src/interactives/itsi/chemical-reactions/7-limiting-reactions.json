@@ -103,8 +103,8 @@
     },
     {
       "id": "left",
-      "top": "model.top + model.height/3",
-      "height": "model.height*2/3",
+      "bottom": "model.bottom",
+      "height": "4.5em",
       "right": "model.left",
       "width": "10em"
     }

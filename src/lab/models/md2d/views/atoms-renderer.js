@@ -279,6 +279,7 @@ define(function(require) {
           atom.anchor.x = 0.5;
           atom.anchor.y = 0.5;
           atom.i = i;
+          atom.marked = modelAtoms[i].marked;
           viewAtoms.push(atom);
           container.addChild(atom);
         }
@@ -304,15 +305,22 @@ define(function(require) {
       },
 
       update: function () {
-        var i, len, viewAtom, x, y;
+        var i, len, viewAtom, modelAtom, x, y;
 
         for (i = 0, len = viewAtoms.length; i < len; ++i) {
           viewAtom = viewAtoms[i];
-          x = m2px(modelAtoms[i].x);
-          y = m2pxInv(modelAtoms[i].y);
+          modelAtom = modelAtoms[i];
+          x = m2px(modelAtom.x);
+          y = m2pxInv(modelAtom.y);
 
           viewAtom.position.x = x;
           viewAtom.position.y = y;
+
+          if (modelAtom.marked !== viewAtom.marked) {
+            // Make sure that marked state is always reflected by the view.
+            viewAtom.setTexture(getAtomTexture(i));
+            viewAtom.marked = modelAtoms[i].marked;
+          }
 
           if (renderMode.keShading) {
             viewAtom.keSprite.alpha = Math.min(5 * model.getAtomKineticEnergy(i), 1);
@@ -321,7 +329,7 @@ define(function(require) {
           }
 
           if (model.properties.useQuantumDynamics) {
-            viewAtoms[i].setTexture(getAtomTexture(i));
+            viewAtom.setTexture(getAtomTexture(i));
           }
         }
       },

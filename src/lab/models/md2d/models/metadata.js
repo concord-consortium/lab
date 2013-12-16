@@ -752,6 +752,9 @@ define(function() {
           // between the same elements (like bond between 1 and 1) have a bit smaller chemical
           // energy equal to 4eV. You can freely modify this configuration. Note that you should
           // define "default" key if you don't specify all possible configurations.
+          // Single bond is defined by "-" symbol, e.g. 0-1 is a single bond between element 0 and 1.
+          // Double bond is defined by "=" symbol, e.g. 1=2 is a double bond between element 1 and 2.
+          // Triple bond is defined by "#" symbol, e.g. 2#3 is a triple bond between element 2 and 3.
           "default": 6,
           "0-0": 4,
           "1-1": 4,

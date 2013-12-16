@@ -18,16 +18,22 @@ define(function (require) {
         // it doesn't get passed directly to our model.reset handler
         resetCause,
 
+        // Random seed that is used during the whole lifetime of a given model.
+        modelRandomSeed = 0,
+
         // event dispatcher
         dispatch = d3.dispatch('modelLoaded', 'modelReset', 'modelSetupComplete');
 
-    // ------------------------------------------------------------
-    //
-    // Main callback from model process
-    //
-    // Pass this function to be called by the model on every model step
-    //
-    // ------------------------------------------------------------
+    function tickStartHandler() {
+      // Use seedrandom library (see vendor/seedrandom) that substitutes an explicitly seeded
+      // RC4-based algorithm for Math.random(). It ensures that simulations will look the same for
+      // different users even if physics engine uses random values. Note that we set seed each tick
+      // to be sure that it's always the same before performing simulation step. Otherwise, it's
+      // possible that simulations won't be repeatable if e.g. user uses tick history or triggers
+      // any code path that calls Math.random() between ticks.
+      Math.seedrandom(modelRandomSeed + model.get("time"));
+    }
+
     function tickHandler() {
       performance.enterScope("js-rendering");
       controller.modelContainer.update();
@@ -39,9 +45,13 @@ define(function (require) {
     //   Model Setup
     // ------------------------------------------------------------
     function setupModel() {
+      // We increase model random seed value, as we expect that each time the model is reloaded
+      // the simulation progress is slightly different (of course if it depends on random values).
+      Math.seedrandom(modelRandomSeed++);
       model = new Model(modelOptions, {
         waitForSetup: true
       });
+      model.on('tickStart.modelController', tickStartHandler);
       model.on('tick.modelController', tickHandler);
       model.on('reset.modelController', resetHandler);
     }
