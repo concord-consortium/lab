@@ -810,7 +810,7 @@ define(function (require) {
       },
 
       setTextBoxProperties: function(i, props) {
-        setProperty(parent.model.setTextBoxProperties, i, props);
+        parent.model.setTextBoxProperties(i, props);
       },
 
       getTextBoxProperties: function(i) {
