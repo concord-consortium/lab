@@ -104,7 +104,7 @@ define(function (require) {
         experimentDefinition,
         modelController,
         model,
-        modelId,
+        currentModelID,
         $interactiveContainer,
         helpSystem,
         modelDefinitions = [],
@@ -153,11 +153,10 @@ define(function (require) {
     };
 
     function getModelDefinition(id) {
-      modelId = id;
-      if (modelHash[modelId]) {
-        return modelHash[modelId];
+      if (modelHash[id]) {
+        return modelHash[id];
       }
-      throw new Error("No model found with id "+modelId);
+      throw new Error("No model found with id " + id);
     }
 
     function layoutInteractive() {
@@ -594,7 +593,7 @@ define(function (require) {
     /**
       Load the model from the model definitions hash.
 
-      @param: modelId.
+      @param: currentModelID.
       @optionalParam modelObject
       @optionalParam parameters   parameter values to copy to the loaded model
     */
@@ -615,7 +614,7 @@ define(function (require) {
         }
       }
 
-      modelId = id;
+      currentModelID = id;
       controller.currentModel = modelDefinition;
 
       if (modelDefinition.viewOptions) {
@@ -1072,10 +1071,10 @@ define(function (require) {
 
       loadInteractive: loadInteractive,
 
-      reloadInteractive: function() {
+      reloadModel: function() {
         model.stop();
         notifyWillResetModelAnd(function() {
-          controller.loadInteractive(initialInteractiveConfig);
+          controller.loadModel(currentModelID);
         });
       },
 
@@ -1335,7 +1334,7 @@ define(function (require) {
       ],
 
       getLoadedModelId: function () {
-        return modelId;
+        return currentModelID;
       },
 
       validateInteractive: validateInteractive,
