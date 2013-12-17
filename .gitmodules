@@ -88,3 +88,6 @@
 [submodule "vendor/lab-grapher"]
 	path = vendor/lab-grapher
 	url = https://github.com/concord-consortium/lab-grapher.git
+[submodule "vendor/slickgrid"]
+	path = vendor/slickgrid
+	url = git@github.com:mleibman/SlickGrid.git
