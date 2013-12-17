@@ -701,7 +701,7 @@ public/%.css: %.scss
 	$(SASS_COMPILER) $< $@
 
 public/lab-grapher.scss:
-	cp submodules/lab-grapher/css/lab-grapher.css public/lab-grapher.scss
+	cp vendor/lab-grapher/css/lab-grapher.css public/lab-grapher.scss
 
 public/%.css: %.sass $(SASS_LAB_LIBRARY_FILES) \
 	public/lab-grapher.scss

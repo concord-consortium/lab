@@ -57,7 +57,7 @@
 
   // Additional modules.
   paths: {
-    'lab-grapher': '../../submodules/lab-grapher/dist/lab-grapher',
+    'lab-grapher': '../../vendor/lab-grapher/dist/lab-grapher',
     'text': '../../vendor/text/text',
     'cs' :'../../vendor/require-cs/cs',
     'coffee-script': '../../vendor/coffee-script/extras/coffee-script',
