@@ -49,6 +49,10 @@ define(function() {
         defaultValue: 1
       },
 
+      randomSeed: {
+        required: false
+      },
+
       helpOnLoad: {
         // If true, the help mode will be automatically shown on interactive load.
         defaultValue: false

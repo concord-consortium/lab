@@ -147,6 +147,7 @@ define(function (require) {
 
         semanticLayout,
         getNextTabIndex,
+        randSeed,
 
         // This is not the complete list of events, as we have custom hacks to maintain lists of
         // event listeners.
@@ -159,6 +160,20 @@ define(function (require) {
         return tabIndex++;
       };
     };
+
+    // Use seedrandom library (see vendor/seedrandom) that substitutes an explicitly seeded
+    // RC4-based algorithm for Math.random().
+    function generateRandomSeed() {
+      randSeed = interactive.randomSeed;
+      if (randSeed === undefined) {
+        // Generate random seed.
+        // First ensure that random is random for sure (seedrandom with explicit value could be
+        // called during previous interactive load, before model tick etc).
+        Math.seedrandom();
+        randSeed = Math.random().toString();
+      }
+      Math.seedrandom(randSeed);
+    }
 
     function getModelDefinition(id) {
       modelId = id;
@@ -489,6 +504,10 @@ define(function (require) {
         controller.interactive = validateInteractive(controller.interactive);
         interactive = controller.interactive;
 
+        // Ensure that interactive initialization is always the same if it's desired ("randomSeed"
+        // paramenter is provided).
+        generateRandomSeed();
+
         // Set up the list of possible modelDefinitions.
         modelDefinitions = interactive.models;
         for (var i = 0, len = modelDefinitions.length; i < len; i++) {
@@ -572,6 +591,10 @@ define(function (require) {
           interactiveViewOptions,
           interactiveModelOptions,
           parameterValues = [];
+
+      // Ensure that model load is always the same if it's desired ("randomSeed" paramenter
+      // is provided).
+      generateRandomSeed();
 
       // TODO remove this "feature" when interactives can maintain their own
       //      interactive level parameters (see loadModel in scriptingAPI too)
@@ -1148,6 +1171,9 @@ define(function (require) {
       get modelController() {
         return modelController;
       },
+      get randomSeed() {
+        return randSeed;
+      },
       getDGExportController: function () {
         return exportController;
       },
@@ -1179,6 +1205,9 @@ define(function (require) {
       reloadModel: function() {
         model.stop();
         notifyWillResetModelAnd(function() {
+          // Ensure that model reload is always the same if it's desired ("randomSeed" paramenter
+          // is provided).
+          generateRandomSeed();
           modelController.reload();
         });
       },
@@ -1423,6 +1452,10 @@ define(function (require) {
           result.experiment = $.extend(true, {}, interactive.experiment);
         }
 
+        if (interactive.randomSeed !== undefined) {
+          result.randomSeed = interactive.randomSeed;
+        }
+
         // Serialize components.
         result.components = [];
         for (i = 0, len = componentList.length; i < len; i++) {
@@ -1482,11 +1515,6 @@ define(function (require) {
     //
     // Initialization.
     //
-
-    // Use seedrandom library (see vendor/seedrandom) that substitutes an explicitly seeded
-    // RC4-based algorithm for Math.random(). It ensures that interactive initialization will
-    // always be repeatable, even if it uses Math.random().
-    Math.seedrandom("initializationSeed");
 
     // Select interactive container.
     // TODO: controller rather should create it itself to follow pattern of other components.
