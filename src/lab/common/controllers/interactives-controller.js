@@ -785,7 +785,6 @@ define(function (require) {
 
         if (experimentController) {
           experimentController.setOnLoadScript(onLoadScript);
-          experimentController.modelLoadedCallback();
         }
 
         dispatch.modelLoaded();

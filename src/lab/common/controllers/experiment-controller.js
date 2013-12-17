@@ -35,8 +35,6 @@ define(function (require) {
         namespace = "experimentController" + (++experimentControllerCount);
 
     function initialize() {
-      scriptingAPI = interactivesController.getScriptingAPI();
-      model = interactivesController.getModel();
       // Validate component definition, use validated copy of the properties.
       experimentDefinition = validator.validateCompleteness(metadata.experiment, experimentDefinition);
       timeSeries    = experimentDefinition.timeSeries;
@@ -46,6 +44,13 @@ define(function (require) {
       stateButtons  = experimentDefinition.stateButtons;
       onResetScript = experimentDefinition.onReset;
       timeSeriesDatasets = [];
+
+      interactivesController.on("modelLoaded.experimentController", function () {
+        scriptingAPI = interactivesController.getScriptingAPI();
+        model = interactivesController.getModel();
+        registerModelListeners();
+        setup();
+      });
     }
 
     function setup() {
@@ -223,15 +228,6 @@ define(function (require) {
 
     // Public API.
     controller = {
-      /**
-        Called by the interactives controller when the model finishes loading.
-      */
-      modelLoadedCallback: function() {
-        scriptingAPI = interactivesController.getScriptingAPI();
-        model = interactivesController.getModel();
-        registerModelListeners();
-        setup();
-      },
 
       setOnLoadScript: function(onLoadScript) {
         onLoadFunc = onLoadScript;
