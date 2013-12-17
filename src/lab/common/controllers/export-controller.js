@@ -214,6 +214,9 @@ define(function (require) {
     }
 
     function handleModelInitialization(eventName, cause) {
+      model = interactivesController.getModel();
+      resetData();
+      registerModelListeners();
 
       if (eventName === 'modelLoaded') {
         if (cause === 'reload') {
@@ -270,12 +273,6 @@ define(function (require) {
     registerInteractiveListeners();
 
     return controller = {
-
-      modelLoadedCallback: function() {
-        model = interactivesController.getModel();
-        resetData();
-        registerModelListeners();
-      },
 
       canExportData: function() {
         return ExportController.canExportData();

@@ -88,11 +88,10 @@ helpers.withIsolatedRequireJS (requirejs) ->
       dgExporter.exportData.reset()
       dgExporter.openTable.reset()
       interactivesController = new MockInteractivesController()
+      exportController = new ExportController(exportsSpec, interactivesController)
+
       interactivesController.loadModel()
       model = interactivesController.model
-
-      exportController = new ExportController(exportsSpec, interactivesController)
-      exportController.modelLoadedCallback()
 
 
     describe "when exportData is called", ->

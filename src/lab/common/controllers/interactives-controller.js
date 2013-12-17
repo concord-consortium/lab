@@ -511,7 +511,6 @@ define(function (require) {
         // setup export controller so you can debug exports by typing script.exportData() in the
         // console.
         exportController = new ExportController(interactive.exports, controller);
-        componentModelLoadedCallbacks.push(exportController.modelLoadedCallback);
 
         // If there is an enclosing container we can export data to (e.g., we're iframed into
         // DataGames) then add an "Analyze Data" button the bottom position of the interactive
@@ -1210,7 +1209,7 @@ define(function (require) {
         // We have know number of objects interested in this event and we have to let them cancel
         // reset operation.
         if (type === "willResetModel") {
-          willResetModelCallbacks = willResetModelCallbacks.push(callback);
+          willResetModelCallbacks.push(callback);
         } else {
           dispatch.on(type, callback);
         }
