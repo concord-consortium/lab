@@ -16,6 +16,12 @@ define(function () {
         .html(component.text)
         .appendTo(this.$element);
     this._clickTargetSelector = 'button';
+    this.setAttributes = function(attrs) {
+      // only support text changes right now
+      if (attrs.text && typeof(attrs.text) !== "undefined") {
+        this.button.html(attrs.text);
+      }
+    };
   }
 
   inherit(ButtonController, InteractiveComponent);
@@ -23,6 +29,7 @@ define(function () {
   ButtonController.prototype.modelLoadedCallback = function () {
     ButtonController.superClass._modelLoadedCallback.call(this);
   };
+
 
   return ButtonController;
 });
