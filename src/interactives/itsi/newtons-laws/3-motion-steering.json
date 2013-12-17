@@ -1,0 +1,120 @@
+{
+  "title": "The motion of one atom, with steering",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "aspectRatio": 1.725,
+  "fontScale": 0.8,
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "page3$0",
+      "url": "imports/legacy-mw-content/converted/itsi/newtonv2/page3$0.json",
+      "importedFrom": "imports/legacy-mw-content/itsi/newtonv2/page3$0.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "showAccelerationVectors": true
+      },
+      "modelOptions": {
+        "timeStep": 0.2
+      },
+      "onLoad": [
+        "removeTextBox(0);",
+        "set('atomTraceColor', 'white');",
+        "setAtomProperties(0, {charge: 1});",
+        "traceAtom(0);"
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "steeringForce",
+      "initialValue": 0.002
+    }
+  ],
+  "components": [
+    {
+      "type": "slider",
+      "id": "steering-force",
+      "width": "90%",
+      "min": 0.0001,
+      "max": 0.01,
+      "property": "steeringForce",
+      "labels": [
+        {
+          "value": 0.0001,
+          "label": "Low"
+        },
+        {
+          "value": 0.01,
+          "label": "High"
+        }
+      ],
+      "steps": 99,
+      "title": "Steering Force"
+    },
+    {
+      "type": "button",
+      "id": "up-button",
+      "text": "Up",
+      "action": [
+        "addElectricField({intensity: get('steeringForce'), orientation: 'N', shapeIdx: null });",
+        "callAt(getTime() + 200, function() {",
+        "  removeElectricField(0);",
+        "});"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "down-button",
+      "text": "Down",
+      "action": [
+        "addElectricField({intensity: get('steeringForce'), orientation: 'S', shapeIdx: null });",
+        "callAt(getTime() + 200, function() {",
+        "  removeElectricField(0);",
+        "});"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "left-button",
+      "text": "Left",
+      "action": [
+        "addElectricField({intensity: get('steeringForce'), orientation: 'W', shapeIdx: null });",
+        "callAt(getTime() + 200, function() {",
+        "  removeElectricField(0);",
+        "});"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "right-button",
+      "text": "Right",
+      "action": [
+        "addElectricField({intensity: get('steeringForce'), orientation: 'E', shapeIdx: null });",
+        "callAt(getTime() + 200, function() {",
+        "  removeElectricField(0);",
+        "});"
+      ]
+    }
+  ],
+  "template": [
+    {
+      "id": "right",
+      "top": "model.top + model.height/3",
+      "left": "model.right",
+      "height": "9em",
+      "width": "14em",
+      "padding-left": "0.7em",
+      "align": "center"
+    }
+  ],
+  "layout": {
+    "right": [
+      ["up-button"],
+      ["left-button","right-button"],
+      ["down-button"],
+      ["steering-force"]
+    ]
+  }
+}
