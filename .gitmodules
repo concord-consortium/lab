@@ -85,3 +85,6 @@
 [submodule "vendor/seedrandom"]
 	path = vendor/seedrandom
 	url = https://github.com/davidbau/seedrandom.git
+[submodule "vendor/lab-grapher"]
+	path = vendor/lab-grapher
+	url = https://github.com/concord-consortium/lab-grapher.git
