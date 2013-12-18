@@ -829,11 +829,6 @@ The **[src/resources/](https://github.com/concord-consortium/lab/tree/master/src
 
 The **[src/jnlp/](https://github.com/concord-consortium/lab/tree/master/src/jnlp)** directory currently contains a
 [template Java web Start JNLP for Molecular Workbench](https://github.com/concord-consortium/lab/blob/master/src/jnlp/jnlps/org/concord/modeler/mw__V1.0.jnlp)
-and (DetectionApplet.class](https://github.com/concord-consortium/lab/blob/master/src/jnlp/org/concord/sensor/applet/DetectionApplet.class)
-a tiny Java class for quickly detecting whether Java applets can be run.
-
-The source code for DetectionApplet is in another repository located here:
-[DetectionApplet.java](https://github.com/concord-consortium/sensor-applets/tree/master/src/main/java/org/concord/sensor/applet/DetectionApplet.java)
 
 #### src/sass
 
