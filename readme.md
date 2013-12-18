@@ -748,18 +748,6 @@ You can test how these parameters work using the
 [Model integration time step, period, and sample rate](interactives.html#interactives/basic-examples/sample-rate-and-refresh-rate.json)
 interactive.
 
-##### src/lab/solar-system/
-
-- [src/lab/solar-system](https://github.com/concord-consortium/lab/tree/master/src/lab/solar-system)
-
-##### src/lab/signal-generator/
-
-- [src/lab/signal-generator](https://github.com/concord-consortium/lab/tree/master/src/lab/signal-generator)
-
-##### src/lab/sensor/
-
-- [src/lab/sensor](https://github.com/concord-consortium/lab/tree/master/src/lab/sensor)
-
 ##### src/lab/grapher/
 
 - [src/lab/grapher](https://github.com/concord-consortium/lab/tree/master/src/lab/grapher)
