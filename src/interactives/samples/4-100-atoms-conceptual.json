@@ -25,8 +25,7 @@
       "type": "checkbox",
       "id": "charged-box",
       "text": "Charge",
-      "property": "chargeShading",
-      "onClick": [
+      "action": [
         "batch(function() {",
         "  var count = getNumberOfAtoms();",
         "  var chargeVal;",
@@ -35,6 +34,7 @@
         "    setAtomProperties(i, {charge: chargeVal}, false, false);",
         "    chargeVal *= -1;",
         "  }",
+        "  set('chargeShading', value);",
         "});"
       ]
     },

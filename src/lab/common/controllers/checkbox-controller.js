@@ -8,7 +8,7 @@ define(function () {
 
   return function CheckboxController(component, interactivesController) {
     var propertyName,
-        onClickScript,
+        actionScript,
         initialValue,
         $checkbox,
         $fakeCheckable,
@@ -63,7 +63,7 @@ define(function () {
     // Validate component definition, use validated copy of the properties.
     component = validator.validateCompleteness(metadata.checkbox, component);
     propertyName  = component.property;
-    onClickScript = component.onClick;
+    actionScript = component.action;
     initialValue  = component.initialValue;
 
     $label = $('<label>').append('<span>' + component.text + '</span>');
@@ -103,9 +103,9 @@ define(function () {
     });
 
     // Process onClick script if it is defined.
-    if (onClickScript) {
+    if (actionScript) {
       // Create a function which assumes we pass it a parameter called 'value'.
-      onClickScript = scriptingAPI.makeFunctionInScriptContext('value', onClickScript);
+      actionScript = scriptingAPI.makeFunctionInScriptContext('value', actionScript);
     }
 
     // Register handler for change event.
@@ -125,8 +125,8 @@ define(function () {
       }
       // Finally, if checkbox has onClick script attached,
       // call it in script context with checkbox status passed.
-      if (onClickScript !== undefined) {
-        onClickScript(value);
+      if (actionScript !== undefined) {
+        actionScript(value);
       }
     });
 
@@ -157,9 +157,9 @@ define(function () {
           model.addPropertyDescriptionObserver(propertyName, updateCheckboxDisabledState);
           // Perform initial checkbox setup.
           updateCheckbox();
-        } else if (onClickScript) {
+        } else if (actionScript) {
           // Call the action script when model is loaded.
-          onClickScript(getCheckboxState());
+          actionScript(getCheckboxState());
         }
       },
 

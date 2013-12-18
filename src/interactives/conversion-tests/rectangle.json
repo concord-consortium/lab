@@ -139,7 +139,7 @@
       "id": "isfence",
       "initialValue":true,
       "text": "Yellow rectangle is fence",
-      "onClick": "setShapeProperties(4,{fence:value});"
+      "action": "setShapeProperties(4,{fence:value});"
     },
     {
       "type": "barGraph",

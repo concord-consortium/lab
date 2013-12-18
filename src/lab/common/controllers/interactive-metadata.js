@@ -439,14 +439,15 @@ define(function() {
         defaultValue: "auto"
       },
       property: {
-        conflictsWith: ["initialValue"]
+        conflictsWith: ["initialValue", "action"]
       },
-      onClick: {
-        // Script executed on user click, optional.
+      action: {
+        // Script executed when checkbox is changed, optional.
+        conflictsWith: ["property"]
       },
       initialValue: {
         // Note that 'initialValue' makes sense only for checkboxes without property binding.
-        // Do not use checkbox as setter.
+        // Do not use checkbox as setter of a given property.
         conflictsWith: ["property"]
       },
       disabled: {
