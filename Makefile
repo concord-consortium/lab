@@ -717,11 +717,18 @@ public/%.js: %.coffee
 	@rm -f $@
 	$(COFFEESCRIPT_COMPILER) --compile --print $< > $@
 
-public/developer-doc/%.html: developer-doc/%.md
+# replace relative references to .md files for the static build
+# look for pattern like ](*.md) replace with ](*.html)
+# the ':' is hack so it doesn't match absolute http:// urls
+%.md.static: %.md
+	@rm -f $@
+	sed s';\](\([^):]*\)\.md);\](\1.html);' $< > $@
+
+public/developer-doc/%.html: developer-doc/%.md.static
 	@rm -f $@
 	$(MARKDOWN_COMPILER) -i GFM $< --template src/layouts/developer-doc.html.erb > $@
 
-public/%.html: %.md
+public/%.html: %.md.static
 	@rm -f $@
 	$(MARKDOWN_COMPILER) $< --toc-levels 2..6 --template src/layouts/top-level.html.erb > $@
 
@@ -734,6 +741,9 @@ public/models/%.json: src/models/%.json
 .PHONY: public/interactives.json
 public/interactives.json: $(INTERACTIVE_FILES)
 	$(GENERATE_INTERACTIVE_INDEX)
+
+# delete the .md.static files and don't bother creating them if they don't need to be
+.INTERMEDIATE: %.md.static
 
 # ------------------------------------------------
 #
