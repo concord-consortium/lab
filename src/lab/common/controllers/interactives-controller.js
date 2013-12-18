@@ -1069,14 +1069,21 @@ define(function (require) {
 
       loadInteractive: loadInteractive,
 
+      reloadInteractive: function() {
+        model.stop();
+        notifyWillResetModelAnd(function() {
+          controller.loadInteractive(initialInteractiveConfig);
+        });
+      },
+
+      loadModel: loadModel,
+
       reloadModel: function() {
         model.stop();
         notifyWillResetModelAnd(function() {
           controller.loadModel(currentModelID);
         });
       },
-
-      loadModel: loadModel,
 
       /**
         Reset the model to its initial state, restoring or retaining model parameters according to
