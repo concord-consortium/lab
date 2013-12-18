@@ -1,4 +1,5 @@
-define(function() {
+define(function(require) {
+  var slickgrid  = require('slickgrid')
 
   return function TableView(opts) {
 

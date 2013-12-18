@@ -52,6 +52,19 @@
         'rgbcolor'
       ],
       exports: 'canvg'
+    },
+    'slickgrid': {
+      deps: [
+        'jquery.event.drag',
+        'jquery.event.drop',
+        'slickgrid-core',
+        'slickgrid-formatters',
+        'slickgrid-editors',
+        'slickgrid-cellrangedecorator',
+        'slickgrid-cellrangeselector',
+        'slickgrid-cellselectionmodel'
+      ],
+      exports: 'slickgrid'
     }
   },
 
@@ -70,7 +83,16 @@
     'backbone': '../../node_modules/backbone/backbone',
     'mustache': '../../node_modules/mustache/mustache',
     'markdown': '../../node_modules/markdown/lib/markdown',
-    'sensor-applet': '../../vendor/lab-sensor-applet-interface-dist/sensor-applet-interface'
+    'sensor-applet': '../../vendor/lab-sensor-applet-interface-dist/sensor-applet-interface',
+    'slickgrid': '../../vendor/slickgrid/slick.grid',
+    'slickgrid-core': '../../vendor/slickgrid/slick.core',
+    'slickgrid-formatters': '../../vendor/slickgrid/slick.formatters',
+    'slickgrid-editors': '../../vendor/slickgrid/slick.editors',
+    'slickgrid-cellrangedecorator': '../../vendor/slickgrid/plugins/slick.cellrangedecorator',
+    'slickgrid-cellrangeselector': '../../vendor/slickgrid/plugins/slick.cellrangeselector',
+    'slickgrid-cellselectionmodel': '../../vendor/slickgrid/plugins/slick.cellselectionmodel',
+    'jquery.event.drag': '../../vendor/slickgrid/lib/jquery.event.drag-2.2',
+    'jquery.event.drop': '../../vendor/slickgrid/lib/jquery.event.drop-2.2'
   },
 
   // Protect global namespace and call export of API.
