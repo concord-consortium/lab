@@ -1,16 +1,10 @@
 ## Building Java Resources
 
-### Building the Classic Java applications and the Sensor Java Applet
-
 The Lab repository can build the legacy Java applications Molecular Workbench and Energy2D we
 are converting to HTML5.
 
 Building these Java applications allows developers to more easily compare the operation
 of the HTML5 versions of these applications to the Java versions running in he browser as applets.
-
-In addition we can create the Java resources to run the invisible Java applet needed for communicating
-with Vernier GoIO probware in the browser however the Java resources for communicating with the
-Vernier GoIO Probeware need to be digitally signed.
 
 ### Running the Classic Java Molecular Workbench and Energy2D as Applications
 
@@ -78,9 +72,7 @@ The self-signed `lab-sample-keystore,jks` keystore was generated with the Java k
 
 ### Building the Java Resources
 
-**Note:** Currently in order to compile OTrunk you need to include the Concord nexus Maven mirror in `~/.m2/settings.xml`. See [Customize Maven mirror](#customize_aven_mirror)
-
-Run `make jnlp-all` to erase, build, package, sign and deploy all the Java resurces.
+Run `make jnlp-all` to erase, build, package, sign and deploy all the Java resources.
 
 The first time this task is run it:
 
@@ -100,12 +92,6 @@ the command again with the `--maven-update` argument:
 
 Details about each Java project, where the repository is located, what branch is compiled, the specific
 compilation details are all contained in this Ruby file:
-[`config/java-projects.rb`](https://github.com/concord-consortium/lab/blob/master/config/java-projects.rb)
-
-### Java build/deploy integration
-
-There is a configuration file expressed in Ruby code here which defines build specifications
-for each Java project:
 [`config/java-projects.rb`](https://github.com/concord-consortium/lab/blob/master/config/java-projects.rb)
 
 The specification indicates whether the Java Jar resource will be directly downloaded or whether the
@@ -134,7 +120,7 @@ the `master` branch of the git mirror here: [concord-consortium/mw](https://gith
 
 1. `:maven`
 
-    Concord's sensor applet framework uses the `:maven` build strategy:
+    An example that has been removed from the java-projects.rb:
 
         'sensor-applets' => { :build_type => :maven,
                               :build => MAVEN_STD_CLEAN_BUILD,
@@ -190,7 +176,7 @@ the `master` branch of the git mirror here: [concord-consortium/mw](https://gith
 4. `:copy_jars`
 5. `:download`
 
-    goio-jna uses the `:download` build strategy:
+    An example that has been removed from java-projects.rb
 
         'goio-jna'       => { :build_type => :download,
                               :url => 'http://source.concord.org/nexus/content/repositories/cc-repo-internal-snapshot/org/concord/sensor/goio-jna/1.0-SNAPSHOT/goio-jna-1.0-20121109.222028-22.jar',
@@ -202,52 +188,9 @@ The script that runs the checkout-build-pack-sign-deploy can either operate on A
 
 Running `script/build-and-deploy-jars.rb` with no arguments operates on all projects listed in config/java-projects.rb.
 
-Optionally you can specify one or more projects to operate on. This builds just sensor and sensor-applets:
+Optionally you can specify one or more projects to operate on. This builds just mw:
 
-    script/build-and-deploy-jars.rb sensor sensor-applets
+    script/build-and-deploy-jars.rb mw
 
 The Jar resources deployed to the `public/jnlp` directory include a timestamp in the deployed artifact so unless you specifically
 request an earlier version you will always get the latest version deployed.
-
-### Working with the Sensor projects source
-
-Most of the sensor related java jars are being downloaded as jars, not
-compiled from source. If you're interested in building them from source:
-
-1. Clone the [concord-consortium/sensor-projects](https://github.com/concord-consortium/sensor-projects) repo:
-
-        git clone https://github.com/concord-consortium/sensor-projects.git sensor-projects
-
-    sensor-projects includes these resources:
-
-        sensor-projects/
-          README
-          ftdi-serial-wrapper/
-          goio-jna/
-          labpro-usb-jna/
-          labquest-jna/
-          pasco-jna/
-          pom.xml/
-          sensor/
-          sensor-native/
-          sensor-pasco/
-          sensor-vernier/
-
-2. Link the individual project folder into `java/`
-
-        rm -rf java/goio-jna
-        ln -s /path/to/sensor-projects/goio-jna java/goio-jna
-
-3. Update `config/java-projects.rb` to use a `:maven` type build, but *without* `:repo` or `:branch` specified
-
-        'goio-jna'  => { :build_type => :maven,
-                         :build => MAVEN_STD_CLEAN_BUILD,
-                         :path => 'org/concord/sensor/goio-jna',
-                         :sign => true }
-
-4. Rebuild the project using `script/build-and-deploy-jars.rb`
-
-        script/build-and-deploy-jars.rb --maven-update goio-jna
-
-5. Repeat 2 - 4 for any other projects you'd like to build from source
-
