@@ -1580,49 +1580,14 @@ The resulting directory on the server will look something like this:
 
     $ tree /var/www/app/public/jnlp/
     public/jnlp/
-    ├── jdom
-    │   └── jdom
-    │       ├── jdom__V1.0.jar
-    │       └── jdom__V1.0.jar.pack.gz
-    ├── jug
-    │   └── jug
-    │       ├── jug__V1.1.2.jar
-    │       └── jug__V1.1.2.jar.pack.gz
     └── org
         └── concord
-            ├── data
-            │   ├── data__V0.2.0-20120531.005123-1.jar
-            │   └── data__V0.2.0-20120531.005123-1.jar.pack.gz
             ├── energy2d
             │   ├── energy2d__V0.1.0-20120531.005123-1.jar
             │   └── energy2d__V0.1.0-20120531.005123-1.jar.pack.gz
-            ├── framework
-            │   ├── framework__V0.1.0-20120531.005123-1.jar
-            │   └── framework__V0.1.0-20120531.005123-1.jar.pack.gz
-            ├── frameworkview
-            │   ├── frameworkview__V0.1.0-20120531.005123-1.jar
-            │   └── frameworkview__V0.1.0-20120531.005123-1.jar.pack.gz
-            ├── modeler
-            │   ├── mw__V2.1.0-20120531.005123-1.jar
-            │   └── mw__V2.1.0-20120531.005123-1.jar.pack.gz
-            ├── otrunk
-            │   ├── otrunk__V0.3.0-20120531.005123-1.jar
-            │   └── otrunk__V0.3.0-20120531.005123-1.jar.pack.gz
-            ├── sensor
-            │   ├── sensor-applets
-            │   │   ├── sensor-applets__V0.1.0-20120531.005123-1.jar
-            │   │   └── sensor-applets__V0.1.0-20120531.005123-1.jar.pack.gz
-            │   ├── sensor__V0.2.0-20120531.005123-1.jar
-            │   ├── sensor__V0.2.0-20120531.005123-1.jar.pack.gz
-            │   └── vernier
-            │       └── vernier-goio
-            │           ├── vernier-goio-macosx-i386-nar__V1.5.0-20101012.203834-2.jar
-            │           ├── vernier-goio-macosx-ppc-nar__V1.5.0-20101012.203834-2.jar
-            │           ├── vernier-goio-macosx-x86_64-nar__V1.5.0-20101012.203835-2.jar
-            │           └── vernier-goio-win32-nar__V1.4.0.jar
-            └── sensor-native
-                ├── sensor-native__V0.1.0-20120531.005123-1.jar
-                └── sensor-native__V0.1.0-20120531.005123-1.jar.pack.gz
+            └── modeler
+                ├── mw__V2.1.0-20120531.005123-1.jar
+                └── mw__V2.1.0-20120531.005123-1.jar.pack.gz
 
 ### Managing AWS servers with thor tasks
 
