@@ -41,6 +41,10 @@ define(function () {
       }
     }
 
+    function getCheckboxState() {
+      return $checkbox.prop('checked');
+    }
+
     function customClickEvent (e) {
       e.preventDefault();
 
@@ -130,6 +134,11 @@ define(function () {
       $element.attr("title", component.tooltip);
     }
 
+    // Set initial value if provided.
+    if (initialValue !== undefined) {
+      setCheckbox(initialValue);
+    }
+
     // Public API
     controller = {
       // This callback should be trigger when model is loaded.
@@ -141,11 +150,6 @@ define(function () {
         model = interactivesController.getModel();
         scriptingAPI = interactivesController.getScriptingAPI();
 
-        onClickScript = component.onClick;
-        if (onClickScript) {
-          onClickScript = scriptingAPI.makeFunctionInScriptContext('value', onClickScript);
-        }
-
         // Connect checkbox with model's property if its name is defined.
         if (propertyName !== undefined) {
           // Register listener for 'propertyName'.
@@ -153,10 +157,9 @@ define(function () {
           model.addPropertyDescriptionObserver(propertyName, updateCheckboxDisabledState);
           // Perform initial checkbox setup.
           updateCheckbox();
-        }
-        else if (initialValue !== undefined) {
-          setCheckbox(initialValue);
-          if (onClickScript) onClickScript(initialValue);
+        } else if (onClickScript) {
+          // Call the action script when model is loaded.
+          onClickScript(getCheckboxState());
         }
       },
 
