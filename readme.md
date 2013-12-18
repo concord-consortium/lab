@@ -825,11 +825,6 @@ build process.
 The **[src/resources/](https://github.com/concord-consortium/lab/tree/master/src/resources)** directory contains image resources and are copied directly to
 **`public/resources`**.
 
-#### src/jnlp
-
-The **[src/jnlp/](https://github.com/concord-consortium/lab/tree/master/src/jnlp)** directory currently contains a
-[template Java web Start JNLP for Molecular Workbench](https://github.com/concord-consortium/lab/blob/master/src/jnlp/jnlps/org/concord/modeler/mw__V1.0.jnlp)
-
 #### src/sass
 
 The **[src/sass/](https://github.com/concord-consortium/lab/tree/master/src/sass)** directory contains Sass templates and the Bourbon Sass library are are used
