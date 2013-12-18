@@ -1,10 +1,17 @@
-## Building Java Resources
+## Java Resources
 
 The Lab repository can build the legacy Java applications Molecular Workbench and Energy2D we
 are converting to HTML5.
 
 Building these Java applications allows developers to more easily compare the operation
-of the HTML5 versions of these applications to the Java versions running in he browser as applets.
+of the HTML5 versions of these applications to the Java versions running in the browser as applets.
+
+Additionally the Lab framework uses a sensor applet to connect with USB sensors from Vernier.
+The jars for this applet and a javascript library for communicating with the applet come from
+the [Lab Sensor Applet Interface](https://github.com/concord-consortium/lab-sensor-applet-interface)
+project. The Lab framework pulls in the
+[distribution repository](https://github.com/concord-consortium/lab-sensor-applet-interface-dist)
+through a submodule. This distribution repository provides the built and signed jars.
 
 ### Running the Classic Java Molecular Workbench and Energy2D as Applications
 

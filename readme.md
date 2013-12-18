@@ -444,9 +444,9 @@ Now open http://localhost:9292/index.html
 
 This developer server and the production server are running an [embedded Jnlp service](developer-doc/jnlp-rack-app.md).
 
-#### Building Java Resources
+#### Java Resources
 
-[Building Java Resources](developer-doc/java.md)
+[Java Resources](developer-doc/java.md)
 
 ## Project Configuration
 
