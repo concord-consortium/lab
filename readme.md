@@ -1,16 +1,11 @@
 # Lab Framework
 
 HTML5-based open source scientific models, visualizations, graphing, and probeware from the
-[Concord Consortium](http://www.concord.org).
+[Concord Consortium](http://www.concord.org). This framework is deployed in the following places.
+These sites contain many examples of what it can do:
 
 - **[lab.concord.org](http://lab.concord.org)** _(production)_
 - **[lab.dev.concord.org](http://lab.dev.concord.org)** _(development)_
-- **[github.com/concord-consortium/lab](https://github.com/concord-consortium/lab)** _(source)_
-
-**Table of Contents**
-
-* toc
-{:toc}
 
 ## Licensing
 
@@ -28,12 +23,6 @@ If you have have received a **distribution archive** of the
 our copyright applies to all resources **except** the files in the
 `vendor/` directory. The files in the `vendor/` directory are from
 third-parties and are distributed under either BSD, MIT, or Apache 2.0 licenses.
-
-## Examples
-
-- [Comprehensive Listing of Interactives](http://lab.dev.concord.org/interactives.html)
-- [Selected Listing by Model Type](http://lab.dev.concord.org/examples.html#model-type-examples-and-more)
-- [Additional Examples](http://lab.dev.concord.org/examples.html#additional-examples)
 
 ## Distribution of Project and Examples
 
