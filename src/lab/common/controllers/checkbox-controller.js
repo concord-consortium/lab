@@ -157,9 +157,6 @@ define(function () {
           model.addPropertyDescriptionObserver(propertyName, updateCheckboxDisabledState);
           // Perform initial checkbox setup.
           updateCheckbox();
-        } else if (actionScript) {
-          // Call the action script when model is loaded.
-          actionScript(getCheckboxState());
         }
       },
 

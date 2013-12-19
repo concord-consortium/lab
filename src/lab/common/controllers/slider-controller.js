@@ -181,10 +181,6 @@ define(function () {
 
         if (propertyName) {
           updateSlider();
-        } else if (actionFunc) {
-          // Make sure to call the action with the current value of slider. (The script action may
-          // manipulate the model, so we have to make sure it runs after the model loads.)
-          actionFunc($slider.slider("option", "value"));
         }
       },
 
