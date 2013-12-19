@@ -561,8 +561,7 @@ define(function() {
         // selection.
         conflictsWith: ["value"]
       },
-      disabled: {},
-      loadModel: {}
+      disabled: {}
     },
 
     radio: {
@@ -615,8 +614,7 @@ define(function() {
         // selection.
         conflictsWith: ["value"]
       },
-      disabled: {},
-      loadModel: {}
+      disabled: {}
     },
 
     numericOutput: {
