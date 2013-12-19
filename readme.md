@@ -24,26 +24,6 @@ our copyright applies to all resources **except** the files in the
 `vendor/` directory. The files in the `vendor/` directory are from
 third-parties and are distributed under either BSD, MIT, or Apache 2.0 licenses.
 
-## Distribution of Project and Examples
-
-Compressed archives of the generated Lab distribution are available for download:
-
-- [Lab distribution (tar.gz archive)](https://github.com/concord-consortium/lab/tarball/gh-pages) _(32MB)_
-- [Lab distribution (zip archive)](https://github.com/concord-consortium/lab/zipball/gh-pages) _(42MB)_
-
-Download and expand one of these archives to create a folder named `concord-consortium-lab-xxxxxxx`.
-The seven characters at the end of the archive filename are the first seven characters of the git
-commit SHA.
-
-To access the content on your local you will need to serve the files from a web server running on your
-local computer. Once there open the file index.html in the expanded archive.
-
-For example Chrome generates this error when I try and load the sample Oil and Water Interactive directly
-from my filesystem:
-
-    XMLHttpRequest cannot load file:///Users/stephen/Downloads/concord-consortium-lab-9771ec6/interactives/samples/1-oil-and-water-shake.json.
-    Origin null is not allowed by Access-Control-Allow-Origin.
-
 ## Setup Development
 
 Lab uses a number of RubyGems and node modules to manage development. Lab's test framework
@@ -328,99 +308,6 @@ Now open http://localhost:9292/index.html
 
 This developer server and the production server are running an [embedded Jnlp service](developer-doc/jnlp-rack-app.md).
 
-## Project Configuration
-
-Configuration variables used by the runtime JavaScript code are available in the JavaScript global
-object `Lab.config`.
-
-In a full build environment the JavaScript configuration is set in the `:jsconfg` section of
-`config/config.yml`:
-
-    :jsconfig:
-      :sharing: true
-      :home: http://lab.concord.org
-      :homeForSharing:
-      :homeInteractivePath: /examples/interactives/interactive.html
-      :homeEmbeddablePath: embeddable.html
-      :utmCampaign: <external-campaign-key>
-
-**`sharing`** A boolean attribute used to determine if the **Share** link in the Interactives will be enabled.
-The default value for this is `true`.
-
-**`home`** Url used to reference cannonical site when sharing is turned off.
-
-**`homeForSharing`** Set :homeForSharing to the host where shared Interactives are found
-if you don't want to share the ones on the actual server. Example if you host the
-Interactives on a static S3 site and want the sharing links to point to the same
-Interactives at "http://lab.concord.org"
-
-**`homeInteractivePath`** Path to page to run non-embeddable version of Interactives.
-
-**`homeEmbeddablePath`** Path to page to run embeddable version of Interactives.
-
-**`utmCampaign`** If present a UTM suffix is added to links in the About box.
-Set to a string which identifies the external organization.
-
-When the build environment is active these values are used to generate JavaScript code integrated
-into the project by the Ruby program:
-[`script/generate-js-config.rb`](https://github.com/concord-consortium/lab/blob/master/script/generate-js-config.rb)
-
-### Interactive Share link
-
-Normally the **Share** link in an Interactive is enabled. The **Share** dialog allows a user to more easily
-share the Interactive in an email or IM, and also provides generated HTML content that can be copied and pasted
-to embed the Interactive into a blog or web page.
-
-If you are hosting this content on an external server where supporting
-sharing is impractical in some manner you can disable the display of the Interactive **Share** link by setting
-`:sharing` in `config/config.yml` to `false`:
-
-    :jsconfig:
-      :sharing: false
-      :home: http://lab.concord.org
-      :homeForSharing: http://lab.concord.org
-      :homeInteractivePath: /examples/interactives/interactive.html
-      :homeEmbeddablePath: embeddable.html
-      :utmCampaign: <external-campaign-key>
-
-The additional values for `:home`, `homeInteractivePath`, and `homeEmbeddablePath` are used to construct an
-additional paragraph in the Interactive **About** box providing a link to the Interactive on the production
-[site for the project](http://lab.concord.org).
-
-You can also enable Sharing **but** use a separate host for generating the sharing urls by entering a value
-for **homeForSharing**. If you are *also* hosting the the Lab Interactives in a subdirectory you must also
-set the values for **homeEmbeddablePath** and **homeInteractivePath** as shown above.
-
-The value for `utmCampaign` is optional. If present and the **home** site has enabled Google Analytics
-setting a value for `utmCampaign` will allow better tracking of users who click through links in the
-Interactive **About** box.
-
-### Google Analytics
-
-In addition there is a optional section in `config/config.yml` which if present enables embedding google
-analytics script into the head of the main `index.html` and all html pages in the `examples/` and `doc/`
-directories. This includes all the Interactives which are located in `examples/interactives` directory.
-
-Include your Google Analytics account number here to enable insertion of the Google Analytics
-script by the build system into the generated HTML pages.
-
-    :google_analytics:
-      :account_id: <account-id>
-
-The content from which the embedded Google Analytics script is generated is contained in this Ruby file:
-[`script/setup.rb`](https://github.com/concord-consortium/lab/blob/master/script/setup.rb).
-
-### Limitations changing configuration in an archive distribution
-
-If you have downloaded a distribution archive you can manually modify the code that initializes the JavaScript
-runtime configuration in the files: `lab/lab.js` and `lab/lab.min.js`. Editing the value for `Lab.config.sharing`
-in these files will affect the JavaScript runtime settings when these files are loaded.
-
-Additionally you can turn on UTM suffixes by adding a string value to `Lab.config.utmCampaign``.
-
-However generation and insertion of the Google Analytics script into HTML pages can only be done by
-setting a value for the `:google_analytics :account_id` and running the build process.
-
 ## Contributing to Lab
 
 If you think you'd like to contribute to Lab as an external developer:
@@ -438,58 +325,11 @@ If you think you'd like to contribute to Lab as an external developer:
 4. Create your changes on a topic branch. Please include tests if you can. When your commits are ready
    push your topic branch to your fork and send a pull request.
 
-## Continuous Integration on travis-ci
-
-[travis-ci](http://travis-ci.org) is a free open-source web-based distributed continuous integration system.
-
-When code is checked in to the master branch the [concord-consortium/lab](http://travis-ci.org/#!/concord-consortium/lab)
-project on [travis-ci](http://travis-ci.org) automatically runs all the unit tests.
-
-If any test fails the author of the commit will get an email as well the developers listed in the
-[.travis.yml](https://github.com/concord-consortium/lab/blob/master/.travis.yml) configuration file.
-
-### Setting up travis-ci integration
-
-I created an account on [travis-ci](http://travis-ci.org) linked to the [stepheneb](https://github.com/stepheneb)
-acocunt on github by having travis-ci authenticate me with github using oauth.
-
-I was then able to manually setup a Travis service hook for the lab repository. I needed to
-do this manually because I was integrating a repository under the concord-consortium github
-organization instead of one directly under my own account.
-
-Useful [travis-ci](http://travis-ci.org) resources
-
-- [The Travis Architecture](http://about.travis-ci.org/docs/dev/overview/)
-- [How to setup and trigger the hook manually](http://about.travis-ci.org/docs/user/how-to-setup-and-trigger-the-hook-manually/)
-- [Build configuration](http://about.travis-ci.org/docs/user/build-configuration/)
-- [Ruby projects](http://about.travis-ci.org/docs/user/languages/ruby/)
-- [Nodejs projects](http://about.travis-ci.org/docs/user/languages/javascript-with-nodejs/)
-- [GUI and Headless Browser testing](http://about.travis-ci.org/docs/user/gui-and-headless-browsers/)
-
-### Generated Examples: `public/examples/`
-
-The `public/examples/` directory is automatically generated running `make` and is not part of the repository.
-
-When `bin/guard` is running any changes to files in the `src/examples/` directory cause automatic rebuilding
-of the associated files in the `public/examples/` directory.
-
-### HTML and CSS Generation
-
-[Haml](http://haml-lang.com/) is used to generate most of the HTML in the `public/` directory.
-
-[kramdown](http://kramdown.rubyforge.org/) is used to generate `readme.html` in `public/` from Mardown markup.
-
-[Sass](http://sass-lang.com/) is used to generate the CSS assets. The Sass markup may be in the form of
-`*.sass` or `*.scss` files
-
-The [Bourbon](http://thoughtbot.com/bourbon/) library of Sass mixins is included.
-
-- [Bourbon documentation](http://thoughtbot.com/bourbon/)
-- [ASCIIcast 330: Better SASS With Bourbon](http://asciicasts.com/episodes/330-better-sass-with-bourbon)
-- [Introducing Bourbon Sass Mixins](http://robots.thoughtbot.com/post/7846399901/introducing-bourbon-sass-mixins)
-
 ## More Documentation
 
+- [Static Distribution](developer-doc/static-distribution.md)
+- [Project Configuration](developer-doc/configuration.md)
+- [Continuous Integration on Travis](developer-doc/travis.md)
 - [Repository Structure](developer-doc/repository-structure.md)
 - [Javascript Dependency Management and Build Process](developer-doc/js-dependency-management.md)
 - [Testing](developer-doc/testing.md)
@@ -498,5 +338,5 @@ The [Bourbon](http://thoughtbot.com/bourbon/) library of Sass mixins is included
 - [References](developer-doc/references.md)
 - [Dependencies](developer-doc/dependencies.md)
 - [Java Resources](developer-doc/java.md)
-
+- [Building Website](developer-doc/website.md)
 
