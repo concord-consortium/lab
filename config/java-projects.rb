@@ -35,45 +35,6 @@ MW_ANT_BUILD = "ant clean; ant dist2"
 # Compiling MW this way drops the size from 7.2 to 5.4 MB
 
 PROJECT_LIST = {
-  'sensor'         => { :build_type => :download,
-                        :url => 'http://jnlp.concord.org/dev3/org/concord/sensor/sensor/sensor-1.0-20130909.215301-41.jar',
-                        :version => '1.0-20130909.215301-41',
-                        :path => 'org/concord/sensor',
-                        :sign => true },
-
-  'sensor-applets' => { :build_type => :maven,
-                        :build => MAVEN_STD_CLEAN_BUILD,
-                        :repository => 'git://github.com/concord-consortium/sensor-applets.git',
-                        :branch => 'master',
-                        :commit => 'v2.0.2',
-                        :path => 'org/concord/sensor/sensor-applets',
-                        :has_applet_class => true,
-                        :sign => true },
-
-  'sensor-vernier' => { :build_type => :download,
-                        :url => 'http://jnlp.concord.org/dev3/org/concord/sensor/sensor-vernier/sensor-vernier-1.0-20130909.215301-42.jar',
-                        :version => '1.0-20130909.215301-42',
-                        :path => 'org/concord/sensor/sensor-vernier',
-                        :sign => true },
-
-  'goio-jna'       => { :build_type => :download,
-                        :url => 'http://jnlp.concord.org/dev3/org/concord/sensor/goio-jna/goio-jna-1.0-20130314.171142-34.jar',
-                        :version => '1.0-20130314.171142-34',
-                        :path => 'org/concord/sensor/goio-jna',
-                        :sign => true },
-
-  'labquest-jna'   => { :build_type => :download,
-                        :url => 'http://jnlp.concord.org/dev3/org/concord/sensor/labquest-jna/labquest-jna-1.0-20130909.215301-42.jar',
-                        :version => '1.0-20130909.215301-42',
-                        :path => 'org/concord/sensor/labquest-jna',
-                        :sign => true },
-
-  'jna'            => { :build_type => :download,
-                        :url => 'http://search.maven.org/remotecontent?filepath=net/java/dev/jna/jna/3.5.1/jna-3.5.1.jar',
-                        :version => '3.5.1',
-                        :path => 'com/sun/jna',
-                        :sign => true },
-
   'energy2d'       => { :build_type => :custom,
                         :build => MANUAL_JAR_ISO_8859_1_BUILD,
                         :version => '0.1.0',

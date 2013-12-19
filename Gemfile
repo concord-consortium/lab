@@ -14,7 +14,7 @@ group :app do
   gem "sass",               "~> 3.2.5"
   gem 'bourbon',            "~> 3.1.1"
   gem 'neat',               "~> 1.2.0"
-  gem 'kramdown',           "~> 0.13.8"
+  gem 'kramdown',           "~> 1.3.0"
   gem "mustache",           "~> 0.99.4"
   gem "rack-livereload",    "~> 0.3.15"
 end
@@ -55,7 +55,6 @@ group :development do
   gem "guard-shell",        "~> 0.5.1"
   gem "guard-livereload",   "~> 1.4.0"
   gem 'guard-coffeescript', "~> 1.3.2"
-  gem 'guard-markdown',     "~> 0.2.0"
   # FS Notification libraries for guard (non-polling)
   gem 'rb-fsevent', "~> 0.9.3", :require => darwin_only('rb-fsevent')
   gem 'rb-inotify', "~> 0.9.0", :require => linux_only('rb-inotify')

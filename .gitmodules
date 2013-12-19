@@ -76,9 +76,15 @@
 [submodule "vendor/fastclick"]
 	path = vendor/fastclick
 	url = https://github.com/ftlabs/fastclick.git
+[submodule "vendor/lab-sensor-applet-interface"]
+	path = vendor/lab-sensor-applet-interface
+	url = git://github.com/concord-consortium/lab-sensor-applet-interface.git
 [submodule "vendor/lab-sensor-applet-interface-dist"]
 	path = vendor/lab-sensor-applet-interface-dist
 	url = git://github.com/concord-consortium/lab-sensor-applet-interface-dist.git
 [submodule "vendor/seedrandom"]
 	path = vendor/seedrandom
 	url = https://github.com/davidbau/seedrandom.git
+[submodule "vendor/lab-grapher"]
+	path = vendor/lab-grapher
+	url = https://github.com/concord-consortium/lab-grapher.git

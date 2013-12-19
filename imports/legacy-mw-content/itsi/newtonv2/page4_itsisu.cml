@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Newton&apos;s Laws at the Atomic Level: The motion of many atoms.</page_title>
+<bg_color><Red>241</Red><Green>240</Green><Blue>246</Blue></bg_color>
+<text>
+ 
+  
+
+
+
+</text>
+<section start="0" end="10">
+<paragraph start="0" end="1">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="3">
+<content start="1" end="2">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>120.0</width>
+<height>30.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="2" end="3">
+</content>
+
+</paragraph>
+<paragraph start="3" end="6">
+<SpaceBelow>8.0</SpaceBelow>
+<content start="3" end="4">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>400.0</width>
+<height>300.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body style=&quot;margin-right: 10&quot;&gt;
+    &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;To the right 
+    is an empty model in which you can place any number of atoms. First, try 
+    adding just two or three atoms, and then trace their paths.&lt;/font&gt;
+
+    &lt;p align=&quot;center&quot;&gt;
+      &lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;&lt;img height=&quot;159&quot; src=&quot;addAtomsPanelFlat.png&quot; width=&quot;244&quot;&gt;
+      &lt;/font&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+      &lt;strong&gt;&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt;Challenge:&lt;/font&gt;&lt;/strong&gt;&lt;font face=&quot;Verdana, Arial, Helvetica, sans-serif&quot; size=&quot;4&quot;&gt; 
+      Highlight an atom, and make it behave like &lt;a link_width=&quot;400&quot; link_left=&quot;10&quot; link_resizable=&quot;false&quot; link_menubar=&quot;false&quot; target=&quot;_blank&quot; link_toolbar=&quot;false&quot; link_height=&quot;415&quot; href=&quot;brownsExperiment.cml&quot; link_top=&quot;10&quot; link_statusbar=&quot;false&quot;&gt;one 
+      of Brown&apos;s tiny particles&lt;/a&gt; that he observed in his microscope. &lt;/font&gt;
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="4" end="5">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page4_itsisu$0.mml</resource><menubar>false</menubar><button>Add Ck</button><button>Delete Objects</button><button>Toggle Trajectory</button><button>Mark Object</button></component></content>
+
+<content start="5" end="6">
+</content>
+
+</paragraph>
+<paragraph start="6" end="7">
+<SpaceBelow>10.0</SpaceBelow>
+<Alignment>1</Alignment>
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="8">
+<Alignment>1</Alignment>
+<content start="7" end="8">
+</content>
+
+</paragraph>
+<paragraph start="8" end="9">
+<content start="8" end="9">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="9" end="10">
+</paragraph>
+</section>
+</document>

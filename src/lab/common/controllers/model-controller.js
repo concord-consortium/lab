@@ -18,20 +18,21 @@ define(function (require) {
         // it doesn't get passed directly to our model.reset handler
         resetCause,
 
-        // Random seed that is used during the whole lifetime of a given model.
-        modelRandomSeed = 0,
-
         // event dispatcher
         dispatch = d3.dispatch('modelLoaded', 'modelReset', 'modelSetupComplete');
 
     function tickStartHandler() {
       // Use seedrandom library (see vendor/seedrandom) that substitutes an explicitly seeded
-      // RC4-based algorithm for Math.random(). It ensures that simulations will look the same for
-      // different users even if physics engine uses random values. Note that we set seed each tick
-      // to be sure that it's always the same before performing simulation step. Otherwise, it's
-      // possible that simulations won't be repeatable if e.g. user uses tick history or triggers
-      // any code path that calls Math.random() between ticks.
-      Math.seedrandom(modelRandomSeed + model.get("time"));
+      // RC4-based algorithm for Math.random(). When interactive random seed is constant, it ensures
+      // that simulations will look the same for different users even if physics engine uses random
+      // values. Note that we set seed each tick to be sure that it's always the same before
+      // performing simulation step. Otherwise, it's possible that simulations won't be repeatable
+      // if e.g. user uses tick history or triggers any code path that calls Math.random()
+      // between ticks.
+      // Note that event if .randomSeed is based on entropy (so, it's almost random), this still
+      // ensures that e.g. when users steps back in tick history and clicks play, he will see
+      // the same results like for the first time.
+      Math.seedrandom(interactivesController.randomSeed + model.get("time"));
     }
 
     function tickHandler() {
@@ -45,9 +46,6 @@ define(function (require) {
     //   Model Setup
     // ------------------------------------------------------------
     function setupModel() {
-      // We increase model random seed value, as we expect that each time the model is reloaded
-      // the simulation progress is slightly different (of course if it depends on random values).
-      Math.seedrandom(modelRandomSeed++);
       model = new Model(modelOptions, {
         waitForSetup: true
       });

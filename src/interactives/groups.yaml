@@ -82,6 +82,10 @@
   :name: "ITSI: Heat Transfer"
   :category: Curriculum
 
+- :path: itsi/newtons-laws
+  :name: "ITSI: Newton's Laws"
+  :category: Curriculum
+
 - :path: itsi/reaction-kinetics
   :name: "ITSI: Reaction Kinetics"
   :category: Curriculum

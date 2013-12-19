@@ -1,17 +1,17 @@
 {
   "title": "Randomness Example",
   "publicationStatus": "public",
-  "subtitle": "Math.random() in Lab is not truly random - simulations are repeatable",
+  "randomSeed": "explicit seed!",
+  "subtitle": "To make simulations repeatable just set *randomSeed* interactive property.",
   "about": [
     "Click play and observe which atoms are being marked every 7ps. Note that each time you reload",
     "the whole page, the atom placement and marking sequence will be exactly the same.",
     "",
-    "The *model reload* will generate a new basic seed, so the simulation will be different than",
-    "the first run. However each time you reload the model e.g. 3 times, you will see exactly",
-    "the same simulation progress. The seed generated during model reload is sequential and",
-    "not truly random too.",
+    "You can open browser console where you will see marked atoms indices.",
     "",
-    "You can open browser console where you will see marked atoms indices."
+    "To restore basic behavior of Math.random() remove *randomSeed* property. However note that",
+    "even when it's not present, the single simulation will be repeatable if you use tick history to",
+    "restore previous state and click *play* button again."
   ],
   "models": [
     {

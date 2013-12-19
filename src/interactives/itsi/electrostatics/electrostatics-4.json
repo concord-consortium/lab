@@ -19,7 +19,6 @@
       },
       "onLoad": [
         "setAtomProperties(0, {draggable: false});",
-        "setShapeProperties(3, {lineColor: 'rgb(255,0,0)', lineWeight: 7});",
         "set('atomTraceColor', 'black');",
         "var wonText  = {text: 'You win!'},",
         "    lostText = {text: 'Target missed!'};",

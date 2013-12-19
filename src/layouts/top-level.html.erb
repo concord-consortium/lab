@@ -1,8 +1,17 @@
 <!DOCTYPE html>
 <html lang='en' xml:lang='en' xmlns='http://www.w3.org/1999/xhtml'>
   <head>
+<%
+extend ::Kramdown::Utils::Html
+title = ''
+h = @converter.root.children.find {|c| c.type == :header}
+if h
+  collector = lambda {|c| c.children.collect {|cc| cc.type == :text ? escape_html(cc.value, :text) : collector.call(cc)}.join('')}
+  title = collector.call(h)
+end
+%>
     <title>
-      Lab: License
+      <%= title %>
     </title>
     <meta content='text/xhtml; charset=utf-8' http-equiv='content-type'>
     <meta content='all' name='distribution'>

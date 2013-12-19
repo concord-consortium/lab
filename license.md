@@ -1,3 +1,5 @@
+## Lab: License
+
 The [Concord Consortium Lab project](https://github.com/concord-consortium/lab)
 is Copyright 2012 (c) by the Concord Consortium and is distributed under
 any of the following licenses:

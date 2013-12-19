@@ -10,7 +10,7 @@ MARKDOWN_COMPILER = bin/kramdown
 VOWS = find test/vows -type f -name '*.js' -o -name '*.coffee' ! -name '.*' | xargs ./node_modules/.bin/vows --isolate --dot-matrix
 MOCHA = find test/mocha -type f -name '*.js' -o -name '*.coffee' ! -name '.*' | xargs node_modules/.bin/mocha --reporter dot
 
-SASS_COMPILER = bin/sass -I src --require ./src/helpers/sass/lab_fontface.rb
+SASS_COMPILER = ./bin/sass -I src -I public -r ./src/helpers/sass/lab_fontface.rb
 R_OPTIMIZER = ./node_modules/.bin/r.js
 GENERATE_INTERACTIVE_INDEX = ruby src/helpers/process-interactives.rb
 
@@ -50,8 +50,8 @@ COFFEESCRIPT_FILES += $(shell find src/examples -name '*.coffee' -exec echo {} \
 COFFEESCRIPT_FILES += $(shell find src/experiments -name '*.coffee' -exec echo {} \; | sed s'/src\/\(.*\)\.coffee/public\/\1.js/' )
 vpath %.coffee src
 
-MARKDOWN_FILES := $(shell find src -name '*.md' -and -not -path "src/sass/*" -exec echo {} \; | grep -v vendor | sed s'/src\/\(.*\)\.md/public\/\1.html/' )
-vpath %.md src
+MARKDOWN_FILES := $(patsubst %.md, public/%.html, $(wildcard *.md)) public/examples.html
+DEV_MARKDOWN_FILES := $(patsubst %.md, public/%.html, $(wildcard developer-doc/*.md))
 
 LAB_JS_FILES = \
 	public/lab/lab.js \
@@ -84,6 +84,7 @@ everything:
 .PHONY: src
 src: \
 	$(MARKDOWN_FILES) \
+	$(DEV_MARKDOWN_FILES) \
 	$(LAB_JS_FILES) \
 	$(LAB_JS_FILES:.js=.min.js) \
 	$(HAML_FILES) \
@@ -289,6 +290,7 @@ public: \
 	public/resources \
 	public/examples \
 	public/doc \
+	public/developer-doc \
 	public/experiments \
 	public/imports \
 	public/jnlp
@@ -313,6 +315,9 @@ public/doc/interactives:
 
 public/doc/models:
 	mkdir -p public/doc/models
+
+public/developer-doc:
+	mkdir -p public/developer-doc
 
 .PHONY: public/experiments
 public/experiments:
@@ -694,13 +699,17 @@ public/%.css: src/%.css
 
 public/grapher.css: src/grapher.sass \
 	src/sass/lab/_colors.sass \
-	src/sass/lab/_grapher.sass
+	src/sass/lab/_bar_graph.sass
 	$(SASS_COMPILER) src/grapher.sass public/grapher.css
 
 public/%.css: %.scss
 	$(SASS_COMPILER) $< $@
 
-public/%.css: %.sass $(SASS_LAB_LIBRARY_FILES)
+public/lab-grapher.scss:
+	cp vendor/lab-grapher/css/lab-grapher.css public/lab-grapher.scss
+
+public/%.css: %.sass $(SASS_LAB_LIBRARY_FILES) \
+	public/lab-grapher.scss
 	@echo $($<)
 	$(SASS_COMPILER) $< $@
 
@@ -708,9 +717,24 @@ public/%.js: %.coffee
 	@rm -f $@
 	$(COFFEESCRIPT_COMPILER) --compile --print $< > $@
 
-public/%.html: %.md
+# replace relative references to .md files for the static build
+# look for pattern like ](*.md) replace with ](*.html)
+# the ':' is hack so it doesn't match absolute http:// urls
+%.md.static: %.md
 	@rm -f $@
-	$(MARKDOWN_COMPILER) $< --toc-levels 2..6 --template src/layouts/$*.html.erb > $@
+	sed s';\](\([^):]*\)\.md);\](\1.html);' $< > $@
+
+public/developer-doc/%.html: developer-doc/%.md.static
+	@rm -f $@
+	$(MARKDOWN_COMPILER) -i GFM $< --template src/layouts/developer-doc.html.erb > $@
+
+public/examples.html: src/examples.md.static
+	@rm -f $@
+	$(MARKDOWN_COMPILER) $< --toc-levels 2..6 --template src/layouts/top-level.html.erb > $@
+
+public/%.html: %.md.static
+	@rm -f $@
+	$(MARKDOWN_COMPILER) $< --toc-levels 2..6 --template src/layouts/top-level.html.erb > $@
 
 public/interactives/%.json: src/interactives/%.json
 	@cp $< $@
@@ -721,6 +745,9 @@ public/models/%.json: src/models/%.json
 .PHONY: public/interactives.json
 public/interactives.json: $(INTERACTIVE_FILES)
 	$(GENERATE_INTERACTIVE_INDEX)
+
+# delete the .md.static files and don't bother creating them if they don't need to be
+.INTERMEDIATE: %.md.static src/examples.md.static
 
 # ------------------------------------------------
 #

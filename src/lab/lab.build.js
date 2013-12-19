@@ -57,7 +57,7 @@
 
   // Additional modules.
   paths: {
-    // Plugin for loading plain text files.
+    'lab-grapher': '../../vendor/lab-grapher/dist/lab-grapher',
     'text': '../../vendor/text/text',
     'cs' :'../../vendor/require-cs/cs',
     'coffee-script': '../../vendor/coffee-script/extras/coffee-script',
