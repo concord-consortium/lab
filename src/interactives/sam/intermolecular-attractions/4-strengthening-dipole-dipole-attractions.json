@@ -114,19 +114,19 @@
       "options": [
         {
           "text": "Select a pair of molecules",
-          "loadModel": "instructions"
+          "action": "loadModel('instructions');"
         },
         {
           "text": "Low polarity",
-          "loadModel": "leastPolarPull"
+          "action": "loadModel('leastPolarPull');"
         },
         {
           "text": "Medium polarity",
-          "loadModel": "medPolarPull"
+          "action": "loadModel('medPolarPull');"
         },
         {
           "text": "High polarity",
-          "loadModel": "mostPolarPull"
+          "action": "loadModel('mostPolarPull');"
         }
       ]
     },

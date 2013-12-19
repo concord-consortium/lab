@@ -373,16 +373,16 @@
       "options": [
         {
           "text": "Water + Ethanol",
-          "loadModel": "particleMixing$0",
+          "action": "loadModel('particleMixing$0');",
           "selected": true
         },
         {
           "text": "Ethanol + Ethanol",
-          "loadModel": "particleMixingDoubleEthanol$0"
+          "action": "loadModel('particleMixingDoubleEthanol$0');"
         },
         {
           "text": "Water + Water",
-          "loadModel": "particleMixingDoubleWater$0"
+          "action": "loadModel('particleMixingDoubleWater$0');"
         }
       ]
     }

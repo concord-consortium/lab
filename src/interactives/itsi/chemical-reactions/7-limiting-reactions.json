@@ -69,11 +69,11 @@
       "options": [
         {
           "text": "perfect ratio",
-          "loadModel": "perfect"
+          "action": "loadModel('perfect');"
         },
         {
           "text": "limiting reactant",
-          "loadModel": "limited"
+          "action": "loadModel('limited');"
         }
       ],
       "disabled": false,

@@ -35,12 +35,12 @@
       "options": [
         {
           "text": "Solid 1",
-          "loadModel": "solid1",
+          "action": "loadModel('solid1');",
           "selected": true
         },
         {
           "text": "Solid 2",
-          "loadModel": "solid2"
+          "action": "loadModel('solid2');"
         }
       ]
     },

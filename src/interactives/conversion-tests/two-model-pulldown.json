@@ -28,12 +28,12 @@
       "options": [
         {
           "text": "Gas1",
-          "loadModel": "gas1",
+          "action": "loadModel('gas1');",
           "selected": true
         },
         {
           "text": "Gas2",
-          "loadModel": "gas2"
+          "action": "loadModel('gas2');"
         }
       ]
     }

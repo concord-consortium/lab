@@ -34,12 +34,12 @@
       "options": [
         {
           "text": "Liquid 1",
-          "loadModel": "liquid1",
+          "action": "loadModel('liquid1');",
           "selected": true
         },
         {
           "text": "Liquid 2",
-          "loadModel": "liquid2"
+          "action": "loadModel('liquid2');"
         }
       ]
     },

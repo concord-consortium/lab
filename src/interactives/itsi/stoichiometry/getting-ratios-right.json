@@ -144,23 +144,23 @@
         {
           "text": "1 hydrogen : 1 chlorine",
           "selected": true,
-          "loadModel": "oneToOne"
+          "action": "loadModel('oneToOne');"
         },
         {
           "text": "2 hydrogen : 1 chlorine",
-          "loadModel": "twoToOne"
+          "action": "loadModel('twoToOne');"
         },
         {
           "text": "2 hydrogen : 2 chlorine",
-          "loadModel": "twoToTwo"
+          "action": "loadModel('twoToTwo');"
         },
         {
           "text": "2 hydrogen : 3 chlorine",
-          "loadModel": "twoToThree"
+          "action": "loadModel('twoToThree');"
         },
         {
           "text": "4 hydrogen : 4 chlorine",
-          "loadModel": "fourToFour"
+          "action": "loadModel('fourToFour');"
         }
       ],
       "disabled": false,
