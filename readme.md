@@ -16,7 +16,7 @@ any of the following licenses:
 - [MIT](http://www.opensource.org/licenses/MIT), or
 - [Apache 2.0](http://www.opensource.org/licenses/Apache-2.0).
 
-The complete licensing details can be read [here](license.html).
+The complete licensing details can be read [here](license.md).
 
 If you have have received a **distribution archive** of the
 [Concord Consortium Lab project](https://github.com/concord-consortium/lab)
