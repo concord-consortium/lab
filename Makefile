@@ -50,7 +50,7 @@ COFFEESCRIPT_FILES += $(shell find src/examples -name '*.coffee' -exec echo {} \
 COFFEESCRIPT_FILES += $(shell find src/experiments -name '*.coffee' -exec echo {} \; | sed s'/src\/\(.*\)\.coffee/public\/\1.js/' )
 vpath %.coffee src
 
-MARKDOWN_FILES := $(patsubst %.md, public/%.html, $(wildcard *.md))
+MARKDOWN_FILES := $(patsubst %.md, public/%.html, $(wildcard *.md)) public/examples.html
 DEV_MARKDOWN_FILES := $(patsubst %.md, public/%.html, $(wildcard developer-doc/*.md))
 
 LAB_JS_FILES = \
@@ -728,6 +728,10 @@ public/developer-doc/%.html: developer-doc/%.md.static
 	@rm -f $@
 	$(MARKDOWN_COMPILER) -i GFM $< --template src/layouts/developer-doc.html.erb > $@
 
+public/examples.html: src/examples.md.static
+	@rm -f $@
+	$(MARKDOWN_COMPILER) $< --toc-levels 2..6 --template src/layouts/top-level.html.erb > $@
+
 public/%.html: %.md.static
 	@rm -f $@
 	$(MARKDOWN_COMPILER) $< --toc-levels 2..6 --template src/layouts/top-level.html.erb > $@
@@ -743,7 +747,7 @@ public/interactives.json: $(INTERACTIVE_FILES)
 	$(GENERATE_INTERACTIVE_INDEX)
 
 # delete the .md.static files and don't bother creating them if they don't need to be
-.INTERMEDIATE: %.md.static
+.INTERMEDIATE: %.md.static src/examples.md.static
 
 # ------------------------------------------------
 #
