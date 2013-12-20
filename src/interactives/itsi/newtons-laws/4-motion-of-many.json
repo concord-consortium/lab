@@ -76,7 +76,7 @@
         "  } else if (get('highlightDepressed')) {",
         "    idx = markedAtoms.indexOf(i);",
         "    if (idx !== -1 ) {",
-        "      markedAtoms = markedAtoms.splice(idx, 1);",
+        "      markedAtoms.splice(idx, 1);",
         "    } else {",
         "      markedAtoms.push(i);",
         "    }",
