@@ -446,8 +446,8 @@ define(function (require) {
             interactivesController.resetModel(options);
           },
 
-          reload: function reload(parametersToRetain) {
-            interactivesController.reloadModel(parametersToRetain);
+          reload: function reload(parametersToRetain, cause) {
+            interactivesController.reloadModel(parametersToRetain, cause);
           },
 
           stepForward: function stepForward() {

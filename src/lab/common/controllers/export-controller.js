@@ -221,6 +221,8 @@ define(function (require) {
       if (eventName === 'modelLoaded') {
         if (cause === 'reload') {
           logAction("reloaded the model", savedPerRunData);
+        } else if (cause === 'new-run') {
+          logAction("set up a new run", savedPerRunData);
         } else {
           logAction("loaded a model");
         }

@@ -613,8 +613,9 @@ define(function (require) {
       @param: currentModelID.
       @optionalParam modelObject
       @optionalParam parameters   parameter values to copy to the loaded model
+      @optionalParam cause cause of the load (can be load, reload or custom)
     */
-    function loadModel(id, modelConfig, parameters) {
+    function loadModel(id, modelConfig, parameters, cause) {
       var modelDefinition = getModelDefinition(id),
           interactiveViewOptions,
           interactiveModelOptions,
@@ -654,14 +655,14 @@ define(function (require) {
       // Load provided modelConfig (highest priority), model definition placed directly inside
       // interactive JSON or model defined by URL.
       if (modelConfig) {
-        finishWithLoadedModel(modelDefinition.url, modelConfig, parameterValues);
+        finishWithLoadedModel(modelDefinition.url, modelConfig, parameterValues, cause);
       } if (modelDefinition.model) {
-        finishWithLoadedModel(modelDefinition.url, modelDefinition.model, parameterValues);
+        finishWithLoadedModel(modelDefinition.url, modelDefinition.model, parameterValues, cause);
       } else if (modelDefinition.url) {
         $.get(labConfig.actualRoot + modelDefinition.url).done(function(modelConfig) {
           // Deal with the servers that return the json as text/plain
           modelConfig = typeof modelConfig === 'string' ? JSON.parse(modelConfig) : modelConfig;
-          finishWithLoadedModel(modelDefinition.url, modelConfig, parameterValues);
+          finishWithLoadedModel(modelDefinition.url, modelConfig, parameterValues, cause);
         }).fail(function() {
           modelConfig = {
             "type": "md2d",
@@ -700,7 +701,7 @@ define(function (require) {
               ]
             }
           };
-          finishWithLoadedModel(modelDefinition.url, modelConfig, parameterValues);
+          finishWithLoadedModel(modelDefinition.url, modelConfig, parameterValues, cause);
         });
       }
 
@@ -756,7 +757,7 @@ define(function (require) {
         return modelOptions;
       }
 
-      function finishWithLoadedModel(modelUrl, modelConfig, parameterValues) {
+      function finishWithLoadedModel(modelUrl, modelConfig, parameterValues, cause) {
         var modelOptions = processOptions(modelConfig, interactiveModelOptions, interactiveViewOptions);
 
         if (modelController) {
@@ -809,7 +810,7 @@ define(function (require) {
           experimentController.setOnLoadScript(onLoadScript);
         }
 
-        dispatch.modelLoaded();
+        dispatch.modelLoaded(cause || "initialLoad");
 
         // Call .ready *after* all previous operations. Note that it will trigger e.g. tick
         // history push of an initial state. It should include all modifications applied
@@ -1110,13 +1111,13 @@ define(function (require) {
        * @param  {arrat} parametersToRetain a list of parameters to save before the model reload
        *                                    and restore after reload
        */
-      reloadModel: function(parametersToRetain) {
+      reloadModel: function(parametersToRetain, cause) {
         model.stop();
         notifyWillResetModelAnd(function() {
           // Ensure that model reload is always the same if it's desired ("randomSeed" paramenter
           // is provided).
           generateRandomSeed();
-          controller.loadModel(currentModelID, null, parametersToRetain);
+          controller.loadModel(currentModelID, null, parametersToRetain, cause || "reload");
         });
       },
 
