@@ -26,13 +26,6 @@ third-parties and are distributed under either BSD, MIT, or Apache 2.0 licenses.
 
 ## Setup Development
 
-Lab uses a number of RubyGems and node modules to manage development. Lab's test framework
-uses [Vows](http://vowsjs.org) amd [Mocha](http://visionmedia.github.io/mocha/) which both depend
-on [nodejs](http://nodejs.org/) and [npm](http://npmjs.org/) the Node Package Manager.
-
-In addition JavaScript minification is done using [UglifyJS](https://github.com/mishoo/UglifyJS).
-JavaScript dependency management is handled by [RequireJS](http://requirejs.org/).
-
 ### Prerequisites:
 
 - [RVM, Ruby 2.0 and Bundler](developer-doc/setup-ruby.md)
@@ -40,21 +33,9 @@ JavaScript dependency management is handled by [RequireJS](http://requirejs.org/
 - [Java](developer-doc/setup-java.md)
 - [additional Linux notes](developer-doc/linux-notes.md)
 
-### Use git to create a local clone of the Lab repository.
-
-If you have commit access to the repository use this form:
-
-    git clone git@github.com:concord-consortium/lab.git
-
-Alternatively if you don't have commit access use this form:
-
-    git clone git://github.com/concord-consortium/lab.git
-
 ### Setup the local Lab repository for development
 
-Make sure you have already installed the prerequistes: [Ruby 2.0](http://www.ruby-lang.org/en/),
-the RubyGem [bundler](http://gembundler.com/), and [nodejs](http://nodejs.org/) (which now includes
-[npm](http://npmjs.org/) the Node Package Manager.
+Clone the git repository
 
 Open a shell and change to the `lab/` directory. The first time you `cd` into the `lab/` directory
 RVM will switch to using `ruby-2.0.0-p247` based on the `.ruby-version` file in the repository.
@@ -68,14 +49,15 @@ run to install it. Run this command if required.
 
 If you do end up having to install a new version of Ruby with RVM change out of and back into the lab directory after the RVM install of Ruby is complete:
 
-    cd ..
-    cd lab
+    cd ..; cd lab
 
 #### Initial configuration
 
-Copy the sample project configuration file to `config/config.yml` (you can examine it and edit if you want).
+Copy the sample project configuration file to `config/config.yml`
 
     cp config/config.sample.yml config/config.yml
+
+You can examine it and edit it if you want: [project configuration documentation](developer-doc/configuration.md)
 
 #### Create a git post-commit hook
 
@@ -87,6 +69,8 @@ After every commit `src/lab/lab.version.js` should be updated to include recent 
 Make the file `.git/hooks/post-commit` executable:
 
     chmod u+x .git/hooks/post-commit
+
+#### Build the project
 
 Now run a make task that will download and install all the dependencies and build the whole project
 for the first time.
