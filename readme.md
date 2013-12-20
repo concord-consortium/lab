@@ -61,14 +61,14 @@ You can examine it and edit it if you want: [project configuration documentation
 
 #### Create a git post-commit hook
 
-After every commit `src/lab/lab.version.js` should be updated to include recent version and build information for Lab's distrobution. To do this make a git `post-commit` hook by creating the file `.git/hooks/post-commit` with this content:
+After every commit `src/lab/lab.version.js` should be updated to include recent version and build information for Lab's distribution.
+This is done with a git post-commit hook. There is a pre built one in `script/post-commit` which you can copy:
 
-    #!/bin/sh
+    cp -vn script/post-commit .git/hooks/
+
+If you already have a post-commit file the above command will tell you. So instead add the following line to your existing `post-commit`:
+
     (cd ../.. && ./script/update-git-commit-and-branch.rb)
-
-Make the file `.git/hooks/post-commit` executable:
-
-    chmod u+x .git/hooks/post-commit
 
 #### Build the project
 
