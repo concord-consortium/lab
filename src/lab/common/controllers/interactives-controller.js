@@ -1103,19 +1103,26 @@ define(function (require) {
 
       loadModel: loadModel,
 
-      reloadModel: function() {
+      /**
+       * Reload the model. The interactives controller will emit a 'willResetModel'.
+       * The willResetModel observers can ask to wait for asynchronous confirmation before the model
+       * is actually reset; see the notifyWillResetModelAnd function.
+       * @param  {arrat} parametersToRetain a list of parameters to save before the model reload
+       *                                    and restore after reload
+       */
+      reloadModel: function(parametersToRetain) {
         model.stop();
         notifyWillResetModelAnd(function() {
           // Ensure that model reload is always the same if it's desired ("randomSeed" paramenter
           // is provided).
           generateRandomSeed();
-          controller.loadModel(currentModelID);
+          controller.loadModel(currentModelID, null, parametersToRetain);
         });
       },
 
       /**
         Reset the model to its initial state, restoring or retaining model parameters according to
-        these options. The interactives controller will emit a 'willResetModel'.  The willResetModel
+        these options. The interactives controller will emit a 'willResetModel'. The willResetModel
         observers can ask to wait for asynchronous confirmation before the model is actually reset;
         see the notifyWillResetModelAnd function.
 
