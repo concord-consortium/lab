@@ -64,7 +64,7 @@ vals = {
   bg: {
     w: 155,
     x: 20,
-    fill: "url(#grad1)"
+    fill: "url(#grad2)"
   }
 }
 
@@ -93,7 +93,7 @@ File.open(filename(vals), "w") {|f|
   f.write content(vals)
 }
 
-vals[:bg][:fill] = "url(#grad2)"
+vals[:bg][:fill] = "url(#grad1)"
 19.times do |i|
   vals[:grad_offset] += (11.3/19)
   vals[:right][:val] -= dv

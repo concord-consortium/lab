@@ -22,7 +22,7 @@
       </clipPath>
     </defs>
     <rect id="bg_field_outline" x="-243.28" y="0" width="664.47" height="100" clip-path="url(#field_outline)" fill="#000000"/>
-    <rect id="bg_gradient" x="-243.28" y="0" width="664.47" height="100" clip-path="url(#field)" fill="url(#grad1)"/>
+    <rect id="bg_gradient" x="-243.28" y="0" width="664.47" height="100" clip-path="url(#field)" fill="url(#grad2)"/>
     <ellipse id="atom_1" ry="5" rx="5" cy="50" cx="49" fill="#999999"/>
     <ellipse id="atom_2" ry="5" rx="5" cy="50" cx="126" fill="#999999"/>
   </g>
