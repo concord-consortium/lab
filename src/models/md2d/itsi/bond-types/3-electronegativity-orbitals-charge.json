@@ -56,6 +56,311 @@
         "imageY": 1.5
       },
       {
+        "imageUri": "images/neg3_23.svg",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 0,
+        "imageY": 0
+      },
+      {
+        "imageUri": "images/neg3_06.svg",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 0,
+        "imageY": 0
+      },
+      {
+        "imageUri": "images/3_06.svg",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 0,
+        "imageY": 0
+      },
+      {
+        "imageUri": "images/neg2_89.svg",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 0,
+        "imageY": 0
+      },
+      {
+        "imageUri": "images/2_89.svg",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 0,
+        "imageY": 0
+      },
+      {
+        "imageUri": "images/neg2_72.svg",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 0,
+        "imageY": 0
+      },
+      {
+        "imageUri": "images/2_72.svg",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 0,
+        "imageY": 0
+      },
+      {
+        "imageUri": "images/neg2_55.svg",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 0,
+        "imageY": 0
+      },
+      {
+        "imageUri": "images/2_55.svg",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 0,
+        "imageY": 0
+      },
+      {
+        "imageUri": "images/neg2_38.svg",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 0,
+        "imageY": 0
+      },
+      {
+        "imageUri": "images/2_38.svg",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 0,
+        "imageY": 0
+      },
+      {
+        "imageUri": "images/neg2_21.svg",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 0,
+        "imageY": 0
+      },
+      {
+        "imageUri": "images/2_21.svg",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 0,
+        "imageY": 0
+      },
+      {
+        "imageUri": "images/neg2_04.svg",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 0,
+        "imageY": 0
+      },
+      {
+        "imageUri": "images/2_04.svg",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 0,
+        "imageY": 0
+      },
+      {
+        "imageUri": "images/neg1_87.svg",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 0,
+        "imageY": 0
+      },
+      {
+        "imageUri": "images/1_87.svg",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 0,
+        "imageY": 0
+      },
+      {
+        "imageUri": "images/neg1_70.svg",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 0,
+        "imageY": 0
+      },
+      {
+        "imageUri": "images/1_70.svg",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 0,
+        "imageY": 0
+      },
+      {
+        "imageUri": "images/neg1_53.svg",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 0,
+        "imageY": 0
+      },
+      {
+        "imageUri": "images/1_53.svg",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 0,
+        "imageY": 0
+      },
+      {
+        "imageUri": "images/neg1_36.svg",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 0,
+        "imageY": 0
+      },
+      {
+        "imageUri": "images/1_36.svg",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 0,
+        "imageY": 0
+      },
+      {
+        "imageUri": "images/neg1_19.svg",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 0,
+        "imageY": 0
+      },
+      {
+        "imageUri": "images/1_19.svg",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 0,
+        "imageY": 0
+      },
+      {
+        "imageUri": "images/neg1_02.svg",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 0,
+        "imageY": 0
+      },
+      {
+        "imageUri": "images/1_02.svg",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 0,
+        "imageY": 0
+      },
+      {
+        "imageUri": "images/neg0_85.svg",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 0,
+        "imageY": 0
+      },
+      {
+        "imageUri": "images/0_85.svg",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 0,
+        "imageY": 0
+      },
+      {
+        "imageUri": "images/neg0_68.svg",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 0,
+        "imageY": 0
+      },
+      {
+        "imageUri": "images/0_68.svg",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 0,
+        "imageY": 0
+      },
+      {
+        "imageUri": "images/neg0_51.svg",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 0,
+        "imageY": 0
+      },
+      {
+        "imageUri": "images/0_51.svg",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 0,
+        "imageY": 0
+      },
+      {
+        "imageUri": "images/neg0_34.svg",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 0,
+        "imageY": 0
+      },
+      {
+        "imageUri": "images/0_34.svg",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 0,
+        "imageY": 0
+      },
+      {
+        "imageUri": "images/neg0_17.svg",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 0,
+        "imageY": 0
+      },
+      {
+        "imageUri": "images/0_17.svg",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 0,
+        "imageY": 0
+      },
+      {
+        "imageUri": "images/0_00.svg",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageX": 0,
+        "imageY": 0
+      },
+
+      {
         "imageUri": "key.svg",
         "imageHostIndex": 0,
         "imageHostType": "",
