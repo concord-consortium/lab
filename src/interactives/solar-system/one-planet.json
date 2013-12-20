@@ -59,7 +59,7 @@
       "id": "trace-button",
       "text": "Trace Planet",
       "initialValue": false,
-      "onClick": [
+      "action": [
         "if (value) {",
         "  traceBody(1);",
         "} else {",

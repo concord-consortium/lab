@@ -98,19 +98,13 @@ define(function (require) {
         font = layoutConfig.minFontSize;
       }
 
-      // Set font-size of #responsive-content element. So, if application author
-      // wants to avoid rescaling of font-size for some elements, they should not
-      // be included in #responsive-content DIV.
-      // TODO: #responsive-content ID is hardcoded, change it?
-      $("#responsive-content").css("font-size", font + "em");
+      // Set font-size of interactive container.
+      $interactiveContainer.css("font-size", font + "em");
       fontSizeChanged = true;
     }
 
     function createContainers() {
       var container, id, prop, i, ii;
-
-      // Cleanup interactive container.
-      $interactiveContainer.empty();
 
       $containerByID = {};
       containerSpecByID = {};
@@ -429,8 +423,7 @@ define(function (require) {
     // Public API.
     layout = {
       /**
-       * Setups interactive layout. Cleanups interactive container, creates new containers and places
-       * components inside them.
+       * Setups interactive layout. Creates new containers and places components inside them.
        *
        * This method should be called each time when at least one of the following objects is changed:
        *  - layout template,
@@ -457,6 +450,8 @@ define(function (require) {
 
         // After .initialize() call client code has to call .setupModel().
         modelController = null;
+
+        $interactiveContainer.addClass("lab-responsive-content");
       },
 
       /**

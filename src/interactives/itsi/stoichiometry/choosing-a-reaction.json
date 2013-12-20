@@ -111,15 +111,15 @@
         {
           "text": "reaction 1 (must be heated)",
           "selected": true,
-          "loadModel": "reaction1"
+          "action": "loadModel('reaction1');"
         },
         {
           "text": "reaction 2",
-          "loadModel": "reaction2"
+          "action": "loadModel('reaction2');"
         },
         {
           "text": "reaction 3",
-          "loadModel": "reaction3"
+          "action": "loadModel('reaction3');"
         }
       ],
       "disabled": false,

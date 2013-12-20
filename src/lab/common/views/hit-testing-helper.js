@@ -69,7 +69,29 @@ define(function (require) {
   // Dependencies.
   var featureTests = require('common/feature-tests'),
 
-      EVENT_TYPES = ['mousedown', 'mouseup', 'contextmenu'];
+      EVENT_TYPES = ['mousedown', 'mouseup', 'contextmenu'],
+
+  // Keep track of window listeners, so helper can cleanup previous listeners. Note that it
+  // means that only one event translation per window is allowed for now!
+      windowListeners = [];
+
+  function addWindowEventListener(type, listener, useCapture) {
+    window.addEventListener(type, listener, useCapture);
+
+    windowListeners.push({
+      type: type,
+      func: listener,
+      capture: useCapture
+    });
+  }
+
+  function cleanupWindowListeners() {
+    var l;
+    while (windowListeners.length > 0) {
+      l = windowListeners.pop();
+      window.removeEventListener(l.type, l.func, l.capture);
+    }
+  }
 
   function noop() {}
 
@@ -352,9 +374,9 @@ define(function (require) {
         }
       }
 
-      window.addEventListener('touchstart', touchStarted, true);
+      addWindowEventListener('touchstart', touchStarted, true);
       ['touchmove', 'touchend', 'touchcancel'].forEach(function (eventType) {
-        window.addEventListener(eventType, touchChanged, true);
+        addWindowEventListener(eventType, touchChanged, true);
       });
 
       // TODO implement cancel semantics for atom dragging?
@@ -363,11 +385,13 @@ define(function (require) {
     }
 
     function init() {
+      cleanupWindowListeners();
+
       layersToHitTest = [foregroundNode];
 
       EVENT_TYPES.forEach(function(eventType) {
         // Use a capturing handler on window so we can swallow the event
-        window.addEventListener(eventType, function(e) {
+        addWindowEventListener(eventType, function(e) {
           var target;
 
           if (e.target !== foregroundNode) {
@@ -406,7 +430,7 @@ define(function (require) {
 
       // Completely swallow "click" events on the foregroundNode. The browser can't issue these
       // correctly; we have to issue them ourselves after a mouseup.
-      window.addEventListener('click', function(e) {
+      addWindowEventListener('click', function(e) {
         if (e.target === foregroundNode) {
           e.stopPropagation();
           e.preventDefault();
@@ -435,7 +459,7 @@ define(function (require) {
           return clonedEvent;
         }
 
-        window.addEventListener('mousemove', function (e) {
+        addWindowEventListener('mousemove', function (e) {
           // Note that we have to check if 'e' is not a synthetic event that can be be dispatched by
           // this handler. Otherwise we will enter infinite loop. We redispatch event even if we are
           // not retargeting it to be able to set defaultPreventedFlag here, so the touch handling

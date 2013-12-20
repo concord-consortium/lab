@@ -5,7 +5,9 @@ define(function(require) {
       benchmark               = require('common/benchmark/benchmark');
 
   // Defines the default postMessage API used to communicate with parent window (i.e., an embedder)
-  return function(model, view, controller) {
+  return function(controller) {
+    var model;
+
     parentMessageController.removeAllListeners();
 
     function sendPropertyValue(propertyName) {
@@ -18,7 +20,8 @@ define(function(require) {
 
     // on message 'setFocus' call view.setFocus
     parentMessageController.addListener('setFocus', function(message) {
-      if (view && view.setFocus) {
+      var view = controller.modelController.modelContainer;
+      if (view.modelContainer && view.setFocus) {
         view.setFocus();
       }
     });
@@ -100,13 +103,7 @@ define(function(require) {
 
     // Remove an existing Listener for events in the model
     parentMessageController.addListener('removeListenerForDispatchEvent', function(message) {
-      var eventName    = message.eventName,
-          properties   = message.properties,
-          values       = {},
-          i            = 0,
-          propertyName = null;
-
-      model.on(eventName, null);
+      model.on(message.eventName, null);
     });
 
     // on message 'get' propertyName: return a 'propertyValue' message
@@ -143,6 +140,17 @@ define(function(require) {
       model.stop();
     });
 
-    parentMessageController.initialize();
+    return {
+      // REF FIXME: use scripting API object and avoid binding the model at all (as scripting
+      // API is always guaranteed to have a current, valid model object).
+      bindModel: function (newModel) {
+        model = newModel;
+        // Looks weird, but it's just consistent with current client code.
+        // REF TODO FIXME: perhaps we should notify parent here that the a model was loaded
+        // and client code should wait for that, not only for "hello" message that is being sent
+        // during parentMessageController initialization.
+        parentMessageController.initialize();
+      }
+    };
   };
 });

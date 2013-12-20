@@ -19,23 +19,9 @@ define(function () {
         view,
         $element;
 
-    function optionTextForLoadModelId(id) {
-      var i, option;
-      for (i = 0; i < component.options.length; i++) {
-        option = component.options[i];
-        if (option.loadModel === id) return option.text;
-      }
-      return false;
-    }
-
     function updatePulldown() {
-      var optionText, modelId;
-      modelId = interactivesController.getLoadedModelId();
-      optionText = optionTextForLoadModelId(modelId);
       if (component.property !== undefined) {
         view.update(model.get(component.property));
-      } else if (optionText) {
-        view.update(optionText);
       }
     }
 
@@ -67,11 +53,8 @@ define(function () {
         onChange: function(option) {
           if (option.action) {
             scriptingAPI.makeFunctionInScriptContext(option.action)();
-          } else if (option.loadModel) {
-            model.stop();
-            interactivesController.loadModel(option.loadModel);
           } else if (option.value !== undefined) {
-            model.properties[component.property] = option.value;
+            scriptingAPI.api.set(component.property, option.value);
           }
         }
       });

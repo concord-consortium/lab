@@ -127,10 +127,10 @@ define(function() {
 
           this.$progressbarContainer = $('<div/>')
             .attr('id', 'sensor-progressbar-container')
-            .css('bottom', $('body').height() / 2 + 75 + $('#responsive-content').offset().top)
+            .css('bottom', $('body').height() / 2 + 75 + $('.lab-responsive-content').offset().top)
             .append('<div class="label">Loading sensor...</div>')
             .append($progressbar)
-            .appendTo('#responsive-content');
+            .appendTo('.lab-responsive-content');
 
           $progressbar.progressbar({ value: false });
         }

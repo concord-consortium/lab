@@ -8,7 +8,7 @@ define(function (require) {
   var global = (function() { return this; }());
 
   function ModelController(modelUrl, modelOptions, interactivesController,
-                                  Model, ModelContainer, ScriptingAPI, Benchmarks) {
+                           Model, ModelContainer, ScriptingAPI, Benchmarks) {
     var controller,
         model,
         benchmarks,
@@ -62,40 +62,32 @@ define(function (require) {
       dispatch.modelReset(resetCause);
     }
 
-    // ------------------------------------------------------------
-    //
-    // Create Model Player
-    //
-    // ------------------------------------------------------------
-    function setupModelPlayer() {
-
-      // ------------------------------------------------------------
-      //
-      // Create container view for model
-      //
-      // ------------------------------------------------------------
-      modelContainer = new ModelContainer(model, controller.modelUrl);
-    }
-
     /**
       Note: newModelConfig, newinteractiveViewConfig are optional. Calling this without
       arguments will simply reload the current model.
     */
+    // REF TODO rename to load
     function reload(newModelUrl, newModelOptions, suppressEvents) {
       // Since we won't call model.reset() (instead, we will discard the model) we need to make sure
       // that the model knows to dispatch a willReset event.
-      if (model.willReset) {
+      if (model && model.willReset) {
         model.willReset();
       }
 
       modelUrl = newModelUrl || modelUrl;
       modelOptions = newModelOptions || modelOptions;
       setupModel();
-      modelContainer.bindModel(model, modelUrl);
+
+      if (modelContainer) {
+        modelContainer.bindModel(model, modelUrl);
+      } else {
+        modelContainer = new ModelContainer(model, controller.modelUrl);
+      }
 
       if (!suppressEvents) {
         dispatch.modelLoaded(ModelController.LOAD_CAUSE.RELOAD);
       }
+
     }
 
     // ------------------------------------------------------------
@@ -182,21 +174,7 @@ define(function (require) {
 
       enableKeyboardHandlers: function () {
         return model.get("enableKeyboardHandlers");
-      },
-
-      /**
-        Call this method once all post-load setup of the model object has been completed. It will
-        cause the model to execute any post-load setup and issue its 'ready' event, if any.
-
-        In general, this method must be called in order to put the model in a runnable state.
-      */
-      modelSetupComplete: function() {
-        if (model.ready) {
-          model.ready();
-        }
-        dispatch.modelSetupComplete();
       }
-
     };
 
     // ------------------------------------------------------------
@@ -205,23 +183,25 @@ define(function (require) {
     //
     // ------------------------------------------------------------
 
-    if (labConfig.environment === 'production') {
-      try {
+    // REF TODO ugly
+    if (modelOptions != null) {
+      if (labConfig.environment === 'production') {
+        try {
+          setupModel();
+        } catch(e) {
+          alert(e);
+          throw new Error(e);
+        }
+      } else {
         setupModel();
-      } catch(e) {
-        alert(e);
-        throw new Error(e);
+        // publish model so it can be inspected at console
+        global.getModel = function() {
+          return model;
+        };
       }
-    } else {
-      setupModel();
-      // publish model so it can be inspected at console
-      global.getModel = function() {
-        return model;
-      };
     }
 
     benchmarks = new Benchmarks(controller);
-    setupModelPlayer();
     return controller;
   }
 

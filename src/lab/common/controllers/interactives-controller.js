@@ -99,25 +99,19 @@ define(function (require) {
 
     var interactive = {},
         controller = {},
+        initialInteractiveConfig,
         experimentController,
         experimentDefinition,
         modelController,
         model,
-        modelId,
+        currentModelID,
         $interactiveContainer,
         helpSystem,
         modelDefinitions = [],
         modelHash = {},
         componentModelLoadedCallbacks = [],
-        onLoadScripts = [],
-        resizeCallbacks = [],
-        modelLoadedCallbacks = [],
-        modelResetCallbacks = [],
         willResetModelCallbacks = [],
         ignoreModelResetEvent = false,
-        isModelLoaded = false,
-        interactiveRenderedCallbacks = [],
-        isInteractiveRendered = false,
 
         // Hash of instantiated components.
         // Key   - component ID.
@@ -149,9 +143,7 @@ define(function (require) {
         getNextTabIndex,
         randSeed,
 
-        // This is not the complete list of events, as we have custom hacks to maintain lists of
-        // event listeners.
-        dispatch = new DispatchSupport('layoutUpdated');
+        dispatch = new DispatchSupport("modelLoaded", "interactiveRendered", "modelReset", "resize");
 
     // simple tabindex support, also exposed via api.getNextTabIndex()
     getNextTabIndex = function () {
@@ -176,11 +168,10 @@ define(function (require) {
     }
 
     function getModelDefinition(id) {
-      modelId = id;
-      if (modelHash[modelId]) {
-        return modelHash[modelId];
+      if (modelHash[id]) {
+        return modelHash[id];
       }
-      throw new Error("No model found with id "+modelId);
+      throw new Error("No model found with id " + id);
     }
 
     function layoutInteractive() {
@@ -191,7 +182,6 @@ define(function (require) {
         return;
       }
       semanticLayout.layoutInteractive();
-      dispatch.layoutUpdated();
     }
 
     // ------------------------------------------------------------
@@ -260,7 +250,7 @@ define(function (require) {
       // Banner hash containing components, layout containers and layout deinition
       // (components location). Keep it in a separate structure, because we do not
       // expect these objects to be serialized!
-      banner = setupBanner(controller, interactive, model, creditsDialog, aboutDialog, shareDialog);
+      banner = setupBanner(controller, interactive, creditsDialog, aboutDialog, shareDialog);
       // Register callbacks of banner components.
       components = banner.components;
       for (comp in components) {
@@ -291,8 +281,8 @@ define(function (require) {
       // We are rendering in embeddable mode if only element on page
       // so resize when window resizes.
       if (onlyElementOnPage()) {
-        $(window).unbind('resize');
-        $(window).on('resize', function() {
+        $(window).off("resize.lab-resize-handler");
+        $(window).on("resize.lab-resize-handler", function() {
           controller.resize();
         });
       }
@@ -304,11 +294,10 @@ define(function (require) {
         controller.resize();
         setTimeout(controller.resize, 50);
       };
-      document.addEventListener("fullscreenchange", resizeAfterFullscreen, false);
-
-      document.addEventListener("mozfullscreenchange", resizeAfterFullscreen, false);
-
-      document.addEventListener("webkitfullscreenchange", resizeAfterFullscreen, false);
+      $(document).off(".lab-fullscreen-change");
+      $(document).on("fullscreenchange.lab-fullscreen-change", resizeAfterFullscreen)
+                 .on("mozfullscreenchange.lab-fullscreen-change", resizeAfterFullscreen)
+                 .on("webkitfullscreenchange.lab-fullscreen-change", resizeAfterFullscreen);
     }
 
     function createComponent(component) {
@@ -350,18 +339,6 @@ define(function (require) {
         return str;
       }
       return str.join('\n');
-    }
-
-
-    /**
-      Call this after the Interactive renders to process any callbacks.
-    */
-    function interactiveRendered() {
-      var i;
-      for(i = 0; i < interactiveRenderedCallbacks.length; i++) {
-        interactiveRenderedCallbacks[i]();
-      }
-      isInteractiveRendered = true;
     }
 
     /**
@@ -458,32 +435,10 @@ define(function (require) {
 
       TODO: make more robust
       This function makes a simplifying assumption that the Interactive is the
-      only content on the page if the parent of the parent is the <body> element
+      only content on the page if the parent is the <body> element
     */
     function onlyElementOnPage() {
-      return $interactiveContainer.parent().parent().prop("nodeName") === "BODY";
-    }
-
-    function createOrUpdateScriptingAPI() {
-      if (scriptingAPI) {
-        // If Scripting API already exists, just bind the new model.
-        scriptingAPI.bindModel(model);
-        // FIXME: this doesn't seem like a necessary step. However, without it md2d-scripting-api
-        // tests fail, but only when all tests are run (e.g. make test-src)! When you run just this
-        // single test everything works (e.g. mocha test/md2d/md2d-scripting-api). It looks like
-        // window.script variable references some old API instance and seems to be related to the
-        // test environment setup. Temporarily put this call here for safety.
-        scriptingAPI.exposeScriptingAPI();
-        return;
-      }
-      // Only create scripting API after model is loaded.
-      scriptingAPI = new ScriptingAPI(controller, model);
-      // Extend universal Interactive scriptingAPI with optional model-specific scripting API
-      if (modelController.ScriptingAPI) {
-        scriptingAPI.extend(modelController.ScriptingAPI);
-      }
-      // Expose API to global namespace (prototyping / testing using the browser console).
-      scriptingAPI.exposeScriptingAPI();
+      return $interactiveContainer.parent().prop("nodeName") === "BODY";
     }
 
     /**
@@ -497,24 +452,41 @@ define(function (require) {
         hash representing the interactive specification or string representing path or full url
     */
     function loadInteractive(newInteractive) {
-      isModelLoaded = false;
-      isInteractiveRendered = false;
+      // Cleanup container!
+      $interactiveContainer.empty();
+
+      creditsDialog = new CreditsDialog(viewSelector);
+      aboutDialog = new AboutDialog(viewSelector);
+      shareDialog = new ShareDialog(viewSelector);
+
       function nextStep() {
+        // Save initial interactive config for reload method.
+        initialInteractiveConfig = $.extend(true, {}, controller.interactive);
         // Validate interactive.
         controller.interactive = validateInteractive(controller.interactive);
         interactive = controller.interactive;
-
-        // Ensure that interactive initialization is always the same if it's desired ("randomSeed"
-        // paramenter is provided).
+        // Ensure that interactive initialization is always the same if it's desired
+        // ("randomSeed" paramenter is provided).
         generateRandomSeed();
-
         // Set up the list of possible modelDefinitions.
         modelDefinitions = interactive.models;
         for (var i = 0, len = modelDefinitions.length; i < len; i++) {
           modelHash[modelDefinitions[i].id] = modelDefinitions[i];
         }
-        loadModelFirstBeforeCompletingInteractive();
+        // Try to load the first model (in order) and initialize interactive.
+        var firstModel = modelDefinitions[0];
+        if (firstModel && firstModel.url) {
+          // Model has to be downloaded, it's async operation so start with it.
+          loadModel(firstModel.id);
+          initializeInteractive();
+        } else if (firstModel && firstModel.model) {
+          // Model is provided inside Interactive JSON, so setup interactive first and then
+          // load a model.
+          initializeInteractive();
+          loadModel(firstModel.id, firstModel.model);
+        }
       }
+
       if (typeof newInteractive === "string") {
         $.get(newInteractive).done(function(results) {
           if (typeof results === 'string') results = JSON.parse(results);
@@ -533,56 +505,112 @@ define(function (require) {
       }
     }
 
-    function loadModelFirstBeforeCompletingInteractive() {
-      // There is a performance issue, it makes sense to start the ajax request
-      // for the model definition as soon as the Interactive Controller can.
-      //
-      // Load first model in modelDefinitions array
-      if (modelDefinitions && modelDefinitions.length > 0) {
-        loadModel(modelDefinitions[0].id);
-      } else {
-        // Setup proxy modelController object with a 0x0 px view for semantic layout system
-        modelController = {
-          getViewContainer: function() {
-            var $el = $("<div>")
-              .attr({
-                "id": "model-container",
-                "class": "container",
-                "tabindex": getNextTabIndex
-              })
-              // Set initial dimensions.
-              .css({
-                "width": "0px",
-                "height": "0px"
-              });
-            return $el;
-          },
-          getHeightForWidth: function() { return 0; },
-          resize: function() {},
-          model: {
-            on: function() {},
-            isStopped: function() {},
-            set: function() {},
-            get: function() {},
-            addObserver: function() {},
-            properties: {}
-          },
-          modelSetupComplete: function() {},
-          initializeView: function() {}
-        };
-        model = modelController.model;
+    function initializeInteractive() {
+      var def = controller.interactive;
 
-        // setup fake model definition
-        controller.currentModel = {};
-        createOrUpdateScriptingAPI();
-        finishLoadingInteractive();
+      var modelDef = def.models[0];
+      modelController = createModelController(modelDef.type, modelDef.modelUrl, null);
+      // also be sure to get notified when the underlying model changes
+      // (this catches reloads)
+      modelController.on('modelReset', modelResetHandler);
+
+      // Create Scripting API
+      scriptingAPI = new ScriptingAPI(controller, null);
+      // Extend universal Interactive scriptingAPI with optional model-specific scripting API
+      if (modelController.ScriptingAPI) {
+        scriptingAPI.extend(modelController.ScriptingAPI);
       }
+      // Expose API to global namespace (prototyping / testing using the browser console).
+      scriptingAPI.exposeScriptingAPI();
+
+      // Setup exporter, if any...
+      if (interactive.exports) {
+        // Regardless of whether or not we are able to export data to an enclosing container,
+        // setup export controller so you can debug exports by typing script.exportData() in the
+        // console.
+        exportController = new ExportController(interactive.exports, controller);
+
+        // If there is an enclosing container we can export data to (e.g., we're iframed into
+        // DataGames) then add an "Analyze Data" button the bottom position of the interactive
+        if (ExportController.canExportData() && !interactive.hideExportDataControl) {
+          createComponent({
+            "type": "button",
+            "text": "Analyze Data",
+            "id": "-lab-analyze-data",
+            "action": "exportData();"
+          });
+        }
+      }
+
+      // Setup experimentController, if defined.
+      if (interactive.experiment) {
+        experimentController = new ExperimentController(interactive.experiment, controller);
+      }
+
+      // Setup help system if help tips are defined.
+      if (interactive.helpTips.length > 0) {
+        helpSystem = new HelpSystem(interactive.helpTips, $interactiveContainer);
+        controller.on("interactiveRendered.helpSystem", function () {
+          function hashCode(string) {
+            var hash = 0, len = string.length, i, c;
+            if (len === 0) return hash;
+            for (i = 0; i < len; i++) {
+              c = string.charCodeAt(i);
+              hash = ((hash<<5) - hash) + c;
+              hash = hash & hash;
+            }
+            return hash;
+          }
+          var hash = hashCode(JSON.stringify(interactive));
+          // When displayOnLoad is set to true, the help mode will be automatically shown,
+          // but only when user opens interactive for the first time.
+          if (interactive.helpOnLoad && !cookies.hasItem("lab-help-" + hash)) {
+            helpSystem.start();
+            cookies.setItem("lab-help-" + hash, true);
+          }
+        });
+      }
+
+      // Replace native tooltips with custom, styled and responsive tooltips.
+      tooltip($interactiveContainer);
+
+      // Create interactive components
+      var componentJsons = def.components || [];
+      // Clear component instances.
+      componentList = [];
+      componentByID = {};
+      // And their onLoad callbacks (TODO REFACTOR ME)
+      componentModelLoadedCallbacks = [];
+
+      for (var i = 0, len = componentJsons.length; i < len; i++) {
+        createComponent(componentJsons[i]);
+      }
+
+      // When all components are created, we can initialize semantic layout.
+      setupLayout();
+
+      // setup messaging with embedding parent window
+      parentMessageAPI = new ParentMessageAPI(controller);
+    }
+
+    function createModelController(type, modelUrl, modelOptions) {
+      // set default model type to "md2d"
+      var modelType = type || "md2d";
+      var modelController;
+
+      if (ModelControllerFor[modelType] === null) {
+        throw new Error("Couldn't understand modelType '" + modelType + "'!");
+      }
+
+      modelController = new ModelControllerFor[modelType](modelUrl, modelOptions, controller);
+
+      return modelController;
     }
 
     /**
       Load the model from the model definitions hash.
 
-      @param: modelId.
+      @param: currentModelID.
       @optionalParam modelObject
       @optionalParam parameters   parameter values to copy to the loaded model
     */
@@ -607,8 +635,7 @@ define(function (require) {
         }
       }
 
-      modelId = id;
-      isModelLoaded = false;
+      currentModelID = id;
       controller.currentModel = modelDefinition;
 
       if (modelDefinition.viewOptions) {
@@ -624,58 +651,57 @@ define(function (require) {
         interactiveModelOptions = $.extend(true, {}, modelDefinition.modelOptions);
       }
 
+      // Load provided modelConfig (highest priority), model definition placed directly inside
+      // interactive JSON or model defined by URL.
       if (modelConfig) {
         finishWithLoadedModel(modelDefinition.url, modelConfig, parameterValues);
-      } else {
-        if (modelDefinition.url) {
-          $.get(labConfig.actualRoot + modelDefinition.url).done(function(modelConfig) {
-            // Deal with the servers that return the json as text/plain
-            modelConfig = typeof modelConfig === 'string' ? JSON.parse(modelConfig) : modelConfig;
-            finishWithLoadedModel(modelDefinition.url, modelConfig, parameterValues);
-          }).fail(function() {
-            modelConfig = {
-              "type": "md2d",
-              "width": 2.5,
-              "height": 1.5,
-              "viewOptions": {
-                "backgroundColor": "rgba(245,200,200,255)",
-                "showClock": false,
-                "textBoxes": [
-                  {
-                    "text": "Model could not be loaded:",
-                    "x": 0.0,
-                    "y": 1.0,
-                    "width": 2.5,
-                    "height": 0.25,
-                    "fontScale": 1.4,
-                    "layer": 1,
-                    "frame": "rectangle",
-                    "textAlign": "center",
-                    "strokeOpacity": 0,
-                    "backgroundColor": "rgb(232,231,231)"
-                  },
-                  {
-                    "text": modelDefinition.url,
-                    "x": 0.0,
-                    "y": 0.8,
-                    "width": 2.5,
-                    "height": 0.25,
-                    "fontScale": 0.9,
-                    "layer": 1,
-                    "frame": "rectangle",
-                    "textAlign": "center",
-                    "strokeOpacity": 0,
-                    "backgroundColor": "rgb(232,231,231)"
-                  }
-                ]
-              }
-            };
-            finishWithLoadedModel(modelDefinition.url, modelConfig, parameterValues);
-          });
-        } else {
-          modelConfig = modelDefinition.model;
-          finishWithLoadedModel("", modelConfig, parameterValues);
-        }
+      } if (modelDefinition.model) {
+        finishWithLoadedModel(modelDefinition.url, modelDefinition.model, parameterValues);
+      } else if (modelDefinition.url) {
+        $.get(labConfig.actualRoot + modelDefinition.url).done(function(modelConfig) {
+          // Deal with the servers that return the json as text/plain
+          modelConfig = typeof modelConfig === 'string' ? JSON.parse(modelConfig) : modelConfig;
+          finishWithLoadedModel(modelDefinition.url, modelConfig, parameterValues);
+        }).fail(function() {
+          modelConfig = {
+            "type": "md2d",
+            "width": 2.5,
+            "height": 1.5,
+            "viewOptions": {
+              "backgroundColor": "rgba(245,200,200,255)",
+              "showClock": false,
+              "textBoxes": [
+                {
+                  "text": "Model could not be loaded:",
+                  "x": 0.0,
+                  "y": 1.0,
+                  "width": 2.5,
+                  "height": 0.25,
+                  "fontScale": 1.4,
+                  "layer": 1,
+                  "frame": "rectangle",
+                  "textAlign": "center",
+                  "strokeOpacity": 0,
+                  "backgroundColor": "rgb(232,231,231)"
+                },
+                {
+                  "text": modelDefinition.url,
+                  "x": 0.0,
+                  "y": 0.8,
+                  "width": 2.5,
+                  "height": 0.25,
+                  "fontScale": 0.9,
+                  "layer": 1,
+                  "frame": "rectangle",
+                  "textAlign": "center",
+                  "strokeOpacity": 0,
+                  "backgroundColor": "rgb(232,231,231)"
+                }
+              ]
+            }
+          };
+          finishWithLoadedModel(modelDefinition.url, modelConfig, parameterValues);
+        });
       }
 
       function processOptions(modelConfig, interactiveModelConfig, interactiveViewConfig) {
@@ -736,160 +762,68 @@ define(function (require) {
         if (modelController) {
           modelController.reload(modelUrl, modelOptions, true);
         } else {
-          modelController = createModelController(modelConfig.type, modelUrl, modelOptions);
-          // also be sure to get notified when the underlying model changes
-          // (this catches reloads)
-          modelController.on('modelLoaded', modelLoadedHandler);
-          modelController.on('modelReset', modelResetHandler);
+          throw new Error("REF something went wrong");
         }
+
+        model = modelController.model;
 
         setupModelPlayerKeyboardHandler();
 
+        // Update model references in various objects.
+        scriptingAPI.bindModel(model);
+        // FIXME: this doesn't seem like a necessary step. However, without it md2d-scripting-api
+        // tests fail, but only when all tests are run (e.g. make test-src)! When you run just this
+        // single test everything works (e.g. mocha test/md2d/md2d-scripting-api). It looks like
+        // window.script variable references some old API instance and seems to be related to the
+        // test environment setup. Temporarily put this call here for safety.
+        scriptingAPI.exposeScriptingAPI();
+        parentMessageAPI.bindModel(model);
 
-        finishLoadingInteractive(parameterValues);
-      }
+        initializeModelOutputsAndParameters();
 
-      function createModelController(type, modelUrl, modelOptions) {
-        // set default model type to "md2d"
-        var modelType = type || "md2d";
-        var modelController;
-
-        if (ModelControllerFor[modelType] === null) {
-          throw new Error("Couldn't understand modelType '" + modelType + "'!");
-        }
-
-        modelController = new ModelControllerFor[modelType](modelUrl, modelOptions, controller);
-
-        return modelController;
-      }
-    }
-
-    function finishLoadingInteractive(parameterValues) {
-      var componentJsons,
-          i, len;
-
-      componentModelLoadedCallbacks = [];
-
-      // Prepare interactive components.
-      componentJsons = interactive.components || [];
-
-      // Clear component instances.
-      componentList = [];
-      componentByID = {};
-
-      // Setup model and notify observers that model was loaded.
-      // modelLoadedHandler(ModelController.LOAD_CAUSE.INITIAL_LOAD);
-
-      model = modelController.model;
-
-      createOrUpdateScriptingAPI();
-      initializeModelOutputsAndParameters();
-
-      // update the parameterValues if values have been provided, e.g. if some parameter values
-      // were retained when loading a model using a radio controller
-      if (parameterValues) {
-        for (i = 0; i < parameterValues.length; i++) {
-          model.set(parameterValues[i].name, parameterValues[i].value);
-        }
-      }
-
-      onLoadScripts = [];
-      if (controller.currentModel.onLoad) {
-        onLoadScripts.push( scriptingAPI.makeFunctionInScriptContext( getStringFromArray(controller.currentModel.onLoad) ) );
-      }
-
-      for (i = 0, len = componentJsons.length; i < len; i++) {
-        createComponent(componentJsons[i]);
-      }
-
-      // Setup exporter, if any...
-      if (interactive.exports) {
-        // Regardless of whether or not we are able to export data to an enclosing container,
-        // setup export controller so you can debug exports by typing script.exportData() in the
-        // console.
-        exportController = new ExportController(interactive.exports, controller, model);
-        componentModelLoadedCallbacks.push(exportController.modelLoadedCallback);
-
-        // If there is an enclosing container we can export data to (e.g., we're iframed into
-        // DataGames) then add an "Analyze Data" button the bottom position of the interactive
-        if (ExportController.canExportData() && !interactive.hideExportDataControl) {
-          createComponent({
-            "type": "button",
-            "text": "Analyze Data",
-            "id": "-lab-analyze-data",
-            "action": "exportData();"
-          });
-        }
-      }
-
-      // Setup help system if help tips are defined.
-      if (interactive.helpTips.length > 0) {
-        helpSystem = new HelpSystem(interactive.helpTips, $interactiveContainer);
-        controller.on("interactiveRendered", function () {
-          function hashCode(string) {
-            var hash = 0, len = string.length, i, c;
-            if (len === 0) return hash;
-            for (i = 0; i < len; i++) {
-              c = string.charCodeAt(i);
-              hash = ((hash<<5) - hash) + c;
-              hash = hash & hash;
-            }
-            return hash;
+        // update the parameterValues if values have been provided, e.g. if some parameter values
+        // were retained when loading a model using a radio controller
+        if (parameterValues) {
+          for (i = 0; i < parameterValues.length; i++) {
+            model.set(parameterValues[i].name, parameterValues[i].value);
           }
-          var hash = hashCode(JSON.stringify(interactive));
-          // When displayOnLoad is set to true, the help mode will be automatically shown,
-          // but only when user opens interactive for the first time.
-          if (interactive.helpOnLoad && !cookies.hasItem("lab-help-" + hash)) {
-            helpSystem.start();
-            cookies.setItem("lab-help-" + hash, true);
-          }
-        });
+        }
+
+        // We call component loaded callbacks before onLoad scripts because some onLoad scripts
+        // may require that components are already initialized. Unfortunately some components
+        // fully initialize themselves only when model is provided (the issue is visible when
+        // experiment controller is being used).
+        // TODO FIXME: components should be fully functional even before model is loaded for
+        // the first time.
+        for(i = 0; i < componentModelLoadedCallbacks.length; i++) {
+          componentModelLoadedCallbacks[i](model, scriptingAPI);
+        }
+
+        var onLoadScript = null;
+        if (controller.currentModel.onLoad) {
+          onLoadScript = scriptingAPI.makeFunctionInScriptContext(getStringFromArray(controller.currentModel.onLoad));
+          onLoadScript();
+        }
+
+        if (experimentController) {
+          experimentController.setOnLoadScript(onLoadScript);
+        }
+
+        dispatch.modelLoaded();
+
+        // Call .ready *after* all previous operations. Note that it will trigger e.g. tick
+        // history push of an initial state. It should include all modifications applied
+        // by on load scripts and callbacks.
+        if (model.ready) model.ready();
+
+        // This will attach model container to DOM.
+        semanticLayout.setupModel(modelController);
+        layoutInteractive();
+
+        modelController.initializeView();
+
+        dispatch.interactiveRendered();
       }
-
-      // When all components are created, we can initialize semantic layout.
-      setupLayout();
-
-      // This will attach model container to DOM.
-      semanticLayout.setupModel(modelController);
-
-      // Call component callbacks *when* the layout is created.
-      // Some callbacks require that their views are already attached to the DOM, e.g. (bar graph uses
-      //getBBox() which in Firefox works only when element is visible and rendered).
-      for(i = 0; i < componentModelLoadedCallbacks.length; i++) {
-        componentModelLoadedCallbacks[i](model, scriptingAPI);
-      }
-
-      // setup messaging with embedding parent window
-      parentMessageAPI = new ParentMessageAPI(model, modelController.modelContainer, controller);
-
-      for(i = 0; i < onLoadScripts.length; i++) {
-        onLoadScripts[i]();
-      }
-
-      // Setup experimentController, if defined...
-      if (interactive.experiment) {
-        experimentController = new ExperimentController(interactive.experiment, controller, onLoadScripts);
-        modelLoadedCallbacks.push(experimentController.modelLoadedCallback);
-      }
-
-      modelController.modelSetupComplete();
-
-      for(i = 0; i < modelLoadedCallbacks.length; i++) {
-        modelLoadedCallbacks[i](model);
-      }
-
-      isModelLoaded = true;
-
-      // Replace native tooltips with custom, styled and responsive tooltips.
-      tooltip($interactiveContainer);
-
-      layoutInteractive();
-
-      modelController.initializeView();
-
-      // notify observers that interactive is rendered.
-      interactiveRendered();
-
     }
 
     function initializeModelOutputsAndParameters() {
@@ -898,46 +832,6 @@ define(function (require) {
       // Setup filtered outputs after basic outputs and parameters, as filtered output require its input
       // to exist during its definition.
       setupCustomOutputs("filtered", controller.currentModel.filteredOutputs, interactive.filteredOutputs);
-    }
-
-    /**
-      Call this after the model loads, to process any queued resize and update events
-      that depend on the model's properties, then draw the screen.
-    */
-    function modelLoadedHandler(cause) {
-      var i;
-
-      model = modelController.model;
-      createOrUpdateScriptingAPI();
-
-      initializeModelOutputsAndParameters();
-
-      modelController.modelSetupComplete();
-      modelController.initializeView();
-
-      onLoadScripts = [];
-      if (controller.currentModel.onLoad) {
-        onLoadScripts.push( scriptingAPI.makeFunctionInScriptContext( getStringFromArray(controller.currentModel.onLoad) ) );
-      }
-
-      // Call component callbacks *when* the layout is created.
-      // Some callbacks require that their views are already attached to the DOM, e.g. (bar graph uses
-      //getBBox() which in Firefox works only when element is visible and rendered).
-      for(i = 0; i < componentModelLoadedCallbacks.length; i++) {
-        componentModelLoadedCallbacks[i](model, scriptingAPI);
-      }
-
-      // setup messaging with embedding parent window
-      parentMessageAPI = new ParentMessageAPI(model, modelController.modelContainer, controller);
-
-      for(i = 0; i < onLoadScripts.length; i++) {
-        onLoadScripts[i]();
-      }
-
-      for(i = 0; i < modelLoadedCallbacks.length; i++) {
-        modelLoadedCallbacks[i](model, cause);
-      }
-      isModelLoaded = true;
     }
 
     function modelResetHandler(cause) {
@@ -950,9 +844,7 @@ define(function (require) {
       Notify observers that a model was reset, passing along the cause of the reset event.
     */
     function notifyModelResetCallbacks(cause) {
-      modelResetCallbacks.forEach(function(cb) {
-        cb(cause);
-      });
+      dispatch.modelReset(cause);
     }
 
     /**
@@ -1193,28 +1085,44 @@ define(function (require) {
       getModelController: function () {
         return modelController;
       },
+
       getComponent: function (id) {
         return componentByID[id];
-      },
-      pushOnLoadScript: function (callback) {
-        onLoadScripts.push(callback);
       },
 
       getNextTabIndex: getNextTabIndex,
 
-      reloadModel: function() {
+      loadInteractive: loadInteractive,
+
+      reloadInteractive: function() {
+        model.stop();
+        notifyWillResetModelAnd(function() {
+          controller.loadInteractive(initialInteractiveConfig);
+        });
+      },
+
+      loadModel: loadModel,
+
+      /**
+       * Reload the model. The interactives controller will emit a 'willResetModel'.
+       * The willResetModel observers can ask to wait for asynchronous confirmation before the model
+       * is actually reset; see the notifyWillResetModelAnd function.
+       * @param  {arrat} parametersToRetain a list of parameters to save before the model reload
+       *                                    and restore after reload
+       */
+      reloadModel: function(parametersToRetain) {
         model.stop();
         notifyWillResetModelAnd(function() {
           // Ensure that model reload is always the same if it's desired ("randomSeed" paramenter
           // is provided).
           generateRandomSeed();
-          modelController.reload();
+          controller.loadModel(currentModelID, null, parametersToRetain);
         });
       },
 
       /**
         Reset the model to its initial state, restoring or retaining model parameters according to
-        these options. The interactives controller will emit a 'willResetModel'.  The willResetModel
+        these options. The interactives controller will emit a 'willResetModel'. The willResetModel
         observers can ask to wait for asynchronous confirmation before the model is actually reset;
         see the notifyWillResetModelAnd function.
 
@@ -1313,10 +1221,7 @@ define(function (require) {
       */
       resize: function () {
         layoutInteractive();
-        // TODO: use events!
-        for(var i = 0; i < resizeCallbacks.length; i++) {
-          resizeCallbacks[i]();
-        }
+        dispatch.resize();
       },
       /**
        * Adds an event listener for the specified type. Supported events:
@@ -1338,40 +1243,16 @@ define(function (require) {
        * sequence than 'regular' modelLoadedCallbacks.)
        */
       on: function (type, callback) {
-        var callbacks;
-
-        if (typeof callback === "function") {
-          callbacks = [callback];
-        } else if (Array.isArray(callback)) {
-          callbacks = callback;
-          if (callbacks.some(function (cb) { return typeof cb !== 'function'; })) {
-            throw new Error("Invalid callback, must be an array of functions.");
-          }
-        } else {
-          throw new Error("Invalid callback, must be a function or array of functions.");
+        if (typeof callback !== "function") {
+          throw new Error("Invalid callback, must be a function.");
         }
-
-        switch(type) {
-          case "resize":
-            resizeCallbacks = resizeCallbacks.concat(callbacks);
-            break;
-          case "modelLoaded":
-            modelLoadedCallbacks = modelLoadedCallbacks.concat(callbacks);
-            break;
-          case "modelReset":
-            modelResetCallbacks = modelResetCallbacks.concat(callbacks);
-            break;
-          case "willResetModel":
-            willResetModelCallbacks = willResetModelCallbacks.concat(callbacks);
-            break;
-          case "interactiveRendered":
-            interactiveRenderedCallbacks = interactiveRenderedCallbacks.concat(callbacks);
-            break;
-          default:
-            if (typeof callback !== "function") {
-              throw new Error("Event type " + type + " does not support multiple callbacks in one call to .on()");
-            }
-            dispatch.on(type, callback);
+        // Note that we can't use DispatchSupport as willResetModel event is a special one.
+        // We have know number of objects interested in this event and we have to let them cancel
+        // reset operation.
+        if (type === "willResetModel") {
+          willResetModelCallbacks.push(callback);
+        } else {
+          dispatch.on(type, callback);
         }
       },
 
@@ -1474,12 +1355,7 @@ define(function (require) {
 
         return result;
       },
-      modelLoaded: function () {
-        return isModelLoaded;
-      },
-      interactiveRendered: function () {
-        return isInteractiveRendered;
-      },
+
       benchmarks: [
         {
           name: "layout (iterations)",
@@ -1502,13 +1378,10 @@ define(function (require) {
       ],
 
       getLoadedModelId: function () {
-        return modelId;
+        return currentModelID;
       },
 
-      // Make these private variables and functions available
-      loadInteractive: loadInteractive,
       validateInteractive: validateInteractive,
-      loadModel: loadModel,
       interactiveNotFound: interactiveNotFound
     };
 
@@ -1531,13 +1404,11 @@ define(function (require) {
     controller.interactiveContainer = $interactiveContainer;
     // Initialize semantic layout.
     semanticLayout = new SemanticLayout($interactiveContainer);
-    creditsDialog = new CreditsDialog();
-    aboutDialog = new AboutDialog();
-    shareDialog = new ShareDialog();
-    controller.on("resize", $.proxy(shareDialog.updateIframeSize, shareDialog));
-    // Run this when controller is created.
-    loadInteractive(interactiveReference);
+    controller.on("resize.share-dialog", function () {
+      shareDialog.updateIframeSize();
+    });
 
+    loadInteractive(interactiveReference);
     return controller;
   };
 });

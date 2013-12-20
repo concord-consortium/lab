@@ -52,7 +52,7 @@ define(function (require) {
     setupModelObservers();
     controller.on('modelLoaded.sensor-model-controller', setupModelObservers);
 
-    interactiveController.on('modelReset', function() {
+    interactiveController.on('modelReset.sensor-model-controller', function() {
       controller.model.set('isNewRunInProgress', false);
     });
 

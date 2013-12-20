@@ -30,11 +30,11 @@
       "options": [
         {
           "text": "Polar/polar",
-          "loadModel": "DissolveCompare$0"
+          "action": "loadModel('DissolveCompare$0');"
         },
         {
           "text": "Nonpolar/nonpolar",
-          "loadModel": "DissolveCompare$1"
+          "action": "loadModel('DissolveCompare$1');"
         }
       ]
     },

@@ -68,15 +68,15 @@
       "options": [
         {
           "text": "Pendulum",
-          "loadModel": "pendulum1$0"
+          "action": "loadModel('pendulum1$0');"
         },
         {
           "text": "Simple Gas",
-          "loadModel": "simple-gas$0"
+          "action": "loadModel('simple-gas$0');"
         },
         {
           "text": "Oil and Water",
-          "loadModel": "page3$1"
+          "action": "loadModel('page3$1');"
         }
       ]
     }

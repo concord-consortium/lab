@@ -17,6 +17,31 @@ define(function (require) {
 
       MAX_Z_INDEX = 1000;
 
+    // Assume that we can have *only one* Pixi renderer.
+    // This is caused by the Pixi bug: https://github.com/GoodBoyDigital/pixi.js/issues/181
+    function getPixiRenderer(w, h) {
+      if (getPixiRenderer.instance == null) {
+        var browser = benchmark.browser;
+        var newRenderer;
+        if (browser.browser === 'Firefox' && browser.oscpu.match(/Mac OS X 10.6/)) {
+          // Work around GPU driver brokenness on some hardware running OS X 10.6 by not using
+          // WebGL. Note Chrome automatically disables WebGL when using the problematic driver.
+          // (Note that sometimes the separator between 10 and 6 is a '.' and sometimes a '_' so
+          // use of the '.' matcher works is required)
+          newRenderer = function(w, h, view, transparent) {
+            return new PIXI.CanvasRenderer(w, h, view, transparent);
+          };
+        } else {
+          newRenderer = PIXI.autoDetectRenderer;
+        }
+        getPixiRenderer.instance = newRenderer(w * CANVAS_OVERSAMPLING, h * CANVAS_OVERSAMPLING, null, true);
+      } else {
+        getPixiRenderer.instance.resize(w, h);
+      }
+      return getPixiRenderer.instance;
+    }
+    getPixiRenderer.instance = null;
+
   return function SVGContainer(model, modelUrl, Renderer, opt) {
         // Public API object to be returned.
     var api,
@@ -643,24 +668,8 @@ define(function (require) {
         var newRenderer;
 
         if (pixiRenderers.length === 0) {
-          browser = benchmark.browser;
-
-          if (browser.browser === 'Firefox' && browser.oscpu.match(/Mac OS X 10.6/)) {
-            // Work around GPU driver brokenness on some hardware running OS X 10.6 by not using
-            // WebGL. Note Chrome automatically disables WebGL when using the problematic driver.
-            // (Note that sometimes the separator between 10 and 6 is a '.' and sometimes a '_' so
-            // use of the '.' matcher works is required)
-            newRenderer = function(w, h, view, transparent) {
-              return new PIXI.CanvasRenderer(w, h, view, transparent);
-            };
-          } else {
-            newRenderer = PIXI.autoDetectRenderer;
-          }
-
-          // Assume that we can have *only one* Pixi renderer.
-          // This is caused by the Pixi bug: https://github.com/GoodBoyDigital/pixi.js/issues/181
-          pixiRenderer = newRenderer(cx * CANVAS_OVERSAMPLING, cy * CANVAS_OVERSAMPLING, null, true);
-          pixiStage= new PIXI.Stage(null);
+          pixiRenderer = getPixiRenderer(cx, cy);
+          pixiStage = new PIXI.Stage(null);
 
           node.appendChild(pixiRenderer.view);
           d3.select(pixiRenderer.view)
@@ -912,8 +921,10 @@ define(function (require) {
     // DOM element.
     node = $el[0];
 
-
-    init();
+    // REF TODO ugly
+    if (model) {
+      init();
+    }
     renderer = new Renderer(api, model);
 
     return api;

@@ -74,15 +74,15 @@
       "options": [
         {
           "text": "Mixture A",
-          "loadModel": "elementA"
+          "action": "loadModel('elementA');"
         },
         {
           "text": "Mixture B",
-          "loadModel": "elementB"
+          "action": "loadModel('elementB');"
         },
         {
           "text": "Mixture C",
-          "loadModel": "elementC"
+          "action": "loadModel('elementC');"
         }
       ]
     },

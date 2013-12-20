@@ -10,7 +10,7 @@ helpers.withIsolatedRequireJSAndViewsMocked (requirejs) ->
   interactive =
     "title": "Test Interactive"
     "models": [
-      "type": "generic-model"
+      "type": "md2d"
       "id": "model1"
       "url": "model1"
     ]

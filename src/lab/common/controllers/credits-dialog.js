@@ -13,8 +13,8 @@ define(function (require) {
    *
    * @constructor
    */
-  function CreditsDialog() {
-    BasicDialog.call(this, {dialogClass: "credits-dialog"});
+  function CreditsDialog(parentSelector) {
+    BasicDialog.call(this, {dialogClass: "credits-dialog", appendTo: parentSelector});
   }
   inherit(CreditsDialog, BasicDialog);
 

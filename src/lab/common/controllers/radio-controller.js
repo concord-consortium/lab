@@ -26,18 +26,16 @@ define(function () {
     // a) model is loaded,
     // b) radio is bound to some property.
     function updateRadio() {
-      var value = model.get(component.property),
-          modelId = interactivesController.getLoadedModelId(),
-          i, len;
-
-      for (i = 0, len = options.length; i < len; i++) {
-        if (options[i].value === undefined && !options[i].loadModel) return;
-        if ((options[i].value !== undefined && options[i].value === value) || options[i].loadModel === modelId) {
-          $options[i].attr("checked", true);
-          $fakeCheckables[i].addClass('checked');
-        } else {
-          $options[i].removeAttr("checked");
-          $fakeCheckables[i].removeClass('checked');
+      if (component.property !== undefined) {
+        var value = model.get(component.property);
+        for (var i = 0, len = options.length; i < len; i++) {
+          if (options[i].value === value) {
+            $options[i].attr("checked", true);
+            $fakeCheckables[i].addClass('checked');
+          } else {
+            $options[i].removeAttr("checked");
+            $fakeCheckables[i].removeClass('checked');
+          }
         }
       }
     }
@@ -150,9 +148,6 @@ define(function () {
           return function() {
             if (option.action){
               scriptingAPI.makeFunctionInScriptContext(option.action)();
-            } else if (option.loadModel){
-              model.stop();
-              interactivesController.loadModel(option.loadModel);
             } else if (option.value !== undefined) {
               model.set(component.property, option.value);
             }
@@ -182,7 +177,6 @@ define(function () {
           model.addPropertiesListener([component.property], updateRadio);
           model.addPropertyDescriptionObserver(component.property, updateRadioDisabledState);
         }
-
         // Perform initial radio setup.
         updateRadio();
       },

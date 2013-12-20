@@ -22,12 +22,12 @@ define(function (require) {
    * @param {Object} interactive Interactive JSON definition.
    * @param {InteractivesController} interactivesController
    */
-  function ShareDialog() {
+  function ShareDialog(parentSelector) {
     var hash           = location.hash,
         origin         = location.href.match(/(.*?\/\/.*?)\//)[1],
         embeddablePath = location.pathname.replace(/\/[^\/]+$/, "/embeddable.html");
 
-    BasicDialog.call(this, {dialogClass: "share-dialog"});
+    BasicDialog.call(this, {dialogClass: "share-dialog", appendTo: parentSelector});
 
     /** @private */
     this._view = {};
@@ -41,7 +41,7 @@ define(function (require) {
     this.setContent(mustache.render(shareDialogTpl, this._view, {copyright: copyrightTpl}));
 
     /** @private */
-    this._$interactiveContainer = $("#responsive-content");
+    this._$interactiveContainer = $(parentSelector);
     /** @private */
     this._$iframeSize = this.$element.find("#iframe-size");
     /** @private */

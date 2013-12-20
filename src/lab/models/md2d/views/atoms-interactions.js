@@ -166,15 +166,12 @@ define(function(require) {
       $target = $(target);
       $target.addClass("atoms-interaction-layer");
 
-      // Use native .addEventListener() instead of jQuery's .on() method, because parent of the
-      // target (canvas) can be cleaned up using jQuery .empty() method (during layout) and all
-      // jQuery handlers will be destroyed. Native handles will remain untouched.
-      target.addEventListener("mousedown", mouseDownCanvas);
-      target.addEventListener("mouseup", mouseUpCanvas);
-      target.addEventListener("mousemove", mouseMoveCanvas);
-      target.addEventListener("mouseover", mouseOverCanvas);
-      target.addEventListener("mouseout", mouseOutCanvas);
-      target.addEventListener("contextmenu", contextMenuCanvas);
+      $target.on("mousedown.atoms-interactions", mouseDownCanvas);
+      $target.on("mouseup.atoms-interactions", mouseUpCanvas);
+      $target.on("mousemove.atoms-interactions", mouseMoveCanvas);
+      $target.on("mouseover.atoms-interactions", mouseOverCanvas);
+      $target.on("mouseout.atoms-interactions", mouseOutCanvas);
+      $target.on("contextmenu.atoms-interactions", contextMenuCanvas);
 
       amniacidContextMenu.register(model, modelView, ".atoms-interaction-layer", function () {
         return contextMenuAtom;

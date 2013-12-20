@@ -104,19 +104,19 @@
         {
           "text": "Sun on ground",
           "selected": true,
-          "loadModel": "sun-on-ground"
+          "action": "loadModel('sun-on-ground');"
         },
         {
           "text": "Sun on CO₂",
-          "loadModel": "sun-on-co2"
+          "action": "loadModel('sun-on-co2');"
         },
         {
           "text": "Infrared on CO₂",
-          "loadModel": "ir-on-co2"
+          "action": "loadModel('ir-on-co2');"
         },
         {
           "text": "Sun on ground and CO₂",
-          "loadModel": "sun-on-ground-and-co2"
+          "action": "loadModel('sun-on-ground-and-co2');"
         }
       ],
       "disabled": false,

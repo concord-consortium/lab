@@ -47,15 +47,15 @@
         },
         {
           "text": "Short ",
-          "loadModel": "vdw-force-lines$0"
+          "action": "loadModel('vdw-force-lines$0');"
         },
         {
           "text": "Medium",
-          "loadModel": "vdw-force-lines-medium"
+          "action": "loadModel('vdw-force-lines-medium');"
         },
         {
           "text": "Long",
-          "loadModel": "vdw-force-lines-long"
+          "action": "loadModel('vdw-force-lines-long');"
         }
       ]
     },

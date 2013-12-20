@@ -35,7 +35,7 @@ helpers.withIsolatedRequireJSAndViewsMocked (requirejs) ->
           "about": "Description",
           "models": [
             {
-              "type": "generic-model",
+              "type": "md2d",
               "id": "model1",
               "url": "model1",
               "parameters": [
@@ -46,7 +46,7 @@ helpers.withIsolatedRequireJSAndViewsMocked (requirejs) ->
                 }
               ]
             }, {
-              "type": "generic-model",
+              "type": "md2d",
               "id": "model2",
               "url": "model2",
               "parameters": [

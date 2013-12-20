@@ -40,17 +40,17 @@ define(function (require) {
       parent.api.repaintIfReady();
     };
 
-    function createModelAdder(method) {
+    function createModelAdder(methodName) {
       return function modelAdder(props, options) {
         try {
-          method.call(parent.model, props);
+          parent.model[methodName].call(parent.model, props);
         } catch (e) {
           if (!options || !options.silent)
             throw e;
         }
         parent.api.repaintIfReady();
       };
-    };
+    }
 
     return {
 
@@ -503,9 +503,9 @@ define(function (require) {
         Adds an obstacle/shape/line using human-readable hash of properties.
         e.g. addObstacle({x: 1, y: 0.5, width: 1, height: 1})
       */
-      addObstacle: createModelAdder(parent.model.addObstacle),
-      addShape: createModelAdder(parent.model.addShape),
-      addLine: createModelAdder(parent.model.addLine),
+      addObstacle: createModelAdder("addObstacle"),
+      addShape: createModelAdder("addShape"),
+      addLine: createModelAdder("addLine"),
 
       /**
         Sets individual obstacle properties using human-readable hash.

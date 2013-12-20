@@ -71,23 +71,23 @@
       "options": [
         {
           "text": "A-B-C",
-          "loadModel": "S3F1"
+          "action": "loadModel('S3F1');"
         },
         {
           "text": "B-A-C",
-          "loadModel": "S3F2"
+          "action": "loadModel('S3F2');"
         },
         {
           "text": "B-C-A",
-          "loadModel": "S3F3"
+          "action": "loadModel('S3F3');"
         },
         {
           "text": "C-B-A",
-          "loadModel": "S3F4"
+          "action": "loadModel('S3F4');"
         },
         {
           "text": "C-A-B",
-          "loadModel": "S3F5"
+          "action": "loadModel('S3F5');"
         }
       ]
     },

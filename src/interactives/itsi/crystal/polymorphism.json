@@ -47,12 +47,12 @@
       "options": [
         {
           "text": "Polymorph-I",
-          "loadModel": "polymorphism$0",
+          "action": "loadModel('polymorphism$0');",
           "selected": true
         },
         {
           "text": "Polymorph-II",
-          "loadModel": "strk2"
+          "action": "loadModel('strk2');"
         }
       ]
     },

@@ -6,7 +6,7 @@ define(function (require) {
       Dataset   = require('common/models/dataset'),
       experimentControllerCount = 0;
 
-  return function ExperimentController(experimentDefinition, interactivesController, onLoadScripts) {
+  return function ExperimentController(experimentDefinition, interactivesController) {
         // Public API.
     var controller,
         model,
@@ -35,8 +35,6 @@ define(function (require) {
         namespace = "experimentController" + (++experimentControllerCount);
 
     function initialize() {
-      scriptingAPI = interactivesController.getScriptingAPI();
-      model = interactivesController.getModel();
       // Validate component definition, use validated copy of the properties.
       experimentDefinition = validator.validateCompleteness(metadata.experiment, experimentDefinition);
       timeSeries    = experimentDefinition.timeSeries;
@@ -45,10 +43,14 @@ define(function (require) {
       destinations  = experimentDefinition.destinations;
       stateButtons  = experimentDefinition.stateButtons;
       onResetScript = experimentDefinition.onReset;
-      if (onLoadScripts.length > 0) {
-        onLoadFunc  = onLoadScripts[0];
-      }
       timeSeriesDatasets = [];
+
+      interactivesController.on("modelLoaded.experimentController", function () {
+        scriptingAPI = interactivesController.getScriptingAPI();
+        model = interactivesController.getModel();
+        registerModelListeners();
+        setup();
+      });
     }
 
     function setup() {
@@ -205,7 +207,7 @@ define(function (require) {
       model.set('experimentCleared', false);
       interactivesController.resetModel({retainParameters: inputs});
       unfreezeInputParameters();
-      if (onResetFunc) {
+      if (onResetFunc && onLoadFunc) {
         onLoadFunc.apply(onResetFunc, null);
       }
       addOlderRunsToGraph();
@@ -226,14 +228,9 @@ define(function (require) {
 
     // Public API.
     controller = {
-      /**
-        Called by the interactives controller when the model finishes loading.
-      */
-      modelLoadedCallback: function() {
-        scriptingAPI = interactivesController.getScriptingAPI();
-        model = interactivesController.getModel();
-        registerModelListeners();
-        setup();
+
+      setOnLoadScript: function(onLoadScript) {
+        onLoadFunc = onLoadScript;
       },
 
       // Returns serialized component definition.

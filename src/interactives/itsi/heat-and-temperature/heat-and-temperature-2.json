@@ -53,20 +53,20 @@
       "options": [
         {
           "text": "Substance m₁",
-          "loadModel": "mass1",
+          "action": "loadModel('mass1');",
           "selected": true
         },
         {
           "text": "Substance m₂",
-          "loadModel": "mass2"
+          "action": "loadModel('mass2');"
         },
         {
           "text": "Substance m₃",
-          "loadModel": "mass3"
+          "action": "loadModel('mass3');"
         },
         {
           "text": "Substance m₄",
-          "loadModel": "mass4"
+          "action": "loadModel('mass4');"
         }
       ]
     },
