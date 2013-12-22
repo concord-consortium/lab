@@ -407,7 +407,7 @@
       "type": "graph",
       "id": "parameter-graph",
       "title": "Parameter Graph",
-      "clearDataOnReset": false,
+      "clearOnModelLoad": false,
       "streamDataFromModel": false,
       "markAllDataPoints": true,
       "showRulersOnSelection": true,
