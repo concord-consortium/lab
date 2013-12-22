@@ -542,11 +542,6 @@ define(function (require) {
         }
       }
 
-      // Setup experimentController, if defined.
-      if (interactive.experiment) {
-        experimentController = new ExperimentController(interactive.experiment, controller);
-      }
-
       // Setup help system if help tips are defined.
       if (interactive.helpTips.length > 0) {
         helpSystem = new HelpSystem(interactive.helpTips, $interactiveContainer);
@@ -584,6 +579,11 @@ define(function (require) {
 
       for (var i = 0, len = componentJsons.length; i < len; i++) {
         createComponent(componentJsons[i]);
+      }
+
+      // Setup experimentController, if defined.
+      if (interactive.experiment) {
+        experimentController = new ExperimentController(interactive.experiment, controller);
       }
 
       // When all components are created, we can initialize semantic layout.
