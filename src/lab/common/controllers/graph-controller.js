@@ -45,6 +45,7 @@ define(function (require) {
         model,
         scriptingAPI,
         properties,
+        isSetup = false,
         dataPointsArrays = [],
         namespace = "graphController" + (++graphControllerCount);
 
@@ -123,6 +124,7 @@ define(function (require) {
         grapher.resetPoints();
       }
       grapher.repaint();
+      isSetup = true;
     }
 
     /**
@@ -185,7 +187,6 @@ define(function (require) {
         model.on('invalidation.'+namespace, function() {
           removeDataAfterStepPointer();
         });
-        model.on('reset.'+namespace, modelResetHandler);
       }
     }
 
@@ -207,20 +208,6 @@ define(function (require) {
       grapher.yLabel(description.getLabel() + " (" + description.getUnitAbbreviation() + ")");
     }
 
-    function modelResetHandler() {
-      if (grapher) {
-        if (component.clearDataOnReset) {
-          resetData();
-          if (component.resetAxesOnReset) {
-            resetGrapher();
-          }
-        }
-      } else {
-        grapher = new Graph($container[0], getOptions(), undefined, interactivesController.getNextTabIndex());
-      }
-      updateYLabelHandler();
-    }
-
     controller = {
       type: "graph",
 
@@ -236,7 +223,9 @@ define(function (require) {
         } else {
           grapher = new Graph($container[0], getOptions(), undefined, interactivesController.getNextTabIndex());
         }
-        resetData();
+        if (component.clearOnModelLoad || !isSetup) {
+          resetData();
+        }
         registerModelListeners();
         updateYLabelHandler();
         grapher.repaint();

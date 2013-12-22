@@ -748,7 +748,7 @@ define(function() {
       type: {
         required: true
       },
-      clearDataOnReset: {
+      clearOnModelLoad: {
         defaultValue: true
       },
       resetAxesOnReset: {
