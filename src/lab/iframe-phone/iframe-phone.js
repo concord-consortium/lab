@@ -3,7 +3,7 @@
 define(function (require){
   var structuredClone = require('iframe-phone/structured-clone');
 
-  return function IFramePhone(iframe, afterConnectedCallback) {
+  return function IFramePhone(iframe, modelLoadedCallback, afterConnectedCallback) {
     var selfOrigin   = window.location.href.match(/(.*?\/\/.*?)\//)[1],
         postMessageQueue = [],
         connected = false,
@@ -89,6 +89,13 @@ define(function (require){
       // Now send any messages that have been queued up ...
       while(postMessageQueue.length > 0) {
         post(postMessageQueue.shift());
+      }
+    });
+
+    // When a model is loaded trigger a callback defined by the client code (if present).
+    addListener('modelLoaded', function () {
+      if (modelLoadedCallback && typeof modelLoadedCallback === "function") {
+        modelLoadedCallback();
       }
     });
 

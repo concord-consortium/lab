@@ -140,16 +140,19 @@ define(function(require) {
       model.stop();
     });
 
+    parentMessageController.initialize();
+
+    controller.on('modelLoaded.parentMessageAPI', function() {
+      parentMessageController.post({
+        'type': 'modelLoaded'
+      });
+    });
+
     return {
       // REF FIXME: use scripting API object and avoid binding the model at all (as scripting
       // API is always guaranteed to have a current, valid model object).
       bindModel: function (newModel) {
         model = newModel;
-        // Looks weird, but it's just consistent with current client code.
-        // REF TODO FIXME: perhaps we should notify parent here that the a model was loaded
-        // and client code should wait for that, not only for "hello" message that is being sent
-        // during parentMessageController initialization.
-        parentMessageController.initialize();
       }
     };
   };
