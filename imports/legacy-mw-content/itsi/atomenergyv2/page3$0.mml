@@ -540,23 +540,16 @@
        <boolean>false</boolean>
       </void>
       <void property="fillMode">
-       <object class="org.concord.modeler.draw.FillMode$PatternFill">
-        <void property="background">
-         <int>-65536</int>
-        </void>
-        <void property="cellHeight">
-         <int>10</int>
-        </void>
-        <void property="cellWidth">
-         <int>10</int>
-        </void>
-        <void property="foreground">
-         <int>-8355712</int>
-        </void>
-        <void property="style">
-         <byte>12</byte>
-        </void>
-       </object>
+        <object class="org.concord.modeler.draw.FillMode$ColorFill"> 
+         <void property="color"> 
+          <object class="java.awt.Color"> 
+           <int>190</int> 
+           <int>0</int> 
+           <int>0</int> 
+           <int>255</int> 
+          </object> 
+         </void> 
+        </object> 
       </void>
       <void property="height">
        <float>20.0</float>

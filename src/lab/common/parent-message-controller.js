@@ -7,7 +7,9 @@ define(function(require) {
       listeners = {},
       structuredClone = require('iframe-phone/structured-clone'),
       controller,
-      isInitialized = false;
+      isInitialized = false,
+      connected = false,
+      postMessageQueue = [];
 
   function postToTarget(message, target) {
     // See http://dev.opera.com/articles/view/window-postmessage-messagechannel/#crossdoc
@@ -21,7 +23,11 @@ define(function(require) {
   }
 
   function post(message) {
-    postToTarget(message, parentOrigin);
+    if (connected) {
+      postToTarget(message, parentOrigin);
+    } else {
+      postMessageQueue.push(message);
+    }
   }
 
   // Only the initial 'hello' message goes permissively to a '*' target (because due to cross origin
@@ -52,10 +58,12 @@ define(function(require) {
       if (typeof messageData === 'string') messageData = JSON.parse(messageData);
 
       // We don't know origin property of parent window until it tells us.
-      if (!parentOrigin) {
+      if (!connected && messageData.type === 'hello') {
         // This is the return handshake from the embedding window.
-        if (messageData.type === 'hello') {
-          parentOrigin = messageData.origin;
+        parentOrigin = messageData.origin;
+        connected = true;
+        while(postMessageQueue.length > 0) {
+          post(postMessageQueue.shift());
         }
       }
 

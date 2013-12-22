@@ -1,0 +1,103 @@
+{
+  "title": "Electronegativity, Orbitals, and Charge",
+  "publicationStatus": "draft",
+  "aspectRatio": 1.725,
+  "fontScale": 0.8,
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "3-electronegativity-orbitals-charge",
+      "url": "models/md2d/itsi/bond-types/3-electronegativity-orbitals-charge.json",
+      "viewOptions": {
+        "controlButtons": ""
+      },
+      "onLoad": [
+        "var i,left,right,uri,images,img;",
+        "function getURI(dif) {",
+        "  return 'images/' + format('0.2f')(dif).replace('.','_').replace('-','neg') + '.svg';",
+        "}",
+        "function updateField() {",
+        "  left = get('leftValue');",
+        "  right = get('rightValue');",
+        "  setTextBoxProperties(0, {text: format('0.2f')(left)});",
+        "  setTextBoxProperties(1, {text: format('0.2f')(right)});",
+        "  uri = getURI(right - left);",
+        "  setImageProperties(0, {imageUri: uri});",
+        "}",
+        "onPropertyChange('leftValue', updateField);",
+        "onPropertyChange('rightValue', updateField);"
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "leftValue",
+      "initialValue": 0.77
+    },
+    {
+      "name": "rightValue",
+      "initialValue": 4
+    }
+  ],
+  "components": [
+    {
+      "type": "slider",
+      "id": "left-slider",
+      "width": "95%",
+      "min": 0.77,
+      "max": 4,
+      "property": "leftValue",
+      "labels": [
+        {
+          "value": 0.77,
+          "label": "Low"
+        },
+        {
+          "value": 4,
+          "label": "High"
+        }
+      ],
+      "steps": 19,
+      "title": "Left Atom Electronegativity"
+    },
+    {
+      "type": "slider",
+      "id": "right-slider",
+      "width": "95%",
+      "min": 0.77,
+      "max": 4,
+      "property": "rightValue",
+      "labels": [
+        {
+          "value": 0.77,
+          "label": "Low"
+        },
+        {
+          "value": 4,
+          "label": "High"
+        }
+      ],
+      "steps": 19,
+      "title": "Right Atom Electronegativity"
+    }
+  ],
+  "template": [
+    {
+      "id": "right",
+      "top": "model.top + model.height/3",
+      "left": "model.right",
+      "height": "9em",
+      "width": "14em",
+      "padding-left": "0.7em",
+      "align": "center"
+    }
+  ],
+  "layout": {
+    "right": [
+      ["left-slider"],
+      ["right-slider"]
+    ]
+  }
+}

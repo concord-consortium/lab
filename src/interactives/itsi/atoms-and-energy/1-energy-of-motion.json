@@ -14,8 +14,64 @@
       "viewOptions": {
         "controlButtons": "play_reset"
       },
+      "modelOptions": {
+        "shapes": {
+          "type": [
+            "rectangle",
+            "rectangle"
+          ],
+          "x": [
+            0.82,
+            0.82
+          ],
+          "y": [
+            0.94,
+            0.94
+          ],
+          "height": [
+            0.13,
+            0.13
+          ],
+          "width": [
+            3.1,
+            2.95
+          ],
+          "fence": [
+            0,
+            1
+          ],
+          "color": [
+            "rgb(255,192,0)",
+            "rgb(255,192,0)"
+          ],
+          "lineColor": [
+            "black",
+            "black"
+          ],
+          "lineWeight": [
+            1,
+            1
+          ],
+          "lineDashes": [
+            "none",
+            "none"
+          ],
+          "layer": [
+            2,
+            1
+          ],
+          "layerPosition": [
+            2,
+            1
+          ],
+          "visible": [
+            1,
+            0
+          ]
+        }
+      },
       "onLoad": [
-        "var atom1,atom2,atomRadius = 0.15,tableTop = getShapeProperties(0);",
+        "var atom1,atom2,atomRadius = 0.15,tableTop = getShapeProperties(1);",
         "callEvery(100, function() {",
         "  atom1 = getAtomProperties(0);",
         "  atom2 = getAtomProperties(1);",

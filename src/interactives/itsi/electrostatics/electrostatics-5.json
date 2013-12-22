@@ -79,7 +79,7 @@
         "    var target = getShapeProperties(0);",
         "    if (atomsWithinRect(target.x, target.y, target.width, target.height).length > 0) {",
         "      stop();",
-        "      if(get('max-countdown-time') - countdown <= 15) {",
+        "      if(get('max-countdown-time') - countdown <= 10) {",
         "        alert('Did you cheat?');",
         "      } else {",
         "        alert('You won!');",
@@ -94,7 +94,7 @@
     {
       "component": "",
       "text": [
-        "Welcome to the Maze Game!",
+        "Welcome to the Charge Game!",
         "- - -",
         "Your goal is to get the gray ball to the target before time runs out."
       ]
@@ -137,6 +137,7 @@
       "name": "max-countdown-time",
       "initialValue": 50,
       "onChange": [
+        "set('max-model-time', (value/2)*10000);",
         "setTextBoxProperties(0,{text: format('0.0f')(value)});"
       ]
     }

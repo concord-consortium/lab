@@ -720,9 +720,10 @@ public/%.js: %.coffee
 # replace relative references to .md files for the static build
 # look for pattern like ](*.md) replace with ](*.html)
 # the ':' is hack so it doesn't match absolute http:// urls
+# the second command is necessary to match anchor references in md files
 %.md.static: %.md
 	@rm -f $@
-	sed s';\](\([^):]*\)\.md);\](\1.html);' $< > $@
+	sed -e s';\](\([^):]*\)\.md);\](\1.html);' -e s';\](\([^):]*\)\.md\(#[^)]*\));\](\1.html\2);' $< > $@
 
 public/developer-doc/%.html: developer-doc/%.md.static
 	@rm -f $@

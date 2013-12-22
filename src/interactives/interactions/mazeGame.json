@@ -139,6 +139,7 @@
       "name": "max-countdown-time",
       "initialValue": 50,
       "onChange": [
+        "set('max-model-time', (value/2)*10000);",
         "setTextBoxProperties(0,{text: format('0.0f')(value)});"
       ]
     }

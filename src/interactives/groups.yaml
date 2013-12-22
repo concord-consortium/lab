@@ -42,6 +42,10 @@
   :name: "ITSI: Atoms and Energy"
   :category: Curriculum
 
+- :path: itsi/bond-types
+  :name: "ITSI: Bond Types"
+  :category: Curriculum
+
 - :path: itsi/chemical-reactions
   :name: "ITSI: Chemical Reactions"
   :category: Curriculum
