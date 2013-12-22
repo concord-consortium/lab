@@ -185,13 +185,10 @@ define(function (require) {
       */
       modelLoadedCallback: function() {
         model = interactivesController.getModel();
-        tableData = $.extend(true, [], component.tableData);
-        headerData = $.extend(true, [], component.headerData);
-        rowIndex = 0;
-        updateTable();
         if (component.streamDataFromModel) {
           registerModelListeners();
         }
+        updateTable();
       },
 
       resize: function () {
