@@ -169,11 +169,11 @@
       "action": [
         "stop();",
         "reset({",
-        "  retainParameters: ['chargeRadius']",
+        "  parametersToRetain: ['chargeRadius']",
         "});",
         "// FIXME need to reset twice to reset electric field??",
         "reset({",
-        "  retainParameters: ['chargeRadius']",
+        "  parametersToRetain: ['chargeRadius']",
         "});",
         "setComponentDisabled('select-radius', false);",
         "setComponentDisabled('shoot-alpha-particles', false)"

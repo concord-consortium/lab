@@ -170,7 +170,7 @@
       "tooltip": "Set up a new experiment run.",
       "action": [
         "reset({",
-        "  retainParameters: ['sensorType','sensorType2','experimentDuration', 'durationEnabled', 'tareValue', 'tareValue2'],",
+        "  parametersToRetain: ['sensorType','sensorType2','experimentDuration', 'durationEnabled', 'tareValue', 'tareValue2'],",
         "  cause: 'new-run'",
         "});",
         "scrollXAxisToZero('propertiesGraph');",
