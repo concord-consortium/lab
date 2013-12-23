@@ -462,13 +462,14 @@ define(function (require) {
            * the model is actually reset.
            * Note that the effect would be almost the same like after reload operation. However
            * the mechanism under the hood is completely different. The biggest difference for
-           * authoring is that when .reset() is called, the "onLoad" script won't be executed again.
+           * authoring is that when .resetModel() is called, the "onLoad" script won't be
+           * executed again.
            * @param  {object} options hash of options, supported properties:
            *                         * parametersToRetain - a list of parameters to save before
            *                           the model reset and restore after reset.
            *                         * cause - cause of the reset action.
            */
-          reset: function reset(options) {
+          resetModel: function resetModel(options) {
             interactivesController.resetModel(options);
           },
 

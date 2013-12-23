@@ -169,7 +169,7 @@
       "text": "New Run",
       "tooltip": "Set up a new experiment run.",
       "action": [
-        "reset({",
+        "resetModel({",
         "  parametersToRetain: ['sensorType','sensorType2','experimentDuration', 'durationEnabled', 'tareValue', 'tareValue2'],",
         "  cause: 'new-run'",
         "});",

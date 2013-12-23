@@ -168,11 +168,11 @@
       "text": "Reset",
       "action": [
         "stop();",
-        "reset({",
+        "resetModel({",
         "  parametersToRetain: ['chargeRadius']",
         "});",
         "// FIXME need to reset twice to reset electric field??",
-        "reset({",
+        "resetModel({",
         "  parametersToRetain: ['chargeRadius']",
         "});",
         "setComponentDisabled('select-radius', false);",
