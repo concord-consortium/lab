@@ -1108,16 +1108,22 @@ define(function (require) {
        * Reload the model. The interactives controller will emit a 'willResetModel'.
        * The willResetModel observers can ask to wait for asynchronous confirmation before the model
        * is actually reset; see the notifyWillResetModelAnd function.
-       * @param  {arrat} parametersToRetain a list of parameters to save before the model reload
-       *                                    and restore after reload
+       * @param  {object} options hash of options, supported properties:
+       *                         * parametersToRetain - a list of parameters to save before
+       *                           the model reload and restore after reload.
+       *                         * cause - cause of the reload action, it can be e.g. "reload"
+       *                           or "new-run". It will be passed to "modelLoaded" event handlers.
        */
-      reloadModel: function(parametersToRetain, cause) {
+      reloadModel: function(options) {
+        if (!options) options = {};
+        if (!options.cause) options.cause = "reload";
+
         model.stop();
         notifyWillResetModelAnd(function() {
           // Ensure that model reload is always the same if it's desired ("randomSeed" paramenter
           // is provided).
           generateRandomSeed();
-          controller.loadModel(currentModelID, null, parametersToRetain, cause || "reload");
+          controller.loadModel(currentModelID, null, options.parametersToRetain, options.cause);
         });
       },
 

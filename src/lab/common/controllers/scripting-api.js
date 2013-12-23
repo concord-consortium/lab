@@ -442,12 +442,33 @@ define(function (require) {
             model.on("stop.custom-script", handler);
           },
 
-          reset: function reset(options) {
-            interactivesController.resetModel(options);
+          /**
+           * Reload the model. The interactives controller will emit a 'willResetModel'.
+           * The willResetModel observers can ask to wait for asynchronous confirmation before
+           * the model is actually reset; see the notifyWillResetModelAnd function.
+           * @param  {object} options hash of options, supported properties:
+           *                         * parametersToRetain - a list of parameters to save before
+           *                           the model reload and restore after reload.
+           *                         * cause - cause of the reload action, it can be e.g. "reload"
+           *                           or "new-run". It will be passed to "modelLoaded" event handlers.
+           */
+          reload: function reload(options) {
+            interactivesController.reloadModel(options);
           },
 
-          reload: function reload(parametersToRetain, cause) {
-            interactivesController.reloadModel(parametersToRetain, cause);
+          /**
+           * Reset the model. Note that the effect would be almost the same like after reload
+           * operation. However the mechanism under the hood is completely different.
+           * The biggest difference for authoring is that when .reset() is called, the "onLoad"
+           * script won't be executed again.
+           * This function is depreciated and .reload() should be used instead.
+           * @param  {object} options hash of options, supported properties:
+           *                         * parametersToRetain - a list of parameters to save before
+           *                           the model reset and restore after reset.
+           *                         * cause - cause of the reset action.
+           */
+          reset: function reset(options) {
+            interactivesController.resetModel(options);
           },
 
           stepForward: function stepForward() {
