@@ -1157,11 +1157,11 @@ define(function (require) {
           var parameters;
 
           // Option processing.
-          var parametersToRetain = options.retainParameters;
-          var parametersToReset = options.resetParameters;
+          var parametersToRetain = options.parametersToRetain;
+          var parametersToReset = options.parametersToReset;
 
           if (parametersToReset && parametersToRetain) {
-            throw new Error("resetModel: resetParameters and retainParameters are mutually exclusive");
+            throw new Error("resetModel: parametersToReset and parametersToRetain are mutually exclusive");
           }
 
           // default behavior is to reset all parameters
