@@ -1,9 +1,9 @@
 //- variables
-simpleModel  = "/examples/simple-atoms-model/simple-atoms-model.html"
-complexModel = "/examples/complex-atoms-model/complex-atoms-model.html"
-folderName   = "/imports/legacy-mw-content/"
+- simpleModel  = "/examples/simple-atoms-model/simple-atoms-model.html"
+- complexModel = "/examples/complex-atoms-model/complex-atoms-model.html"
+- folderName   = "/imports/legacy-mw-content/"
 
-nestedCmlToJsonHash = {}
+- nestedCmlToJsonHash = {}
 - for (cmlFile in cmlToJsonHash) {
 -   splitCml = /([^\/]*)\/(.*)/.exec(cmlFile);
 -   topFolder = splitCml[1];
@@ -41,16 +41,16 @@ html
       a(href='http://www.concord.org/', id='logo')
         img(src='../../resources/layout/cc-logo.png')
       h1 Imported CML Files and the conversions of their models
-    each cmlFiles, topFolder in nestedCmlToJsonHash
+    - each cmlFiles, topFolder in nestedCmlToJsonHash
       h3 #{topFolder}
       div(class='item-list')
         ul
-          each jsons, cml in cmlFiles
+          - each jsons, cml in cmlFiles
             li
               a(class="convert-to-mw", href=topFolder+"/"+cml) #{cml}
               ul
-                each json in jsons
-                  modelName = /[^\/]*$/.exec(json)[0];
+                - each json in jsons
+                  - modelName = /[^\/]*$/.exec(json)[0];
                   li
                     ul(class="horiz")
                       li
