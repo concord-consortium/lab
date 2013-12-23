@@ -90,6 +90,10 @@
   :name: "ITSI: Newton's Laws"
   :category: Curriculum
 
+- :path: itsi/protein-structure
+  :name: "ITSI: Protein Structure"
+  :category: Curriculum
+
 - :path: itsi/reaction-kinetics
   :name: "ITSI: Reaction Kinetics"
   :category: Curriculum

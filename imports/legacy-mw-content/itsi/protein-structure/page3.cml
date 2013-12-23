@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>From DNA to Proteins: Translation</page_title>
+<bg_color><Red>244</Red><Green>245</Green><Blue>239</Blue></bg_color>
+<text>
+ 
+   
+(Note: The sources of the mRNA nucleotides and the amino acids are not shown, 
+but they are normally found floating around inside of the cell.)
+
+         
+or 
+   
+
+
+</text>
+<section start="0" end="173">
+<paragraph start="0" end="1">
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="3">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>750.0</width>
+<height>215.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    &lt;link type=&quot;text/css&quot; href=&quot;bioStyles.css&quot; rel=&quot;stylesheet&quot;&gt;
+    
+  &lt;/head&gt;
+  &lt;body marginheight=&quot;4&quot; marginwidth=&quot;10&quot;&gt;
+    &lt;p class=&quot;firstp&quot;&gt;
+      Use the model below to control both steps in the pathway from DNA to 
+      protein: First, transcription, pairing of RNA nucleotides with a DNA 
+      template strand to make an mRNA, and Second, translation, using the mRNA 
+      sequence information to link amino acids together to make a protein.&lt;br&gt;&lt;b&gt;What 
+      to do: &lt;/b&gt;&lt;br&gt;
+    &lt;/p&gt;
+    &lt;ol&gt;
+      &lt;li&gt;
+        Run the model by clicking the &lt;b&gt;Transcribe&lt;/b&gt; button.
+      &lt;/li&gt;
+      &lt;li&gt;
+        Then use the &lt;b&gt;Translate&lt;/b&gt; button to see amino acids being linked 
+        together into a protein.
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;b&gt;Reset&lt;/b&gt; the model and repeat the processes, but this time, &lt;b&gt;use 
+        the Translate step-by-step button&lt;/b&gt;, watching carefully to see how 
+        translation proceeds. Note that the codon being translated is the one 
+        in the center of the ribosome (green box).
+      &lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<bgcolor>-131415</bgcolor>
+<border>Raised Bevel</border>
+</component></content>
+
+<content start="2" end="3">
+</content>
+
+</paragraph>
+<paragraph start="3" end="7">
+<Alignment>1</Alignment>
+<SpaceBelow>5.0</SpaceBelow>
+<content start="3" end="4">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>125.0</width>
+<height>310.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;img src=&quot;nucleotideKeyExtended.gif&quot;&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="4" end="5">
+</content>
+
+<content start="5" end="6">
+<component><class>org.concord.mw2d.activity.AtomContainer</class>
+<resource>page3$0.mml</resource><menubar>false</menubar><statusbar>false</statusbar><recorderless>true</recorderless>
+<dna>ATGCCAGGCGGCGAGAGCTTGCTAATTGGCTTATAG</dna><dna_dt1>200</dna_dt1><dna_dt2>1000</dna_dt2><dna_context>false</dna_context></component></content>
+
+<content start="6" end="7">
+</content>
+
+</paragraph>
+<paragraph start="7" end="86">
+<Alignment>1</Alignment>
+<content start="7" end="8">
+</content>
+
+<content start="8" end="12">
+<bold>true</bold></content>
+
+<content start="12" end="86">
+</content>
+
+</paragraph>
+<paragraph start="86" end="151">
+<Alignment>1</Alignment>
+<content start="86" end="151">
+</content>
+
+</paragraph>
+<paragraph start="151" end="152">
+<Alignment>1</Alignment>
+<content start="151" end="152">
+</content>
+
+</paragraph>
+<paragraph start="152" end="162">
+<Alignment>1</Alignment>
+<SpaceBelow>5.0</SpaceBelow>
+<content start="152" end="153">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Transcribe</title>
+<tooltip>Transcribe </tooltip>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Transcribe DNA to mRNA</action>
+</component></content>
+
+<content start="153" end="154">
+</content>
+
+<content start="154" end="155">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Translate </title>
+<tooltip>Translate mRNA to protein</tooltip>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Translate mRNA to protein (without removing existing setup)</action>
+</component></content>
+
+<content start="155" end="156">
+</content>
+
+<content start="156" end="157">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Stop the model</title>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Stop DNA transcription or translation</action>
+</component></content>
+
+<content start="157" end="158">
+</content>
+
+<content start="158" end="159">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Reset the model</title>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Reset protein synthesis simulation</action>
+</component></content>
+
+<content start="159" end="162">
+</content>
+
+</paragraph>
+<paragraph start="162" end="166">
+<Alignment>1</Alignment>
+<SpaceBelow>5.0</SpaceBelow>
+<content start="162" end="166">
+</content>
+
+</paragraph>
+<paragraph start="166" end="170">
+<Alignment>1</Alignment>
+<SpaceBelow>5.0</SpaceBelow>
+<content start="166" end="167">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Transcribe step by step</title>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Transcribe step by step</action>
+</component></content>
+
+<content start="167" end="168">
+</content>
+
+<content start="168" end="169">
+<component><class>org.concord.modeler.PageButton</class>
+<title>Translate step by step</title>
+<opaque>false</opaque>
+<modelclass>org.concord.mw2d.models.MolecularModel</modelclass>
+<model>0</model>
+<action>Translate step by step</action>
+</component></content>
+
+<content start="169" end="170">
+</content>
+
+</paragraph>
+<paragraph start="170" end="171">
+<Alignment>1</Alignment>
+<SpaceBelow>5.0</SpaceBelow>
+<content start="170" end="171">
+</content>
+
+</paragraph>
+<paragraph start="171" end="172">
+<content start="171" end="172">
+<size>10</size></content>
+
+</paragraph>
+<paragraph start="172" end="173">
+</paragraph>
+</section>
+</document>
