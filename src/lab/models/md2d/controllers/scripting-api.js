@@ -17,7 +17,7 @@ define(function (require) {
   */
   return function MD2DScriptingAPI (parent) {
 
-    var dnaEditDialog = new DNAEditDialog(parent.model),
+    var dnaEditDialog = null,
         // whether we are currently processing a batch command, suppresses repaint
         batchDepth = 0;
 
@@ -625,7 +625,10 @@ define(function (require) {
       /**
         Opens DNA properties dialog, which allows to set DNA code.
       */
-      openDNADialog: function showDNADialog() {
+      openDNADialog: function openDNADialog() {
+        if (dnaEditDialog == null) {
+          dnaEditDialog = new DNAEditDialog(parent.model);
+        }
         dnaEditDialog.open();
       },
 
