@@ -144,12 +144,6 @@
       "action": "stop()"
     },
     {
-      "type": "button",
-      "id": "reset-model",
-      "text": "Reset",
-      "action": "reset()"
-    },
-    {
       "type": "slider",
       "id": "select-light-source-frequency",
       "min": 1,
@@ -179,7 +173,7 @@
       ]
     ],
     "bottom": [
-      ["enable-light-source", "stop-model", "reset-model"],
+      ["enable-light-source", "stop-model"],
       ["select-light-source-frequency"]
     ]
   },
