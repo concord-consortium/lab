@@ -37,7 +37,7 @@ define(function (require) {
 
       model.addObserver('needsReload', function() {
         if (model.properties.needsReload) {
-          controller.reload();
+          interactiveController.reloadModel();
         }
       });
 
@@ -50,7 +50,7 @@ define(function (require) {
     }
 
     setupModelObservers();
-    controller.on('modelLoaded.sensor-model-controller', setupModelObservers);
+    interactiveController.on('modelLoaded.sensor-model-controller', setupModelObservers);
 
     interactiveController.on('modelReset.sensor-model-controller', function() {
       controller.model.set('isNewRunInProgress', false);

@@ -130,7 +130,7 @@
       "id": "reset-barrier",
       "text": "Reset experiment",
       "action": [
-        "reload();"
+        "reloadModel();"
       ]
     },
     {

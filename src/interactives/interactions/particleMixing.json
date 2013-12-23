@@ -358,7 +358,7 @@
       "id": "reset",
       "text": "Reset",
       "action": [
-        "reload();"
+        "reloadModel();"
       ]
     },
     {

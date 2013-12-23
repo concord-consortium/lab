@@ -452,7 +452,7 @@ define(function (require) {
            *                         * cause - cause of the reload action, it can be e.g. "reload"
            *                           or "new-run". It will be passed to "modelLoaded" event handlers.
            */
-          reload: function reload(options) {
+          reloadModel: function reloadModel(options) {
             interactivesController.reloadModel(options);
           },
 

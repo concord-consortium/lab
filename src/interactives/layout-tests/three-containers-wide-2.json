@@ -117,7 +117,7 @@
       "id": "reset-experiment",
       "text": "Reset experiment",
       "action": [
-        "reload();",
+        "reloadModel();",
         "set('experimentRunning', false);"
       ]
     },
