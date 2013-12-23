@@ -171,7 +171,7 @@
       "text": "New Run",
       "tooltip": "Set up a new experiment run.",
       "action": [
-        "reset({",
+        "reload({",
         "  parametersToRetain: ['gravity', 'ballMass', 'springConstant', 'startingDisplacement', 'damping','experimentDuration', 'durationEnabled'],",
         "  cause: 'new-run'",
         "});"
