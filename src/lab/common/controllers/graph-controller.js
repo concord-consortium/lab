@@ -187,6 +187,7 @@ define(function (require) {
         model.on('invalidation.'+namespace, function() {
           removeDataAfterStepPointer();
         });
+        model.on('reset.'+namespace, modelResetHandler);
       }
     }
 
@@ -206,6 +207,20 @@ define(function (require) {
     function setYLabelFromProperty() {
       var description = model.getPropertyDescription(yLabelProperty);
       grapher.yLabel(description.getLabel() + " (" + description.getUnitAbbreviation() + ")");
+    }
+
+    function modelResetHandler() {
+      if (grapher) {
+        if (component.clearOnModelReset) {
+          resetData();
+          if (component.resetAxesOnReset) {
+            resetGrapher();
+          }
+        }
+      } else {
+        grapher = new Graph($container[0], getOptions(), undefined, interactivesController.getNextTabIndex());
+      }
+      updateYLabelHandler();
     }
 
     controller = {
