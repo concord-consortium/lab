@@ -27,13 +27,13 @@
    <int>2</int> 
   </void> 
   <void property="epsilon"> 
-   <double>0.0010</double> 
+   <double>0.02</double> 
   </void> 
   <void property="mass"> 
-   <double>3.0</double> 
+   <double>4.0</double> 
   </void> 
   <void property="sigma"> 
-   <double>21.0</double> 
+   <double>20.0</double> 
   </void> 
  </object> 
  <object id="Element3" class="org.concord.mw2d.models.Element"> 
