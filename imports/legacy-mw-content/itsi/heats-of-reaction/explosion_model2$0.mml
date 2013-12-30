@@ -354,6 +354,14 @@
   <void property="displayStyle"> 
    <byte>2</byte> 
   </void> 
+  <void property="elementColors"> 
+   <void index="1"> 
+    <int>-9066941</int> 
+   </void> 
+   <void index="2"> 
+    <int>-16776961</int> 
+   </void> 
+  </void> 
   <void property="fillMode"> 
    <object class="org.concord.modeler.draw.FillMode$ColorFill"> 
     <void property="color"> 
