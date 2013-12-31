@@ -3,7 +3,7 @@
 define(function (require){
   var structuredClone = require('iframe-phone/structured-clone');
 
-  return function IFramePhone(iframe, modelLoadedCallback, afterConnectedCallback) {
+  return function IFramePhone(iframe, afterConnectedCallback, modelLoadedCallback) {
     var selfOrigin   = window.location.href.match(/(.*?\/\/.*?)\//)[1],
         postMessageQueue = [],
         connected = false,
