@@ -106,7 +106,7 @@
       "max": 75,
       "labels": 0,
       "barWidth": "1.5em",
-      "title": "Kinetic Energy",
+      "title": "Kinetic energy",
       "property": "kineticEnergy",
       "averagePeriod": 2500
     },
@@ -117,7 +117,7 @@
       "max": 0,
       "labels": 0,
       "barWidth": "1.5em",
-      "title": "Potential Energy",
+      "title": "Potential energy",
       "property": "potentialEnergy",
       "averagePeriod": 2500
     },
