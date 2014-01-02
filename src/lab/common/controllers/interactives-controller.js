@@ -112,6 +112,7 @@ define(function (require) {
         componentModelLoadedCallbacks = [],
         willResetModelCallbacks = [],
         ignoreModelResetEvent = false,
+        initialModelLoad,
 
         // Hash of instantiated components.
         // Key   - component ID.
@@ -459,6 +460,11 @@ define(function (require) {
       aboutDialog = new AboutDialog(viewSelector);
       shareDialog = new ShareDialog(viewSelector);
 
+      // Each time we load a new interactive, we assume that it would be an "initial" model load.
+      // This flag is used to decide whether parameters should be retained or not.
+      // During the initial model load we obviously don't want to retain parameters.
+      initialModelLoad = true;
+
       function nextStep() {
         // Save initial interactive config for reload method.
         initialInteractiveConfig = $.extend(true, {}, controller.interactive);
@@ -612,28 +618,24 @@ define(function (require) {
 
       @param: currentModelID.
       @optionalParam modelObject
-      @optionalParam parameters   parameter values to copy to the loaded model
+      @optionalParam additionalPropertiesToRetain properties that should be retained during load
+                     process except from ones defined in 'parametersToRetain' interactive section
       @optionalParam cause cause of the load (can be load, reload or custom)
     */
-    function loadModel(id, modelConfig, parameters, cause) {
+    function loadModel(id, modelConfig, additionalPropertiesToRetain, cause) {
       var modelDefinition = getModelDefinition(id),
           interactiveViewOptions,
           interactiveModelOptions,
-          parameterValues = [];
+          retainedProperties;
 
-      // Ensure that model load is always the same if it's desired ("randomSeed" paramenter
+      // Ensure that model load is always the same if it's desired ("randomSeed" parameter
       // is provided).
       generateRandomSeed();
 
-      // TODO remove this "feature" when interactives can maintain their own
-      //      interactive level parameters (see loadModel in scriptingAPI too)
-      if (parameters) {
-        for (var i = 0; i < parameters.length; i++) {
-          parameterValues.push({
-            "name": parameters[i],
-            "value": model.get(parameters[i])
-          });
-        }
+      // Check initialModelLoad flag. If it's equal to false, it means that it's a subsequent model
+      // load and properties really can be retained.
+      if (!initialModelLoad) {
+        retainedProperties = getRetainedProperties(additionalPropertiesToRetain);
       }
 
       currentModelID = id;
@@ -655,14 +657,14 @@ define(function (require) {
       // Load provided modelConfig (highest priority), model definition placed directly inside
       // interactive JSON or model defined by URL.
       if (modelConfig) {
-        finishWithLoadedModel(modelDefinition.url, modelConfig, parameterValues, cause);
+        finishWithLoadedModel(modelDefinition.url, modelConfig, retainedProperties, cause);
       } if (modelDefinition.model) {
-        finishWithLoadedModel(modelDefinition.url, modelDefinition.model, parameterValues, cause);
+        finishWithLoadedModel(modelDefinition.url, modelDefinition.model, retainedProperties, cause);
       } else if (modelDefinition.url) {
         $.get(labConfig.actualRoot + modelDefinition.url).done(function(modelConfig) {
           // Deal with the servers that return the json as text/plain
           modelConfig = typeof modelConfig === 'string' ? JSON.parse(modelConfig) : modelConfig;
-          finishWithLoadedModel(modelDefinition.url, modelConfig, parameterValues, cause);
+          finishWithLoadedModel(modelDefinition.url, modelConfig, retainedProperties, cause);
         }).fail(function() {
           modelConfig = {
             "type": "md2d",
@@ -701,7 +703,7 @@ define(function (require) {
               ]
             }
           };
-          finishWithLoadedModel(modelDefinition.url, modelConfig, parameterValues, cause);
+          finishWithLoadedModel(modelDefinition.url, modelConfig, retainedProperties, cause);
         });
       }
 
@@ -757,7 +759,7 @@ define(function (require) {
         return modelOptions;
       }
 
-      function finishWithLoadedModel(modelUrl, modelConfig, parameterValues, cause) {
+      function finishWithLoadedModel(modelUrl, modelConfig, retainedProperties, cause) {
         var modelOptions = processOptions(modelConfig, interactiveModelOptions, interactiveViewOptions);
 
         if (modelController) {
@@ -782,12 +784,8 @@ define(function (require) {
 
         initializeModelOutputsAndParameters();
 
-        // update the parameterValues if values have been provided, e.g. if some parameter values
-        // were retained when loading a model using a radio controller
-        if (parameterValues) {
-          for (i = 0; i < parameterValues.length; i++) {
-            model.set(parameterValues[i].name, parameterValues[i].value);
-          }
+        if (retainedProperties) {
+          model.set(retainedProperties);
         }
 
         // We call component loaded callbacks before onLoad scripts because some onLoad scripts
@@ -796,7 +794,7 @@ define(function (require) {
         // experiment controller is being used).
         // TODO FIXME: components should be fully functional even before model is loaded for
         // the first time.
-        for(i = 0; i < componentModelLoadedCallbacks.length; i++) {
+        for(var i = 0; i < componentModelLoadedCallbacks.length; i++) {
           componentModelLoadedCallbacks[i](model, scriptingAPI);
         }
 
@@ -824,6 +822,9 @@ define(function (require) {
         modelController.initializeView();
 
         dispatch.interactiveRendered();
+
+        // Each subsequent model won't be treated as initial one so e.g. properties can be retained.
+        initialModelLoad = false;
       }
     }
 
@@ -1029,19 +1030,19 @@ define(function (require) {
       model.set(initialValues);
     }
 
-    function allParametersExcept(exceptions) {
-      var exceptionsByName = {};
+    function getRetainedProperties(additionalProps) {
+      function concatWithoutDuplicates() {
+        var arr, set = {};
+        for (var i = 0, ii = arguments.length; i < ii; i++) {
+          arr = arguments[i];
+          for (var j = 0, jj = arr.length; j < jj; j++) {
+            set[arr[j]] = true;
+          }
+        }
+        return Object.keys(set);
+      }
 
-      exceptions.forEach(function(exception) {
-        exceptionsByName[exception] = true;
-      });
-
-      return Object.keys(customParametersByName).filter(function(key) {
-        return !exceptionsByName[key];
-      });
-    }
-
-    function getProperties(propertyKeys) {
+      var propertyKeys = concatWithoutDuplicates(interactive.propertiesToRetain, additionalProps || []);
       var properties = {};
 
       propertyKeys.forEach(function(key) {
@@ -1128,67 +1129,24 @@ define(function (require) {
       },
 
       /**
-        Reset the model to its initial state, restoring or retaining model parameters according to
-        these options. The interactives controller will emit a 'willResetModel'. The willResetModel
-        observers can ask to wait for asynchronous confirmation before the model is actually reset;
-        see the notifyWillResetModelAnd function.
-
-        Once the reset is confirmed, model will issue a 'willReset' event, reset its tick history,
-        and emit a 'reset' event.
-
-        Options:
-          parametersToRetain:
-            a list of parameters to save before the model reset and restore after reset
-            if the value is 'all', retain all parameters
-
-          parametersToReset:
-           (mutually exclusive with parametersToRetain)
-            a list of parameters to reset to their initial values after the model reset
-            if the value is 'all', reset all parameters
-
-          cause:
-            optional string giving the cause of the reset, e.g., "new-run"
+       * Reset the model to its initial state, restoring or retaining model parameters according to
+       * these options. The interactives controller will emit a 'willResetModel'. The willResetModel
+       * observers can ask to wait for asynchronous confirmation before the model is actually reset;
+       * see the notifyWillResetModelAnd function.
+       *
+       * Once the reset is confirmed, model will issue a 'willReset' event, reset its tick history,
+       * and emit a 'reset' event.
+       *
+       * @param {object} options hash of options, supported properties:
+       *                         * parametersToRetain - a list of parameters to save before
+       *                           the model reset and restore after reset.
+       *                         * cause - cause of the reset action, e.g. "new-run".
       */
       resetModel: function(options) {
         model.stop();
         notifyWillResetModelAnd(function() {
           options = options || {};
-
-          var parameters;
-
-          // Option processing.
-          var parametersToRetain = options.parametersToRetain;
-          var parametersToReset = options.parametersToReset;
-
-          if (parametersToReset && parametersToRetain) {
-            throw new Error("resetModel: parametersToReset and parametersToRetain are mutually exclusive");
-          }
-
-          // default behavior is to reset all parameters
-          if (!parametersToRetain && !parametersToReset) {
-            parametersToReset = 'all';
-          }
-
-          if (parametersToRetain === 'all') {
-            parametersToRetain = undefined;
-            parametersToReset = [];
-          }
-
-          if (parametersToReset === 'all') {
-            parametersToRetain = [];
-            parametersToReset = undefined;
-          }
-
-          // Invariants (assuming correct input):
-          // 1. exactly one of (parametersToReset, parametersToRetain) is defined
-          // 2. for each x in (parametersToReset, parametersToRetain), x is defined => x is an array
-
-          // identify the complete list of parametersToRetain (whose values need to be saved)
-          if (parametersToReset) {
-            parametersToRetain = allParametersExcept(parametersToReset);
-          }
-
-          parameters = getProperties(parametersToRetain);
+          var retainedProperties = getRetainedProperties(options.parametersToRetain);
 
           // Consumers of the model's events will see a reset event followed by the invalidation event
           // emitted when we set the model's parameters to their desired initial state. That's because
@@ -1207,7 +1165,7 @@ define(function (require) {
           ignoreModelResetEvent = true;
 
           modelController.reset(options.cause);
-          model.set(parameters);
+          model.set(retainedProperties);
           notifyModelResetCallbacks(options.cause);
 
           ignoreModelResetEvent = false;
@@ -1316,6 +1274,7 @@ define(function (require) {
           // Node that modelDefinitions section can also contain custom parameters definition. However, their initial values
           // should be already updated (take a look at the beginning of this function), so we can just serialize whole array.
           models: $.extend(true, [], interactive.models),
+          propertiesToRetain: $.extend(true, [], interactive.propertiesToRetain),
           // All used parameters are already updated, they contain currently used values.
           parameters: $.extend(true, [], interactive.parameters),
           // Outputs are directly bound to the model, we can copy their initial definitions.

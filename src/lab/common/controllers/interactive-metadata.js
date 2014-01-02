@@ -68,6 +68,11 @@ define(function() {
         defaultValue: []
       },
 
+      propertiesToRetain: {
+        // List of properties that should be retained during model reload or reset.
+        defaultValue: []
+      },
+
       outputs: {
         // List of outputs.
         defaultValue: []
