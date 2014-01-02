@@ -37,7 +37,7 @@
     "vows": "0.7.0",
     "node-inspector": "0.3.4",
     "jshint": ">=2.1.10",
-    "cheerio": ">=0.12.1",
+    "cheerio": "0.12.4",
     "jade": ">=0.35.0",
     "mkdirp": "0.3.2",
     "mocha": "1.12.x",
