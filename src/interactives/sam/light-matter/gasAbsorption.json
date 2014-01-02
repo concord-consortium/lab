@@ -94,7 +94,21 @@
       "initialValue": null,
       "onChange": [
         "if (value !== get('loadedModelID')) {",
-        "  loadModel(value, ['lightSourceFrequency']);",
+        "  loadModel(value, ['lightSourceFrequency', 'isLightSourceEnabled']);",
+        "}"
+      ]
+    },
+    {
+      "name": "isLightSourceEnabled",
+      "initialValue": false,
+      "onChange": [
+        "if (value) {",
+        "  start();",
+        "  turnOnLightSource();",
+        "}",
+        "else {",
+        "  stop();",
+        "  turnOffLightSource();",
         "}"
       ]
     }
@@ -133,8 +147,7 @@
       "id": "enable-light-source",
       "text": "Shine light on mixture",
       "action": [
-        "start();",
-        "turnOnLightSource();"
+        "set('isLightSourceEnabled', true);"
       ]
     },
     {

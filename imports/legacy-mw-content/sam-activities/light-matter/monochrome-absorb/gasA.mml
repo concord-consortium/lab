@@ -685,7 +685,7 @@
     <void property="probabilityMap">
      <void method="put">
       <int>11</int>
-      <float>0.5</float>
+      <float>0</float>
      </void>
      <void method="put">
       <int>12</int>
