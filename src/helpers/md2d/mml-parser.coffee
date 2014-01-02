@@ -749,7 +749,8 @@ parseMML = (mmlString) ->
         imageX = parseFloat $image.find("[property=x]>double").text()
         imageY = parseFloat $image.find("[property=y]>double").text()
         [imageX, imageY] = toNextgenCoordinates imageX, imageY
-        images.push {imageUri: imageUri, imageHostIndex: imageHostIndex, imageHostType: imageHostType, imageLayer: imageLayer, imageLayerPosition: imageLayerPosition, imageX: imageX, imageY: imageY }
+        imageVisible = parseBoolean($image.find("[property=visible]>boolean").text())
+        images.push {imageUri: imageUri, imageHostIndex: imageHostIndex, imageHostType: imageHostType, imageLayer: imageLayer, imageLayerPosition: imageLayerPosition, imageX: imageX, imageY: imageY, visible: imageVisible }
 
     ###
       Text boxes. TODO: factor out pattern common to MML parsing of images and text boxes

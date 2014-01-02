@@ -94,7 +94,8 @@ define(function(require) {
           y:                y,
           referencePoint:   referencePoint,
           capturesPointer:  capturesPointer,
-          zOrder:           desc.imageLayerPosition || 0
+          zOrder:           desc.imageLayerPosition || 0,
+          visible:          desc.visible
         });
       });
 
@@ -180,6 +181,7 @@ define(function(require) {
             transform: translateImage,
             'pointer-events': function(d) { return d.capturesPointer ? 'auto' : 'none'; }
           });
+          images.style('display', function(d) { return d.visible ? '' : 'none'; });
 
           images.exit().remove();
         });
