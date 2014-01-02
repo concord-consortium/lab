@@ -12,23 +12,61 @@
       "url": "imports/legacy-mw-content/converted/interactions/exploring-electrons/electronProperties$0.json",
       "importedFrom": "imports/legacy-mw-content/interactions/exploring-electrons/electronProperties$0.mml",
       "viewOptions": {
-        "controlButtons": ""
+        "controlButtons": "",
+        "images": [
+          {
+            "imageUri": "plate_pos.png",
+            "imageHostIndex": 0,
+            "imageHostType": "",
+            "imageLayer": 1,
+            "imageLayerPosition": 1,
+            "imageX": 1,
+            "imageY": 2
+          },
+          {
+            "imageUri": "plate_neg.png",
+            "imageHostIndex": 0,
+            "imageHostType": "",
+            "imageLayer": 1,
+            "imageLayerPosition": 1,
+            "imageX": 1,
+            "imageY": 2
+          }
+        ]
       },
       "onLoad": [
         "var radius = getElementProperties(2).radius,",
         "    xMax = get('viewPortWidth') + get('viewPortX') + radius,",
         "    yMin = get('viewPortY') - radius,",
         "    yMax = yMin + get('viewPortHeight') + radius,",
-        "    eFieldProps = getShapeProperties(0);",
-        "setTextBoxProperties(1,{x: eFieldProps.x, width: eFieldProps.width, y: 3.1, text: '+ + + + + +', textAlign: 'center'});",
-        "setTextBoxProperties(0,{x: eFieldProps.x, width: eFieldProps.width, y: 0.95, text: '- - - - - - - -', textAlign: 'center'});",
+        "    eFieldProps = getShapeProperties(0),",
+        "    plateThickness = 0.2;",
+        "addShape({",
+        "  type: 'rectangle',",
+        "  x: eFieldProps.x,",
+        "  y: eFieldProps.y,",
+        "  width: eFieldProps.width,",
+        "  height: plateThickness,",
+        "  color: '#f00',",
+        "  lineColor: '#aaa'",
+        "});",
+        "addShape({",
+        "  type: 'rectangle',",
+        "  x: eFieldProps.x,",
+        "  y: eFieldProps.y + eFieldProps.height - plateThickness,",
+        "  width: eFieldProps.width,",
+        "  height: plateThickness,",
+        "  color: '#00f',",
+        "  lineColor: '#aaa'",
+        "});",
         "setElectricFieldProperties({orientation: 'S'});",
         "onPropertyChange('time',function(time){",
         "  var props = getAtomProperties(0);",
         "  if (props.x > xMax || props.y > yMax || props.y < yMin) {",
         "    stop();",
         "  }",
-        "});"
+        "});",
+        "set('plateChargeProxy',8);"
       ]
     }
   ],
@@ -64,7 +102,7 @@
     {
       "type": "button",
       "id": "send-mystery-particle",
-      "text": "Send mystery particle from Crookes tube",
+      "text": "Send cathode ray particle from Crookes tube",
       "action": [
         "if (getNumberOfAtoms()>0) {",
         "  untraceAtom(0);",
@@ -84,15 +122,15 @@
       "labels": [
         {
           "value": 1,
-          "label": "H"
+          "label": "Hydrogen"
         },
         {
           "value": 7,
-          "label": "Li"
+          "label": "Lithium"
         },
         {
           "value": 12,
-          "label": "C"
+          "label": "Carbon"
         }
       ],
       "property": "mysteryMass"
@@ -131,6 +169,12 @@
       ],
       "title": "Adjust charge on plates",
       "property": "plateChargeProxy"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable-weak-plates",
+      "text": "Weaker plates",
+      "property": "enableWeakPlates"
     }
   ],
   "parameters": [
@@ -150,6 +194,14 @@
       "onChange": "set('timeStep', value ? 0.1 : 1);"
     },
     {
+      "name": "enableWeakPlates",
+      "initialValue": false,
+      "onChange": [
+        "var currentPlateCharge = get('plateChargeProxy');",
+        "set('plateChargeProxy', currentPlateCharge);"
+      ]
+    },
+    {
       "name": "plateChargeProxy",
       "initialValue": 8,
       "onChange": [
@@ -159,20 +211,28 @@
         "    blue = 'rgb(' + s + ',' + s + ',' + x + ')',",
         "    red  = 'rgb(' + x + ',' + s + ',' + s + ')',",
         "    white = 'rgb(192,192,192)',",
-        "    negText = '- - - - - - - - -',",
-        "    posText = '+ + + + + +';",
+        "    shapePropsTop    = getShapeProperties(3),",
+        "    shapePropsBottom = getShapeProperties(2),",
+        "    negText = '',",
+        "    posText = '',",
+        "    plateStrengthScale = get('enableWeakPlates') ? 0.001 : 1;",
+        "if (!shapePropsTop.type) return;",
         "if (value < 0) {",
-        "  setTextBoxProperties(1,{backgroundColor: blue, text: negText});",
-        "  setTextBoxProperties(0,{backgroundColor: red,  text: posText});",
-        "  setElectricFieldProperties(0,{intensity: mag/100000, orientation: 'N'});",
+        "  setImageProperties(1,{imageY: shapePropsTop.y + shapePropsTop.height - 0.02, imageX: shapePropsTop.x + 0.05});",
+        "  setImageProperties(0,{imageY: shapePropsBottom.y + shapePropsBottom.height - 0.02, imageX: shapePropsBottom.x + 0.05});",
+        "  setShapeProperties(2,{color: blue});",
+        "  setShapeProperties(3,{color: red});",
+        "  setElectricFieldProperties(0,{intensity: mag/100000*plateStrengthScale, orientation: 'N'});",
         "} else if (value > 0) {",
-        "  setTextBoxProperties(0,{backgroundColor: blue, text: negText});",
-        "  setTextBoxProperties(1,{backgroundColor: red,  text: posText});",
-        "  setElectricFieldProperties(0,{intensity: mag/100000, orientation: 'S'});",
+        "  setImageProperties(0,{imageY: shapePropsTop.y + shapePropsTop.height - 0.02, imageX: shapePropsTop.x + 0.05});",
+        "  setImageProperties(1,{imageY: shapePropsBottom.y + shapePropsBottom.height - 0.02, imageX: shapePropsBottom.x + 0.05});",
+        "  setShapeProperties(2,{color: red});",
+        "  setShapeProperties(3,{color: blue});",
+        "  setElectricFieldProperties(0,{intensity: mag/100000*plateStrengthScale, orientation: 'S'});",
         "} else {",
-        "  setTextBoxProperties(0,{backgroundColor: white, text: ''});",
-        "  setTextBoxProperties(1,{backgroundColor: white, text: ''});",
-        "  setElectricFieldProperties(0,{intensity: mag/100000, orientation: 'N'});",
+        "  setImageProperties(0,{imageY: 10});",
+        "  setImageProperties(1,{imageY: 10});",
+        "  setElectricFieldProperties(0,{intensity: mag/100000*plateStrengthScale, orientation: 'N'});",
         "}"
       ]
     }
@@ -182,7 +242,8 @@
       ["send-neg-particle", "send-pos-particle"],
       ["label-atom-mass","set-atom-mass"],
       ["send-mystery-particle", "enable-slow-motion"],
-      ["set-charge-on-plates"]
+      ["set-charge-on-plates"],
+      ["enable-weak-plates"]
     ]
   },
   "template": [
