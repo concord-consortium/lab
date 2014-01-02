@@ -54,7 +54,8 @@
         "imageLayer": 2,
         "imageLayerPosition": 7,
         "imageX": 2.25,
-        "imageY": 3.64
+        "imageY": 3.64,
+        "visible": false
       },
       {
         "imageUri": "grooveHoriz.png",
@@ -63,7 +64,8 @@
         "imageLayer": 2,
         "imageLayerPosition": 8,
         "imageX": 4.07,
-        "imageY": 3.42
+        "imageY": 3.42,
+        "visible": false
       }
     ],
     "imageMapping": {},
@@ -74,9 +76,9 @@
         "y": 3.56,
         "layer": 1,
         "color": "rgb(255,255,255)",
+        "fontSize": 0.14,
         "hostType": "Atom",
         "hostIndex": 0,
-        "fontSize": 0.14,
         "anchor": "upper-left"
       },
       {
@@ -85,9 +87,9 @@
         "y": 3.74,
         "layer": 1,
         "color": "rgb(255,255,255)",
+        "fontSize": 0.14,
         "hostType": "Atom",
         "hostIndex": 1,
-        "fontSize": 0.14,
         "anchor": "upper-left"
       }
     ],
