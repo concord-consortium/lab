@@ -22,11 +22,7 @@
       "name": "vdg-visible",
       "initialValue": true,
       "onChange": [
-        "if (value) {",
-        "  setImageProperties(0,{imageX: 1.29, imageY: 1.36});",
-        "} else {",
-        "  setImageProperties(0,{imageX: 1, imageY: -10});",
-        "}"
+        "setImageProperties(0,{visible: value});"
       ]
     }
   ],
