@@ -14,7 +14,7 @@
       ],
       "model": {
         "useChemicalReactions": true,
-        "targetTemperature": 4000,
+        "targetTemperature": 1000,
         "chemicalReactions": {},
         "timeStep": 0.5,
         "width": 10,
@@ -117,6 +117,26 @@
       "id": "heat-bath-checbox",
       "text": "Heat bath",
       "property": "temperatureControl"
+    },
+    {
+      "type": "slider",
+      "id": "temp-slider",
+      "min": 100,
+      "max": 2000,
+      "displayValue": "return format('.0f')(value)",
+      "labels": [
+        {
+          "value": 100,
+          "label": "100"
+        },
+        {
+          "value": 2000,
+          "label": "2000"
+        }
+      ],
+      "steps": 19,
+      "title": "Temperature (K)",
+      "property": "targetTemperature"
     },
     {
       "type": "text",
@@ -282,7 +302,7 @@
   ],
   "layout": {
     "under-model": [
-      "heat-bath-checbox"
+      "heat-bath-checbox", "temp-slider"
     ],
     "bottom": [
       "energy-graph"
