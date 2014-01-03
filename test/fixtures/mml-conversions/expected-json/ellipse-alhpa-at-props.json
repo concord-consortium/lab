@@ -56,7 +56,7 @@
         "imageLayerPosition": 9,
         "imageX": 4.21,
         "imageY": 1.72,
-        "visible": false
+        "visible": true
       },
       {
         "imageUri": "p1.gif",
@@ -66,7 +66,7 @@
         "imageLayerPosition": 10,
         "imageX": 4.37,
         "imageY": 1.72,
-        "visible": false
+        "visible": true
       },
       {
         "imageUri": "n0.gif",
@@ -76,7 +76,7 @@
         "imageLayerPosition": 11,
         "imageX": 4.53,
         "imageY": 1.72,
-        "visible": false
+        "visible": true
       }
     ],
     "imageMapping": {},

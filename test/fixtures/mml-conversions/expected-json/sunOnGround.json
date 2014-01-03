@@ -54,7 +54,7 @@
         "imageLayer": 1,
         "imageX": 2.96,
         "imageY": 3.26,
-        "visible": false
+        "visible": true
       }
     ],
     "imageMapping": {},

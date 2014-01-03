@@ -55,7 +55,7 @@
         "imageLayerPosition": 7,
         "imageX": 2.25,
         "imageY": 3.64,
-        "visible": false
+        "visible": true
       },
       {
         "imageUri": "grooveHoriz.png",
@@ -65,7 +65,7 @@
         "imageLayerPosition": 8,
         "imageX": 4.07,
         "imageY": 3.42,
-        "visible": false
+        "visible": true
       }
     ],
     "imageMapping": {},

@@ -55,7 +55,7 @@
         "imageLayer": 1,
         "imageX": 0.12,
         "imageY": 2.55,
-        "visible": false
+        "visible": true
       },
       {
         "imageUri": "above-top.png",
@@ -65,7 +65,7 @@
         "imageLayerPosition": 1,
         "imageX": 1.73,
         "imageY": 2.76,
-        "visible": false
+        "visible": true
       },
       {
         "imageUri": "beneath-bottom.png",
@@ -75,7 +75,7 @@
         "imageLayerPosition": 2,
         "imageX": 0.18,
         "imageY": 1.28,
-        "visible": false
+        "visible": true
       },
       {
         "imageUri": "beneath-top.png",
@@ -85,7 +85,7 @@
         "imageLayerPosition": 3,
         "imageX": 1.88,
         "imageY": 1.42,
-        "visible": false
+        "visible": true
       }
     ],
     "imageMapping": {},

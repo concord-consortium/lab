@@ -749,7 +749,7 @@ parseMML = (mmlString) ->
         imageX = parseFloat $image.find("[property=x]>double").text()
         imageY = parseFloat $image.find("[property=y]>double").text()
         [imageX, imageY] = toNextgenCoordinates imageX, imageY
-        imageVisible = parseBoolean($image.find("[property=visible]>boolean").text())
+        imageVisible = parseBoolean($image.find("[property=visible]>boolean").text(), true)
         images.push {imageUri: imageUri, imageHostIndex: imageHostIndex, imageHostType: imageHostType, imageLayer: imageLayer, imageLayerPosition: imageLayerPosition, imageX: imageX, imageY: imageY, visible: imageVisible }
 
     ###
