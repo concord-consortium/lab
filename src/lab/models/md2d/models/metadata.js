@@ -822,6 +822,9 @@ define(function() {
       },
       imageLayerPosition: {
         defaultValue: 1
+      },
+      visible: {
+        defaultValue: 1
       }
     },
 
