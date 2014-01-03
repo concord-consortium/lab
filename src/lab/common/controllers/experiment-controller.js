@@ -183,7 +183,7 @@ define(function (require) {
       saveRun.setDisabled(true);
       nextRun.setDisabled(true);
       model.set('experimentCleared', false);
-      interactivesController.reloadModel({parametersToRetain: inputs, cause: "new-run"});
+      interactivesController.reloadModel({propertiesToRetain: inputs, cause: "new-run"});
       unfreezeInputParameters();
       addOlderRunsToGraph();
     }

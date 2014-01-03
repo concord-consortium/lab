@@ -179,7 +179,7 @@
       "text": "Reset",
       "action": [
         "resetModel({",
-        "  parametersToRetain: ['showElectricField', 'showForceVectors']",
+        "  propertiesToRetain: ['showElectricField', 'showForceVectors']",
         "});",
         "set('atomIndices',[]);",
         "set('atomOriginalSign',[]);"

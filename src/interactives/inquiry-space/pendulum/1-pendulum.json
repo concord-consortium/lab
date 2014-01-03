@@ -167,7 +167,7 @@
       "tooltip": "Set up a new experiment run.",
       "action": [
         "reloadModel({",
-        "  parametersToRetain: ['gravity', 'rodLength', 'startingAngle', 'ballMass', 'damping','experimentDuration', 'durationEnabled'],",
+        "  propertiesToRetain: ['gravity', 'rodLength', 'startingAngle', 'ballMass', 'damping','experimentDuration', 'durationEnabled'],",
         "  cause: 'new-run'",
         "});"
       ]

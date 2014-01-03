@@ -97,7 +97,7 @@ helpers.withIsolatedRequireJSAndViewsMocked (requirejs) ->
           scriptingAPI.set "timeStep", 103
           scriptingAPI.set "targetTemperature", 104
           controller[action]({
-            parametersToRetain: ["parameter1", "timeStep"]
+            propertiesToRetain: ["parameter1", "timeStep"]
           })
           scriptingAPI.get("parameter1").should.eql 101
           scriptingAPI.get("parameter2").should.eql 2
@@ -115,7 +115,7 @@ helpers.withIsolatedRequireJSAndViewsMocked (requirejs) ->
           scriptingAPI.set "timeStep", 103
           scriptingAPI.set "targetTemperature", 104
           controller[action]({
-            parametersToRetain: ["timeStep"]
+            propertiesToRetain: ["timeStep"]
           })
           scriptingAPI.get("parameter1").should.eql 101
           scriptingAPI.get("parameter2").should.eql 2

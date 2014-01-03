@@ -620,7 +620,7 @@ define(function (require) {
       @param: currentModelID.
       @optionalParam modelObject
       @optionalParam additionalPropertiesToRetain properties that should be retained during load
-                     process except from ones defined in 'parametersToRetain' interactive section
+                     process except from ones defined in 'propertiesToRetain' interactive section
       @optionalParam cause cause of the load (can be load, reload or custom)
     */
     function loadModel(id, modelConfig, additionalPropertiesToRetain, cause) {
@@ -1114,7 +1114,7 @@ define(function (require) {
        * The willResetModel observers can ask to wait for asynchronous confirmation before the model
        * is actually reset; see the notifyWillResetModelAnd function.
        * @param  {object} options hash of options, supported properties:
-       *                         * parametersToRetain - a list of parameters to save before
+       *                         * propertiesToRetain - a list of properties to save before
        *                           the model reload and restore after reload.
        *                         * cause - cause of the reload action, it can be e.g. "reload"
        *                           or "new-run". It will be passed to "modelLoaded" event handlers.
@@ -1128,21 +1128,20 @@ define(function (require) {
           // Ensure that model reload is always the same if it's desired ("randomSeed" paramenter
           // is provided).
           generateRandomSeed();
-          controller.loadModel(currentModelID, initialModelConfig, options.parametersToRetain, options.cause);
+          controller.loadModel(currentModelID, initialModelConfig, options.propertiesToRetain, options.cause);
         });
       },
 
       /**
-       * Reset the model to its initial state, restoring or retaining model parameters according to
-       * these options. The interactives controller will emit a 'willResetModel'. The willResetModel
-       * observers can ask to wait for asynchronous confirmation before the model is actually reset;
-       * see the notifyWillResetModelAnd function.
+       * Reset the model to its initial state. The interactives controller will emit
+       * a 'willResetModel'. The willResetModel observers can ask to wait for asynchronous
+       * confirmation before the model is actually reset; see the notifyWillResetModelAnd function.
        *
        * Once the reset is confirmed, model will issue a 'willReset' event, reset its tick history,
        * and emit a 'reset' event.
        *
        * @param {object} options hash of options, supported properties:
-       *                         * parametersToRetain - a list of parameters to save before
+       *                         * propertiesToRetain - a list of properties to save before
        *                           the model reset and restore after reset.
        *                         * cause - cause of the reset action, e.g. "new-run".
       */
@@ -1150,7 +1149,7 @@ define(function (require) {
         model.stop();
         notifyWillResetModelAnd(function() {
           options = options || {};
-          var retainedProperties = getRetainedProperties(options.parametersToRetain);
+          var retainedProperties = getRetainedProperties(options.propertiesToRetain);
 
           // Consumers of the model's events will see a reset event followed by the invalidation event
           // emitted when we set the model's parameters to their desired initial state. That's because

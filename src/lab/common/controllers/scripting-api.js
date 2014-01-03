@@ -447,7 +447,7 @@ define(function (require) {
            * The willResetModel observers can ask to wait for asynchronous confirmation before
            * the model is actually reloaded.
            * @param  {object} options hash of options, supported properties:
-           *                         * parametersToRetain - a list of parameters to save before
+           *                         * propertiesToRetain - a list of properties to save before
            *                           the model reload and restore after reload.
            *                         * cause - cause of the reload action, it can be e.g. "reload"
            *                           or "new-run". It will be passed to "modelLoaded" event handlers.
@@ -465,7 +465,7 @@ define(function (require) {
            * authoring is that when .resetModel() is called, the "onLoad" script won't be
            * executed again.
            * @param  {object} options hash of options, supported properties:
-           *                         * parametersToRetain - a list of parameters to save before
+           *                         * propertiesToRetain - a list of properties to save before
            *                           the model reset and restore after reset.
            *                         * cause - cause of the reset action.
            */
