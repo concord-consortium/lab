@@ -17,6 +17,7 @@ define(function (require) {
         formatters,
         tableData,
         headerData,
+        id,
         namespace = "tableController" + (++tableControllerCount);
 
     function initialize() {
@@ -31,6 +32,8 @@ define(function (require) {
       rowIndex = 0;
       tableData = $.extend(true, [], component.tableData);
       headerData = $.extend(true, [], component.headerData);
+
+      id = component.id;
 
       view = new TableView({
         id: component.id,
@@ -55,7 +58,7 @@ define(function (require) {
       formatters = [];
 
       if (component.indexColumn) {
-        columns.push("#");
+        columns.push({name: "#", emWidth: 1.5});
         formatters.push(d3.format("f"));
       }
 
@@ -69,17 +72,25 @@ define(function (require) {
             if (unitAbrev) {
               propertyTitle += ' (' + unitAbrev + ')';
             }
-            columns.push(propertyTitle);
+            console.log("propertyTitle = "+propertyTitle)
+            columns.push({name: propertyTitle});
             // formatters.push(propertyDescription.format);
             formatters.push(d3.format('.3r'));
           } else {
-            columns.push(component.propertyColumns[i]);
+            columns.push({name: component.propertyColumns[i]});
             formatters.push(d3.format('.3r'));
           }
         } else {
-          columns.push(component.propertyColumns[i]);
+          columns.push({name: component.propertyColumns[i]});
           formatters.push(d3.format('.3r'));
         }
+      }
+
+      for (i = 0; i < columns.length; i++) {
+        columns[i].id = component.id + "-column-" + i;
+        columns[i].field = component.id + "-column-" + i;
+        columns[i].sortable = true;
+        columns[i].editor = Slick.Editors.Text;
       }
     }
 
@@ -102,7 +113,9 @@ define(function (require) {
         rowData.push(model.get(component.propertyColumns[i]));
       }
       tableData.push(rowData);
-      view.appendDataRow(rowData, rowIndex);
+      view.updateTable({
+        tableData: tableData
+      });
     }
 
     function replacePropertyRow() {
@@ -115,11 +128,12 @@ define(function (require) {
       }
       if (tableData.length === 0) {
         tableData.push(rowData);
-        view.appendDataRow(rowData, rowIndex);
       } else {
         tableData[tableData.length-1] = rowData;
-        view.replaceDataRow(rowData, rowIndex);
       }
+      view.updateTable({
+        tableData: tableData
+      });
     }
 
     /**
@@ -128,6 +142,7 @@ define(function (require) {
       This is used when a change is made that invalidates the future data.
     */
     function removeDataAfterStepPointer() {
+      return;
       var ptr = model.stepCounter();
       if (tableData.length > ptr-1) {
         tableData.length = ptr;
@@ -141,6 +156,7 @@ define(function (require) {
       This desaturates the table region corresponding to times after the current point.
     */
     function redrawCurrentStepPointer() {
+      return;
       view.clearSelection();
       view.addSelection(model.stepCounter()+1);
     }
@@ -215,7 +231,13 @@ define(function (require) {
       /**
         Used when manually adding a row of property values to the table.
       */
-      appendDataPropertiesToComponent: appendPropertyRow,
+      appendDataPropertiesToComponent: function() {
+        if (component.addNewRows) {
+          appendPropertyRow.apply(this, arguments);
+        } else {
+          replacePropertyRow.apply(this, arguments);
+        }
+      },
 
       // Returns view container.
       getViewContainer: function () {

@@ -378,7 +378,7 @@
       "clearDataOnReset": true,
       "streamDataFromModel": true,
       "addNewRows": false,
-      "visibleRows": 1,
+      "height": "4.8em",
       "indexColumn": false,
       "propertyColumns": [
         "rodLength",
@@ -394,7 +394,6 @@
       "clearDataOnReset": false,
       "streamDataFromModel": false,
       "visibleRows": 4,
-      "height": "12em",
       "indexColumn": true,
       "propertyColumns": [
         "rodLength",
@@ -613,6 +612,7 @@
       "fontScale": "0.85",
       "bottom": "experiment-controls.bottom",
       "left": "experiment-controls.right",
+      "width": "model.width",
       "padding-top": "0.5em",
       "padding-left": "1.5em",
       "padding-right": "0.4em",

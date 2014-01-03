@@ -13,6 +13,9 @@ define(function(require) {
         height      = opts.height,
         tooltip     = opts.tooltip,
         klasses     = opts.klasses || [],
+        addNewRows  = opts.addNewRows || false,
+        tableId     = id + "-table",
+        grid,
         headerWidths,
         $el,
         $tableWrapper,
@@ -24,65 +27,6 @@ define(function(require) {
         tbodyPos,
         tbodyHeight,
         selected = [];
-
-    function renderColumnTitles() {
-      var i, $th;
-      $titlerow.find('th').remove("th");
-      for(i = 0; i < columns.length; i++) {
-        $th = $('<th>');
-        $th.text(columns[i]);
-        $th.click(columnSort);
-        $titlerow.append($th);
-      }
-    }
-
-    function columnSort(e) {
-      var $title = $(this),
-          ascending = "asc",
-          descending = "desc",
-          sortOrder;
-
-      sortOrder = ascending;
-      if ($title.hasClass(ascending)) {
-        $title.removeClass(ascending);
-        $title.addClass(descending);
-        sortOrder = descending;
-      } else if ($title.hasClass(descending)) {
-        $title.removeClass(descending);
-        $title.addClass(ascending);
-        sortOrder = ascending;
-      } else {
-        $title.addClass(descending);
-        sortOrder = descending;
-      }
-      $title.siblings().removeClass("sorted");
-      $bodyrows = $tbody.find("tr");
-      $bodyrows.tsort('td:eq('+$title.index()+')',
-        {
-          sortFunction:function(a, b) {
-            var anum = Math.abs(parseFloat(a.s)),
-                bnum = Math.abs(parseFloat(b.s));
-            if (sortOrder === ascending) {
-              return anum === bnum ? 0 : (anum > bnum ? 1 : -1);
-            } else {
-              return anum === bnum ? 0 : (anum < bnum ? 1 : -1);
-            }
-          }
-        }
-      );
-      $title.addClass("sorted");
-      e.preventDefault();
-    }
-
-    function alignColumnWidths() {
-      headerWidths = $thead.find('tr:first th').map(function() {
-        return $(this).width();
-      });
-
-      $tbody.find('tr:first td').each(function(i) {
-        $(this).width(headerWidths[i]);
-      });
-    }
 
     function getRowByIndex(rowIndex) {
       return $($tbody.find('tr')).filter(function() {
@@ -167,9 +111,6 @@ define(function(require) {
         $tr.append($td);
       }
       $tbody.append($tr);
-      if (tableData.length < 2) {
-        alignColumnWidths();
-      }
       $tr[0].scrollIntoView();
       clearSelection();
       addSelection(index);
@@ -196,12 +137,7 @@ define(function(require) {
     }
 
     function renderTableData() {
-      var i, rowData, $tr, $td;
-      $tbody.find('.data').remove();
-      if (!tableData) { return; }
-      for(i = 0; i < tableData.length; i++) {
-        appendDataRow(tableData[i], i);
-      }
+      grid.setData(tableData);
     }
 
     function calculateSizeAndPosition() {
@@ -209,63 +145,138 @@ define(function(require) {
       tbodyHeight = $tbody.height();
     }
 
+    function emToPx(input) {
+      var emSize = parseFloat($el.css("font-size"));
+      return input * emSize;
+    }
+
+    function fixColumnWidths() {
+      var cols = grid.getColumns(),
+          i;
+      for (i = 0; i < cols.length; i++) {
+        $($el.find(".slick-header-column")[i]).outerWidth(cols[i].width);
+      }
+
+      // for the moment, rm this as it messes up the header height
+      $el.find(".slick-sort-indicator").remove();
+    }
+
+    function fixRowHeights() {
+      $el.find(".slick-row, .slick-cell").css({height: "1.5em"})
+    }
+
     return {
-      render: function() {
-        var i, j, rowData, $title, $tr, $th, $td;
-        $el = $('<div>');
-        $table = $('<table>');
-        $tbody = $('<tbody>');
-        $titlerow  = $('<tr class="header">');
-        $thead = $('<thead>').append($titlerow);
-        $table
-          .append($thead)
-          .append($tbody);
-        renderColumnTitles();
-        renderTableData();
-        $tableWrapper = $('<div>')
-          .addClass("table-wrapper")
-          .append($table);
-        $el.attr('id', id);
-        if (title) {
-          $title = $('<div>')
-            .addClass("title")
-            .text(title);
-          $el.append($title);
+      render: function(parent) {
+        var tableHeight;
+
+        if (height) {
+          tableHeight = height;
+        } else {
+          tableHeight = (4 + 0.867 * visibleRows) + "em";
         }
-        $el.append($tableWrapper);
+
+        $el = $('<div>').attr('id', id)
+          .css({width: width, height: tableHeight});
+        $table = $('<div>').attr('id', tableId)
+          .css({width: '100%', height: '100%'})
+          .appendTo($el);
         for (i = 0; i < klasses.length; i++) {
           $el.addClass(klasses[i]);
         }
-        if (tooltip) {
-          $el.attr("title", tooltip);
-        }
-        if (width) {
-          $el.css("width", width);
-        }
-        if (height) {
-          $el.css("height", height);
-        }
-        $tbody.delegate("tr", "click", function(e) {
-          var ri = getRowIndexFromRow($(e.currentTarget));
-          if (!e.shiftKey && !e.metaKey) {
-            clearSelection();
-          }
-          addSelection(ri);
-          if (e.shiftKey) {
-            fillSelection();
-          }
-        });
-        calculateSizeAndPosition();
+
+        var options = {
+          editable: true,
+          enableAddRow: addNewRows,
+          enableCellNavigation: true,
+          asyncEditorLoading: false,
+          autoEdit: true,
+          forceFitColumns: true
+        };
+
+        tableData = [{},{},{}];
+        console.log(columns)
+        grid = new Slick.Grid($table, tableData, columns, options);
+
+        grid.onColumnsReordered.subscribe(fixColumnWidths);
+
         return $el;
+  //       <div style="width:600px;">
+  //   <div id="myGrid" style="width:100%;height:500px;"></div>
+  // </div>
+
+  //       var i, j, rowData, $title, $tr, $th, $td;
+  //       $el = $('<div>');
+  //       $table = $('<table>');
+  //       $tbody = $('<tbody>');
+  //       $titlerow  = $('<tr class="header">');
+  //       $thead = $('<thead>').append($titlerow);
+  //       $table
+  //         .append($thead)
+  //         .append($tbody);
+  //       renderTableData();
+  //       $tableWrapper = $('<div>')
+  //         .addClass("table-wrapper")
+  //         .append($table);
+  //       $el.attr('id', id);
+  //       if (title) {
+  //         $title = $('<div>')
+  //           .addClass("title")
+  //           .text(title);
+  //         $el.append($title);
+  //       }
+  //       $el.append($tableWrapper);
+  //       for (i = 0; i < klasses.length; i++) {
+  //         $el.addClass(klasses[i]);
+  //       }
+  //       if (tooltip) {
+  //         $el.attr("title", tooltip);
+  //       }
+  //       if (width) {
+  //         $el.css("width", width);
+  //       }
+  //       if (height) {
+  //         $el.css("height", height);
+  //       }
+  //       $tbody.delegate("tr", "click", function(e) {
+  //         var ri = getRowIndexFromRow($(e.currentTarget));
+  //         if (!e.shiftKey && !e.metaKey) {
+  //           clearSelection();
+  //         }
+  //         addSelection(ri);
+  //         if (e.shiftKey) {
+  //           fillSelection();
+  //         }
+  //       });
+  //       calculateSizeAndPosition();
+  //       return $el;
       },
 
       resize: function () {
-        var remainingHeight;
-        $table.height($tableWrapper.height());
-        remainingHeight = $table.height() - ($thead.outerHeight(true));
-        $tbody.height(remainingHeight - 6);
-        alignColumnWidths();
-        calculateSizeAndPosition();
+        var cols, i;
+
+        $("#"+tableId).width($("#"+id).width());
+        $("#"+tableId+" .slick-viewport").width($("#"+tableId).width());
+        // grid.autosizeColumns();
+
+        cols = grid.getColumns();
+
+        for (i = 0; i < cols.length; i++) {
+          if (cols[i].emWidth) {
+            cols[i].width = emToPx(cols[i].emWidth)
+          }
+        }
+
+        grid.setOptions({rowHeight: emToPx(1.5)});
+
+        grid.resizeCanvas();
+
+        fixColumnWidths();
+
+        // var remainingHeight;
+        // $table.height($tableWrapper.height());
+        // remainingHeight = $table.height() - ($thead.outerHeight(true));
+        // $tbody.height(remainingHeight - 6);
+        // calculateSizeAndPosition();
       },
 
       appendDataRow: appendDataRow,
@@ -282,10 +293,28 @@ define(function(require) {
         columns     = opts.columns || columns;
         formatters  = opts.formatters || formatters;
         tableData   = opts.tableData || tableData;
-        renderColumnTitles();
-        renderTableData();
-        alignColumnWidths();
-        calculateSizeAndPosition();
+        for (var i=0; i<tableData.length; i++) {
+          datum = tableData[i];
+          if (datum instanceof Array){
+            newDatum = {}
+            for (var j=0; j<datum.length; j++) {
+              newDatum[columns[j].id] = datum[j];
+            }
+            tableData[i] = newDatum;
+          }
+        }
+
+        grid.setColumns(columns);
+        grid.setData(tableData);
+        grid.render();
+
+        fixRowHeights();
+
+        // grid.resizeCanvas(); // calling this too fast causes shrinking....
+        window.grid = grid;
+        window.data = tableData;
+        window.el = $el;
+        window.resize = this.resize;
       }
 
     };

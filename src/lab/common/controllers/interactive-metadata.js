@@ -736,10 +736,9 @@ define(function() {
         defaultValue: []
       },
       width: {
-        defaultValue: "auto"
+        defaultValue: "100%"
       },
       height: {
-        defaultValue: "100%"
       },
       tooltip: {
         defaultValue: ""

@@ -198,6 +198,7 @@ test-src: test/layout.html \
 	public/vendor/jquery-ui/jquery-ui.min.js \
 	public/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js \
 	public/vendor/jquery-selectBoxIt/jquery.selectBoxIt.min.js \
+	public/vendor/slickgrid/slick.grid.css \
 	public/vendor/jquery-context-menu \
 	src/lab/lab.version.js \
 	src/lab/lab.config.js
@@ -444,6 +445,7 @@ public/vendor: \
 	public/vendor/jquery-ui/jquery-ui.min.js \
 	public/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js \
 	public/vendor/jquery-selectBoxIt/jquery.selectBoxIt.min.js \
+	public/vendor/slickgrid/slick.grid.css \
 	public/vendor/tinysort/jquery.tinysort.js \
 	public/vendor/jquery-context-menu \
 	public/vendor/science.js \
@@ -505,6 +507,13 @@ public/vendor/jquery-selectBoxIt/jquery.selectBoxIt.min.js: \
 
 public/vendor/jquery-selectBoxIt:
 	mkdir -p public/vendor/jquery-selectBoxIt
+
+public/vendor/slickgrid/slick.grid.css: \
+	public/vendor/slickgrid
+	cp vendor/slickgrid/slick.grid.css public/vendor/slickgrid
+
+public/vendor/slickgrid:
+	mkdir -p public/vendor/slickgrid
 
 public/vendor/jquery-context-menu:
 	mkdir -p public/vendor/jquery-context-menu
