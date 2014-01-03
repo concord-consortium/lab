@@ -100,6 +100,7 @@ define(function (require) {
     var interactive = {},
         controller = {},
         initialInteractiveConfig,
+        initialModelConfig,
         experimentController,
         experimentDefinition,
         modelController,
@@ -466,7 +467,7 @@ define(function (require) {
       initialModelLoad = true;
 
       function nextStep() {
-        // Save initial interactive config for reload method.
+        // Save initial interactive config for reload method (so it can be synchronous).
         initialInteractiveConfig = $.extend(true, {}, controller.interactive);
         // Validate interactive.
         controller.interactive = validateInteractive(controller.interactive);
@@ -658,7 +659,7 @@ define(function (require) {
       // interactive JSON or model defined by URL.
       if (modelConfig) {
         finishWithLoadedModel(modelDefinition.url, modelConfig, retainedProperties, cause);
-      } if (modelDefinition.model) {
+      } else if (modelDefinition.model) {
         finishWithLoadedModel(modelDefinition.url, modelDefinition.model, retainedProperties, cause);
       } else if (modelDefinition.url) {
         $.get(labConfig.actualRoot + modelDefinition.url).done(function(modelConfig) {
@@ -760,6 +761,9 @@ define(function (require) {
       }
 
       function finishWithLoadedModel(modelUrl, modelConfig, retainedProperties, cause) {
+        // Save initial model config for reload method (so it can be synchronous).
+        initialModelConfig = $.extend(true, {}, modelConfig);
+
         var modelOptions = processOptions(modelConfig, interactiveModelOptions, interactiveViewOptions);
 
         if (modelController) {
@@ -1124,7 +1128,7 @@ define(function (require) {
           // Ensure that model reload is always the same if it's desired ("randomSeed" paramenter
           // is provided).
           generateRandomSeed();
-          controller.loadModel(currentModelID, null, options.parametersToRetain, options.cause);
+          controller.loadModel(currentModelID, initialModelConfig, options.parametersToRetain, options.cause);
         });
       },
 
