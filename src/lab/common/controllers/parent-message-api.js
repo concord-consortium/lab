@@ -21,12 +21,12 @@ define(function(require) {
     // on message 'setFocus' call view.setFocus
     parentMessageController.addListener('setFocus', function(message) {
       var view = controller.modelController.modelContainer;
-      if (view.modelContainer && view.setFocus) {
+      if (view && view.setFocus) {
         view.setFocus();
       }
     });
 
-   // on message 'loadInteractive' call controller.loadInteractive
+    // on message 'loadInteractive' call controller.loadInteractive
     parentMessageController.addListener('loadInteractive', function(message) {
       if (controller && controller.loadInteractive) {
         controller.loadInteractive(message.data);
