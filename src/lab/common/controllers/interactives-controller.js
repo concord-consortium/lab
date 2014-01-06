@@ -123,6 +123,10 @@ define(function (require) {
         // Simple list of instantiated components.
         componentList = [],
 
+        // List of properties that are bound to components. Such properties are e.g. retained
+        // during model reset or reload.
+        propertiesBoundToComponents = [],
+
         // List of custom parameters which are used by the interactive.
         customParametersByName = [],
 
@@ -322,6 +326,11 @@ define(function (require) {
       // Save the new instance.
       componentByID[id] = comp;
       componentList.push(comp);
+      if (component.property) {
+        // All properties that are bound to some interactive component should be retained during
+        // model reset or reload.
+        propertiesBoundToComponents.push(component.property);
+      }
 
       // Register component modelLoaded callbacks if available.
       // FIXME. These callbacks should be event listeners.
@@ -581,8 +590,10 @@ define(function (require) {
       // Clear component instances.
       componentList = [];
       componentByID = {};
-      // And their onLoad callbacks (TODO REFACTOR ME)
+      // Their onLoad callbacks (TODO REFACTOR ME)
       componentModelLoadedCallbacks = [];
+      // And list of properties bound to components.
+      propertiesBoundToComponents = [];
 
       for (var i = 0, len = componentJsons.length; i < len; i++) {
         createComponent(componentJsons[i]);
@@ -1046,11 +1057,16 @@ define(function (require) {
         return Object.keys(set);
       }
 
-      var propertyKeys = concatWithoutDuplicates(interactive.propertiesToRetain, additionalProps || []);
+      var propertyKeys = concatWithoutDuplicates(interactive.propertiesToRetain,
+                                                 propertiesBoundToComponents,
+                                                 additionalProps || []);
       var properties = {};
 
       propertyKeys.forEach(function(key) {
-        properties[key] = model.properties[key];
+        // Save only writable properties. We won't be able to restore non-writable properties anyway.
+        if (model.isPropertyWritable(key)) {
+          properties[key] = model.properties[key];
+        }
       });
 
       return properties;
