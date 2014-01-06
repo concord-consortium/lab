@@ -13,12 +13,14 @@
         "showClock": true
       },
       "onLoad": [
-        "onPropertyChange('initialVelocityInMKS', function() {",
+        "function updateTextbox() {",
         "  var vx = get('initialVelocity');",
         "  var vxInMKS = get('initialVelocityInMKS');",
         "  set('initialVelocity', vx);",
         "  setTextBoxProperties(0,{text: 'initial speed= ' + vxInMKS + ' m/s'});",
-        "});"
+        "}",
+        "onPropertyChange('initialVelocityInMKS', updateTextbox);",
+        "updateTextbox();"
       ]
     }
   ],
