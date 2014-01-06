@@ -156,7 +156,7 @@ $(function () {
     info("Testing " + (interactiveID + 1) + "/" + interactives.length + ": " + interactives[interactiveID]);
     var newPath = root + "embeddable.html#" + interactives[interactiveID];
     if ($iframe.attr("src") === newPath) {
-      // Reload iframe to trigger interactiveLoaded callback.
+      // Reload iframe to trigger modelLoaded callback.
       $iframe[0].contentWindow.location.reload(true);
     } else {
       $iframe.attr("src", newPath);
@@ -164,8 +164,8 @@ $(function () {
     interactiveID++;
   }
 
-  function interactiveLoaded() {
-    console.log("Interactive loaded");
+  function modelLoaded() {
+    console.log("Model loaded");
     if (benchamrkEnabled) {
       console.log("Starting benchmark");
       iframePhone.post({ type: "runBenchmarks" });
@@ -211,6 +211,6 @@ $(function () {
   $("#start").on("click", start);
   $("#stop").on("click", stop).prop("disabled", true);
   // 2. Setup IFramePhone. Note that we have to do it just once.
-  iframePhone = new Lab.IFramePhone($iframe[0], interactiveLoaded);
+  iframePhone = new Lab.IFramePhone($iframe[0], null, modelLoaded);
   iframePhone.addListener("returnBenchmarks", benchmarkResultsReceived);
 });
