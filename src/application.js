@@ -203,7 +203,7 @@ AUTHORING = false;
     });
     $content.css("border", "none");
     // initiate communication with Interactive in iframe and setup callback
-    iframePhone = new Lab.IFramePhone($iframe[0], function() {
+    iframePhone = new Lab.IFramePhone($iframe[0], null, function() {
       // On a Interactive Browser page with an iframe send the
       // focus to the Interactive.
       if (isFullIFramePage()) {
