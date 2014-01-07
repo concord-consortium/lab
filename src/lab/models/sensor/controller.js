@@ -49,7 +49,6 @@ define(function (require) {
       });
     }
 
-    setupModelObservers();
     interactiveController.on('modelLoaded.sensor-model-controller', setupModelObservers);
 
     interactiveController.on('modelReset.sensor-model-controller', function() {

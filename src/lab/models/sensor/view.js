@@ -150,6 +150,8 @@ define(function() {
 
       repaint: function() {},
 
+      setFocus: function () {},
+
       updateUnits: function(units) {
         sensorReadingView.updateUnits(units);
         if (model.properties.sensorReading == null) {

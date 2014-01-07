@@ -45,7 +45,7 @@ define(function(require) {
         mainProperties,
         isStopped = true,
         needsReload = false,
-        dispatch = d3.dispatch('play', 'stop', 'tick', 'willReset', 'reset', 'stepForward',
+        dispatch = d3.dispatch('play', 'stop', 'tick', 'tickStart', 'willReset', 'reset', 'stepForward',
                                'stepBack', 'seek', 'invalidation'),
         initialSensorType,
         sensorType,
@@ -541,7 +541,9 @@ define(function(require) {
         model.defineOutput(key, description, function () {
           return filter.calculate();
         });
-      }
+      },
+
+      serialize: function () { return ""; }
     };
 
     initializeStateVariables();
