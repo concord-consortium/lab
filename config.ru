@@ -27,7 +27,7 @@ Rack::Mime::MIME_TYPES.merge!({
 # see: https://github.com/johnbintz/rack-livereload
 if ENVIRONMENT == 'development'
   puts "using rack-live-reload"
-  map '/vendor/sensor-applet-js/jars' do
+  map '/vendor/lab-sensor-applet-interface-dist/jars' do
     # so no cache headers aren't added to the jars
     run Rack::Directory.new PUBLIC_PATH + "/vendor/lab-sensor-applet-interface-dist/jars"
   end
