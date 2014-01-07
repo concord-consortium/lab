@@ -22,7 +22,18 @@ define(function(require) {
     }
   }
 
-  function post(message) {
+  function post(type, content) {
+    var message;
+    // Message object can be constructed from 'type' and 'content' arguments or it can be passed
+    // as the first argument.
+    if (arguments.length === 1 && typeof type === 'object' && typeof type.type === 'string') {
+      message = type;
+    } else {
+      message = {
+        type: type,
+        content: content
+      };
+    }
     if (connected) {
       postToTarget(message, parentOrigin);
     } else {
@@ -33,8 +44,11 @@ define(function(require) {
   // Only the initial 'hello' message goes permissively to a '*' target (because due to cross origin
   // restrictions we can't find out our parent's origin until they voluntarily send us a message
   // with it.)
-  function postHello(message) {
-    postToTarget(message, '*');
+  function postHello() {
+    postToTarget({
+      type: 'hello',
+      origin: document.location.href.match(/(.*?\/\/.*?)\//)[1]
+    }, '*');
   }
 
   function addListener(type, fn) {
@@ -69,7 +83,7 @@ define(function(require) {
 
       // Perhaps-redundantly insist on checking origin as well as source window of message.
       if (message.origin === parentOrigin) {
-        if (listeners[messageData.type]) listeners[messageData.type](messageData);
+        if (listeners[messageData.type]) listeners[messageData.type](messageData.content);
       }
    }
 
@@ -88,10 +102,7 @@ define(function(require) {
 
     // We kick off communication with the parent window by sending a "hello" message. Then we wait
     // for a handshake (another "hello" message) from the parent window.
-    postHello({
-      type: 'hello',
-      origin: document.location.href.match(/(.*?\/\/.*?)\//)[1]
-    });
+    postHello();
     window.addEventListener('message', messageListener, false);
   }
 
