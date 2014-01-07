@@ -1406,8 +1406,10 @@ AUTHORING = false;
       model.on('seek.dataTable', null);
       model.on('stepForward.dataTable', null);
       model.on('stepBack.dataTable', null);
-      model.on('addAtom.dataTable', null);
-      model.on('removeAtom.dataTable', null);
+      if (model.type == 'md2d') {
+        model.on('addAtom.dataTable', null);
+        model.on('removeAtom.dataTable', null);
+      }
     }
 
     // Initialization
