@@ -64,7 +64,6 @@ define(function (require) {
       });
     }
 
-    setupModelObservers();
     interactiveController.on('modelLoaded.dual-sensor-model-controller', setupModelObservers);
 
     interactiveController.on('modelReset.dual-sensor-model-controller', function() {

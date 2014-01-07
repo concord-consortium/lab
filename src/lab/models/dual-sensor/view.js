@@ -15,7 +15,7 @@ define(function() {
         selected: model.properties.sensorType == null,
         disabled: true
       }].concat(Object.keys(sensorDefinitions).filter(function(key) {
-        return sensorDefinitions[key].appletClass === "labquest";
+        return sensorDefinitions[key].appletClass === "LabQuest";
       }).map(function(key) {
         return {
           value: key,
@@ -37,7 +37,7 @@ define(function() {
         selected: model.properties.sensorType2 == null,
         disabled: true
       }].concat(Object.keys(sensorDefinitions).filter(function(key) {
-        return sensorDefinitions[key].appletClass === "labquest";
+        return sensorDefinitions[key].appletClass === "LabQuest";
       }).map(function(key) {
         return {
           value: key,
@@ -234,6 +234,8 @@ define(function() {
       },
 
       repaint: function() {},
+
+      setFocus: function () {},
 
       updateUnits: function(units) {
         sensorReadingView.updateUnits(units);
