@@ -93,7 +93,6 @@ define(function (require) {
 
     function appendPropertyRow() {
       var i, rowData = [];
-      rowIndex++;
       if (component.indexColumn) {
         rowData.push(rowIndex);
       }
@@ -102,6 +101,7 @@ define(function (require) {
       }
       tableData.push(rowData);
       view.appendDataRow(rowData, rowIndex);
+      rowIndex++;
     }
 
     function replacePropertyRow() {
