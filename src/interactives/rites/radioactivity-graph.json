@@ -10,9 +10,8 @@
     {
       "type": "md2d",
       "id": "syringe$0",
-      "url": "imports/legacy-mw-content/converted/sam-activities/diffusion/original/empty.json",
+      "url": "imports/legacy-mw-content/converted/rites/empty.json",
       "onLoad": [
-        "removeTextBox(2); removeTextBox(1); removeTextBox(0);",
         "set('timeStep',1);",
         "set('timeStepsPerTick',1);",
         "var count = 0,",
@@ -59,8 +58,7 @@
         "});"
       ],
       "viewOptions": {
-        "controlButtons": "",
-        "images": []
+        "controlButtons": ""
       }
     }
   ],
@@ -214,7 +212,7 @@
       "id": "bottom",
       "left": "model.left",
       "top": "model.bottom",
-      "width": "model.width",
+      "width": "interactive.width",
       "padding-right": "1em",
       "padding-bottom": "1em",
       "padding-top": "0.5em"
