@@ -12,6 +12,58 @@
       }
     }
   ],
+  "parameters": [
+    {
+      "name": "plotAction",
+      "initialValue": "nothing",
+      "onChange": [
+        "switch(value) {",
+        "  case 'nothing':",
+        "    onClick('background', function () {}); break;",
+        "  case 'atom':",
+        "    onClick('background', function(x, y, d, i) {",
+        "      addAtom({x: x, y: y});",
+        "    }); break;",
+        "  case 'obstacle':",
+        "    onClick('background', function(x, y, d, i) {",
+        "      addObstacle({x: x, y: y, width: 0.2, height: 0.2});",
+        "    }); break;",
+        "}"
+      ]
+    },
+    {
+      "name": "atomAction",
+      "initialValue": "nothing",
+      "onChange": [
+        "switch(value) {",
+        "  case 'nothing':",
+        "    onClick('atom', function () {}); break;",
+        "  case 'remove':",
+        "    onClick('atom', function(x, y, d, i) {",
+        "      removeAtom(i);",
+        "    }); break;",
+        "  case 'charge':",
+        "    onClick('atom', function(x, y, d, i) {",
+        "      setAtomProperties(i, {charge: Math.random() * 2 - 1});",
+        "    }); break;",
+        "}"
+      ]
+    },
+    {
+      "name": "obstacleAction",
+      "initialValue": "nothing",
+      "onChange": [
+        "switch(value) {",
+        "  case 'nothing':",
+        "    onClick('obstacle', function () {}); break;",
+        "  case 'remove':",
+        "    onClick('obstacle', function(x, y, d, i) {",
+        "      removeObstacle(i);",
+        "    }); break",
+        "}"
+      ]
+    }
+  ],
   "components": [
     {
       "id": "plotLabel",
@@ -23,27 +75,19 @@
       "id": "plotAction",
       "type": "radio",
       "orientation": "horizontal",
+      "property": "plotAction",
       "options": [
         {
           "text": "nothing",
-          "action": "onClick('background', function () {});",
-          "selected": true
+          "value": "nothing"
         },
         {
           "text": "adds an atom",
-          "action": [
-            "onClick('background', function(x, y, d, i) {",
-            "  addAtom({x: x, y: y});",
-            "});"
-          ]
+          "value": "atom"
         },
         {
           "text": "adds an obstacle",
-          "action": [
-            "onClick('background', function(x, y, d, i) {",
-            "  addObstacle({x: x, y: y, width: 0.2, height: 0.2});",
-            "});"
-          ]
+          "value": "obstacle"
         }
       ]
     },
@@ -57,27 +101,19 @@
       "id": "atomAction",
       "type": "radio",
       "orientation": "horizontal",
+      "property": "atomAction",
       "options": [
         {
           "text": "nothing",
-          "action": "onClick('atom', function () {});",
-          "selected": true
+          "value": "nothing"
         },
         {
           "text": "removes it",
-          "action": [
-            "onClick('atom', function(x, y, d, i) {",
-            "  removeAtom(i);",
-            "});"
-          ]
+          "value": "remove"
         },
         {
           "text": "sets random charge",
-          "action": [
-            "onClick('atom', function(x, y, d, i) {",
-            "  setAtomProperties(i, {charge: Math.random() * 2 - 1});",
-            "});"
-          ]
+          "value": "charge"
         }
       ]
     },
@@ -91,19 +127,15 @@
       "id": "obstacleAction",
       "type": "radio",
       "orientation": "horizontal",
+      "property": "obstacleAction",
       "options": [
         {
           "text": "nothing",
-          "action": "onClick('obstacle', function () {});",
-          "selected": true
+          "value": "nothing"
         },
         {
           "text": "removes it",
-          "action": [
-            "onClick('obstacle', function(x, y, d, i) {",
-            "  removeObstacle(i);",
-            "});"
-          ]
+          "value": "remove"
         }
       ]
     }
