@@ -29,7 +29,7 @@ define(function() {
       $titlerow.find('th').remove("th");
       for(i = 0; i < columns.length; i++) {
         $th = $('<th>');
-        $th.text(columns[i]);
+        $th.text(columns[i].name);
         $th.click(columnSort);
         $titlerow.append($th);
       }
@@ -259,8 +259,12 @@ define(function() {
           var $td      = $(e.currentTarget),
               rowIndex = $td.parent().data('index'),
               colIndex = $td.data('index'),
-              data     = tableData[rowIndex][colIndex],
-              $input   = $('<input class="editor-text">').val(data);
+              data, $input;
+
+          if (!columns[colIndex].editable) return;
+
+          data   = tableData[rowIndex][colIndex],
+          $input = $('<input class="editor-text">').val(data);
 
           $td.empty().append($input);
           $input.focus();

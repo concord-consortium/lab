@@ -49,20 +49,28 @@ define(function (require) {
     }
 
     function generateColumnTitlesAndFormatters() {
-      var i, propertyName, propertyDescription, propertyTitle, unitAbrev;
+      var i, propertyName, columnDesc, propertyDescription, propertyTitle, unitAbrev;
 
       columns = [];
       formatters = [];
 
       if (component.indexColumn) {
-        columns.push("#");
+        columns.push({name: "#", editable: false});
         formatters.push(d3.format("f"));
       }
 
       for(i = 0; i < component.propertyColumns.length; i++) {
         propertyTitle = null;
+        editable = false;
+
+        if (typeof component.propertyColumns[i] == "string") {
+          columnDesc = {name: component.propertyColumns[i]};
+        } else {
+          columnDesc = component.propertyColumns[i];
+        }
+
         if (typeof model !== 'undefined') {
-          propertyName = component.propertyColumns[i];
+          propertyName = columnDesc.name;
           if (model.properties.hasOwnProperty(propertyName)) {
             propertyDescription = model.getPropertyDescription(propertyName);
             if (propertyDescription) {
@@ -75,9 +83,10 @@ define(function (require) {
           }
         }
         if (!propertyTitle) {
-          propertyTitle = component.propertyColumns[i];
+          propertyTitle = columnDesc.name;
+          editable = columnDesc.hasOwnProperty("editable") ? columnDesc.editable : true;
         }
-        columns.push(propertyTitle);
+        columns.push({name: propertyTitle, editable: editable});
         formatters.push(d3.format('.3r'));
       }
     }
