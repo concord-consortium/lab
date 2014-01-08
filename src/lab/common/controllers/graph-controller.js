@@ -82,7 +82,7 @@ define(function (require) {
       dataSet = new DataSet(componentData, interactivesController);
     }
 
-    function getDataSet () {
+    function loadDataSet () {
       if (lookUpDataSetById()) {
         return;
       }
@@ -96,7 +96,7 @@ define(function (require) {
       component = validator.validateCompleteness(metadata.graph, component);
       // The list of properties we are being asked to graph.
       properties = component.properties.slice();
-      getDataSet();
+      loadDataSet();
       $container = $('<div>').attr('id', component.id).addClass('graph');
       // Each interactive component has to have class "component".
       $container.addClass("component");

@@ -14,7 +14,8 @@ define(function () {
    *
    * @constructor
    *
-   * @param {Model} the model we are collecting data from
+   * @param {component} the json definition for our dataset.
+   * @param {interactivesController}
    */
   function DataSet(component, interactivesController) {
     this.interactivesController = interactivesController;
@@ -27,7 +28,6 @@ define(function () {
     this.clearOnModelLoad     = this.component.clearOnModelLoad;
     this._dataSeriesArry      = [];  // [seriesa,seriesb,seriesc]
     this._listeningPool       = new ListeningPool(this.namespace);
-    // this._addListeners();
   }
 
   DataSet.Events = {
@@ -40,12 +40,19 @@ define(function () {
   };
 
   /******************************************************************
-
+    "Private" methods, not intended for use by outside objects.
   *******************************************************************/
+
+  /**
+    Check that we haven't invalidated future datapoints.
+  */
   DataSet.prototype._inNewModelTerritory = function () {
     return (this._model.stepCounter() < this.numberOfPoints());
   };
 
+  /**
+    register model listeners
+  */
   DataSet.prototype._addListeners = function() {
     var listeningPool  = this._listeningPool;
     var model          = this.interactivesController.getModel();
@@ -75,18 +82,26 @@ define(function () {
     });
   };
 
+  /**
+    Law of demeter workaround ;)
+  */
   DataSet.prototype._getModelProperty = function (propName) {
     return this._model.get(propName);
   };
 
   /**
     Trigger a custom event for listeners.
-    @param {series} [[x,y]] series values being added.
+    @param {name} event name we are triggering
+    @param {data} extra data for the event.
   */
-  DataSet.prototype._trigger = function (name, params) {
-    $(this).trigger(name, {'data' : params});
+  DataSet.prototype._trigger = function (name, data) {
+    $(this).trigger(name, {'data' : data});
   };
 
+
+  /******************************************************************
+    "Public" methods, should have associated unit tests.
+  *******************************************************************/
   /**
     Returns an array containing two-element arrays each containing the current model
     time and the current value of each model property specified in component.properties.
@@ -104,7 +119,8 @@ define(function () {
   };
 
   /**
-    Resets the cached data array to a single, initial data point, and pushes that data into graph.
+    Resets the cached data array to a single, initial data point,
+    and pushes that data into graph.
   */
   DataSet.prototype.resetData = function () {
     var dataPoint        = this.getDataPoint();
@@ -124,8 +140,8 @@ define(function () {
   };
 
   /**
-    Appends the current data point (as returned by getDataPoint()) to the graph and to the cached
-    data array
+    Appends the current data point (as returned by getDataPoint()) to the graph
+    and to the cached data array
   */
   DataSet.prototype.appendDataPoint = function () {
     var dataPoint = this.getDataPoint();
@@ -141,8 +157,9 @@ define(function () {
 
 
   /**
-    Removes all data from the graph that correspond to steps following the current step pointer.
-    This is used when a change is made that invalidates the future data.
+    Removes all data from the graph that correspond to steps following the
+    current step pointer. This is used when a change is made that
+    invalidates the future data.
   */
   DataSet.prototype.removeDataAfterStepPointer = function () {
     var i;
@@ -172,7 +189,14 @@ define(function () {
     this._trigger(DataSet.Events.REMOVE_ALL_SERIES);
   };
 
-
+  /**
+    Called when the model has loaded. Setup listeners. Clear Data.
+    TODO: Right now this only works becuase classes using DataSet are
+    directly invoking dataset.modelLoadedCallback() after receiving
+    such notification from the interactives controller.  in the future
+    we probably want to register the dataset for model load callbacks
+    directly.
+  */
   DataSet.prototype.modelLoadedCallback = function() {
     this._addListeners();
     if (this.clearOnModelLoad || this.isSetup) {

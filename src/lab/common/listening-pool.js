@@ -1,12 +1,26 @@
 define(function () {
 
   /**
+   * isD3Listner : is a given listener a D3 listener?
+   * @param {listener} the listener to check for D3
+   */
+  var isD3Listner = function(listener) {
+    // D3 events don't use "off", they issue another 'on' with same name
+    // see: https://github.com/mbostock/d3/wiki/Internals#wiki-dispatch_on
+    if (typeof listener.off !== 'function') {
+      return true;
+    }
+    return false;
+  };
+
+  /**
    * ListeningPool:  A simple helper to keep track of the events you
    * are listening too.
    *
    * @constructor
    *
-   * @param {Namespace} our event namespace (useful for JQuery events)
+   * @param {Namespace} our event namespace. Required for D3 events,
+   * handy for JQuery event types.
    */
   function ListeningPool(namespace) {
     this._nameSpace           = namespace;
@@ -35,19 +49,6 @@ define(function () {
   };
 
   /**
-   * isD3Listner : is a given listener a D3 listener?
-   * @param {listener} the listener to remove
-   */
-  var isD3Listner = function(listener) {
-    // D3 events don't use "off", they issue another 'on' with
-    // the same event name....
-    if (typeof listener.off != 'function') {
-      return true;
-    }
-    return false;
-  };
-
-  /**
    * remove : remove a listener from the registeredListeners
    * @param {listener} the listener to remove
    */
@@ -65,7 +66,6 @@ define(function () {
    * (We could simply use JQuery off(/namespace/) if we stick to JQ events)
    */
   ListeningPool.prototype.removeAll = function () {
-    var listener;
     while(this.registeredListeners.length > 0) {
       this.remove(this.registeredListeners.pop());
     }
