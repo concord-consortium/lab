@@ -123,9 +123,9 @@ define(function (require) {
         // Simple list of instantiated components.
         componentList = [],
 
-        // List of properties that are bound to components. Such properties are e.g. retained
-        // during model reset or reload.
-        propertiesBoundToComponents = [],
+        // List of properties that are bound to components and should be retained during
+        // model reload / reset.
+        propertiesRetainedByComponents = [],
 
         // List of custom parameters which are used by the interactive.
         customParametersByName = [],
@@ -326,10 +326,10 @@ define(function (require) {
       // Save the new instance.
       componentByID[id] = comp;
       componentList.push(comp);
-      if (component.property) {
+      if (component.retainProperty && component.property != null) {
         // All properties that are bound to some interactive component should be retained during
         // model reset or reload.
-        propertiesBoundToComponents.push(component.property);
+        propertiesRetainedByComponents.push(component.property);
       }
 
       // Register component modelLoaded callbacks if available.
@@ -593,7 +593,7 @@ define(function (require) {
       // Their onLoad callbacks (TODO REFACTOR ME)
       componentModelLoadedCallbacks = [];
       // And list of properties bound to components.
-      propertiesBoundToComponents = [];
+      propertiesRetainedByComponents = [];
 
       for (var i = 0, len = componentJsons.length; i < len; i++) {
         createComponent(componentJsons[i]);
@@ -1058,7 +1058,7 @@ define(function (require) {
       }
 
       var propertyKeys = concatWithoutDuplicates(interactive.propertiesToRetain,
-                                                 propertiesBoundToComponents,
+                                                 propertiesRetainedByComponents,
                                                  additionalProps || []);
       var properties = {};
 
