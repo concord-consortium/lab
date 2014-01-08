@@ -1,9 +1,11 @@
 /*global define, $*/
 
 define(function (require) {
-  var Graph = require('lab-grapher'),
-      metadata  = require('common/controllers/interactive-metadata'),
-      validator = require('common/validator'),
+  var Graph         = require('lab-grapher'),
+      metadata      = require('common/controllers/interactive-metadata'),
+      validator     = require('common/validator'),
+      ListeningPool = require('common/listening-pool'),
+      DataSet       = require('common/data-set'),
 
       // Note: We always explicitly copy properties from component spec to grapher options hash,
       // in order to avoid tighly coupling an externally-exposed API (the component spec) to an
@@ -42,24 +44,59 @@ define(function (require) {
         $container,
         grapher,
         controller,
-        model,
+        dataSet,
         scriptingAPI,
         properties,
         isSetup = false,
         dataPointsArrays = [],
+        listeningPool,
         namespace = "graphController" + (++graphControllerCount);
 
     // Name of the model property whose description sets the current yLabel.
     var yLabelProperty;
 
+    function getModel () {
+      return interactivesController.getModel();
+    }
+
+    // In the future, we expect datasets to be defined in the interactive json
+    function lookUpDataSetById () {
+      if (properties.dataSetId) {
+        dataSet = interactivesController.getComponent(properties.dataSetId);
+      }
+      return false;
+    }
+
+    // Legacy path: The dataset is defined as part of the graph controller.
+    function makeDataSet () {
+      var componentData = {
+        properties: component.properties.slice(),
+        streamDataFromModel: component.streamDataFromModel,
+        clearOnModelReset: component.clearOnModelLoad,
+        xProperty: component.xProperty,
+        clearOnModelLoad: component.clearOnModelLoad,
+        id: component.id + "autoDataSet",
+        dataPoints: [],
+        type: 'dataSet'
+      };
+      dataSet = new DataSet(componentData, interactivesController);
+    }
+
+    function getDataSet () {
+      if (lookUpDataSetById()) {
+        return;
+      }
+      makeDataSet();
+    }
+
     function initialize() {
       scriptingAPI = interactivesController.getScriptingAPI();
-      model = interactivesController.getModel();
-
+      listeningPool = new ListeningPool(namespace);
       // Validate component definition, use validated copy of the properties.
       component = validator.validateCompleteness(metadata.graph, component);
       // The list of properties we are being asked to graph.
       properties = component.properties.slice();
+      getDataSet();
       $container = $('<div>').attr('id', component.id).addClass('graph');
       // Each interactive component has to have class "component".
       $container.addClass("component");
@@ -73,19 +110,7 @@ define(function (require) {
       }
     }
 
-    /**
-      Returns an array containing two-element arrays each containing the current model
-      time and the current value of each model property specified in component.properties.
-    */
-    function getDataPoint() {
-      var ret = [], i, len, xval;
 
-      xval = model.get(component.xProperty);
-      for (i = 0, len = properties.length; i < len; i++) {
-        ret.push([xval, model.get(properties[i])]);
-      }
-      return ret;
-    }
 
     /**
       Return an options hash for use by the grapher.
@@ -105,64 +130,46 @@ define(function (require) {
       return options;
     }
 
-    /**
-      Resets the cached data array to a single, initial data point, and pushes that data into graph.
-    */
-    function resetData() {
-      var dataPoint = getDataPoint(),
-          i;
-
-      if (component.streamDataFromModel) {
-        for (i = 0; i < dataPoint.length; i++) {
-          dataPointsArrays[i] = [dataPoint[i]];
-        }
-        grapher.resetPoints(dataPointsArrays);
-      } else {
-        for (i = 0; i < dataPoint.length; i++) {
-          dataPointsArrays[i] = [];
-        }
-        grapher.resetPoints();
-      }
-      grapher.repaint();
-      isSetup = true;
-    }
-
-    /**
-      Appends the current data point (as returned by getDataPoint()) to the graph and to the cached
-      data array
-    */
-    function appendDataPoint() {
-      var dataPoint = getDataPoint(),
-          i;
-
-      for (i = 0; i < dataPoint.length; i++) {
-        dataPointsArrays[i].push(dataPoint[i]);
-      }
-      // The grapher considers each individual (property, time) pair to be a "point", and therefore
-      // considers the set of properties at any 1 time (what we consider a "point") to be "points".
-      grapher.addPoints(dataPoint);
-    }
-
-    /**
-      Removes all data from the graph that correspond to steps following the current step pointer.
-      This is used when a change is made that invalidates the future data.
-    */
-    function removeDataAfterStepPointer() {
-      var i;
-
-      for (i = 0; i < properties.length; i++) {
-        // Account for initial data, which corresponds to stepCounter == 0
-        dataPointsArrays[i].length = model.stepCounter()+1;
-      }
-      grapher.resetPoints(dataPointsArrays);
-    }
 
     /**
       Causes the graph to move the "current" pointer to the current model step. This desaturates
       the graph region corresponding to times after the current point.
     */
     function redrawCurrentStepPointer() {
-      grapher.updateOrRescale(model.stepCounter());
+      grapher.updateOrRescale(getModel().stepCounter());
+    }
+    function _selectionChangeHandler(event, extra) {
+      redrawCurrentStepPointer(extra.data);  //
+    }
+
+
+    function resetGraph() {
+      if (grapher) {
+        if (component.resetAxesOnReset) {
+          resetGrapher();
+        }
+      } else {
+        initGrapher();
+      }
+      updateYLabelHandler();
+    }
+    function _modelResetHandler() {
+      resetGraph();
+    }
+
+    /**
+      Reset all the datapoints in the graph.
+      dataSeriesArry will contain an empty data set, or invitial values
+      for all model params.
+    */
+    function clearGrapher(data) {
+      if(grapher) {
+        grapher.resetPoints(data);
+        grapher.repaint();
+      }
+    }
+    function _dataResetHandler(event, extra) {
+      clearGrapher(extra.data);  //
     }
 
     /**
@@ -172,55 +179,50 @@ define(function (require) {
       grapher.reset('#' + component.id, getOptions());
     }
 
-    function registerModelListeners() {
-      if (component.streamDataFromModel) {
-        // Namespace listeners to '.graphController' so we can eventually remove them all at once
-        model.on('tick.'+namespace, appendDataPoint);
-        model.on('stepBack.'+namespace, redrawCurrentStepPointer);
-        model.on('stepForward.'+namespace, redrawCurrentStepPointer);
-        model.on('seek.'+namespace, redrawCurrentStepPointer);
-        model.on('play.'+namespace, function() {
-          if (grapher.numberOfPoints() && model.stepCounter() < grapher.numberOfPoints()) {
-            removeDataAfterStepPointer();
-          }
-        });
-        model.on('invalidation.'+namespace, function() {
-          removeDataAfterStepPointer();
-        });
-        model.on('reset.'+namespace, modelResetHandler);
-      }
+    /**
+      Add new points to the graphers
+    */
+    function addGraphPoints(dataPoints) {
+      grapher.addPoints(dataPoints);
+    }
+    function _sampleAddedHandler(event, extra) {
+      addGraphPoints(extra.data);
+    }
+
+
+    function registerListeners() {
+      listeningPool.removeAll();
+      var model = getModel();
+
+      // We reset the graph view after model reset.
+      listeningPool.listen(model, 'reset',       _modelResetHandler);
+
+      // Not sure, but we probably want all the other events from the dataSet
+      listeningPool.listen($(dataSet), DataSet.Events.SELECTION_CHANGED, _selectionChangeHandler);
+      listeningPool.listen($(dataSet), DataSet.Events.DATA_RESET,        _dataResetHandler);
+      listeningPool.listen($(dataSet), DataSet.Events.SAMPLE_ADDED,      _sampleAddedHandler);
     }
 
     function updateYLabelHandler() {
       if (yLabelProperty) {
-        model.removePropertyDescriptionObserver(yLabelProperty, setYLabelFromProperty);
+        getModel().removePropertyDescriptionObserver(yLabelProperty, setYLabelFromProperty);
         yLabelProperty = null;
       }
 
       if (!component.ylabel && properties.length === 1) {
         yLabelProperty = properties[0];
         setYLabelFromProperty();
-        model.addPropertyDescriptionObserver(yLabelProperty, setYLabelFromProperty);
+        getModel().addPropertyDescriptionObserver(yLabelProperty, setYLabelFromProperty);
       }
     }
 
     function setYLabelFromProperty() {
-      var description = model.getPropertyDescription(yLabelProperty);
+      var description = getModel().getPropertyDescription(yLabelProperty);
       grapher.yLabel(description.getLabel() + " (" + description.getUnitAbbreviation() + ")");
     }
 
-    function modelResetHandler() {
-      if (grapher) {
-        if (component.clearOnModelReset) {
-          resetData();
-          if (component.resetAxesOnReset) {
-            resetGrapher();
-          }
-        }
-      } else {
-        grapher = new Graph($container[0], getOptions(), undefined, interactivesController.getNextTabIndex());
-      }
-      updateYLabelHandler();
+    function initGrapher() {
+      grapher = new Graph($container[0], getOptions(), undefined, interactivesController.getNextTabIndex());
     }
 
     controller = {
@@ -230,18 +232,19 @@ define(function (require) {
         Called by the interactives controller when the model finishes loading.
       */
       modelLoadedCallback: function() {
-        model = interactivesController.getModel();
-        scriptingAPI = interactivesController.getScriptingAPI();
-
         if (grapher) {
           resetGrapher();
         } else {
-          grapher = new Graph($container[0], getOptions(), undefined, interactivesController.getNextTabIndex());
+          initGrapher();
         }
+        dataSet.modelLoadedCallback(); // TODO: have dataSet register its own
+        registerListeners();
+
+        scriptingAPI = interactivesController.getScriptingAPI();
+        // TODO: Let the dataset handle this by itself:
         if (component.clearOnModelLoad || !isSetup) {
-          resetData();
+          dataSet.resetData();
         }
-        registerModelListeners();
         updateYLabelHandler();
         grapher.repaint();
       },
@@ -249,21 +252,23 @@ define(function (require) {
       /**
         Used when manually adding points to the graph.
       */
-      appendDataPropertiesToComponent: appendDataPoint,
+      appendDataPropertiesToComponent: function() {
+        dataSet.appendDataPoint(arguments);
+      },
 
 
       /**
-        Add non-realtime dataset to the graph.
+        Add non-realtime series to the dataSet.
       */
-      addDataSet: function (dataset) {
-        dataPointsArrays.push(dataset);
+      addDataSet: function (series) {
+        dataSet.addStaticDataSeries(series);
       },
 
       /**
-        Remove all non-realtime datasets
+        Remove all non-realtime data series from the dataSets
       */
       clearDataSets: function () {
-        dataPointsArrays.length = properties.length;
+        dataSet.clearStaticDataSeries();
       },
 
       /**
@@ -273,7 +278,7 @@ define(function (require) {
       setAttributes: function(opts) {
         if (grapher) {
           $.extend(component, opts);
-          resetData();
+          dataSet.resetData();
           if (opts.dataPoints) {
             dataPointsArrays = opts.dataPoints;
           }
@@ -294,6 +299,7 @@ define(function (require) {
         property has a max.
       */
       syncAxisRangesToPropertyRanges: function() {
+        var model = getModel();
         var xDescription = model.getPropertyDescription(component.xProperty);
         var yDescriptions = properties.map(function(property) {
           return model.getPropertyDescription(property);
