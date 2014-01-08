@@ -5,7 +5,7 @@ define(function (require) {
       metadata      = require('common/controllers/interactive-metadata'),
       validator     = require('common/validator'),
       ListeningPool = require('common/listening-pool'),
-      DataSet       = require('common/data-set'),
+      DataSet       = require('common/controllers/data-set'),
 
       // Note: We always explicitly copy properties from component spec to grapher options hash,
       // in order to avoid tighly coupling an externally-exposed API (the component spec) to an
