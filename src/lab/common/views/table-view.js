@@ -157,6 +157,7 @@ define(function() {
       $($tr).data('index', index);
       for(i = 0; i < rowData.length; i++) {
         $td = $('<td>');
+        $($td).data('index', i);
         datum = rowData[i];
         if(typeof datum === "string") {
           $td.text(datum);
@@ -210,7 +211,7 @@ define(function() {
 
     return {
       render: function() {
-        var i, j, rowData, $title, $tr, $th, $td;
+        var i, j, rowData, $title, $tr, $th, $td, self = this;
         $el = $('<div>');
         $table = $('<table>');
         $tbody = $('<tbody>');
@@ -253,6 +254,34 @@ define(function() {
           if (e.shiftKey) {
             fillSelection();
           }
+        });
+        $tbody.delegate("td", "click", function(e) {
+          var $td      = $(e.currentTarget),
+              rowIndex = $td.parent().data('index'),
+              colIndex = $td.data('index'),
+              data     = tableData[rowIndex][colIndex],
+              $input   = $('<input class="editor-text">').val(data);
+
+          $td.empty().append($input);
+          $input.focus();
+
+          function commitChange() {
+            var val = $input.val();
+            if (!isNaN(parseFloat(val)) && isFinite(val)) {
+              val = parseFloat(val);
+            }
+            tableData[rowIndex][colIndex] = val;
+            self.updateTable({});
+          }
+
+          $input.bind('keypress', function(e) {
+            var code = (e.keyCode ? e.keyCode : e.which);
+            if(code == 13) { //Enter
+               commitChange();
+            }
+            return true;
+          });
+          $input.blur(commitChange);
         });
         calculateSizeAndPosition();
         return $el;
