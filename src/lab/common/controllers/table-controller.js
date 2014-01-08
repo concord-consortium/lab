@@ -62,6 +62,7 @@ define(function (require) {
       for(i = 0; i < component.propertyColumns.length; i++) {
         propertyTitle = null;
         editable = false;
+        format = '.3r';
 
         if (typeof component.propertyColumns[i] == "string") {
           columnDesc = {name: component.propertyColumns[i]};
@@ -85,9 +86,10 @@ define(function (require) {
         if (!propertyTitle) {
           propertyTitle = columnDesc.name;
           editable = columnDesc.hasOwnProperty("editable") ? columnDesc.editable : true;
+          format = columnDesc.hasOwnProperty("format") ? columnDesc.format : format;
         }
         columns.push({name: propertyTitle, editable: editable});
-        formatters.push(d3.format('.3r'));
+        formatters.push(d3.format(format));
       }
     }
 
