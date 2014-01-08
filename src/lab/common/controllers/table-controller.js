@@ -60,26 +60,25 @@ define(function (require) {
       }
 
       for(i = 0; i < component.propertyColumns.length; i++) {
+        propertyTitle = null;
         if (typeof model !== 'undefined') {
           propertyName = component.propertyColumns[i];
-          propertyDescription = model.getPropertyDescription(propertyName);
-          if (propertyDescription) {
-            propertyTitle = propertyDescription.getLabel();
-            unitAbrev = propertyDescription.getUnitAbbreviation();
-            if (unitAbrev) {
-              propertyTitle += ' (' + unitAbrev + ')';
+          if (model.properties.hasOwnProperty(propertyName)) {
+            propertyDescription = model.getPropertyDescription(propertyName);
+            if (propertyDescription) {
+              propertyTitle = propertyDescription.getLabel();
+              unitAbrev = propertyDescription.getUnitAbbreviation();
+              if (unitAbrev) {
+                propertyTitle += ' (' + unitAbrev + ')';
+              }
             }
-            columns.push(propertyTitle);
-            // formatters.push(propertyDescription.format);
-            formatters.push(d3.format('.3r'));
-          } else {
-            columns.push(component.propertyColumns[i]);
-            formatters.push(d3.format('.3r'));
           }
-        } else {
-          columns.push(component.propertyColumns[i]);
-          formatters.push(d3.format('.3r'));
         }
+        if (!propertyTitle) {
+          propertyTitle = component.propertyColumns[i];
+        }
+        columns.push(propertyTitle);
+        formatters.push(d3.format('.3r'));
       }
     }
 
