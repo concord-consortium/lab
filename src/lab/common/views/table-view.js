@@ -115,8 +115,8 @@ define(function() {
         $tr = getRowByIndex(rowIndex);
         $tr.addClass('selected');
         var v = getRowVisiblity($tr);
-        if (v === -1) $tr[0].scrollIntoView(true);
-        if (v === 1) $tr[0].scrollIntoView();
+        // if (v === -1) $tr[0].scrollIntoView(true);
+        // if (v === 1) $tr[0].scrollIntoView();
         return $tr;
       }
     }
@@ -169,7 +169,7 @@ define(function() {
       if (tableData.length < 2) {
         alignColumnWidths();
       }
-      $tr[0].scrollIntoView();
+      // $tr[0].scrollIntoView();
       clearSelection();
       addSelection(index);
     }
