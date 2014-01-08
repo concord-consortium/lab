@@ -85,6 +85,9 @@ define(function (require) {
         }
         if (!propertyTitle) {
           propertyTitle = columnDesc.name;
+          if (columnDesc.units) {
+            propertyTitle += ' (' + columnDesc.units + ')';
+          }
           editable = columnDesc.hasOwnProperty("editable") ? columnDesc.editable : true;
           format = columnDesc.hasOwnProperty("format") ? columnDesc.format : format;
         }

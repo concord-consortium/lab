@@ -161,10 +161,18 @@
         "numElementsChild",
         {
           "name": "Total Isotopes",
-          "format": "d"
+          "format": "r"
         },
-        "% Parents",
-        "% Daughters"
+        {
+          "name": "Parents",
+          "units": "%",
+          "format": ".2r"
+        },
+        {
+          "name": "Daughters",
+          "units": "%",
+          "format": ".2r"
+        }
       ],
       "width": "100%",
       "height": "12em",
