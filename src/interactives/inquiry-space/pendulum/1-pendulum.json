@@ -17,7 +17,7 @@
       "id": "pendulum1$0",
       "url": "imports/legacy-mw-content/converted/inquiry-space/pendulum/pendulum1$0.json",
       "viewOptions": {
-        "controlButtons": "reset",
+        "controlButtons": "",
         "controlButtonStyle": "text",
         "gridLines": true,
         "showClock": true,
@@ -165,12 +165,7 @@
       "id": "new-run-button",
       "text": "New Run",
       "tooltip": "Set up a new experiment run.",
-      "action": [
-        "reloadModel({",
-        "  propertiesToRetain: ['gravity', 'rodLength', 'startingAngle', 'ballMass', 'damping','experimentDuration', 'durationEnabled'],",
-        "  cause: 'new-run'",
-        "});"
-      ]
+      "action": "reloadModel({cause: 'new-run'});"
     },
     {
       "type": "button",
