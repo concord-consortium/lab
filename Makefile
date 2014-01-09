@@ -508,8 +508,6 @@ public/vendor/jquery-selectBoxIt:
 	mkdir -p public/vendor/jquery-selectBoxIt
 
 public/vendor/chosen/chosen.jquery.min.js: \
-	vendor/chosen/chosen.jquery.min.js \
-	vendor/chosen/chosen.css \
 	public/vendor/chosen
 	cp vendor/chosen/chosen.jquery.min.js public/vendor/chosen
 	cp vendor/chosen/chosen.css public/vendor/chosen
