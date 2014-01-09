@@ -204,6 +204,7 @@ define(function () {
     directly.
   */
   DataSet.prototype.modelLoadedCallback = function() {
+    this._model = this.interactivesController.getModel();
     this._addListeners();
     if (this.clearOnModelLoad || this.isSetup) {
       this.resetData();
