@@ -40,22 +40,18 @@
       "url": "imports/legacy-mw-content/converted/student/stateofmatter/latentheat3$0.json",
       "viewOptions": {
         "showClock": false,
-        "controlButtonStyle": "text",
-        "controlButtons": "reset"
+        "controlButtons": ""
       },
       "modelOptions": {
         "timeStep": 2.5
       },
       "onLoad": [
         "setComponentDisabled('start-cooling', false);",
-        "setComponentDisabled('stop-cooling', true);",
         "callEvery(300, function() {",
         "  if (get('experimentRunning')) {",
         "    var energy_to_add = -0.35;",
         "    addKEToAtoms(energy_to_add);",
-        "    var runningTime = get('time') - get('timeExperimentStarted');",
-        "    set('experimentTime', runningTime);",
-        "    if (runningTime > 150000) stop();",
+        "    if (get('temperatureFiltered') < 50) stop();",
         "  }",
         "});"
       ]
@@ -73,19 +69,8 @@
    ],
   "parameters": [
     {
-      "name": "timeExperimentStarted",
-      "initialValue": 0,
-      "onChange": ""
-    },
-    {
       "name": "experimentRunning",
       "initialValue": false,
-      "onChange": ""
-    },
-    {
-      "name": "experimentTime",
-      "label": "Experiment time",
-      "initialValue": 0,
       "onChange": ""
     }
   ],
@@ -121,30 +106,14 @@
         "  start();",
         "}",
         "setComponentDisabled('start-cooling', true);",
-        "setComponentDisabled('stop-cooling', false);",
-        "set('timeExperimentStarted', get('time'));",
         "set('experimentRunning', true);"
       ]
     },
     {
       "type": "button",
-      "id": "stop-cooling",
-      "text": "Stop removing heat",
-      "disabled": true,
-      "action": [
-        "set('experimentRunning', false);",
-        "if (isStopped()) {",
-        "  start();",
-        "}",
-        "setComponentDisabled('start-cooling', false);",
-        "setComponentDisabled('stop-cooling', true);"
-      ]
-    },
-    {
-      "type": "numericOutput",
-      "id": "experiment-time",
-      "property": "experimentTime",
-      "displayValue": "return format('.1f')(value/1000)"
+      "id": "reset",
+      "text": "Reset",
+      "action": "reloadModel();"
     },
     {
       "type": "graph",
@@ -176,7 +145,7 @@
       "temperature-energy-graph"
     ],
     "bottom": [
-      "start-cooling", "stop-cooling", "experiment-time"
+      "start-cooling", "reset"
     ]
   },
   "template": [

@@ -40,24 +40,20 @@
       "url": "imports/legacy-mw-content/converted/student/stateofmatter/latentheat2$0.json",
       "viewOptions": {
         "showClock": false,
-        "controlButtonStyle": "text",
-        "controlButtons": "reset"
+        "controlButtons": ""
       },
       "modelOptions": {
         "timeStep": 2.5
       },
       "onLoad": [
         "setComponentDisabled('start-heating', false);",
-        "setComponentDisabled('stop-heating', true);",
         "callEvery(300, function() {",
         "  if (get('experimentRunning')) {",
         "    var energy_to_add = 0.35;",
         "    addKEToAtoms(energy_to_add);",
-        "    var runningTime = get('time') - get('timeExperimentStarted');",
-        "    set('experimentTime', runningTime);",
-        "    if (runningTime > 150000) stop();",
+        "    if (get('temperatureFiltered') > 2900) stop();",
         "  }",
-        "});"
+         "});"
       ]
     }
   ],
@@ -73,19 +69,8 @@
    ],
   "parameters": [
     {
-      "name": "timeExperimentStarted",
-      "initialValue": 0,
-      "onChange": ""
-    },
-    {
       "name": "experimentRunning",
       "initialValue": false,
-      "onChange": ""
-    },
-    {
-      "name": "experimentTime",
-      "label": "Experiment time",
-      "initialValue": 0,
       "onChange": ""
     }
   ],
@@ -121,30 +106,14 @@
         "  start();",
         "}",
         "setComponentDisabled('start-heating', true);",
-        "setComponentDisabled('stop-heating', false);",
-        "set('timeExperimentStarted', get('time'));",
         "set('experimentRunning', true);"
       ]
     },
     {
       "type": "button",
-      "id": "stop-heating",
-      "text": "Stop adding heat",
-      "disabled": true,
-      "action": [
-        "set('experimentRunning', false);",
-        "if (isStopped()) {",
-        "  start();",
-        "}",
-        "setComponentDisabled('start-heating', false);",
-        "setComponentDisabled('stop-heating', true);"
-      ]
-    },
-    {
-      "type": "numericOutput",
-      "id": "experiment-time",
-      "property": "experimentTime",
-      "displayValue": "return format('.1f')(value/1000)"
+      "id": "reset",
+      "text": "Reset",
+      "action": "reloadModel();"
     },
     {
       "type": "graph",
@@ -153,9 +122,9 @@
       "xlabel": "Total energy",
       "ylabel": "Temperature (K)",
       "ymin": 0,
-      "ymax": 2500,
+      "ymax": 3000,
       "xmin": -160,
-      "xmax": 40,
+      "xmax": 50,
       "lines": false,
       "lineWidth": 2,
       "yTickCount": 5,
@@ -176,7 +145,7 @@
       "temperature-energy-graph"
     ],
     "bottom": [
-      "start-heating", "stop-heating", "experiment-time"
+      "start-heating", "reset"
     ]
   },
   "template": [
