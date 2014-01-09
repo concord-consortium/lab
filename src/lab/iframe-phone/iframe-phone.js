@@ -13,7 +13,18 @@ define(function (require){
       return iframe.src.match(/(.*?\/\/.*?)\//)[1];
     }
 
-    function post(message) {
+    function post(type, content) {
+      var message;
+      // Message object can be constructed from 'type' and 'content' arguments or it can be passed
+      // as the first argument.
+      if (arguments.length === 1 && typeof type === 'object' && typeof type.type === 'string') {
+        message = type;
+      } else {
+        message = {
+          type: type,
+          content: content
+        };
+      }
       if (connected) {
         // if we are laready connected ... send the message
         message.origin = selfOrigin;
@@ -39,21 +50,17 @@ define(function (require){
       handlers[messageName] = null;
     }
 
-    function addDispatchListener(eventName,func,properties) {
-      addListener(eventName,func);
-      post({
-        'type': 'listenForDispatchEvent',
-        'eventName': eventName,
-        'properties': properties
+    function addDispatchListener(eventName, func, properties) {
+      addListener(eventName, func);
+      post('listenForDispatchEvent', {
+        eventName: eventName,
+        properties: properties
       });
     }
 
-    function removeDispatchListener(messageName) {
-      post({
-        'type': 'removeListenerForDispatchEvent',
-        'eventName': messageName
-      });
-      removeListener(messageName);
+    function removeDispatchListener(eventName) {
+      post('removeListenerForDispatchEvent', eventName);
+      removeListener(eventName);
     }
 
     function receiveMessage(message) {
@@ -64,10 +71,9 @@ define(function (require){
         if (typeof messageData === 'string') {
           messageData = JSON.parse(messageData);
         }
-        if (handlers[messageData.type]){
-          handlers[messageData.type](messageData.values);
-        }
-        else {
+        if (handlers[messageData.type]) {
+          handlers[messageData.type](messageData.content);
+        } else {
           console.log("cant handle type: " + messageData.type);
         }
       }
@@ -78,7 +84,7 @@ define(function (require){
       connected = true;
 
       // send hello response
-      post({type: 'hello'});
+      post('hello');
 
       // give the user a chance to do things now that we are connected
       // note that is will happen before any queued messages

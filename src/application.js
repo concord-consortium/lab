@@ -194,7 +194,7 @@ AUTHORING = false;
           interactive.fontScale = fontScale;
           interactive.aspectRatio = aspectRatio;
           descriptionByPath[interactiveUrl].aspectRatio = aspectRatio;
-          iframePhone.post({ type:'loadInteractive', data: interactive });
+          iframePhone.post('loadInteractive', interactive);
           // Update editor.
           editor.setValue(JSON.stringify(interactive, null, indent));
           console.log("new aspect ratio: " + aspectRatio);
@@ -207,11 +207,11 @@ AUTHORING = false;
       // On a Interactive Browser page with an iframe send the
       // focus to the Interactive.
       if (isFullIFramePage()) {
-        iframePhone.post({ type:'setFocus' });
+        iframePhone.post('setFocus');
       }
-      iframePhone.post({ type:'getInteractiveState' });
-      iframePhone.addListener('interactiveState', function(message) {
-        interactive = message;
+      iframePhone.post('getInteractiveState');
+      iframePhone.addListener('interactiveState', function(content) {
+        interactive = content;
         setupFullPage();
       });
     });
@@ -716,7 +716,7 @@ AUTHORING = false;
         if(isFullPage()) {
           controller.loadInteractive(interactive, '#interactive-container');
         } else {
-          iframePhone.post({ type:'loadInteractive', data:interactive  });
+          iframePhone.post('loadInteractive', interactive);
           $interactiveTitle.text(interactive.title);
           $('#interactive-subtitle').text(interactive.subtitle);
         }
@@ -733,9 +733,9 @@ AUTHORING = false;
           interactiveState = controller.serialize();
           editor.setValue(JSON.stringify(interactiveState, null, indent));
         } else {
-          iframePhone.post({ type:'getInteractiveState' });
-          iframePhone.addListener('interactiveState', function(message) {
-            editor.setValue(JSON.stringify(message, null, indent));
+          iframePhone.post('getInteractiveState');
+          iframePhone.addListener('interactiveState', function(content) {
+            editor.setValue(JSON.stringify(content, null, indent));
           });
         }
       });
@@ -752,7 +752,7 @@ AUTHORING = false;
         if (editMode && isFullIFramePage()) {
           interactive.aspectRatio = aspectRatio;
           descriptionByPath[interactiveUrl].aspectRatio = aspectRatio;
-          iframePhone.post({ type:'loadInteractive', data: interactive });
+          iframePhone.post('loadInteractive', interactive);
           // Update editor.
           editor.setValue(JSON.stringify(interactive, null, indent));
           console.log("new aspect ratio: " + aspectRatio);
@@ -788,9 +788,9 @@ AUTHORING = false;
         modelState = controller.modelController.state();
         modelEditor.setValue(JSON.stringify(modelState, null, indent));
       } else {
-        iframePhone.post({ type:'getModelState' });
-        iframePhone.addListener('modelState', function(message) {
-          modelEditor.setValue(JSON.stringify(message, null, indent));
+        iframePhone.post('getModelState');
+        iframePhone.addListener('modelState', function(content) {
+          modelEditor.setValue(JSON.stringify(content, null, indent));
         });
       }
     }
@@ -820,7 +820,7 @@ AUTHORING = false;
         if(isFullPage()) {
           controller.loadModel(interactive.models[0].id, modelJson);
         } else {
-          iframePhone.post({ type:'loadModel', data: { modelId: interactive.models[0].id, modelObject: modelJson } });
+          iframePhone.post('loadModel', { modelId: interactive.models[0].id, modelObject: modelJson });
         }
       });
 
@@ -882,7 +882,7 @@ AUTHORING = false;
   // Benchmarks
   //
   function getFingerprint() {
-    if (Lab.config.environment == 'production') {
+    if (Lab.config.environment === 'production') {
       // fake fingerprint on production because library won't be loaded
       return "mock fingerprint";
     } else {
@@ -928,9 +928,9 @@ AUTHORING = false;
           function() { $runBenchmarksButton.attr('disabled', true); },
           function() { $runBenchmarksButton.attr('disabled', false); });
       } else {
-        iframePhone.post({ type:'runBenchmarks' });
-        iframePhone.addListener('returnBenchmarks', function(message) {
-          Lab.benchmark.renderToTable(benchmarksTable, message.benchmarks, message.results);
+        iframePhone.post('runBenchmarks');
+        iframePhone.addListener('returnBenchmarks', function(content) {
+          Lab.benchmark.renderToTable(benchmarksTable, content.benchmarks, content.results);
         });
       }
 
@@ -952,7 +952,7 @@ AUTHORING = false;
 
       // create data object directly from the table element
       headers.each(function(i) {
-        data[this.innerHTML] = $('#model-benchmark-results tr.average td:nth-child('+(i+1)+')').text()
+        data[this.innerHTML] = $('#model-benchmark-results tr.average td:nth-child('+(i+1)+')').text();
       });
 
       data["browser id"] = fingerprint;
@@ -1022,7 +1022,7 @@ AUTHORING = false;
       if (_model) {
         _model.on(privateName, func); // for now
       } else if (iframePhone) {
-        iframePhone.addDispatchListener(privateName,func, props);
+        iframePhone.addDispatchListener(privateName, func, props);
       }
     }
 
@@ -1038,7 +1038,7 @@ AUTHORING = false;
     function addIframeEventListeners() {
       addEventHook("tick", function(props) {
         updateModelEnergyGraph(props);
-      }, ['kineticEnergy','potentialEnergy']);
+      }, ['kineticEnergy', 'potentialEnergy']);
 
       addEventHook('play', function(props) {
         if (modelEnergyGraph.numberOfPoints() && props.tickCounter < modelEnergyGraph.numberOfPoints()) {
@@ -1193,18 +1193,17 @@ AUTHORING = false;
       }
       setupShowHideLHandler();
     } else if (iframePhone) {
-      iframePhone.addListener('propertyValue', function(displayTimePerTick) {
-        energyGraphSamplePeriod = displayTimePerTick;
-        renderModelEnergyGraph();
-        if (callback && typeof callback === "function") {
-          callback();
+      iframePhone.addListener('propertyValue', function(content) {
+        if (content.name === 'displayTimePerTick') {
+          energyGraphSamplePeriod = content.value;
+          renderModelEnergyGraph();
+          if (callback && typeof callback === "function") {
+            callback();
+          }
+          setupShowHideLHandler();
         }
-        setupShowHideLHandler();
       });
-      iframePhone.post({
-        'type': 'get',
-        'propertyName': 'displayTimePerTick'
-      });
+      iframePhone.post('get', 'displayTimePerTick');
     } else {
       renderModelEnergyGraph();
       if (callback && typeof callback === "function") {
