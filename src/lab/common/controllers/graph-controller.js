@@ -138,7 +138,7 @@ define(function (require) {
     function redrawCurrentStepPointer() {
       grapher.updateOrRescale(getModel().stepCounter());
     }
-    function _selectionChangeHandler(extra) {
+    function _selectionChangeHandler(event, extra) {
       redrawCurrentStepPointer(extra.data);  //
     }
 
@@ -171,6 +171,9 @@ define(function (require) {
     function _dataResetHandler(extra) {
       clearGrapher(extra.data);
     }
+    function _invalidationHandler(extra) {
+      clearGrapher(extra.data);
+    }
 
     /**
       Ask the grapher to reset itself, without adding new data.
@@ -201,6 +204,7 @@ define(function (require) {
       listeningPool.listen(dataSet, DataSet.Events.SELECTION_CHANGED, _selectionChangeHandler);
       listeningPool.listen(dataSet, DataSet.Events.DATA_RESET,        _dataResetHandler);
       listeningPool.listen(dataSet, DataSet.Events.SAMPLE_ADDED,      _sampleAddedHandler);
+      listeningPool.listen(dataSet, DataSet.Events.DATA_TRUNCATED,    _invalidationHandler);
     }
 
     function updateYLabelHandler() {
