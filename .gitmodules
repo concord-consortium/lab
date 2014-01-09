@@ -88,3 +88,7 @@
 [submodule "vendor/lab-grapher"]
 	path = vendor/lab-grapher
 	url = https://github.com/concord-consortium/lab-grapher.git
+[submodule "vendor/chosen"]
+	path = vendor/chosen
+	url = https://github.com/harvesthq/chosen.git
+	branch = gh-pages
