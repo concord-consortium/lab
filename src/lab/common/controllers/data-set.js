@@ -129,7 +129,7 @@ define(function () {
   DataSet.prototype.getDataPoint = function () {
     var ret = [], i, len, xval;
 
-    xval = this._model.get(this.xPropertyName );
+    xval = this._getModelProperty(this.xPropertyName );
     for (i = 0, len = this.modelProperties.length; i < len; i++) {
       ret.push([xval, this._getModelProperty(this.modelProperties[i])]);
     }
