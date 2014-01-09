@@ -135,8 +135,8 @@ define(function (require) {
       Causes the graph to move the "current" pointer to the current model step. This desaturates
       the graph region corresponding to times after the current point.
     */
-    function redrawCurrentStepPointer() {
-      grapher.updateOrRescale(getModel().stepCounter());
+    function redrawCurrentStepPointer(step) {
+      grapher.updateOrRescale(step);
     }
     function _selectionChangeHandler(event, extra) {
       redrawCurrentStepPointer(extra.data);  //
