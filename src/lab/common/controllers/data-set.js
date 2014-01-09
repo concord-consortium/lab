@@ -1,6 +1,7 @@
 define(function () {
-  var ListeningPool = require('common/listening-pool');
-  var dataSetCount  = 0;
+  var ListeningPool   = require('common/listening-pool');
+  var DispatchSupport = require('common/dispatch-support');
+  var dataSetCount    = 0;
 
   // TODO: placeholder function:
   function validateComponent (component) {
@@ -19,24 +20,29 @@ define(function () {
    */
   function DataSet(component, interactivesController) {
     this.interactivesController = interactivesController;
-    this._model               = interactivesController.getModel();
-    this.namespace            = "dataSet" + (++dataSetCount);
-    this.component            = validateComponent(component);
-    this.xPropertyName        = this.component.xProperty;
-    this.modelProperties      = this.component.properties || [];
-    this.streamDataFromModel  = this.component.streamDataFromModel;
-    this.clearOnModelLoad     = this.component.clearOnModelLoad;
-    this._dataSeriesArry      = [];  // [seriesa,seriesb,seriesc]
-    this._listeningPool       = new ListeningPool(this.namespace);
+    this._model                 = interactivesController.getModel();
+    this.namespace              = "dataSet" + (++dataSetCount);
+    this.component              = validateComponent(component);
+    this.xPropertyName          = this.component.xProperty;
+    this.modelProperties        = this.component.properties || [];
+    this.streamDataFromModel    = this.component.streamDataFromModel;
+    this.clearOnModelLoad       = this.component.clearOnModelLoad;
+    this._dataSeriesArry        = [];  // [seriesa,seriesb,seriesc]
+    this._listeningPool         = new ListeningPool(this.namespace);
+    this._dispatch              = new DispatchSupport();
+    for (var key in DataSet.Events) {
+      this._dispatch.addEventTypes(DataSet.Events[key]);
+    }
+    this._dispatch.mixInto(DataSet.prototype);
   }
 
   DataSet.Events = {
-    SAMPLE_ADDED:      "DataSet.SAMPLE_ADDED",
-    NEW_SERIES:        "DataSet.NEW_SERIES",
-    DATA_TRUNCATED:    "DataSet.DATA_TRUNCATED",
-    DATA_RESET:        "DataSet.DATA_RESET",
-    REMOVE_ALL_SERIES: "DataSet.REMOVE_ALL_SERIES",
-    SELECTION_CHANGED: "DataSet.SELECTION_CHANGED"
+    SAMPLE_ADDED:      "sampleAdded",
+    NEW_SERIES:        "newSeries",
+    DATA_TRUNCATED:    "dataTruncated",
+    DATA_RESET:        "dataReset",
+    REMOVE_ALL_SERIES: "removeAllSeries",
+    SELECTION_CHANGED: "selectionChanged"
   };
 
   /******************************************************************
@@ -95,7 +101,7 @@ define(function () {
     @param {data} extra data for the event.
   */
   DataSet.prototype._trigger = function (name, data) {
-    $(this).trigger(name, {'data' : data});
+    this._dispatch[name]({'data': data});
   };
 
 

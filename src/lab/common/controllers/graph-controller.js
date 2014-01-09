@@ -138,7 +138,7 @@ define(function (require) {
     function redrawCurrentStepPointer() {
       grapher.updateOrRescale(getModel().stepCounter());
     }
-    function _selectionChangeHandler(event, extra) {
+    function _selectionChangeHandler(extra) {
       redrawCurrentStepPointer(extra.data);  //
     }
 
@@ -168,8 +168,8 @@ define(function (require) {
         grapher.repaint();
       }
     }
-    function _dataResetHandler(event, extra) {
-      clearGrapher(extra.data);  //
+    function _dataResetHandler(extra) {
+      clearGrapher(extra.data);
     }
 
     /**
@@ -185,7 +185,7 @@ define(function (require) {
     function addGraphPoints(dataPoints) {
       grapher.addPoints(dataPoints);
     }
-    function _sampleAddedHandler(event, extra) {
+    function _sampleAddedHandler(extra) {
       addGraphPoints(extra.data);
     }
 
@@ -198,9 +198,9 @@ define(function (require) {
       listeningPool.listen(model, 'reset',       _modelResetHandler);
 
       // Not sure, but we probably want all the other events from the dataSet
-      listeningPool.listen($(dataSet), DataSet.Events.SELECTION_CHANGED, _selectionChangeHandler);
-      listeningPool.listen($(dataSet), DataSet.Events.DATA_RESET,        _dataResetHandler);
-      listeningPool.listen($(dataSet), DataSet.Events.SAMPLE_ADDED,      _sampleAddedHandler);
+      listeningPool.listen(dataSet, DataSet.Events.SELECTION_CHANGED, _selectionChangeHandler);
+      listeningPool.listen(dataSet, DataSet.Events.DATA_RESET,        _dataResetHandler);
+      listeningPool.listen(dataSet, DataSet.Events.SAMPLE_ADDED,      _sampleAddedHandler);
     }
 
     function updateYLabelHandler() {
