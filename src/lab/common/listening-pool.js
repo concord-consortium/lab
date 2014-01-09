@@ -54,7 +54,7 @@ define(function () {
    */
   ListeningPool.prototype.remove = function(listener) {
     if (isD3Listner(listener)) {
-      listener.speaker.on(listener.eventName); // How D3 removes listeners...
+      listener.speaker.on(listener.eventName, null); // How D3 removes listeners...
     }
     else {
       listener.speaker.off(listener.eventName); // How JQuery removes listeners..
