@@ -50,10 +50,22 @@ define(function () {
   *******************************************************************/
 
   /**
+  * returns the number of (model) data points we have recorded.
+  * TODO: This is for model invadlidation / data truncation,
+  * so its assumed that the first columns are from model data.
+  */
+  DataSet.prototype._numberOfPoints = function () {
+    if (this._dataSeriesArry.length > 0) {
+      return this._dataSeriesArry[0].length;
+    }
+    return 0;
+  };
+
+  /**
     Check that we haven't invalidated future datapoints.
   */
   DataSet.prototype._inNewModelTerritory = function () {
-    return (this._model.stepCounter() < this.numberOfPoints());
+    return (this._model.stepCounter() < this._numberOfPoints());
   };
 
   /**
