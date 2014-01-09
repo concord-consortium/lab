@@ -464,6 +464,8 @@ AUTHORING = false;
     } else {
       $selectInteractive.val(interactiveUrl);
     }
+    // create searchable dropdown using Chosen
+    $selectInteractive.chosen();
     updateNextPreviousInteractiveStatus();
   }
 
