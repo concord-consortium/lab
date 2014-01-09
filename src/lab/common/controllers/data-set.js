@@ -174,7 +174,6 @@ define(function () {
       // Account for initial data, which corresponds to stepCounter == 0
       this._dataSeriesArry[i].length = newLength;
     }
-    // TODO: Should we return a copy of the array using .split?
     this._trigger(DataSet.Events.DATA_TRUNCATED, this._dataSeriesArry);
   };
 
