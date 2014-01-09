@@ -138,7 +138,7 @@ define(function (require) {
     function redrawCurrentStepPointer(step) {
       grapher.updateOrRescale(step);
     }
-    function _selectionChangeHandler(event, extra) {
+    function _selectionChangeHandler(extra) {
       redrawCurrentStepPointer(extra.data);  //
     }
 
