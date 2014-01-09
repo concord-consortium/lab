@@ -35,6 +35,8 @@ AUTHORING = false;
 
       $serializedControls = $("#header *.serialize"),
 
+      chosenApplied = false,
+
       applicationCallbacks,
 
       controller,
@@ -406,6 +408,9 @@ AUTHORING = false;
   }
 
   function setupSelectList() {
+    if (chosenApplied) {
+      $selectInteractive.chosen('destroy');
+    }
     $selectInteractive.empty();
     $selectInteractive.append($("<option>")
           .attr('value', 'select')
@@ -466,6 +471,7 @@ AUTHORING = false;
     }
     // create searchable dropdown using Chosen
     $selectInteractive.chosen();
+    chosenApplied = true;
     updateNextPreviousInteractiveStatus();
   }
 
