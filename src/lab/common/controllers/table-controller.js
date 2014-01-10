@@ -236,6 +236,11 @@ define(function (require) {
         return $element;
       },
 
+      // Returns the view object.
+      getView: function() {
+        return view;
+      },
+
       // Returns serialized component definition.
       serialize: function () {
         // start with the initial component definition.
