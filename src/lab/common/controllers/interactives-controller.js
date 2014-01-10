@@ -107,6 +107,7 @@ define(function (require) {
         model,
         currentModelID,
         $interactiveContainer,
+        $fastClickContainer,
         helpSystem,
         modelDefinitions = [],
         modelHash = {},
@@ -277,7 +278,7 @@ define(function (require) {
 
       // Setup layout using both author components and components
       // created automatically in this controller.
-      semanticLayout.initialize(template, layout, components,
+      semanticLayout.initialize($interactiveContainer, template, layout, components,
                                 interactive.aspectRatio, interactive.fontScale);
 
       // We are rendering in embeddable mode if only element on page
@@ -457,9 +458,24 @@ define(function (require) {
       // Cleanup container!
       $interactiveContainer.empty();
 
-      creditsDialog = new CreditsDialog(viewSelector);
-      aboutDialog = new AboutDialog(viewSelector);
-      shareDialog = new ShareDialog(viewSelector);
+      // Attach FastClick only to the .lab-fastclick-container DIV. We don't want to affect rest of the
+      // web page (e.g. by attaching FastClick to "body" or window), let its developer decide whether
+      // FastClick should be used there or not. It solves two issues on mobile browsers:
+      // - eliminates 300ms delay between a physical tap and the firing of a click event
+      // - fixes sticky :hover state (https://www.pivotaltracker.com/story/show/58373748)
+      //
+      // Unfortunatelly we cannot attach FastClick to the whole interactive container, as it breaks
+      // e.g. jQuery context menu.
+      // See: https://www.pivotaltracker.com/story/show/63386470
+      // Components have choice whether to attach themselves to .lab-interactive-container
+      // or .lab-fastclick-container.
+      $fastClickContainer = $('<div class="lab-fastclick-container"></div>');
+      $fastClickContainer.appendTo($interactiveContainer);
+      FastClick.attach($fastClickContainer[0]);
+
+      creditsDialog = new CreditsDialog(".lab-fastclick-container");
+      aboutDialog = new AboutDialog(".lab-fastclick-container");
+      shareDialog = new ShareDialog(".lab-fastclick-container");
 
       // Each time we load a new interactive, we assume that it would be an "initial" model load.
       // This flag is used to decide whether parameters should be retained or not.
@@ -1060,6 +1076,13 @@ define(function (require) {
     // Public API.
     //
     controller = {
+      get interactiveContainer() {
+        // Note that by default fastclick container is returned here. It's interactive container
+        // child with FastClick attached.
+        // Some elements may want to attach themselves to interactive container itself when they
+        // don't work well with FastClick (e.g. jQuery Context Menu).
+        return $fastClickContainer;
+      },
       get scriptingAPI() {
         return scriptingAPI;
       },
@@ -1359,25 +1382,16 @@ define(function (require) {
     //
 
     // Select interactive container.
-    // TODO: controller rather should create it itself to follow pattern of other components.
     $interactiveContainer = $(viewSelector);
+    $interactiveContainer.addClass("lab-interactive-container");
 
-    // Attach FastClick only to the interactive container. We don't want to affect rest of the
-    // web page (e.g. by attaching FastClick to "body" or window), let its developer decide whether
-    // FastClick should be used there or not. It solves two issues on mobile browsers:
-    // - eliminates 300ms delay between a physical tap and the firing of a click event
-    // - fixes sticky :hover state (https://www.pivotaltracker.com/story/show/58373748)
-    FastClick.attach($interactiveContainer[0]);
-
-    // add container to API
-    controller.interactiveContainer = $interactiveContainer;
     // Initialize semantic layout.
-    semanticLayout = new SemanticLayout($interactiveContainer);
+    semanticLayout = new SemanticLayout();
     controller.on("resize.share-dialog", function () {
       shareDialog.updateIframeSize();
     });
-
     loadInteractive(interactiveReference);
+
     return controller;
   };
 });

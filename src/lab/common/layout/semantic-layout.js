@@ -16,6 +16,11 @@ define(function (require) {
         // Public API.
     var layout,
 
+        // Parent of all components. It can be equal to $interactiveContainer or it can be one
+        // its child with class .lab-fastclick-container (what means that FastClick is attached
+        // to it).
+        $parentContainer,
+
         // Array of containers specifications.
         containerSpecList,
         // Hash containing content of container for a given container ID.
@@ -113,7 +118,7 @@ define(function (require) {
         container = containerSpecList[i];
         id = container.id;
         containerSpecByID[id] = container;
-        $containerByID[id] = $("<div id='" + id + "'>").appendTo($interactiveContainer);
+        $containerByID[id] = $("<div id='" + id + "'>").appendTo($parentContainer);
         $containerByID[id].css({
           "display": "inline-block",
           "position": "absolute"
@@ -438,7 +443,13 @@ define(function (require) {
        * @param {number} newFontScale Aspect ratio, floating point number, typically around 1.3.
        * @param {number} newFontScale Font scale, floating point number, typically between 0.5 and 1.5.
        */
-      initialize: function(newContainers, newContainersContent, newComponents, newAspectRatio, newFontScale) {
+      initialize: function($newContainer, newContainers, newContainersContent, newComponents, newAspectRatio, newFontScale) {
+        $interactiveContainer = $newContainer;
+        // Parent container of all other containers can be either interactive container or one of
+        // its children with class .lab-fastclick-container. Support both cases.
+        $parentContainer = $interactiveContainer.find(".lab-fastclick-container");
+        if ($parentContainer.length === 0) $parentContainer = $interactiveContainer;
+
         containerSpecList = newContainers;
         containersContent = newContainersContent;
         componentByID = newComponents;
@@ -479,7 +490,7 @@ define(function (require) {
           "position": "absolute",
           "z-index": "0"
         });
-        $modelContainer.appendTo($interactiveContainer);
+        $modelContainer.appendTo($parentContainer);
         $containerByID.model = $modelContainer;
       },
 
