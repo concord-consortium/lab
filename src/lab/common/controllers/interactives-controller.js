@@ -278,7 +278,7 @@ define(function (require) {
 
       // Setup layout using both author components and components
       // created automatically in this controller.
-      semanticLayout.initialize($interactiveContainer, template, layout, components,
+      semanticLayout.initialize($interactiveContainer, $fastClickContainer, template, layout, components,
                                 interactive.aspectRatio, interactive.fontScale);
 
       // We are rendering in embeddable mode if only element on page

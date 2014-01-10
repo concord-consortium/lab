@@ -12,14 +12,14 @@ define(function (require) {
       console      = require('common/console'),
       alert        = require('common/alert');
 
-  return function SemanticLayout($interactiveContainer) {
+  return function SemanticLayout() {
         // Public API.
     var layout,
 
-        // Parent of all components. It can be equal to $interactiveContainer or it can be one
-        // its child with class .lab-fastclick-container (what means that FastClick is attached
-        // to it).
-        $parentContainer,
+        // Manin container of the interactive. Font scaling will be applied to it.
+        $mainContainer,
+        // Parent of all containers, it should equal to $mainContainer or one of its children.
+        $containersParent,
 
         // Array of containers specifications.
         containerSpecList,
@@ -91,8 +91,8 @@ define(function (require) {
           canonicalHeight = canonicalWidth / aspectRatio,
           containerScale, font;
 
-      containerScale = Math.min($interactiveContainer.width() / canonicalWidth,
-                                $interactiveContainer.height() / canonicalHeight);
+      containerScale = Math.min($mainContainer.width() / canonicalWidth,
+                                $mainContainer.height() / canonicalHeight);
 
       padding = containerScale * 10;
 
@@ -104,7 +104,7 @@ define(function (require) {
       }
 
       // Set font-size of interactive container.
-      $interactiveContainer.css("font-size", font + "em");
+      $mainContainer.css("font-size", font + "em");
       fontSizeChanged = true;
     }
 
@@ -118,7 +118,7 @@ define(function (require) {
         container = containerSpecList[i];
         id = container.id;
         containerSpecByID[id] = container;
-        $containerByID[id] = $("<div id='" + id + "'>").appendTo($parentContainer);
+        $containerByID[id] = $("<div id='" + id + "'>").appendTo($containersParent);
         $containerByID[id].css({
           "display": "inline-block",
           "position": "absolute"
@@ -437,18 +437,18 @@ define(function (require) {
        *  - model controller,
        *  - font scale.
        *
+       * @param {jQuery} $newMainContainer Top-most container, font scalling will be applied to it.
+       * @param {jQuery} $newContainersParent Element that will be a parent for containers
+       *                 (can be equal to main container or one of its children).
        * @param {array} newContainers List of layout containers.
        * @param {Object} newContainersContent Hash of components locations, e.g. {"bottom": ["button", "textLabel"]}.
        * @param {Object} newComponents Hash of components controllers. Keys are IDs of the components.
        * @param {number} newFontScale Aspect ratio, floating point number, typically around 1.3.
        * @param {number} newFontScale Font scale, floating point number, typically between 0.5 and 1.5.
        */
-      initialize: function($newContainer, newContainers, newContainersContent, newComponents, newAspectRatio, newFontScale) {
-        $interactiveContainer = $newContainer;
-        // Parent container of all other containers can be either interactive container or one of
-        // its children with class .lab-fastclick-container. Support both cases.
-        $parentContainer = $interactiveContainer.find(".lab-fastclick-container");
-        if ($parentContainer.length === 0) $parentContainer = $interactiveContainer;
+      initialize: function($newMainContainer, $newContainersParent, newContainers, newContainersContent, newComponents, newAspectRatio, newFontScale) {
+        $mainContainer = $newMainContainer;
+        $containersParent = $newContainersParent;
 
         containerSpecList = newContainers;
         containersContent = newContainersContent;
@@ -462,7 +462,7 @@ define(function (require) {
         // After .initialize() call client code has to call .setupModel().
         modelController = null;
 
-        $interactiveContainer.addClass("lab-responsive-content");
+        $mainContainer.addClass("lab-responsive-content");
       },
 
       /**
@@ -490,7 +490,7 @@ define(function (require) {
           "position": "absolute",
           "z-index": "0"
         });
-        $modelContainer.appendTo($parentContainer);
+        $modelContainer.appendTo($containersParent);
         $containerByID.model = $modelContainer;
       },
 
@@ -514,8 +514,8 @@ define(function (require) {
         console.time('[layout] update');
 
         reset();
-        availableWidth  = $interactiveContainer.width();
-        availableHeight = $interactiveContainer.height();
+        availableWidth  = $mainContainer.width();
+        availableHeight = $mainContainer.height();
         modelWidth = availableWidth; // optimization
 
         // 0. Set font size of the interactive-container based on its size.
