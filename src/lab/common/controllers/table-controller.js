@@ -50,6 +50,7 @@ define(function (require) {
 
     function generateColumnTitlesAndFormatters() {
       var i, propertyName, columnDesc, propertyDescription, propertyTitle, unitAbrev;
+      var editable, format;
 
       columns = [];
       formatters = [];
@@ -64,7 +65,7 @@ define(function (require) {
         editable = false;
         format = '.3r';
 
-        if (typeof component.propertyColumns[i] == "string") {
+        if (typeof component.propertyColumns[i] === "string") {
           columnDesc = {name: component.propertyColumns[i]};
         } else {
           columnDesc = component.propertyColumns[i];
