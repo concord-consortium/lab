@@ -145,7 +145,6 @@ define(function(require) {
       lines,
       lineTop,
       mockLinesTop = [],
-      keShadingMode,
       useQuantumDynamics,
       forceVectorColor,
       forceVectorWidth,
@@ -307,6 +306,7 @@ define(function(require) {
 
     function drawSymbolImages() {
       var heatBath = model.get('temperatureControl'),
+        keShadingMode = model.get('keShading'),
         imageSelect, imageHeight,
         // Variables used for calculating proper y positions.
         yPos = 0,
@@ -1162,7 +1162,7 @@ define(function(require) {
       setupRendererOptions();
 
       // Subscribe for model events.
-      model.addPropertiesListener(["temperatureControl"], drawSymbolImages);
+      model.addPropertiesListener(["temperatureControl", "keShading"], drawSymbolImages);
 
       function redrawClickableObjects(redrawOperation) {
         return function() {
