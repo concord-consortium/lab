@@ -262,6 +262,7 @@ define(function() {
               data, $input;
 
           if (!columns[colIndex].editable) return;
+          if ($td.find('input').length) return;
 
           data   = tableData[rowIndex][colIndex],
           $input = $('<input class="editor-text">').val(data);
@@ -278,12 +279,12 @@ define(function() {
             self.updateTable({});
           }
 
-          $input.bind('keypress', function(e) {
+          $input.bind('keydown', function(e) {
             var code = (e.keyCode ? e.keyCode : e.which);
             if(code == 13) { //Enter
-               commitChange();
+              commitChange();
             }
-            return true;
+            e.stopPropagation();
           });
           $input.blur(commitChange);
         });
