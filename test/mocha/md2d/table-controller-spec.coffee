@@ -163,25 +163,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
         it "should call the views updateTable method with correct columns", ->
           controller.modelLoadedCallback()
           view.updateTable.callCount.should.equal 1
-          debugger
-          assert view.updateTable.calledWithMatch({columns: 6})
-
-
-        it "should pass the DIV DOM element to the TableView constructor", ->
-          controller.modelLoadedCallback()
-          mock.TableView.getCall(0).args[0].tagName.should.eql "DIV"
-          mock.TableView.getCall(0).args[0].id.should.eql getComponentSpec().id
-
-        it "should create a TableView instance which is returned by #getView", ->
-          should.not.exist controller.getView()
-          controller.modelLoadedCallback()
-          controller.getView().should.equal mock.TableView.returnValues[0]
-
-        it "should call grapher.reset when called a second time", ->
-          controller.modelLoadedCallback()
-          grapher = mock.TableView.returnValues[0]
-          controller.modelLoadedCallback()
-          grapher.reset.callCount.should.equal 1
+          assert view.updateTable.calledWithMatch(sinon.match.has('columns'))
 
       describe "interaction with model", ->
         grapher = null
