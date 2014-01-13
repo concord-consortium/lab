@@ -95,6 +95,7 @@ define(function() {
 
     function getRowVisiblity($tr) {
       var p = $tr.position();
+      if (!p || !tbodyPos) return 0;
       if (p.top < tbodyPos.top) return -1;
       if (p.top > tbodyHeight) return 1;
       return 0;
@@ -114,9 +115,6 @@ define(function() {
         selected.push(rowIndex);
         $tr = getRowByIndex(rowIndex);
         $tr.addClass('selected');
-        var v = getRowVisiblity($tr);
-        // if (v === -1) $tr[0].scrollIntoView(true);
-        // if (v === 1) $tr[0].scrollIntoView();
         return $tr;
       }
     }
@@ -170,7 +168,6 @@ define(function() {
       if (tableData.length < 2) {
         alignColumnWidths();
       }
-      // $tr[0].scrollIntoView();
       clearSelection();
       addSelection(index);
     }
@@ -196,7 +193,7 @@ define(function() {
     }
 
     function renderTableData() {
-      var i, rowData, $tr, $td;
+      var i;
       $tbody.find('.data').remove();
       if (!tableData) { return; }
       for(i = 0; i < tableData.length; i++) {
@@ -209,9 +206,74 @@ define(function() {
       tbodyHeight = $tbody.height();
     }
 
+    function commitEditing() {
+      var $input = $tbody.find('input');
+
+      $input.each(function() {
+        var $td = $(this).parent(),
+            rowIndex = $td.parent().data('index'),
+            colIndex = $td.data('index'),
+            val = $(this).val();
+
+        if (!isNaN(parseFloat(val)) && isFinite(val)) {
+          val = parseFloat(val);
+        }
+        tableData[rowIndex][colIndex] = val;
+        $td.empty().html(val);
+      });
+
+      alignColumnWidths();
+      calculateSizeAndPosition();
+    }
+
+    function startEditing(rowIndex, colIndex) {
+      var $td = $(getRowByIndex(rowIndex).find('td')[colIndex]),
+          $oldInputs = $tbody.find('input'),
+          data,
+          $input,
+          nextColIndex;
+
+      if (!$td || (!columns[colIndex].editable) || ($td.find('input').length)) {
+        return;
+      }
+
+      if ($oldInputs.length) {
+        commitEditing();
+      }
+
+      data   = tableData[rowIndex][colIndex],
+      $input = $('<input class="editor-text">').val(data);
+
+      $td.empty().append($input);
+
+      alignColumnWidths();
+
+      $input.bind('keydown', function(e) {
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if(code === 13) {        // Enter
+          commitEditing();
+        } else if (code === 9){  // Tab
+          commitEditing();
+          // find and select next available cell
+          nextColIndex = colIndex;
+          while (++nextColIndex < columns.length) {
+            if (columns[nextColIndex].editable) {
+              startEditing(rowIndex, nextColIndex);
+              break;
+            }
+          }
+        }
+        e.stopPropagation();
+      });
+
+      setTimeout(function(){
+        $input.focus();
+      }, 0);
+    }
+
     return {
       render: function() {
-        var i, j, rowData, $title, $tr, $th, $td, self = this;
+        var i, $title;
         $el = $('<div>');
         $table = $('<table>');
         $tbody = $('<tbody>');
@@ -258,35 +320,9 @@ define(function() {
         $tbody.delegate("td", "click", function(e) {
           var $td      = $(e.currentTarget),
               rowIndex = $td.parent().data('index'),
-              colIndex = $td.data('index'),
-              data, $input;
+              colIndex = $td.data('index');
 
-          if (!columns[colIndex].editable) return;
-          if ($td.find('input').length) return;
-
-          data   = tableData[rowIndex][colIndex],
-          $input = $('<input class="editor-text">').val(data);
-
-          $td.empty().append($input);
-          $input.focus();
-
-          function commitChange() {
-            var val = $input.val();
-            if (!isNaN(parseFloat(val)) && isFinite(val)) {
-              val = parseFloat(val);
-            }
-            tableData[rowIndex][colIndex] = val;
-            self.updateTable({});
-          }
-
-          $input.bind('keydown', function(e) {
-            var code = (e.keyCode ? e.keyCode : e.which);
-            if(code == 13) { //Enter
-              commitChange();
-            }
-            e.stopPropagation();
-          });
-          $input.blur(commitChange);
+          startEditing(rowIndex, colIndex);
         });
         calculateSizeAndPosition();
         return $el;
