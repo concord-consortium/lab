@@ -37,7 +37,11 @@ define(function (require) {
         bars: 'bars'
       },
 
-      graphControllerCount = 0;
+      graphControllerCount = 0,
+
+      // Index of the model property whose description sets the current yLabel (when yLabel isn't
+      // provided explicitly in graph component description).
+      Y_LABEL_PROP_IDX = 0;
 
   return function graphController(component, interactivesController) {
     var // HTML element containing view
@@ -52,9 +56,6 @@ define(function (require) {
         listeningPool,
         namespace = "graphController" + (++graphControllerCount);
 
-    // Name of the model property whose description sets the current yLabel.
-    var yLabelProperty;
-
     function getModel () {
       return interactivesController.getModel();
     }
@@ -65,6 +66,11 @@ define(function (require) {
         dataSet = interactivesController.getComponent(properties.dataSetId);
       }
       return false;
+    }
+
+    // Returns true if label is defined explicitly (it's defined and different from "auto").
+    function isLabelExplicit(label) {
+      return label != null && label !== "auto";
     }
 
     // Legacy path: The dataset is defined as part of the graph controller.
@@ -151,7 +157,7 @@ define(function (require) {
       } else {
         initGrapher();
       }
-      updateYLabelHandler();
+      updateLabels();
     }
     function _modelResetHandler() {
       resetGraph();
@@ -173,6 +179,18 @@ define(function (require) {
     }
     function _invalidationHandler(extra) {
       clearGrapher(extra.data);
+    }
+    function _xLabelChangedHandler(label) {
+      // Set label provided by dataset only if graph component description doesn't specify xlabel.
+      if (!isLabelExplicit(component.xlabel)) {
+        grapher.xLabel(label);
+      }
+    }
+    function _yLabelsChangedHandler(labels) {
+      // Set label provided by dataset only if graph component description doesn't specify ylabel.
+      if (!isLabelExplicit(component.ylabel)) {
+        grapher.yLabel(labels[Y_LABEL_PROP_IDX]);
+      }
     }
 
     /**
@@ -205,24 +223,13 @@ define(function (require) {
       listeningPool.listen(dataSet, DataSet.Events.DATA_RESET,        _dataResetHandler);
       listeningPool.listen(dataSet, DataSet.Events.SAMPLE_ADDED,      _sampleAddedHandler);
       listeningPool.listen(dataSet, DataSet.Events.DATA_TRUNCATED,    _invalidationHandler);
+      listeningPool.listen(dataSet, DataSet.Events.X_LABEL_CHANGED,   _xLabelChangedHandler);
+      listeningPool.listen(dataSet, DataSet.Events.Y_LABELS_CHANGED,  _yLabelsChangedHandler);
     }
 
-    function updateYLabelHandler() {
-      if (yLabelProperty) {
-        getModel().removePropertyDescriptionObserver(yLabelProperty, setYLabelFromProperty);
-        yLabelProperty = null;
-      }
-
-      if (!component.ylabel && properties.length === 1) {
-        yLabelProperty = properties[0];
-        setYLabelFromProperty();
-        getModel().addPropertyDescriptionObserver(yLabelProperty, setYLabelFromProperty);
-      }
-    }
-
-    function setYLabelFromProperty() {
-      var description = getModel().getPropertyDescription(yLabelProperty);
-      grapher.yLabel(description.getLabel() + " (" + description.getUnitAbbreviation() + ")");
+    function updateLabels() {
+      grapher.xLabel(isLabelExplicit(component.xlabel) ? component.xlabel : dataSet.getXLabel());
+      grapher.yLabel(isLabelExplicit(component.ylabel) ? component.ylabel : dataSet.getYLabels()[Y_LABEL_PROP_IDX]);
     }
 
     function initGrapher() {
@@ -249,7 +256,7 @@ define(function (require) {
         if (component.clearOnModelLoad || !isSetup) {
           dataSet.resetData();
         }
-        updateYLabelHandler();
+        updateLabels();
         grapher.repaint();
       },
 
@@ -287,10 +294,10 @@ define(function (require) {
             dataPointsArrays = opts.dataPoints;
           }
           resetGrapher();
+          // We may have set or unset the explicit 'ylabel' / 'xlabel' options; update the graph's
+          // labels as appropriate.
+          updateLabels();
         }
-        // We may have set or unset the explicit 'ylabel' option; update the graph's ylabel as
-        // appropriate
-        updateYLabelHandler();
       },
 
       /**
