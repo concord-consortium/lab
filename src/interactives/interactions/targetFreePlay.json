@@ -29,8 +29,6 @@
         "set('selectedLevelID', 'level1');",
         "setShapeProperties(3, {lineColor: 'rgb(255,0,0)', lineWeight: 7});",
         "set('atomTraceColor','yellow');",
-        "set('atomIndices',[]);",
-        "set('atomOriginalSign',[]);",
         "var timeStepsPerTick = get('timeStepsPerTick'),",
         "    collisionPadding = 0.075;",
         "onClick('background', function(x, y, d, i) {",
@@ -75,8 +73,6 @@
         "set('selectedLevelID', 'level2');",
         "setShapeProperties(3, {lineColor: 'rgb(255,0,0)', lineWeight: 7});",
         "set('atomTraceColor','yellow');",
-        "set('atomIndices',[]);",
-        "set('atomOriginalSign',[]);",
         "var timeStepsPerTick = get('timeStepsPerTick'),",
         "    collisionPadding = 0.075;",
         "onClick('background', function(x, y, d, i) {",
@@ -178,11 +174,9 @@
       "id": "reset",
       "text": "Reset",
       "action": [
-        "resetModel({",
+        "reloadModel({",
         "  propertiesToRetain: ['showElectricField', 'showForceVectors']",
-        "});",
-        "set('atomIndices',[]);",
-        "set('atomOriginalSign',[]);"
+        "});"
       ]
     },
     {
