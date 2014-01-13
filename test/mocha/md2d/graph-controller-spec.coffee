@@ -13,6 +13,8 @@ helpers.withIsolatedRequireJS (requirejs) ->
       updateOrRescale: sinon.spy()
       reset:           sinon.spy()
       repaint:         sinon.spy()
+      xLabel:          sinon.spy()
+      yLabel:          sinon.spy()
 
   requirejs.define 'lab-grapher', [], ->
     # Just a function that calls through to mock.Graph, while allowing mock.Graph to
@@ -304,7 +306,6 @@ helpers.withIsolatedRequireJS (requirejs) ->
                 newData[0].should.have.length 2
                 newData[1].should.have.length 2
 
-
     describe "handling of graph configuration options in component spec", ->
       grapherOptionsForComponentSpec = (componentSpec) ->
         controller = new GraphController componentSpec, interactivesController
@@ -331,6 +332,12 @@ helpers.withIsolatedRequireJS (requirejs) ->
       it "should respect the component spec property 'xlabel'", ->
         shouldSendComponentSpecPropertyToGrapherOption 'xlabel', 'xlabel'
 
+      it "should have a default value for 'ylabel'", ->
+        grapherOptionsForComponentSpec(getComponentSpec()).should.have.property 'ylabel'
+
+      it "should respect the component spec property 'ylabel'", ->
+        shouldSendComponentSpecPropertyToGrapherOption 'ylabel', 'ylabel'
+
       it "should have a default value for 'xmin'", ->
         grapherOptionsForComponentSpec(getComponentSpec()).should.have.property 'xmin'
 
@@ -342,12 +349,6 @@ helpers.withIsolatedRequireJS (requirejs) ->
 
       it "should respect the component spec property 'xmax'", ->
         shouldSendComponentSpecPropertyToGrapherOption 'xmax', 'xmax'
-
-      it "should have a default value for 'ylabel'", ->
-        grapherOptionsForComponentSpec(getComponentSpec()).should.have.property 'ylabel'
-
-      it "should respect the component spec property 'ylabel'", ->
-        shouldSendComponentSpecPropertyToGrapherOption 'ylabel', 'ylabel'
 
       it "should have a default value for 'ymin'", ->
         grapherOptionsForComponentSpec(getComponentSpec()).should.have.property 'ymin'

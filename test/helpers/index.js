@@ -140,6 +140,7 @@ exports.withIsolatedRequireJSAndViewsMocked = function(continuation) {
           resetPoints: function() {},
           resize: function() {},
           repaint: function() {},
+          xLabel: function() {},
           yLabel: function() {},
           xDomain: function() {
             return [0, 10];
