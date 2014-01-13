@@ -598,6 +598,9 @@ define(function (require) {
       if (interactive.helpTips.length > 0) {
         helpSystem = new HelpSystem(interactive.helpTips, $fastClickContainer);
         controller.on("interactiveRendered.helpSystem", function () {
+          // Make sure that this callback is executed only once.
+          controller.on("interactiveRendered.helpSystem", null);
+
           function hashCode(string) {
             var hash = 0, len = string.length, i, c;
             if (len === 0) return hash;
@@ -1265,9 +1268,6 @@ define(function (require) {
        * sequence than 'regular' modelLoadedCallbacks.)
        */
       on: function (type, callback) {
-        if (typeof callback !== "function") {
-          throw new Error("Invalid callback, must be a function.");
-        }
         // Note that we can't use DispatchSupport as willResetModel event is a special one.
         // We have know number of objects interested in this event and we have to let them cancel
         // reset operation.
