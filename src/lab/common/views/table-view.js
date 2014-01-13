@@ -75,11 +75,11 @@ define(function() {
 
     function alignColumnWidths() {
       headerWidths = $thead.find('tr:first th').map(function() {
-        return $(this).width();
+        return $(this).outerWidth();
       });
 
       $tbody.find('tr:first td').each(function(i) {
-        $(this).width(headerWidths[i]);
+        $(this).outerWidth(headerWidths[i]);
       });
     }
 
