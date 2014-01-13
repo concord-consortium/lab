@@ -567,7 +567,7 @@ define(function (require) {
 
       // Setup help system if help tips are defined.
       if (interactive.helpTips.length > 0) {
-        helpSystem = new HelpSystem(interactive.helpTips, $interactiveContainer);
+        helpSystem = new HelpSystem(interactive.helpTips, $fastClickContainer);
         controller.on("interactiveRendered.helpSystem", function () {
           function hashCode(string) {
             var hash = 0, len = string.length, i, c;
