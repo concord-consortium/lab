@@ -808,7 +808,7 @@ define(function() {
         defaultValue: "100%"
       },
       xlabel: {
-        defaultValue: "Model Time (ps)"
+        defaultValue: "auto"
       },
       xmin: {
         defaultValue: 0
@@ -817,7 +817,7 @@ define(function() {
         defaultValue: 20
       },
       ylabel: {
-        defaultValue: ""
+        defaultValue: "auto"
       },
       ymin: {
         defaultValue: 0
