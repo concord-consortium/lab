@@ -95,6 +95,35 @@ define(function (require) {
         'playback':      PlaybackController
       };
 
+  function clone(obj) {
+    var copy;
+    // Handle the 3 simple types, and null or undefined.
+    if (null == obj || "object" !== typeof obj) return obj;
+    // Handle Date
+    if (obj instanceof Date) {
+        copy = new Date();
+        copy.setTime(obj.getTime());
+        return copy;
+    }
+    // Handle Array
+    if (obj instanceof Array) {
+        copy = [];
+        for (var i = 0, len = obj.length; i < len; i++) {
+            copy[i] = clone(obj[i]);
+        }
+        return copy;
+    }
+    // Handle Object
+    if (obj instanceof Object) {
+        copy = {};
+        for (var attr in obj) {
+            if (obj.hasOwnProperty(attr)) copy[attr] = clone(obj[attr]);
+        }
+        return copy;
+    }
+    throw new Error("Unable to copy obj! Its type isn't supported.");
+  }
+
   return function InteractivesController(interactiveReference, viewSelector) {
 
     var interactive = {},
@@ -125,7 +154,7 @@ define(function (require) {
         componentList = [],
 
         // List of custom parameters which are used by the interactive.
-        customParametersByName = [],
+        customParametersByName = {},
 
         // API for scripts defined in the interactive JSON file.
         // and additional model-specific scripting api if one is defined
@@ -1038,7 +1067,9 @@ define(function (require) {
         }, onChangeFunc);
 
         if (parameter.initialValue !== undefined) {
-          initialValues[parameter.name] = parameter.initialValue;
+          // Deep copy of the initial value. Otherwise, if initial value is an object or array,
+          // all updates to parameter value will be shared with its initial value.
+          initialValues[parameter.name] = clone(parameter.initialValue);
         }
         // Save reference to the definition which is finally used.
         // Note that if parameter is defined both in interactive top-level scope
@@ -1219,7 +1250,7 @@ define(function (require) {
        * "resize", "modelLoaded", "modelReset", "interactiveRendered" and "layoutUpdated".
        *
        * @param {string} type
-       * @param  {function|array} callback Callback function or an array of functions.
+       * @param  {function|null} callback Callback function or null (to remove callback).
        *
        * FIXME: We should using DispatchSupport exclusively to emit events (i.e., instead of
        * maintaining custom arrays of callbacks in interactives controller, pass each callback we
@@ -1276,7 +1307,9 @@ define(function (require) {
               param = customParametersByName[param];
               val = model.get(param.name);
               if (val !== undefined) {
-                param.initialValue = val;
+                // Deep copy of the initial value. Otherwise, if value is an object or array, all
+                // updates to parameter value will be shared with its initial value.
+                param.initialValue = clone(val);
               }
             }
           }
