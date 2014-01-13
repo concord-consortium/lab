@@ -266,6 +266,8 @@ define(function() {
         e.stopPropagation();
       });
 
+      $input.on('blur', commitEditing);
+
       setTimeout(function(){
         $input.focus();
       }, 0);
