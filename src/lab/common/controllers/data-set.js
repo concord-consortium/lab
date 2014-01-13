@@ -42,7 +42,9 @@ define(function () {
     DATA_TRUNCATED:    "dataTruncated",
     DATA_RESET:        "dataReset",
     REMOVE_ALL_SERIES: "removeAllSeries",
-    SELECTION_CHANGED: "selectionChanged"
+    SELECTION_CHANGED: "selectionChanged",
+    X_LABEL_CHANGED:   "xLabelChanged",
+    Y_LABELS_CHANGED:  "yLabelsChanged"
   };
 
   /******************************************************************
@@ -98,6 +100,18 @@ define(function () {
     listeningPool.listen(model, 'invalidation', function() {
       context.removeDataAfterStepPointer();
     });
+
+
+    // Register observers of model properties descriptions so labels can be updated by client code.
+    this._model.addPropertyDescriptionObserver(this.xPropertyName, function() {
+      context._trigger(DataSet.Events.X_LABEL_CHANGED, context.getXLabel());
+    });
+
+    this.modelProperties.forEach(function (prop) {
+      context._model.addPropertyDescriptionObserver(prop, function() {
+        context._trigger(DataSet.Events.Y_LABELS_CHANGED, context.getYLabels());
+      });
+    });
   };
 
   /**
@@ -114,6 +128,11 @@ define(function () {
   */
   DataSet.prototype._trigger = function (name, data) {
     this._dispatch[name]({'data': data});
+  };
+
+  DataSet.prototype._getPropertyLabel = function(prop) {
+    var description = this._model.getPropertyDescription(prop);
+    return description.getLabel() + " (" + description.getUnitAbbreviation() + ")";
   };
 
 
@@ -204,6 +223,25 @@ define(function () {
   DataSet.prototype.clearStaticDataSeries =  function () {
     this._dataSeriesArry.length = this.modelProperties.length;
     this._trigger(DataSet.Events.REMOVE_ALL_SERIES);
+  };
+
+  /**
+    Return X property label.
+   */
+  DataSet.prototype.getXLabel = function() {
+    return this._getPropertyLabel(this.xPropertyName);
+  };
+
+  /**
+    Return Y properties labels (array).
+   */
+  DataSet.prototype.getYLabels = function() {
+    var res = [];
+    var context = this;
+    this.modelProperties.forEach(function (prop) {
+      res.push(context._getPropertyLabel(prop));
+    });
+    return res;
   };
 
   /**
