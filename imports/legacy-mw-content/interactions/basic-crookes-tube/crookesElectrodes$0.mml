@@ -1,347 +1,359 @@
-<?xml version="1.0" encoding="UTF-8"?> 
-<java version="1.6.0_41" class="java.beans.XMLDecoder"> 
- <object id="Element0" class="org.concord.mw2d.models.Element"> 
-  <void property="epsilon"> 
-   <double>0.0010000000474974513</double> 
-  </void> 
-  <void property="mass"> 
-   <double>0.16666666666666666</double> 
-  </void> 
-  <void property="sigma"> 
-   <double>7.0</double> 
-  </void> 
- </object> 
- <object id="Element1" class="org.concord.mw2d.models.Element"> 
-  <void property="ID"> 
-   <int>1</int> 
-  </void> 
-  <void property="mass"> 
-   <double>0.3333333333333333</double> 
-  </void> 
-  <void property="sigma"> 
-   <double>14.0</double> 
-  </void> 
- </object> 
- <object id="Element2" class="org.concord.mw2d.models.Element"> 
-  <void property="ID"> 
-   <int>2</int> 
-  </void> 
-  <void property="mass"> 
-   <double>0.5</double> 
-  </void> 
-  <void property="sigma"> 
-   <double>21.0</double> 
-  </void> 
- </object> 
- <object id="Element3" class="org.concord.mw2d.models.Element"> 
-  <void property="ID"> 
-   <int>3</int> 
-  </void> 
-  <void property="mass"> 
-   <double>0.6666666666666666</double> 
-  </void> 
-  <void property="sigma"> 
-   <double>28.0</double> 
-  </void> 
- </object> 
- <object class="org.concord.mw2d.models.Affinity"> 
-  <void property="epsilon"> 
-   <void method="put"> 
-    <object id="Pair0" class="org.concord.mw2d.models.Pair"> 
-     <void property="element1"> 
-      <object idref="Element2"/> 
-     </void> 
-     <void property="element2"> 
-      <object idref="Element3"/> 
-     </void> 
-    </object> 
-    <double>0.1</double> 
-   </void> 
-   <void method="put"> 
-    <object id="Pair1" class="org.concord.mw2d.models.Pair"> 
-     <void property="element1"> 
-      <object idref="Element0"/> 
-     </void> 
-     <void property="element2"> 
-      <object idref="Element1"/> 
-     </void> 
-    </object> 
-    <double>0.1</double> 
-   </void> 
-   <void method="put"> 
-    <object id="Pair2" class="org.concord.mw2d.models.Pair"> 
-     <void property="element1"> 
-      <object idref="Element1"/> 
-     </void> 
-     <void property="element2"> 
-      <object idref="Element3"/> 
-     </void> 
-    </object> 
-    <double>0.1</double> 
-   </void> 
-   <void method="put"> 
-    <object id="Pair3" class="org.concord.mw2d.models.Pair"> 
-     <void property="element1"> 
-      <object idref="Element0"/> 
-     </void> 
-     <void property="element2"> 
-      <object idref="Element2"/> 
-     </void> 
-    </object> 
-    <double>0.1</double> 
-   </void> 
-   <void method="put"> 
-    <object id="Pair4" class="org.concord.mw2d.models.Pair"> 
-     <void property="element1"> 
-      <object idref="Element1"/> 
-     </void> 
-     <void property="element2"> 
-      <object idref="Element2"/> 
-     </void> 
-    </object> 
-    <double>0.1</double> 
-   </void> 
-   <void method="put"> 
-    <object id="Pair5" class="org.concord.mw2d.models.Pair"> 
-     <void property="element1"> 
-      <object idref="Element0"/> 
-     </void> 
-     <void property="element2"> 
-      <object idref="Element3"/> 
-     </void> 
-    </object> 
-    <double>0.1</double> 
-   </void> 
-   <void method="put"> 
-    <object id="Pair6" class="org.concord.mw2d.models.Pair"> 
-     <void property="element1"> 
-      <object idref="Element0"/> 
-     </void> 
-     <void property="element2"> 
-      <object id="Element4" class="org.concord.mw2d.models.Element"> 
-       <void property="ID"> 
-        <int>4</int> 
-       </void> 
-       <void property="mass"> 
-        <double>5.0</double> 
-       </void> 
-      </object> 
-     </void> 
-    </object> 
-    <double>0.1</double> 
-   </void> 
-   <void method="put"> 
-    <object id="Pair7" class="org.concord.mw2d.models.Pair"> 
-     <void property="element1"> 
-      <object idref="Element1"/> 
-     </void> 
-     <void property="element2"> 
-      <object idref="Element4"/> 
-     </void> 
-    </object> 
-    <double>0.1</double> 
-   </void> 
-   <void method="put"> 
-    <object id="Pair8" class="org.concord.mw2d.models.Pair"> 
-     <void property="element1"> 
-      <object idref="Element2"/> 
-     </void> 
-     <void property="element2"> 
-      <object idref="Element4"/> 
-     </void> 
-    </object> 
-    <double>0.1</double> 
-   </void> 
-   <void method="put"> 
-    <object id="Pair9" class="org.concord.mw2d.models.Pair"> 
-     <void property="element1"> 
-      <object idref="Element3"/> 
-     </void> 
-     <void property="element2"> 
-      <object idref="Element4"/> 
-     </void> 
-    </object> 
-    <double>0.1</double> 
-   </void> 
-  </void> 
-  <void property="lbMixing"> 
-   <void method="put"> 
-    <object idref="Pair0"/> 
-    <boolean>true</boolean> 
-   </void> 
-   <void method="put"> 
-    <object idref="Pair1"/> 
-    <boolean>true</boolean> 
-   </void> 
-   <void method="put"> 
-    <object idref="Pair2"/> 
-    <boolean>true</boolean> 
-   </void> 
-   <void method="put"> 
-    <object idref="Pair3"/> 
-    <boolean>true</boolean> 
-   </void> 
-   <void method="put"> 
-    <object idref="Pair4"/> 
-    <boolean>true</boolean> 
-   </void> 
-   <void method="put"> 
-    <object idref="Pair5"/> 
-    <boolean>true</boolean> 
-   </void> 
-   <void method="put"> 
-    <object idref="Pair6"/> 
-    <boolean>true</boolean> 
-   </void> 
-   <void method="put"> 
-    <object idref="Pair7"/> 
-    <boolean>true</boolean> 
-   </void> 
-   <void method="put"> 
-    <object idref="Pair8"/> 
-    <boolean>true</boolean> 
-   </void> 
-   <void method="put"> 
-    <object idref="Pair9"/> 
-    <boolean>true</boolean> 
-   </void> 
-  </void> 
-  <void property="repulsive"> 
-   <void method="put"> 
-    <object idref="Pair0"/> 
-    <boolean>false</boolean> 
-   </void> 
-   <void method="put"> 
-    <object idref="Pair1"/> 
-    <boolean>false</boolean> 
-   </void> 
-   <void method="put"> 
-    <object idref="Pair2"/> 
-    <boolean>false</boolean> 
-   </void> 
-   <void method="put"> 
-    <object idref="Pair3"/> 
-    <boolean>false</boolean> 
-   </void> 
-   <void method="put"> 
-    <object idref="Pair4"/> 
-    <boolean>false</boolean> 
-   </void> 
-   <void method="put"> 
-    <object idref="Pair5"/> 
-    <boolean>false</boolean> 
-   </void> 
-   <void method="put"> 
-    <object idref="Pair6"/> 
-    <boolean>false</boolean> 
-   </void> 
-   <void method="put"> 
-    <object idref="Pair7"/> 
-    <boolean>false</boolean> 
-   </void> 
-   <void method="put"> 
-    <object idref="Pair8"/> 
-    <boolean>false</boolean> 
-   </void> 
-   <void method="put"> 
-    <object idref="Pair9"/> 
-    <boolean>false</boolean> 
-   </void> 
-  </void> 
-  <void property="sigma"> 
-   <void method="put"> 
-    <object idref="Pair0"/> 
-    <double>24.24871130596428</double> 
-   </void> 
-   <void method="put"> 
-    <object idref="Pair1"/> 
-    <double>9.899494936611665</double> 
-   </void> 
-   <void method="put"> 
-    <object idref="Pair2"/> 
-    <double>19.79898987322333</double> 
-   </void> 
-   <void method="put"> 
-    <object idref="Pair3"/> 
-    <double>12.12435565298214</double> 
-   </void> 
-   <void method="put"> 
-    <object idref="Pair4"/> 
-    <double>17.146428199482248</double> 
-   </void> 
-   <void method="put"> 
-    <object idref="Pair5"/> 
-    <double>14.0</double> 
-   </void> 
-   <void method="put"> 
-    <object idref="Pair6"/> 
-    <double>9.16515138991168</double> 
-   </void> 
-   <void method="put"> 
-    <object idref="Pair7"/> 
-    <double>12.96148139681572</double> 
-   </void> 
-   <void method="put"> 
-    <object idref="Pair8"/> 
-    <double>15.874507866387544</double> 
-   </void> 
-   <void method="put"> 
-    <object idref="Pair9"/> 
-    <double>18.33030277982336</double> 
-   </void> 
-  </void> 
- </object> 
- <object class="org.concord.mw2d.models.AtomicModel$State"> 
-  <void property="boundary"> 
-   <object class="org.concord.mw2d.models.RectangularBoundary$Delegate"> 
-    <void property="height"> 
-     <double>300.0</double> 
-    </void> 
-    <void property="viewSize"> 
-     <object class="java.awt.Dimension"> 
-      <int>650</int> 
-      <int>300</int> 
-     </object> 
-    </void> 
-    <void property="width"> 
-     <double>650.0</double> 
-    </void> 
-   </object> 
-  </void> 
-  <void property="lightSource"> 
-   <object class="org.concord.mw2d.models.LightSource"/> 
-  </void> 
-  <void property="numberOfParticles"> 
-   <int>1</int> 
-  </void> 
-  <void property="properties"> 
-   <void method="put"> 
-    <string>filename</string> 
-    <string>crookesElectrodes$0.mml</string> 
-   </void> 
-   <void method="put"> 
-    <string>date</string> 
-    <object class="java.util.Date"> 
-     <long>1362325577000</long> 
-    </object> 
-   </void> 
-   <void method="put"> 
-    <string>url</string> 
-    <string>/Users/ddamelin/Documents/CC Stuff/Interactions/MWActiviites/Crookes with electrodes/crookesElectrodes$0.mml</string> 
-   </void> 
-   <void method="put"> 
-    <string>size</string> 
-    <long>32742</long> 
-   </void> 
-   <void method="put"> 
-    <string>codebase</string> 
-    <string>/Users/ddamelin/Documents/CC Stuff/Interactions/MWActiviites/Crookes with electrodes</string> 
-   </void> 
-  </void> 
-  <void property="quantumRule"> 
-   <object class="org.concord.mw2d.models.QuantumRule"/> 
-  </void> 
-  <void property="script"> 
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.7.0_45" class="java.beans.XMLDecoder">
+ <object class="org.concord.mw2d.models.Element" id="Element0">
+  <void property="epsilon">
+   <double>0.0010000000474974513</double>
+  </void>
+  <void property="mass">
+   <double>0.16666666666666666</double>
+  </void>
+  <void property="sigma">
+   <double>7.0</double>
+  </void>
+ </object>
+ <object class="org.concord.mw2d.models.Element" id="Element1">
+  <void property="ID">
+   <int>1</int>
+  </void>
+  <void property="mass">
+   <double>0.3333333333333333</double>
+  </void>
+  <void property="sigma">
+   <double>14.0</double>
+  </void>
+ </object>
+ <object class="org.concord.mw2d.models.Element" id="Element2">
+  <void property="ID">
+   <int>2</int>
+  </void>
+  <void property="mass">
+   <double>0.5</double>
+  </void>
+  <void property="sigma">
+   <double>21.0</double>
+  </void>
+ </object>
+ <object class="org.concord.mw2d.models.Element" id="Element3">
+  <void property="ID">
+   <int>3</int>
+  </void>
+  <void property="mass">
+   <double>0.6666666666666666</double>
+  </void>
+  <void property="sigma">
+   <double>28.0</double>
+  </void>
+ </object>
+ <object class="org.concord.mw2d.models.Affinity">
+  <void property="epsilon">
+   <void method="put">
+    <object class="org.concord.mw2d.models.Pair" id="Pair0">
+     <void property="element1">
+      <object idref="Element2"/>
+     </void>
+     <void property="element2">
+      <object idref="Element3"/>
+     </void>
+    </object>
+    <double>0.1</double>
+   </void>
+   <void method="put">
+    <object class="org.concord.mw2d.models.Pair" id="Pair1">
+     <void property="element1">
+      <object idref="Element0"/>
+     </void>
+     <void property="element2">
+      <object idref="Element1"/>
+     </void>
+    </object>
+    <double>0.05050000002374873</double>
+   </void>
+   <void method="put">
+    <object class="org.concord.mw2d.models.Pair" id="Pair2">
+     <void property="element1">
+      <object idref="Element1"/>
+     </void>
+     <void property="element2">
+      <object idref="Element3"/>
+     </void>
+    </object>
+    <double>0.1</double>
+   </void>
+   <void method="put">
+    <object class="org.concord.mw2d.models.Pair" id="Pair3">
+     <void property="element1">
+      <object idref="Element0"/>
+     </void>
+     <void property="element2">
+      <object idref="Element2"/>
+     </void>
+    </object>
+    <double>0.05050000002374873</double>
+   </void>
+   <void method="put">
+    <object class="org.concord.mw2d.models.Pair" id="Pair4">
+     <void property="element1">
+      <object idref="Element1"/>
+     </void>
+     <void property="element2">
+      <object idref="Element2"/>
+     </void>
+    </object>
+    <double>0.1</double>
+   </void>
+   <void method="put">
+    <object class="org.concord.mw2d.models.Pair" id="Pair5">
+     <void property="element1">
+      <object idref="Element0"/>
+     </void>
+     <void property="element2">
+      <object idref="Element3"/>
+     </void>
+    </object>
+    <double>0.05050000002374873</double>
+   </void>
+   <void method="put">
+    <object class="org.concord.mw2d.models.Pair" id="Pair6">
+     <void property="element1">
+      <object idref="Element0"/>
+     </void>
+     <void property="element2">
+      <object class="org.concord.mw2d.models.Element" id="Element4">
+       <void property="ID">
+        <int>4</int>
+       </void>
+       <void property="mass">
+        <double>5.0</double>
+       </void>
+      </object>
+     </void>
+    </object>
+    <double>0.05050000002374873</double>
+   </void>
+   <void method="put">
+    <object class="org.concord.mw2d.models.Pair" id="Pair7">
+     <void property="element1">
+      <object idref="Element1"/>
+     </void>
+     <void property="element2">
+      <object idref="Element4"/>
+     </void>
+    </object>
+    <double>0.1</double>
+   </void>
+   <void method="put">
+    <object class="org.concord.mw2d.models.Pair" id="Pair8">
+     <void property="element1">
+      <object idref="Element2"/>
+     </void>
+     <void property="element2">
+      <object idref="Element4"/>
+     </void>
+    </object>
+    <double>0.1</double>
+   </void>
+   <void method="put">
+    <object class="org.concord.mw2d.models.Pair" id="Pair9">
+     <void property="element1">
+      <object idref="Element3"/>
+     </void>
+     <void property="element2">
+      <object idref="Element4"/>
+     </void>
+    </object>
+    <double>0.1</double>
+   </void>
+  </void>
+  <void property="lbMixing">
+   <void method="put">
+    <object idref="Pair0"/>
+    <boolean>true</boolean>
+   </void>
+   <void method="put">
+    <object idref="Pair1"/>
+    <boolean>true</boolean>
+   </void>
+   <void method="put">
+    <object idref="Pair2"/>
+    <boolean>true</boolean>
+   </void>
+   <void method="put">
+    <object idref="Pair3"/>
+    <boolean>true</boolean>
+   </void>
+   <void method="put">
+    <object idref="Pair4"/>
+    <boolean>true</boolean>
+   </void>
+   <void method="put">
+    <object idref="Pair5"/>
+    <boolean>true</boolean>
+   </void>
+   <void method="put">
+    <object idref="Pair6"/>
+    <boolean>true</boolean>
+   </void>
+   <void method="put">
+    <object idref="Pair7"/>
+    <boolean>true</boolean>
+   </void>
+   <void method="put">
+    <object idref="Pair8"/>
+    <boolean>true</boolean>
+   </void>
+   <void method="put">
+    <object idref="Pair9"/>
+    <boolean>true</boolean>
+   </void>
+  </void>
+  <void property="repulsive">
+   <void method="put">
+    <object idref="Pair0"/>
+    <boolean>false</boolean>
+   </void>
+   <void method="put">
+    <object idref="Pair1"/>
+    <boolean>false</boolean>
+   </void>
+   <void method="put">
+    <object idref="Pair2"/>
+    <boolean>false</boolean>
+   </void>
+   <void method="put">
+    <object idref="Pair3"/>
+    <boolean>false</boolean>
+   </void>
+   <void method="put">
+    <object idref="Pair4"/>
+    <boolean>false</boolean>
+   </void>
+   <void method="put">
+    <object idref="Pair5"/>
+    <boolean>false</boolean>
+   </void>
+   <void method="put">
+    <object idref="Pair6"/>
+    <boolean>false</boolean>
+   </void>
+   <void method="put">
+    <object idref="Pair7"/>
+    <boolean>false</boolean>
+   </void>
+   <void method="put">
+    <object idref="Pair8"/>
+    <boolean>false</boolean>
+   </void>
+   <void method="put">
+    <object idref="Pair9"/>
+    <boolean>false</boolean>
+   </void>
+  </void>
+  <void property="sigma">
+   <void method="put">
+    <object idref="Pair0"/>
+    <double>24.24871130596428</double>
+   </void>
+   <void method="put">
+    <object idref="Pair1"/>
+    <double>9.899494936611665</double>
+   </void>
+   <void method="put">
+    <object idref="Pair2"/>
+    <double>19.79898987322333</double>
+   </void>
+   <void method="put">
+    <object idref="Pair3"/>
+    <double>12.12435565298214</double>
+   </void>
+   <void method="put">
+    <object idref="Pair4"/>
+    <double>17.146428199482248</double>
+   </void>
+   <void method="put">
+    <object idref="Pair5"/>
+    <double>14.0</double>
+   </void>
+   <void method="put">
+    <object idref="Pair6"/>
+    <double>9.16515138991168</double>
+   </void>
+   <void method="put">
+    <object idref="Pair7"/>
+    <double>12.96148139681572</double>
+   </void>
+   <void method="put">
+    <object idref="Pair8"/>
+    <double>15.874507866387544</double>
+   </void>
+   <void method="put">
+    <object idref="Pair9"/>
+    <double>18.33030277982336</double>
+   </void>
+  </void>
+ </object>
+ <object class="org.concord.mw2d.models.AtomicModel$State">
+  <void property="boundary">
+   <object class="org.concord.mw2d.models.RectangularBoundary$Delegate">
+    <void property="height">
+     <double>300.0</double>
+    </void>
+    <void property="viewSize">
+     <object class="java.awt.Dimension" id="Dimension0">
+      <void class="java.awt.Dimension" method="getField">
+       <string>width</string>
+       <void method="set">
+        <object idref="Dimension0"/>
+        <int>650</int>
+       </void>
+      </void>
+      <void class="java.awt.Dimension" method="getField">
+       <string>height</string>
+       <void method="set">
+        <object idref="Dimension0"/>
+        <int>300</int>
+       </void>
+      </void>
+     </object>
+    </void>
+    <void property="width">
+     <double>650.0</double>
+    </void>
+   </object>
+  </void>
+  <void property="lightSource">
+   <object class="org.concord.mw2d.models.LightSource"/>
+  </void>
+  <void property="numberOfParticles">
+   <int>1</int>
+  </void>
+  <void property="properties">
+   <void method="put">
+    <string>filename</string>
+    <string>crookesElectrodes$0.mml</string>
+   </void>
+   <void method="put">
+    <string>date</string>
+    <object class="java.util.Date">
+     <long>1389123960000</long>
+    </object>
+   </void>
+   <void method="put">
+    <string>url</string>
+    <string>/Users/wsd/cc/lab/imports/legacy-mw-content/interactions/basic-crookes-tube/crookesElectrodes$0.mml</string>
+   </void>
+   <void method="put">
+    <string>size</string>
+    <long>31624</long>
+   </void>
+   <void method="put">
+    <string>codebase</string>
+    <string>/Users/wsd/cc/lab/imports/legacy-mw-content/interactions/basic-crookes-tube</string>
+   </void>
+  </void>
+  <void property="quantumRule">
+   <object class="org.concord.mw2d.models.QuantumRule"/>
+  </void>
+  <void property="script">
    <string>define %goldLeft 1;
 define %goldOff 2;
 define %goldOn1 3;
@@ -374,43 +386,43 @@ define %lastAtom 0;
 define %showParticles 0;
 define %beamOn 0;
 define %metalType 1;
-run;</string> 
-  </void> 
-  <void property="tasks"> 
-   <void method="add"> 
-    <object class="org.concord.mw2d.models.TaskAttributes"> 
-     <void property="description"> 
-      <string></string> 
-     </void> 
-     <void property="interval"> 
-      <int>100</int> 
-     </void> 
-     <void property="name"> 
-      <string>createFlow</string> 
-     </void> 
-     <void property="script"> 
+run;</string>
+  </void>
+  <void property="tasks">
+   <void method="add">
+    <object class="org.concord.mw2d.models.TaskAttributes">
+     <void property="description">
+      <string></string>
+     </void>
+     <void property="interval">
+      <int>100</int>
+     </void>
+     <void property="name">
+      <string>createFlow</string>
+     </void>
+     <void property="script">
       <string>if ((%showParticles) and (%beamOn));
 	set %y 14.4*rand() + 1.9;
 	set %x 4.3;
 	add atom 0 (%x,%y);
 	set %lastAtom %number_of_atoms - 1;
 	set atom[%lastAtom].vx 1000;
-endif;</string> 
-     </void> 
-    </object> 
-   </void> 
-   <void method="add"> 
-    <object class="org.concord.mw2d.models.TaskAttributes"> 
-     <void property="description"> 
-      <string></string> 
-     </void> 
-     <void property="interval"> 
-      <int>50</int> 
-     </void> 
-     <void property="name"> 
-      <string>stopMost</string> 
-     </void> 
-     <void property="script"> 
+endif;</string>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="org.concord.mw2d.models.TaskAttributes">
+     <void property="description">
+      <string></string>
+     </void>
+     <void property="interval">
+      <int>50</int>
+     </void>
+     <void property="name">
+      <string>stopMost</string>
+     </void>
+     <void property="script">
       <string>set %i 0;
 while (%i &lt; %number_of_atoms);
 	set %offset %element[0].sigma;
@@ -430,22 +442,22 @@ while (%i &lt; %number_of_atoms);
 		endif;
 	endif;
 	%i++;
-endwhile;</string> 
-     </void> 
-    </object> 
-   </void> 
-   <void method="add"> 
-    <object class="org.concord.mw2d.models.TaskAttributes"> 
-     <void property="description"> 
-      <string></string> 
-     </void> 
-     <void property="enabled"> 
-      <boolean>false</boolean> 
-     </void> 
-     <void property="name"> 
-      <string>resetMetals</string> 
-     </void> 
-     <void property="script"> 
+endwhile;</string>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="org.concord.mw2d.models.TaskAttributes">
+     <void property="description">
+      <string></string>
+     </void>
+     <void property="enabled">
+      <boolean>false</boolean>
+     </void>
+     <void property="name">
+      <string>resetMetals</string>
+     </void>
+     <void property="script">
       <string>select image all;
 set visible off;
 if (%metalType == 1);
@@ -478,768 +490,714 @@ if (%metalType == 3);
 		set image[%ironOff].visible on;
 	endif;
 endif;
-select image none;</string> 
-     </void> 
-    </object> 
-   </void> 
-  </void> 
-  <void property="timeStep"> 
-   <double>1.0</double> 
-  </void> 
-  <void property="universe"> 
-   <object class="org.concord.mw2d.models.Universe"/> 
-  </void> 
- </object> 
- <object class="org.concord.mw2d.AtomisticView$State"> 
-  <void property="colorCode"> 
-   <string>None</string> 
-  </void> 
-  <void property="drawCharge"> 
-   <boolean>false</boolean> 
-  </void> 
-  <void property="forceFlavor"> 
-   <void property="color"> 
-    <object class="java.awt.Color"> 
-     <int>255</int> 
-     <int>0</int> 
-     <int>255</int> 
-     <int>255</int> 
-    </object> 
-   </void> 
-  </void> 
-  <void property="images"> 
-   <array class="org.concord.mw2d.models.ImageComponent$Delegate" length="23"> 
-    <void index="0"> 
-     <object class="org.concord.mw2d.models.ImageComponent$Delegate"> 
-      <void property="URI"> 
-       <string>siverOn1.png</string> 
-      </void> 
-      <void property="layer"> 
-       <int>1</int> 
-      </void> 
-      <void property="visible"> 
-       <boolean>false</boolean> 
-      </void> 
-      <void property="x"> 
-       <double>18.000000149011612</double> 
-      </void> 
-      <void property="y"> 
-       <double>10.0</double> 
-      </void> 
-     </object> 
-    </void> 
-    <void index="1"> 
-     <object class="org.concord.mw2d.models.ImageComponent$Delegate"> 
-      <void property="URI"> 
-       <string>goldLeft.png</string> 
-      </void> 
-      <void property="draggable"> 
-       <boolean>false</boolean> 
-      </void> 
-      <void property="layer"> 
-       <int>2</int> 
-      </void> 
-      <void property="layerPosition"> 
-       <byte>1</byte> 
-      </void> 
-      <void property="visible"> 
-       <boolean>false</boolean> 
-      </void> 
-      <void property="x"> 
-       <double>10.0</double> 
-      </void> 
-      <void property="y"> 
-       <double>10.0</double> 
-      </void> 
-     </object> 
-    </void> 
-    <void index="2"> 
-     <object class="org.concord.mw2d.models.ImageComponent$Delegate"> 
-      <void property="URI"> 
-       <string>goldOff.png</string> 
-      </void> 
-      <void property="layer"> 
-       <int>1</int> 
-      </void> 
-      <void property="layerPosition"> 
-       <byte>2</byte> 
-      </void> 
-      <void property="visible"> 
-       <boolean>false</boolean> 
-      </void> 
-      <void property="x"> 
-       <double>25.000000149011612</double> 
-      </void> 
-      <void property="y"> 
-       <double>10.0</double> 
-      </void> 
-     </object> 
-    </void> 
-    <void index="3"> 
-     <object class="org.concord.mw2d.models.ImageComponent$Delegate"> 
-      <void property="URI"> 
-       <string>goldOn1.png</string> 
-      </void> 
-      <void property="layer"> 
-       <int>1</int> 
-      </void> 
-      <void property="layerPosition"> 
-       <byte>3</byte> 
-      </void> 
-      <void property="visible"> 
-       <boolean>false</boolean> 
-      </void> 
-      <void property="x"> 
-       <double>18.0</double> 
-      </void> 
-      <void property="y"> 
-       <double>10.0</double> 
-      </void> 
-     </object> 
-    </void> 
-    <void index="4"> 
-     <object class="org.concord.mw2d.models.ImageComponent$Delegate"> 
-      <void property="URI"> 
-       <string>goldOn2.png</string> 
-      </void> 
-      <void property="layer"> 
-       <int>2</int> 
-      </void> 
-      <void property="layerPosition"> 
-       <byte>4</byte> 
-      </void> 
-      <void property="visible"> 
-       <boolean>false</boolean> 
-      </void> 
-      <void property="x"> 
-       <double>203.0000001490116</double> 
-      </void> 
-      <void property="y"> 
-       <double>84.00000014901161</double> 
-      </void> 
-     </object> 
-    </void> 
-    <void index="5"> 
-     <object class="org.concord.mw2d.models.ImageComponent$Delegate"> 
-      <void property="URI"> 
-       <string>ironLeft.png</string> 
-      </void> 
-      <void property="layer"> 
-       <int>2</int> 
-      </void> 
-      <void property="layerPosition"> 
-       <byte>5</byte> 
-      </void> 
-      <void property="visible"> 
-       <boolean>false</boolean> 
-      </void> 
-      <void property="x"> 
-       <double>10.0</double> 
-      </void> 
-      <void property="y"> 
-       <double>10.0</double> 
-      </void> 
-     </object> 
-    </void> 
-    <void index="6"> 
-     <object class="org.concord.mw2d.models.ImageComponent$Delegate"> 
-      <void property="URI"> 
-       <string>ironOff.png</string> 
-      </void> 
-      <void property="layer"> 
-       <int>1</int> 
-      </void> 
-      <void property="layerPosition"> 
-       <byte>6</byte> 
-      </void> 
-      <void property="visible"> 
-       <boolean>false</boolean> 
-      </void> 
-      <void property="x"> 
-       <double>25.000000149011612</double> 
-      </void> 
-      <void property="y"> 
-       <double>10.0</double> 
-      </void> 
-     </object> 
-    </void> 
-    <void index="7"> 
-     <object class="org.concord.mw2d.models.ImageComponent$Delegate"> 
-      <void property="URI"> 
-       <string>ironOn1.png</string> 
-      </void> 
-      <void property="layer"> 
-       <int>1</int> 
-      </void> 
-      <void property="layerPosition"> 
-       <byte>7</byte> 
-      </void> 
-      <void property="visible"> 
-       <boolean>false</boolean> 
-      </void> 
-      <void property="x"> 
-       <double>18.000000149011612</double> 
-      </void> 
-      <void property="y"> 
-       <double>10.0</double> 
-      </void> 
-     </object> 
-    </void> 
-    <void index="8"> 
-     <object class="org.concord.mw2d.models.ImageComponent$Delegate"> 
-      <void property="URI"> 
-       <string>ironOn2.png</string> 
-      </void> 
-      <void property="layer"> 
-       <int>2</int> 
-      </void> 
-      <void property="layerPosition"> 
-       <byte>8</byte> 
-      </void> 
-      <void property="visible"> 
-       <boolean>false</boolean> 
-      </void> 
-      <void property="x"> 
-       <double>203.0000001490116</double> 
-      </void> 
-      <void property="y"> 
-       <double>83.00000014901161</double> 
-      </void> 
-     </object> 
-    </void> 
-    <void index="9"> 
-     <object class="org.concord.mw2d.models.ImageComponent$Delegate"> 
-      <void property="URI"> 
-       <string>silverLeft.png</string> 
-      </void> 
-      <void property="layer"> 
-       <int>2</int> 
-      </void> 
-      <void property="layerPosition"> 
-       <byte>9</byte> 
-      </void> 
-      <void property="x"> 
-       <double>10.0</double> 
-      </void> 
-      <void property="y"> 
-       <double>10.0</double> 
-      </void> 
-     </object> 
-    </void> 
-    <void index="10"> 
-     <object class="org.concord.mw2d.models.ImageComponent$Delegate"> 
-      <void property="URI"> 
-       <string>silverOff.png</string> 
-      </void> 
-      <void property="layer"> 
-       <int>1</int> 
-      </void> 
-      <void property="layerPosition"> 
-       <byte>10</byte> 
-      </void> 
-      <void property="x"> 
-       <double>25.000000149011612</double> 
-      </void> 
-      <void property="y"> 
-       <double>10.0</double> 
-      </void> 
-     </object> 
-    </void> 
-    <void index="11"> 
-     <object class="org.concord.mw2d.models.ImageComponent$Delegate"> 
-      <void property="URI"> 
-       <string>silverOn2.png</string> 
-      </void> 
-      <void property="layer"> 
-       <int>2</int> 
-      </void> 
-      <void property="layerPosition"> 
-       <byte>11</byte> 
-      </void> 
-      <void property="visible"> 
-       <boolean>false</boolean> 
-      </void> 
-      <void property="x"> 
-       <double>203.0000001490116</double> 
-      </void> 
-      <void property="y"> 
-       <double>84.00000014901161</double> 
-      </void> 
-     </object> 
-    </void> 
-    <void index="12"> 
-     <object class="org.concord.mw2d.models.ImageComponent$Delegate"> 
-      <void property="URI"> 
-       <string>beamDown1.png</string> 
-      </void> 
-      <void property="layer"> 
-       <int>1</int> 
-      </void> 
-      <void property="layerPosition"> 
-       <byte>14</byte> 
-      </void> 
-      <void property="visible"> 
-       <boolean>false</boolean> 
-      </void> 
-      <void property="x"> 
-       <double>197.0</double> 
-      </void> 
-      <void property="y"> 
-       <double>80.0</double> 
-      </void> 
-     </object> 
-    </void> 
-    <void index="13"> 
-     <object class="org.concord.mw2d.models.ImageComponent$Delegate"> 
-      <void property="URI"> 
-       <string>beamDown2.png</string> 
-      </void> 
-      <void property="layer"> 
-       <int>1</int> 
-      </void> 
-      <void property="layerPosition"> 
-       <byte>15</byte> 
-      </void> 
-      <void property="visible"> 
-       <boolean>false</boolean> 
-      </void> 
-      <void property="x"> 
-       <double>196.0</double> 
-      </void> 
-      <void property="y"> 
-       <double>80.0</double> 
-      </void> 
-     </object> 
-    </void> 
-    <void index="14"> 
-     <object class="org.concord.mw2d.models.ImageComponent$Delegate"> 
-      <void property="URI"> 
-       <string>beamDown3.png</string> 
-      </void> 
-      <void property="layer"> 
-       <int>1</int> 
-      </void> 
-      <void property="layerPosition"> 
-       <byte>16</byte> 
-      </void> 
-      <void property="visible"> 
-       <boolean>false</boolean> 
-      </void> 
-      <void property="x"> 
-       <double>198.0</double> 
-      </void> 
-      <void property="y"> 
-       <double>80.0</double> 
-      </void> 
-     </object> 
-    </void> 
-    <void index="15"> 
-     <object class="org.concord.mw2d.models.ImageComponent$Delegate"> 
-      <void property="URI"> 
-       <string>beamDonw4.png</string> 
-      </void> 
-      <void property="layer"> 
-       <int>1</int> 
-      </void> 
-      <void property="layerPosition"> 
-       <byte>17</byte> 
-      </void> 
-      <void property="visible"> 
-       <boolean>false</boolean> 
-      </void> 
-      <void property="x"> 
-       <double>199.0</double> 
-      </void> 
-      <void property="y"> 
-       <double>79.0</double> 
-      </void> 
-     </object> 
-    </void> 
-    <void index="16"> 
-     <object class="org.concord.mw2d.models.ImageComponent$Delegate"> 
-      <void property="URI"> 
-       <string>beamDown5.png</string> 
-      </void> 
-      <void property="layer"> 
-       <int>1</int> 
-      </void> 
-      <void property="layerPosition"> 
-       <byte>18</byte> 
-      </void> 
-      <void property="visible"> 
-       <boolean>false</boolean> 
-      </void> 
-      <void property="x"> 
-       <double>198.0</double> 
-      </void> 
-      <void property="y"> 
-       <double>80.0</double> 
-      </void> 
-     </object> 
-    </void> 
-    <void index="17"> 
-     <object class="org.concord.mw2d.models.ImageComponent$Delegate"> 
-      <void property="URI"> 
-       <string>beamUp1.png</string> 
-      </void> 
-      <void property="layer"> 
-       <int>1</int> 
-      </void> 
-      <void property="layerPosition"> 
-       <byte>19</byte> 
-      </void> 
-      <void property="visible"> 
-       <boolean>false</boolean> 
-      </void> 
-      <void property="x"> 
-       <double>196.0</double> 
-      </void> 
-      <void property="y"> 
-       <double>52.0</double> 
-      </void> 
-     </object> 
-    </void> 
-    <void index="18"> 
-     <object class="org.concord.mw2d.models.ImageComponent$Delegate"> 
-      <void property="URI"> 
-       <string>beamUp2.png</string> 
-      </void> 
-      <void property="layer"> 
-       <int>1</int> 
-      </void> 
-      <void property="layerPosition"> 
-       <byte>20</byte> 
-      </void> 
-      <void property="visible"> 
-       <boolean>false</boolean> 
-      </void> 
-      <void property="x"> 
-       <double>198.0</double> 
-      </void> 
-      <void property="y"> 
-       <double>27.0</double> 
-      </void> 
-     </object> 
-    </void> 
-    <void index="19"> 
-     <object class="org.concord.mw2d.models.ImageComponent$Delegate"> 
-      <void property="URI"> 
-       <string>beamUp3.png</string> 
-      </void> 
-      <void property="layer"> 
-       <int>1</int> 
-      </void> 
-      <void property="layerPosition"> 
-       <byte>21</byte> 
-      </void> 
-      <void property="visible"> 
-       <boolean>false</boolean> 
-      </void> 
-      <void property="x"> 
-       <double>196.0</double> 
-      </void> 
-      <void property="y"> 
-       <double>-4.0</double> 
-      </void> 
-     </object> 
-    </void> 
-    <void index="20"> 
-     <object class="org.concord.mw2d.models.ImageComponent$Delegate"> 
-      <void property="URI"> 
-       <string>beamUp4.png</string> 
-      </void> 
-      <void property="layer"> 
-       <int>1</int> 
-      </void> 
-      <void property="layerPosition"> 
-       <byte>22</byte> 
-      </void> 
-      <void property="visible"> 
-       <boolean>false</boolean> 
-      </void> 
-      <void property="x"> 
-       <double>198.0</double> 
-      </void> 
-      <void property="y"> 
-       <double>-5.0</double> 
-      </void> 
-     </object> 
-    </void> 
-    <void index="21"> 
-     <object class="org.concord.mw2d.models.ImageComponent$Delegate"> 
-      <void property="URI"> 
-       <string>beamUp5.png</string> 
-      </void> 
-      <void property="layer"> 
-       <int>1</int> 
-      </void> 
-      <void property="layerPosition"> 
-       <byte>23</byte> 
-      </void> 
-      <void property="visible"> 
-       <boolean>false</boolean> 
-      </void> 
-      <void property="x"> 
-       <double>197.0</double> 
-      </void> 
-      <void property="y"> 
-       <double>-7.0</double> 
-      </void> 
-     </object> 
-    </void> 
-    <void index="22"> 
-     <object class="org.concord.mw2d.models.ImageComponent$Delegate"> 
-      <void property="URI"> 
-       <string>beamStraight.png</string> 
-      </void> 
-      <void property="layer"> 
-       <int>1</int> 
-      </void> 
-      <void property="layerPosition"> 
-       <byte>24</byte> 
-      </void> 
-      <void property="visible"> 
-       <boolean>false</boolean> 
-      </void> 
-      <void property="x"> 
-       <double>196.0</double> 
-      </void> 
-      <void property="y"> 
-       <double>83.0</double> 
-      </void> 
-     </object> 
-    </void> 
-   </array> 
-  </void> 
-  <void property="momentumFlavor"> 
-   <void property="color"> 
-    <object class="java.awt.Color"> 
-     <int>0</int> 
-     <int>0</int> 
-     <int>255</int> 
-     <int>255</int> 
-    </object> 
-   </void> 
-  </void> 
-  <void property="rectangles"> 
-   <array class="org.concord.mw2d.models.RectangleComponent$Delegate" length="2"> 
-    <void index="0"> 
-     <object class="org.concord.mw2d.models.RectangleComponent$Delegate"> 
-      <void property="alpha"> 
-       <int>40</int> 
-      </void> 
-      <void property="fillMode"> 
-       <object class="org.concord.modeler.draw.FillMode$GradientFill"> 
-        <void property="color1"> 
-         <object class="java.awt.Color"> 
-          <int>204</int> 
-          <int>255</int> 
-          <int>255</int> 
-          <int>255</int> 
-         </object> 
-        </void> 
-        <void property="color2"> 
-         <object class="java.awt.Color"> 
-          <int>210</int> 
-          <int>210</int> 
-          <int>210</int> 
-          <int>255</int> 
-         </object> 
-        </void> 
-        <void property="style"> 
-         <int>1031</int> 
-        </void> 
-        <void property="variant"> 
-         <int>1044</int> 
-        </void> 
-       </object> 
-      </void> 
-      <void property="height"> 
-       <float>169.0</float> 
-      </void> 
-      <void property="layer"> 
-       <int>1</int> 
-      </void> 
-      <void property="layerPosition"> 
-       <byte>12</byte> 
-      </void> 
-      <void property="lineColor"> 
-       <object class="java.awt.Color"> 
-        <int>214</int> 
-        <int>215</int> 
-        <int>215</int> 
-        <int>255</int> 
-       </object> 
-      </void> 
-      <void property="lineWeight"> 
-       <int>3</int> 
-      </void> 
-      <void property="width"> 
-       <float>646.0</float> 
-      </void> 
-      <void property="x"> 
-       <double>2.0</double> 
-      </void> 
-      <void property="y"> 
-       <double>6.5</double> 
-      </void> 
-     </object> 
-    </void> 
-    <void index="1"> 
-     <object class="org.concord.mw2d.models.RectangleComponent$Delegate"> 
-      <void property="height"> 
-       <float>163.0</float> 
-      </void> 
-      <void property="layer"> 
-       <int>1</int> 
-      </void> 
-      <void property="layerPosition"> 
-       <byte>13</byte> 
-      </void> 
-      <void property="vectorField"> 
-       <object class="org.concord.mw2d.models.ElectricField"> 
-        <void property="frequency"> 
-         <double>0.006283185307179587</double> 
-        </void> 
-        <void property="intensity"> 
-         <double>0.0</double> 
-        </void> 
-        <void property="local"> 
-         <boolean>true</boolean> 
-        </void> 
-        <void property="orientation"> 
-         <int>3003</int> 
-        </void> 
-       </object> 
-      </void> 
-      <void property="visible"> 
-       <boolean>false</boolean> 
-      </void> 
-      <void property="width"> 
-       <float>130.0</float> 
-      </void> 
-      <void property="x"> 
-       <double>324.0</double> 
-      </void> 
-      <void property="y"> 
-       <double>9.0</double> 
-      </void> 
-     </object> 
-    </void> 
-   </array> 
-  </void> 
-  <void property="showClock"> 
-   <boolean>false</boolean> 
-  </void> 
-  <void property="textBoxes"> 
-   <array class="org.concord.mw2d.models.TextBoxComponent$Delegate" length="2"> 
-    <void index="0"> 
-     <object class="org.concord.mw2d.models.TextBoxComponent$Delegate"> 
-      <void property="attachmentPosition"> 
-       <byte>11</byte> 
-      </void> 
-      <void property="borderType"> 
-       <int>1</int> 
-      </void> 
-      <void property="fillMode"> 
-       <object class="org.concord.modeler.draw.FillMode$ColorFill"> 
-        <void property="color"> 
-         <object class="java.awt.Color"> 
-          <int>255</int> 
-          <int>255</int> 
-          <int>255</int> 
-          <int>255</int> 
-         </object> 
-        </void> 
-       </object> 
-      </void> 
-      <void property="font"> 
-       <object class="java.awt.Font"> 
-        <string>Courier</string> 
-        <int>1</int> 
-        <int>12</int> 
-       </object> 
-      </void> 
-      <void property="layer"> 
-       <int>1</int> 
-      </void> 
-      <void property="layerPosition"> 
-       <byte>25</byte> 
-      </void> 
-      <void property="text"> 
-       <string>                </string> 
-      </void> 
-      <void property="x"> 
-       <double>324.0</double> 
-      </void> 
-      <void property="y"> 
-       <double>151.0</double> 
-      </void> 
-     </object> 
-    </void> 
-    <void index="1"> 
-     <object class="org.concord.mw2d.models.TextBoxComponent$Delegate"> 
-      <void property="attachmentPosition"> 
-       <byte>11</byte> 
-      </void> 
-      <void property="borderType"> 
-       <int>1</int> 
-      </void> 
-      <void property="fillMode"> 
-       <object class="org.concord.modeler.draw.FillMode$ColorFill"> 
-        <void property="color"> 
-         <object class="java.awt.Color"> 
-          <int>255</int> 
-          <int>255</int> 
-          <int>255</int> 
-          <int>255</int> 
-         </object> 
-        </void> 
-       </object> 
-      </void> 
-      <void property="font"> 
-       <object class="java.awt.Font"> 
-        <string>Courier</string> 
-        <int>1</int> 
-        <int>12</int> 
-       </object> 
-      </void> 
-      <void property="layer"> 
-       <int>1</int> 
-      </void> 
-      <void property="layerPosition"> 
-       <byte>26</byte> 
-      </void> 
-      <void property="text"> 
-       <string>                </string> 
-      </void> 
-      <void property="x"> 
-       <double>324.0</double> 
-      </void> 
-      <void property="y"> 
-       <double>11.0</double> 
-      </void> 
-     </object> 
-    </void> 
-   </array> 
-  </void> 
- </object> 
- <object class="org.concord.mw2d.models.Atom"> 
-  <void property="ID"> 
-   <int>1</int> 
-  </void> 
-  <void property="movable"> 
-   <boolean>false</boolean> 
-  </void> 
-  <void property="rx"> 
-   <double>289.0</double> 
-  </void> 
-  <void property="ry"> 
-   <double>252.0</double> 
-  </void> 
-  <void property="visible"> 
-   <boolean>false</boolean> 
-  </void> 
- </object> 
- <object class="org.concord.mw2d.models.MolecularModel$State"/> 
-</java> 
+select image none;</string>
+     </void>
+    </object>
+   </void>
+  </void>
+  <void property="timeStep">
+   <double>1.0</double>
+  </void>
+  <void property="universe">
+   <object class="org.concord.mw2d.models.Universe"/>
+  </void>
+ </object>
+ <object class="org.concord.mw2d.AtomisticView$State">
+  <void property="colorCode">
+   <string>None</string>
+  </void>
+  <void property="drawCharge">
+   <boolean>false</boolean>
+  </void>
+  <void property="forceFlavor">
+   <void property="color">
+    <object class="java.awt.Color">
+     <int>255</int>
+     <int>0</int>
+     <int>255</int>
+     <int>255</int>
+    </object>
+   </void>
+  </void>
+  <void property="images">
+   <array class="org.concord.mw2d.models.ImageComponent$Delegate" length="25">
+    <void index="0">
+     <object class="org.concord.mw2d.models.ImageComponent$Delegate">
+      <void property="URI">
+       <string>siverOn1.png</string>
+      </void>
+      <void property="layer">
+       <int>1</int>
+      </void>
+      <void property="visible">
+       <boolean>false</boolean>
+      </void>
+      <void property="x">
+       <double>18.000000149011612</double>
+      </void>
+      <void property="y">
+       <double>10.0</double>
+      </void>
+     </object>
+    </void>
+    <void index="1">
+     <object class="org.concord.mw2d.models.ImageComponent$Delegate">
+      <void property="URI">
+       <string>goldLeft.png</string>
+      </void>
+      <void property="draggable">
+       <boolean>false</boolean>
+      </void>
+      <void property="layer">
+       <int>2</int>
+      </void>
+      <void property="layerPosition">
+       <byte>1</byte>
+      </void>
+      <void property="visible">
+       <boolean>false</boolean>
+      </void>
+      <void property="x">
+       <double>10.0</double>
+      </void>
+      <void property="y">
+       <double>10.0</double>
+      </void>
+     </object>
+    </void>
+    <void index="2">
+     <object class="org.concord.mw2d.models.ImageComponent$Delegate">
+      <void property="URI">
+       <string>goldOff.png</string>
+      </void>
+      <void property="layer">
+       <int>1</int>
+      </void>
+      <void property="layerPosition">
+       <byte>2</byte>
+      </void>
+      <void property="visible">
+       <boolean>false</boolean>
+      </void>
+      <void property="x">
+       <double>25.000000149011612</double>
+      </void>
+      <void property="y">
+       <double>10.0</double>
+      </void>
+     </object>
+    </void>
+    <void index="3">
+     <object class="org.concord.mw2d.models.ImageComponent$Delegate">
+      <void property="URI">
+       <string>goldOn1.png</string>
+      </void>
+      <void property="layer">
+       <int>1</int>
+      </void>
+      <void property="layerPosition">
+       <byte>3</byte>
+      </void>
+      <void property="visible">
+       <boolean>false</boolean>
+      </void>
+      <void property="x">
+       <double>18.0</double>
+      </void>
+      <void property="y">
+       <double>10.0</double>
+      </void>
+     </object>
+    </void>
+    <void index="4">
+     <object class="org.concord.mw2d.models.ImageComponent$Delegate">
+      <void property="URI">
+       <string>goldOn2.png</string>
+      </void>
+      <void property="layer">
+       <int>2</int>
+      </void>
+      <void property="layerPosition">
+       <byte>4</byte>
+      </void>
+      <void property="visible">
+       <boolean>false</boolean>
+      </void>
+      <void property="x">
+       <double>203.0000001490116</double>
+      </void>
+      <void property="y">
+       <double>84.00000014901161</double>
+      </void>
+     </object>
+    </void>
+    <void index="5">
+     <object class="org.concord.mw2d.models.ImageComponent$Delegate">
+      <void property="URI">
+       <string>ironLeft.png</string>
+      </void>
+      <void property="layer">
+       <int>2</int>
+      </void>
+      <void property="layerPosition">
+       <byte>5</byte>
+      </void>
+      <void property="visible">
+       <boolean>false</boolean>
+      </void>
+      <void property="x">
+       <double>10.0</double>
+      </void>
+      <void property="y">
+       <double>10.0</double>
+      </void>
+     </object>
+    </void>
+    <void index="6">
+     <object class="org.concord.mw2d.models.ImageComponent$Delegate">
+      <void property="URI">
+       <string>ironOff.png</string>
+      </void>
+      <void property="layer">
+       <int>1</int>
+      </void>
+      <void property="layerPosition">
+       <byte>6</byte>
+      </void>
+      <void property="visible">
+       <boolean>false</boolean>
+      </void>
+      <void property="x">
+       <double>25.000000149011612</double>
+      </void>
+      <void property="y">
+       <double>10.0</double>
+      </void>
+     </object>
+    </void>
+    <void index="7">
+     <object class="org.concord.mw2d.models.ImageComponent$Delegate">
+      <void property="URI">
+       <string>ironOn1.png</string>
+      </void>
+      <void property="layer">
+       <int>1</int>
+      </void>
+      <void property="layerPosition">
+       <byte>7</byte>
+      </void>
+      <void property="visible">
+       <boolean>false</boolean>
+      </void>
+      <void property="x">
+       <double>18.000000149011612</double>
+      </void>
+      <void property="y">
+       <double>10.0</double>
+      </void>
+     </object>
+    </void>
+    <void index="8">
+     <object class="org.concord.mw2d.models.ImageComponent$Delegate">
+      <void property="URI">
+       <string>ironOn2.png</string>
+      </void>
+      <void property="layer">
+       <int>2</int>
+      </void>
+      <void property="layerPosition">
+       <byte>8</byte>
+      </void>
+      <void property="visible">
+       <boolean>false</boolean>
+      </void>
+      <void property="x">
+       <double>203.0000001490116</double>
+      </void>
+      <void property="y">
+       <double>83.00000014901161</double>
+      </void>
+     </object>
+    </void>
+    <void index="9">
+     <object class="org.concord.mw2d.models.ImageComponent$Delegate">
+      <void property="URI">
+       <string>silverLeft.png</string>
+      </void>
+      <void property="layer">
+       <int>2</int>
+      </void>
+      <void property="layerPosition">
+       <byte>9</byte>
+      </void>
+      <void property="x">
+       <double>10.0</double>
+      </void>
+      <void property="y">
+       <double>10.0</double>
+      </void>
+     </object>
+    </void>
+    <void index="10">
+     <object class="org.concord.mw2d.models.ImageComponent$Delegate">
+      <void property="URI">
+       <string>silverOff.png</string>
+      </void>
+      <void property="layer">
+       <int>1</int>
+      </void>
+      <void property="layerPosition">
+       <byte>10</byte>
+      </void>
+      <void property="x">
+       <double>25.000000149011612</double>
+      </void>
+      <void property="y">
+       <double>10.0</double>
+      </void>
+     </object>
+    </void>
+    <void index="11">
+     <object class="org.concord.mw2d.models.ImageComponent$Delegate">
+      <void property="URI">
+       <string>silverOn2.png</string>
+      </void>
+      <void property="layer">
+       <int>2</int>
+      </void>
+      <void property="layerPosition">
+       <byte>11</byte>
+      </void>
+      <void property="visible">
+       <boolean>false</boolean>
+      </void>
+      <void property="x">
+       <double>203.0000001490116</double>
+      </void>
+      <void property="y">
+       <double>84.00000014901161</double>
+      </void>
+     </object>
+    </void>
+    <void index="12">
+     <object class="org.concord.mw2d.models.ImageComponent$Delegate">
+      <void property="URI">
+       <string>beamDown1.png</string>
+      </void>
+      <void property="layer">
+       <int>1</int>
+      </void>
+      <void property="layerPosition">
+       <byte>14</byte>
+      </void>
+      <void property="visible">
+       <boolean>false</boolean>
+      </void>
+      <void property="x">
+       <double>197.0</double>
+      </void>
+      <void property="y">
+       <double>80.0</double>
+      </void>
+     </object>
+    </void>
+    <void index="13">
+     <object class="org.concord.mw2d.models.ImageComponent$Delegate">
+      <void property="URI">
+       <string>beamDown2.png</string>
+      </void>
+      <void property="layer">
+       <int>1</int>
+      </void>
+      <void property="layerPosition">
+       <byte>15</byte>
+      </void>
+      <void property="visible">
+       <boolean>false</boolean>
+      </void>
+      <void property="x">
+       <double>196.0</double>
+      </void>
+      <void property="y">
+       <double>80.0</double>
+      </void>
+     </object>
+    </void>
+    <void index="14">
+     <object class="org.concord.mw2d.models.ImageComponent$Delegate">
+      <void property="URI">
+       <string>beamDown3.png</string>
+      </void>
+      <void property="layer">
+       <int>1</int>
+      </void>
+      <void property="layerPosition">
+       <byte>16</byte>
+      </void>
+      <void property="visible">
+       <boolean>false</boolean>
+      </void>
+      <void property="x">
+       <double>198.0</double>
+      </void>
+      <void property="y">
+       <double>80.0</double>
+      </void>
+     </object>
+    </void>
+    <void index="15">
+     <object class="org.concord.mw2d.models.ImageComponent$Delegate">
+      <void property="URI">
+       <string>beamDonw4.png</string>
+      </void>
+      <void property="layer">
+       <int>1</int>
+      </void>
+      <void property="layerPosition">
+       <byte>17</byte>
+      </void>
+      <void property="visible">
+       <boolean>false</boolean>
+      </void>
+      <void property="x">
+       <double>199.0</double>
+      </void>
+      <void property="y">
+       <double>79.0</double>
+      </void>
+     </object>
+    </void>
+    <void index="16">
+     <object class="org.concord.mw2d.models.ImageComponent$Delegate">
+      <void property="URI">
+       <string>beamDown5.png</string>
+      </void>
+      <void property="layer">
+       <int>1</int>
+      </void>
+      <void property="layerPosition">
+       <byte>18</byte>
+      </void>
+      <void property="visible">
+       <boolean>false</boolean>
+      </void>
+      <void property="x">
+       <double>198.0</double>
+      </void>
+      <void property="y">
+       <double>80.0</double>
+      </void>
+     </object>
+    </void>
+    <void index="17">
+     <object class="org.concord.mw2d.models.ImageComponent$Delegate">
+      <void property="URI">
+       <string>beamUp1.png</string>
+      </void>
+      <void property="layer">
+       <int>1</int>
+      </void>
+      <void property="layerPosition">
+       <byte>19</byte>
+      </void>
+      <void property="visible">
+       <boolean>false</boolean>
+      </void>
+      <void property="x">
+       <double>196.0</double>
+      </void>
+      <void property="y">
+       <double>52.0</double>
+      </void>
+     </object>
+    </void>
+    <void index="18">
+     <object class="org.concord.mw2d.models.ImageComponent$Delegate">
+      <void property="URI">
+       <string>beamUp2.png</string>
+      </void>
+      <void property="layer">
+       <int>1</int>
+      </void>
+      <void property="layerPosition">
+       <byte>20</byte>
+      </void>
+      <void property="visible">
+       <boolean>false</boolean>
+      </void>
+      <void property="x">
+       <double>198.0</double>
+      </void>
+      <void property="y">
+       <double>27.0</double>
+      </void>
+     </object>
+    </void>
+    <void index="19">
+     <object class="org.concord.mw2d.models.ImageComponent$Delegate">
+      <void property="URI">
+       <string>beamUp3.png</string>
+      </void>
+      <void property="layer">
+       <int>1</int>
+      </void>
+      <void property="layerPosition">
+       <byte>21</byte>
+      </void>
+      <void property="visible">
+       <boolean>false</boolean>
+      </void>
+      <void property="x">
+       <double>196.0</double>
+      </void>
+      <void property="y">
+       <double>-4.0</double>
+      </void>
+     </object>
+    </void>
+    <void index="20">
+     <object class="org.concord.mw2d.models.ImageComponent$Delegate">
+      <void property="URI">
+       <string>beamUp4.png</string>
+      </void>
+      <void property="layer">
+       <int>1</int>
+      </void>
+      <void property="layerPosition">
+       <byte>22</byte>
+      </void>
+      <void property="visible">
+       <boolean>false</boolean>
+      </void>
+      <void property="x">
+       <double>198.0</double>
+      </void>
+      <void property="y">
+       <double>-5.0</double>
+      </void>
+     </object>
+    </void>
+    <void index="21">
+     <object class="org.concord.mw2d.models.ImageComponent$Delegate">
+      <void property="URI">
+       <string>beamUp5.png</string>
+      </void>
+      <void property="layer">
+       <int>1</int>
+      </void>
+      <void property="layerPosition">
+       <byte>23</byte>
+      </void>
+      <void property="visible">
+       <boolean>false</boolean>
+      </void>
+      <void property="x">
+       <double>197.0</double>
+      </void>
+      <void property="y">
+       <double>-7.0</double>
+      </void>
+     </object>
+    </void>
+    <void index="22">
+     <object class="org.concord.mw2d.models.ImageComponent$Delegate">
+      <void property="URI">
+       <string>beamStraight.png</string>
+      </void>
+      <void property="layer">
+       <int>1</int>
+      </void>
+      <void property="layerPosition">
+       <byte>24</byte>
+      </void>
+      <void property="visible">
+       <boolean>false</boolean>
+      </void>
+      <void property="x">
+       <double>196.0</double>
+      </void>
+      <void property="y">
+       <double>83.0</double>
+      </void>
+     </object>
+    </void>
+    <void index="23">
+     <object class="org.concord.mw2d.models.ImageComponent$Delegate">
+      <void property="URI">
+       <string>plate_neg.png</string>
+      </void>
+      <void property="layer">
+       <int>1</int>
+      </void>
+      <void property="layerPosition">
+       <byte>25</byte>
+      </void>
+      <void property="x">
+       <double>10.0</double>
+      </void>
+      <void property="y">
+       <double>10.0</double>
+      </void>
+     </object>
+    </void>
+    <void index="24">
+     <object class="org.concord.mw2d.models.ImageComponent$Delegate">
+      <void property="URI">
+       <string>plate_pos.png</string>
+      </void>
+      <void property="layer">
+       <int>1</int>
+      </void>
+      <void property="layerPosition">
+       <byte>26</byte>
+      </void>
+      <void property="x">
+       <double>10.0</double>
+      </void>
+      <void property="y">
+       <double>10.0</double>
+      </void>
+     </object>
+    </void>
+   </array>
+  </void>
+  <void property="momentumFlavor">
+   <void property="color">
+    <object class="java.awt.Color">
+     <int>0</int>
+     <int>0</int>
+     <int>255</int>
+     <int>255</int>
+    </object>
+   </void>
+  </void>
+  <void property="rectangles">
+   <array class="org.concord.mw2d.models.RectangleComponent$Delegate" length="2">
+    <void index="0">
+     <object class="org.concord.mw2d.models.RectangleComponent$Delegate">
+      <void property="alpha">
+       <int>40</int>
+      </void>
+      <void property="fillMode">
+       <object class="org.concord.modeler.draw.FillMode$GradientFill">
+        <void property="color1">
+         <object class="java.awt.Color">
+          <int>204</int>
+          <int>255</int>
+          <int>255</int>
+          <int>255</int>
+         </object>
+        </void>
+        <void property="color2">
+         <object class="java.awt.Color">
+          <int>210</int>
+          <int>210</int>
+          <int>210</int>
+          <int>255</int>
+         </object>
+        </void>
+        <void property="style">
+         <int>1031</int>
+        </void>
+        <void property="variant">
+         <int>1044</int>
+        </void>
+       </object>
+      </void>
+      <void property="height">
+       <float>169.0</float>
+      </void>
+      <void property="layer">
+       <int>1</int>
+      </void>
+      <void property="layerPosition">
+       <byte>12</byte>
+      </void>
+      <void property="lineColor">
+       <object class="java.awt.Color">
+        <int>214</int>
+        <int>215</int>
+        <int>215</int>
+        <int>255</int>
+       </object>
+      </void>
+      <void property="lineWeight">
+       <int>3</int>
+      </void>
+      <void property="width">
+       <float>646.0</float>
+      </void>
+      <void property="x">
+       <double>2.0</double>
+      </void>
+      <void property="y">
+       <double>6.5</double>
+      </void>
+     </object>
+    </void>
+    <void index="1">
+     <object class="org.concord.mw2d.models.RectangleComponent$Delegate">
+      <void property="height">
+       <float>163.0</float>
+      </void>
+      <void property="layer">
+       <int>1</int>
+      </void>
+      <void property="layerPosition">
+       <byte>13</byte>
+      </void>
+      <void property="vectorField">
+       <object class="org.concord.mw2d.models.ElectricField">
+        <void property="frequency">
+         <double>0.006283185307179587</double>
+        </void>
+        <void property="intensity">
+         <double>0.0</double>
+        </void>
+        <void property="local">
+         <boolean>true</boolean>
+        </void>
+        <void property="orientation">
+         <int>3003</int>
+        </void>
+       </object>
+      </void>
+      <void property="visible">
+       <boolean>false</boolean>
+      </void>
+      <void property="width">
+       <float>130.0</float>
+      </void>
+      <void property="x">
+       <double>324.0</double>
+      </void>
+      <void property="y">
+       <double>9.0</double>
+      </void>
+     </object>
+    </void>
+   </array>
+  </void>
+  <void property="showClock">
+   <boolean>false</boolean>
+  </void>
+ </object>
+ <object class="org.concord.mw2d.models.Atom">
+  <void property="ID">
+   <int>1</int>
+  </void>
+  <void property="movable">
+   <boolean>false</boolean>
+  </void>
+  <void property="rx">
+   <double>289.0</double>
+  </void>
+  <void property="ry">
+   <double>252.0</double>
+  </void>
+  <void property="visible">
+   <boolean>false</boolean>
+  </void>
+ </object>
+ <object class="org.concord.mw2d.models.MolecularModel$State"/>
+</java>
