@@ -4,6 +4,10 @@ Simple module which provides mutations context menu for DNA nucleotides.
 CSS style definition: sass/lab/_context-menu.sass
 ###
 define (require) ->
+  # jQuery Context Menu uses jQuery functions like .addClass(), .hasClass() and .removeClass()
+  # on context menu trigger elements. In our case they are SVG elements which are not supported
+  # by jQuery. Include a special plugin that adds support of SVG elements to these jQuery functions.
+  require 'common/jquery-svg-class'
 
   ###
   Registers context menu for DOM elements defined by @selector.
