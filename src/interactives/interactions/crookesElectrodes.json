@@ -37,7 +37,7 @@
         "    eFieldProps = getShapeProperties(1),",
         "    plateThickness = 0.2;",
         "setImageProperties([1,5,9],{imageY: 2.875});",
-        "setImageProperties([4,8,11],{imageY: 2.195, imageX: 2.007});",
+        "setImageProperties([4,8,11],{imageY: 2.2, imageX: 2.007});",
         "setImageProperties([12,13,14,15,16,17,18,19,20,21,22],{imageX: 2.011});",
         "setImageProperties(22,{imageX: 2.0, imageY: 2.24});",
         "addShape({",
