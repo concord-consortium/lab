@@ -153,14 +153,18 @@ define(function() {
       var i, datum, $tr, $td;
       $tr = $('<tr class="data">');
       $($tr).data('index', index);
-      for(i = 0; i < rowData.length; i++) {
+      for(i = 0; i < columns.length; i++) {
         $td = $('<td>');
         $($td).data('index', i);
         datum = rowData[i];
-        if(typeof datum === "string") {
-          $td.text(datum);
-        } else if(typeof datum === "number") {
-          $td.text(formatters[i](datum));
+        if (typeof datum !== "undefined" && datum !== null) {
+          if(typeof datum === "string") {
+            $td.text(datum);
+          } else if(typeof datum === "number") {
+            $td.text(formatters[i](datum));
+          }
+        } else {
+          $td.html("&nbsp;");
         }
         $tr.append($td);
       }
@@ -168,8 +172,10 @@ define(function() {
       if (tableData.length < 2) {
         alignColumnWidths();
       }
-      clearSelection();
-      addSelection(index);
+      if (rowData.length > 0) {
+        clearSelection();
+        addSelection(index);
+      }
     }
 
     function removeDataRow(index) {
@@ -187,7 +193,16 @@ define(function() {
 
       for (i = 0; i < rowData.length; i++) {
         if (i < dataElementCount) {
-          $($dataElements[i]).text(formatters[i](rowData[i]));
+          datum = rowData[i];
+          if (typeof datum !== "undefined" && datum !== null) {
+            if(typeof datum === "string") {
+              $($dataElements[i]).text(datum);
+            } else if(typeof datum === "number") {
+              $($dataElements[i]).text(formatters[i](datum));
+            }
+          } else {
+            $($dataElements[i]).html("&nbsp;");
+          }
         }
       }
     }
