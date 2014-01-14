@@ -179,12 +179,11 @@ define(function (require) {
       model.on('invalidation.'+namespace, function() {
         replacePropertyRow();
       });
-      model.on('reset.'+namespace, modelResetHandler);
     }
 
     function modelResetHandler() {
       if (component.clearDataOnReset) {
-        tableData = $.extend(true, [], component.tableData);
+        tableData = [];
         headerData = $.extend(true, [], component.headerData);
         rowIndex = 0;
         updateTable();
@@ -201,7 +200,13 @@ define(function (require) {
         if (component.streamDataFromModel) {
           registerModelListeners();
         }
-        updateTable();
+        model.on('reset.'+namespace, modelResetHandler);
+
+        if (component.clearDataOnReset) {
+          modelResetHandler();
+        } else {
+          updateTable();
+        }
       },
 
       resize: function () {
