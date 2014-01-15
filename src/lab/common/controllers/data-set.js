@@ -204,6 +204,28 @@ define(function () {
     this._trigger(DataSet.Events.SAMPLE_ADDED, dataPoint);
   };
 
+  /**
+    Replaces the current data point (as returned by getDataPoint()). If no data point have been
+    added, one will be added, so this will be equivalent to appendDataPoint().
+  */
+  DataSet.prototype.replaceDataPoint = function () {
+    var dataPoint = this.getDataPoint(),
+        arr,
+        i;
+
+    for (i = 0; i < dataPoint.length; i++) {
+      arr = this._dataSeriesArry[i];
+      if (arr.length > 0){
+        arr[arr.length - 1] = dataPoint[i];
+      } else {
+        arr.push(dataPoint[i]);
+      }
+    }
+    // The grapher considers each individual (property, time) pair to be a "point", and therefore
+    // considers the set of properties at any 1 time (what we consider a "point") to be "points".
+    this._trigger(DataSet.Events.SAMPLE_ADDED, dataPoint);
+  };
+
 
   /**
     Removes all data from the graph that correspond to steps following the
