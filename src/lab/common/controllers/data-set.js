@@ -102,18 +102,17 @@ define(function () {
       listeningPool.listen(model, 'tick', function () {
         context.appendDataPoint();
       });
-    }
 
-    listeningPool.listen(model, 'play', function() {
-      if (context._inNewModelTerritory()) {
+      listeningPool.listen(model, 'play', function() {
+        if (context._inNewModelTerritory()) {
+          context.removeDataAfterStepPointer();
+        }
+      });
+
+      listeningPool.listen(model, 'invalidation', function() {
         context.removeDataAfterStepPointer();
-      }
-    });
-
-    listeningPool.listen(model, 'invalidation', function() {
-      context.removeDataAfterStepPointer();
-    });
-
+      });
+    }
 
     // Register observers of model properties descriptions so labels can be updated by client code.
     this._model.addPropertyDescriptionObserver(this.xPropertyName, function() {
