@@ -5,7 +5,7 @@ define(function (require) {
   var ModelController   = require('common/controllers/model-controller'),
       Model             = require('models/sensor/modeler'),
       ModelContainer    = require('models/sensor/view'),
-      ScriptingAPI      = function() {},
+      ScriptingAPI      = require('models/sensor/scripting-api'),
       Benchmarks        = function() {};
 
   return function (modelUrl, modelOptions, interactiveController) {

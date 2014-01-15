@@ -1,7 +1,7 @@
 @import 'sass/bourbon/bourbon'
 @import 'sass/neat/neat'
 
-.lab-responsive-content
+.lab-interactive-container
   @include fill-parent
   height: 100%
   position: relative
@@ -13,6 +13,11 @@
   background-color: lighten($interactive-container-background-gradient-destination, 5%)
   $experimental-support-for-svg: true
   @include background-image(radial-gradient(center, ellipse cover, $interactive-container-background 12%, $interactive-container-background-gradient-destination 100%))
+
+.lab-fastclick-container
+  @include fill-parent
+  height: 100%
+  position: relative
 
 .component-spacing
   margin: 0.3em 0.5em

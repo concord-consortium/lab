@@ -457,23 +457,6 @@ define(function (require) {
           },
 
           /**
-           * Reset the model. The interactives controller will emit a 'willResetModel'.
-           * The willResetModel observers can ask to wait for asynchronous confirmation before
-           * the model is actually reset.
-           * Note that the effect would be almost the same like after reload operation. However
-           * the mechanism under the hood is completely different. The biggest difference for
-           * authoring is that when .resetModel() is called, the "onLoad" script won't be
-           * executed again.
-           * @param  {object} options hash of options, supported properties:
-           *                         * propertiesToRetain - a list of properties to save before
-           *                           the model reset and restore after reset.
-           *                         * cause - cause of the reset action.
-           */
-          resetModel: function resetModel(options) {
-            interactivesController.resetModel(options);
-          },
-
-          /**
            * Reload the interactive. The interactives controller will emit a 'willResetModel',
            * as obviously the interactive reload causes the model to be restored to its initial
            * state too. The willResetModel observers can ask to wait for asynchronous confirmation
@@ -573,6 +556,13 @@ define(function (require) {
        */
       get model() {
         return model;
+      },
+
+      /**
+       * InteractivesController instance.
+       */
+      get intController() {
+        return interactivesController;
       },
 
       /**

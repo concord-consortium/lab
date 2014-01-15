@@ -95,6 +95,35 @@ define(function (require) {
         'playback':      PlaybackController
       };
 
+  function clone(obj) {
+    var copy;
+    // Handle the 3 simple types, and null or undefined.
+    if (null == obj || "object" !== typeof obj) return obj;
+    // Handle Date
+    if (obj instanceof Date) {
+        copy = new Date();
+        copy.setTime(obj.getTime());
+        return copy;
+    }
+    // Handle Array
+    if (obj instanceof Array) {
+        copy = [];
+        for (var i = 0, len = obj.length; i < len; i++) {
+            copy[i] = clone(obj[i]);
+        }
+        return copy;
+    }
+    // Handle Object
+    if (obj instanceof Object) {
+        copy = {};
+        for (var attr in obj) {
+            if (obj.hasOwnProperty(attr)) copy[attr] = clone(obj[attr]);
+        }
+        return copy;
+    }
+    throw new Error("Unable to copy obj! Its type isn't supported.");
+  }
+
   return function InteractivesController(interactiveReference, viewSelector) {
 
     var interactive = {},
@@ -107,6 +136,7 @@ define(function (require) {
         model,
         currentModelID,
         $interactiveContainer,
+        $fastClickContainer,
         helpSystem,
         modelDefinitions = [],
         modelHash = {},
@@ -124,7 +154,7 @@ define(function (require) {
         componentList = [],
 
         // List of custom parameters which are used by the interactive.
-        customParametersByName = [],
+        customParametersByName = {},
 
         // API for scripts defined in the interactive JSON file.
         // and additional model-specific scripting api if one is defined
@@ -277,7 +307,7 @@ define(function (require) {
 
       // Setup layout using both author components and components
       // created automatically in this controller.
-      semanticLayout.initialize(template, layout, components,
+      semanticLayout.initialize($interactiveContainer, $fastClickContainer, template, layout, components,
                                 interactive.aspectRatio, interactive.fontScale);
 
       // We are rendering in embeddable mode if only element on page
@@ -457,9 +487,24 @@ define(function (require) {
       // Cleanup container!
       $interactiveContainer.empty();
 
-      creditsDialog = new CreditsDialog(viewSelector);
-      aboutDialog = new AboutDialog(viewSelector);
-      shareDialog = new ShareDialog(viewSelector);
+      // Attach FastClick only to the .lab-fastclick-container DIV. We don't want to affect rest of the
+      // web page (e.g. by attaching FastClick to "body" or window), let its developer decide whether
+      // FastClick should be used there or not. It solves two issues on mobile browsers:
+      // - eliminates 300ms delay between a physical tap and the firing of a click event
+      // - fixes sticky :hover state (https://www.pivotaltracker.com/story/show/58373748)
+      //
+      // Unfortunatelly we cannot attach FastClick to the whole interactive container, as it breaks
+      // e.g. jQuery context menu.
+      // See: https://www.pivotaltracker.com/story/show/63386470
+      // Components have choice whether to attach themselves to .lab-interactive-container
+      // or .lab-fastclick-container.
+      $fastClickContainer = $('<div class="lab-fastclick-container"></div>');
+      $fastClickContainer.appendTo($interactiveContainer);
+      FastClick.attach($fastClickContainer[0]);
+
+      creditsDialog = new CreditsDialog(".lab-fastclick-container");
+      aboutDialog = new AboutDialog(".lab-fastclick-container");
+      shareDialog = new ShareDialog(".lab-fastclick-container");
 
       // Each time we load a new interactive, we assume that it would be an "initial" model load.
       // This flag is used to decide whether parameters should be retained or not.
@@ -551,8 +596,11 @@ define(function (require) {
 
       // Setup help system if help tips are defined.
       if (interactive.helpTips.length > 0) {
-        helpSystem = new HelpSystem(interactive.helpTips, $interactiveContainer);
+        helpSystem = new HelpSystem(interactive.helpTips, $fastClickContainer);
         controller.on("interactiveRendered.helpSystem", function () {
+          // Make sure that this callback is executed only once.
+          controller.on("interactiveRendered.helpSystem", null);
+
           function hashCode(string) {
             var hash = 0, len = string.length, i, c;
             if (len === 0) return hash;
@@ -1022,7 +1070,9 @@ define(function (require) {
         }, onChangeFunc);
 
         if (parameter.initialValue !== undefined) {
-          initialValues[parameter.name] = parameter.initialValue;
+          // Deep copy of the initial value. Otherwise, if initial value is an object or array,
+          // all updates to parameter value will be shared with its initial value.
+          initialValues[parameter.name] = clone(parameter.initialValue);
         }
         // Save reference to the definition which is finally used.
         // Note that if parameter is defined both in interactive top-level scope
@@ -1060,6 +1110,13 @@ define(function (require) {
     // Public API.
     //
     controller = {
+      get interactiveContainer() {
+        // Note that by default fastclick container is returned here. It's interactive container
+        // child with FastClick attached.
+        // Some elements may want to attach themselves to interactive container itself when they
+        // don't work well with FastClick (e.g. jQuery Context Menu).
+        return $fastClickContainer;
+      },
       get scriptingAPI() {
         return scriptingAPI;
       },
@@ -1196,7 +1253,7 @@ define(function (require) {
        * "resize", "modelLoaded", "modelReset", "interactiveRendered" and "layoutUpdated".
        *
        * @param {string} type
-       * @param  {function|array} callback Callback function or an array of functions.
+       * @param  {function|null} callback Callback function or null (to remove callback).
        *
        * FIXME: We should using DispatchSupport exclusively to emit events (i.e., instead of
        * maintaining custom arrays of callbacks in interactives controller, pass each callback we
@@ -1211,9 +1268,6 @@ define(function (require) {
        * sequence than 'regular' modelLoadedCallbacks.)
        */
       on: function (type, callback) {
-        if (typeof callback !== "function") {
-          throw new Error("Invalid callback, must be a function.");
-        }
         // Note that we can't use DispatchSupport as willResetModel event is a special one.
         // We have know number of objects interested in this event and we have to let them cancel
         // reset operation.
@@ -1253,7 +1307,9 @@ define(function (require) {
               param = customParametersByName[param];
               val = model.get(param.name);
               if (val !== undefined) {
-                param.initialValue = val;
+                // Deep copy of the initial value. Otherwise, if value is an object or array, all
+                // updates to parameter value will be shared with its initial value.
+                param.initialValue = clone(val);
               }
             }
           }
@@ -1359,25 +1415,16 @@ define(function (require) {
     //
 
     // Select interactive container.
-    // TODO: controller rather should create it itself to follow pattern of other components.
     $interactiveContainer = $(viewSelector);
+    $interactiveContainer.addClass("lab-interactive-container");
 
-    // Attach FastClick only to the interactive container. We don't want to affect rest of the
-    // web page (e.g. by attaching FastClick to "body" or window), let its developer decide whether
-    // FastClick should be used there or not. It solves two issues on mobile browsers:
-    // - eliminates 300ms delay between a physical tap and the firing of a click event
-    // - fixes sticky :hover state (https://www.pivotaltracker.com/story/show/58373748)
-    FastClick.attach($interactiveContainer[0]);
-
-    // add container to API
-    controller.interactiveContainer = $interactiveContainer;
     // Initialize semantic layout.
-    semanticLayout = new SemanticLayout($interactiveContainer);
+    semanticLayout = new SemanticLayout();
     controller.on("resize.share-dialog", function () {
       shareDialog.updateIframeSize();
     });
-
     loadInteractive(interactiveReference);
+
     return controller;
   };
 });

@@ -462,6 +462,7 @@ public/vendor: \
 	public/vendor/shutterbug/README.md \
 	public/vendor/shutterbug/LICENSE.md \
 	public/vendor/lab-sensor-applet-interface-dist \
+	public/vendor/chosen/chosen.jquery.min.js \
 	public/favicon.ico
 
 
@@ -505,6 +506,15 @@ public/vendor/jquery-selectBoxIt/jquery.selectBoxIt.min.js: \
 
 public/vendor/jquery-selectBoxIt:
 	mkdir -p public/vendor/jquery-selectBoxIt
+
+public/vendor/chosen/chosen.jquery.min.js: \
+	public/vendor/chosen
+	cp vendor/chosen/chosen.jquery.min.js public/vendor/chosen
+	cp vendor/chosen/chosen.css public/vendor/chosen
+	cp vendor/chosen/*.png public/vendor/chosen
+
+public/vendor/chosen:
+	mkdir -p public/vendor/chosen
 
 public/vendor/jquery-context-menu:
 	mkdir -p public/vendor/jquery-context-menu

@@ -118,12 +118,12 @@ exports.withIsolatedRequireJSAndViewsMocked = function(continuation) {
           getParentHeight: function() {},
           getParentWidth: function() {},
           modelChanged: function() {},
-          $el: $("div")
+          $el: $("<div></div>")
         };
       },
       NumericOutputView = function() {
         return {
-          render: function() { return $("div"); },
+          render: function() { return $("<div></div>"); },
           resize: function() {},
           update: function() {},
           updateLabel: function() {},

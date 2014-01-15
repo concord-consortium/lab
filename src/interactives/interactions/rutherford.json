@@ -168,11 +168,7 @@
       "text": "Reset",
       "action": [
         "stop();",
-        "resetModel({",
-        "  propertiesToRetain: ['chargeRadius']",
-        "});",
-        "// FIXME need to reset twice to reset electric field??",
-        "resetModel({",
+        "reloadModel({",
         "  propertiesToRetain: ['chargeRadius']",
         "});",
         "setComponentDisabled('select-radius', false);",

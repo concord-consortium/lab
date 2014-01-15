@@ -85,14 +85,14 @@ group :build do
       command("make public/imports")
     end
 
-    watch(/^src\/(.+)\.sass$/) do |match|
+    watch(/^src\/(.+)(\.sass)|(\.scss)$/) do |match|
       path = match[1]
       puts path
       if path =~ /^sass\//
         delete_css
         command("make")
       else
-        command("bin/sass -I src --require ./src/helpers/sass/lab_fontface.rb src/#{path}.sass public/#{path}.css")
+        command("bin/sass -I src -I public --require ./src/helpers/sass/lab_fontface.rb src/#{path}.sass public/#{path}.css")
       end
     end
 

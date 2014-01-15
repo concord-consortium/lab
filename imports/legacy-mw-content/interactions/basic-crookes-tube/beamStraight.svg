@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="700px" height="60px">
+<defs>
+<filter id="largeBlur" x="-25%" y="-50%" width="125%" height="150%">
+<feGaussianBlur in="SourceGraphic" stdDeviation="6" />
+</filter>
+</defs>
+<line fill="none" stroke="#00BF09" stroke-width="6" x1="0" y1="15" x2="700" y2="15" style="filter:url(#largeBlur)"/>
+</svg>

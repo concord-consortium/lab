@@ -214,6 +214,8 @@
           background-repeat: no-repeat
           background-position: top right
           cursor: s-resize
+        th:nth-child(even)
+          background-color: darken(#eee, 6%)
       tbody
         border-collapse: collapse
         padding-bottom: 0.3em
@@ -227,8 +229,12 @@
           border-top: 1px solid #888
           &:nth-child(odd)
             background-color: #f8f8f8
+            td:nth-child(even)
+              background-color: darken(#f8f8f8, 6%)
           &:nth-child(even)
             background-color: #fff
+            td:nth-child(even)
+              background-color: darken(#fff, 6%)
           &:first-child
             border-top: none
           td
@@ -238,6 +244,8 @@
             padding: 0.2em 0.3em 0.2em 0.3em
         tr.selected
           background-color: #fff4b8
+          td:nth-child(even)
+            background-color: darken(#fff4b8, 6%)
       .editor-text
         width: 100%
         height: 100%
