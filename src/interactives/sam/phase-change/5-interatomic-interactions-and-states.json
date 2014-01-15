@@ -18,6 +18,13 @@
       }
     }
   ],
+  "parameters": [
+    {
+      "name": "epsilon",
+      "initialValue": 0.144,
+      "onChange": "setElementProperties(2, { epsilon: -value });"
+    }
+  ],
   "components": [
     {
       "type": "slider",
@@ -36,8 +43,7 @@
       ],
       "steps": 50,
       "title": "Attraction between atoms",
-      "initialValue": 0.144,
-      "action": "setElementProperties(2, { epsilon: -value });"
+      "property": "epsilon"
     }
   ],
   "layout": {
