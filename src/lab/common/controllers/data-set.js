@@ -361,5 +361,34 @@ define(function () {
       this.resetData();
     }
   };
+
+  DataSet.prototype.loadDataSet = function (newDataSeriesArry) {
+    var i, ii, j, cols, dataPoint;
+
+    this.resetData();
+
+    cols = newDataSeriesArry.length;
+
+    if (!newDataSeriesArry || !cols) {
+      return;
+    }
+
+
+    // interates through the data and appends points, as if the data were coming in
+    // as new. This is nice for the table listeners, but we may want a version that
+    // simply copies the array staight.
+    for (i = 0, ii = newDataSeriesArry[0].length; i < ii; i++) {
+      dataPoint = [];
+      for (j = 0; j < cols; j++) {
+        dataPoint.push(newDataSeriesArry[j][i]);
+      }
+      this.appendStaticDataPoint(dataPoint);
+    }
+  };
+
+  DataSet.prototype.serialize = function () {
+    return this._dataSeriesArry.slice();
+  };
+
   return DataSet;
 });
