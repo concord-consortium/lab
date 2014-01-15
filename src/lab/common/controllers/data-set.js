@@ -255,7 +255,7 @@ define(function () {
   DataSet.prototype.modelLoadedCallback = function() {
     this._model = this.interactivesController.getModel();
     this._addListeners();
-    if (this.clearOnModelLoad || this.isSetup) {
+    if (this.clearOnModelLoad || this.isSetup || this._dataSeriesArry.length === 0) {
       this.resetData();
     }
   };
