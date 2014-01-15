@@ -33,7 +33,7 @@ define(function () {
     for (var key in DataSet.Events) {
       this._dispatch.addEventTypes(DataSet.Events[key]);
     }
-    this._dispatch.mixInto(DataSet.prototype);
+    this._dispatch.mixInto(this);
   }
 
   DataSet.Events = {
