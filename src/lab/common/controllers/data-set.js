@@ -92,9 +92,11 @@ define(function () {
     listeningPool.listen(model, 'stepForward', positionChanged);
     listeningPool.listen(model, 'seek',        positionChanged);
 
-    listeningPool.listen(model, 'tick', function () {
-      context.appendDataPoint();
-    });
+    if (this.streamDataFromModel) {
+      listeningPool.listen(model, 'tick', function () {
+        context.appendDataPoint();
+      });
+    }
 
     listeningPool.listen(model, 'play', function() {
       if (context._inNewModelTerritory()) {
