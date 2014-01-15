@@ -265,6 +265,32 @@ define(function () {
   };
 
   /**
+    Just like appendDataPoint, but used to insert a row of static data.
+    Currently used when the data table loads in serialized data.
+
+    Expects the data to be passed in the current dataPoint format:
+    [
+      [xval, yval1],    // property 1
+      [xval, yval2],    // property 2
+      ...
+    ]
+  */
+  DataSet.prototype.appendStaticDataPoint = function(dataPoint) {
+    var i;
+
+    for (i = 0; i < dataPoint.length; i++) {
+      this._dataSeriesArry[i].push(dataPoint[i]);
+    }
+
+    if (!this.xPropertyName) {
+      // keep the next dataIndex ahead of any static points added
+      this._dataIndex = Math.max(this._dataIndex, dataPoint[0][0]) + 1;
+    }
+
+    this._trigger(DataSet.Events.SAMPLE_ADDED, dataPoint);
+  };
+
+  /**
     Modifies an existing data point at a given xValue, with a new value
     for a given property
   */
@@ -293,13 +319,13 @@ define(function () {
     if (this._dataSeriesArry.length) {
       arry = this._dataSeriesArry[0];
       for (i = 0, ii = arry.length; i < ii; i++) {
-        if (arry[i] && arry[i][0] == xValue) {
+        if (arry[i] && arry[i][0] === xValue) {
           return i;
         }
       }
     }
     return -1;
-  }
+  };
 
   /**
     Return X property label.
