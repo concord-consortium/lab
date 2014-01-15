@@ -4,12 +4,16 @@ define(function (require) {
   var metadata  = require('common/controllers/interactive-metadata'),
       validator = require('common/validator'),
       TableView = require('common/views/table-view'),
+      ListeningPool = require('common/listening-pool'),
+      DataSet   = require('common/controllers/data-set'),
       tableControllerCount = 0;
 
   return function TableController(component, interactivesController) {
         // Public API.
     var controller,
         model,
+        dataSet,
+        listeningPool,
         view,
         $element,
         rowIndex,
@@ -17,15 +21,28 @@ define(function (require) {
         formatters,
         tableData,
         headerData,
+        properties,
         namespace = "tableController" + (++tableControllerCount);
 
     function initialize() {
-      var parent = interactivesController.interactiveContainer;
+      var parent = interactivesController.interactiveContainer,
+          i;
 
       model = interactivesController.getModel();
 
       // Validate component definition, use validated copy of the properties.
       component = validator.validateCompleteness(metadata.table, component);
+
+      properties = component.propertyColumns.slice();
+      // dataTable has object-based properties, which dataSet doesn't support yet
+      for (i = 0; i < properties.length; i++) {
+        if (properties[i].name) {
+          properties[i] = properties[i].name;
+        }
+      }
+
+      listeningPool = new ListeningPool(namespace);
+      loadDataSet();
 
       generateColumnTitlesAndFormatters();
       rowIndex = 0;
@@ -46,6 +63,36 @@ define(function (require) {
       });
 
       $element = view.render(parent);
+    }
+
+    // In the future, we expect datasets to be defined in the interactive json
+    function lookUpDataSetById () {
+      if (properties.dataSetId) {
+        dataSet = interactivesController.getComponent(properties.dataSetId);
+      }
+      return false;
+    }
+
+    // Legacy path: The dataset is defined as part of the graph controller.
+    function makeDataSet () {
+      var componentData = {
+        properties: properties.slice(),
+        streamDataFromModel: component.streamDataFromModel,
+        clearOnModelReset: component.clearOnModelLoad,
+        xProperty: component.xProperty,
+        clearOnModelLoad: component.clearOnModelLoad,
+        id: component.id + "autoDataSet",
+        dataPoints: [],
+        type: 'dataSet'
+      };
+      dataSet = new DataSet(componentData, interactivesController);
+    }
+
+    function loadDataSet () {
+      if (lookUpDataSetById()) {
+        return;
+      }
+      makeDataSet();
     }
 
     function generateColumnTitlesAndFormatters() {
@@ -107,33 +154,11 @@ define(function (require) {
     }
 
     function appendPropertyRow() {
-      var i, rowData = [];
-      if (component.indexColumn) {
-        rowData.push(rowIndex);
-      }
-      for(i = 0; i < component.propertyColumns.length; i++) {
-        rowData.push(model.get(component.propertyColumns[i]));
-      }
-      tableData.push(rowData);
-      view.appendDataRow(rowData, rowIndex);
-      rowIndex++;
+      dataSet.appendDataPoint();
     }
 
     function replacePropertyRow() {
-      var i, rowData = [];
-      if (component.indexColumn) {
-        rowData.push(rowIndex);
-      }
-      for(i = 0; i < component.propertyColumns.length; i++) {
-        rowData.push(model.get(component.propertyColumns[i]));
-      }
-      if (tableData.length === 0) {
-        tableData.push(rowData);
-        view.appendDataRow(rowData, rowIndex);
-      } else {
-        tableData[tableData.length-1] = rowData;
-        view.replaceDataRow(rowData, rowIndex);
-      }
+      dataSet.replaceDataPoint();
     }
 
     /**
@@ -159,15 +184,19 @@ define(function (require) {
       view.addSelection(model.stepCounter()+1);
     }
 
-    function registerModelListeners() {
-      // Namespace listeners to '.tableController' so we can eventually remove them all at once
-      model.on('tick.'+namespace, function () {
-        if (component.addNewRows) {
-          appendPropertyRow();
-        } else {
-          replacePropertyRow();
-        }
-      });
+    function sampleAddedHandler(evt) {
+      if (component.addNewRows) {
+        view.appendDataRow(evt.data, rowIndex);
+        rowIndex++;
+      } else {
+        view.replaceDataRow(evt.data, rowIndex);
+      }
+    }
+
+    function registerDataListeners() {
+      listeningPool.listen(dataSet, DataSet.Events.SAMPLE_ADDED, sampleAddedHandler);
+
+      /** -- Old methods not yet converted to new dataset
 
       model.on('stepBack.'+namespace, redrawCurrentStepPointer);
       model.on('stepForward.'+namespace, redrawCurrentStepPointer);
@@ -180,11 +209,13 @@ define(function (require) {
       model.on('invalidation.'+namespace, function() {
         replacePropertyRow();
       });
+
+      **/
     }
 
     function modelResetHandler() {
       if (component.clearDataOnReset) {
-        tableData = [];
+        dataSet.resetData();
         headerData = $.extend(true, [], component.headerData);
         rowIndex = 0;
         updateTable();
@@ -198,10 +229,11 @@ define(function (require) {
       */
       modelLoadedCallback: function() {
         model = interactivesController.getModel();
-        if (component.streamDataFromModel) {
-          registerModelListeners();
-        }
-        model.on('reset.'+namespace, modelResetHandler);
+        // if (component.streamDataFromModel) {
+          registerDataListeners();
+        // }
+        dataSet.modelLoadedCallback();
+        listeningPool.listen(model, 'reset', modelResetHandler);
 
         if (component.clearDataOnReset) {
           modelResetHandler();

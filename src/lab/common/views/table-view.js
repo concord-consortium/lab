@@ -156,7 +156,7 @@ define(function() {
       for(i = 0; i < columns.length; i++) {
         $td = $('<td>');
         $($td).data('index', i);
-        datum = rowData[i];
+        datum = rowData[i][1];
         if (typeof datum !== "undefined" && datum !== null) {
           if(typeof datum === "string") {
             $td.text(datum);
@@ -184,6 +184,11 @@ define(function() {
     }
 
     function replaceDataRow(rowData, index) {
+      if ($tbody.find('tr').length == 0) {
+        appendDataRow(rowData, index);
+        return;
+      }
+
       var $tr = $($tbody.find('tr')).filter(function() {
             return $(this).data("index") === index;
           }),
@@ -193,7 +198,7 @@ define(function() {
 
       for (i = 0; i < rowData.length; i++) {
         if (i < dataElementCount) {
-          datum = rowData[i];
+          datum = rowData[i][1];
           if (typeof datum !== "undefined" && datum !== null) {
             if(typeof datum === "string") {
               $($dataElements[i]).text(datum);
