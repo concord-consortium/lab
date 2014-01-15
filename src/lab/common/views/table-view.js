@@ -156,7 +156,7 @@ define(function() {
       for(i = 0; i < columns.length; i++) {
         $td = $('<td>');
         $($td).data('index', i);
-        datum = rowData[i][1];
+        datum = (rowData[i] && rowData[i].length) ? rowData[i][1] : rowData[i];
         if (typeof datum !== "undefined" && datum !== null) {
           if(typeof datum === "string") {
             $td.text(datum);
@@ -198,7 +198,7 @@ define(function() {
 
       for (i = 0; i < rowData.length; i++) {
         if (i < dataElementCount) {
-          datum = rowData[i][1];
+          datum = (rowData[i] && rowData[i].length) ? rowData[i][1] : rowData[i];
           if (typeof datum !== "undefined" && datum !== null) {
             if(typeof datum === "string") {
               $($dataElements[i]).text(datum);
