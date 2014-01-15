@@ -30,6 +30,12 @@ define(function () {
     this._dataSeriesArry        = [];  // [seriesa,seriesb,seriesc]
     this._listeningPool         = new ListeningPool(this.namespace);
     this._dispatch              = new DispatchSupport();
+
+    this.modelPropertiesIndices = {};
+    for (var i = 0; i < this.modelProperties.length; i++) {
+      this.modelPropertiesIndices[this.modelProperties[i]] = i;
+    }
+
     for (var key in DataSet.Events) {
       this._dispatch.addEventTypes(DataSet.Events[key]);
     }
@@ -258,6 +264,43 @@ define(function () {
     this._dataSeriesArry.length = this.modelProperties.length;
     this._trigger(DataSet.Events.REMOVE_ALL_SERIES);
   };
+
+  /**
+    Modifies an existing data point at a given xValue, with a new value
+    for a given property
+  */
+  DataSet.prototype.editDataPoint = function (xValue, property, newValue) {
+    var row = this.getIndexForXValue(xValue),
+        col = this.modelPropertiesIndices[property];
+
+    if (row > -1 && typeof col !== "undefined") {
+      this._dataSeriesArry[col][row][1] = newValue;
+    }
+  };
+
+  DataSet.prototype.getDataPointForXValue = function (xValue, property) {
+    var row = this.getIndexForXValue(xValue),
+        col = this.modelPropertiesIndices[property];
+
+    if (row > -1 && typeof col !== "undefined") {
+      return this._dataSeriesArry[col][row][1];
+    } else {
+      return null;
+    }
+  };
+
+  DataSet.prototype.getIndexForXValue = function (xValue) {
+    var arry, i, ii;
+    if (this._dataSeriesArry.length) {
+      arry = this._dataSeriesArry[0];
+      for (i = 0, ii = arry.length; i < ii; i++) {
+        if (arry[i] && arry[i][0] == xValue) {
+          return i;
+        }
+      }
+    }
+    return -1;
+  }
 
   /**
     Return X property label.
