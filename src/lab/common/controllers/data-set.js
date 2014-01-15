@@ -52,6 +52,11 @@ define(function () {
   *******************************************************************/
 
   /**
+  * Used for datasets that don't use an xProperty
+  */
+  DataSet.prototype._dataIndex = 0;
+
+  /**
   * returns the number of (model) data points we have recorded.
   * TODO: This is for model invadlidation / data truncation,
   * so its assumed that the first columns are from model data.
@@ -148,7 +153,12 @@ define(function () {
   DataSet.prototype.getDataPoint = function () {
     var ret = [], i, len, xval;
 
-    xval = this._getModelProperty(this.xPropertyName );
+    if (this.xPropertyName) {
+      xval = this._getModelProperty(this.xPropertyName);
+    } else {
+      xval = this._dataIndex++;
+    }
+
     for (i = 0, len = this.modelProperties.length; i < len; i++) {
       ret.push([xval, this._getModelProperty(this.modelProperties[i])]);
     }
