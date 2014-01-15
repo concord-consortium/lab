@@ -53,14 +53,13 @@ define(function (require) {
         id: component.id,
         title: component.title,
         columns: columns,
-        tableData: tableData,
         formatters: formatters,
         visibleRows: component.visibleRows,
         width: component.width,
         height: component.height,
         tooltip: component.tooltip,
         klasses: [ "interactive-table", "component" ]
-      });
+      }, controller);
 
       $element = view.render(parent);
     }
@@ -186,10 +185,9 @@ define(function (require) {
 
     function sampleAddedHandler(evt) {
       if (component.addNewRows) {
-        view.appendDataRow(evt.data, rowIndex);
-        rowIndex++;
+        view.appendDataRow(evt.data, evt.data[0][0]);
       } else {
-        view.replaceDataRow(evt.data, rowIndex);
+        view.replaceDataRow(evt.data, evt.data[0][0]);
       }
     }
 
@@ -267,6 +265,16 @@ define(function (require) {
         Used when manually adding a row of property values to the table.
       */
       appendDataPropertiesToComponent: appendPropertyRow,
+
+      addDataToCell: function (rowIndex, colIndex, val) {
+        var property = properties[colIndex];
+        dataSet.editDataPoint(rowIndex, property, val);
+      },
+
+      getDataInCell: function (rowIndex, colIndex) {
+        var property = properties[colIndex];
+        return  dataSet.getDataPointForXValue(rowIndex, property);
+      },
 
       // Returns view container.
       getViewContainer: function () {

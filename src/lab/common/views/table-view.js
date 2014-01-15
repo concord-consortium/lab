@@ -1,12 +1,11 @@
 define(function() {
 
-  return function TableView(opts) {
+  return function TableView(opts, tableController) {
 
     var id          = opts.id,
         columns     = opts.columns,
         formatters  = opts.formatters,
         visibleRows = opts.visibleRows,
-        tableData   = opts.tableData,
         title       = opts.title,
         width       = opts.width,
         height      = opts.height,
@@ -169,7 +168,7 @@ define(function() {
         $tr.append($td);
       }
       $tbody.append($tr);
-      if (tableData.length < 2) {
+      if ($tbody.find("tr").length < 2) {
         alignColumnWidths();
       }
       if (rowData.length > 0) {
@@ -184,7 +183,9 @@ define(function() {
     }
 
     function replaceDataRow(rowData, index) {
-      if ($tbody.find('tr').length == 0) {
+      var datum;
+
+      if ($tbody.find('tr').length === 0) {
         appendDataRow(rowData, index);
         return;
       }
@@ -212,15 +213,6 @@ define(function() {
       }
     }
 
-    function renderTableData() {
-      var i;
-      $tbody.find('.data').remove();
-      if (!tableData) { return; }
-      for(i = 0; i < tableData.length; i++) {
-        appendDataRow(tableData[i], i);
-      }
-    }
-
     function calculateSizeAndPosition() {
       tbodyPos = $tbody.position();
       tbodyHeight = $tbody.height();
@@ -238,7 +230,7 @@ define(function() {
         if (!isNaN(parseFloat(val)) && isFinite(val)) {
           val = parseFloat(val);
         }
-        tableData[rowIndex][colIndex] = val;
+        tableController.addDataToCell(rowIndex, colIndex, val);
         $td.empty().html(val);
       });
 
@@ -261,7 +253,7 @@ define(function() {
         commitEditing();
       }
 
-      data   = tableData[rowIndex][colIndex],
+      data   = tableController.getDataInCell(rowIndex, colIndex);
       $input = $('<input class="editor-text">').val(data);
 
       $td.empty().append($input);
@@ -305,7 +297,6 @@ define(function() {
           .append($thead)
           .append($tbody);
         renderColumnTitles();
-        renderTableData();
         $tableWrapper = $('<div>')
           .addClass("table-wrapper")
           .append($table);
@@ -372,9 +363,7 @@ define(function() {
       updateTable: function(opts) {
         columns     = opts.columns || columns;
         formatters  = opts.formatters || formatters;
-        tableData   = opts.tableData || tableData;
         renderColumnTitles();
-        renderTableData();
         alignColumnWidths();
         calculateSizeAndPosition();
       }
