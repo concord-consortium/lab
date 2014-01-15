@@ -22,6 +22,7 @@ define(function (require) {
         tableData,
         headerData,
         properties,
+        firstTime = true,
         namespace = "tableController" + (++tableControllerCount);
 
     function initialize() {
@@ -236,11 +237,13 @@ define(function (require) {
           updateTable();
         }
 
-        // load serialized table data into the data set
-        // eventually, the data set will probably want to handle
-        // serialization by itself
-        dataSet.loadDataSet(tableData);
-
+        if (firstTime) {
+          // load serialized table data into the data set
+          // eventually, the data set will probably want to handle
+          // serialization by itself
+          dataSet.loadDataSet(tableData);
+        }
+        firstTime = false;
       },
 
       resize: function () {
