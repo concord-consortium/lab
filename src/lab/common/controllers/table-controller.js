@@ -147,8 +147,7 @@ define(function (require) {
       generateColumnTitlesAndFormatters();
       view.updateTable({
         columns: columns,
-        formatters: formatters,
-        tableData: tableData
+        formatters: formatters
       });
     }
 
@@ -227,9 +226,7 @@ define(function (require) {
       */
       modelLoadedCallback: function() {
         model = interactivesController.getModel();
-        // if (component.streamDataFromModel) {
-          registerDataListeners();
-        // }
+        registerDataListeners();
         dataSet.modelLoadedCallback();
         listeningPool.listen(model, 'reset', modelResetHandler);
 
@@ -238,6 +235,12 @@ define(function (require) {
         } else {
           updateTable();
         }
+
+        // load serialized table data into the data set
+        // eventually, the data set will probably want to handle
+        // serialization by itself
+        dataSet.loadDataSet(tableData);
+
       },
 
       resize: function () {
@@ -292,7 +295,7 @@ define(function (require) {
         var result = $.extend(true, {}, component);
         // add headerData and tableData
         result.headerData = columns;
-        result.tableData = tableData;
+        result.tableData = dataSet.serialize();
         return result;
       }
     };
