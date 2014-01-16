@@ -19,7 +19,6 @@ define(function (require) {
         rowIndex,
         columns,
         formatters,
-        tableData,
         headerData,
         properties,
         namespace = "tableController" + (++tableControllerCount);
@@ -173,12 +172,12 @@ define(function (require) {
       This is used when a change is made that invalidates the future data.
     */
     function removeDataAfterStepPointer() {
-      var ptr = model.stepCounter();
-      if (tableData.length > ptr-1) {
-        tableData.length = ptr;
-        rowIndex = ptr;
-        updateTable();
-      }
+      // var ptr = model.stepCounter();
+      // if (tableData.length > ptr-1) {
+      //   tableData.length = ptr;
+      //   rowIndex = ptr;
+      //   updateTable();
+      // }
     }
 
     /**
@@ -277,20 +276,8 @@ define(function (require) {
       },
 
       getData: function(propArray) {
-        var i, row, index, j, result = [], rowResult;
-        for(i = 0; i < tableData.length; i++) {
-          row = tableData[i];
-          rowResult = [];
-          for(j = 0; j < propArray.length; j++) {
-            index = component.propertyColumns.indexOf(propArray[j]);
-            if(component.indexColumn) {
-              index++;
-            }
-            rowResult.push(row[index]);
-          }
-          result.push(rowResult);
-        }
-        return [result];
+        // TODO: no idea why wrapping array is needed (backward compatibility)...
+        return [dataSet.getPropertiesValues(propArray)];
       },
 
       /**

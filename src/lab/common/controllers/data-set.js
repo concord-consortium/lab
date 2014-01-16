@@ -334,6 +334,28 @@ define(function () {
   };
 
   /**
+    Return two dimensional array which contains values of listed properties.
+   */
+  DataSet.prototype.getPropertiesValues = function(properties) {
+    var result = [];
+    var rowResult;
+    var property;
+    var col;
+
+    for (var i = 0, ii = this._dataSeriesArry[0].length; i < ii; i++) {
+      rowResult = [];
+      for (var j = 0, jj = properties.length; j < jj; j++) {
+        property = properties[j];
+        col = this.modelPropertiesIndices[property];
+        rowResult.push(this._dataSeriesArry[col][i][1]);
+      }
+      result.push(rowResult);
+    }
+
+    return result;
+  };
+
+  /**
     Return X property label.
    */
   DataSet.prototype.getXLabel = function() {
