@@ -450,6 +450,11 @@ define(function() {
       property: {
         conflictsWith: ["initialValue", "action"]
       },
+      retainProperty: {
+        // If property binding is used (so 'property' is defined), this flag decides whether
+        // property should be retained during model reload / reset or not.
+        defaultValue: true
+      },
       action: {
         // Script executed when checkbox is changed, optional.
         conflictsWith: ["property"]
@@ -506,6 +511,11 @@ define(function() {
         // If you use property binding, do not mix it with action scripts and initial values.
         conflictsWith: ["initialValue", "action"]
       },
+      retainProperty: {
+        // If property binding is used (so 'property' is defined), this flag decides whether
+        // property should be retained during model reload / reset or not.
+        defaultValue: true
+      },
       action: {
         conflictsWith: ["property"]
       },
@@ -543,6 +553,11 @@ define(function() {
       property: {
         // Pulldown can be also connected to a model property.
         // In such case, options should define "value", not "action".
+      },
+      retainProperty: {
+        // If property binding is used (so 'property' is defined), this flag decides whether
+        // property should be retained during model reload / reset or not.
+        defaultValue: true
       },
       disabled: {
         defaultValue: false
@@ -596,6 +611,11 @@ define(function() {
       property: {
         // Radio can be also connected to a model property.
         // In such case, options should define "value", not "action".
+      },
+      retainProperty: {
+        // If property binding is used (so 'property' is defined), this flag decides whether
+        // property should be retained during model reload / reset or not.
+        defaultValue: true
       },
       disabled: {
         defaultValue: false

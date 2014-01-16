@@ -28,12 +28,11 @@
         ]
       },
       "modelOptions": {
-        "unitsScheme": "mks"
+        "unitsScheme": "mks",
+        "timeStep": 1.5,
+        "timeStepsPerTick": 75
       },
       "onLoad": [
-        "set('targetTemperature',500);",
-        "set('gasElementType',2);",
-        "set({ timeStep: 0.00015, timeStepsPerTick: 75, modelSampleRate: 'default' });",
         "onPropertyChange('time', function(t) {",
         "  var atoms               = atomsWithinRect(6.75, 0, 0.25, 1.96, get('gasElementType'));",
         "  var nNewAtomsInTarget   = 0;",

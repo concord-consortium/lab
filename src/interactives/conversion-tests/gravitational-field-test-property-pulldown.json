@@ -11,7 +11,9 @@
       "viewOptions": {
         "controlButtons": "play_reset_step"
       },
-      "onLoad": "set('gravitationalField', 8e-7);"
+      "modelOptions": {
+        "gravitationalField": 8e-7
+      }
     }
   ],
   "components": [
@@ -61,12 +63,6 @@
           "value": 1.6e-06
         }
       ]
-    },
-    {
-      "type": "button",
-      "id": "button1",
-      "text": "Reset",
-      "action": "reloadModel();"
     },
     {
       "type": "numericOutput",
