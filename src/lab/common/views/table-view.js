@@ -350,6 +350,10 @@ define(function() {
         calculateSizeAndPosition();
       },
 
+      clear: function () {
+        $tbody.find('.data').remove();
+      },
+
       appendDataRow: appendDataRow,
 
       removeDataRow: removeDataRow,
