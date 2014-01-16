@@ -190,6 +190,9 @@ define(function (require) {
     }
 
     function handleNewDataRow(dataRow, index) {
+      if (component.indexColumn) {
+        dataRow.unshift(rowIndex++);
+      }
       if (component.addNewRows) {
         view.appendDataRow(dataRow, index);
       } else {
