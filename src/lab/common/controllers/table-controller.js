@@ -22,7 +22,6 @@ define(function (require) {
         tableData,
         headerData,
         properties,
-        firstTime = true,
         namespace = "tableController" + (++tableControllerCount);
 
     function initialize() {
@@ -47,7 +46,6 @@ define(function (require) {
 
       generateColumnTitlesAndFormatters();
       rowIndex = 0;
-      tableData = $.extend(true, [], component.tableData);
       headerData = $.extend(true, [], component.headerData);
 
       view = new TableView({
@@ -63,6 +61,11 @@ define(function (require) {
       }, controller);
 
       $element = view.render(parent);
+
+      // This will load serialized data (passed as "initialData") into the data set if available.
+      // Otherwise data set will be just cleared. It will also call dataResetHandler(), so view
+      // will be immediately updated.
+      dataSet.resetData();
     }
 
     // In the future, we expect datasets to be defined in the interactive json
@@ -82,7 +85,7 @@ define(function (require) {
         xProperty: component.xProperty,
         clearOnModelLoad: component.clearOnModelLoad,
         id: component.id + "autoDataSet",
-        dataPoints: [],
+        initialData: component.tableData,
         type: 'dataSet'
       };
       dataSet = new DataSet(componentData, interactivesController);
@@ -93,6 +96,10 @@ define(function (require) {
         return;
       }
       makeDataSet();
+
+      // Register DataSet listeners.
+      listeningPool.listen(dataSet, DataSet.Events.SAMPLE_ADDED, sampleAddedHandler);
+      listeningPool.listen(dataSet, DataSet.Events.DATA_RESET, dataResetHandler);
     }
 
     function generateColumnTitlesAndFormatters() {
@@ -183,17 +190,41 @@ define(function (require) {
       view.addSelection(model.stepCounter()+1);
     }
 
-    function sampleAddedHandler(evt) {
+    function handleNewDataRow(dataRow, index) {
       if (component.addNewRows) {
-        view.appendDataRow(evt.data, evt.data[0][0]);
+        view.appendDataRow(dataRow, index);
       } else {
-        view.replaceDataRow(evt.data, evt.data[0][0]);
+        view.replaceDataRow(dataRow, index);
       }
     }
 
-    function registerDataListeners() {
-      listeningPool.listen(dataSet, DataSet.Events.SAMPLE_ADDED, sampleAddedHandler);
+    function sampleAddedHandler(evt) {
+      handleNewDataRow(evt.data, evt.data[0][0]);
+    }
 
+    function dataResetHandler(evt) {
+      // Interates through the data and appends points, as if the data were coming in as new.
+      var newDataSeriesArry = evt.data;
+      var cols = newDataSeriesArry.length;
+      var dataPoint;
+
+      view.clear();
+
+      if (!newDataSeriesArry || !cols) {
+        return;
+      }
+
+      for (var i = 0, ii = newDataSeriesArry[0].length; i < ii; i++) {
+        dataPoint = [];
+        for (var j = 0; j < cols; j++) {
+          dataPoint.push(newDataSeriesArry[j][i]);
+        }
+        handleNewDataRow(dataPoint, dataPoint[0][0]);
+      }
+    }
+
+    function registerModelListeners() {
+      listeningPool.listen(model, 'reset', modelResetHandler);
       /** -- Old methods not yet converted to new dataset
 
       model.on('stepBack.'+namespace, redrawCurrentStepPointer);
@@ -213,11 +244,15 @@ define(function (require) {
 
     function modelResetHandler() {
       if (component.clearDataOnReset) {
-        dataSet.resetData();
-        headerData = $.extend(true, [], component.headerData);
-        rowIndex = 0;
-        updateTable();
+        clearTable();
       }
+    }
+
+    function clearTable() {
+      headerData = $.extend(true, [], component.headerData);
+      rowIndex = 0;
+      updateTable();
+      dataSet.resetData();
     }
 
     // Public API.
@@ -227,23 +262,14 @@ define(function (require) {
       */
       modelLoadedCallback: function() {
         model = interactivesController.getModel();
-        registerDataListeners();
+        registerModelListeners();
         dataSet.modelLoadedCallback();
-        listeningPool.listen(model, 'reset', modelResetHandler);
 
         if (component.clearDataOnReset) {
-          modelResetHandler();
+          clearTable();
         } else {
           updateTable();
         }
-
-        if (firstTime) {
-          // load serialized table data into the data set
-          // eventually, the data set will probably want to handle
-          // serialization by itself
-          dataSet.loadDataSet(tableData);
-        }
-        firstTime = false;
       },
 
       resize: function () {
