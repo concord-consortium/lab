@@ -54,7 +54,8 @@
         "imageHostType": "RectangularObstacle",
         "imageLayer": 2,
         "imageX": -3.51,
-        "imageY": 2.51
+        "imageY": 2.51,
+        "visible": true
       },
       {
         "imageUri": "membraneManyPores.png",
@@ -63,7 +64,8 @@
         "imageLayer": 1,
         "imageLayerPosition": 1,
         "imageX": 2.13,
-        "imageY": 2.67
+        "imageY": 2.67,
+        "visible": true
       },
       {
         "imageUri": "waterSodiumChlorideKey.png",
@@ -72,7 +74,8 @@
         "imageLayer": 1,
         "imageLayerPosition": 5,
         "imageX": 2.95,
-        "imageY": 2.44
+        "imageY": 2.44,
+        "visible": true
       }
     ],
     "imageMapping": {},

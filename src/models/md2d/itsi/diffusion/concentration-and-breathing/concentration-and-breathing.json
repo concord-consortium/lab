@@ -54,7 +54,8 @@
         "imageLayer": 1,
         "imageLayerPosition": 3,
         "imageX": 1.71,
-        "imageY": 2.33
+        "imageY": 2.33,
+        "visible": true
       },
       {
         "imageUri": "rbcBkg.gif",
@@ -63,7 +64,8 @@
         "imageLayer": 2,
         "imageLayerPosition": 4,
         "imageX": 1.78,
-        "imageY": 2.32
+        "imageY": 2.32,
+        "visible": true
       }
     ],
     "imageMapping": {},

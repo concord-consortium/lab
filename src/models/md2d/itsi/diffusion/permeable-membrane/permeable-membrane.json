@@ -54,7 +54,8 @@
         "imageHostType": "",
         "imageLayer": 2,
         "imageX": 0.01,
-        "imageY": 2.49
+        "imageY": 2.49,
+        "visible": true
       },
       {
         "imageUri": "membraneNoPores.png",
@@ -63,7 +64,8 @@
         "imageLayer": 1,
         "imageLayerPosition": 1,
         "imageX": 2.25,
-        "imageY": 2.64
+        "imageY": 2.64,
+        "visible": true
       },
       {
         "imageUri": "oxygenCO2Key.png",
@@ -72,7 +74,8 @@
         "imageLayer": 1,
         "imageLayerPosition": 2,
         "imageX": 1.94,
-        "imageY": 0.27
+        "imageY": 0.27,
+        "visible": true
       }
     ],
     "imageMapping": {},
