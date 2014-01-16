@@ -368,33 +368,6 @@ define(function () {
     }
   };
 
-  DataSet.prototype.loadDataSet = function (newDataSeriesArry) {
-    var i, ii, j, cols, dataPoint;
-
-    // Clear dataset first. We can't use .resetData() as it will try to append some data from model
-    // if streaming is enabled.
-    this._dataSeriesArry = [];
-    for (i = 0, ii = this.modelProperties.length; i < ii; i++) {
-      this._dataSeriesArry[i] = [];
-    }
-    this._trigger(DataSet.Events.DATA_RESET, this._dataSeriesArry);
-
-    cols = newDataSeriesArry.length;
-    if (!newDataSeriesArry || !cols) {
-      return;
-    }
-    // interates through the data and appends points, as if the data were coming in
-    // as new. This is nice for the table listeners, but we may want a version that
-    // simply copies the array staight.
-    for (i = 0, ii = newDataSeriesArry[0].length; i < ii; i++) {
-      dataPoint = [];
-      for (j = 0; j < cols; j++) {
-        dataPoint.push(newDataSeriesArry[j][i]);
-      }
-      this.appendStaticDataPoint(dataPoint);
-    }
-  };
-
   DataSet.prototype.serialize = function () {
     return this._dataSeriesArry.slice();
   };
