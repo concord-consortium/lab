@@ -189,19 +189,20 @@ define(function (require) {
       view.addSelection(model.stepCounter()+1);
     }
 
-    function handleNewDataRow(dataRow, index) {
+    function handleNewDataRow(dataRow) {
       if (component.indexColumn) {
-        dataRow.unshift(rowIndex++);
+        dataRow.unshift(rowIndex);
       }
       if (component.addNewRows) {
-        view.appendDataRow(dataRow, index);
+        view.appendDataRow(dataRow, rowIndex);
+        rowIndex++;
       } else {
-        view.replaceDataRow(dataRow, index);
+        view.replaceDataRow(dataRow, rowIndex);
       }
     }
 
     function sampleAddedHandler(evt) {
-      handleNewDataRow(evt.data, evt.data[0][0]);
+      handleNewDataRow(evt.data);
     }
 
     function dataResetHandler(evt) {
@@ -221,7 +222,7 @@ define(function (require) {
         for (var j = 0; j < cols; j++) {
           dataPoint.push(newDataSeriesArry[j][i]);
         }
-        handleNewDataRow(dataPoint, dataPoint[0][0]);
+        handleNewDataRow(dataPoint);
       }
     }
 
