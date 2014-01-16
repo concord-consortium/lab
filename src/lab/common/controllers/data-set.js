@@ -27,6 +27,9 @@ define(function () {
     this.modelProperties        = this.component.properties || [];
     this.streamDataFromModel    = this.component.streamDataFromModel;
     this.clearOnModelLoad       = this.component.clearOnModelLoad;
+    // Set initial data only if there is real data there. Otherwise set null for convenience.
+    this.initialData            = this.component.initialData && this.component.initialData.length > 0 ?
+                                  $.extend(true, [], this.component.initialData) : null;
     this._dataSeriesArry        = [];  // [seriesa,seriesb,seriesc]
     this._listeningPool         = new ListeningPool(this.namespace);
     this._dispatch              = new DispatchSupport();
@@ -47,7 +50,7 @@ define(function () {
     NEW_SERIES:        "newSeries",
     DATA_TRUNCATED:    "dataTruncated",
     DATA_RESET:        "dataReset",
-    REMOVE_ALL_SERIES: "removeAllSeries",
+    REMOVE_ALL_SERIES: "removeAlldataPointseries",
     SELECTION_CHANGED: "selectionChanged",
     X_LABEL_CHANGED:   "xLabelChanged",
     Y_LABELS_CHANGED:  "yLabelsChanged"
@@ -177,16 +180,19 @@ define(function () {
     and pushes that data into graph.
   */
   DataSet.prototype.resetData = function () {
-    var dataPoint        = this.getDataPoint();
-    this._dataSeriesArry = [];
-    var i;
+    this._dataIndex = 0;
 
-    if (this.streamDataFromModel) {
+    if (this.initialData) {
+      this._dataSeriesArry = $.extend(true, [], this.initialData);
+    } else if (this._model && this.streamDataFromModel) {
+      var dataPoint = this.getDataPoint();
+      this._dataSeriesArry = [];
       for (i = 0; i < dataPoint.length; i++) {
         this._dataSeriesArry[i] = [dataPoint[i]];
       }
     } else {
-      for (i = 0; i < dataPoint.length; i++) {
+      this._dataSeriesArry = [];
+      for (var i = 0, len = this.modelProperties.length; i < len; i++) {
         this._dataSeriesArry[i] = [];
       }
     }
@@ -365,15 +371,18 @@ define(function () {
   DataSet.prototype.loadDataSet = function (newDataSeriesArry) {
     var i, ii, j, cols, dataPoint;
 
-    this.resetData();
+    // Clear dataset first. We can't use .resetData() as it will try to append some data from model
+    // if streaming is enabled.
+    this._dataSeriesArry = [];
+    for (i = 0, ii = this.modelProperties.length; i < ii; i++) {
+      this._dataSeriesArry[i] = [];
+    }
+    this._trigger(DataSet.Events.DATA_RESET, this._dataSeriesArry);
 
     cols = newDataSeriesArry.length;
-
     if (!newDataSeriesArry || !cols) {
       return;
     }
-
-
     // interates through the data and appends points, as if the data were coming in
     // as new. This is nice for the table listeners, but we may want a version that
     // simply copies the array staight.
