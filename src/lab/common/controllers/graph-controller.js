@@ -51,7 +51,6 @@ define(function (require) {
         dataSet,
         scriptingAPI,
         properties,
-        isSetup = false,
         dataPointsArrays = [],
         listeningPool,
         namespace = "graphController" + (++graphControllerCount);
@@ -114,6 +113,9 @@ define(function (require) {
       if (component.tooltip) {
         $container.attr("title", component.tooltip);
       }
+
+      // Initial setup of the data.
+      dataSet.resetData();
     }
 
 
@@ -253,7 +255,7 @@ define(function (require) {
 
         scriptingAPI = interactivesController.getScriptingAPI();
         // TODO: Let the dataset handle this by itself:
-        if (component.clearOnModelLoad || !isSetup) {
+        if (component.clearOnModelLoad) {
           dataSet.resetData();
         }
         updateLabels();
