@@ -2051,18 +2051,23 @@ define(function(require) {
     }
 
     (function () {
-      if (!initialProperties.viewOptions || !initialProperties.viewOptions.textBoxes) {
+      if (!initialProperties.viewOptions) {
         return;
       }
-      // Temporal workaround to provide text boxes validation.
-      // Note that text boxes are handled completely different from other objects
+
+      // Temporal workaround to provide text boxes and images validation.
+      // Note that text boxes and images are handled completely different from other objects
       // like atoms or obstacles. There is much of inconsistency and probably
       // it should be refactored anyway.
-      var textBoxes = initialProperties.viewOptions.textBoxes,
+      var textBoxes = initialProperties.viewOptions.textBoxes || [],
+          images = initialProperties.viewOptions.images || [],
           i, len;
 
       for (i = 0, len = textBoxes.length; i < len; i++) {
         textBoxes[i] = validator.validateCompleteness(metadata.textBox, textBoxes[i]);
+      }
+      for (i = 0, len = images.length; i < len; i++) {
+        images[i] = validator.validateCompleteness(metadata.image, images[i]);
       }
     }());
 
