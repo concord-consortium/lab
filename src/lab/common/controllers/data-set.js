@@ -97,9 +97,6 @@ define(function () {
     };
 
     listeningPool.removeAll(); // remove previous listeners.
-    listeningPool.listen(model, 'stepBack',    positionChanged);
-    listeningPool.listen(model, 'stepForward', positionChanged);
-    listeningPool.listen(model, 'seek',        positionChanged);
 
     if (this.streamDataFromModel) {
       listeningPool.listen(model, 'tick', function () {
@@ -111,6 +108,10 @@ define(function () {
           context.removeDataAfterStepPointer();
         }
       });
+
+      listeningPool.listen(model, 'stepBack',    positionChanged);
+      listeningPool.listen(model, 'stepForward', positionChanged);
+      listeningPool.listen(model, 'seek',        positionChanged);
 
       listeningPool.listen(model, 'invalidation', function() {
         context.removeDataAfterStepPointer();
