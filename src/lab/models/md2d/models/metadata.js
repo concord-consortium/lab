@@ -824,7 +824,7 @@ define(function() {
         defaultValue: 1
       },
       visible: {
-        defaultValue: 1
+        defaultValue: true
       }
     },
 
