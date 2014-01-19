@@ -34,8 +34,8 @@
   :name: "Inquiry Examples: Pendulums"
   :category: Curriculum
 
-- :path: inquiry-space/pendulum
-  :name: "Inquiry Space: Pendulums"
+- :path: inquiry-space
+  :name: "Inquiry Space"
   :category: Curriculum
 
 - :path: itsi/atoms-and-energy

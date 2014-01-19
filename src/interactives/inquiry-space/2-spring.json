@@ -18,7 +18,7 @@
       "id": "spring-mass",
       "url": "imports/legacy-mw-content/converted/inquiry-space/pendulum/spring-mass$0.json",
       "viewOptions": {
-        "controlButtons": "",
+        "controlButtons": "reset",
         "controlButtonStyle": "text",
         "gridLines": true,
         "showClock": true,
@@ -170,7 +170,12 @@
       "id": "new-run-button",
       "text": "New Run",
       "tooltip": "Set up a new experiment run.",
-      "action": "reloadModel({cause: 'new-run'});"
+      "action": [
+        "reloadModel({",
+        "  propertiesToRetain: ['gravity', 'ballMass', 'springConstant', 'startingDisplacement', 'damping','experimentDuration', 'durationEnabled'],",
+        "  cause: 'new-run'",
+        "});"
+      ]
     },
     {
       "type": "button",
