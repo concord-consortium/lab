@@ -104,6 +104,17 @@
       "value": "return getAtomProperties(0).vy;"
     }
   ],
+  "exports": {
+    "perRun": [
+      "mass-of-jumper",
+      "air-resistance"
+    ],
+    "perTick": [
+      "distance",
+      "vel"
+    ]
+  },
+  "hideExportDataControl": true,
   "components": [
     {
       "type": "button",
