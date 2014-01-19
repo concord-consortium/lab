@@ -1,0 +1,241 @@
+{
+  "title": "Terminal Velocity",
+  "publicationStatus": "draft",
+  "subtitle": "Explore parachutes and air resistance.",
+  "aspectRatio": 1,
+  "fontScale": 1,
+  "about": [
+    "If you've ever felt the wind in your face while riding a bike, then you have felt air resistance.",
+    "The faster you go the harder air resistance pushes back. Skydivers rely on this force ",
+    "to prevent them from continually going faster and faster. Eventually, at some particular speed the ",
+    "force from air resistance is equal to the force of gravity and the skydiver stops speeding up. ",
+    "The velocity reached when you stop getting faster is called *terminal velocity* .",
+    "",
+    "Explore factors that affect terminal velocity by using this simulation of a parachute jumper."
+  ],
+  "models": [
+    {
+      "type": "md2d",
+      "id": "parachute-model",
+      "url": "imports/legacy-mw-content/converted/inquiry-space/parachute/parachute$0.json",
+      "viewOptions": {
+        "controlButtons": ""
+      },
+      "modelOptions": {
+        "unitsScheme": "mks",
+        "timeStepsPerTick": 167,
+        "timeStep": 1,
+        "modelSampleRate": 60
+      },
+      "onLoad": [
+        "function setGraphRange() {",
+        "  setComponentAttributes('distance-graph', {'xmax': get('experimentDuration')*1.1});",
+        "  setComponentAttributes('vel-graph', {'xmax': get('experimentDuration')*1.1});",
+        "}",
+        "function setButtonState() {",
+        "  setComponentDisabled('start-button', get('hasPlayed'));",
+        "  setComponentDisabled('stop-button', get('isStopped'));",
+        "  setComponentDisabled('new-run-button', !get('hasPlayed'));",
+        "  setComponentDisabled('analyze-data-button', !(get('hasPlayed') && get('isStopped') && canExportData() && isUnexportedDataPresent()));",
+        "  setComponentDisabled('mass-slider', !get('isStopped'));",
+        "  setComponentDisabled('resistance-slider', !get('isStopped'));",
+        "}",
+        "onPropertyChange('isPlayable', setButtonState);",
+        "onPropertyChange('isStopped', setButtonState);",
+        "onPropertyChange('hasPlayed', setButtonState);",
+        "callEvery(1, function() {",
+        "   if ((Math.floor(getTime()) >= get('experimentDuration')) && get('durationEnabled')) {",
+        "     stop();",
+        "     setComponentDisabled('start-button',true);",
+        "   }",
+        "});",
+        "onPropertyChange('experimentDuration', setGraphRange);",
+        "onPropertyChange('durationEnabled', function(){ setComponentDisabled('duration-slider', !(get('durationEnabled'))); });",
+        "onPropertyChange('time', function() {",
+        "   if (getAtomProperties(0).y < 1) {",
+        "     stop();",
+        "   }",
+        "});",
+        "setGraphRange();",
+        "setButtonState();",
+        "setComponentDisabled('stop-button', true);",
+        "setComponentDisabled('start-button', false);"
+       ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "experimentDuration",
+      "initialValue": 8
+    },
+    {
+      "name": "durationEnabled",
+      "initialValue": false
+    },
+    {
+      "name": "mass-of-jumper",
+      "initialValue": 100,
+      "onChange": [
+        "var volFactor = 1000;",
+        "var massToVol = value/volFactor;",
+        "var radius = Math.pow((massToVol * 3) / (4 * Math.PI), 0.3333);  // assumes sphere - used to scale radius with mass",
+        "setElementProperties(2, { mass: value, sigma: radius });"
+      ]
+    },
+    {
+      "name": "air-resistance",
+      "initialValue": 700,
+      "onChange": [
+        "setAtomProperties(0, { friction: value });"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "name": "distance",
+      "unitAbbreviation": "m",
+      "label": "Distance to surface",
+      "value": "return getAtomProperties(0).y - 9.33;"
+    },
+    {
+      "name": "vel",
+      "unitAbbreviation": "m/s",
+      "label": "Velocity",
+      "value": "return getAtomProperties(0).vy;"
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "start-button",
+      "text": "Start",
+      "tooltip": "Start the experiment run.",
+      "action": [
+        "start();",
+        "setComponentDisabled('start-button', true);"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "stop-button",
+      "text": "Stop",
+      "tooltip": "Stop the experiment run.",
+      "action": "stop();"
+    },
+    {
+      "type": "button",
+      "id": "new-run-button",
+      "text": "New Run",
+      "tooltip": "Set up a new experiment run.",
+      "action": [
+        "reloadModel({ propertiesToRetain: [], cause: 'new-run' });"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "analyze-data-button",
+      "text": "Analyze Data",
+      "tooltip": "Put data from the experiment run into DataGames.",
+      "action": [
+        "exportData();",
+        "setComponentDisabled('analyze-data-button', !isUnexportedDataPresent());"
+      ]
+    },
+    {
+      "type": "slider",
+      "id": "mass-slider",
+      "min": 100,
+      "max": 300,
+      "displayValue": "return format('.0f')(value)",
+      "steps": 8,
+      "title": "Mass of jumper (g)",
+      "property": "mass-of-jumper"
+    },
+    {
+      "type": "slider",
+      "id": "resistance-slider",
+      "min": 700,
+      "max": 1100,
+       "labels": [
+        {
+          "value": 700,
+          "label": "small"
+        },
+        {
+          "value": 900,
+          "label": "medium"
+        },
+        {
+          "value": 1100,
+          "label": "large"
+        }
+      ],
+      "steps": 4,
+      "title": "Parachute size (air resistance)",
+      "property": "air-resistance"
+    },
+    {
+      "type": "graph",
+      "id": "distance-graph",
+      "properties": [ "distance" ],
+      "xlabel": "Time (s)",
+      "ylabel": "Distance (m)",
+      "title": "Distance vs. Time",
+      "units": true,
+      "ymin": -10,
+      "ymax": 0,
+      "xTickCount": 5,
+      "yTickCount": 5,
+      "height": "13em"
+    },
+    {
+      "type": "graph",
+      "id": "vel-graph",
+      "properties": [ "vel"] ,
+      "xlabel": "Time (s)",
+      "ylabel": "Velocity (m/s)",
+      "title": "Velocity vs. Time",
+      "units": true,
+      "ymin": -4,
+      "ymax": 0,
+      "xTickCount": 5,
+      "yTickCount": 5,
+      "height": "13em"
+    }
+  ],
+  "layout": {
+    "right": [
+      ["distance-graph"],
+      ["vel-graph"]
+    ],
+    "bottom": [
+      [
+        "start-button",
+        "stop-button",
+        "analyze-data-button",
+        "new-run-button"
+      ],
+      [
+        "mass-slider",
+        "resistance-slider"
+      ]
+    ]
+  },
+  "template": [
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "padding-top": "0.5em"
+    },
+    {
+      "id": "right",
+      "top": "model.top",
+      "left": "model.right",
+      "right": "interactive.right",
+      "height": "model.height",
+      "padding-left": "1em",
+      "padding-right": "0.5em"
+    }
+  ]
+
+}
