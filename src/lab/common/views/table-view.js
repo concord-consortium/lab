@@ -42,6 +42,9 @@ define(function() {
           descending = "desc",
           sortOrder;
 
+      // Remove blank row and setup it again after storting to ensure that it's always at the end
+      // of the table.
+      removeBlankRow();
       sortOrder = ascending;
       if ($title.hasClass(ascending)) {
         $title.removeClass(ascending);
@@ -71,6 +74,7 @@ define(function() {
         }
       );
       $title.addClass("sorted");
+      setupBlankRow();
       e.preventDefault();
     }
 
@@ -177,14 +181,18 @@ define(function() {
         clearSelection();
         addSelection(index);
       }
-      if (blankRow) {
-        setupBlankRow(index + 1);
-      }
+      setupBlankRow();
+    }
+
+    function removeBlankRow() {
+      $tbody.find(".blank").remove();
     }
 
     function setupBlankRow(index) {
       // Remove old blank row and add new one.
-      $tbody.find(".blank").remove();
+      removeBlankRow();
+      if (!blankRow) return;
+      var index = $tbody.find("tr").length;
       var i, $tr, $td;
       $tr = $('<tr class="data blank">');
       $($tr).data('index', index);
