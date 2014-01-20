@@ -47,6 +47,7 @@ define(function () {
 
   DataSet.Events = {
     SAMPLE_ADDED:      "sampleAdded",
+    SAMPLE_CHANGED:     "sampleChanged",
     NEW_SERIES:        "newSeries",
     DATA_TRUNCATED:    "dataTruncated",
     DATA_RESET:        "dataReset",
@@ -291,11 +292,21 @@ define(function () {
   */
   DataSet.prototype.editDataPoint = function (xValue, property, newValue) {
     var row = this.getIndexForXValue(xValue),
-        col = this.modelPropertiesIndices[property];
+        col = this.modelPropertiesIndices[property],
+        dataPoint = [];
 
     if (row > -1 && typeof col !== "undefined") {
       this._dataSeriesArry[col][row][1] = newValue;
     }
+
+    for (var i = 0, len = this._dataSeriesArry.length; i < len; i++) {
+      dataPoint.push(this._dataSeriesArry[i][row]);
+    }
+
+    // Provide complete information about changed data.
+    this._trigger(DataSet.Events.SAMPLE_CHANGED, {row: row,
+                                                  xValue: xValue,
+                                                  dataPoint: dataPoint});
   };
 
   DataSet.prototype.getDataPointForXValue = function (xValue, property) {
