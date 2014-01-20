@@ -1,0 +1,61 @@
+{
+  "title": "Tables Demo",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "simple-gas$0",
+      "url": "imports/legacy-mw-content/converted/new-examples-for-nextgen/simple-gas$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+    {
+      "id": "table",
+      "type": "table",
+      "title": null,
+      "clearDataOnReset": false,
+      "streamDataFromModel": false,
+      "addNewRows": true,
+      "showBlankRow": true,
+      "indexColumn": true,
+      "propertyColumns": [
+        {
+          "name": "time",
+          "format": "r",
+          "editable": false
+        },
+        {
+          "name": "Editable column",
+          "format": "r"
+        }
+      ],
+      "tableData": [
+        [
+          [
+            0,
+            0.00
+          ],
+          [
+            1,
+            0.00
+          ]
+        ],
+        [
+          [
+            0,
+            "abc"
+          ],
+          [
+            1,
+            "xyz"
+          ]
+        ]
+      ],
+      "height": "15em"
+    }
+  ]
+}
