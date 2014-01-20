@@ -208,7 +208,12 @@ define(function (require) {
     }
 
     function sampleChangedHandler(evt) {
-      view.replaceDataRow(evt.data.dataPoint, evt.data.row);
+      var dataRow = evt.data.dataPoint;
+      var rowIndex = evt.data.row;
+      if (component.indexColumn) {
+        dataRow.unshift(rowIndex);
+      }
+      view.replaceDataRow(dataRow, rowIndex);
     }
 
     function dataResetHandler(evt) {
@@ -296,6 +301,8 @@ define(function (require) {
       appendDataPropertiesToComponent: appendPropertyRow,
 
       addDataToCell: function (row, col, val) {
+        // Index column is purely stored by view, it isn't present in DataSet.
+        if (component.indexColumn) col--;
         var property = properties[col];
 
         if (val !== "" && row === rowIndex) {
