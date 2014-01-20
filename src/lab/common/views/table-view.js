@@ -6,6 +6,7 @@ define(function() {
         columns     = opts.columns,
         formatters  = opts.formatters,
         visibleRows = opts.visibleRows,
+        blankRow    = opts.showBlankRow,
         title       = opts.title,
         width       = opts.width,
         height      = opts.height,
@@ -17,6 +18,7 @@ define(function() {
         $table,
         $thead,
         $titlerow,
+        $newRow,
         $tbody,
         $bodyrows,
         tbodyPos,
@@ -175,6 +177,27 @@ define(function() {
         clearSelection();
         addSelection(index);
       }
+      if (blankRow) {
+        setupBlankRow(index + 1);
+      }
+    }
+
+    function setupBlankRow(index) {
+      // Remove old blank row and add new one.
+      $tbody.find(".blank").remove();
+      var i, $tr, $td;
+      $tr = $('<tr class="data blank">');
+      $($tr).data('index', index);
+      for(i = 0; i < columns.length; i++) {
+        $td = $('<td>');
+        $($td).data('index', i);
+        $td.html("&nbsp;");
+        $tr.append($td);
+      }
+      $tbody.append($tr);
+      if ($tbody.find("tr").length < 2) {
+        alignColumnWidths();
+      }
     }
 
     function removeDataRow(index) {
@@ -291,7 +314,7 @@ define(function() {
         $el = $('<div>');
         $table = $('<table>');
         $tbody = $('<tbody>');
-        $titlerow  = $('<tr class="header">');
+        $titlerow = $('<tr class="header">');
         $thead = $('<thead>').append($titlerow);
         $table
           .append($thead)

@@ -743,6 +743,10 @@ define(function() {
       visibleRows: {
         defaultValue: 4
       },
+      showBlankRow: {
+        // If true, a new blank row will be always visible.
+        defaultValue: false
+      },
       indexColumn: {
         defaultValue: true
       },

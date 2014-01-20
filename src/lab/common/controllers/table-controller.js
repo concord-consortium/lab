@@ -53,6 +53,7 @@ define(function (require) {
         columns: columns,
         formatters: formatters,
         visibleRows: component.visibleRows,
+        showBlankRow: component.showBlankRow,
         width: component.width,
         height: component.height,
         tooltip: component.tooltip,
