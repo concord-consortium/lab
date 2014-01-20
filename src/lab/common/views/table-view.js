@@ -18,7 +18,6 @@ define(function() {
         $table,
         $thead,
         $titlerow,
-        $newRow,
         $tbody,
         $bodyrows,
         tbodyPos,
@@ -34,6 +33,27 @@ define(function() {
         $th.click(columnSort);
         $titlerow.append($th);
       }
+    }
+
+    function setFormattedData($td, datum, colIdx) {
+      if (typeof datum !== "undefined" && datum !== null) {
+        if(typeof datum === "string") {
+          $td.text(datum);
+        } else if(typeof datum === "number") {
+          $td.text(formatters[colIdx](datum));
+        }
+      } else {
+        $td.html("&nbsp;");
+      }
+    }
+
+    function formatNumericValues() {
+      $tbody.find('td').html(function() {
+        var $td = $(this);
+        var datum = $td.data('datum');
+        var colIdx = $td.data('index');
+        setFormattedData($td, datum, colIdx);
+      });
     }
 
     function columnSort(e) {
@@ -162,15 +182,8 @@ define(function() {
         $td = $('<td>');
         $($td).data('index', i);
         datum = (rowData[i] && rowData[i].length) ? rowData[i][1] : rowData[i];
-        if (typeof datum !== "undefined" && datum !== null) {
-          if(typeof datum === "string") {
-            $td.text(datum);
-          } else if(typeof datum === "number") {
-            $td.text(formatters[i](datum));
-          }
-        } else {
-          $td.html("&nbsp;");
-        }
+        $td.data('datum', datum);
+        setFormattedData($td, datum, i);
         $tr.append($td);
       }
       $tbody.append($tr);
@@ -188,7 +201,7 @@ define(function() {
       $tbody.find(".blank").remove();
     }
 
-    function setupBlankRow(index) {
+    function setupBlankRow() {
       // Remove old blank row and add new one.
       removeBlankRow();
       if (!blankRow) return;
@@ -226,20 +239,14 @@ define(function() {
           }),
           $dataElements = $($tr).find('td'),
           dataElementCount = $dataElements.length,
-          i;
+          $td, i;
 
       for (i = 0; i < rowData.length; i++) {
         if (i < dataElementCount) {
+          $td = $($dataElements[i]);
           datum = (rowData[i] && rowData[i].length) ? rowData[i][1] : rowData[i];
-          if (typeof datum !== "undefined" && datum !== null) {
-            if(typeof datum === "string") {
-              $($dataElements[i]).text(datum);
-            } else if(typeof datum === "number") {
-              $($dataElements[i]).text(formatters[i](datum));
-            }
-          } else {
-            $($dataElements[i]).html("&nbsp;");
-          }
+          $td.data('datum', datum);
+          setFormattedData($td, datum, i);
         }
       }
     }
@@ -399,6 +406,7 @@ define(function() {
         columns     = opts.columns || columns;
         formatters  = opts.formatters || formatters;
         renderColumnTitles();
+        formatNumericValues();
         alignColumnWidths();
         calculateSizeAndPosition();
       }
