@@ -61,11 +61,6 @@ define(function () {
   *******************************************************************/
 
   /**
-  * Used for datasets that don't use an xProperty
-  */
-  DataSet.prototype._dataIndex = 0;
-
-  /**
   * returns the number of (model) data points we have recorded.
   * TODO: This is for model invadlidation / data truncation,
   * so its assumed that the first columns are from model data.
@@ -167,7 +162,7 @@ define(function () {
     if (this.xPropertyName) {
       xval = this._getModelProperty(this.xPropertyName);
     } else {
-      xval = this._dataIndex++;
+      xval = this._numberOfPoints();
     }
 
     for (i = 0, len = this.modelProperties.length; i < len; i++) {
@@ -181,8 +176,6 @@ define(function () {
     and pushes that data into graph.
   */
   DataSet.prototype.resetData = function () {
-    this._dataIndex = 0;
-
     if (this.initialData) {
       this._dataSeriesArry = $.extend(true, [], this.initialData);
     } else if (this._model && this.streamDataFromModel) {
@@ -287,11 +280,6 @@ define(function () {
 
     for (i = 0; i < dataPoint.length; i++) {
       this._dataSeriesArry[i].push(dataPoint[i]);
-    }
-
-    if (!this.xPropertyName) {
-      // keep the next dataIndex ahead of any static points added
-      this._dataIndex = Math.max(this._dataIndex, dataPoint[0][0]) + 1;
     }
 
     this._trigger(DataSet.Events.SAMPLE_ADDED, dataPoint);
