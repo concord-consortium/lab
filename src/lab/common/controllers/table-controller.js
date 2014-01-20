@@ -98,6 +98,7 @@ define(function (require) {
 
       // Register DataSet listeners.
       listeningPool.listen(dataSet, DataSet.Events.SAMPLE_ADDED, sampleAddedHandler);
+      listeningPool.listen(dataSet, DataSet.Events.SAMPLE_CHANGED, sampleChangedHandler);
       listeningPool.listen(dataSet, DataSet.Events.DATA_RESET, dataResetHandler);
     }
 
@@ -205,6 +206,10 @@ define(function (require) {
       handleNewDataRow(evt.data);
     }
 
+    function sampleChangedHandler(evt) {
+      view.replaceDataRow(evt.data.dataPoint, evt.data.row);
+    }
+
     function dataResetHandler(evt) {
       // Interates through the data and appends points, as if the data were coming in as new.
       var newDataSeriesArry = evt.data;
@@ -289,9 +294,13 @@ define(function (require) {
       */
       appendDataPropertiesToComponent: appendPropertyRow,
 
-      addDataToCell: function (rowIndex, colIndex, val) {
-        var property = properties[colIndex];
-        dataSet.editDataPoint(rowIndex, property, val);
+      addDataToCell: function (row, col, val) {
+        var property = properties[col];
+
+        if (row === rowIndex) {
+          dataSet.appendDataPoint();
+        }
+        dataSet.editDataPoint(row, property, val);
       },
 
       getDataInCell: function (rowIndex, colIndex) {
