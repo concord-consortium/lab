@@ -313,6 +313,8 @@ define(function (require) {
       },
 
       getDataInCell: function (rowIndex, colIndex) {
+        // Index column is purely stored by view, it isn't present in DataSet.
+        if (component.indexColumn) colIndex--;
         var property = properties[colIndex];
         return  dataSet.getDataPointForXValue(rowIndex, property);
       },
