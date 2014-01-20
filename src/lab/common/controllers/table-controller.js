@@ -297,7 +297,8 @@ define(function (require) {
       addDataToCell: function (row, col, val) {
         var property = properties[col];
 
-        if (row === rowIndex) {
+        if (val !== "" && row === rowIndex) {
+          // Extend table when new data is added to "nonexistent" (in data model) row.
           dataSet.appendDataPoint();
         }
         dataSet.editDataPoint(row, property, val);
