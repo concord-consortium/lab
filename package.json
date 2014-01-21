@@ -41,7 +41,7 @@
     "jade": ">=0.35.0",
     "mkdirp": "0.3.2",
     "mocha": "1.12.x",
-    "should": "2.1.1",
+    "should": "3.0.1",
     "sinon": ">=1.7.3",
     "mocha-phantomjs": ">=3.1.x",
     "chai": ">=1.7.2"

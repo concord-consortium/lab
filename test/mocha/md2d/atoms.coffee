@@ -41,14 +41,14 @@ describe "MD2D modeler", ->
 
     bondedAtoms = model.getBondedAtoms 0
     bondedAtoms.length.should.equal 1
-    bondedAtoms.should.contain 1
+    bondedAtoms.should.containEql 1
 
     moleculeAtoms = model.getMoleculeAtoms 0
     moleculeAtoms.should.eql bondedAtoms
 
     bondedAtoms = model.getBondedAtoms 1
     bondedAtoms.length.should.equal 1
-    bondedAtoms.should.contain 0
+    bondedAtoms.should.containEql 0
 
     moleculeAtoms = model.getMoleculeAtoms 1
     moleculeAtoms.should.eql bondedAtoms
@@ -58,36 +58,36 @@ describe "MD2D modeler", ->
 
     bondedAtoms = model.getBondedAtoms 0
     bondedAtoms.length.should.equal 2
-    bondedAtoms.should.contain 1
-    bondedAtoms.should.contain 2
+    bondedAtoms.should.containEql 1
+    bondedAtoms.should.containEql 2
 
     moleculeAtoms = model.getMoleculeAtoms 0
     moleculeAtoms.should.eql bondedAtoms
 
     bondedAtoms = model.getBondedAtoms 1
     bondedAtoms.length.should.equal 1
-    bondedAtoms.should.contain 0
+    bondedAtoms.should.containEql 0
 
     moleculeAtoms = model.getMoleculeAtoms 1
     moleculeAtoms.length.should.equal 2
-    moleculeAtoms.should.contain 0
-    moleculeAtoms.should.contain 2
+    moleculeAtoms.should.containEql 0
+    moleculeAtoms.should.containEql 2
 
     bondedAtoms = model.getBondedAtoms 2
     bondedAtoms.length.should.equal 1
-    bondedAtoms.should.contain 0
+    bondedAtoms.should.containEql 0
 
     moleculeAtoms = model.getMoleculeAtoms 2
     moleculeAtoms.length.should.equal 2
-    moleculeAtoms.should.contain 0
-    moleculeAtoms.should.contain 1
+    moleculeAtoms.should.containEql 0
+    moleculeAtoms.should.containEql 1
 
     # Remove one radial bond
     model.removeRadialBond 0
 
     bondedAtoms = model.getBondedAtoms 0
     bondedAtoms.length.should.equal 1
-    bondedAtoms.should.contain 2
+    bondedAtoms.should.containEql 2
 
     moleculeAtoms = model.getMoleculeAtoms 0
     moleculeAtoms.should.eql bondedAtoms
@@ -100,7 +100,7 @@ describe "MD2D modeler", ->
 
     bondedAtoms = model.getBondedAtoms 2
     bondedAtoms.length.should.equal 1
-    bondedAtoms.should.contain 0
+    bondedAtoms.should.containEql 0
 
     moleculeAtoms = model.getMoleculeAtoms 2
     moleculeAtoms.should.eql bondedAtoms
@@ -110,14 +110,14 @@ describe "MD2D modeler", ->
 
     bondedAtoms = model.getBondedAtoms 0
     bondedAtoms.length.should.equal 1
-    bondedAtoms.should.contain 1
+    bondedAtoms.should.containEql 1
 
     moleculeAtoms = model.getMoleculeAtoms 0
     moleculeAtoms.should.eql bondedAtoms
 
     bondedAtoms = model.getBondedAtoms 1
     bondedAtoms.length.should.equal 1
-    bondedAtoms.should.contain 0
+    bondedAtoms.should.containEql 0
 
     moleculeAtoms = model.getMoleculeAtoms 1
     moleculeAtoms.should.eql bondedAtoms
@@ -134,14 +134,14 @@ describe "MD2D modeler", ->
 
     bondedAtoms = model.getBondedAtoms 0
     bondedAtoms.length.should.equal 1
-    bondedAtoms.should.contain 1
+    bondedAtoms.should.containEql 1
 
     moleculeAtoms = model.getMoleculeAtoms 0
     moleculeAtoms.should.eql bondedAtoms
 
     bondedAtoms = model.getBondedAtoms 1
     bondedAtoms.length.should.equal 1
-    bondedAtoms.should.contain 0
+    bondedAtoms.should.containEql 0
 
     moleculeAtoms = model.getMoleculeAtoms 1
     moleculeAtoms.should.eql bondedAtoms
