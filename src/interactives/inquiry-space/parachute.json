@@ -50,12 +50,6 @@
         "onPropertyChange('isPlayable', setButtonState);",
         "onPropertyChange('isStopped', setButtonState);",
         "onPropertyChange('hasPlayed', setButtonState);",
-        "callEvery(1, function() {",
-        "   if ((Math.floor(getTime()) >= get('experimentDuration')) && get('durationEnabled')) {",
-        "     stop();",
-        "     setComponentDisabled('start-button',true);",
-        "   }",
-        "});",
         "onPropertyChange('experimentDuration', setGraphRange);",
         "onPropertyChange('durationEnabled', function(){ setComponentDisabled('duration-slider', !(get('durationEnabled'))); });",
         "var counter = 0;",
@@ -123,13 +117,13 @@
       "name": "distance",
       "unitAbbreviation": "m",
       "label": "Distance to surface",
-      "value": "return getAtomProperties(0).y - 9.33;"
+      "value": "return getAtomProperties(0).y - 1;"
     },
     {
       "name": "vel",
       "unitAbbreviation": "m/s",
       "label": "Velocity",
-      "value": "return getAtomProperties(0).vy;"
+      "value": "return getAtomProperties(0).vy* -1;"
     }
   ],
   "exports": {
@@ -208,8 +202,8 @@
       "ylabel": "Distance (m)",
       "title": "Distance vs. Time",
       "units": true,
-      "ymin": -10,
-      "ymax": 0,
+      "ymin": -0.5,
+      "ymax": 9,
       "xTickCount": 5,
       "yTickCount": 5,
       "height": "13em"
@@ -222,8 +216,8 @@
       "ylabel": "Velocity (m/s)",
       "title": "Velocity vs. Time",
       "units": true,
-      "ymin": -4,
-      "ymax": 0,
+      "ymin": 0,
+      "ymax": 4,
       "xTickCount": 5,
       "yTickCount": 5,
       "height": "13em"
