@@ -265,7 +265,6 @@ define(function (require) {
       modelLoadedCallback: function() {
         model = interactivesController.getModel();
         registerModelListeners();
-        dataSet.modelLoadedCallback();
 
         if (component.clearDataOnReset) {
           clearTable();

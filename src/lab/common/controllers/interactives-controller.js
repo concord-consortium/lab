@@ -141,7 +141,8 @@ define(function (require) {
         helpSystem,
         modelDefinitions = [],
         modelHash = {},
-        componentModelLoadedCallbacks = [],
+        componentModelLoadedCallbacks,
+        dataSetModelLoadedCallbacks,
         willResetModelCallbacks = [],
         ignoreModelResetEvent = false,
         initialModelLoad,
@@ -571,10 +572,21 @@ define(function (require) {
       }
     }
 
-    function initializeInteractive() {
-      var def = controller.interactive;
+    function cleanupInteractive() {
+      // Clear component instances.
+      componentList = [];
+      componentByID = {};
+      // Internal onLoad callbacks (TODO REFACTOR ME)
+      dataSetModelLoadedCallbacks = [];
+      componentModelLoadedCallbacks = [];
+      // And list of properties bound to components.
+      propertiesRetainedByComponents = [];
+    }
 
-      var modelDef = def.models[0];
+    function initializeInteractive() {
+      cleanupInteractive();
+
+      var modelDef = controller.interactive.models[0];
       modelController = createModelController(modelDef.type, modelDef.modelUrl, null);
       // also be sure to get notified when the underlying model changes
       // (this catches reloads)
@@ -588,6 +600,16 @@ define(function (require) {
       }
       // Expose API to global namespace (prototyping / testing using the browser console).
       scriptingAPI.exposeScriptingAPI();
+
+      // Setup data sets.
+      dataSetsByName = {};
+      interactive.dataSets.forEach(function (dataSetDefinition) {
+        var dataSet = new DataSet(dataSetDefinition, controller);
+        dataSetsByName[dataSetDefinition.name] = dataSet;
+        // $.proxy ensures that callback will be always executed
+        // in the context of correct object ('this' binding).
+        dataSetModelLoadedCallbacks.push($.proxy(dataSet.modelLoadedCallback, dataSet));
+      });
 
       // Setup exporter, if any...
       if (interactive.exports) {
@@ -607,12 +629,6 @@ define(function (require) {
           });
         }
       }
-
-      // Setup data sets.
-      dataSetsByName = {};
-      interactive.dataSets.forEach(function (dataSetDefinition) {
-        dataSetsByName[dataSetDefinition.name] = new DataSet(dataSetDefinition, controller);
-      });
 
       // Setup help system if help tips are defined.
       if (interactive.helpTips.length > 0) {
@@ -645,14 +661,7 @@ define(function (require) {
       tooltip($interactiveContainer);
 
       // Create interactive components
-      var componentJsons = def.components || [];
-      // Clear component instances.
-      componentList = [];
-      componentByID = {};
-      // Their onLoad callbacks (TODO REFACTOR ME)
-      componentModelLoadedCallbacks = [];
-      // And list of properties bound to components.
-      propertiesRetainedByComponents = [];
+      var componentJsons = controller.interactive.components || [];
 
       for (var i = 0, len = componentJsons.length; i < len; i++) {
         createComponent(componentJsons[i]);
@@ -862,13 +871,13 @@ define(function (require) {
           model.set(retainedProperties);
         }
 
+        for (var i = 0; i < dataSetModelLoadedCallbacks.length; i++) {
+          dataSetModelLoadedCallbacks[i]();
+        }
+
         // We call component loaded callbacks before onLoad scripts because some onLoad scripts
-        // may require that components are already initialized. Unfortunately some components
-        // fully initialize themselves only when model is provided (the issue is visible when
-        // experiment controller is being used).
-        // TODO FIXME: components should be fully functional even before model is loaded for
-        // the first time.
-        for(var i = 0; i < componentModelLoadedCallbacks.length; i++) {
+        // may require that components are already initialized.
+        for (i = 0; i < componentModelLoadedCallbacks.length; i++) {
           componentModelLoadedCallbacks[i](model, scriptingAPI);
         }
 
@@ -1397,6 +1406,7 @@ define(function (require) {
         result.dataSets = [];
         for (var dsName in dataSetsByName) {
           result.dataSets.push(dataSetsByName[dsName].serialize());
+
         }
 
         // Serialize components.

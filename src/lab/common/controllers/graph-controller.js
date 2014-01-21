@@ -229,17 +229,13 @@ define(function (require) {
         Called by the interactives controller when the model finishes loading.
       */
       modelLoadedCallback: function() {
+        registerModelListeners();
         if (grapher) {
           resetGrapher();
         } else {
           initGrapher();
         }
-        registerModelListeners();
-
-        dataSet.modelLoadedCallback(); // TODO: have dataSet register its own
-
         scriptingAPI = interactivesController.getScriptingAPI();
-
         updateLabels();
         grapher.repaint();
       },
