@@ -386,6 +386,14 @@ define(function () {
   };
 
   DataSet.prototype.serialize = function () {
+    // Start with the initial component definition.
+    var result = $.extend(true, {}, this.component);
+    // Save current data as initial data.
+    result.initialData = this.serializeData();
+    return result;
+  };
+
+  DataSet.prototype.serializeData = function () {
     return this._dataSeriesArry.slice();
   };
 

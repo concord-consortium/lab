@@ -333,7 +333,7 @@ define(function (require) {
         var result = $.extend(true, {}, component);
         // add headerData and tableData
         result.headerData = columns;
-        result.tableData = dataSet.serialize();
+        result.tableData = dataSet.serializeData();
         return result;
       }
     };
