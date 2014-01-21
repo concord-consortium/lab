@@ -68,6 +68,11 @@ define(function() {
         defaultValue: []
       },
 
+      dataSets: {
+        // List of data sets.
+        defaultValue: []
+      },
+
       propertiesToRetain: {
         // List of properties that should be retained during model reload or reset.
         defaultValue: []
@@ -175,6 +180,23 @@ define(function() {
       unitName: {},
       unitPluralName: {},
       unitAbbreviation: {}
+    },
+
+    dataSet: {
+      name: {
+        required: true
+      },
+      properties: {
+        defaultValue: []
+      },
+      streamDataFromModel: {
+        defaultValue: true
+      },
+      clearOnModelLoad: {
+        defaultValue: true
+      },
+      xProperty: {},
+      initialData: {}
     },
 
     filteredOutput: {
