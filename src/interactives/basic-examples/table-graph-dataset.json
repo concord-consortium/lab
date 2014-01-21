@@ -1,5 +1,5 @@
 {
-  "title": "Tables Demo",
+  "title": "Table, Graph and DataSet Demo",
   "publicationStatus": "public",
   "subtitle": "",
   "models": [
@@ -43,6 +43,13 @@
           ]
         ]
       ]
+    },
+    {
+      "name": "graph-dataset",
+      "properties": [
+        "totalEnergy"
+      ],
+      "xProperty": "displayTime"
     }
   ],
   "components": [
@@ -66,6 +73,23 @@
           "format": "r"
         }
       ]
+    },
+    {
+      "type": "graph",
+      "id": "graph",
+      "dataSet": "graph-dataset",
+      "ymin": -100,
+      "ymax": 100,
+      "xmax": 10,
+      "xTickCount": 5,
+      "yTickCount": 6,
+      "xFormatter": ".2r",
+      "yFormatter": ".2s",
+      "properties": [
+        "totalEnergy"
+      ],
+      "width": "15em",
+      "height": "15em"
     }
   ]
 }
