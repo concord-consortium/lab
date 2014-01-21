@@ -753,11 +753,19 @@ define(function() {
       title: {
         defaultValue: null
       },
+      dataSet: {
+        // Optional. When external data set is referenced, then properties listed in "conflictsWith"
+        // array should be defined inside data set definition, not in table definition.
+        conflictsWith: ["tableData", "clearDataOnReset", "streamDataFromModel"]
+      },
+      tableData: {
+        conflictsWith: ["dataSet"]
+      },
       clearDataOnReset: {
-        defaultValue: true
+        conflictsWith: ["dataSet"]
       },
       streamDataFromModel: {
-        defaultValue: true
+        conflictsWith: ["dataSet"]
       },
       addNewRows: {
         defaultValue: true
@@ -776,9 +784,6 @@ define(function() {
         defaultValue: []
       },
       headerData: {
-        defaultValue: []
-      },
-      tableData: {
         defaultValue: []
       },
       width: {

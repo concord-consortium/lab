@@ -68,14 +68,6 @@ define(function (require) {
       dataSet.resetData();
     }
 
-    // In the future, we expect datasets to be defined in the interactive json
-    function lookUpDataSetById () {
-      if (properties.dataSetId) {
-        dataSet = interactivesController.getComponent(properties.dataSetId);
-      }
-      return false;
-    }
-
     // Legacy path: The dataset is defined as part of the graph controller.
     function makeDataSet () {
       var componentData = {
@@ -86,14 +78,12 @@ define(function (require) {
         streamDataFromModel: component.streamDataFromModel,
         clearOnModelLoad: component.clearDataOnReset
       };
-      dataSet = new DataSet(componentData, interactivesController);
+      return new DataSet(componentData, interactivesController);
     }
 
     function loadDataSet () {
-      if (lookUpDataSetById()) {
-        return;
-      }
-      makeDataSet();
+      dataSet = component.dataSet ? interactivesController.getDataSet(component.dataSet) :
+                                    makeDataSet();
 
       // Register DataSet listeners.
       listeningPool.listen(dataSet, DataSet.Events.SAMPLE_ADDED, sampleAddedHandler);
@@ -333,7 +323,11 @@ define(function (require) {
         var result = $.extend(true, {}, component);
         // add headerData and tableData
         result.headerData = columns;
-        result.tableData = dataSet.serializeData();
+        if (!component.dataSet) {
+          // Include data directly in component definition only when no external data set is
+          // referenced by table. When some external data set is used, it will serialize data.
+          result.tableData = dataSet.serializeData();
+        }
         return result;
       }
     };
