@@ -79,6 +79,13 @@ define(function (require) {
     function loadDataSet () {
       dataSet = component.dataSet ? interactivesController.getDataSet(component.dataSet) :
                                     makeDataSet();
+
+      listeningPool.listen(dataSet, DataSet.Events.SELECTION_CHANGED, _selectionChangeHandler);
+      listeningPool.listen(dataSet, DataSet.Events.DATA_RESET,        _dataResetHandler);
+      listeningPool.listen(dataSet, DataSet.Events.SAMPLE_ADDED,      _sampleAddedHandler);
+      listeningPool.listen(dataSet, DataSet.Events.DATA_TRUNCATED,    _invalidationHandler);
+      listeningPool.listen(dataSet, DataSet.Events.X_LABEL_CHANGED,   _xLabelChangedHandler);
+      listeningPool.listen(dataSet, DataSet.Events.Y_LABELS_CHANGED,  _yLabelsChangedHandler);
     }
 
     function initialize() {
@@ -200,20 +207,10 @@ define(function (require) {
     }
 
 
-    function registerListeners() {
-      listeningPool.removeAll();
+    function registerModelListeners() {
       var model = getModel();
-
       // We reset the graph view after model reset.
-      listeningPool.listen(model, 'reset',       _modelResetHandler);
-
-      // Not sure, but we probably want all the other events from the dataSet
-      listeningPool.listen(dataSet, DataSet.Events.SELECTION_CHANGED, _selectionChangeHandler);
-      listeningPool.listen(dataSet, DataSet.Events.DATA_RESET,        _dataResetHandler);
-      listeningPool.listen(dataSet, DataSet.Events.SAMPLE_ADDED,      _sampleAddedHandler);
-      listeningPool.listen(dataSet, DataSet.Events.DATA_TRUNCATED,    _invalidationHandler);
-      listeningPool.listen(dataSet, DataSet.Events.X_LABEL_CHANGED,   _xLabelChangedHandler);
-      listeningPool.listen(dataSet, DataSet.Events.Y_LABELS_CHANGED,  _yLabelsChangedHandler);
+      listeningPool.listen(model, 'reset', _modelResetHandler);
     }
 
     function updateLabels() {
@@ -237,14 +234,12 @@ define(function (require) {
         } else {
           initGrapher();
         }
+        registerModelListeners();
+
         dataSet.modelLoadedCallback(); // TODO: have dataSet register its own
-        registerListeners();
 
         scriptingAPI = interactivesController.getScriptingAPI();
-        // TODO: Let the dataset handle this by itself:
-        if (component.clearOnModelLoad) {
-          dataSet.resetData();
-        }
+
         updateLabels();
         grapher.repaint();
       },
