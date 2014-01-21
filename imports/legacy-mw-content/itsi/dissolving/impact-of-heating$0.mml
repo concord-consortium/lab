@@ -387,7 +387,7 @@
    <int>3</int> 
   </void> 
   <void property="charge"> 
-   <double>1.0</double> 
+   <double>1.5</double> 
   </void> 
   <void property="rx"> 
    <double>402.7584914269031</double> 
@@ -424,7 +424,7 @@
  </object> 
  <object class="org.concord.mw2d.models.Atom"> 
   <void property="charge"> 
-   <double>-1.0</double> 
+   <double>-1.5</double> 
   </void> 
   <void property="rx"> 
    <double>313.83748983824654</double> 
@@ -441,7 +441,7 @@
  </object> 
  <object class="org.concord.mw2d.models.Atom"> 
   <void property="charge"> 
-   <double>-1.0</double> 
+   <double>-1.5</double> 
   </void> 
   <void property="rx"> 
    <double>378.0914686574876</double> 
@@ -458,7 +458,7 @@
  </object> 
  <object class="org.concord.mw2d.models.Atom"> 
   <void property="charge"> 
-   <double>-1.0</double> 
+   <double>-1.5</double> 
   </void> 
   <void property="rx"> 
    <double>427.8279066158473</double> 
@@ -475,7 +475,7 @@
  </object> 
  <object class="org.concord.mw2d.models.Atom"> 
   <void property="charge"> 
-   <double>-1.0</double> 
+   <double>-1.5</double> 
   </void> 
   <void property="rx"> 
    <double>344.4403858616558</double> 
@@ -492,7 +492,7 @@
  </object> 
  <object class="org.concord.mw2d.models.Atom"> 
   <void property="charge"> 
-   <double>-1.0</double> 
+   <double>-1.5</double> 
   </void> 
   <void property="rx"> 
    <double>398.0016666903161</double> 
@@ -512,7 +512,7 @@
    <int>3</int> 
   </void> 
   <void property="charge"> 
-   <double>1.0</double> 
+   <double>1.5</double> 
   </void> 
   <void property="rx"> 
    <double>372.0412253919701</double> 
@@ -532,7 +532,7 @@
    <int>3</int> 
   </void> 
   <void property="charge"> 
-   <double>1.0</double> 
+   <double>1.5</double> 
   </void> 
   <void property="rx"> 
    <double>319.4195949869082</double> 
@@ -552,7 +552,7 @@
    <int>3</int> 
   </void> 
   <void property="charge"> 
-   <double>1.0</double> 
+   <double>1.5</double> 
   </void> 
   <void property="rx"> 
    <double>422.8784105491409</double> 

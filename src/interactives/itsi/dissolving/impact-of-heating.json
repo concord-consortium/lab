@@ -12,7 +12,8 @@
       "importedFrom": "imports/legacy-mw-content/itsi/dissolving/impact-of-heating$0.mml",
       "viewOptions": {
         "controlButtons": "play_reset"
-      }
+      },
+      "onLoad": "addKEToAtoms(10);"
     }
   ],
   "components": [
@@ -30,7 +31,7 @@
     {
       "id": "show-vdw",
       "type": "checkbox",
-      "text": "Show Hydrogen Bonds",
+      "text": "Show Attractions",
       "textOn": "right",
       "width": "auto",
       "height": "auto",
