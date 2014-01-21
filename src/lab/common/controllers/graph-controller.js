@@ -210,7 +210,7 @@ define(function (require) {
     function registerModelListeners() {
       var model = getModel();
       // We reset the graph view after model reset.
-      listeningPool.listen(model, 'reset', _modelResetHandler);
+      model.on('reset', _modelResetHandler);
     }
 
     function updateLabels() {

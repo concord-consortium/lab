@@ -226,7 +226,7 @@ define(function (require) {
     }
 
     function registerModelListeners() {
-      listeningPool.listen(model, 'reset', modelResetHandler);
+      model.on('reset', modelResetHandler);
       /** -- Old methods not yet converted to new dataset
 
       model.on('stepBack.'+namespace, redrawCurrentStepPointer);
