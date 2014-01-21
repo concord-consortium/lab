@@ -12,28 +12,16 @@
       }
     }
   ],
-  "components": [
+  "dataSets": [
     {
-      "id": "table",
-      "type": "table",
-      "title": null,
-      "clearDataOnReset": false,
+      "name": "table-dataset",
       "streamDataFromModel": false,
-      "addNewRows": true,
-      "showBlankRow": true,
-      "indexColumn": true,
-      "propertyColumns": [
-        {
-          "name": "time",
-          "format": "r",
-          "editable": false
-        },
-        {
-          "name": "Editable column",
-          "format": "r"
-        }
+      "clearOnModelLoad": false,
+      "properties": [
+        "time",
+        "Editable column"
       ],
-      "tableData": [
+      "initialData": [
         [
           [
             0,
@@ -54,8 +42,30 @@
             "xyz"
           ]
         ]
-      ],
-      "height": "15em"
+      ]
+    }
+  ],
+  "components": [
+    {
+      "id": "table",
+      "type": "table",
+      "dataSet": "table-dataset",
+      "title": null,
+      "addNewRows": true,
+      "showBlankRow": true,
+      "indexColumn": true,
+      "height": "15em",
+      "propertyColumns": [
+        {
+          "name": "time",
+          "format": "r",
+          "editable": false
+        },
+        {
+          "name": "Editable column",
+          "format": "r"
+        }
+      ]
     }
   ]
 }
