@@ -75,14 +75,11 @@ define(function (require) {
     // Legacy path: The dataset is defined as part of the graph controller.
     function makeDataSet () {
       var componentData = {
+        name: component.id + "-autoDataSet",
         properties: component.properties.slice(),
-        streamDataFromModel: component.streamDataFromModel,
-        clearOnModelReset: component.clearOnModelLoad,
         xProperty: component.xProperty,
-        clearOnModelLoad: component.clearOnModelLoad,
-        id: component.id + "autoDataSet",
-        dataPoints: [],
-        type: 'dataSet'
+        streamDataFromModel: component.streamDataFromModel,
+        clearOnModelLoad: component.clearOnModelLoad
       };
       dataSet = new DataSet(componentData, interactivesController);
     }

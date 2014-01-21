@@ -1,14 +1,9 @@
 define(function () {
+  var metadata        = require('common/controllers/interactive-metadata');
+  var validator       = require('common/validator');
   var ListeningPool   = require('common/listening-pool');
   var DispatchSupport = require('common/dispatch-support');
   var dataSetCount    = 0;
-
-  // TODO: placeholder function:
-  function validateComponent (component) {
-    // TODO: Validate component definition, use validated copy of the properties.
-    // component = validator.validateCompleteness(metadata.graph, component);
-    return component;
-  }
 
   /**
    * DataSet: Manage Collections of data for tables, graphs, others.
@@ -22,7 +17,7 @@ define(function () {
     this.interactivesController = interactivesController;
     this._model                 = interactivesController.getModel();
     this.namespace              = "dataSet" + (++dataSetCount);
-    this.component              = validateComponent(component);
+    this.component              = validator.validateCompleteness(metadata.dataSet, component);
     this.xPropertyName          = this.component.xProperty;
     this.modelProperties        = this.component.properties || [];
     this.streamDataFromModel    = this.component.streamDataFromModel;
