@@ -59,14 +59,6 @@ define(function (require) {
       return interactivesController.getModel();
     }
 
-    // In the future, we expect datasets to be defined in the interactive json
-    function lookUpDataSetById () {
-      if (properties.dataSetId) {
-        dataSet = interactivesController.getComponent(properties.dataSetId);
-      }
-      return false;
-    }
-
     // Returns true if label is defined explicitly (it's defined and different from "auto").
     function isLabelExplicit(label) {
       return label != null && label !== "auto";
@@ -81,14 +73,12 @@ define(function (require) {
         streamDataFromModel: component.streamDataFromModel,
         clearOnModelLoad: component.clearOnModelLoad
       };
-      dataSet = new DataSet(componentData, interactivesController);
+      return new DataSet(componentData, interactivesController);
     }
 
     function loadDataSet () {
-      if (lookUpDataSetById()) {
-        return;
-      }
-      makeDataSet();
+      dataSet = component.dataSet ? interactivesController.getDataSet(component.dataSet) :
+                                    makeDataSet();
     }
 
     function initialize() {

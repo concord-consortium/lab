@@ -804,16 +804,24 @@ define(function() {
       type: {
         required: true
       },
+      dataSet: {
+        // Optional. When external data set is referenced, then properties listed in "conflictsWith"
+        // array should be defined inside data set definition, not in table definition.
+        conflictsWith: ["dataPoints", "clearDataOnReset", "clearOnModelLoad", "streamDataFromModel"]
+      },
+      dataPoints: {
+        conflictsWith: ["dataSet"]
+      },
       clearOnModelLoad: {
-        defaultValue: true
+        conflictsWith: ["dataSet"]
       },
       clearOnModelReset: {
-        defaultValue: true
-      },
-      resetAxesOnReset: {
-        defaultValue: true
+        conflictsWith: ["dataSet"]
       },
       streamDataFromModel: {
+        conflictsWith: ["dataSet"]
+      },
+      resetAxesOnReset: {
         defaultValue: true
       },
       enableAutoScaleButton: {
@@ -827,9 +835,6 @@ define(function() {
       },
       clearSelectionOnLeavingSelectMode: {
         defaultValue: false
-      },
-      dataPoints: {
-        defaultValue: []
       },
       markAllDataPoints: {
         defaultValue: false
