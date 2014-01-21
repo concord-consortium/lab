@@ -78,6 +78,30 @@
       }
     }
   ],
+  "parameters": [
+    {
+      "name": "container-hieght",
+      "initialValue": 3,
+      "onChange": [
+        "var i,N = getNumberOfAtoms();",
+        "for (var i = 0; i < N; i++) {",
+        "  removeAtom(0);",
+        "}",
+        "setShapeProperties(0, { height: value, y: (3-value)/2 });"
+      ]
+    },
+    {
+      "name": "container-width",
+      "initialValue": 5,
+      "onChange": [
+        "var i,N = getNumberOfAtoms();",
+        "for (var i = 0; i < N; i++) {",
+        "  removeAtom(0);",
+        "}",
+        "setShapeProperties(0, { width: value, x: (5-value)/2 });"
+      ]
+    }
+  ],
   "outputs": [
     {
       "name": "reactionComplete",
@@ -123,7 +147,6 @@
       "width": "90%",
       "min": 1,
       "max": 3,
-      "initialValue": 3,
       "labels": [
         {
           "value": 1,
@@ -136,13 +159,7 @@
       ],
       "steps": 200,
       "title": "Container Height",
-      "action": [
-        "var i,N = getNumberOfAtoms();",
-        "for (var i = 0; i < N; i++) {",
-        "  removeAtom(0);",
-        "}",
-        "setShapeProperties(0, { height: value, y: (3-value)/2 });"
-      ]
+      "property": "container-hieght"
     },
     {
       "type": "slider",
@@ -150,7 +167,6 @@
       "width": "90%",
       "min": 1,
       "max": 5,
-      "initialValue": 5,
       "labels": [
         {
           "value": 1,
@@ -163,13 +179,7 @@
       ],
       "steps": 400,
       "title": "Container Width",
-      "action": [
-        "var i,N = getNumberOfAtoms();",
-        "for (var i = 0; i < N; i++) {",
-        "  removeAtom(0);",
-        "}",
-        "setShapeProperties(0, { width: value, x: (5-value)/2 });"
-      ]
+      "property": "container-width"
     },
     {
       "type": "slider",
