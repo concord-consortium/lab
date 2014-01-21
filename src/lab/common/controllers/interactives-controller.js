@@ -10,6 +10,7 @@ define(function (require) {
       metadata                = require('common/controllers/interactive-metadata'),
       validator               = require('common/validator'),
       interactiveNotFound     = require('common/interactive-not-found'),
+      DataSet                 = require('common/controllers/data-set'),
       BarGraphController      = require('common/controllers/bar-graph-controller'),
       GraphController         = require('common/controllers/graph-controller'),
       ExportController        = require('common/controllers/export-controller'),
@@ -159,6 +160,9 @@ define(function (require) {
 
         // List of custom parameters which are used by the interactive.
         customParametersByName = {},
+
+        // Hash containing all available data sets.
+        dataSetsByName,
 
         // API for scripts defined in the interactive JSON file.
         // and additional model-specific scripting api if one is defined
@@ -421,6 +425,7 @@ define(function (require) {
       validateArray("model", interactive.models);
       validateArray("parameter", interactive.parameters);
       validateArray("output", interactive.outputs);
+      validateArray("dataSet", interactive.dataSets);
       validateArray("filteredOutput", interactive.filteredOutputs);
       validateArray("helpTip", interactive.helpTips);
 
@@ -602,6 +607,12 @@ define(function (require) {
           });
         }
       }
+
+      // Setup data sets.
+      dataSetsByName = {};
+      interactive.dataSets.forEach(function (dataSetDefinition) {
+        dataSetsByName[dataSetDefinition.name] = new DataSet(dataSetDefinition, controller);
+      });
 
       // Setup help system if help tips are defined.
       if (interactive.helpTips.length > 0) {
@@ -1157,6 +1168,10 @@ define(function (require) {
         return model;
       },
 
+      getDataSet: function(name) {
+        return dataSetsByName[name];
+      },
+
       getScriptingAPI: function() {
         return scriptingAPI;
       },
@@ -1376,6 +1391,12 @@ define(function (require) {
 
         if (interactive.randomSeed !== undefined) {
           result.randomSeed = interactive.randomSeed;
+        }
+
+        // Serialize data sets.
+        result.dataSets = [];
+        for (var ds in dataSetsByName) {
+          result.dataSets.push(ds.serialize());
         }
 
         // Serialize components.
