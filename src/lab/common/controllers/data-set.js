@@ -38,6 +38,9 @@ define(function () {
       this._dispatch.addEventTypes(DataSet.Events[key]);
     }
     this._dispatch.mixInto(this);
+
+    // This will initialize _dataSeriesArry in a right way (e.g. copy initial data).
+    this.resetData();
   }
 
   DataSet.Events = {

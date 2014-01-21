@@ -1395,8 +1395,8 @@ define(function (require) {
 
         // Serialize data sets.
         result.dataSets = [];
-        for (var ds in dataSetsByName) {
-          result.dataSets.push(ds.serialize());
+        for (var dsName in dataSetsByName) {
+          result.dataSets.push(dataSetsByName[dsName].serialize());
         }
 
         // Serialize components.
