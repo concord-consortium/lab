@@ -55,6 +55,11 @@
   ],
   "components": [
     {
+      "type": "text",
+      "id": "label1",
+      "text": "Left table is editable, right not. Both use the same data set, so they are synchronized:"
+    },
+    {
       "id": "table1",
       "type": "table",
       "dataSet": "table-dataset",
@@ -62,7 +67,7 @@
       "addNewRows": true,
       "showBlankRow": true,
       "indexColumn": true,
-      "height": "15em",
+      "height": "10em",
       "propertyColumns": [
         {
           "name": "time",
@@ -83,7 +88,7 @@
       "addNewRows": true,
       "showBlankRow": false,
       "indexColumn": true,
-      "height": "15em",
+      "height": "10em",
       "propertyColumns": [
         {
           "name": "time",
@@ -96,6 +101,11 @@
           "editable": false
         }
       ]
+    },
+    {
+      "type": "text",
+      "id": "label2",
+      "text": "Table use the same data set as graph, so they are synchronized:"
     },
     {
       "type": "graph",
@@ -124,17 +134,15 @@
       "indexColumn": true,
       "height": "15em",
       "propertyColumns": [
-        {
-          "name": "totalEnergy",
-          "format": "r",
-          "editable": false
-        }
+        "totalEnergy"
       ]
     }
   ],
   "layout": {
     "bottom": [
+      ["label1"],
       ["table1", "table2"],
+      ["label2"],
       ["graph", "table3"]
     ]
   }
