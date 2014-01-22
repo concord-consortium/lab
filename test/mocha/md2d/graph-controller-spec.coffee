@@ -23,6 +23,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
 
   GraphController = requirejs 'common/controllers/graph-controller'
   Model           = requirejs 'models/md2d/models/modeler'
+  DataSet         = requirejs 'common/controllers/data-set'
 
   class MockInteractivesController
     constructor: () ->
@@ -55,6 +56,8 @@ helpers.withIsolatedRequireJS (requirejs) ->
       @model.willReset()
       @model.reset()
       @modelResetCallbacks.forEach (cb) -> cb(opts.cause)
+
+    addDataSet: (ds, priv) ->
 
   loadModel = ->
     model = new Model simpleModel
@@ -148,6 +151,8 @@ helpers.withIsolatedRequireJS (requirejs) ->
         beforeEach ->
           sinon.spy mock, 'Graph'
           controller.modelLoadedCallback()
+          # In normal environment dataSet.modelLoadedCallback is called by interactives controller.
+          controller.getDataSet().modelLoadedCallback()
           grapher = mock.Graph.returnValues[0]
         afterEach ->
           mock.Graph.restore()

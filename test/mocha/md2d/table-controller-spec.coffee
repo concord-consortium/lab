@@ -21,6 +21,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
 
   TableController = requirejs 'common/controllers/table-controller'
   Model           = requirejs 'models/md2d/models/modeler'
+  DataSet         = requirejs 'common/controllers/data-set'
 
   class MockInteractivesController
     constructor: () ->
@@ -53,6 +54,8 @@ helpers.withIsolatedRequireJS (requirejs) ->
       @model.willReset()
       @model.reset()
       @modelResetCallbacks.forEach (cb) -> cb(opts.cause)
+
+    addDataSet: (ds, priv) ->
 
   loadModel = ->
     model = new Model simpleModel
