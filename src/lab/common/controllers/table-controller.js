@@ -176,6 +176,7 @@ define(function (require) {
     }
 
     function handleNewDataRow(dataRow) {
+      dataRow = $.extend(true, [], dataRow);
       if (component.indexColumn) {
         dataRow.unshift(rowIndex);
       }
@@ -192,7 +193,7 @@ define(function (require) {
     }
 
     function sampleChangedHandler(evt) {
-      var dataRow = evt.data.dataPoint;
+      var dataRow = $.extend(true, [], evt.data.dataPoint);
       var rowIndex = evt.data.row;
       if (component.indexColumn) {
         dataRow.unshift(rowIndex);
