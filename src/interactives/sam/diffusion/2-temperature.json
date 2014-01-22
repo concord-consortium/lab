@@ -158,7 +158,7 @@
     {
       "type": "barGraph",
       "id": "thermometer",
-      "property": "temperature",
+      "property": "targetTemperature",
       "title": "Thermometer",
       "labels": 0,
       "min": 0,
