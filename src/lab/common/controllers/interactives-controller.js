@@ -162,8 +162,8 @@ define(function (require) {
         // List of custom parameters which are used by the interactive.
         customParametersByName = {},
 
-        // Hash containing all available data sets.
-        dataSetsByName,
+        // Hash containing all public (see .addDataSet() method) data sets.
+        publicDataSetsByName,
 
         // API for scripts defined in the interactive JSON file.
         // and additional model-specific scripting api if one is defined
@@ -602,13 +602,11 @@ define(function (require) {
       scriptingAPI.exposeScriptingAPI();
 
       // Setup data sets.
-      dataSetsByName = {};
+      publicDataSetsByName = {};
       interactive.dataSets.forEach(function (dataSetDefinition) {
-        var dataSet = new DataSet(dataSetDefinition, controller);
-        dataSetsByName[dataSetDefinition.name] = dataSet;
-        // $.proxy ensures that callback will be always executed
-        // in the context of correct object ('this' binding).
-        dataSetModelLoadedCallbacks.push($.proxy(dataSet.modelLoadedCallback, dataSet));
+        // Data set will automatically register itself in interactive controller (it will call
+        // .addDataSet() method).
+        new DataSet(dataSetDefinition, controller);
       });
 
       // Setup exporter, if any...
@@ -1177,8 +1175,25 @@ define(function (require) {
         return model;
       },
 
+      /**
+        Return public data set (e.g. defined in interactive JSON).
+       */
       getDataSet: function(name) {
-        return dataSetsByName[name];
+        return publicDataSetsByName[name];
+      },
+
+      /*
+        Add a new data set.
+        If data set is 'private', it won't be accessible via .getDataSet() method and it won't be
+        serialized as a part of interactive JSON.
+       */
+      addDataSet: function (dataSet, private) {
+        // $.proxy ensures that callback will be always executed
+        // in the context of correct object ('this' binding).
+        dataSetModelLoadedCallbacks.push($.proxy(dataSet.modelLoadedCallback, dataSet));
+        if (!private) {
+          publicDataSetsByName[dataSet.name] = dataSet;
+        }
       },
 
       getScriptingAPI: function() {
@@ -1402,10 +1417,11 @@ define(function (require) {
           result.randomSeed = interactive.randomSeed;
         }
 
-        // Serialize data sets.
+        // Serialize only public data sets. Data sets automatically created by components
+        // (e.g. table of graph) won't be serialized as a first-class objects in interactive JSON.
         result.dataSets = [];
-        for (var dsName in dataSetsByName) {
-          result.dataSets.push(dataSetsByName[dsName].serialize());
+        for (var dsName in publicDataSetsByName) {
+          result.dataSets.push(publicDataSetsByName[dsName].serialize());
 
         }
 

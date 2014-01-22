@@ -64,21 +64,17 @@ define(function (require) {
       return label != null && label !== "auto";
     }
 
-    // Legacy path: The dataset is defined as part of the graph controller.
-    function makeDataSet () {
-      var componentData = {
-        name: component.id + "-autoDataSet",
-        properties: component.properties.slice(),
-        xProperty: component.xProperty,
-        streamDataFromModel: component.streamDataFromModel,
-        clearOnModelLoad: component.clearOnModelLoad
-      };
-      return new DataSet(componentData, interactivesController);
-    }
-
     function loadDataSet () {
+      // Get public data set (if its name is provided) or create own, private data set that will
+      // be used only by this graph.
       dataSet = component.dataSet ? interactivesController.getDataSet(component.dataSet) :
-                                    makeDataSet();
+                                    new DataSet({
+                                      name:                component.id + "-autoDataSet",
+                                      properties:          component.properties.slice(),
+                                      xProperty:           component.xProperty,
+                                      streamDataFromModel: component.streamDataFromModel,
+                                      clearOnModelLoad:    component.clearOnModelLoad
+                                    }, interactivesController, true);
 
       listeningPool.listen(dataSet, DataSet.Events.SELECTION_CHANGED, _selectionChangeHandler);
       listeningPool.listen(dataSet, DataSet.Events.DATA_RESET,        _dataResetHandler);
@@ -238,6 +234,10 @@ define(function (require) {
         scriptingAPI = interactivesController.getScriptingAPI();
         updateLabels();
         grapher.repaint();
+      },
+
+      getDataSet: function() {
+        return dataSet;
       },
 
       /**

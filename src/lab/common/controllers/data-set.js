@@ -10,14 +10,18 @@ define(function () {
    *
    * @constructor
    *
-   * @param {component} the json definition for our dataset.
-   * @param {interactivesController}
+   * @param {object}                 component              The json definition for our dataset.
+   * @param {interactivesController} interactivesController InteractivesController instance.
+   * @param {boolean}                private                If true, data set will register itself
+   *                                                        as 'private' data set in interactives
+   *                                                        controller.
    */
-  function DataSet(component, interactivesController) {
+  function DataSet(component, interactivesController, private) {
     this.interactivesController = interactivesController;
     this._model                 = interactivesController.getModel();
     this.namespace              = "dataSet" + (++dataSetCount);
     this.component              = validator.validateCompleteness(metadata.dataSet, component);
+    this.name                   = this.component.name;
     this.xPropertyName          = this.component.xProperty;
     this.modelProperties        = this.component.properties || [];
     this.streamDataFromModel    = this.component.streamDataFromModel;
@@ -41,6 +45,10 @@ define(function () {
 
     // This will initialize _dataSeriesArry in a right way (e.g. copy initial data).
     this.resetData();
+
+    // Finally register itself in interactives controller (e.g. it's necessary to ensure that
+    // modelLoadedCallback will be called).
+    this.interactivesController.addDataSet(this, private);
   }
 
   DataSet.Events = {

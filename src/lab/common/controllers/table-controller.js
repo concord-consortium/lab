@@ -1,11 +1,11 @@
 /*global define, $*/
 
 define(function (require) {
-  var metadata  = require('common/controllers/interactive-metadata'),
-      validator = require('common/validator'),
-      TableView = require('common/views/table-view'),
+  var metadata    = require('common/controllers/interactive-metadata'),
+      validator     = require('common/validator'),
+      TableView     = require('common/views/table-view'),
       ListeningPool = require('common/listening-pool'),
-      DataSet   = require('common/controllers/data-set'),
+      DataSet       = require('common/controllers/data-set'),
       tableControllerCount = 0;
 
   return function TableController(component, interactivesController) {
@@ -68,22 +68,18 @@ define(function (require) {
       dataSet.resetData();
     }
 
-    // Legacy path: The dataset is defined as part of the graph controller.
-    function makeDataSet () {
-      var componentData = {
-        name: component.id + "-autoDataSet",
-        properties: properties.slice(),
-        xProperty: component.xProperty,
-        initialData: component.tableData,
-        streamDataFromModel: component.streamDataFromModel,
-        clearOnModelLoad: component.clearDataOnReset
-      };
-      return new DataSet(componentData, interactivesController);
-    }
-
     function loadDataSet () {
+      // Get public data set (if its name is provided) or create own, private data set that will
+      // be used only by this table.
       dataSet = component.dataSet ? interactivesController.getDataSet(component.dataSet) :
-                                    makeDataSet();
+                                    new DataSet({
+                                      name: component.id + "-autoDataSet",
+                                      properties: properties.slice(),
+                                      xProperty: component.xProperty,
+                                      initialData: component.tableData,
+                                      streamDataFromModel: component.streamDataFromModel,
+                                      clearOnModelLoad: component.clearDataOnReset
+                                    }, interactivesController, true);
 
       // Register DataSet listeners.
       listeningPool.listen(dataSet, DataSet.Events.SAMPLE_ADDED, sampleAddedHandler);
