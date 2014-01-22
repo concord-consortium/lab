@@ -25,7 +25,7 @@ define(function () {
     this.xPropertyName          = this.component.xProperty;
     this.modelProperties        = this.component.properties || [];
     this.streamDataFromModel    = this.component.streamDataFromModel;
-    this.clearOnModelLoad       = this.component.clearOnModelLoad;
+    this.clearOnModelReset      = this.component.clearOnModelReset;
     // Set initial data only if there is real data there. Otherwise set null for convenience.
     this.initialData            = this.component.initialData && this.component.initialData.length > 0 ?
                                   $.extend(true, [], this.component.initialData) : null;
@@ -119,6 +119,12 @@ define(function () {
         context.removeDataAfterStepPointer();
       });
     }
+
+    listeningPool.listen(model, 'reset', function() {
+      if (context.clearOnModelReset) {
+        context.resetData();
+      }
+    });
 
     // Register observers of model properties descriptions so labels can be updated by client code.
     this._model.addPropertyDescriptionObserver(this.xPropertyName, function() {
@@ -391,7 +397,7 @@ define(function () {
   DataSet.prototype.modelLoadedCallback = function() {
     this._model = this.interactivesController.getModel();
     this._addListeners();
-    if (this.clearOnModelLoad || this.isSetup || this._dataSeriesArry.length === 0) {
+    if (this.clearOnModelReset || this.isSetup || this._dataSeriesArry.length === 0) {
       this.resetData();
     }
   };

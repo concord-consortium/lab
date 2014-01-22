@@ -78,7 +78,7 @@ define(function (require) {
                                       xProperty: component.xProperty,
                                       initialData: component.tableData,
                                       streamDataFromModel: component.streamDataFromModel,
-                                      clearOnModelLoad: component.clearDataOnReset
+                                      clearOnModelReset: component.clearOnModelReset
                                     }, interactivesController, true);
 
       // Register DataSet listeners.
@@ -206,6 +206,8 @@ define(function (require) {
       var cols = newDataSeriesArry.length;
       var dataPoint;
 
+
+      rowIndex = 0;
       view.clear();
 
       if (!newDataSeriesArry || !cols) {
@@ -222,8 +224,9 @@ define(function (require) {
     }
 
     function registerModelListeners() {
-      model.on('reset', modelResetHandler);
       /** -- Old methods not yet converted to new dataset
+
+      Probably they shouldn't be converted at all. It's data set responsibility.
 
       model.on('stepBack.'+namespace, redrawCurrentStepPointer);
       model.on('stepForward.'+namespace, redrawCurrentStepPointer);
@@ -240,19 +243,6 @@ define(function (require) {
       **/
     }
 
-    function modelResetHandler() {
-      if (component.clearDataOnReset) {
-        clearTable();
-      }
-    }
-
-    function clearTable() {
-      headerData = $.extend(true, [], component.headerData);
-      rowIndex = 0;
-      updateTable();
-      dataSet.resetData();
-    }
-
     // Public API.
     controller = {
       /**
@@ -261,12 +251,7 @@ define(function (require) {
       modelLoadedCallback: function() {
         model = interactivesController.getModel();
         registerModelListeners();
-
-        if (component.clearDataOnReset) {
-          clearTable();
-        } else {
-          updateTable();
-        }
+        updateTable();
       },
 
       resize: function () {

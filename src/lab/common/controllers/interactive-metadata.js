@@ -192,7 +192,11 @@ define(function() {
       streamDataFromModel: {
         defaultValue: true
       },
-      clearOnModelLoad: {
+      clearOnModelReset: {
+        // Note that "model reset" in general includes actions like:
+        // - reset
+        // - reload
+        // - new model load
         defaultValue: true
       },
       xProperty: {},
@@ -756,12 +760,12 @@ define(function() {
       dataSet: {
         // Optional. When external data set is referenced, then properties listed in "conflictsWith"
         // array should be defined inside data set definition, not in table definition.
-        conflictsWith: ["tableData", "clearDataOnReset", "streamDataFromModel"]
+        conflictsWith: ["tableData", "clearOnModelReset", "streamDataFromModel"]
       },
       tableData: {
         conflictsWith: ["dataSet"]
       },
-      clearDataOnReset: {
+      clearOnModelReset: {
         conflictsWith: ["dataSet"]
       },
       streamDataFromModel: {
@@ -807,12 +811,9 @@ define(function() {
       dataSet: {
         // Optional. When external data set is referenced, then properties listed in "conflictsWith"
         // array should be defined inside data set definition, not in table definition.
-        conflictsWith: ["dataPoints", "clearDataOnReset", "clearOnModelLoad", "streamDataFromModel"]
+        conflictsWith: ["dataPoints", "clearOnModelReset", "streamDataFromModel"]
       },
       dataPoints: {
-        conflictsWith: ["dataSet"]
-      },
-      clearOnModelLoad: {
         conflictsWith: ["dataSet"]
       },
       clearOnModelReset: {

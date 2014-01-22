@@ -73,7 +73,7 @@ define(function (require) {
                                       properties:          component.properties.slice(),
                                       xProperty:           component.xProperty,
                                       streamDataFromModel: component.streamDataFromModel,
-                                      clearOnModelLoad:    component.clearOnModelLoad
+                                      clearOnModelReset:   component.clearOnModelReset
                                     }, interactivesController, true);
 
       listeningPool.listen(dataSet, DataSet.Events.SELECTION_CHANGED, _selectionChangeHandler);
