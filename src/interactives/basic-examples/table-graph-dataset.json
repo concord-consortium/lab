@@ -2,6 +2,7 @@
   "title": "Table, Graph and DataSet Demo",
   "publicationStatus": "public",
   "subtitle": "",
+  "aspectRatio": 0.8,
   "models": [
     {
       "type": "md2d",
@@ -19,7 +20,7 @@
       "clearOnModelReset": false,
       "properties": [
         "time",
-        "Editable column"
+        "Editable col"
       ],
       "initialData": [
         [
@@ -54,9 +55,9 @@
   ],
   "components": [
     {
-      "id": "table",
+      "id": "table1",
       "type": "table",
-      "dataSet": "graph-dataset",
+      "dataSet": "table-dataset",
       "title": null,
       "addNewRows": true,
       "showBlankRow": true,
@@ -64,8 +65,35 @@
       "height": "15em",
       "propertyColumns": [
         {
-          "name": "totalEnergy",
+          "name": "time",
+          "format": "r",
+          "editable": false
+        },
+        {
+          "name": "Editable col",
           "format": "r"
+        }
+      ]
+    },
+    {
+      "id": "table2",
+      "type": "table",
+      "dataSet": "table-dataset",
+      "title": null,
+      "addNewRows": true,
+      "showBlankRow": false,
+      "indexColumn": true,
+      "height": "15em",
+      "propertyColumns": [
+        {
+          "name": "time",
+          "format": "r",
+          "editable": false
+        },
+        {
+          "name": "Text",
+          "format": "r",
+          "editable": false
         }
       ]
     },
@@ -83,8 +111,31 @@
       "properties": [
         "totalEnergy"
       ],
-      "width": "15em",
+      "width": "12em",
       "height": "15em"
+    },
+    {
+      "id": "table3",
+      "type": "table",
+      "dataSet": "graph-dataset",
+      "title": null,
+      "addNewRows": true,
+      "showBlankRow": false,
+      "indexColumn": true,
+      "height": "15em",
+      "propertyColumns": [
+        {
+          "name": "totalEnergy",
+          "format": "r",
+          "editable": false
+        }
+      ]
     }
-  ]
+  ],
+  "layout": {
+    "bottom": [
+      ["table1", "table2"],
+      ["graph", "table3"]
+    ]
+  }
 }
