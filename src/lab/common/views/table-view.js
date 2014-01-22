@@ -195,6 +195,7 @@ define(function() {
         addSelection(index);
       }
       setupBlankRow();
+      scrollToBottom();
     }
 
     function removeBlankRow() {
@@ -219,6 +220,11 @@ define(function() {
       if ($tbody.find("tr").length < 2) {
         alignColumnWidths();
       }
+    }
+
+    function scrollToBottom() {
+      // Dummy, big number will cause that we will always scroll maximally to the bottom.
+      $tbody.scrollTop(99999999);
     }
 
     function removeDataRow(index) {
