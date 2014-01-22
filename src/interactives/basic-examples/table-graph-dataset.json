@@ -16,7 +16,7 @@
     {
       "name": "table-dataset",
       "streamDataFromModel": false,
-      "clearOnModelLoad": false,
+      "clearOnModelReset": false,
       "properties": [
         "time",
         "Editable column"
@@ -56,7 +56,7 @@
     {
       "id": "table",
       "type": "table",
-      "dataSet": "table-dataset",
+      "dataSet": "graph-dataset",
       "title": null,
       "addNewRows": true,
       "showBlankRow": true,
@@ -64,12 +64,7 @@
       "height": "15em",
       "propertyColumns": [
         {
-          "name": "time",
-          "format": "r",
-          "editable": false
-        },
-        {
-          "name": "Editable column",
+          "name": "totalEnergy",
           "format": "r"
         }
       ]
