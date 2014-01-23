@@ -199,7 +199,6 @@ define(function() {
         // - new model load
         defaultValue: true
       },
-      xProperty: {},
       initialData: {}
     },
 
