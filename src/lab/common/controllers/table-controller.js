@@ -85,6 +85,8 @@ define(function (require) {
       listeningPool.listen(dataSet, DataSet.Events.SAMPLE_ADDED, sampleAddedHandler);
       listeningPool.listen(dataSet, DataSet.Events.SAMPLE_CHANGED, sampleChangedHandler);
       listeningPool.listen(dataSet, DataSet.Events.DATA_RESET, dataResetHandler);
+      listeningPool.listen(dataSet, DataSet.Events.DATA_TRUNCATED, dataTruncatedHandler);
+      listeningPool.listen(dataSet, DataSet.Events.SELECTION_CHANGED, selectionChangedHandler);
     }
 
     function generateColumnTitlesAndFormatters() {
@@ -148,43 +150,44 @@ define(function (require) {
       dataSet.appendDataPoint();
     }
 
-    function replacePropertyRow() {
-      dataSet.replaceDataPoint();
-    }
-
-    /**
-      Removes all data from the table that correspond to steps following
-      the current step pointer.
-      This is used when a change is made that invalidates the future data.
-    */
-    function removeDataAfterStepPointer() {
-      // var ptr = model.stepCounter();
-      // if (tableData.length > ptr-1) {
-      //   tableData.length = ptr;
-      //   rowIndex = ptr;
-      //   updateTable();
-      // }
-    }
-
-    /**
-      Causes the table to move the "current" pointer to the current model step.
-      This desaturates the table region corresponding to times after the current point.
-    */
-    function redrawCurrentStepPointer() {
+    function selectionChangedHandler(evt) {
       view.clearSelection();
-      view.addSelection(model.stepCounter()+1);
+      view.addSelection(evt.data);
     }
 
-    function handleNewDataRow(dataRow) {
-      dataRow = $.extend(true, [], dataRow);
+    function data2row(dataPoint, index) {
+      var dataRow = [];
       if (component.indexColumn) {
-        dataRow.unshift(rowIndex);
+        if (index == null) {
+          index = rowIndex;
+        }
+        dataRow.push(index);
       }
+      properties.forEach(function (prop) {
+        dataRow.push(dataPoint[prop]);
+      });
+      return dataRow;
+    }
+
+    function nthRow(data, index) {
+      var dataRow = [];
+      if (component.indexColumn) {
+        dataRow.push(index);
+      }
+      properties.forEach(function (prop) {
+        dataRow.push(data[prop][index]);
+      });
+      return dataRow;
+    }
+
+    function handleNewDataRow(dataPoint) {
+      var dataRow = data2row(dataPoint);
       if (component.addNewRows) {
         view.appendDataRow(dataRow, rowIndex);
         rowIndex++;
       } else {
-        view.replaceDataRow(dataRow, rowIndex);
+        view.replaceDataRow(dataRow, 0);
+        rowIndex++;
       }
     }
 
@@ -193,34 +196,48 @@ define(function (require) {
     }
 
     function sampleChangedHandler(evt) {
-      var dataRow = $.extend(true, [], evt.data.dataPoint);
-      var rowIndex = evt.data.row;
-      if (component.indexColumn) {
-        dataRow.unshift(rowIndex);
-      }
+      var rowIndex = evt.data.index;
+      var dataRow = data2row(evt.data.dataPoint, rowIndex);
       view.replaceDataRow(dataRow, rowIndex);
     }
 
     function dataResetHandler(evt) {
-      // Interates through the data and appends points, as if the data were coming in as new.
-      var newDataSeriesArry = evt.data;
-      var cols = newDataSeriesArry.length;
-      var dataPoint;
-
-
-      rowIndex = 0;
-      view.clear();
-
-      if (!newDataSeriesArry || !cols) {
-        return;
+      function addProp(prop) {
+        var propArr = data[prop];
+        dataRow.push(propArr ? propArr[rowIndex] : undefined);
       }
+      var data = evt.data;
+      var length = data[properties[0]].length;
+      var dataRow;
 
-      for (var i = 0, ii = newDataSeriesArry[0].length; i < ii; i++) {
-        dataPoint = [];
-        for (var j = 0; j < cols; j++) {
-          dataPoint.push(newDataSeriesArry[j][i]);
+      if (component.addNewRows) {
+        var dataRows = [];
+
+        rowIndex = 0;
+        for (; rowIndex < length; rowIndex++) {
+          dataRow = [];
+          if (component.indexColumn) {
+            dataRow.push(rowIndex);
+          }
+          properties.forEach(addProp);
+          dataRows.push(dataRow);
         }
-        handleNewDataRow(dataPoint);
+        view.clear();
+        view.appendDataRows(dataRows, 0);
+      } else {
+        dataRow = nthRow(data, length - 1);
+        view.replaceDataRow(dataRow, 0);
+        rowIndex = length;
+      }
+    }
+
+    function dataTruncatedHandler(evt) {
+      var dataLength = evt.data[properties[0]].length;
+      rowIndex = dataLength;
+      if (component.addNewRows) {
+        view.removeDataRows(dataLength, Infinity);
+      } else {
+        view.replaceDataRow(nthRow(evt.data, dataLength - 1), 0);
       }
     }
 
@@ -260,8 +277,12 @@ define(function (require) {
       },
 
       getData: function(propArray) {
-        // TODO: no idea why wrapping array is needed (backward compatibility)...
-        return [dataSet.getPropertiesValues(propArray)];
+        var data = dataSet.getData();
+        var result = {};
+        propArray.forEach(function (prop) {
+          result[prop] = data[prop];
+        });
+        return result;
       },
 
       /**
@@ -285,7 +306,7 @@ define(function (require) {
         // Index column is purely stored by view, it isn't present in DataSet.
         if (component.indexColumn) colIndex--;
         var property = properties[colIndex];
-        return  dataSet.getDataPointForXValue(rowIndex, property);
+        return  dataSet.getPropertyValue(rowIndex, property);
       },
 
       // Returns view container.
