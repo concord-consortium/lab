@@ -32,6 +32,9 @@
   :actualRoot: ""
   :utmCampaign:
   :fontface: Lato
+  # used as the basis for urls that lock in the Lab engine, should be blank
+  # everywhere other than production I think:
+  :versioned_home: http://lab.concord.org/version/
 :google_analytics:
   :account_id:
 # password and alias for Java siging certificate.
