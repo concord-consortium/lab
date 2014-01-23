@@ -19,7 +19,7 @@ Embeddable.sendGAPageview = function (){
     _gaq.push(['_trackPageview', location.pathname + my_hashtag]);
 };
 
-Embeddable.load = function(interactiveUrl, containerSelector, controllerReady, notFoundCallback) {
+Embeddable.load = function(interactiveUrl, containerSelector, callbacks) {
   // When Shutterbug wants to take a snapshot of the page, it first emits a 'shutterbug-
   // saycheese' event. By default, any WebGL canvas will return a blank image when Shutterbug
   // calls .toDataURL on it, However, if we ask Pixi to render to the canvas during the
@@ -30,17 +30,28 @@ Embeddable.load = function(interactiveUrl, containerSelector, controllerReady, n
     window.script.repaint();
   });
 
+  callbacks = callbacks || {};
+
   $.get(interactiveUrl).done(function(results) {
     if (typeof results === 'string') results = JSON.parse(results);
 
+    if (results.redirect) {
+      if (callbacks.redirect) {
+        callbacks.redirect(results.redirect);
+        return;
+      } else {
+        throw new Error("Redirecting interactive loaded without a redirect handler");
+      }
+    }
+
     Embeddable.controller = new Lab.InteractivesController(results, containerSelector);
-    if(controllerReady) controllerReady(Embeddable.controller);
+    if(callbacks.controllerReady) callbacks.controllerReady(Embeddable.controller);
   })
   .fail(function() {
     document.title = "Interactive not found";
     $(containerSelector).load("interactives/not-found.html", function(){
       $('#interactive-link').text(interactiveUrl).attr('href', interactiveUrl);
     });
-    if(notFoundCallback) notFoundCallback();
+    if(callbacks.notFound) callbacks.notFound();
   });
 };
