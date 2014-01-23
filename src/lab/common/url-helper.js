@@ -27,11 +27,13 @@ define(function (require) {
   }
 
   UrlHelper.prototype.getVersionedUrl = function(load_learner) {
-    var host   = window.location.host;
-    var path   = window.location.pathname;
-    var search = window.location.search;
-    var hash   = window.location.hash;
-    var base   = host;
+    var host     = window.location.host;
+    var path     = window.location.pathname;
+    var search   = window.location.search;
+    var hash     = window.location.hash;
+    var protocol = window.location.protocol;
+    var base     = host;
+
     if (load_learner) {
       search = addParam(search,'load_learner_data','true');
     }
@@ -43,7 +45,10 @@ define(function (require) {
     else {
       search = addParam(search,'show_data_warning', 'true');
     }
-    return base + path + search + hash;
+    if (/^https?\:\/\//.test(base)) {
+      return base + path + search + hash;
+    }
+    return protocol + "//" + base + path + search + hash;
   };
 
 
