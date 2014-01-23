@@ -22,35 +22,18 @@
         "time",
         "Editable col"
       ],
-      "initialData": [
-        [
-          [
-            0,
-            0.00
-          ],
-          [
-            1,
-            0.00
-          ]
-        ],
-        [
-          [
-            0,
-            "abc"
-          ],
-          [
-            1,
-            "xyz"
-          ]
-        ]
-      ]
+      "initialData": {
+        "time": [0, 0],
+        "Editable col": ["abc", "xyz"]
+      }
     },
     {
       "name": "graph-dataset",
       "properties": [
+        "displayTime",
         "totalEnergy"
       ],
-      "xProperty": "displayTime"
+      "clearOnModelReset": false
     }
   ],
   "components": [
@@ -71,8 +54,7 @@
       "propertyColumns": [
         {
           "name": "time",
-          "format": "r",
-          "editable": false
+          "format": "r"
         },
         {
           "name": "Editable col",
@@ -96,7 +78,7 @@
           "editable": false
         },
         {
-          "name": "Text",
+          "name": "Editable col",
           "format": "r",
           "editable": false
         }
@@ -129,11 +111,12 @@
       "type": "table",
       "dataSet": "graph-dataset",
       "title": null,
-      "addNewRows": true,
+      "addNewRows": false,
       "showBlankRow": false,
       "indexColumn": true,
       "height": "15em",
       "propertyColumns": [
+        "displayTime",
         "totalEnergy"
       ]
     }
