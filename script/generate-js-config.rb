@@ -40,9 +40,22 @@ jsconfig = <<HEREDOC
 // this file is generated during build process by: ./script/generate-js-config.rb
 define(function (require) {
   var actualRoot = require('common/actual-root'),
+      version = require('lab.version'),
       publicAPI;
   publicAPI = #{JSON.pretty_generate(CONFIG[:jsconfig])};
   publicAPI.actualRoot = actualRoot;
+  if(publicAPI.versioned_home && version.repo.last_tag) {
+    publicAPI.versioned_home = publicAPI.versioned_home + version.repo.last_tag;
+    publicAPI.get_versioned_url  = function() {
+      return Lab.config.versioned_home + "/" + window.location.pathname + window.location.hash;
+    };
+  }
+  else {
+   publicAPI.get_versioned_url  = function() {
+      console.error("No versioned_home defined in Lab.config. Your data might drift");
+      return window.location.toString();
+    };
+  }
   return publicAPI;
 });
 HEREDOC
