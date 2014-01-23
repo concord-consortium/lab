@@ -228,6 +228,13 @@
         interactive = content;
         setupFullPage();
       });
+      // example of how to get the a versioned learner url --
+      // where the URL is decorated with query params, and possibly
+      // the url points to versioned release of the framework.
+      iframePhone.post('getLearnerUrl');
+      iframePhone.addListener('setLearnerUrl', function(content) {
+        $("#learner_url").attr('href',content);
+      });
     });
 
     // add basic redirect listener, this might be called before the iframe-phone even
