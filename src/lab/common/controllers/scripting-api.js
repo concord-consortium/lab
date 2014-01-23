@@ -372,13 +372,6 @@ define(function (require) {
             }
           },
 
-          getComponentData: function getComponentData(compID, propArray) {
-            var comp = interactivesController.getComponent(compID);
-            if (comp !== undefined && comp.getData) {
-              return comp.getData(propArray);
-            }
-          },
-
           /**
             Set the ranges of graph component to match the ranges of the properties it is graphing.
           */

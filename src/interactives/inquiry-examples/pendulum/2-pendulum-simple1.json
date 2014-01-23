@@ -157,7 +157,6 @@
         "     },",
         "   },",
         "   opts = xAxisParams[value];",
-        "opts.dataPoints = getComponentData('experiment-table', [value, 'period']);",
         "setComponentAttributes('parameter-graph', opts);"
       ],
       "initialValue": "rodLength"
