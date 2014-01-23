@@ -1,8 +1,8 @@
 define(function() {
 
   return function TableView(opts, tableController) {
-
-    var id          = opts.id,
+    var api,
+        id          = opts.id,
         columns     = opts.columns,
         formatters  = opts.formatters,
         visibleRows = opts.visibleRows,
@@ -174,14 +174,14 @@ define(function() {
       selected = [];
     }
 
-    function appendDataRow(rowData, index) {
+    function appendSingleRow(rowData, index) {
       var i, datum, $tr, $td;
       $tr = $('<tr class="data">');
       $($tr).data('index', index);
       for(i = 0; i < columns.length; i++) {
         $td = $('<td>');
         $($td).data('index', i);
-        datum = (rowData[i] && rowData[i].length) ? rowData[i][1] : rowData[i];
+        datum = rowData[i];
         $td.data('datum', datum);
         setFormattedData($td, datum, i);
         $tr.append($td);
@@ -194,8 +194,6 @@ define(function() {
         clearSelection();
         addSelection(index);
       }
-      setupBlankRow();
-      scrollToBottom();
     }
 
     function removeBlankRow() {
@@ -236,7 +234,7 @@ define(function() {
       var datum;
 
       if ($tbody.find('tr').length === 0) {
-        appendDataRow(rowData, index);
+        api.appendDataRow(rowData, index);
         return;
       }
 
@@ -250,7 +248,7 @@ define(function() {
       for (i = 0; i < rowData.length; i++) {
         if (i < dataElementCount) {
           $td = $($dataElements[i]);
-          datum = (rowData[i] && rowData[i].length) ? rowData[i][1] : rowData[i];
+          datum = rowData[i];
           $td.data('datum', datum);
           setFormattedData($td, datum, i);
         }
@@ -329,7 +327,7 @@ define(function() {
       }, 0);
     }
 
-    return {
+    api = {
       render: function() {
         var i, $title;
         $el = $('<div>');
@@ -398,9 +396,30 @@ define(function() {
         $tbody.find('.data').remove();
       },
 
-      appendDataRow: appendDataRow,
+      appendDataRow: function (rowData, index) {
+        appendSingleRow(rowData, index);
+        setupBlankRow();
+        scrollToBottom();
+      },
+
+      appendDataRows: function (rows, startIndex) {
+        var index = startIndex;
+        rows.forEach(function (row) {
+          appendSingleRow(row, index++);
+        });
+        setupBlankRow();
+        scrollToBottom();
+      },
 
       removeDataRow: removeDataRow,
+
+      removeDataRows: function (startIdx, endIdx) {
+        var $tr = $tbody.find('tr').filter(function() {
+          var idx = $(this).data("index");
+          return idx >= startIdx && idx < endIdx;
+        });
+        $tr.remove();
+      },
 
       replaceDataRow: replaceDataRow,
 
@@ -416,8 +435,9 @@ define(function() {
         alignColumnWidths();
         calculateSizeAndPosition();
       }
-
     };
+
+    return api;
   };
 });
 
