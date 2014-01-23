@@ -23,4 +23,26 @@
 
     = LAB_JS
     %script{:src => "embeddable.js", :type => "text/javascript"}
+    :javascript
+      (function() {
+        var interactiveUrl,
+            hash = document.location.hash;
+
+        $(window).bind('hashchange', function() {
+          if (document.location.hash !== hash) {
+            location.reload();
+          }
+        });
+
+        if (!hash) return;
+
+        interactiveUrl = hash.substr(1, hash.length);
+        Embeddable.load(interactiveUrl, '#interactive-container', function(controller){
+          controller.on("modelLoaded.application", function() {
+            document.title = "Lab Interactive: " + controller.interactive.title;
+            Embeddable.sendGAPageview();
+          });
+        });
+      }());
+
     = LAB_SHUTTERBUG_EMBEDDABLE

@@ -5,13 +5,8 @@
 // allowing things like positioning textBoxes by hand.
 AUTHORING = false;
 
-(function() {
-
-  var controller,
-      interactiveUrl,
-      hash;
-
-  function sendGAPageview(){
+Embeddable = window.Embeddable || {};
+Embeddable.sendGAPageview = function (){
     // send the pageview to GA
     if (typeof _gaq === 'undefined'){
       return;
@@ -22,26 +17,9 @@ AUTHORING = false;
     // grab the first value of the array (assuming that's the value that indicates which interactive is being viewed)
     var my_hashtag = my_hashtag_array[0];
     _gaq.push(['_trackPageview', location.pathname + my_hashtag]);
-  }
+};
 
-  hash = document.location.hash;
-
-  if (hash) {
-    interactiveUrl = hash.substr(1, hash.length);
-    controller = new Lab.InteractivesController(interactiveUrl, '#interactive-container');
-    controller.on("modelLoaded.application", function() {
-      interactive = controller.interactive;
-      document.title = "Lab Interactive: " + interactive.title;
-      sendGAPageview();
-    });
-  }
-
-  $(window).bind('hashchange', function() {
-    if (document.location.hash !== hash) {
-      location.reload();
-    }
-  });
-
+Embeddable.load = function(interactiveUrl, containerSelector, controllerReady, notFoundCallback) {
   // When Shutterbug wants to take a snapshot of the page, it first emits a 'shutterbug-
   // saycheese' event. By default, any WebGL canvas will return a blank image when Shutterbug
   // calls .toDataURL on it, However, if we ask Pixi to render to the canvas during the
@@ -52,4 +30,17 @@ AUTHORING = false;
     window.script.repaint();
   });
 
-}());
+  $.get(interactiveUrl).done(function(results) {
+    if (typeof results === 'string') results = JSON.parse(results);
+
+    Embeddable.controller = new Lab.InteractivesController(results, containerSelector);
+    if(controllerReady) controllerReady(Embeddable.controller);
+  })
+  .fail(function() {
+    document.title = "Interactive not found";
+    $(containerSelector).load("interactives/not-found.html", function(){
+      $('#interactive-link').text(interactiveUrl).attr('href', interactiveUrl);
+    });
+    if(notFoundCallback) notFoundCallback();
+  });
+};

@@ -9,7 +9,6 @@ define(function (require) {
       alert                   = require('common/alert'),
       metadata                = require('common/controllers/interactive-metadata'),
       validator               = require('common/validator'),
-      interactiveNotFound     = require('common/interactive-not-found'),
       DataSet                 = require('common/controllers/data-set'),
       BarGraphController      = require('common/controllers/bar-graph-controller'),
       GraphController         = require('common/controllers/graph-controller'),
@@ -496,7 +495,7 @@ define(function (require) {
       definition, and
 
       @param newInteractive
-        hash representing the interactive specification or string representing path or full url
+        hash representing the interactive specification
     */
     function loadInteractive(newInteractive) {
       // Cleanup container!
@@ -526,49 +525,32 @@ define(function (require) {
       // During the initial model load we obviously don't want to retain parameters.
       initialModelLoad = true;
 
-      function nextStep() {
-        // Save initial interactive config for reload method (so it can be synchronous).
-        initialInteractiveConfig = $.extend(true, {}, controller.interactive);
-        // Validate interactive.
-        controller.interactive = validateInteractive(controller.interactive);
-        interactive = controller.interactive;
-        // Ensure that interactive initialization is always the same if it's desired
-        // ("randomSeed" paramenter is provided).
-        generateRandomSeed();
-        // Set up the list of possible modelDefinitions.
-        modelDefinitions = interactive.models;
-        for (var i = 0, len = modelDefinitions.length; i < len; i++) {
-          modelHash[modelDefinitions[i].id] = modelDefinitions[i];
-        }
-        // Try to load the first model (in order) and initialize interactive.
-        var firstModel = modelDefinitions[0];
-        if (firstModel && firstModel.url) {
-          // Model has to be downloaded, it's async operation so start with it.
-          loadModel(firstModel.id);
-          initializeInteractive();
-        } else if (firstModel && firstModel.model) {
-          // Model is provided inside Interactive JSON, so setup interactive first and then
-          // load a model.
-          initializeInteractive();
-          loadModel(firstModel.id, firstModel.model);
-        }
-      }
+      controller.interactive = newInteractive;
 
-      if (typeof newInteractive === "string") {
-        $.get(newInteractive).done(function(results) {
-          if (typeof results === 'string') results = JSON.parse(results);
-          controller.interactive = results;
-          nextStep();
-        })
-        .fail(function() {
-          document.title = "Interactive not found";
-          controller.interactive = interactiveNotFound(newInteractive);
-          nextStep();
-        });
-      } else {
-        // we were passed an interactive object
-        controller.interactive = newInteractive;
-        nextStep();
+      // Save initial interactive config for reload method (so it can be synchronous).
+      initialInteractiveConfig = $.extend(true, {}, controller.interactive);
+      // Validate interactive.
+      controller.interactive = validateInteractive(controller.interactive);
+      interactive = controller.interactive;
+      // Ensure that interactive initialization is always the same if it's desired
+      // ("randomSeed" paramenter is provided).
+      generateRandomSeed();
+      // Set up the list of possible modelDefinitions.
+      modelDefinitions = interactive.models;
+      for (var i = 0, len = modelDefinitions.length; i < len; i++) {
+        modelHash[modelDefinitions[i].id] = modelDefinitions[i];
+      }
+      // Try to load the first model (in order) and initialize interactive.
+      var firstModel = modelDefinitions[0];
+      if (firstModel && firstModel.url) {
+        // Model has to be downloaded, it's async operation so start with it.
+        loadModel(firstModel.id);
+        initializeInteractive();
+      } else if (firstModel && firstModel.model) {
+        // Model is provided inside Interactive JSON, so setup interactive first and then
+        // load a model.
+        initializeInteractive();
+        loadModel(firstModel.id, firstModel.model);
       }
     }
 
@@ -1469,8 +1451,7 @@ define(function (require) {
         return currentModelID;
       },
 
-      validateInteractive: validateInteractive,
-      interactiveNotFound: interactiveNotFound
+      validateInteractive: validateInteractive
     };
 
     //

@@ -1,10 +1,6 @@
 /*global Lab, _, $, jQuery, d3, Shutterbug, CodeMirror, controllers, alert, modelList, benchmark, _gaq, DEVELOPMENT: true, AUTHORING: true */
 /*jshint boss:true */
 
-// Strawman setting for telling the interactive to be in "author mode",
-// allowing things like positioning textBoxes by hand.
-AUTHORING = false;
-
 (function() {
       // Default interactive aspect ratio.
   var DEF_ASPECT_RATIO = 1.3,
@@ -61,19 +57,6 @@ AUTHORING = false;
 
       widthBeforeEditMode,
       editMode = false;
-
-  function sendGAPageview(){
-    // send the pageview to GA
-    if (typeof _gaq === 'undefined'){
-      return;
-    }
-    // make an array out of the URL's hashtag string, splitting the string at every ampersand
-    var my_hashtag_array = location.hash.split('&');
-
-    // grab the first value of the array (assuming that's the value that indicates which interactive is being viewed)
-    var my_hashtag = my_hashtag_array[0];
-    _gaq.push(['_trackPageview', location.pathname + my_hashtag]);
-  }
 
   function isFullIFramePage() {
     return ($("#render-in-iframe").is(':checked'));
@@ -157,6 +140,17 @@ AUTHORING = false;
     AUTHORING = true;
     applicationCallbacks = [setupFullPage];
 
+    interactivesPromise.done(function() {
+      restoreOptionsFromCookie();
+      setupSelectList();
+      $("#select-filters input").click(setupSelectList);
+      $("#select-filters input").click(setupSelectGroups);
+      $("#render-controls input").click(function() {
+        saveOptionsToCookie();
+        location.reload();
+      });
+    });
+
     if(isFullIFramePage()) {
       // If we are on a Full Interactive Browser page with render in iframe
       // enabled then *don't* create an instance of the Interatactive
@@ -165,14 +159,24 @@ AUTHORING = false;
     } else {
       // On all the other versions of this page we need to create an
       // instance of the Interactive now.
-      controller = new Lab.InteractivesController(interactiveUrl, '#interactive-container');
-      controller.on("modelLoaded.application", function() {
-        model = controller.getModel();
-        interactive = controller.serialize();
+      controller = null;
+      interactive = null;
+      model = null;
+      Embeddable.load(interactiveUrl, '#interactive-container', function(_controller){
+        controller = _controller;
+        controller.on("modelLoaded.application", function() {
+          model = controller.getModel();
+          interactive = controller.serialize();
+          setupFullPage();
+        });
+      }, function(){
+        controller = null;
+        interactive = null;
+        model = null;
         setupFullPage();
       });
     }
-    sendGAPageview();
+    Embeddable.sendGAPageview();
   }
 
   function embedIframeInteractive() {
@@ -222,23 +226,18 @@ AUTHORING = false;
   function setupFullPage() {
     var $interactiveHeader = $("#interactive-header");
 
+    if(interactive) document.title = "Lab Interactive Browser: " + interactive.title;
+
     interactivesPromise.done(function() {
-      document.title = "Lab Interactive Browser: " + interactive.title;
-      restoreOptionsFromCookie();
-      setupSelectList();
-      $("#select-filters input").click(setupSelectList);
-      $("#select-filters input").click(setupSelectGroups);
-      $("#render-controls input").click(function() {
-        saveOptionsToCookie();
-        location.reload();
-      });
-      $interactiveTitle.text(interactive.title);
-      if (interactive.publicationStatus === 'draft') {
-        $interactiveTitle.append(" <i>(draft)</i>");
-      }
-      if (interactive.subtitle) {
-        $("#interactive-subtitle").remove();
-        $interactiveHeader.append('<div id="interactive-subtitle">' + interactive.subtitle + '</div>');
+      if (interactive) {
+        $interactiveTitle.text(interactive.title);
+        if (interactive.publicationStatus === 'draft') {
+          $interactiveTitle.append(" <i>(draft)</i>");
+        }
+        if (interactive.subtitle) {
+          $("#interactive-subtitle").remove();
+          $interactiveHeader.append('<div id="interactive-subtitle">' + interactive.subtitle + '</div>');
+        }
       }
       finishSetupFullPage();
     });
@@ -265,9 +264,11 @@ AUTHORING = false;
     $jsonModelLink.attr("title", "View model JSON in another window");
 
     // construct link to JSON version of model
-    jsonModelPath = interactive.models[0].url;
-    $jsonModelLink.attr("href", origin + Lab.config.actualRoot + jsonModelPath);
-    $jsonModelLink.attr("title", "View model JSON in another window");
+    if (interactive) {
+      jsonModelPath = interactive.models[0].url;
+      $jsonModelLink.attr("href", origin + Lab.config.actualRoot + jsonModelPath);
+      $jsonModelLink.attr("title", "View model JSON in another window");
+    }
 
     if (Lab.config.dataGamesProxyPrefix) {
       // construct link to DataGames embeddable version of Interactive
@@ -302,6 +303,14 @@ AUTHORING = false;
   // Extras
   //
   function setupExtras() {
+    if (interactive) {
+      $('#extras-bottom').show();
+    } else {
+      // Should we also disable the editors?
+      $('#extras-bottom').hide();
+      return;
+    }
+
     if(isFullPage()) {
       // Interactive Browser with Interactive embedding in DOM (not in iframe)
       // set keyboard focus on MD2D view
@@ -361,7 +370,7 @@ AUTHORING = false;
 
   function selectInteractiveSizeHandler() {
     var selection = $selectInteractiveSize.val(),
-        intAspectRatio = descriptionByPath && interactiveUrl &&
+        intAspectRatio = descriptionByPath && interactiveUrl && descriptionByPath[interactiveUrl] &&
                          descriptionByPath[interactiveUrl].aspectRatio || DEF_ASPECT_RATIO,
         widths = {
           "tiny":         "318px",
