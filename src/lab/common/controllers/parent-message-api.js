@@ -2,7 +2,8 @@
 
 define(function(require) {
   var parentMessageController = require('common/parent-message-controller'),
-      benchmark               = require('common/benchmark/benchmark');
+      benchmark               = require('common/benchmark/benchmark'),
+      config                  = require('lab.config');
 
   // Defines the default postMessage API used to communicate with parent window (i.e., an embedder)
   return function(controller) {
@@ -23,6 +24,11 @@ define(function(require) {
       if (view && view.setFocus) {
         view.setFocus();
       }
+    });
+
+    // on message 'getLearnerUrl' return config.getVersionedUrl(loadLearnerData)
+    parentMessageController.addListener('getLearnerUrl', function() {
+      parentMessageController.post('setLearnerUrl', config.getVersionedUrl(true));
     });
 
     // on message 'loadInteractive' call controller.loadInteractive
