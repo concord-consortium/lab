@@ -22,17 +22,17 @@ define(function () {
     this.namespace              = "dataSet" + (++dataSetCount);
     this.component              = validator.validateCompleteness(metadata.dataSet, component);
     this.name                   = this.component.name;
-    this.xPropertyName          = this.component.xProperty;
     this.modelProperties        = this.component.properties || [];
     this.streamDataFromModel    = this.component.streamDataFromModel;
     this.clearOnModelReset      = this.component.clearOnModelReset;
     // Set initial data only if there is real data there. Otherwise set null for convenience.
-    this.initialData            = this.component.initialData && this.component.initialData.length > 0 ?
-                                  $.extend(true, [], this.component.initialData) : null;
-    this._dataSeriesArry        = [];  // [seriesa,seriesb,seriesc]
+    this.initialData            = this.component.initialData ?
+                                  $.extend(true, {}, this.component.initialData) : null;
+    this._data                  = {};
     this._listeningPool         = new ListeningPool(this.namespace);
     this._dispatch              = new DispatchSupport();
 
+    // TODO: rm me
     this.modelPropertiesIndices = {};
     for (var i = 0; i < this.modelProperties.length; i++) {
       this.modelPropertiesIndices[this.modelProperties[i]] = i;
@@ -43,7 +43,7 @@ define(function () {
     }
     this._dispatch.mixInto(this);
 
-    // This will initialize _dataSeriesArry in a right way (e.g. copy initial data).
+    // This will initialize _data in a right way (e.g. copy initial data).
     this.resetData();
 
     // Finally register itself in interactives controller (e.g. it's necessary to ensure that
@@ -53,14 +53,14 @@ define(function () {
 
   DataSet.Events = {
     SAMPLE_ADDED:      "sampleAdded",
-    SAMPLE_CHANGED:     "sampleChanged",
-    NEW_SERIES:        "newSeries",
+    SAMPLE_CHANGED:    "sampleChanged",
+
     DATA_TRUNCATED:    "dataTruncated",
     DATA_RESET:        "dataReset",
-    REMOVE_ALL_SERIES: "removeAlldataPointseries",
+
     SELECTION_CHANGED: "selectionChanged",
-    X_LABEL_CHANGED:   "xLabelChanged",
-    Y_LABELS_CHANGED:  "yLabelsChanged"
+
+    LABELS_CHANGED:    "labelsChanged"
   };
 
   /******************************************************************
@@ -73,8 +73,8 @@ define(function () {
   * so its assumed that the first columns are from model data.
   */
   DataSet.prototype._numberOfPoints = function () {
-    if (this._dataSeriesArry.length > 0) {
-      return this._dataSeriesArry[0].length;
+    if (this.modelProperties.length > 0) {
+      return this._data[this.modelProperties[0]].length;
     }
     return 0;
   };
@@ -126,14 +126,9 @@ define(function () {
       }
     });
 
-    // Register observers of model properties descriptions so labels can be updated by client code.
-    this._model.addPropertyDescriptionObserver(this.xPropertyName, function() {
-      context._trigger(DataSet.Events.X_LABEL_CHANGED, context.getXLabel());
-    });
-
     this.modelProperties.forEach(function (prop) {
       context._model.addPropertyDescriptionObserver(prop, function() {
-        context._trigger(DataSet.Events.Y_LABELS_CHANGED, context.getYLabels());
+        context._trigger(DataSet.Events.LABELS_CHANGED, context.getLabels());
       });
     });
   };
@@ -163,25 +158,20 @@ define(function () {
   /******************************************************************
     "Public" methods, should have associated unit tests.
   *******************************************************************/
-  /**
-    Returns an array containing two-element arrays each containing the current model
-    time and the current value of each model property specified in component.properties.
-    NP: Perhaps this should be named "LoadCurrentDatumForModel" -- it inserts each row of
-    series data from the model.
-  */
+
   DataSet.prototype.getDataPoint = function () {
-    var ret = [], i, len, xval;
+    var context = this;
+    var ret = {};
 
-    if (this.xPropertyName) {
-      xval = this._getModelProperty(this.xPropertyName);
-    } else {
-      xval = this._numberOfPoints();
-    }
+    this.modelProperties.forEach(function (prop) {
+      ret[prop] = context._getModelProperty(prop);
+    });
 
-    for (i = 0, len = this.modelProperties.length; i < len; i++) {
-      ret.push([xval, this._getModelProperty(this.modelProperties[i])]);
-    }
     return ret;
+  };
+
+  DataSet.prototype.getData = function() {
+    return this._data;
   };
 
   /**
@@ -189,216 +179,86 @@ define(function () {
     and pushes that data into graph.
   */
   DataSet.prototype.resetData = function () {
+    var context = this;
     if (this.initialData) {
-      this._dataSeriesArry = $.extend(true, [], this.initialData);
-    } else if (this._model && this.streamDataFromModel) {
-      var dataPoint = this.getDataPoint();
-      this._dataSeriesArry = [];
-      for (i = 0; i < dataPoint.length; i++) {
-        this._dataSeriesArry[i] = [dataPoint[i]];
-      }
+      this._data = $.extend(true, {}, this.initialData);
     } else {
-      this._dataSeriesArry = [];
-      for (var i = 0, len = this.modelProperties.length; i < len; i++) {
-        this._dataSeriesArry[i] = [];
-      }
+      this.modelProperties.forEach(function (prop) {
+        context._data[prop] = [];
+      });
     }
-    this._trigger(DataSet.Events.DATA_RESET, this._dataSeriesArry);
+    this._trigger(DataSet.Events.DATA_RESET, this._data);
   };
 
-  /**
-    Appends the current data point (as returned by getDataPoint()) to the graph
-    and to the cached data array
-  */
   DataSet.prototype.appendDataPoint = function () {
     var dataPoint = this.getDataPoint();
-    var i;
+    var context = this;
 
-    for (i = 0; i < dataPoint.length; i++) {
-      this._dataSeriesArry[i].push(dataPoint[i]);
-    }
-    // The grapher considers each individual (property, time) pair to be a "point", and therefore
-    // considers the set of properties at any 1 time (what we consider a "point") to be "points".
-    this._trigger(DataSet.Events.SAMPLE_ADDED, dataPoint);
-  };
+    this.modelProperties.forEach(function (prop) {
+      context._data[prop].push(dataPoint[prop]);
+    });
 
-  /**
-    Replaces the current data point (as returned by getDataPoint()). If no data point have been
-    added, one will be added, so this will be equivalent to appendDataPoint().
-  */
-  DataSet.prototype.replaceDataPoint = function () {
-    var dataPoint = this.getDataPoint(),
-        arr,
-        i;
-
-    for (i = 0; i < dataPoint.length; i++) {
-      arr = this._dataSeriesArry[i];
-      if (arr.length > 0){
-        arr[arr.length - 1] = dataPoint[i];
-      } else {
-        arr.push(dataPoint[i]);
-      }
-    }
-    // The grapher considers each individual (property, time) pair to be a "point", and therefore
-    // considers the set of properties at any 1 time (what we consider a "point") to be "points".
     this._trigger(DataSet.Events.SAMPLE_ADDED, dataPoint);
   };
 
 
   /**
-    Removes all data from the graph that correspond to steps following the
-    current step pointer. This is used when a change is made that
-    invalidates the future data.
+    Removes all data that correspond to steps following the current step pointer. This is used when
+    a change is made that invalidates the future data.
   */
   DataSet.prototype.removeDataAfterStepPointer = function () {
-    var i;
     var newLength = this._model.stepCounter() + 1;
-    for (i = 0; i < this.modelProperties.length; i++) {
-      // Account for initial data, which corresponds to stepCounter == 0
-      this._dataSeriesArry[i].length = newLength;
-    }
-    this._trigger(DataSet.Events.DATA_TRUNCATED, this._dataSeriesArry);
+    var context = this;
+
+    this.modelProperties.forEach(function (prop) {
+      context._data[prop].length = newLength;
+    });
+
+    this._trigger(DataSet.Events.DATA_TRUNCATED, this._data);
   };
 
-  /**
-    Add non-realtime dataset to the graph.
-    @param {series} [[x,y]] series values being added.
-  */
-  DataSet.prototype.addStaticDataSeries = function (series) {
-    this._dataSeriesArry.push(series);
-    this._trigger(DataSet.Events.NEW_SERIES, series);
-  };
+  DataSet.prototype.editDataPoint = function (index, property, newValue) {
+    this._data[property][index] = newValue;
 
-  /**
-    Remove all non-realtime datasets
-  */
-  DataSet.prototype.clearStaticDataSeries =  function () {
-    this._dataSeriesArry.length = this.modelProperties.length;
-    this._trigger(DataSet.Events.REMOVE_ALL_SERIES);
-  };
+    var context = this;
+    var dataPoint = {};
+    this.modelProperties.forEach(function (prop) {
+      dataPoint[prop] = context._data[prop][index];
+    });
 
-  /**
-    Just like appendDataPoint, but used to insert a row of static data.
-    Currently used when the data table loads in serialized data.
-
-    Expects the data to be passed in the current dataPoint format:
-    [
-      [xval, yval1],    // property 1
-      [xval, yval2],    // property 2
-      ...
-    ]
-  */
-  DataSet.prototype.appendStaticDataPoint = function(dataPoint) {
-    var i;
-
-    for (i = 0; i < dataPoint.length; i++) {
-      this._dataSeriesArry[i].push(dataPoint[i]);
-    }
-
-    this._trigger(DataSet.Events.SAMPLE_ADDED, dataPoint);
-  };
-
-  /**
-    Modifies an existing data point at a given xValue, with a new value
-    for a given property
-  */
-  DataSet.prototype.editDataPoint = function (xValue, property, newValue) {
-    var row = this.getIndexForXValue(xValue),
-        col = this.modelPropertiesIndices[property],
-        dataPoint = [];
-
-    if (row > -1 && typeof col !== "undefined") {
-      this._dataSeriesArry[col][row][1] = newValue;
-    }
-
-    for (var i = 0, len = this._dataSeriesArry.length; i < len; i++) {
-      dataPoint.push(this._dataSeriesArry[i][row]);
-    }
-
-    // Provide complete information about changed data.
-    this._trigger(DataSet.Events.SAMPLE_CHANGED, {row: row,
-                                                  xValue: xValue,
+    this._trigger(DataSet.Events.SAMPLE_CHANGED, {index:     index,
+                                                  property:  property,
+                                                  value:     newValue,
                                                   dataPoint: dataPoint});
   };
 
-  DataSet.prototype.getDataPointForXValue = function (xValue, property) {
-    var row = this.getIndexForXValue(xValue),
-        col = this.modelPropertiesIndices[property];
-
-    if (row > -1 && typeof col !== "undefined") {
-      return this._dataSeriesArry[col][row][1];
-    } else {
-      return null;
-    }
-  };
-
-  DataSet.prototype.getIndexForXValue = function (xValue) {
-    var arry, i, ii;
-    if (this._dataSeriesArry.length) {
-      arry = this._dataSeriesArry[0];
-      for (i = 0, ii = arry.length; i < ii; i++) {
-        if (arry[i] && arry[i][0] === xValue) {
-          return i;
-        }
-      }
-    }
-    return -1;
+  DataSet.prototype.getPropertyValue = function (index, property) {
+    return this._data[property][index];
   };
 
   /**
-    Return two dimensional array which contains values of listed properties.
+    Return properties labels (array).
    */
-  DataSet.prototype.getPropertiesValues = function(properties) {
-    var result = [];
-    var rowResult;
-    var property;
-    var col;
-
-    for (var i = 0, ii = this._dataSeriesArry[0].length; i < ii; i++) {
-      rowResult = [];
-      for (var j = 0, jj = properties.length; j < jj; j++) {
-        property = properties[j];
-        col = this.modelPropertiesIndices[property];
-        rowResult.push(this._dataSeriesArry[col][i][1]);
-      }
-      result.push(rowResult);
-    }
-
-    return result;
-  };
-
-  /**
-    Return X property label.
-   */
-  DataSet.prototype.getXLabel = function() {
-    return this._getPropertyLabel(this.xPropertyName);
-  };
-
-  /**
-    Return Y properties labels (array).
-   */
-  DataSet.prototype.getYLabels = function() {
-    var res = [];
+  DataSet.prototype.getLabels = function() {
+    var res = {};
     var context = this;
     this.modelProperties.forEach(function (prop) {
-      res.push(context._getPropertyLabel(prop));
+      res[prop] = context._getPropertyLabel(prop);
     });
     return res;
   };
 
   /**
     Called when the model has loaded. Setup listeners. Clear Data.
-    TODO: Right now this only works becuase classes using DataSet are
-    directly invoking dataset.modelLoadedCallback() after receiving
-    such notification from the interactives controller.  in the future
-    we probably want to register the dataset for model load callbacks
-    directly.
   */
   DataSet.prototype.modelLoadedCallback = function() {
     this._model = this.interactivesController.getModel();
     this._addListeners();
-    if (this.clearOnModelReset || this.isSetup || this._dataSeriesArry.length === 0) {
+    if (this.clearOnModelReset) {
       this.resetData();
+    }
+    if (this.streamDataFromModel) {
+      this.appendDataPoint();
     }
   };
 
@@ -411,7 +271,7 @@ define(function () {
   };
 
   DataSet.prototype.serializeData = function () {
-    return this._dataSeriesArry.slice();
+    return $.extend(true, {}, this._data);
   };
 
   return DataSet;
