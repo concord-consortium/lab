@@ -50,8 +50,10 @@ define(function (require) {
         controller,
         dataSet,
         scriptingAPI,
+        xProperty,
         properties,
         dataPointsArrays = [],
+        staticSeries,
         listeningPool,
         namespace = "graphController" + (++graphControllerCount);
 
@@ -67,21 +69,26 @@ define(function (require) {
     function loadDataSet () {
       // Get public data set (if its name is provided) or create own, private data set that will
       // be used only by this graph.
-      dataSet = component.dataSet ? interactivesController.getDataSet(component.dataSet) :
-                                    new DataSet({
-                                      name:                component.id + "-autoDataSet",
-                                      properties:          component.properties.slice(),
-                                      xProperty:           component.xProperty,
-                                      streamDataFromModel: component.streamDataFromModel,
-                                      clearOnModelReset:   component.clearOnModelReset
-                                    }, interactivesController, true);
-
-      listeningPool.listen(dataSet, DataSet.Events.SELECTION_CHANGED, _selectionChangeHandler);
+      if (component.dataSet) {
+        dataSet = interactivesController.getDataSet(component.dataSet);
+      } else {
+        // Make sure that properties passed to data set include xProperty!
+        var dataSetProperties = component.properties.slice();
+        if (dataSetProperties.indexOf(xProperty) === -1) {
+          dataSetProperties.push(xProperty);
+        }
+        dataSet = new DataSet({
+                                properties:          dataSetProperties,
+                                name:                component.id + "-autoDataSet",
+                                streamDataFromModel: component.streamDataFromModel,
+                                clearOnModelReset:   component.clearOnModelReset
+                              }, interactivesController, true);
+      }
       listeningPool.listen(dataSet, DataSet.Events.DATA_RESET,        _dataResetHandler);
       listeningPool.listen(dataSet, DataSet.Events.SAMPLE_ADDED,      _sampleAddedHandler);
+      listeningPool.listen(dataSet, DataSet.Events.SELECTION_CHANGED, _selectionChangeHandler);
       listeningPool.listen(dataSet, DataSet.Events.DATA_TRUNCATED,    _invalidationHandler);
-      listeningPool.listen(dataSet, DataSet.Events.X_LABEL_CHANGED,   _xLabelChangedHandler);
-      listeningPool.listen(dataSet, DataSet.Events.Y_LABELS_CHANGED,  _yLabelsChangedHandler);
+      listeningPool.listen(dataSet, DataSet.Events.LABELS_CHANGED,    _labelsChangedHandler);
     }
 
     function initialize() {
@@ -91,6 +98,7 @@ define(function (require) {
       component = validator.validateCompleteness(metadata.graph, component);
       // The list of properties we are being asked to graph.
       properties = component.properties.slice();
+      xProperty = component.xProperty;
       loadDataSet();
       $container = $('<div>').attr('id', component.id).addClass('graph');
       // Each interactive component has to have class "component".
@@ -104,11 +112,11 @@ define(function (require) {
         $container.attr("title", component.tooltip);
       }
 
+      staticSeries = [];
+
       // Initial setup of the data.
       dataSet.resetData();
     }
-
-
 
     /**
       Return an options hash for use by the grapher.
@@ -128,7 +136,6 @@ define(function (require) {
       return options;
     }
 
-
     /**
       Causes the graph to move the "current" pointer to the current model step. This desaturates
       the graph region corresponding to times after the current point.
@@ -136,10 +143,9 @@ define(function (require) {
     function redrawCurrentStepPointer(step) {
       grapher.updateOrRescale(step);
     }
-    function _selectionChangeHandler(extra) {
-      redrawCurrentStepPointer(extra.data);  //
+    function _selectionChangeHandler(evt) {
+      redrawCurrentStepPointer(evt.data);  //
     }
-
 
     function resetGraph() {
       if (grapher) {
@@ -161,27 +167,44 @@ define(function (require) {
       for all model params.
     */
     function clearGrapher(data) {
-      if(grapher) {
-        grapher.resetPoints(data);
-        grapher.repaint();
-      }
+      if (!grapher) return;
+      // Convert data received from data set to data format expected by grapher (nested arrays).
+      var gData = [];
+      var gSeries;
+      var xArr;
+      var propArr;
+      properties.forEach(function (prop) {
+        gSeries = [];
+        xArr = data[xProperty];
+        propArr = data[prop];
+        for (var i = 0, len = Math.min(xArr.length, propArr.length); i < len; i++) {
+          gSeries.push([xArr[i], propArr[i]]);
+        }
+        gData.push(gSeries);
+      });
+
+      // Append static data series!
+      gData = gData.concat(staticSeries);
+
+      grapher.resetPoints(gData);
+      grapher.repaint();
     }
+
     function _dataResetHandler(extra) {
       clearGrapher(extra.data);
     }
     function _invalidationHandler(extra) {
       clearGrapher(extra.data);
     }
-    function _xLabelChangedHandler(label) {
-      // Set label provided by dataset only if graph component description doesn't specify xlabel.
-      if (!isLabelExplicit(component.xlabel)) {
-        grapher.xLabel(label);
-      }
-    }
-    function _yLabelsChangedHandler(labels) {
+    function _labelsChangedHandler(labels) {
       // Set label provided by dataset only if graph component description doesn't specify ylabel.
-      if (!isLabelExplicit(component.ylabel)) {
-        grapher.yLabel(labels[Y_LABEL_PROP_IDX]);
+      var yLabel = labels[properties[Y_LABEL_PROP_IDX]];
+      var xLabel = labels[component.xProperty];
+      if (!isLabelExplicit(component.ylabel) && yLabel) {
+        grapher.yLabel(yLabel);
+      }
+      if (!isLabelExplicit(component.xlabel) && xLabel) {
+        grapher.xLabel(xLabel);
       }
     }
 
@@ -195,11 +218,20 @@ define(function (require) {
     /**
       Add new points to the graphers
     */
-    function addGraphPoints(dataPoints) {
-      grapher.addPoints(dataPoints);
+    function addGraphPoints(dataPoint) {
+      if (!grapher) return;
+      // Convert data received from data set to data expected by grapher (nested arrays).
+      var gPoints = [];
+      var point;
+      properties.forEach(function (prop) {
+        point = [dataPoint[xProperty], dataPoint[prop]];
+        gPoints.push(point);
+      });
+      grapher.addPoints(gPoints);
     }
-    function _sampleAddedHandler(extra) {
-      addGraphPoints(extra.data);
+
+    function _sampleAddedHandler(evt) {
+      addGraphPoints(evt.data);
     }
 
 
@@ -210,8 +242,7 @@ define(function (require) {
     }
 
     function updateLabels() {
-      grapher.xLabel(isLabelExplicit(component.xlabel) ? component.xlabel : dataSet.getXLabel());
-      grapher.yLabel(isLabelExplicit(component.ylabel) ? component.ylabel : dataSet.getYLabels()[Y_LABEL_PROP_IDX]);
+      _labelsChangedHandler(dataSet.getLabels());
     }
 
     function initGrapher() {
@@ -226,9 +257,7 @@ define(function (require) {
       */
       modelLoadedCallback: function() {
         registerModelListeners();
-        if (grapher) {
-          resetGrapher();
-        } else {
+        if (!grapher) {
           initGrapher();
         }
         scriptingAPI = interactivesController.getScriptingAPI();
@@ -252,14 +281,14 @@ define(function (require) {
         Add non-realtime series to the dataSet.
       */
       addDataSet: function (series) {
-        dataSet.addStaticDataSeries(series);
+        staticSeries.push(series);
       },
 
       /**
         Remove all non-realtime data series from the dataSets
       */
       clearDataSets: function () {
-        dataSet.clearStaticDataSeries();
+        staticSeries = [];
       },
 
       /**
