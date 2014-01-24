@@ -30,9 +30,9 @@
       },
       "modelOptions": {
         "unitsScheme": "mks",
-        "timeStepsPerTick": 167,
+        "timeStepsPerTick": 416,
         "timeStep": 1,
-        "modelSampleRate": 60
+        "modelSampleRate": 20
       },
       "onLoad": [
         "function setGraphRange() {",
@@ -67,7 +67,7 @@
         "   }",
         "   counter++;",
         "// adding textbox instead of shape because model stuttered when adding new shape but not textbox",
-        "   if ((counter % 8) === 0) {",
+        "   if ((counter % 4) === 0) {",
         "      var rad = 0.01;",
         "      addTextBox({",
         "        x: props.x - 0.45,",
