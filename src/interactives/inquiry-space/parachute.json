@@ -67,7 +67,7 @@
         "   }",
         "   counter++;",
         "// adding textbox instead of shape because model stuttered when adding new shape but not textbox",
-        "   if ((counter % 10) === 0) {",
+        "   if ((counter % 8) === 0) {",
         "      var rad = 0.01;",
         "      addTextBox({",
         "        x: props.x - 0.45,",
