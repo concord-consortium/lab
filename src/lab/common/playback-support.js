@@ -7,10 +7,9 @@ define(function (require) {
   return function PlaybackSupport(args) {
         // DispatchSupport instance or compatible module.
     var dispatch = args && args.dispatch || null,
-        // Properties object - it can be used to define 'modelSampleRate'. It
-        // can be simple plain object or more sophisticated object returned by
-        // PropertiesSupport module.
-        properties = args && args.properties || null,
+        // Properties object - it can be used to define 'modelSampleRate'.
+        // Instance of PropertiesSupport class is expected.
+        propertySupport = args && args.propertySupport || null,
 
         eventsSupported = (function() {
           // Events support is optional. It should be provided by the
@@ -47,7 +46,7 @@ define(function (require) {
       var intervalID,
           // When target support properties and it defines
           // 'modelSampleRate', it will be used.
-          sampleRate = properties && properties.modelSampleRate || 'default';
+          sampleRate = propertySupport && propertySupport.properties.modelSampleRate || 'default';
 
       if (sampleRate === 'default') {
         // use requestAnimationFrame via d3.timer
