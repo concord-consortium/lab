@@ -151,8 +151,14 @@ define(function (require) {
     }
 
     function selectionChangedHandler(evt) {
-      view.clearSelection();
-      view.addSelection(evt.data);
+      var activeRow = evt.data;
+      if (component.addNewRows) {
+        view.clearSelection();
+        view.addSelection(activeRow);
+      } else {
+        var data = dataSet.getData();
+        view.replaceDataRow(nthRow(data, activeRow), 0);
+      }
     }
 
     function data2row(dataPoint, index) {
@@ -198,29 +204,23 @@ define(function (require) {
     function sampleChangedHandler(evt) {
       var rowIndex = evt.data.index;
       var dataRow = data2row(evt.data.dataPoint, rowIndex);
-      view.replaceDataRow(dataRow, rowIndex);
+      if (component.addNewRows) {
+        view.replaceDataRow(dataRow, rowIndex);
+      } else {
+        view.replaceDataRow(dataRow, 0);
+      }
     }
 
     function dataResetHandler(evt) {
-      function addProp(prop) {
-        var propArr = data[prop];
-        dataRow.push(propArr ? propArr[rowIndex] : undefined);
-      }
       var data = evt.data;
       var length = data[properties[0]].length;
       var dataRow;
 
       if (component.addNewRows) {
         var dataRows = [];
-
         rowIndex = 0;
         for (; rowIndex < length; rowIndex++) {
-          dataRow = [];
-          if (component.indexColumn) {
-            dataRow.push(rowIndex);
-          }
-          properties.forEach(addProp);
-          dataRows.push(dataRow);
+          dataRows.push(nthRow(data, rowIndex));
         }
         view.clear();
         view.appendDataRows(dataRows, 0);
