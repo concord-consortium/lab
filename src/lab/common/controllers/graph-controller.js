@@ -86,6 +86,7 @@ define(function (require) {
       }
       listeningPool.listen(dataSet, DataSet.Events.DATA_RESET,        _dataResetHandler);
       listeningPool.listen(dataSet, DataSet.Events.SAMPLE_ADDED,      _sampleAddedHandler);
+      listeningPool.listen(dataSet, DataSet.Events.SAMPLE_CHANGED,    _sampleChangedHandler);
       listeningPool.listen(dataSet, DataSet.Events.SELECTION_CHANGED, _selectionChangeHandler);
       listeningPool.listen(dataSet, DataSet.Events.DATA_TRUNCATED,    _invalidationHandler);
       listeningPool.listen(dataSet, DataSet.Events.LABELS_CHANGED,    _labelsChangedHandler);
@@ -200,10 +201,10 @@ define(function (require) {
       // Set label provided by dataset only if graph component description doesn't specify ylabel.
       var yLabel = labels[properties[Y_LABEL_PROP_IDX]];
       var xLabel = labels[component.xProperty];
-      if (!isLabelExplicit(component.ylabel) && yLabel) {
+      if (!isLabelExplicit(component.ylabel)) {
         grapher.yLabel(yLabel);
       }
-      if (!isLabelExplicit(component.xlabel) && xLabel) {
+      if (!isLabelExplicit(component.xlabel)) {
         grapher.xLabel(xLabel);
       }
     }
@@ -215,25 +216,43 @@ define(function (require) {
       grapher.reset('#' + component.id, getOptions());
     }
 
-    /**
-      Add new points to the graphers
-    */
-    function addGraphPoints(dataPoint) {
+    function isPointValid(point) {
+      var x = point[0];
+      var y = point[1];
+      return x != null && x !== "" && !isNaN(Number(x)) &&
+             y != null && y !== "" && !isNaN(Number(y));
+    }
+
+    function _sampleAddedHandler(evt) {
       if (!grapher) return;
       // Convert data received from data set to data expected by grapher (nested arrays).
+      var valid = true;
+      var dataPoint = evt.data;
       var gPoints = [];
       var point;
       properties.forEach(function (prop) {
         point = [dataPoint[xProperty], dataPoint[prop]];
+        if (!isPointValid(point)) valid = false;
         gPoints.push(point);
       });
-      grapher.addPoints(gPoints);
+      if (valid) grapher.addPoints(gPoints);
     }
 
-    function _sampleAddedHandler(evt) {
-      addGraphPoints(evt.data);
+    function _sampleChangedHandler(evt) {
+      if (!grapher) return;
+      // Convert data received from data set to data expected by grapher (nested arrays).
+      var valid = true;
+      var dataPoint = evt.data.dataPoint;
+      var index = evt.data.index;
+      var gPoints = [];
+      var point;
+      properties.forEach(function (prop) {
+        point = [dataPoint[xProperty], dataPoint[prop]];
+        if (!isPointValid(point)) valid = false;
+        gPoints.push(point);
+      });
+      if (valid) grapher.replacePoints(gPoints, index);
     }
-
 
     function registerModelListeners() {
       var model = getModel();
