@@ -150,6 +150,7 @@ define(function () {
   };
 
   DataSet.prototype._getPropertyLabel = function(prop) {
+    if (!this._model.hasProperty(prop)) return "";
     var description = this._model.getPropertyDescription(prop);
     return description.getLabel() + " (" + description.getUnitAbbreviation() + ")";
   };

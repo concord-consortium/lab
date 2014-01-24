@@ -718,6 +718,14 @@ define(function() {
           The 'isPropertyWritable' method mixed into 'target' returns information whether
           the property named 'key' is writable.
          */
+        target.hasProperty = function(key) {
+          return propertyInformation[key] != null;
+        };
+
+        /**
+          The 'isPropertyWritable' method mixed into 'target' returns information whether
+          the property named 'key' is writable.
+         */
         target.isPropertyWritable = function(key) {
           return propertyInformation[key].descriptor.writable;
         };
