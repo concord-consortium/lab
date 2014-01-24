@@ -2,7 +2,7 @@
   "title": "Table, Graph and DataSet Demo",
   "publicationStatus": "public",
   "subtitle": "",
-  "aspectRatio": 0.8,
+  "aspectRatio": 0.6,
   "models": [
     {
       "type": "md2d",
@@ -33,6 +33,15 @@
         "displayTime",
         "totalEnergy"
       ],
+      "clearOnModelReset": false
+    },
+    {
+      "name": "table-graph-dataset",
+      "properties": [
+        "X coord",
+        "Y coord"
+      ],
+      "streamDataFromModel": false,
       "clearOnModelReset": false
     }
   ],
@@ -87,11 +96,11 @@
     {
       "type": "text",
       "id": "label2",
-      "text": "Table use the same data set as graph, so they are synchronized:"
+      "text": "Table uses the same data set as graph, so they are synchronized:"
     },
     {
+      "id": "graph1",
       "type": "graph",
-      "id": "graph",
       "dataSet": "graph-dataset",
       "ymin": -100,
       "ymax": 100,
@@ -111,13 +120,51 @@
       "type": "table",
       "dataSet": "graph-dataset",
       "title": null,
-      "addNewRows": false,
+      "addNewRows": true,
       "showBlankRow": false,
       "indexColumn": true,
       "height": "15em",
       "propertyColumns": [
         "displayTime",
         "totalEnergy"
+      ]
+    },
+    {
+      "type": "text",
+      "id": "label3",
+      "text": "Table and graph are synchronized, use table to plot data on the graph:"
+    },
+    {
+      "id": "graph2",
+      "type": "graph",
+      "dataSet": "table-graph-dataset",
+      "ymin": -10,
+      "ymax": 10,
+      "xmax": 10,
+      "xTickCount": 5,
+      "yTickCount": 5,
+      "xFormatter": ".2r",
+      "yFormatter": ".2s",
+      "xProperty": "X coord",
+      "properties": [
+        "Y coord"
+      ],
+      "width": "20em",
+      "height": "15em"
+    },
+    {
+      "id": "table4",
+      "type": "table",
+      "dataSet": "table-graph-dataset",
+      "title": null,
+      "addNewRows": true,
+      "showBlankRow": true,
+      "indexColumn": true,
+      "height": "15em",
+      "width": "10em",
+      "propertyColumns": [
+        "X coord",
+        "Y coord"
       ]
     }
   ],
@@ -126,7 +173,9 @@
       ["label1"],
       ["table1", "table2"],
       ["label2"],
-      ["graph", "table3"]
+      ["graph1", "table3"],
+      ["label3"],
+      ["graph2", "table4"]
     ]
   }
 }
