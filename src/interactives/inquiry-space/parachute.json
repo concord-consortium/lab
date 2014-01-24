@@ -30,9 +30,9 @@
       },
       "modelOptions": {
         "unitsScheme": "mks",
-        "timeStepsPerTick": 167,
+        "timeStepsPerTick": 416,
         "timeStep": 1,
-        "modelSampleRate": 60
+        "modelSampleRate": 20
       },
       "onLoad": [
         "function setGraphRange() {",
@@ -53,37 +53,43 @@
         "onPropertyChange('experimentDuration', setGraphRange);",
         "onPropertyChange('durationEnabled', function(){ setComponentDisabled('duration-slider', !(get('durationEnabled'))); });",
         "var counter = 0;",
+        "var lastVy = 999;",
+        "var TVMessageTime = 999;",
+        "var sigDig = 1000;  // set how many digits to round vy when checking for match to last vy (terminal velocity reached)",
         "onPropertyChange('time', function() {",
-        "   if (getAtomProperties(0).y < 1) {",
+        "   var props = getAtomProperties(0);",
+        "   if ((Math.round(props.vy*sigDig)/sigDig == lastVy) && (TVMessageTime == 999)) {",
+        "     TVMessageTime = get('time') + 1;",
+        "     setTextBoxProperties(0, { x: 0 });",
+        "   }",
+        "   if ((props.y < 1) || (get('time') > TVMessageTime)) {",
         "     stop();",
         "   }",
         "   counter++;",
-        "   if ((counter % 10) === 0) {",
-        "      var props = getAtomProperties(0);",
+        "// adding textbox instead of shape because model stuttered when adding new shape but not textbox",
+        "   if ((counter % 4) === 0) {",
         "      var rad = 0.01;",
-        "      addShape({",
-        "        type: 'ellipse',",
-        "        x: props.x - rad,",
-        "        y: props.y + rad,",
-        "        width: rad*2,",
-        "        height: rad*2,",
-        "        lineColor: 'black',",
-        "        layer: 0,",
-        "        color: 'black'",
+        "      addTextBox({",
+        "        x: props.x - 0.45,",
+        "        y: props.y + 0.55,",
+        "        fontSize: 0.5,",
+        "        text: '.'",
         "      });",
         "   }",
+        "   lastVy = Math.round(props.vy*sigDig)/sigDig;",
         "});",
         "setGraphRange();",
         "setButtonState();",
         "setComponentDisabled('stop-button', true);",
-        "setComponentDisabled('start-button', false);"
+        "setComponentDisabled('start-button', false);",
+        "setTextBoxProperties(0, { x: 10 });"
        ]
     }
   ],
   "parameters": [
     {
       "name": "experimentDuration",
-      "initialValue": 8
+      "initialValue": 3
     },
     {
       "name": "durationEnabled",
@@ -91,7 +97,7 @@
     },
     {
       "name": "mass-of-jumper",
-      "initialValue": 100,
+      "initialValue": 200,
       "onChange": [
         "var volFactor = 1000;",
         "var massToVol = value/volFactor;",
@@ -101,7 +107,7 @@
     },
     {
       "name": "parachute-size",
-      "initialValue": 700,
+      "initialValue": 900,
       "onChange": [
         "setAtomProperties(0, { friction: value });",
         "for (var i=700; i <= 1100; i = i + 100) {",

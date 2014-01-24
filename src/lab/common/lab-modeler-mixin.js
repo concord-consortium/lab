@@ -38,7 +38,7 @@ define(function (require) {
         dispatchSupport = new DispatchSupport(),
         playbackSupport = new PlaybackSupport({
           dispatch: dispatchSupport,
-          properties: propertySupport.properties
+          propertySupport: propertySupport
         });
 
     // Is the model setup complete, so the model is ready to be played and record to tick history?

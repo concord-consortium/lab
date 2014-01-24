@@ -25,6 +25,11 @@ def unpushed?
   !system("git diff --cached --exit-code --quiet")
 end
 
+# get the latest (nearest) tagged version see: http://bit.ly/1aORIhz
+def last_tagged_version
+  %x[git describe --tags --abbrev=0].chomp
+end
+
 repo = Grit::Repo.new(".")
 head = repo.head
 head_commit_sha = `git log -1 --pretty="%H"`.strip
@@ -51,6 +56,7 @@ define(function (require) {
         "short_message": "#{short_message}",
         "message":       "#{cleanup_string(message)}"
       },
+      "last_tag":        "#{last_tagged_version}",
       "dirty": #{dirty?}
     }
   };

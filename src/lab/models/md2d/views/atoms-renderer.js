@@ -208,6 +208,8 @@ define(function(require) {
 
         canvg(canv, mustache.render(atomSVG, tplData));
         elementTex[key] = new PIXI.Texture.fromCanvas(canv);
+        // canvg starts a timer, we don't need or want that timer
+        canv.svg.stop();
       }
       return elementTex[key];
     }

@@ -37,11 +37,20 @@
         if (!hash) return;
 
         interactiveUrl = hash.substr(1, hash.length);
-        Embeddable.load(interactiveUrl, '#interactive-container', function(controller){
-          controller.on("modelLoaded.application", function() {
-            document.title = "Lab Interactive: " + controller.interactive.title;
-            Embeddable.sendGAPageview();
-          });
+        Embeddable.load(interactiveUrl, '#interactive-container', {
+          controllerReady: function(controller){
+            controller.on("modelLoaded.application", function() {
+              document.title = "Lab Interactive: " + controller.interactive.title;
+              Embeddable.sendGAPageview();
+            });
+          },
+          redirect: function(path){
+            // Let our parent know we are redirecting
+            if (window.parent) {
+              window.parent.postMessage(JSON.stringify({type: "redirect", content: path}), '*');
+            }
+            location.hash = "#" + path;
+          }
         });
       }());
 

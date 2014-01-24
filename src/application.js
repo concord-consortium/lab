@@ -126,6 +126,10 @@
     }
   }
 
+  function redirectHandler(path) {
+    document.location.hash = "#" + path;
+  }
+
   hash = document.location.hash;
   if (hash) {
     interactiveUrl = hash.substr(1, hash.length);
@@ -162,18 +166,22 @@
       controller = null;
       interactive = null;
       model = null;
-      Embeddable.load(interactiveUrl, '#interactive-container', function(_controller){
-        controller = _controller;
-        controller.on("modelLoaded.application", function() {
-          model = controller.getModel();
-          interactive = controller.serialize();
+      Embeddable.load(interactiveUrl, '#interactive-container', {
+        controllerReady: function(_controller){
+          controller = _controller;
+          controller.on("modelLoaded.application", function() {
+            model = controller.getModel();
+            interactive = controller.serialize();
+            setupFullPage();
+          });
+        },
+        notFound: function(){
+          controller = null;
+          interactive = null;
+          model = null;
           setupFullPage();
-        });
-      }, function(){
-        controller = null;
-        interactive = null;
-        model = null;
-        setupFullPage();
+        },
+        redirect: redirectHandler
       });
     }
     Embeddable.sendGAPageview();
@@ -220,7 +228,18 @@
         interactive = content;
         setupFullPage();
       });
+      // example of how to get the a versioned learner url --
+      // where the URL is decorated with query params, and possibly
+      // the url points to versioned release of the framework.
+      iframePhone.post('getLearnerUrl');
+      iframePhone.addListener('setLearnerUrl', function(content) {
+        $("#learner_url").attr('href',content);
+      });
     });
+
+    // add basic redirect listener, this might be called before the iframe-phone even
+    // receives a 'hello' message
+    iframePhone.addListener('redirect', redirectHandler);
   }
 
   function setupFullPage() {
