@@ -27,7 +27,7 @@ end
 
 # get the latest (nearest) tagged version see: http://bit.ly/1aORIhz
 def last_tagged_version
-  %x[git describe --abbrev=0].chomp
+  %x[git describe --tags --abbrev=0].chomp
 end
 
 repo = Grit::Repo.new(".")
