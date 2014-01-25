@@ -15,6 +15,16 @@
   //Allow "use strict"; be included in the RequireJS files.
   useStrict: true,
 
+  //Stub out the cs module after a build since
+  //it will not be needed.
+  stubModules: ['cs'],
+
+  //The optimization will load CoffeeScript to convert
+  //the CoffeeScript files to plain JS. Use the exclude
+  //directive so that the coffee-script module is not included
+  //in the built file.
+  exclude: ['coffee-script'],
+
   // Paths to CommonJS modules.
   packages: [
     {
