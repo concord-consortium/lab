@@ -232,26 +232,24 @@ define(function (require) {
       var point;
       properties.forEach(function (prop) {
         point = [dataPoint[xProperty], dataPoint[prop]];
-        if (!isPointValid(point)) valid = false;
-        gPoints.push(point);
+        // Pass only valid points, null will be ignored by grapher.
+        gPoints.push(isPointValid(point) ? point : null);
       });
       if (valid) grapher.addPoints(gPoints);
     }
 
     function _sampleChangedHandler(evt) {
       if (!grapher) return;
-      // Convert data received from data set to data expected by grapher (nested arrays).
-      var valid = true;
       var dataPoint = evt.data.dataPoint;
       var index = evt.data.index;
       var gPoints = [];
       var point;
       properties.forEach(function (prop) {
         point = [dataPoint[xProperty], dataPoint[prop]];
-        if (!isPointValid(point)) valid = false;
-        gPoints.push(point);
+        // Pass only valid points, null will be ignored by grapher.
+        gPoints.push(isPointValid(point) ? point : null);
       });
-      if (valid) grapher.replacePoints(gPoints, index);
+      grapher.replacePoints(gPoints, index);
     }
 
     function registerModelListeners() {
