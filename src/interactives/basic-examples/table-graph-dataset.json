@@ -39,7 +39,8 @@
       "name": "table-graph-dataset",
       "properties": [
         "X coord",
-        "Y coord"
+        "Y1 coord",
+        "Y2 coord"
       ],
       "streamDataFromModel": false,
       "clearOnModelReset": false
@@ -147,7 +148,8 @@
       "yFormatter": ".2s",
       "xProperty": "X coord",
       "properties": [
-        "Y coord"
+        "Y1 coord",
+        "Y2 coord"
       ],
       "width": "20em",
       "height": "15em"
@@ -161,10 +163,20 @@
       "showBlankRow": true,
       "indexColumn": true,
       "height": "15em",
-      "width": "10em",
+      "width": "15em",
       "propertyColumns": [
-        "X coord",
-        "Y coord"
+        {
+          "name": "X coord",
+          "format": "r"
+        },
+        {
+          "name": "Y1 coord",
+          "format": "r"
+        },
+        {
+          "name": "Y2 coord",
+          "format": "r"
+        }
       ]
     }
   ],
