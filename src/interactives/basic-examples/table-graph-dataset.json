@@ -38,7 +38,7 @@
     {
       "name": "table-graph-dataset",
       "properties": [
-        "time",
+        "displayTime",
         "totalEnergy",
         "X coord",
         "Y1 coord",
@@ -149,7 +149,7 @@
       "xFormatter": ".2r",
       "yFormatter": ".2s",
       "xProperty": [
-        "time",
+        "displayTime",
         "X coord",
         "X coord"
       ],
