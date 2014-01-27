@@ -38,11 +38,13 @@
     {
       "name": "table-graph-dataset",
       "properties": [
+        "time",
+        "totalEnergy",
         "X coord",
         "Y1 coord",
         "Y2 coord"
       ],
-      "streamDataFromModel": false,
+      "streamDataFromModel": true,
       "clearOnModelReset": false
     }
   ],
@@ -146,8 +148,13 @@
       "yTickCount": 5,
       "xFormatter": ".2r",
       "yFormatter": ".2s",
-      "xProperty": "X coord",
+      "xProperty": [
+        "time",
+        "X coord",
+        "X coord"
+      ],
       "properties": [
+        "totalEnergy",
         "Y1 coord",
         "Y2 coord"
       ],
