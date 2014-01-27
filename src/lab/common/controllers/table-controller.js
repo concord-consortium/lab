@@ -235,7 +235,7 @@ define(function (require) {
       var dataLength = evt.data[properties[0]].length;
       rowIndex = dataLength;
       if (component.addNewRows) {
-        view.removeDataRows(dataLength, Infinity);
+        view.removeDataRows(dataLength);
       } else {
         view.replaceDataRow(nthRow(evt.data, dataLength - 1), 0);
       }

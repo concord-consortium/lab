@@ -225,11 +225,6 @@ define(function() {
       $tbody.scrollTop(99999999);
     }
 
-    function removeDataRow(index) {
-      var $tr = $($tbody.find('tr')).filter(function() { return $(this).data("index") === index; });
-      $tr.remove();
-    }
-
     function replaceDataRow(rowData, index) {
       var datum;
 
@@ -411,14 +406,13 @@ define(function() {
         scrollToBottom();
       },
 
-      removeDataRow: removeDataRow,
-
-      removeDataRows: function (startIdx, endIdx) {
+      removeDataRows: function (startIdx) {
         var $tr = $tbody.find('tr').filter(function() {
           var idx = $(this).data("index");
-          return idx >= startIdx && idx < endIdx;
+          return idx >= startIdx;
         });
         $tr.remove();
+        setupBlankRow();
       },
 
       replaceDataRow: replaceDataRow,
