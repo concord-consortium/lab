@@ -22,21 +22,18 @@ define(function () {
     this.namespace              = "dataSet" + (++dataSetCount);
     this.component              = validator.validateCompleteness(metadata.dataSet, component);
     this.name                   = this.component.name;
-    this.modelProperties        = this.component.properties || [];
+    this.properties             = this.component.properties || [];
     this.streamDataFromModel    = this.component.streamDataFromModel;
     this.clearOnModelReset      = this.component.clearOnModelReset;
     // Set initial data only if there is real data there. Otherwise set null for convenience.
     this.initialData            = this.component.initialData ?
                                   $.extend(true, {}, this.component.initialData) : null;
     this._data                  = {};
+    // Keep clear distinction between model properties and other properties (e.g. they can be
+    // filled by the user). Data streaming streams only model properties.
+    this._modelProperties       = [];
     this._listeningPool         = new ListeningPool(this.namespace);
     this._dispatch              = new DispatchSupport();
-
-    // TODO: rm me
-    this.modelPropertiesIndices = {};
-    for (var i = 0; i < this.modelProperties.length; i++) {
-      this.modelPropertiesIndices[this.modelProperties[i]] = i;
-    }
 
     for (var key in DataSet.Events) {
       this._dispatch.addEventTypes(DataSet.Events[key]);
@@ -68,22 +65,10 @@ define(function () {
   *******************************************************************/
 
   /**
-  * returns the number of (model) data points we have recorded.
-  * TODO: This is for model invadlidation / data truncation,
-  * so its assumed that the first columns are from model data.
-  */
-  DataSet.prototype._numberOfPoints = function () {
-    if (this.modelProperties.length > 0) {
-      return this._data[this.modelProperties[0]].length;
-    }
-    return 0;
-  };
-
-  /**
     Check that we haven't invalidated future datapoints.
   */
   DataSet.prototype._inNewModelTerritory = function () {
-    return (this._model.stepCounter() < this._numberOfPoints());
+    return (this._model.stepCounter() < this.maxLength(this._modelProperties));
   };
 
   /**
@@ -107,7 +92,7 @@ define(function () {
 
       listeningPool.listen(model, 'play', function() {
         if (context._inNewModelTerritory()) {
-          context.removeDataAfterStepPointer();
+          context.removeModelDataAfterStepPointer();
         }
       });
 
@@ -116,7 +101,7 @@ define(function () {
       listeningPool.listen(model, 'seek',        positionChanged);
 
       listeningPool.listen(model, 'invalidation', function() {
-        context.removeDataAfterStepPointer();
+        context.removeModelDataAfterStepPointer();
       });
     }
 
@@ -126,7 +111,7 @@ define(function () {
       }
     });
 
-    this.modelProperties.forEach(function (prop) {
+    this.properties.forEach(function (prop) {
       context._model.addPropertyDescriptionObserver(prop, function() {
         context._trigger(DataSet.Events.LABELS_CHANGED, context.getLabels());
       });
@@ -164,7 +149,7 @@ define(function () {
     var context = this;
     var ret = {};
 
-    this.modelProperties.forEach(function (prop) {
+    this._modelProperties.forEach(function (prop) {
       ret[prop] = context._getModelProperty(prop);
     });
 
@@ -173,6 +158,15 @@ define(function () {
 
   DataSet.prototype.getData = function() {
     return this._data;
+  };
+
+  DataSet.prototype.maxLength = function(props) {
+    var maxLength = -Infinity;
+    var context = this;
+    props.forEach(function (prop) {
+      if (maxLength < context._data[prop].length) maxLength = context._data[prop].length;
+    });
+    return maxLength;
   };
 
   /**
@@ -184,18 +178,21 @@ define(function () {
     if (this.initialData) {
       this._data = $.extend(true, {}, this.initialData);
     } else {
-      this.modelProperties.forEach(function (prop) {
+      this.properties.forEach(function (prop) {
         context._data[prop] = [];
       });
     }
     this._trigger(DataSet.Events.DATA_RESET, this._data);
   };
 
-  DataSet.prototype.appendDataPoint = function () {
-    var dataPoint = this.getDataPoint();
+  DataSet.prototype.appendDataPoint = function (props, values) {
+    var dataPoint = $.extend(this.getDataPoint(), values);
     var context = this;
 
-    this.modelProperties.forEach(function (prop) {
+    if (!props) {
+      props = this._modelProperties;
+    }
+    props.forEach(function (prop) {
       context._data[prop].push(dataPoint[prop]);
     });
 
@@ -207,12 +204,14 @@ define(function () {
     Removes all data that correspond to steps following the current step pointer. This is used when
     a change is made that invalidates the future data.
   */
-  DataSet.prototype.removeDataAfterStepPointer = function () {
+  DataSet.prototype.removeModelDataAfterStepPointer = function () {
     var newLength = this._model.stepCounter() + 1;
     var context = this;
 
-    this.modelProperties.forEach(function (prop) {
-      context._data[prop].length = newLength;
+    this._modelProperties.forEach(function (prop) {
+      if (context._data[prop].length > newLength) {
+        context._data[prop].length = newLength;
+      }
     });
 
     this._trigger(DataSet.Events.DATA_TRUNCATED, this._data);
@@ -223,7 +222,7 @@ define(function () {
 
     var context = this;
     var dataPoint = {};
-    this.modelProperties.forEach(function (prop) {
+    this.properties.forEach(function (prop) {
       dataPoint[prop] = context._data[prop][index];
     });
 
@@ -243,7 +242,7 @@ define(function () {
   DataSet.prototype.getLabels = function() {
     var res = {};
     var context = this;
-    this.modelProperties.forEach(function (prop) {
+    this.properties.forEach(function (prop) {
       res[prop] = context._getPropertyLabel(prop);
     });
     return res;
@@ -255,6 +254,14 @@ define(function () {
   DataSet.prototype.modelLoadedCallback = function() {
     this._model = this.interactivesController.getModel();
     this._addListeners();
+    // Keep list of properties that are defined in model. Only these properties will be streamed.
+    this._modelProperties = [];
+    var context = this;
+    this.properties.forEach(function (prop) {
+      if (context._model.hasProperty(prop)) {
+        context._modelProperties.push(prop);
+      }
+    });
     if (this.clearOnModelReset) {
       this.resetData();
     }
