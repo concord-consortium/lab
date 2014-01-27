@@ -157,6 +157,16 @@ AWS account.**
 
         $ thor cloud:setup_ssh lab.dev.concord.org
 
+11. You will have to manually edit config/config.yml on your new host.  
+    SSH into your host, and edit the configuration file config/config.yml. 
+    The setup process should notify you of this (from aws-lab-server.rb): 
+    "If the new server provisioning with littlechef was successful 
+    login to the server with ssh and update the server hostname settings 
+    in config/config.yml".
+
+    **TODO**: Should we write a tool to easily view/edit configuration files?
+
+
 ## Using Capstrano to deploy new code to an existing server
 
 After testing, committing, and pushing code to a public repository use the Capistrano
