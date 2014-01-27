@@ -186,8 +186,16 @@ define(function (require) {
       return dataRow;
     }
 
+    function isEmpty(row) {
+      for (var i = component.indexColumn ? 1 : 0, len = row.length; i < len; i++) {
+        if (row[i] != null) return false;
+      }
+      return true;
+    }
+
     function handleNewDataRow(dataPoint) {
       var dataRow = data2row(dataPoint);
+      if (isEmpty(dataRow)) return;
       if (component.addNewRows) {
         view.appendDataRow(dataRow, rowIndex);
         rowIndex++;
@@ -213,7 +221,7 @@ define(function (require) {
 
     function dataResetHandler(evt) {
       var data = evt.data;
-      var length = data[properties[0]].length;
+      var length = dataSet.maxLength(properties);
       var dataRow;
 
       if (component.addNewRows) {
@@ -232,7 +240,7 @@ define(function (require) {
     }
 
     function dataTruncatedHandler(evt) {
-      var dataLength = evt.data[properties[0]].length;
+      var dataLength = dataSet.maxLength(properties);
       rowIndex = dataLength;
       if (component.addNewRows) {
         view.removeDataRows(dataLength);
@@ -295,9 +303,13 @@ define(function (require) {
         if (component.indexColumn) col--;
         var property = properties[col];
 
-        if (val !== "" && row === rowIndex) {
-          // Extend table when new data is added to "nonexistent" (in data model) row.
-          dataSet.appendDataPoint();
+        if (row === rowIndex) {
+          // Extend table when new non-empty data is added to "nonexistent" (in data model) row.
+          if (val === "") return;
+          var values = {};
+          values[property] = val;
+          dataSet.appendDataPoint(properties, values);
+          return;
         }
         dataSet.editDataPoint(row, property, val);
       },

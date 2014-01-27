@@ -297,7 +297,7 @@ define(function (require) {
         Used when manually adding points to the graph.
       */
       appendDataPropertiesToComponent: function() {
-        dataSet.appendDataPoint(arguments);
+        dataSet.appendDataPoint();
       },
 
 
