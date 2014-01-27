@@ -196,36 +196,10 @@
           "format": "r"
         }
       ],
-      "tableData": [
-        [
-          [
-            0,
-            1
-          ],
-          [
-            1,
-            2
-          ],
-          [
-            2,
-            3
-          ]
-        ],
-        [
-          [
-            0,
-            null
-          ],
-          [
-            1,
-            null
-          ],
-          [
-            2,
-            null
-          ]
-        ]
-      ],
+      "tableData": {
+        "Run #": [1, 2, 3],
+        "% of non-decayed isotopes that decayed": []
+      },
       "width": "60%",
       "height": "7em",
       "tooltip": ""
