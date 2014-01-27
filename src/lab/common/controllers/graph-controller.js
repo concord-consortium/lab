@@ -39,8 +39,9 @@ define(function (require) {
 
       graphControllerCount = 0,
 
-      // Index of the model property whose description sets the current yLabel (when yLabel isn't
-      // provided explicitly in graph component description).
+      // Index of the model property whose description sets the current X/Y label
+      // (when labels aren't provided explicitly in graph component description).
+      X_LABEL_PROP_IDX = 0,
       Y_LABEL_PROP_IDX = 0;
 
   return function graphController(component, interactivesController) {
@@ -50,7 +51,7 @@ define(function (require) {
         controller,
         dataSet,
         scriptingAPI,
-        xProperty,
+        xProperties,
         properties,
         dataPointsArrays = [],
         staticSeries,
@@ -74,9 +75,11 @@ define(function (require) {
       } else {
         // Make sure that properties passed to data set include xProperty!
         var dataSetProperties = component.properties.slice();
-        if (dataSetProperties.indexOf(xProperty) === -1) {
-          dataSetProperties.push(xProperty);
-        }
+        xProperties.forEach(function (xProp) {
+          if (dataSetProperties.indexOf(xProp) === -1) {
+            dataSetProperties.push(xProp);
+          }
+        });
         dataSet = new DataSet({
                                 properties:          dataSetProperties,
                                 name:                component.id + "-autoDataSet",
@@ -99,7 +102,10 @@ define(function (require) {
       component = validator.validateCompleteness(metadata.graph, component);
       // The list of properties we are being asked to graph.
       properties = component.properties.slice();
-      xProperty = component.xProperty;
+      xProperties = component.xProperty;
+      if (!$.isArray(xProperties)) {
+        xProperties = [xProperties];
+      }
       loadDataSet();
       $container = $('<div>').attr('id', component.id).addClass('graph');
       // Each interactive component has to have class "component".
@@ -171,13 +177,10 @@ define(function (require) {
       if (!grapher) return;
       // Convert data received from data set to data format expected by grapher (nested arrays).
       var gData = [];
-      var gSeries;
-      var xArr;
-      var propArr;
-      properties.forEach(function (prop) {
-        gSeries = [];
-        xArr = data[xProperty];
-        propArr = data[prop];
+      properties.forEach(function (prop, idx) {
+        var gSeries = [];
+        var xArr = data[xProp(idx)];
+        var propArr = data[prop];
         for (var i = 0, len = Math.min(xArr.length, propArr.length); i < len; i++) {
           gSeries.push([xArr[i], propArr[i]]);
         }
@@ -200,7 +203,7 @@ define(function (require) {
     function _labelsChangedHandler(labels) {
       // Set label provided by dataset only if graph component description doesn't specify ylabel.
       var yLabel = labels[properties[Y_LABEL_PROP_IDX]];
-      var xLabel = labels[component.xProperty];
+      var xLabel = labels[xProperties[X_LABEL_PROP_IDX]];
       if (!isLabelExplicit(component.ylabel)) {
         grapher.yLabel(yLabel);
       }
@@ -223,6 +226,10 @@ define(function (require) {
              y != null && y !== "" && !isNaN(Number(y));
     }
 
+    function xProp(idx) {
+      return xProperties[idx] || xProperties[0];
+    }
+
     function _sampleAddedHandler(evt) {
       if (!grapher) return;
       // Convert data received from data set to data expected by grapher (nested arrays).
@@ -230,8 +237,8 @@ define(function (require) {
       var dataPoint = evt.data;
       var gPoints = [];
       var point;
-      properties.forEach(function (prop) {
-        point = [dataPoint[xProperty], dataPoint[prop]];
+      properties.forEach(function (prop, idx) {
+        point = [dataPoint[xProp(idx)], dataPoint[prop]];
         // Pass only valid points, null will be ignored by grapher.
         gPoints.push(isPointValid(point) ? point : null);
       });
@@ -244,8 +251,8 @@ define(function (require) {
       var index = evt.data.index;
       var gPoints = [];
       var point;
-      properties.forEach(function (prop) {
-        point = [dataPoint[xProperty], dataPoint[prop]];
+      properties.forEach(function (prop, idx) {
+        point = [dataPoint[xProp(idx)], dataPoint[prop]];
         // Pass only valid points, null will be ignored by grapher.
         gPoints.push(isPointValid(point) ? point : null);
       });
@@ -337,7 +344,7 @@ define(function (require) {
       */
       syncAxisRangesToPropertyRanges: function() {
         var model = getModel();
-        var xDescription = model.getPropertyDescription(component.xProperty);
+        var xDescription = model.getPropertyDescription(xProperties[X_LABEL_PROP_IDX]);
         var yDescriptions = properties.map(function(property) {
           return model.getPropertyDescription(property);
         });
