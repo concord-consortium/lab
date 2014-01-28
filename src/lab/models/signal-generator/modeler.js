@@ -3,7 +3,6 @@
 define(function(require) {
 
   var LabModelerMixin         = require('common/lab-modeler-mixin'),
-      validator               = require('common/validator'),
       metadata                = require('models/signal-generator/metadata'),
 
       unitsDefinition = {
