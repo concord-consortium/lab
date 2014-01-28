@@ -48,25 +48,40 @@ define(function(require) {
 
         lastFrequency,
         phase = 0,
-        time = 0,
+        times = [],
         stepCounter = 0,
+        timesIndex = -1,
         model;
 
     function constrain(angle) {
       return angle - 2 * Math.PI * Math.floor(angle / (2 * Math.PI));
     }
 
+    function angle(time) {
+      return constrain(phase + 2 * Math.PI * model.properties.frequency * time);
+    }
+
+    function getIndexWithDefault(array, index, defaultValue) {
+      return index < 0 ? defaultValue : array[index];
+    }
+
     model = {
 
       tick: function () {
         var intervalLength = 1000 / model.properties.modelSampleRate;
+        var lastTime = getIndexWithDefault(times, times.length - 1, 0);
+
+        times.push(lastTime + 0.001 * intervalLength * model.properties.timeScale);
 
         stepCounter++;
-        time += (0.001 * intervalLength * model.properties.timeScale);
 
-        model.updateAllOutputProperties();
-
-        dispatch.tick();
+        if (stepCounter % model.properties.sampleBatchLength === 0) {
+          while (timesIndex < times.length - 1) {
+            timesIndex++;
+            model.updateAllOutputProperties();
+            dispatch.tick();
+          }
+        }
       },
 
       stepCounter: function() {
@@ -89,7 +104,7 @@ define(function(require) {
       unitType: 'time',
       format: '.2f'
     }, function() {
-      return time;
+      return getIndexWithDefault(times, timesIndex, 0);
     });
 
     model.defineOutput('displayTime', {
@@ -97,14 +112,15 @@ define(function(require) {
       unitType: 'time',
       format: '.2f'
     }, function() {
-      return time;
+      return getIndexWithDefault(times, timesIndex, 0);
     });
 
     model.defineOutput('signalValue', {
       label: "Signal Value",
       format: '.2f'
     }, function() {
-      return Math.cos(model.properties.angle);
+      var time = getIndexWithDefault(times, timesIndex, 0);
+      return Math.cos(angle(time));
     });
 
     model.defineOutput('angle', {
@@ -112,8 +128,8 @@ define(function(require) {
       unitType: 'angle',
       format: '.2f'
     }, function() {
-      var angle = phase + 2 * Math.PI * model.properties.frequency * model.properties.time;
-      return constrain(angle);
+      var time = getIndexWithDefault(times, timesIndex, 0);
+      return angle(time);
     });
 
     return model;
