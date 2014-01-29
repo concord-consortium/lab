@@ -44,6 +44,11 @@
         "Y1 coord",
         "Y2 coord"
       ],
+      "serializableProperties": [
+        "X coord",
+        "Y1 coord",
+        "Y2 coord"
+      ],
       "streamDataFromModel": true,
       "clearOnModelReset": false
     }
