@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "optimist": ">=0.6.0",
-    "coffee-script": ">=1.6.3",
+    "coffee-script": "1.6.3",
     "requirejs": ">=2.1.8",
     "amdefine": ">=0.0.8",
     "mustache": "~0.7.2",
