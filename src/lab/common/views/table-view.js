@@ -190,10 +190,6 @@ define(function() {
       if ($tbody.find("tr").length < 2) {
         alignColumnWidths();
       }
-      if (rowData.length > 0) {
-        clearSelection();
-        addSelection(index);
-      }
     }
 
     function removeBlankRow() {

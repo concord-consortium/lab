@@ -95,6 +95,7 @@ define(function () {
     if (this.streamDataFromModel) {
       listeningPool.listen(model, 'tick', function () {
         context.appendDataPoint();
+        positionChanged();
       });
 
       listeningPool.listen(model, 'play', function() {
