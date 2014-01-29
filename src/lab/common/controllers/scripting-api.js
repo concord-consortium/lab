@@ -351,6 +351,21 @@ define(function (require) {
           },
 
           /**
+            Clears data set completely.
+           */
+          clearDataSet: function clearDataSet(name) {
+            interactivesController.getDataSet(name).clearData();
+          },
+
+          /**
+            Resets data sat to its initial data. When initial data is not provided, clears data
+            set (in such case this function behaves exactly like .clearDataSet()).
+           */
+          resetDataSet: function clearDataSet(name) {
+            interactivesController.getDataSet(name).resetData();
+          },
+
+          /**
             Used when manually adding points to a graph or a table.
             Normally the graph or table property streamDataFromModel should be false
             when using this function.

@@ -64,6 +64,13 @@ define(function () {
     "Private" methods, not intended for use by outside objects.
   *******************************************************************/
 
+  DataSet.prototype._setupEmptyData = function () {
+    var context = this;
+    this.properties.forEach(function (prop) {
+      context._data[prop] = [];
+    });
+  };
+
   /**
     Check that we haven't invalidated future datapoints.
   */
@@ -170,17 +177,22 @@ define(function () {
   };
 
   /**
-    Resets the cached data array to a single, initial data point,
-    and pushes that data into graph.
+    Resets data sat to its initial data. When initial data is not provided, clears data
+    set (in such case this function behaves exactly like .clearData()).
   */
   DataSet.prototype.resetData = function () {
-    var context = this;
-    this.properties.forEach(function (prop) {
-      context._data[prop] = [];
-    });
+    this._setupEmptyData();
     if (this.initialData) {
       $.extend(true, this._data, this.initialData);
     }
+    this._trigger(DataSet.Events.DATA_RESET, this._data);
+  };
+
+  /**
+    Clears completely data set.
+   */
+  DataSet.prototype.clearData = function () {
+    this._setupEmptyData();
     this._trigger(DataSet.Events.DATA_RESET, this._data);
   };
 
