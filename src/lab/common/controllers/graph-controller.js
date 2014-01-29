@@ -14,6 +14,8 @@ define(function (require) {
         title: 'title',
         enableAutoScaleButton: 'enableAutoScaleButton',
         enableAxisScaling: 'enableAxisScaling',
+        autoScaleX: 'autoScaleX',
+        autoScaleY: 'autoScaleY',
         enableSelectionButton: 'enableSelectionButton',
         clearSelectionOnLeavingSelectMode: 'clearSelectionOnLeavingSelectMode',
         dataPoints: 'dataPoints',
@@ -151,7 +153,7 @@ define(function (require) {
       grapher.updateOrRescale(step);
     }
     function _selectionChangeHandler(evt) {
-      redrawCurrentStepPointer(evt.data);  //
+      redrawCurrentStepPointer(evt.data);
     }
 
     function resetGraph() {
@@ -281,11 +283,8 @@ define(function (require) {
       */
       modelLoadedCallback: function() {
         registerModelListeners();
-        if (!grapher) {
-          initGrapher();
-        }
         scriptingAPI = interactivesController.getScriptingAPI();
-        updateLabels();
+        resetGraph();
         grapher.repaint();
       },
 

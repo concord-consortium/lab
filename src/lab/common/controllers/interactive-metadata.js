@@ -830,6 +830,12 @@ define(function() {
       enableAxisScaling: {
         defaultValue: true
       },
+      autoScaleX: {
+        defaultValue: true
+      },
+      autoScaleY: {
+        defaultValue: true
+      },
       enableSelectionButton: {
         defaultValue: false
       },
