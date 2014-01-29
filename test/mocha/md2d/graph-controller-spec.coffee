@@ -150,9 +150,9 @@ helpers.withIsolatedRequireJS (requirejs) ->
         grapher = null
         beforeEach ->
           sinon.spy mock, 'Graph'
-          controller.modelLoadedCallback()
           # In normal environment dataSet.modelLoadedCallback is called by interactives controller.
           controller.getDataSet().modelLoadedCallback()
+          controller.modelLoadedCallback()
           grapher = mock.Graph.returnValues[0]
         afterEach ->
           mock.Graph.restore()

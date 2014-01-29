@@ -164,6 +164,7 @@ define(function (require) {
       } else {
         initGrapher();
       }
+      clearGrapher(dataSet.getData());
       updateLabels();
     }
     function _modelResetHandler() {
