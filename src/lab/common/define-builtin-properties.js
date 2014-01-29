@@ -42,17 +42,18 @@ define(function (require) {
         afterSetCallback: propertyChangeInvalidates ? propertySupport.invalidatingChangePostHook : undefined
       };
 
-      unitType = metadataForType[key].unitType;
-      if (unitType) {
-        descriptor.description = new PropertyDescription(unitsDefinition, { unitType: unitType });
-        if (unitsTranslation) {
-          descriptor.beforeSetTransform = function(value) {
-            return unitsTranslation.translateToModelUnits(value, unitType);
-          };
-          descriptor.afterGetTransform = function(value) {
-            return unitsTranslation.translateFromModelUnits(value, unitType);
-          };
-        }
+      descriptor.description = new PropertyDescription(unitsDefinition, {
+          unitType: metadataForType[key].unitType,
+          label: metadataForType[key].label || key
+      });
+
+      if (descriptor.description.getUnitType() && unitsTranslation) {
+        descriptor.beforeSetTransform = function(value) {
+          return unitsTranslation.translateToModelUnits(value, unitType);
+        };
+        descriptor.afterGetTransform = function(value) {
+          return unitsTranslation.translateFromModelUnits(value, unitType);
+        };
       }
 
       propertySupport.defineProperty(key, descriptor);
