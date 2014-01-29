@@ -41,6 +41,8 @@
         "    yMax = yMin + get('viewPortHeight') + radius,",
         "    eFieldProps = getShapeProperties(0),",
         "    plateThickness = 0.2;",
+        "removeTextBox(0);",
+        "removeTextBox(0);",
         "addShape({",
         "  type: 'rectangle',",
         "  x: eFieldProps.x,",
@@ -172,9 +174,9 @@
     },
     {
       "type": "checkbox",
-      "id": "enable-weak-plates",
-      "text": "Weaker plates",
-      "property": "enableWeakPlates"
+      "id": "enable-super-plates",
+      "text": "Increase charge on plates 1000x",
+      "property": "superChargePlates"
     }
   ],
   "parameters": [
@@ -194,11 +196,10 @@
       "onChange": "set('timeStep', value ? 0.1 : 1);"
     },
     {
-      "name": "enableWeakPlates",
-      "initialValue": false,
+      "name": "superChargePlates",
+      "initialValue": true,
       "onChange": [
-        "var currentPlateCharge = get('plateChargeProxy');",
-        "set('plateChargeProxy', currentPlateCharge);"
+        "set('plateChargeProxy', get('plateChargeProxy'));"
       ]
     },
     {
@@ -215,7 +216,7 @@
         "    shapePropsBottom = getShapeProperties(2),",
         "    negText = '',",
         "    posText = '',",
-        "    plateStrengthScale = get('enableWeakPlates') ? 0.001 : 1;",
+        "    plateStrengthScale = get('superChargePlates') ? 1 : 0.001;",
         "if (!shapePropsTop.type) return;",
         "if (value < 0) {",
         "  setImageProperties(1,{imageY: shapePropsTop.y + shapePropsTop.height - 0.02, imageX: shapePropsTop.x + 0.05});",
@@ -243,7 +244,7 @@
       ["label-atom-mass","set-atom-mass"],
       ["send-mystery-particle", "enable-slow-motion"],
       ["set-charge-on-plates"],
-      ["enable-weak-plates"]
+      ["enable-super-plates"]
     ]
   },
   "template": [

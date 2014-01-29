@@ -14,8 +14,6 @@
         "controlButtons": "play_reset"
       },
       "onLoad": [
-        "set('loadedModelID','elementA');",
-        "set('selectedModelID','elementA');",
         "setLightSourceAngle(0);",
         "setLightSourceFrequency(get('lightSourceFrequency'));",
         "setLightSourceNumber(5);",
@@ -32,8 +30,6 @@
         "controlButtons": "play_reset"
       },
       "onLoad": [
-        "set('loadedModelID','elementB');",
-        "set('selectedModelID','elementB');",
         "setLightSourceAngle(0);",
         "setLightSourceFrequency(get('lightSourceFrequency'));",
         "setLightSourceNumber(5);",
@@ -50,8 +46,6 @@
         "controlButtons": "play_reset"
       },
       "onLoad": [
-        "set('loadedModelID','elementC');",
-        "set('selectedModelID','elementC');",
         "setLightSourceAngle(0);",
         "setLightSourceFrequency(get('lightSourceFrequency'));",
         "setLightSourceNumber(5);",
@@ -68,8 +62,6 @@
         "controlButtons": "play_reset"
       },
       "onLoad": [
-        "set('loadedModelID','mixture');",
-        "set('selectedModelID','mixture');",
         "setLightSourceAngle(0);",
         "setLightSourceFrequency(get('lightSourceFrequency'));",
         "setLightSourceNumber(5);",
@@ -84,19 +76,6 @@
       "name": "lightSourceFrequency",
       "initialValue": 3,
       "onChange": "setLightSourceFrequency(value);"
-    },
-    {
-      "name": "loadedModelID",
-      "initialValue": null
-    },
-    {
-      "name": "selectedModelID",
-      "initialValue": null,
-      "onChange": [
-        "if (value !== get('loadedModelID')) {",
-        "  loadModel(value, ['lightSourceFrequency', 'isLightSourceEnabled']);",
-        "}"
-      ]
     },
     {
       "name": "isLightSourceEnabled",
@@ -122,23 +101,23 @@
     {
       "type": "radio",
       "id": "select-model",
-      "property": "selectedModelID",
       "options": [
         {
           "text": "Gas A",
-          "value": "elementA"
+          "action": "loadModel('elementA', ['isLightSourceEnabled', 'lightSourceFrequency'])",
+          "selected": true
         },
         {
           "text": "Gas B",
-          "value": "elementB"
+          "action": "loadModel('elementB', ['isLightSourceEnabled', 'lightSourceFrequency'])"
         },
         {
           "text": "Gas C",
-          "value": "elementC"
+          "action": "loadModel('elementC', ['isLightSourceEnabled', 'lightSourceFrequency'])"
         },
         {
           "text": "Mixture",
-          "value": "mixture"
+          "action": "loadModel('mixture', ['isLightSourceEnabled', 'lightSourceFrequency'])"
         }
       ]
     },

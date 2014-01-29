@@ -21,6 +21,10 @@ define(function() {
         defaultValue: 1,
         unitType: "time",
         propertyChangeInvalidates: true
+      },
+      sampleBatchLength: {
+        defaultValue: 1,
+        propertyChangeInvalidates: false
       }
     },
     viewOptions: {

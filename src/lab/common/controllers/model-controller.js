@@ -194,12 +194,13 @@ define(function (require) {
         }
       } else {
         setupModel();
-        // publish model so it can be inspected at console
-        global.getModel = function() {
-          return model;
-        };
       }
     }
+
+    // publish model so it can be inspected at console
+    global.getModel = function() {
+      return model;
+    };
 
     benchmarks = new Benchmarks(controller);
     return controller;

@@ -1,4 +1,4 @@
 --reporter spec
 --require test/mocha-boilerplate
 --globals model,model_player
---compilers coffee:coffee-script
+--compilers coffee:coffee-script/register

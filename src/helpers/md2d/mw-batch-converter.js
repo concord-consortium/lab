@@ -8,7 +8,7 @@ For the moment, to run these scripts
   > convertMMLFolder()
   > createCmlJsonIndex(outputHtmlFile)
 **/
-require('coffee-script');
+require('coffee-script/register');
 
 var parseMML = require('./mml-parser').parseMML,
     mkdirp = require('mkdirp'),
