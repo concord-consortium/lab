@@ -175,12 +175,11 @@ define(function () {
   */
   DataSet.prototype.resetData = function () {
     var context = this;
+    this.properties.forEach(function (prop) {
+      context._data[prop] = [];
+    });
     if (this.initialData) {
-      this._data = $.extend(true, {}, this.initialData);
-    } else {
-      this.properties.forEach(function (prop) {
-        context._data[prop] = [];
-      });
+      $.extend(true, this._data, this.initialData);
     }
     this._trigger(DataSet.Events.DATA_RESET, this._data);
   };
@@ -279,7 +278,14 @@ define(function () {
   };
 
   DataSet.prototype.serializeData = function () {
-    return $.extend(true, {}, this._data);
+    var props = this.component.serializableProperties === "all" ?
+                this.properties : this.component.serializableProperties;
+    var result = {};
+    var context = this;
+    props.forEach(function (prop) {
+      result[prop] = $.extend(true, [], context._data[prop]);
+    });
+    return result;
   };
 
   return DataSet;

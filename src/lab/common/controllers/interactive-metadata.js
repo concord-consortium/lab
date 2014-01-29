@@ -189,6 +189,12 @@ define(function() {
       properties: {
         defaultValue: []
       },
+      serializableProperties: {
+        // You can provide a list of properties that should be serialized, e.g.:
+        // ["prop1", "prop2", "time"]
+        // or use special value "all".
+        defaultValue: "all"
+      },
       streamDataFromModel: {
         defaultValue: true
       },
