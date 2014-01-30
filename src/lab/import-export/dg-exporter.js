@@ -132,7 +132,8 @@ define(function(require) {
       this.doCommand('createCollection', {
         name: this.parentCollectionName,
         attrs: perRunColumnLabels,
-        childAttrName: 'contents'
+        childAttrName: 'contents',
+        collapseChildren: true
       });
 
       // Step 3. Create a table to be the child of the parent table; each row of the child
