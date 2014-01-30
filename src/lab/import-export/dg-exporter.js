@@ -102,8 +102,13 @@ define(function(require) {
         }
         position = this.perRunColumnLabelPositions[label];
 
-        perRunColumnLabels[position] = { name: label };
-        perRunColumnValues[position] = value;
+        if (i === 0) {
+          perRunColumnLabels[position] = { name: label, formula: "caseIndex" };
+          perRunColumnValues[position] = null;
+        } else {
+          perRunColumnLabels[position] = { name: label };
+          perRunColumnValues[position] = value;
+        }
       }
 
       // Extract list of data column labels into form needed for export (needs to be an array of

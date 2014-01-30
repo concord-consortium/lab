@@ -291,7 +291,7 @@ define(function (require) {
           component = interactivesController.getComponent(selectionComponents[i]);
           if (component && component.selectionDomain) {
             domain = component.selectionDomain();
-            if (domain != null && domain.length == 2) {
+            if (domain !== null && domain.length == 2) {
               if (min > domain[0]) {
                 min = domain[0];
               }
@@ -333,8 +333,8 @@ define(function (require) {
           });
         }
 
-        perRunPropertyLabels[0] = "Run";
-        perRunPropertyValues[0] = runNumber++;
+        perRunPropertyLabels[0] = "Row";
+        perRunPropertyValues[0] = null;
 
         for (i = 0; i < perRun.length; i++) {
           perRunPropertyLabels[i+1] = getLabelForProperty(perRun[i]);
