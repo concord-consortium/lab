@@ -153,17 +153,6 @@ define(function () {
     "Public" methods, should have associated unit tests.
   *******************************************************************/
 
-  DataSet.prototype.getDataPoint = function () {
-    var context = this;
-    var ret = {};
-
-    this._modelProperties.forEach(function (prop) {
-      ret[prop] = context._getModelProperty(prop);
-    });
-
-    return ret;
-  };
-
   DataSet.prototype.getData = function() {
     return this._data;
   };
@@ -198,14 +187,16 @@ define(function () {
   };
 
   DataSet.prototype.appendDataPoint = function (props, values) {
-    var dataPoint = $.extend(this.getDataPoint(), values);
-    var context = this;
-
     if (!props) {
       props = this._modelProperties;
     }
+    var dataPoint = {};
+    var context = this;
     props.forEach(function (prop) {
-      context._data[prop].push(dataPoint[prop]);
+      var val = values && values[prop] !== undefined ? values[prop] : context._getModelProperty(prop);
+      if (val === undefined) return;
+      dataPoint[prop] = val;
+      context._data[prop].push(val);
     });
 
     this._trigger(DataSet.Events.SAMPLE_ADDED, dataPoint);
