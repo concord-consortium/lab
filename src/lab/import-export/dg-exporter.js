@@ -102,8 +102,13 @@ define(function(require) {
         }
         position = this.perRunColumnLabelPositions[label];
 
-        perRunColumnLabels[position] = { name: label };
-        perRunColumnValues[position] = value;
+        if (i === 0) {
+          perRunColumnLabels[position] = { name: label, formula: "caseIndex" };
+          perRunColumnValues[position] = null;
+        } else {
+          perRunColumnLabels[position] = { name: label };
+          perRunColumnValues[position] = value;
+        }
       }
 
       // Extract list of data column labels into form needed for export (needs to be an array of
@@ -127,7 +132,8 @@ define(function(require) {
       this.doCommand('createCollection', {
         name: this.parentCollectionName,
         attrs: perRunColumnLabels,
-        childAttrName: 'contents'
+        childAttrName: 'contents',
+        collapseChildren: true
       });
 
       // Step 3. Create a table to be the child of the parent table; each row of the child

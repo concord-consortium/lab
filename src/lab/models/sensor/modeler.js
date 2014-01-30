@@ -1,11 +1,9 @@
-/*global define: false, d3: false $: true */
+/*global define: false, $: true */
 
 define(function(require) {
 
-  var PropertySupport      = require('common/property-support'),
+  var LabModelerMixin      = require('common/lab-modeler-mixin'),
       PropertyDescription  = require('common/property-description'),
-      RunningAverageFilter = require('cs!common/filters/running-average-filter'),
-      validator            = require('common/validator'),
       metadata             = require('./metadata'),
       sensorApplet         = require('sensor-applet'),
       unitsDefinition      = sensorApplet.unitsDefinition,
@@ -37,16 +35,11 @@ define(function(require) {
     };
 
   return function Model(initialProperties) {
-    var propertySupport = new PropertySupport({
-          types: ['mainProperty', 'viewOption', 'parameter', 'output']
-        }),
-
-        viewOptions,
-        mainProperties,
+    var labModelerMixin,
+        propertySupport,
+        dispatch,
         isStopped = true,
         needsReload = false,
-        dispatch = d3.dispatch('play', 'stop', 'tick', 'tickStart', 'willReset', 'reset', 'stepForward',
-                               'stepBack', 'seek', 'invalidation'),
         initialSensorType,
         sensorType,
         applet,
@@ -62,85 +55,7 @@ define(function(require) {
         isTaring,
         isSensorTareable,
         initialTareValue,
-        invalidatingChangeNestingLevel = 0,
-        filteredOutputs = [],
-        customSetters,
         model;
-
-    //
-    // The following function is essentially copied from MD2D modeler, and should moved to a common
-    // module
-    //
-    function defineBuiltinProperty(key, type, setter) {
-      var metadataForType,
-          descriptor,
-          propertyChangeInvalidates,
-          unitType;
-
-      if (type === 'mainProperty') {
-        metadataForType = metadata.mainProperties;
-      } else if (type === 'viewOption') {
-        metadataForType = metadata.viewOptions;
-      } else {
-        throw new Error(type + " is not a supported built-in property type");
-      }
-
-      propertyChangeInvalidates = validator.propertyChangeInvalidates(metadataForType[key]);
-
-      descriptor = {
-        type: type,
-        writable: validator.propertyIsWritable(metadataForType[key]),
-        set: setter,
-        includeInHistoryState: !!metadataForType[key].storeInTickHistory,
-        validate: function(value) {
-          return validator.validateSingleProperty(metadataForType[key], key, value, false);
-        },
-        beforeSetCallback: propertyChangeInvalidates ? invalidatingChangePreHook : undefined,
-        afterSetCallback: propertyChangeInvalidates ? invalidatingChangePostHook : undefined
-      };
-
-      unitType = metadataForType[key].unitType;
-      if (unitType) {
-        descriptor.description = new PropertyDescription(unitsDefinition, { unitType: unitType });
-      } else {
-        // A property with no units should at least have a label
-        descriptor.description = new PropertyDescription(null, {
-          label: metadataForType.label || key
-        });
-      }
-
-      propertySupport.defineProperty(key, descriptor);
-    }
-
-    function invalidatingChangePreHook() {
-      if (invalidatingChangeNestingLevel === 0) {
-        propertySupport.storeComputedProperties();
-        propertySupport.deleteComputedPropertyCachedValues();
-        propertySupport.enableCaching = false;
-      }
-      invalidatingChangeNestingLevel++;
-    }
-
-    function invalidatingChangePostHook() {
-      invalidatingChangeNestingLevel--;
-      updateFilteredOutputs();
-      if (invalidatingChangeNestingLevel === 0) {
-        propertySupport.enableCaching = true;
-        propertySupport.notifyChangedComputedProperties();
-      }
-    }
-
-    function makeInvalidatingChange(closure) {
-      invalidatingChangePreHook();
-      closure();
-      invalidatingChangePostHook();
-    }
-
-    function updateFilteredOutputs() {
-      filteredOutputs.forEach(function(output) {
-        output.addSample();
-      });
-    }
 
     function updatePropertyRange(property, min, max) {
       var descriptionHash;
@@ -171,14 +86,14 @@ define(function(require) {
         applet.remove();
       }
 
-      makeInvalidatingChange(function() {
+      model.makeInvalidatingChange(function() {
         isSensorReady = false;
         isSensorInitializing = false;
       });
     }
 
     function appendApplet() {
-      makeInvalidatingChange(function() {
+      model.makeInvalidatingChange(function() {
         isSensorInitializing = true;
       });
 
@@ -203,13 +118,13 @@ define(function(require) {
             } else {
               handleLoadingFailure("There was an unexpected error when connecting to the sensor.");
             }
-            makeInvalidatingChange(function() {
+            model.makeInvalidatingChange(function() {
               isSensorInitializing = false;
             });
             return;
           }
 
-          makeInvalidatingChange(function() {
+          model.makeInvalidatingChange(function() {
             isSensorReady = true;
             isSensorInitializing = false;
           });
@@ -274,7 +189,7 @@ define(function(require) {
             throw error;
           }
         } else {
-          makeInvalidatingChange(function() {
+          model.makeInvalidatingChange(function() {
             rawSensorValue = values[0];
             if (isTaring) {
               model.properties.tareValue = rawSensorValue;
@@ -380,11 +295,7 @@ define(function(require) {
       }
 
       didCollectData = true;
-
-      propertySupport.deleteComputedPropertyCachedValues();
-      propertySupport.notifyAllComputedProperties();
-      updateFilteredOutputs();
-
+      model.updateAllOutputProperties();
       dispatch.tick();
     }
 
@@ -405,12 +316,12 @@ define(function(require) {
               handleSensorConnectionError();
             }
           } else if (isStarted) {
-            makeInvalidatingChange(function() {
+            model.makeInvalidatingChange(function() {
               isStopped = false;
             });
             dispatch.play();
           }
-        })
+        });
       },
 
       stop: function() {
@@ -418,7 +329,7 @@ define(function(require) {
         if (applet) {
           applet.stop();
         }
-        makeInvalidatingChange(function() {
+        model.makeInvalidatingChange(function() {
           isStopped = true;
         });
         dispatch.stop();
@@ -431,7 +342,7 @@ define(function(require) {
         if (sensorPollingIntervalID != null && rawSensorValue != null) {
           model.properties.tareValue = rawSensorValue;
         } else {
-          makeInvalidatingChange(function() {
+          model.makeInvalidatingChange(function() {
             isTaring = true;
           });
         }
@@ -455,7 +366,7 @@ define(function(require) {
 
       reload: function() {
         model.stop();
-        makeInvalidatingChange(function() {
+        model.makeInvalidatingChange(function() {
           needsReload = true;
         });
       },
@@ -466,81 +377,6 @@ define(function(require) {
 
       stepCounter: function() {
         return stepCounter;
-      },
-
-      //
-      // The following are essentially copied from MD2D modeler, and should moved to a common module
-      //
-
-      addPropertiesListener: function(properties, callback) {
-        if (typeof properties === 'string') {
-          model.addObserver(properties, callback);
-        } else {
-          properties.forEach(function(property) {
-            model.addObserver(property, callback);
-          });
-        }
-      },
-
-      defineParameter: function(key, descriptionHash, setter) {
-        var descriptor = {
-              type: 'parameter',
-              includeInHistoryState: true,
-              invokeSetterAfterBulkRestore: false,
-              description: new PropertyDescription(unitsDefinition, descriptionHash),
-              beforeSetCallback: invalidatingChangePreHook,
-              afterSetCallback: invalidatingChangePostHook
-            };
-
-        // In practice, some parameters are meant only to be observed, and have no setter
-        if (setter) {
-          descriptor.set = function(value) {
-            setter.call(model, value);
-          };
-        }
-        propertySupport.defineProperty(key, descriptor);
-      },
-
-      defineOutput: function(key, descriptionHash, getter) {
-        propertySupport.defineProperty(key, {
-          type: 'output',
-          writable: false,
-          get: getter,
-          includeInHistoryState: false,
-          description: new PropertyDescription(unitsDefinition, descriptionHash)
-        });
-      },
-
-      defineFilteredOutput: function(key, description, filteredPropertyKey, type, period) {
-        var filter, initialValue;
-
-        if (type === "RunningAverage") {
-          filter = new RunningAverageFilter(period);
-        } else {
-          throw new Error("FilteredOutput: unknown filter type " + type + ".");
-        }
-
-        // Add initial sample
-        initialValue = model.properties[key];
-        if (initialValue === undefined || isNaN(Number(initialValue))) {
-          throw new Error("FilteredOutput: property is not a valid numeric value or it is undefined.");
-        }
-        filter.addSample(model.properties.time, initialValue);
-
-        filteredOutputs.push({
-          addSample: function() {
-            filter.addSample(model.properties.time, model.properties[filteredPropertyKey]);
-          }
-        });
-
-        // Extend description to contain information about filter
-        description.property = filteredPropertyKey;
-        description.type = type;
-        description.period = period;
-
-        model.defineOutput(key, description, function () {
-          return filter.calculate();
-        });
       },
 
       serialize: function () { return ""; }
@@ -554,27 +390,24 @@ define(function(require) {
     }
     window.Lab.sensor = {};
 
-    propertySupport.mixInto(model);
-
-    customSetters = {
-      sensorType: setSensorType
-    };
-
-    mainProperties = validator.validateCompleteness(metadata.mainProperties, initialProperties);
-    Object.keys(mainProperties).forEach(function(key) {
-      defineBuiltinProperty(key, 'mainProperty', customSetters[key]);
+    labModelerMixin = new LabModelerMixin({
+      metadata: metadata,
+      setters: {
+        sensorType: setSensorType
+      },
+      unitsDefinition: unitsDefinition,
+      initialProperties: initialProperties,
+      usePlaybackSupport: false
     });
-    propertySupport.setRawValues(mainProperties);
+
+    labModelerMixin.mixInto(model);
+    propertySupport = labModelerMixin.propertySupport;
+    dispatch = labModelerMixin.dispatchSupport;
+    dispatch.addEventTypes("tick", "play", "stop", "tickStart", "tickEnd");
 
     // Remember thse values so that the model can be reset properly
     initialSensorType = model.properties.sensorType;
     initialTareValue = model.properties.tareValue;
-
-    viewOptions = validator.validateCompleteness(metadata.viewOptions, initialProperties.viewOptions || {});
-    Object.keys(viewOptions).forEach(function(key) {
-      defineBuiltinProperty(key, 'viewOption');
-    });
-    propertySupport.setRawValues(viewOptions);
 
     model.defineOutput('time', {
       label: "Time",

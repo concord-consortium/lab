@@ -112,11 +112,11 @@ helpers.withIsolatedRequireJS (requirejs) ->
 
         describe "the first argument", ->
           it "should be a list of the per-run parameters followed by the per-run outputs, including labels and units", ->
-            call.args[0].should.eql ["Run", "per-run parameter (units 3)", "per-run output (units 1)"]
+            call.args[0].should.eql ["Row", "per-run parameter (units 3)", "per-run output (units 1)"]
 
         describe "the second argument", ->
           it "should be a list of per-run parameters and outputs' values", ->
-            call.args[1].should.eql [1, 10, 1]
+            call.args[1].should.eql [null, 10, 1]
 
         describe "the third argument", ->
           it "should be a list containing \"Time (ps)\", followed by per-tick parameters and outputs, including labels and units", ->
@@ -132,9 +132,9 @@ helpers.withIsolatedRequireJS (requirejs) ->
             call = dgExporter.exportData.getCall 1
 
           describe "the run number", ->
-            it "should be 2", ->
-              call.args[0][0].should.eql "Run"
-              call.args[1][0].should.eql 2
+            it "should be null", ->
+              call.args[0][0].should.eql "Row"
+              should.equal(call.args[1][0], null)
 
     describe "effect of stepping model forward/back/etc", ->
 
