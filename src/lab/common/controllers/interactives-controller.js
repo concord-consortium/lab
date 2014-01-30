@@ -46,6 +46,7 @@ define(function (require) {
         'signal-generator': require('models/signal-generator/controller'),
         'sensor':           require('models/sensor/controller'),
         'dual-sensor':      require('models/dual-sensor/controller'),
+        'labquest2':        require('models/labquest2/controller'),
         'energy2d':         require('models/energy2d/controllers/controller')
       },
 

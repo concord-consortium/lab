@@ -1,0 +1,148 @@
+{
+  "title": "LabQuest2 Sensor",
+  "publicationStatus": "draft",
+  "subtitle": "Testing the labquest2 model type",
+  "about": "",
+  "fontscale": 0.9,
+  "models": [
+    {
+      "type": "labquest2",
+      "id": "signal1",
+      "url": "models/labquest2/labquest2.json",
+      "viewOptions": {
+        "controlButtons": "reset",
+        "controlButtonStyle": "text",
+        "showClock": true
+      },
+      "onLoad": [
+        "function setGraphRange() {",
+        "  if (!get('isNewRunInProgress')) {",
+        "    syncAxisRangesToPropertyRanges('propertiesGraph');",
+        "  }",
+        "  resetGraphSelection('propertiesGraph');",
+        "}",
+        "function setButtonState() {",
+        "  setComponentDisabled('start-button', !get('isPlayable'));",
+        "  setComponentDisabled('stop-button', get('isStopped'));",
+        "  setComponentDisabled('new-run-button', !get('hasPlayed'));",
+        "  setComponentDisabled('analyze-data-button', !(get('hasPlayed') && get('isStopped') && canExportData() && isUnexportedDataPresent()));",
+        "}",
+        "onPropertyChange('isPlayable', setButtonState);",
+        "onPropertyChange('isStopped', setButtonState);",
+        "onPropertyChange('hasPlayed', setButtonState);",
+        "setButtonState();",
+        "onPropertyChange('sensorName', function() {",
+        "  if (get('sensorName') && !get('isNewRunInProgress')) {",
+        "    setGraphRange();",
+        "    setComponentDisabled('start-button', false);",
+        "  }",
+        "});",
+        "setGraphRange();"
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "isNewRunInProgress",
+      "initialValue": false
+    }
+  ],
+  "hideExportDataControl": true,
+  "components": [
+    {
+      "type": "graph",
+      "id": "propertiesGraph",
+      "title": "Sensor Reading",
+      "xlabel": "Time (s)",
+      "ymin": 0,
+      "ymax": 6,
+      "xmax": 10,
+      "xTickCount": 5,
+      "xFormatter": ".2s",
+      "yFormatter": ".2s",
+      "properties": [
+        "sensorReading"
+      ],
+      "enableSelectionButton": true,
+      "clearSelectionOnLeavingSelectMode": true,
+      "resetAxesOnReset": false
+    },
+    {
+      "type": "button",
+      "id": "start-button",
+      "text": "Start",
+      "tooltip": "Start the experiment run.",
+      "action": [
+        "start();",
+        "setComponentDisabled('start-button', true);"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "stop-button",
+      "text": "Stop",
+      "tooltip": "Stop the experiment run.",
+      "action": "stop();"
+    },
+    {
+      "type": "button",
+      "id": "new-run-button",
+      "text": "New Run",
+      "tooltip": "Set up a new experiment run.",
+      "action": [
+        "resetModel({",
+          "cause: 'new-run'",
+        "});",
+        "scrollXAxisToZero('propertiesGraph');"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "analyze-data-button",
+      "text": "Analyze Data",
+      "tooltip": "Put data from the experiment run into DataGames.",
+      "action": [
+        "exportData();",
+        "setComponentDisabled('analyze-data-button', !isUnexportedDataPresent());"
+      ]
+    }
+  ],
+  "layout": {
+    "below-model": [
+      "propertiesGraph"
+    ],
+    "container-bottom": [
+      "start-button",
+      "stop-button",
+      "analyze-data-button",
+      "new-run-button"
+    ]
+  },
+  "exports": {
+    "selectionComponents": ["propertiesGraph"],
+    "perRun": ["sensorType"],
+    "perTick": ["sensorReading"]
+  },
+  "template": [
+    {
+      "id": "below-model",
+      "top": "model.bottom",
+      "padding-top": "0.3em",
+      "bottom": "container-bottom.top",
+      "padding-bottom": "2em",
+      "width": "interactive.width",
+      "padding-right": "1em"
+    },
+    {
+      "id": "model-left",
+      "top": "model.top",
+      "right": "model.left",
+      "padding-right": "0.5em"
+    },
+    {
+      "id": "container-bottom",
+      "width": "below-model.width",
+      "bottom": "interactive.bottom"
+    }
+  ]
+}
