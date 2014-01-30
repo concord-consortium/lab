@@ -291,6 +291,7 @@ define(function () {
   };
 
   DataSet.prototype.serializeData = function () {
+    if (this.component.serializableProperties === "none") return {};
     var props = this.component.serializableProperties === "all" ?
                 this.properties : this.component.serializableProperties;
     var result = {};

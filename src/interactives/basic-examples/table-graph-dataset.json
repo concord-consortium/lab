@@ -33,7 +33,7 @@
         "displayTime",
         "totalEnergy"
       ],
-      "clearOnModelReset": false
+      "serializableProperties": "none"
     },
     {
       "name": "table-graph-dataset",
