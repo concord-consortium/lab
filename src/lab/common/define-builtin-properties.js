@@ -42,12 +42,13 @@ define(function (require) {
         afterSetCallback: propertyChangeInvalidates ? propertySupport.invalidatingChangePostHook : undefined
       };
 
+      unitType = metadataForType[key].unitType;
       descriptor.description = new PropertyDescription(unitsDefinition, {
-          unitType: metadataForType[key].unitType,
+          unitType: unitType,
           label: metadataForType[key].label || key
       });
 
-      if (descriptor.description.getUnitType() && unitsTranslation) {
+      if (unitType && unitsTranslation) {
         descriptor.beforeSetTransform = function(value) {
           return unitsTranslation.translateToModelUnits(value, unitType);
         };
