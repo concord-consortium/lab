@@ -3,9 +3,9 @@
 define(function (require) {
   // Dependencies.
   var ModelController   = require('common/controllers/model-controller'),
-      Model             = require('models/sensor/modeler'),
-      ModelContainer    = require('models/sensor/view'),
-      ScriptingAPI      = require('models/sensor/scripting-api'),
+      Model             = require('./modeler'),
+      ModelContainer    = require('./view'),
+      ScriptingAPI      = require('./scripting-api'),
       Benchmarks        = function() {};
 
   return function (modelUrl, modelOptions, interactiveController) {
