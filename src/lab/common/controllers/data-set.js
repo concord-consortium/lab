@@ -117,6 +117,9 @@ define(function () {
       if (context.clearOnModelReset) {
         context.resetData();
       }
+      if (context.streamDataFromModel) {
+        context.appendDataPoint();
+      }
     });
 
     this.properties.forEach(function (prop) {
