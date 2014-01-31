@@ -462,6 +462,7 @@ public/vendor: \
 	public/vendor/shutterbug/README.md \
 	public/vendor/shutterbug/LICENSE.md \
 	public/vendor/lab-sensor-applet-interface-dist \
+	public/vendor/sensor-labquest-2-interface/sensor-labquest-2-interface.js \
 	public/vendor/chosen/chosen.jquery.min.js \
 	public/favicon.ico
 
@@ -648,6 +649,14 @@ public/vendor/lab-sensor-applet-interface-dist: vendor/lab-sensor-applet-interfa
 	mkdir -p public/vendor/lab-sensor-applet-interface-dist
 	cp -r vendor/lab-sensor-applet-interface-dist/* public/vendor/lab-sensor-applet-interface-dist/
 
+public/vendor/sensor-labquest-2-interface/sensor-labquest-2-interface.js: \
+	public/vendor/sensor-labquest-2-interface \
+	vendor/sensor-labquest-2-interface/dist/sensor-labquest-2-interface.js
+	cp vendor/sensor-labquest-2-interface/dist/sensor-labquest-2-interface.js public/vendor/sensor-labquest-2-interface/
+
+public/vendor/sensor-labquest-2-interface:
+	mkdir -p public/vendor/sensor-labquest-2-interface
+
 public/favicon.ico:
 	cp -f src/favicon.ico public/favicon.ico
 
@@ -668,6 +677,9 @@ vendor/jquery-ui:
 	git submodule update --init --recursive
 
 vendor/lab-sensor-applet-interface-dist:
+	git submodule update --init --recursive
+
+vendor/sensor-labquest-2-interface/dist/sensor-labquest-2-interface.js:
 	git submodule update --init --recursive
 
 vendor/shutterbug:

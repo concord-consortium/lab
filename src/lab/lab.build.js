@@ -80,7 +80,8 @@
     'backbone': '../../node_modules/backbone/backbone',
     'mustache': '../../node_modules/mustache/mustache',
     'markdown': '../../node_modules/markdown/lib/markdown',
-    'sensor-applet': '../../vendor/lab-sensor-applet-interface-dist/sensor-applet-interface'
+    'sensor-applet': '../../vendor/lab-sensor-applet-interface-dist/sensor-applet-interface',
+    'labquest2-interface': '../../vendor/sensor-labquest-2-interface/dist/sensor-labquest-2-interface'
   },
 
   // Protect global namespace and call export of API.
