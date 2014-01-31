@@ -267,10 +267,6 @@ helpers.withIsolatedRequireJS (requirejs) ->
             expectedData[1].push kePoint0
 
             model.tick()
-            pePoint1 = [model.get('displayTime'), model.get('potentialEnergy')]
-            kePoint1 = [model.get('displayTime'), model.get('kineticEnergy')]
-            expectedData[0].push pePoint1
-            expectedData[1].push kePoint1
 
             model.tick()
             model.stepBack()
@@ -280,13 +276,20 @@ helpers.withIsolatedRequireJS (requirejs) ->
             grapher.reset.reset()
 
             # This should invalidate the third data point (corresponding to stepCounter == 2)
-            model.set gravitationalField: 1
-
-          it "should not call grapher.addPoints", ->
-            grapher.addPoints.callCount.should.equal 0
+            # and update second point (corresponding to stepCounter == 1). Gravitation field
+            # obviously affects potential and total energy. That's why we collect values here
+            # and not right after the first tick.
+            model.set gravitationalField: 1e-5
+            pePoint1 = [model.get('displayTime'), model.get('potentialEnergy')]
+            kePoint1 = [model.get('displayTime'), model.get('kineticEnergy')]
+            expectedData[0].push pePoint1
+            expectedData[1].push kePoint1
 
           it "should call grapher.resetPoints", ->
             grapher.resetPoints.callCount.should.equal 1
+
+          it "should call grapher.addPoints", ->
+            grapher.addPoints.callCount.should.equal 1
 
           describe "the array passed to resetPoints", ->
             newData = null
@@ -302,14 +305,20 @@ helpers.withIsolatedRequireJS (requirejs) ->
                 newData[1][0].should.eql expectedData[1][0]
 
             describe "the second element of each array", ->
-              it "should be the post-first-tick values of each of the properties", ->
-                newData[0][1].should.eql expectedData[0][1]
-                newData[1][1].should.eql expectedData[1][1]
-
-            describe "the third element of each array", ->
               it "should not exist", ->
-                newData[0].should.have.length 2
-                newData[1].should.have.length 2
+                newData[0].should.have.length 1
+                newData[1].should.have.length 1
+
+          describe "the array passed to addPoints", ->
+            newData = null
+            beforeEach ->
+              newData = grapher.addPoints.getCall(0).args[0]
+
+            describe "the element of each array", ->
+              it "should be the post-first-tick values of each of the properties", ->
+                newData[0].should.eql expectedData[0][1]
+                newData[1].should.eql expectedData[1][1]
+
 
     describe "handling of graph configuration options in component spec", ->
       grapherOptionsForComponentSpec = (componentSpec) ->
