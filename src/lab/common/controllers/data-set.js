@@ -211,7 +211,7 @@ define(function () {
     a change is made that invalidates the future data.
   */
   DataSet.prototype.removeModelDataAfterStepPointer = function () {
-    var newLength = this._model.stepCounter() + 1;
+    var newLength = this._model.stepCounter();
     var context = this;
 
     this._modelProperties.forEach(function (prop) {
@@ -221,6 +221,11 @@ define(function () {
     });
 
     this._trigger(DataSet.Events.DATA_TRUNCATED, this._data);
+
+    // Note that code above also removes point equal to step pointer! It's intentional.
+    // Now we append the last point again to be sure that it contains updated values of model
+    // properties (as invalidation in most cases is related to change of some model property).
+    context.appendDataPoint();
   };
 
   DataSet.prototype.editDataPoint = function (index, property, newValue) {
