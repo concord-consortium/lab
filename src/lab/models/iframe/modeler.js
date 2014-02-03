@@ -8,8 +8,7 @@ define(function(require) {
       PropertySupport         = require('common/property-support'),
       ParameterSupport        = require('common/parameter-support'),
       defineBuiltinProperties = require('common/define-builtin-properties'),
-      console                 = require('common/console'),
-      metadata                = require('iframe-model/metadata');
+      metadata                = require('models/iframe/metadata');
 
   return function Model(initialProperties) {
     var dispatchSupport = new DispatchSupport(),

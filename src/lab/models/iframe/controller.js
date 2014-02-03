@@ -1,10 +1,10 @@
-/*global define $ */
+/*global define */
 
 define(function (require) {
   // Dependencies.
   var ModelController   = require('common/controllers/model-controller'),
-      Model             = require('iframe-model/modeler'),
-      ModelContainer    = require('iframe-model/iframe-container'),
+      Model             = require('models/iframe/modeler'),
+      ModelContainer    = require('models/iframe/iframe-container'),
       ScriptingAPI      = function() {},
       Benchmarks        = function() {};
 
