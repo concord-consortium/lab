@@ -36,13 +36,12 @@ define(function(require) {
       });
 
       // HACK to play with properties
-      phone.addListener('propertyValue', function(values, messageData){
-        // assume it is the property we are observing
-        if(messageData.name === 'pressureProbeFiltered'){
-          model.set('pressure', values);
+      phone.addListener('propertyValue', function(content) {
+        if(content.name === 'pressureProbeFiltered'){
+          model.set('pressure', content.value);
         }
       });
-      phone.post({type: 'observe', propertyName: 'pressureProbeFiltered'});
+      phone.post('observe', 'pressureProbeFiltered');
       // END OF HACK
     }
 
@@ -81,6 +80,11 @@ define(function(require) {
         addListeners();
       },
 
+      serialize: function () {
+        // TODO: obviously it's not a real serialization.
+        return initialProperties;
+      },
+
       get iframePhone(){
         return phone;
       }
@@ -108,7 +112,7 @@ define(function(require) {
     // the playback controller assumes 'play' and 'stop' are defined even if the viewOptions
     // disable these buttons
     // the outer iframe in the interactives browser expects a 'reset', 'stepForward', 'stepBack' event type
-    dispatchSupport.addEventTypes('tick', 'play', 'stop', 'reset', 'stepForward', 'stepBack');
+    dispatchSupport.addEventTypes('tick', 'tickStart', 'play', 'stop', 'reset', 'stepForward', 'stepBack');
 
     /*
     Options for starting on property support:

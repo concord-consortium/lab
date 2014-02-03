@@ -46,7 +46,8 @@ define(function(require) {
       // this is called after the element has been added to the DOM
       // the element is not re-added to the DOM during a scriptAPI.reset()
       setup: function() {},
-      update: function() {}
+      update: function() {},
+      repaint: function() {}
     };
   };
 });
