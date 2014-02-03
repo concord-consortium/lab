@@ -2,15 +2,18 @@
   "title": "Specific Heat and Latent Heat in Condensation",
   "publicationStatus": "public",
   "subtitle": "Seeing Specific Heat and Latent Heat in a Condensation Experiment",
+  "category": "Chemistry",
+  "subCategory": "States of mater",
+  "screenshot": "http://screenshots.lab.concord.org/latentheat3.png",
   "aspectRatio": 2.1,
   "fontScale": 0.8,
   "about": [
-    "Specific heat capacitiy is the measure of the heat energy required",
+    "Specific heat capacity is the measure of the heat energy required",
     "to raise the temperature of a given quantity of a substance by one",
-    "kelvin. Latent heat of melting describes tœhe amount of heat",
+    "kelvin. Latent heat of melting describes the amount of heat",
     "required to melt a solid. When a solid is undergoing melting, the",
     "temperature basically remains constant until the entire solid is",
-    "molten. The above simulation demonstrates the specific heat and",
+    "molten. The simulation demonstrates the specific heat and",
     "the latent heat.",
     "",
     "The physical origin of latent heat is that when a system is in a",
@@ -36,39 +39,19 @@
       "id": "latentheat3$0",
       "url": "imports/legacy-mw-content/converted/student/stateofmatter/latentheat3$0.json",
       "viewOptions": {
-        "controlButtons": "play_reset_step"
+        "showClock": false,
+        "controlButtons": ""
       },
       "modelOptions": {
         "timeStep": 2.5
       },
       "onLoad": [
         "setComponentDisabled('start-cooling', false);",
-        "callEvery(200, function() {",
+        "callEvery(300, function() {",
         "  if (get('experimentRunning')) {",
-        "    var numAtoms, i, props, vx2, vy2, newVx, newVy, ratio, vXConstant, vYConstant;",
-        "    batch(function(){",
-        "      numAtoms = getNumberOfAtoms()",
-        "      for(i=0; i<numAtoms; i++){",
-        "        // The idea here is to subtract the same amount of KE from every atom, and to keep",
-        "        // the direction of the velocity the same",
-        "        props = getAtomProperties(i);",
-        "        vx2 = props.vx * props.vx;",
-        "        vy2 = props.vy * props.vy;",
-        "        if (vx2*vy2) {",
-        "          ratio = vx2/vy2;",
-        "          vXConstant = 0.000000002*ratio/(1+ratio);",
-        "          vYConstant = 0.000000002 - vXConstant;",
-        "          if(props.vx >= 0) newVx =  Math.sqrt(Math.max(0, vx2-vXConstant));",
-        "          if(props.vx < 0) newVx = - Math.sqrt(Math.max(0, vx2-vXConstant));",
-        "          if(props.vy >= 0) newVy =  Math.sqrt(Math.max(0, vy2-vYConstant));",
-        "          if(props.vy < 0) newVy = - Math.sqrt(Math.max(0, vy2-vYConstant));",
-        "          setAtomProperties(i, {vx:newVx, vy:newVy});",
-        "        }",
-        "      }",
-        "    });",
-        "    var runningTime = get('time') - get('timeExperimentStarted');",
-        "    set('experimentTime', runningTime);",
-        "    if (runningTime > 150000) stop();",
+        "    var energy_to_add = -0.35;",
+        "    addKEToAtoms(energy_to_add);",
+        "    if (get('temperatureFiltered') < 50) stop();",
         "  }",
         "});"
       ]
@@ -86,19 +69,8 @@
    ],
   "parameters": [
     {
-      "name": "timeExperimentStarted",
-      "initialValue": 0,
-      "onChange": ""
-    },
-    {
       "name": "experimentRunning",
       "initialValue": false,
-      "onChange": ""
-    },
-    {
-      "name": "experimentTime",
-      "label": "Experiment time",
-      "initialValue": 0,
       "onChange": ""
     }
   ],
@@ -131,27 +103,17 @@
       "text": "Start removing heat",
       "action": [
         "if (isStopped()) {",
-        "  setComponentDisabled('start-cooling', true);",
         "  start();",
         "}",
-        "set('timeExperimentStarted', get('time'));",
+        "setComponentDisabled('start-cooling', true);",
         "set('experimentRunning', true);"
       ]
     },
     {
       "type": "button",
-      "id": "reset-experiment",
-      "text": "Reset experiment",
-      "action": [
-        "reload();",
-        "set('experimentRunning', false);"
-      ]
-    },
-    {
-      "type": "numericOutput",
-      "id": "experiment-time",
-      "property": "experimentTime",
-      "displayValue": "return format('.1f')(value/1000)"
+      "id": "reset",
+      "text": "Reset",
+      "action": "reloadModel();"
     },
     {
       "type": "graph",
@@ -183,7 +145,7 @@
       "temperature-energy-graph"
     ],
     "bottom": [
-      "start-cooling", "reset-experiment", "experiment-time"
+      "start-cooling", "reset"
     ]
   },
   "template": [

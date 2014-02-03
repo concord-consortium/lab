@@ -34,6 +34,7 @@
   // Additional modules.
   paths: {
     'underscore': '../../vendor/underscore/underscore',
+    'lab-grapher': '../../vendor/lab-grapher/dist/lab-grapher',
     'backbone': '../../node_modules/backbone/backbone'
   },
 

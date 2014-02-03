@@ -1,13 +1,7 @@
 @import 'sass/bourbon/bourbon'
 @import 'sass/neat/neat'
 
-#responsive-content
-  @include fill-parent
-  font-size: 0.9em
-  height: 100%
-  padding: 0
-
-#interactive-container
+.lab-interactive-container
   @include fill-parent
   height: 100%
   position: relative
@@ -16,9 +10,14 @@
   &:focus
     outline: none
   // Old browsers
-  background-color: $interactive-container-background
+  background-color: lighten($interactive-container-background-gradient-destination, 5%)
   $experimental-support-for-svg: true
-  @include background-image(radial-gradient(center, ellipse cover,  $interactive-container-background 12%,$interactive-container-background-gradient-destination 100%))
+  @include background-image(radial-gradient(center, ellipse cover, $interactive-container-background 12%, $interactive-container-background-gradient-destination 100%))
+
+.lab-fastclick-container
+  @include fill-parent
+  height: 100%
+  position: relative
 
 .component-spacing
   margin: 0.3em 0.5em
@@ -74,6 +73,14 @@ body:fullscreen .fullscreen
   background-position: 0.3em 0.2em
   &:hover
     background-image: url("#{$directory}/resources/layout/cc-logo-dark.png")
+
+#interactive-reload-icon > i
+  color: #000
+  opacity: 0.5
+  &.active
+    color: #fff
+  &:hover
+    opacity: 0.9
 
 // Help system
 #banner-help

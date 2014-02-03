@@ -39,11 +39,11 @@
       "options": [
         {
           "text": "Large solid",
-          "loadModel": "largesolid"
+          "action": "loadModel('largesolid');"
         },
         {
           "text": "Small solid (half size)",
-          "loadModel": "smallsolid"
+          "action": "loadModel('smallsolid');"
         }
       ]
     },

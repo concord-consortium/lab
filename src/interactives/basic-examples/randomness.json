@@ -1,0 +1,41 @@
+{
+  "title": "Randomness Example",
+  "publicationStatus": "public",
+  "randomSeed": "explicit seed!",
+  "subtitle": "To make simulations repeatable just set *randomSeed* interactive property.",
+  "about": [
+    "Click play and observe which atoms are being marked every 7ps. Note that each time you reload",
+    "the whole page, the atom placement and marking sequence will be exactly the same.",
+    "",
+    "You can open browser console where you will see marked atoms indices.",
+    "",
+    "To restore basic behavior of Math.random() remove *randomSeed* property. However note that",
+    "even when it's not present, the single simulation will be repeatable if you use tick history to",
+    "restore previous state and click *play* button again."
+  ],
+  "models": [
+    {
+      "type": "md2d",
+      "id": "simple",
+      "model": {
+        "width": 5,
+        "height": 3
+      },
+      "onLoad": [
+        "for (var i = 0; i < 10; i++) addRandomAtom(0);",
+        "function markRandomAtom() {",
+        "  var randomIndex = Math.floor(Math.random() * 10);",
+        "  markAtoms([randomIndex]);",
+        "  console.log('random index: ' + randomIndex);",
+        "}",
+        "callEvery(7000, markRandomAtom);",
+        "markRandomAtom();"
+      ],
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "backgroundColor": "#777",
+        "atomNumbers": true
+      }
+    }
+  ]
+}

@@ -78,11 +78,11 @@ when 'production'
 else
   <<-HEREDOC
 <script src="vendor/d3/d3.js" type="text/javascript"></script>
-<script src="vendor/jquery/jquery.min.js" type="text/javascript"></script>
-<script src="vendor/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
-<script src="vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js" type="text/javascript"></script>
+<script src="vendor/jquery/jquery.js" type="text/javascript"></script>
+<script src="vendor/jquery-ui/jquery-ui.js" type="text/javascript"></script>
+<script src="vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.js" type="text/javascript"></script>
 <script src="vendor/jquery-context-menu/jquery.contextMenu.js" type="text/javascript"></script>
-<script src="vendor/jquery-selectBoxIt/jquery.selectBoxIt.min.js" type="text/javascript"></script>
+<script src="vendor/jquery-selectBoxIt/jquery.selectBoxIt.js" type="text/javascript"></script>
 <script src='vendor/tinysort/jquery.tinysort.js' type='text/javascript'></script>
   HEREDOC
 end
@@ -97,6 +97,7 @@ when 'production'
 <script src='vendor/codemirror/addon/format/formatting.js' type='text/javascript'></script>
 <script src='vendor/codemirror/addon/edit/matchbrackets.js' type='text/javascript'></script>
 <script src='vendor/codemirror/addon/edit/closebrackets.js' type='text/javascript'></script>
+<script src='vendor/chosen/chosen.jquery.min.js' type='text/javascript'></script>
   HEREDOC
 else
   <<-HEREDOC
@@ -108,6 +109,7 @@ else
 <script src='vendor/codemirror/addon/edit/matchbrackets.js' type='text/javascript'></script>
 <script src='vendor/codemirror/addon/edit/closebrackets.js' type='text/javascript'></script>
 <script src='vendor/fingerprintjs/fingerprint.min.js' type='text/javascript'></script>
+<script src='vendor/chosen/chosen.jquery.min.js' type='text/javascript'></script>
   HEREDOC
 end
 
@@ -122,21 +124,18 @@ else
   HEREDOC
 end
 
-if ENV['LAB_DISABLE_SHUTTERBUG']
-  LAB_SHUTTERBUG = ''
-  LAB_SHUTTERBUG_EMBEDDABLE = ''
-else
-  LAB_SHUTTERBUG = "<script src='shutterbug/shutterbug.js' type='text/javascript'></script>"
-  LAB_SHUTTERBUG_EMBEDDABLE = LAB_SHUTTERBUG + <<-HEREDOC
+LAB_SHUTTERBUG = <<-HEREDOC
+<script src='vendor/shutterbug/shutterbug.js' type='text/javascript'></script>
+  HEREDOC
+LAB_SHUTTERBUG_EMBEDDABLE = LAB_SHUTTERBUG + <<-HEREDOC
 <script>
   $(window).load(function () {
     if (typeof Shutterbug !== 'undefined') {
-      window.shutterbug = new Shutterbug("#responsive-content","#image_output") };
+      window.shutterbug = new Shutterbug("#interactive-container","#image_output") };
     }
   );
 </script>
   HEREDOC
-end
 
 if ENV['LAB_DISABLE_MODEL_LIST']
   LAB_MODEL_LIST = ''

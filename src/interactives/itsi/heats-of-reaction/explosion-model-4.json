@@ -1,0 +1,112 @@
+{
+  "title": "Explosion Model 4",
+  "publicationStatus": "draft",
+  "aspectRatio": 1.725,
+  "fontScale": 0.8,
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "explosion_model4$0.json",
+      "url": "imports/legacy-mw-content/converted/itsi/heats-of-reaction/explosion_model4$0.json",
+      "importedFrom": "imports/legacy-mw-content/itsi/heatv2/heat_itsi_models/explosion_model4$0.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "textBoxes": [
+          {
+            "text": "External\npressure",
+            "x": 4.08,
+            "y": 2.39,
+            "layer": 1,
+            "frame": "rounded rectangle",
+            "color": "rgb(255,255,255)",
+            "strokeColor": "rgb(255,255,255)",
+            "fontSize": 0.11,
+            "calloutPoint": [
+              2.83,
+              1.25
+            ],
+            "hostType": "RectangularObstacle",
+            "hostIndex": 0,
+            "backgroundColor": "rgb(0,0,0)",
+            "anchor": "upper-left"
+          }
+        ]
+      },
+      "modelOptions": {
+        "timeStep": 0.4,
+        "chemicalReactions": {
+          "valenceElectrons": [
+            1,
+            1,
+            6,
+            7
+          ],
+          "bondEnergy": {
+            "default": 6,
+            "1-2": 6.2,
+            "1-1": 1.4,
+            "2-2": 0,
+            "2=2": 5.16
+          },
+          "activationEnergy": {
+            "default": 0.3,
+            "1+2-2": 0.05,
+            "2+1-2": 0.11,
+            "2+1-1": 0.05,
+            "1+2-1": 0.01
+          }
+        }
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "heat-button",
+      "text": "Heat",
+      "action": "addKEToAtoms(5);"
+    },
+    {
+      "type": "button",
+      "id": "cool-button",
+      "text": "Cool",
+      "action": "addKEToAtoms(-5);"
+    },
+    {
+      "id": "ke-shading",
+      "type": "checkbox",
+      "text": "KE shading",
+      "textOn": "right",
+      "width": "auto",
+      "height": "auto",
+      "property": "keShading",
+      "disabled": false,
+      "tooltip": ""
+    },
+    {
+      "id": "show-index",
+      "type": "checkbox",
+      "text": "Show Index",
+      "textOn": "right",
+      "width": "auto",
+      "height": "auto",
+      "property": "atomNumbers",
+      "disabled": false,
+      "tooltip": ""
+    }
+  ],
+  "template": [
+    {
+      "id": "below",
+      "left": "model.left",
+      "top": "model.bottom",
+      "width": "model.width",
+      "align": "center"
+    }
+  ],
+  "layout": {
+    "below": ["heat-button","cool-button","ke-shading","show-index"]
+  }
+}

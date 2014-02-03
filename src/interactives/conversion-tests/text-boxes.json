@@ -121,6 +121,16 @@
             "layer": 1
           },
           {
+            "text": "colored border",
+            "x": 3.15,
+            "y": 2.03,
+            "fontScale": 0.7,
+            "frame": "rounded rectangle",
+            "strokeColor": "rgba(0,0,255,0.5)",
+            "backgroundColor": "rgba(32,255,32,0.2)",
+            "layer": 1
+          },
+          {
             "text": "Smaller Centered Text in Larger Frame that Wraps",
             "x": 2.4,
             "y": 1.45,

@@ -1,6 +1,8 @@
 {
-  "title": "correct-ratio-of-hydrogen-and-oxygen",
+  "title": "Correct Ratio of Hydrogen and Oxygen",
   "publicationStatus": "draft",
+  "aspectRatio": 1.725,
+  "fontScale": 0.9,
   "subtitle": "",
   "about": "",
   "models": [
@@ -10,14 +12,254 @@
       "url": "imports/legacy-mw-content/converted/itsi/stoichiometry/correct-ratio-of-hydrogen-and-oxygen$0.json",
       "importedFrom": "imports/legacy-mw-content/itsi/stoichiometry/correct-ratio-of-hydrogen-and-oxygen$0.mml",
       "viewOptions": {
-        "controlButtons": "play_reset"
-      }
+        "viewPortWidth": 3,
+        "viewPortHeight": 2,
+        "controlButtons": "play_reset",
+        "textBoxes": [
+          {
+            "text": "First choose your starting ratio of\nhydrogen to oxygen, then make a prediction\nabout how much water will be produced.",
+            "x": 0.06,
+            "y": 0.8,
+            "anchor": "upper-left",
+            "layer": 1,
+            "frame": "rounded rectangle",
+            "backgroundColor": "rgb(199,209,244)",
+            "strokeWidthEms": 0.03,
+            "strokeOpacity": 1,
+            "rotate": 0,
+            "fontSize": 0.12
+          }
+        ]
+      },
+      "modelOptions": {
+        "timeStep": 0.5,
+        "width": 3,
+        "height": 2,
+        "chemicalReactions": {
+          "valenceElectrons": [
+            1,
+            1,
+            6,
+            7
+          ],
+          "bondEnergy": {
+            "default": 6,
+            "1-2": 5.2,
+            "1-1": 4.52,
+            "2-2": 0.1,
+            "2=2": 5.16
+          },
+          "activationEnergy": {
+            "default": 0.2,
+            "1+2-2": 0.05,
+            "2+1-2": 2.51,
+            "2+1-1": 0.05,
+            "1+2-1": 2.51
+          }
+        }
+      },
+      "onLoad": [
+        "var i,idx,atoms,count,totalAtoms,",
+        "atomsDef = {",
+        "  x: [ 0.209248976263729, 0.2907510237362711, 0.6948023469265797, 0.8251976530734203, 0.981425048924553, 0.8385749510754471, 1.5075980042094141, 1.3524019957905862, 0.8247177413550096, 0.6352822586449903, 2.137387055451635, 2.3426129445483648, 1.7635778592766957, 1.7364221407233043, 1.6749205466546755, 1.8450794533453245 ],",
+        "  y: [ 0.6172232497490597, 0.7627767502509403, 1.6379772420342817, 1.7420227579657181, 0.35692374553461037, 0.4430762544653896, 1.019411586256271, 1.0805884137437287, 1.1927945669720037, 1.0272054330279963, 1.0927803164227137, 0.9472196835772863, 1.7150681117828936, 1.4649318882171065, 0.36267080158246645, 0.17732919841753358 ],",
+        "  vx: [ 0.0018020847509394775, 0.0006917245098786197, 0.0018020847509394775, 0.0006917245098786197, 0.0018020847509394775, 0.0006917245098786197, 0.0018020847509394775, 0.0006917245098786197, 0.001040698156998557, -0.0008001987081906391, 0.001040698156998557, -0.0008001987081906391, 0.001040698156998557, -0.0008001987081906391, 0.001040698156998557, -0.0008001987081906391 ],",
+        "  vy: [ -0.0004713725414495413, 0.00020743365921404907, -0.0004713725414495413, 0.00020743365921404907, -0.0004713725414495413, 0.00020743365921404907, -0.0004713725414495413, 0.00020743365921404907, 0.0004837396463587673, -0.0004159420534558525, 0.0004837396463587673, -0.0004159420534558525, 0.0004837396463587673, -0.0004159420534558525, 0.0004837396463587673, -0.0004159420534558525 ],",
+        "  element: [ 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2 ]",
+        "};",
+        "function addPair(type) {",
+        "  idx = atoms;",
+        "  if (type === 2) { idx += 8; }",
+        "  addAtom({x: atomsDef.x[idx], y: atomsDef.y[idx], vx: atomsDef.vx[idx], vy: atomsDef.vy[idx], element: atomsDef.element[idx]});",
+        "  idx++;",
+        "  idx = addAtom({x: atomsDef.x[idx], y: atomsDef.y[idx], vx: atomsDef.vx[idx], vy: atomsDef.vy[idx], element: atomsDef.element[idx]});",
+        "  atoms += 2;",
+        "  totalAtoms += 2;",
+        "  addRadialBond({atom1: totalAtoms-2, atom2: totalAtoms-1, strength: 200, type: 101, length: (type === 2 ? 0.2520000100135803 : 0.1680000066757202)});",
+        "}",
+        "function setupPairs() {",
+        "  if (getNumberOfTextBoxes() > 0) { removeTextBox(0); }",
+        "  for (i = getNumberOfAtoms()-1; i >= 0; i--) { removeAtom(i); }",
+        "  totalAtoms = 0;",
+        "  atoms = 0;",
+        "  count = get('h2');",
+        "  for (i = 0; i < count; i++) {",
+        "    addPair(1);",
+        "  }",
+        "  count = get('o2');",
+        "  atoms = 0;",
+        "  for (i = 0; i < count; i++) {",
+        "    addPair(2);",
+        "  }",
+        "}",
+        "onPropertyChange('h2', setupPairs);",
+        "onPropertyChange('o2', setupPairs);"
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "h2",
+      "initialValue": 0
+    },
+    {
+      "name": "o2",
+      "initialValue": 0
+    },
+    {
+      "name": "h2o",
+      "initialValue": 0
     }
   ],
   "components": [
+    {
+      "type": "text",
+      "id": "overview",
+      "text": "![H2 + O2 -> H2O](/imports/legacy-mw-content/itsi/stoichiometry/waterEquationFlat.png)"
+    },
+    {
+      "type": "text",
+      "id": "part1",
+      "text": "![H2](/imports/legacy-mw-content/itsi/stoichiometry/h2.png)"
+    },
+    {
+      "type": "text",
+      "id": "part2",
+      "text": "![O2](/imports/legacy-mw-content/itsi/stoichiometry/o2.png)"
+    },
+    {
+      "type": "text",
+      "id": "part3",
+      "text": "![H2O](/imports/legacy-mw-content/itsi/stoichiometry/h20.png)"
+    },
+    {
+      "type": "pulldown",
+      "id": "h-pulldown",
+      "property": "h2",
+      "label": "",
+      "labelOn": "top",
+      "options": [
+        {
+          "text": "0",
+          "value": 0
+        },
+        {
+          "text": "1",
+          "value": 1
+        },
+        {
+          "text": "2",
+          "value": 2
+        },
+        {
+          "text": "3",
+          "value": 3
+        },
+        {
+          "text": "4",
+          "value": 4
+        }
+      ]
+    },
+    {
+      "type": "pulldown",
+      "id": "o-pulldown",
+      "property": "o2",
+      "label": "",
+      "labelOn": "top",
+      "options": [
+        {
+          "text": "0",
+          "value": 0
+        },
+        {
+          "text": "1",
+          "value": 1
+        },
+        {
+          "text": "2",
+          "value": 2
+        },
+        {
+          "text": "3",
+          "value": 3
+        },
+        {
+          "text": "4",
+          "value": 4
+        }
+      ]
+    },
+    {
+      "type": "pulldown",
+      "id": "h2o-pulldown",
+      "property": "h2o",
+      "label": "",
+      "labelOn": "top",
+      "options": [
+        {
+          "text": "0",
+          "value": 0
+        },
+        {
+          "text": "1",
+          "value": 1
+        },
+        {
+          "text": "2",
+          "value": 2
+        },
+        {
+          "text": "3",
+          "value": 3
+        },
+        {
+          "text": "4",
+          "value": 4
+        },
+        {
+          "text": "5",
+          "value": 5
+        },
+        {
+          "text": "6",
+          "value": 6
+        },
+        {
+          "text": "7",
+          "value": 7
+        },
+        {
+          "text": "8",
+          "value": 8
+        },
+        {
+          "text": "9",
+          "value": 9
+        }
+      ]
+    }
+  ],
+  "template": [
+    {
+      "id": "right",
+      "right": "interactive.right",
+      "top": "model.top + model.height/3",
+      "height": "4.5em",
+      "width": "16em",
+      "padding-right": "0.5em",
+      "align": "right"
+    },
+    {
+      "id": "below",
+      "left": "model.left",
+      "top": "model.bottom",
+      "height": "2em",
+      "align": "center"
+    }
   ],
   "layout": {
-    "bottom": [
-    ]
+    "right": ["overview"],
+    "below": ["h-pulldown","part1","o-pulldown","part2","h2o-pulldown","part3"]
   }
 }

@@ -11,7 +11,6 @@ $logo-color-light: rgba(248, 212, 136, 1.0)
 @import 'sass/bourbon/bourbon'
 @import url('molecules-view.css')
 @import 'sass/neat/neat'
-@import 'sass/lab/lab'
 
 #iframe-wrapper
   border: none
@@ -85,6 +84,11 @@ $logo-color-light: rgba(248, 212, 136, 1.0)
       background-color: darken($header-background-color2, 15%)
       &:hover
         background-color: darken($header-background-color2, 25%)
+  .chosen-container
+    color: initial
+    font-weight: initial
+    .chosen-results
+      max-height: 300px !important
 
 #interactive-header
   width: 95%

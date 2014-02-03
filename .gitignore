@@ -13,6 +13,7 @@
 npm-debug.log
 /test/*.html
 /config/config.yml
+/vendor/shutterbug
 
 # system-generated files
 .DS_Store

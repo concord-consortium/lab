@@ -1,7 +1,7 @@
 helpers = require '../../helpers'
 helpers.setupBrowserEnvironment()
 
-Model = requirejs 'md2d/models/modeler'
+Model = requirejs 'models/md2d/models/modeler'
 
 describe "MD2D modeler with Quantum Dynamics plugin", ->
   model = null

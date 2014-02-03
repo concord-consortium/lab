@@ -1,0 +1,138 @@
+{
+  "title": "Excited Electrons",
+  "publicationStatus": "public",
+  "subtitle": "Investigate how an electron becomes excited.",
+  "category": "Physics",
+  "subCategory": "Light and sound",
+  "screenshot": "http://screenshots.lab.concord.org/excited-states-and-photons-page-2.png",
+  "about": [
+    "An atom's electrons have energy, but they are restricted to very specific energy levels. If an electron has the lowest possible energy ",
+    "it is considered to be in the **ground state**. An electron is called **excited** if it has higher energy than the ground state. In this ",
+    "model an excited electron is shown by a yellow halo around the atom.",
+    "",
+    "**How does an electron become excited?** Try colliding the atoms together at different velocities. Do electrons always get excited? Where ",
+    "does the energy come from when electrons go from the ground state to an excited state?"
+  ],
+  "aspectRatio": 1.75,
+  "models": [
+    {
+      "type": "md2d",
+      "id": "quantum-collision",
+      "url": "imports/legacy-mw-content/converted/sam-activities/light-matter/excited-states-and-photons/page2$0.json",
+      "viewOptions": {
+        "controlButtons": "play_reset_step",
+        "showClock": false,
+        "showVelocityVectors": false
+      },
+      "onLoad": [
+        "unfreeze('initialVelocityInMKS')",
+        "onPropertyChange('initialVelocityInMKS', function() {",
+        "  var vx = get('initialVelocity');",
+        "  var vxInMKS = get('initialVelocityInMKS');",
+        "  set('initialVelocity', vx);",
+        "  setTextBoxProperties(0,{text: 'initial speed = ' + vxInMKS + ' m/s'});",
+        "});",
+        "onStart(function() {",
+        "  freeze('initialVelocityInMKS');",
+        "});"
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "initialVelocity",
+      "unitType": "velocity",
+      "onChange": "setAtomProperties(1, { vx: value });",
+      "initialValue": 0
+    },
+    {
+      "name": "initialVelocityInMKS",
+      "onChange": "set('initialVelocity', get('initialVelocityInMKS') * 1e-6);",
+      "initialValue": 500
+    }
+  ],
+  "components": [
+    {
+      "type": "slider",
+      "id": "v-slider",
+      "min": 0,
+      "max": 2500,
+      "labels": [
+        {
+          "value": 0,
+          "label": "0"
+        },
+        {
+          "value": 500,
+          "label": "500"
+        },
+        {
+          "value": 1000,
+          "label": "1000"
+        },
+        {
+          "value": 1500,
+          "label": "1500"
+        },
+        {
+          "value": 2000,
+          "label": "2000"
+        },
+        {
+          "value": 2500,
+          "label": "2500"
+        }
+      ],
+      "steps": 25,
+      "title": "Initial speed of the blue atom (m/s)",
+      "displayValue": "return format('f')(value)",
+      "property": "initialVelocityInMKS",
+      "width": "18em"
+    },
+    {
+      "type": "graph",
+      "id": "graph",
+      "title": "Kinetic Energy of the System",
+      "xlabel": "Model time (fs)",
+      "ylabel": "Kinetic energy (eV)",
+      "ymin": 0,
+      "ymax": 2,
+      "xmax": 10,
+      "xTickCount": 5,
+      "yTickCount": 5,
+      "xFormatter": ".2s",
+      "yFormatter": ".2s",
+      "properties": [
+        "kineticEnergy"
+      ]
+    }
+  ],
+  "layout": {
+    "right": [
+      "graph"
+    ],
+    "bottom": [
+      "v-slider"
+    ]
+  },
+  "template": [
+    {
+      "id": "right",
+      "top": "model.top",
+      "left": "model.right",
+      "height": "model.height",
+      "padding-left": "1em",
+      "padding-right": "0.5em",
+      "width": "model.width",
+      "min-width": "6em"
+    },
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "left": "model.left",
+      "width": "interactive.width",
+      "padding-top": "0.5em",
+      "align": "center"
+    }
+  ]
+}

@@ -43,16 +43,18 @@ define(function (require) {
       };
 
       unitType = metadataForType[key].unitType;
-      if (unitType) {
-        descriptor.description = new PropertyDescription(unitsDefinition, { unitType: unitType });
-        if (unitsTranslation) {
-          descriptor.beforeSetTransform = function(value) {
-            return unitsTranslation.translateToModelUnits(value, unitType);
-          };
-          descriptor.afterGetTransform = function(value) {
-            return unitsTranslation.translateFromModelUnits(value, unitType);
-          };
-        }
+      descriptor.description = new PropertyDescription(unitsDefinition, {
+          unitType: unitType,
+          label: metadataForType[key].label || key
+      });
+
+      if (unitType && unitsTranslation) {
+        descriptor.beforeSetTransform = function(value) {
+          return unitsTranslation.translateToModelUnits(value, unitType);
+        };
+        descriptor.afterGetTransform = function(value) {
+          return unitsTranslation.translateFromModelUnits(value, unitType);
+        };
       }
 
       propertySupport.defineProperty(key, descriptor);

@@ -1,0 +1,29 @@
+<svg width="175" height="100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g>
+    <title>Charges</title>
+    <defs>
+      <linearGradient id="grad1" y2="0" x2="100%" y1="0" x1="0%">
+        <stop stop-color="rgb(255,0,0)" offset="0%"/>
+        <stop stop-color="rgb(255,255,255)" offset="41.08%"/>
+        <stop stop-color="rgb(0,0,255)" offset="100%"/>
+      </linearGradient>
+      <linearGradient id="grad2" y2="0" x2="100%" y1="0" x1="0%">
+        <stop stop-color="rgb(0,0,255)" offset="0%"/>
+        <stop stop-color="rgb(255,255,255)" offset="41.08%"/>
+        <stop stop-color="rgb(255,0,0)" offset="100%"/>
+      </linearGradient>
+      <clipPath id="field">
+        <ellipse id="field_1" ry="31.32" rx="38.68" cy="50" cx="57.50" stroke="#000000"/>
+        <ellipse id="field_2" ry="45.92" rx="53.29" cy="50" cx="117.50" stroke="#000000"/>
+      </clipPath>
+      <clipPath id="field_outline">
+        <ellipse id="field_1_outline" ry="31.82" rx="39.18" cy="50" cx="57.50" stroke="#000000"/>
+        <ellipse id="field_2_outline" ry="46.42" rx="53.79" cy="50" cx="117.50" stroke="#000000"/>
+      </clipPath>
+    </defs>
+    <rect id="bg_field_outline" x="-46.38" y="0" width="282.37" height="100" clip-path="url(#field_outline)" fill="#000000"/>
+    <rect id="bg_gradient" x="-46.38" y="0" width="282.37" height="100" clip-path="url(#field)" fill="url(#grad2)"/>
+    <ellipse id="atom_1" ry="5" rx="5" cy="50" cx="49" fill="#999999"/>
+    <ellipse id="atom_2" ry="5" rx="5" cy="50" cx="126" fill="#999999"/>
+  </g>
+</svg>

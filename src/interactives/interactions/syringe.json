@@ -1,8 +1,15 @@
 {
   "title": "Gas Pressure in a Syringe",
-  "publicationStatus": "draft",
-  "subtitle": "",
-  "about": "",
+  "publicationStatus": "public",
+  "subtitle": "Explore the particulate model of gasses.",
+  "about": [
+    "Why is it hard to pull back on a capped syringe, and why does the plunger move back in if you let go? ",
+    "Why can you compress a capped syringe that has air in it, but you can only compress it to a certain point? ",
+    "Why is there a sound as you press or pull on an open syringe?",
+    "",
+    "Use this simulation and match it to the behavior of a real one if you can."
+  ],
+  "aspectRatio": 1.31625,
   "models": [
     {
       "type": "md2d",
@@ -10,15 +17,35 @@
       "url": "imports/legacy-mw-content/converted/interactions/syringe/syringe$0.json",
       "importedFrom": "imports/legacy-mw-content/interactions/syringe/syringe$0.mml",
       "viewOptions": {
-        "controlButtons": "play_reset"
+        "controlButtons": "",
+        "imageMapping": {
+          "plunger.png": "plunger.svg",
+          "nail.png": "nail.svg"
+        }
       },
       "onLoad": [
+        "setImageProperties(0,{imageX: 10});",
         "start();",
         "var indexPlunger = get('index-plunger'),",
         "    minX = get('plunger-min'),",
         "    maxX = get('plunger-max'),",
         "    timeStepsPerTick = get('timeStepsPerTick');",
         "setObstacleProperties(indexPlunger,{mass: 9999999999});",
+        "setObstacleProperties(indexPlunger,{friction: 0.005});",
+        "// make sure there aren't any hidden atoms waiting to get kicked out",
+        "var moleculesInside = getAtomsWithinShape(1),",
+        "    props,",
+        "    w = get('width'),",
+        "    h = get('height'),",
+        "    xNew;",
+        "while (moleculesInside.length > 0) {",
+        "  xNew = 0.1 + Math.random() * (w - 0.2);",
+        "  while(xNew >= 1.32 && xNew < 1.72) {",
+        "    xNew = 0.1 + Math.random() * (w - 0.2);",
+        "  }",
+        "  setAtomProperties(moleculesInside[0], {x: xNew, vx: 0, vy: 0, ax: 0, ay: 0}, true);",
+        "  moleculesInside = getAtomsWithinShape(1);",
+        "}",
         "callEvery(timeStepsPerTick,function(){",
         "  var prop = getObstacleProperties(indexPlunger);",
         "  if (prop.x < minX) {",
@@ -56,39 +83,48 @@
     {
       "type": "button",
       "id": "plunger-pull-out",
-      "text": "Plunger ⇥ ",
+      "text": "Pull plunger out ⇥",
+      "width": "14em",
       "action": [
-        "setObstacleProperties(get('index-plunger'), {externalAx: 0.0000005, mass: 2500});"
+        "setImageProperties(0,{imageX: 10});",
+        "setObstacleProperties(get('index-plunger'), {externalAx: 0.0000005, mass: 5000});"
       ]
     },
     {
       "type": "button",
       "id": "plunger-push-in",
-      "text": "⇤ Plunger",
+      "text": "Push plunger in ⇤",
+      "width": "14em",
       "action": [
-        "setObstacleProperties(get('index-plunger'), {externalAx: -0.0000005, mass: 2500});"
+        "setImageProperties(0,{imageX: 10});",
+        "setObstacleProperties(get('index-plunger'), {externalAx: -0.0000005, mass: 5000});"
       ]
     },
     {
       "type": "button",
       "id": "plunger-lock",
-      "text": "Lock plunger ⇎",
+      "text": "Lock plunger in place ⇎",
+      "width": "14em",
       "action": [
-        "setObstacleProperties(get('index-plunger'), {externalAx: 0, vx: 0, mass: 999999999});"
+        "setObstacleProperties(get('index-plunger'), {externalAx: 0, vx: 0, mass: 999999999});",
+        "setImageProperties(0,{imageX: 3.1});"
       ]
     },
     {
       "type": "button",
       "id": "plunger-release",
       "text": "Release plunger ⬄",
+      "width": "14em",
       "action": [
-        "setObstacleProperties(get('index-plunger'), {externalAx: 0, vx: 0, mass: 2500});"
+        "setObstacleProperties(get('index-plunger'), {externalAx: 0, vx: 0, mass: 5000});",
+        "setImageProperties(0,{imageX: 10});"
       ]
     },
     {
       "type": "button",
       "id": "plug-remove",
       "text": "Remove stopper",
+      "width": "10em",
       "action": [
         "setShapeProperties(get('index-plug'), {y: -10});",
         "set('notPlugged',true);"
@@ -98,14 +134,20 @@
       "type": "button",
       "id": "plug-add",
       "text": "Add stopper",
+      "width": "10em",
       "action": [
         "if (get('notPlugged')) {",
         "  var moleculesInside = getAtomsWithinShape(1),",
         "      props,",
         "      w = get('width'),",
-        "      h = get('height');",
+        "      h = get('height'),",
+        "      xNew;",
         "  while (moleculesInside.length > 0) {",
-        "    setAtomProperties(moleculesInside[0], {x: 0.1 + Math.random() * (w-0.2)});",
+        "    xNew = 0.1 + Math.random() * (w - 0.2);",
+        "    while(xNew >= 1.32 && xNew < 1.72) {",
+        "      xNew = 0.1 + Math.random() * (w - 0.2);",
+        "    }",
+        "    setAtomProperties(moleculesInside[0], {x: xNew, vx: 0, vy: 0, ax: 0, ay: 0}, true);",
         "    moleculesInside = getAtomsWithinShape(1);",
         "  }",
         "}",
@@ -116,8 +158,18 @@
   ],
   "layout": {
     "bottom": [
-      ["plunger-push-in", "plunger-pull-out", "plunger-lock", "plunger-release"],
-      ["plug-remove","plug-add"]
+      ["plunger-push-in", "plunger-lock"],
+      ["plunger-pull-out", "plunger-release"],
+      ["plug-remove", "plug-add"]
     ]
-  }
+  },
+  "template": [
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "left": "model.left",
+      "width": "model.width",
+      "align": "center"
+    }
+  ]
 }

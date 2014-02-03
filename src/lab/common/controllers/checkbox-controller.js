@@ -8,7 +8,7 @@ define(function () {
 
   return function CheckboxController(component, interactivesController) {
     var propertyName,
-        onClickScript,
+        actionScript,
         initialValue,
         $checkbox,
         $fakeCheckable,
@@ -41,6 +41,10 @@ define(function () {
       }
     }
 
+    function getCheckboxState() {
+      return $checkbox.prop('checked');
+    }
+
     function customClickEvent (e) {
       e.preventDefault();
 
@@ -59,7 +63,7 @@ define(function () {
     // Validate component definition, use validated copy of the properties.
     component = validator.validateCompleteness(metadata.checkbox, component);
     propertyName  = component.property;
-    onClickScript = component.onClick;
+    actionScript = component.action;
     initialValue  = component.initialValue;
 
     $label = $('<label>').append('<span>' + component.text + '</span>');
@@ -87,10 +91,10 @@ define(function () {
     $element.addClass("component");
 
     // Ensure that custom div (used for styling) is clickable.
-    $fakeCheckable.on('touchstart click', customClickEvent);
+    $fakeCheckable.on('click', customClickEvent);
     // Label also requires custom event handler to ensure that click updates
     // fake clickable element too.
-    $label.on('touchstart click', customClickEvent);
+    $label.on('click', customClickEvent);
 
     // Custom dimensions.
     $element.css({
@@ -99,9 +103,9 @@ define(function () {
     });
 
     // Process onClick script if it is defined.
-    if (onClickScript) {
+    if (actionScript) {
       // Create a function which assumes we pass it a parameter called 'value'.
-      onClickScript = scriptingAPI.makeFunctionInScriptContext('value', onClickScript);
+      actionScript = scriptingAPI.makeFunctionInScriptContext('value', actionScript);
     }
 
     // Register handler for change event.
@@ -121,13 +125,18 @@ define(function () {
       }
       // Finally, if checkbox has onClick script attached,
       // call it in script context with checkbox status passed.
-      if (onClickScript !== undefined) {
-        onClickScript(value);
+      if (actionScript !== undefined) {
+        actionScript(value);
       }
     });
 
     if (component.tooltip) {
       $element.attr("title", component.tooltip);
+    }
+
+    // Set initial value if provided.
+    if (initialValue !== undefined) {
+      setCheckbox(initialValue);
     }
 
     // Public API
@@ -141,11 +150,6 @@ define(function () {
         model = interactivesController.getModel();
         scriptingAPI = interactivesController.getScriptingAPI();
 
-        onClickScript = component.onClick;
-        if (onClickScript) {
-          onClickScript = scriptingAPI.makeFunctionInScriptContext('value', onClickScript);
-        }
-
         // Connect checkbox with model's property if its name is defined.
         if (propertyName !== undefined) {
           // Register listener for 'propertyName'.
@@ -153,10 +157,6 @@ define(function () {
           model.addPropertyDescriptionObserver(propertyName, updateCheckboxDisabledState);
           // Perform initial checkbox setup.
           updateCheckbox();
-        }
-        else if (initialValue !== undefined) {
-          setCheckbox(initialValue);
-          if (onClickScript) onClickScript(initialValue);
         }
       },
 

@@ -5,12 +5,12 @@
   "aspectRatio": 2.1,
   "fontScale": 0.8,
   "about": [
-    "Specific heat capacitiy is the measure of the heat energy required",
+    "Specific heat capacity is the measure of the heat energy required",
     "to raise the temperature of a given quantity of a substance by one",
-    "kelvin. Latent heat of melting describes tœhe amount of heat",
+    "kelvin. Latent heat of melting describes the amount of heat",
     "required to melt a solid. When a solid is undergoing melting, the",
     "temperature basically remains constant until the entire solid is",
-    "molten. The above simulation demonstrates the specific heat and",
+    "molten. The simulation demonstrates the specific heat and",
     "the latent heat.",
     "",
     "The physical origin of latent heat is that when a system is in a",
@@ -106,7 +106,7 @@
       "max": 75,
       "labels": 0,
       "barWidth": "1.5em",
-      "title": "Kinetic Energy",
+      "title": "Kinetic energy",
       "property": "kineticEnergy",
       "averagePeriod": 2500
     },
@@ -117,7 +117,7 @@
       "max": 0,
       "labels": 0,
       "barWidth": "1.5em",
-      "title": "Potential Energy",
+      "title": "Potential energy",
       "property": "potentialEnergy",
       "averagePeriod": 2500
     },
@@ -139,7 +139,7 @@
       "id": "reset-experiment",
       "text": "Reset experiment",
       "action": [
-        "reload();",
+        "reloadModel();",
         "set('experimentRunning', false);"
       ]
     },

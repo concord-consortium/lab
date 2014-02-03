@@ -1,6 +1,9 @@
 {
   "title": "Protein Folding",
   "publicationStatus": "public",
+  "category": "Biology",
+  "subCategory": "Molecular biology",
+  "screenshot": "http://screenshots.lab.concord.org/5-amino-acids.png",
   "subtitle": "How do peptides fold into stable conformations?",
   "fontScale": 0.6,
   "about": [
@@ -17,6 +20,13 @@
       }
     }
   ],
+  "parameters": [
+    {
+      "name": "solvent",
+      "initialValue": "water",
+      "onChange": "setSolvent(value);"
+    }
+  ],
   "components": [
     {
       "type": "checkbox",
@@ -27,6 +37,7 @@
     {
       "type": "pulldown",
       "id": "select-solvent",
+      "property": "solvent",
       "options": [
         {
           "text": "Select the solvent type",
@@ -35,21 +46,22 @@
         },
         {
           "text": "Vacuum",
-          "action": "setSolvent('vacuum');"
+          "value": "vacuum"
         },
         {
           "text": "Oil",
-          "action": "setSolvent('oil');"
+          "value": "oil"
         },
         {
           "text": "Water",
-          "action": "setSolvent('water');"
+          "value": "water"
         }
       ]
     },
     {
       "type": "pulldown",
       "id": "select-color-scheme",
+      "property": "aminoAcidColorScheme",
       "options": [
         {
           "text": "Select the color scheme for the amino acids",
@@ -58,19 +70,19 @@
         },
         {
           "text": "None",
-          "action": "set({aminoAcidColorScheme: 'none'});"
+          "value": "none"
         },
         {
           "text": "Charge",
-          "action": "set({aminoAcidColorScheme: 'charge'});"
+          "value": "charge"
         },
         {
           "text": "Hydrophobicity",
-          "action": "set({aminoAcidColorScheme: 'hydrophobicity'});"
+          "value": "hydrophobicity"
         },
         {
           "text": "Charge and hydrophobicity",
-          "action": "set({aminoAcidColorScheme: 'chargeAndHydro'});"
+          "value": "chargeAndHydro"
         }
       ]
     },

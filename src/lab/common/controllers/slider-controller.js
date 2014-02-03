@@ -27,7 +27,7 @@ define(function () {
         // Make sure that this function is only called when:
         // a) model is loaded,
         // b) slider is bound to some property.
-        updateSlider = function  () {
+        updateSlider = function () {
           var value = interactivesController.getModel().get(propertyName);
           $slider.slider('value', value);
           if (displayValue) {
@@ -131,6 +131,11 @@ define(function () {
 
       disablable(controller, component);
 
+      // Prevent keyboard control of slider from stepping the model backwards and forwards
+      $sliderHandle.on('keydown.slider-handle', function(event) {
+          event.stopPropagation();
+      });
+
       // Apply custom width and height settings.
       // Also not that we set dimensions of the most outer container, not slider.
       // Slider itself will always follow dimensions of container DIV.
@@ -147,6 +152,14 @@ define(function () {
       }
       // Call resize function to support complex resizing when height is different from "auto".
       controller.resize();
+
+      // Finally set the initial value if it's provided.
+      if (initialValue !== undefined && initialValue !== null) {
+        $slider.slider('value', initialValue);
+        if (displayValue) {
+          $sliderHandle.text(displayFunc(initialValue));
+        }
+      }
     }
 
     // Public API.
@@ -166,17 +179,7 @@ define(function () {
 
         bindTargets();
 
-        if (initialValue !== undefined && initialValue !== null) {
-          // Make sure to call the action with the startup value of slider. (The script action may
-          // manipulate the model, so we have to make sure it runs after the model loads.)
-          if (actionFunc) {
-            $slider.slider('value', initialValue);
-            actionFunc(initialValue);
-            if (displayValue) {
-              $sliderHandle.text(displayFunc(initialValue));
-            }
-          }
-        } else if (propertyName) {
+        if (propertyName) {
           updateSlider();
         }
       },

@@ -1,12 +1,12 @@
 define(function() {
 
-  return function TableView(opts) {
-
-    var id          = opts.id,
+  return function TableView(opts, tableController) {
+    var api,
+        id          = opts.id,
         columns     = opts.columns,
         formatters  = opts.formatters,
         visibleRows = opts.visibleRows,
-        tableData   = opts.tableData,
+        blankRow    = opts.showBlankRow,
         title       = opts.title,
         width       = opts.width,
         height      = opts.height,
@@ -29,10 +29,31 @@ define(function() {
       $titlerow.find('th').remove("th");
       for(i = 0; i < columns.length; i++) {
         $th = $('<th>');
-        $th.text(columns[i]);
+        $th.text(columns[i].name);
         $th.click(columnSort);
         $titlerow.append($th);
       }
+    }
+
+    function setFormattedData($td, datum, colIdx) {
+      if (typeof datum !== "undefined" && datum !== null) {
+        if(typeof datum === "string") {
+          $td.text(datum);
+        } else if(typeof datum === "number") {
+          $td.text(formatters[colIdx](datum));
+        }
+      } else {
+        $td.html("&nbsp;");
+      }
+    }
+
+    function formatNumericValues() {
+      $tbody.find('td').html(function() {
+        var $td = $(this);
+        var datum = $td.data('datum');
+        var colIdx = $td.data('index');
+        setFormattedData($td, datum, colIdx);
+      });
     }
 
     function columnSort(e) {
@@ -41,6 +62,9 @@ define(function() {
           descending = "desc",
           sortOrder;
 
+      // Remove blank row and setup it again after storting to ensure that it's always at the end
+      // of the table.
+      removeBlankRow();
       sortOrder = ascending;
       if ($title.hasClass(ascending)) {
         $title.removeClass(ascending);
@@ -70,16 +94,17 @@ define(function() {
         }
       );
       $title.addClass("sorted");
+      setupBlankRow();
       e.preventDefault();
     }
 
     function alignColumnWidths() {
       headerWidths = $thead.find('tr:first th').map(function() {
-        return $(this).width();
+        return $(this).outerWidth();
       });
 
       $tbody.find('tr:first td').each(function(i) {
-        $(this).width(headerWidths[i]);
+        $(this).outerWidth(headerWidths[i]);
       });
     }
 
@@ -95,6 +120,7 @@ define(function() {
 
     function getRowVisiblity($tr) {
       var p = $tr.position();
+      if (!p || !tbodyPos) return 0;
       if (p.top < tbodyPos.top) return -1;
       if (p.top > tbodyHeight) return 1;
       return 0;
@@ -114,9 +140,6 @@ define(function() {
         selected.push(rowIndex);
         $tr = getRowByIndex(rowIndex);
         $tr.addClass('selected');
-        var v = getRowVisiblity($tr);
-        if (v === -1) $tr[0].scrollIntoView(true);
-        if (v === 1) $tr[0].scrollIntoView();
         return $tr;
       }
     }
@@ -151,55 +174,75 @@ define(function() {
       selected = [];
     }
 
-    function appendDataRow(rowData, index) {
+    function appendSingleRow(rowData, index) {
       var i, datum, $tr, $td;
       $tr = $('<tr class="data">');
       $($tr).data('index', index);
-      for(i = 0; i < rowData.length; i++) {
+      for(i = 0; i < columns.length; i++) {
         $td = $('<td>');
+        $($td).data('index', i);
         datum = rowData[i];
-        if(typeof datum === "string") {
-          $td.text(datum);
-        } else if(typeof datum === "number") {
-          $td.text(formatters[i](datum));
-        }
+        $td.data('datum', datum);
+        setFormattedData($td, datum, i);
         $tr.append($td);
       }
       $tbody.append($tr);
-      if (tableData.length < 2) {
+      if ($tbody.find("tr").length < 2) {
         alignColumnWidths();
       }
-      $tr[0].scrollIntoView();
-      clearSelection();
-      addSelection(index);
     }
 
-    function removeDataRow(index) {
-      var $tr = $($tbody.find('tr')).filter(function() { return $(this).data("index") === index; });
-      $tr.remove();
+    function removeBlankRow() {
+      $tbody.find(".blank").remove();
+    }
+
+    function setupBlankRow() {
+      // Remove old blank row and add new one.
+      removeBlankRow();
+      if (!blankRow) return;
+      var index = $tbody.find("tr").length;
+      var i, $tr, $td;
+      $tr = $('<tr class="data blank">');
+      $($tr).data('index', index);
+      for(i = 0; i < columns.length; i++) {
+        $td = $('<td>');
+        $($td).data('index', i);
+        $td.html("&nbsp;");
+        $tr.append($td);
+      }
+      $tbody.append($tr);
+      if ($tbody.find("tr").length < 2) {
+        alignColumnWidths();
+      }
+    }
+
+    function scrollToBottom() {
+      // Dummy, big number will cause that we will always scroll maximally to the bottom.
+      $tbody.scrollTop(99999999);
     }
 
     function replaceDataRow(rowData, index) {
+      var datum;
+
+      if ($tbody.find('tr').length === 0) {
+        api.appendDataRow(rowData, index);
+        return;
+      }
+
       var $tr = $($tbody.find('tr')).filter(function() {
             return $(this).data("index") === index;
           }),
           $dataElements = $($tr).find('td'),
           dataElementCount = $dataElements.length,
-          i;
+          $td, i;
 
       for (i = 0; i < rowData.length; i++) {
         if (i < dataElementCount) {
-          $($dataElements[i]).text(formatters[i](rowData[i]));
+          $td = $($dataElements[i]);
+          datum = rowData[i];
+          $td.data('datum', datum);
+          setFormattedData($td, datum, i);
         }
-      }
-    }
-
-    function renderTableData() {
-      var i, rowData, $tr, $td;
-      $tbody.find('.data').remove();
-      if (!tableData) { return; }
-      for(i = 0; i < tableData.length; i++) {
-        appendDataRow(tableData[i], i);
       }
     }
 
@@ -208,19 +251,85 @@ define(function() {
       tbodyHeight = $tbody.height();
     }
 
-    return {
+    function commitEditing() {
+      var $input = $tbody.find('input');
+
+      $input.each(function() {
+        var $td = $(this).parent(),
+            rowIndex = $td.parent().data('index'),
+            colIndex = $td.data('index'),
+            val = $(this).val();
+
+        if (!isNaN(parseFloat(val)) && isFinite(val)) {
+          val = parseFloat(val);
+        }
+        tableController.addDataToCell(rowIndex, colIndex, val);
+        $td.empty().html(val);
+      });
+
+      alignColumnWidths();
+      calculateSizeAndPosition();
+    }
+
+    function startEditing(rowIndex, colIndex) {
+      var $td = $(getRowByIndex(rowIndex).find('td')[colIndex]),
+          $oldInputs = $tbody.find('input'),
+          data,
+          $input,
+          nextColIndex;
+
+      if (!$td || (!columns[colIndex].editable) || ($td.find('input').length)) {
+        return;
+      }
+
+      if ($oldInputs.length) {
+        commitEditing();
+      }
+
+      data   = tableController.getDataInCell(rowIndex, colIndex);
+      $input = $('<input class="editor-text">').val(data);
+
+      $td.empty().append($input);
+
+      alignColumnWidths();
+
+      $input.bind('keydown', function(e) {
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if(code === 13) {        // Enter
+          commitEditing();
+        } else if (code === 9){  // Tab
+          commitEditing();
+          // find and select next available cell
+          nextColIndex = colIndex;
+          while (++nextColIndex < columns.length) {
+            if (columns[nextColIndex].editable) {
+              startEditing(rowIndex, nextColIndex);
+              break;
+            }
+          }
+        }
+        e.stopPropagation();
+      });
+
+      $input.on('blur', commitEditing);
+
+      setTimeout(function(){
+        $input.focus();
+      }, 0);
+    }
+
+    api = {
       render: function() {
-        var i, j, rowData, $title, $tr, $th, $td;
+        var i, $title;
         $el = $('<div>');
         $table = $('<table>');
         $tbody = $('<tbody>');
-        $titlerow  = $('<tr class="header">');
+        $titlerow = $('<tr class="header">');
         $thead = $('<thead>').append($titlerow);
         $table
           .append($thead)
           .append($tbody);
         renderColumnTitles();
-        renderTableData();
         $tableWrapper = $('<div>')
           .addClass("table-wrapper")
           .append($table);
@@ -254,6 +363,13 @@ define(function() {
             fillSelection();
           }
         });
+        $tbody.delegate("td", "click", function(e) {
+          var $td      = $(e.currentTarget),
+              rowIndex = $td.parent().data('index'),
+              colIndex = $td.data('index');
+
+          startEditing(rowIndex, colIndex);
+        });
         calculateSizeAndPosition();
         return $el;
       },
@@ -267,9 +383,33 @@ define(function() {
         calculateSizeAndPosition();
       },
 
-      appendDataRow: appendDataRow,
+      clear: function () {
+        $tbody.find('.data').remove();
+      },
 
-      removeDataRow: removeDataRow,
+      appendDataRow: function (rowData, index) {
+        appendSingleRow(rowData, index);
+        setupBlankRow();
+        scrollToBottom();
+      },
+
+      appendDataRows: function (rows, startIndex) {
+        var index = startIndex;
+        rows.forEach(function (row) {
+          appendSingleRow(row, index++);
+        });
+        setupBlankRow();
+        scrollToBottom();
+      },
+
+      removeDataRows: function (startIdx) {
+        var $tr = $tbody.find('tr').filter(function() {
+          var idx = $(this).data("index");
+          return idx >= startIdx;
+        });
+        $tr.remove();
+        setupBlankRow();
+      },
 
       replaceDataRow: replaceDataRow,
 
@@ -280,14 +420,14 @@ define(function() {
       updateTable: function(opts) {
         columns     = opts.columns || columns;
         formatters  = opts.formatters || formatters;
-        tableData   = opts.tableData || tableData;
         renderColumnTitles();
-        renderTableData();
+        formatNumericValues();
         alignColumnWidths();
         calculateSizeAndPosition();
       }
-
     };
+
+    return api;
   };
 });
 

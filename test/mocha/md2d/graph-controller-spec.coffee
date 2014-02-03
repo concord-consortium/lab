@@ -13,14 +13,17 @@ helpers.withIsolatedRequireJS (requirejs) ->
       updateOrRescale: sinon.spy()
       reset:           sinon.spy()
       repaint:         sinon.spy()
+      xLabel:          sinon.spy()
+      yLabel:          sinon.spy()
 
-  requirejs.define 'grapher/core/graph', [], ->
+  requirejs.define 'lab-grapher', [], ->
     # Just a function that calls through to mock.Graph, while allowing mock.Graph to
     # be replaced with a stub or spy at any time.
     (-> mock.Graph(arguments...))
 
   GraphController = requirejs 'common/controllers/graph-controller'
-  Model           = requirejs 'md2d/models/modeler'
+  Model           = requirejs 'models/md2d/models/modeler'
+  DataSet         = requirejs 'common/controllers/data-set'
 
   class MockInteractivesController
     constructor: () ->
@@ -53,6 +56,8 @@ helpers.withIsolatedRequireJS (requirejs) ->
       @model.willReset()
       @model.reset()
       @modelResetCallbacks.forEach (cb) -> cb(opts.cause)
+
+    addDataSet: (ds, priv) ->
 
   loadModel = ->
     model = new Model simpleModel
@@ -145,6 +150,8 @@ helpers.withIsolatedRequireJS (requirejs) ->
         grapher = null
         beforeEach ->
           sinon.spy mock, 'Graph'
+          # In normal environment dataSet.modelLoadedCallback is called by interactives controller.
+          controller.getDataSet().modelLoadedCallback()
           controller.modelLoadedCallback()
           grapher = mock.Graph.returnValues[0]
         afterEach ->
@@ -260,10 +267,6 @@ helpers.withIsolatedRequireJS (requirejs) ->
             expectedData[1].push kePoint0
 
             model.tick()
-            pePoint1 = [model.get('displayTime'), model.get('potentialEnergy')]
-            kePoint1 = [model.get('displayTime'), model.get('kineticEnergy')]
-            expectedData[0].push pePoint1
-            expectedData[1].push kePoint1
 
             model.tick()
             model.stepBack()
@@ -273,13 +276,20 @@ helpers.withIsolatedRequireJS (requirejs) ->
             grapher.reset.reset()
 
             # This should invalidate the third data point (corresponding to stepCounter == 2)
-            model.set gravitationalField: 1
-
-          it "should not call grapher.addPoints", ->
-            grapher.addPoints.callCount.should.equal 0
+            # and update second point (corresponding to stepCounter == 1). Gravitation field
+            # obviously affects potential and total energy. That's why we collect values here
+            # and not right after the first tick.
+            model.set gravitationalField: 1e-5
+            pePoint1 = [model.get('displayTime'), model.get('potentialEnergy')]
+            kePoint1 = [model.get('displayTime'), model.get('kineticEnergy')]
+            expectedData[0].push pePoint1
+            expectedData[1].push kePoint1
 
           it "should call grapher.resetPoints", ->
             grapher.resetPoints.callCount.should.equal 1
+
+          it "should call grapher.addPoints", ->
+            grapher.addPoints.callCount.should.equal 1
 
           describe "the array passed to resetPoints", ->
             newData = null
@@ -295,14 +305,19 @@ helpers.withIsolatedRequireJS (requirejs) ->
                 newData[1][0].should.eql expectedData[1][0]
 
             describe "the second element of each array", ->
-              it "should be the post-first-tick values of each of the properties", ->
-                newData[0][1].should.eql expectedData[0][1]
-                newData[1][1].should.eql expectedData[1][1]
-
-            describe "the third element of each array", ->
               it "should not exist", ->
-                newData[0].should.have.length 2
-                newData[1].should.have.length 2
+                newData[0].should.have.length 1
+                newData[1].should.have.length 1
+
+          describe "the array passed to addPoints", ->
+            newData = null
+            beforeEach ->
+              newData = grapher.addPoints.getCall(0).args[0]
+
+            describe "the element of each array", ->
+              it "should be the post-first-tick values of each of the properties", ->
+                newData[0].should.eql expectedData[0][1]
+                newData[1].should.eql expectedData[1][1]
 
 
     describe "handling of graph configuration options in component spec", ->
@@ -331,6 +346,12 @@ helpers.withIsolatedRequireJS (requirejs) ->
       it "should respect the component spec property 'xlabel'", ->
         shouldSendComponentSpecPropertyToGrapherOption 'xlabel', 'xlabel'
 
+      it "should have a default value for 'ylabel'", ->
+        grapherOptionsForComponentSpec(getComponentSpec()).should.have.property 'ylabel'
+
+      it "should respect the component spec property 'ylabel'", ->
+        shouldSendComponentSpecPropertyToGrapherOption 'ylabel', 'ylabel'
+
       it "should have a default value for 'xmin'", ->
         grapherOptionsForComponentSpec(getComponentSpec()).should.have.property 'xmin'
 
@@ -342,12 +363,6 @@ helpers.withIsolatedRequireJS (requirejs) ->
 
       it "should respect the component spec property 'xmax'", ->
         shouldSendComponentSpecPropertyToGrapherOption 'xmax', 'xmax'
-
-      it "should have a default value for 'ylabel'", ->
-        grapherOptionsForComponentSpec(getComponentSpec()).should.have.property 'ylabel'
-
-      it "should respect the component spec property 'ylabel'", ->
-        shouldSendComponentSpecPropertyToGrapherOption 'ylabel', 'ylabel'
 
       it "should have a default value for 'ymin'", ->
         grapherOptionsForComponentSpec(getComponentSpec()).should.have.property 'ymin'

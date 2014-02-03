@@ -61,23 +61,23 @@
       "options": [
         {
           "text": "Select an antibody shape",
-          "loadModel": "page8$0"
+          "action": "loadModel('page8$0');"
         },
         {
           "text": "shape1",
-          "loadModel": "antibodyDesign1"
+          "action": "loadModel('antibodyDesign1');"
         },
         {
           "text": "shape2",
-          "loadModel": "antibodyDesign2"
+          "action": "loadModel('antibodyDesign2');"
         },
         {
           "text": "shape3",
-          "loadModel": "antibodyDesign3"
+          "action": "loadModel('antibodyDesign3');"
         },
         {
           "text": "shape4",
-          "loadModel": "antibodyDesign4"
+          "action": "loadModel('antibodyDesign4');"
         }
       ]
     }

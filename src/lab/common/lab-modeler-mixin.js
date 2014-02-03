@@ -23,6 +23,9 @@ define(function (require) {
         initialProperties = args.initialProperties,
         tickHistory       = args.tickHistory,
 
+        // defaults to true:
+        usePlaybackSupport = args.usePlaybackSupport === undefined || !!args.usePlaybackSupport,
+
         propertySupport = new PropertySupport({
           types: ["output", "parameter", "mainProperty", "viewOption"]
         }),
@@ -36,10 +39,14 @@ define(function (require) {
           tickHistory: tickHistory
         }),
         dispatchSupport = new DispatchSupport(),
-        playbackSupport = new PlaybackSupport({
-          dispatch: dispatchSupport,
-          properties: propertySupport.properties
-        });
+        playbackSupport;
+
+        if (usePlaybackSupport) {
+          playbackSupport = new PlaybackSupport({
+            dispatch: dispatchSupport,
+            propertySupport: propertySupport
+          });
+        }
 
     // Is the model setup complete, so the model is ready to be played and record to tick history?
     // "Naked" models are ready upon instantation, but in an interactive, a model shouldn't record
@@ -57,7 +64,10 @@ define(function (require) {
         parameterSupport.mixInto(target);
         outputSupport.mixInto(target);
         dispatchSupport.mixInto(target);
-        playbackSupport.mixInto(target);
+
+        if (playbackSupport) {
+          playbackSupport.mixInto(target);
+        }
 
         // This allows external code (such as the model controller) to trigger the model's
         // willReset event. This allows observers such as the export controller to observe model

@@ -1,85 +1,140 @@
 /*global define, $*/
 
 define(function (require) {
-  var metadata  = require('common/controllers/interactive-metadata'),
-      validator = require('common/validator'),
-      TableView = require('common/views/table-view'),
+  var metadata    = require('common/controllers/interactive-metadata'),
+      validator     = require('common/validator'),
+      TableView     = require('common/views/table-view'),
+      ListeningPool = require('common/listening-pool'),
+      DataSet       = require('common/controllers/data-set'),
       tableControllerCount = 0;
 
   return function TableController(component, interactivesController) {
         // Public API.
     var controller,
         model,
+        dataSet,
+        listeningPool,
         view,
         $element,
         rowIndex,
         columns,
         formatters,
-        tableData,
         headerData,
+        properties,
         namespace = "tableController" + (++tableControllerCount);
 
     function initialize() {
-      var parent = interactivesController.interactiveContainer;
+      var parent = interactivesController.interactiveContainer,
+          i;
 
       model = interactivesController.getModel();
 
       // Validate component definition, use validated copy of the properties.
       component = validator.validateCompleteness(metadata.table, component);
 
+      properties = component.propertyColumns.slice();
+      // dataTable has object-based properties, which dataSet doesn't support yet
+      for (i = 0; i < properties.length; i++) {
+        if (properties[i].name) {
+          properties[i] = properties[i].name;
+        }
+      }
+
+      listeningPool = new ListeningPool(namespace);
+      loadDataSet();
+
       generateColumnTitlesAndFormatters();
       rowIndex = 0;
-      tableData = $.extend(true, [], component.tableData);
       headerData = $.extend(true, [], component.headerData);
 
       view = new TableView({
         id: component.id,
         title: component.title,
         columns: columns,
-        tableData: tableData,
         formatters: formatters,
         visibleRows: component.visibleRows,
+        showBlankRow: component.showBlankRow,
         width: component.width,
         height: component.height,
         tooltip: component.tooltip,
         klasses: [ "interactive-table", "component" ]
-      });
+      }, controller);
 
       $element = view.render(parent);
+
+      // This will load serialized data (passed as "initialData") into the data set if available.
+      // Otherwise data set will be just cleared. It will also call dataResetHandler(), so view
+      // will be immediately updated.
+      dataSet.resetData();
+    }
+
+    function loadDataSet () {
+      // Get public data set (if its name is provided) or create own, private data set that will
+      // be used only by this table.
+      dataSet = component.dataSet ? interactivesController.getDataSet(component.dataSet) :
+                                    new DataSet({
+                                      name: component.id + "-autoDataSet",
+                                      properties: properties.slice(),
+                                      xProperty: component.xProperty,
+                                      initialData: component.tableData,
+                                      streamDataFromModel: component.streamDataFromModel,
+                                      clearOnModelReset: component.clearOnModelReset
+                                    }, interactivesController, true);
+
+      // Register DataSet listeners.
+      listeningPool.listen(dataSet, DataSet.Events.SAMPLE_ADDED, sampleAddedHandler);
+      listeningPool.listen(dataSet, DataSet.Events.SAMPLE_CHANGED, sampleChangedHandler);
+      listeningPool.listen(dataSet, DataSet.Events.DATA_RESET, dataResetHandler);
+      listeningPool.listen(dataSet, DataSet.Events.DATA_TRUNCATED, dataTruncatedHandler);
+      listeningPool.listen(dataSet, DataSet.Events.SELECTION_CHANGED, selectionChangedHandler);
     }
 
     function generateColumnTitlesAndFormatters() {
-      var i, propertyName, propertyDescription, propertyTitle, unitAbrev;
+      var i, propertyName, columnDesc, propertyDescription, propertyTitle, unitAbrev;
+      var editable, format;
 
       columns = [];
       formatters = [];
 
       if (component.indexColumn) {
-        columns.push("#");
+        columns.push({name: "#", editable: false});
         formatters.push(d3.format("f"));
       }
 
       for(i = 0; i < component.propertyColumns.length; i++) {
-        if (typeof model !== 'undefined') {
-          propertyName = component.propertyColumns[i];
-          propertyDescription = model.getPropertyDescription(propertyName);
-          if (propertyDescription) {
-            propertyTitle = propertyDescription.getLabel();
-            unitAbrev = propertyDescription.getUnitAbbreviation();
-            if (unitAbrev) {
-              propertyTitle += ' (' + unitAbrev + ')';
-            }
-            columns.push(propertyTitle);
-            // formatters.push(propertyDescription.format);
-            formatters.push(d3.format('.3r'));
-          } else {
-            columns.push(component.propertyColumns[i]);
-            formatters.push(d3.format('.3r'));
-          }
+        propertyTitle = null;
+        editable = false;
+        format = '.3r';
+
+        if (typeof component.propertyColumns[i] === "string") {
+          columnDesc = {name: component.propertyColumns[i]};
         } else {
-          columns.push(component.propertyColumns[i]);
-          formatters.push(d3.format('.3r'));
+          columnDesc = component.propertyColumns[i];
         }
+
+        if (typeof model !== 'undefined') {
+          propertyName = columnDesc.name;
+          if (model.properties.hasOwnProperty(propertyName)) {
+            propertyDescription = model.getPropertyDescription(propertyName);
+            if (propertyDescription) {
+              propertyTitle = propertyDescription.getLabel();
+              unitAbrev = propertyDescription.getUnitAbbreviation();
+              if (unitAbrev) {
+                propertyTitle += ' (' + unitAbrev + ')';
+              }
+            }
+          }
+        }
+        if (!propertyTitle) {
+          propertyTitle = columnDesc.name;
+          if (columnDesc.units) {
+            propertyTitle += ' (' + columnDesc.units + ')';
+          }
+          editable = columnDesc.hasOwnProperty("editable") ? columnDesc.editable : true;
+          format = columnDesc.hasOwnProperty("format") ? columnDesc.format : format;
+        }
+        columns.push({name: propertyTitle, editable: editable});
+        formatters.push(d3.format(format));
       }
     }
 
@@ -87,73 +142,117 @@ define(function (require) {
       generateColumnTitlesAndFormatters();
       view.updateTable({
         columns: columns,
-        formatters: formatters,
-        tableData: tableData
+        formatters: formatters
       });
     }
 
     function appendPropertyRow() {
-      var i, rowData = [];
-      rowIndex++;
-      if (component.indexColumn) {
-        rowData.push(rowIndex);
-      }
-      for(i = 0; i < component.propertyColumns.length; i++) {
-        rowData.push(model.get(component.propertyColumns[i]));
-      }
-      tableData.push(rowData);
-      view.appendDataRow(rowData, rowIndex);
+      dataSet.appendDataPoint();
     }
 
-    function replacePropertyRow() {
-      var i, rowData = [];
-      if (component.indexColumn) {
-        rowData.push(rowIndex);
-      }
-      for(i = 0; i < component.propertyColumns.length; i++) {
-        rowData.push(model.get(component.propertyColumns[i]));
-      }
-      if (tableData.length === 0) {
-        tableData.push(rowData);
-        view.appendDataRow(rowData, rowIndex);
+    function selectionChangedHandler(evt) {
+      var activeRow = evt.data;
+      if (component.addNewRows) {
+        view.clearSelection();
+        view.addSelection(activeRow);
       } else {
-        tableData[tableData.length-1] = rowData;
-        view.replaceDataRow(rowData, rowIndex);
+        var data = dataSet.getData();
+        view.replaceDataRow(nthRow(data, activeRow), 0);
       }
     }
 
-    /**
-      Removes all data from the table that correspond to steps following
-      the current step pointer.
-      This is used when a change is made that invalidates the future data.
-    */
-    function removeDataAfterStepPointer() {
-      var ptr = model.stepCounter();
-      if (tableData.length > ptr-1) {
-        tableData.length = ptr;
-        rowIndex = ptr;
-        updateTable();
+    function data2row(dataPoint, index) {
+      var dataRow = [];
+      if (component.indexColumn) {
+        if (index == null) {
+          index = rowIndex;
+        }
+        dataRow.push(index);
+      }
+      properties.forEach(function (prop) {
+        dataRow.push(dataPoint[prop]);
+      });
+      return dataRow;
+    }
+
+    function nthRow(data, index) {
+      var dataRow = [];
+      if (component.indexColumn) {
+        dataRow.push(index);
+      }
+      properties.forEach(function (prop) {
+        dataRow.push(data[prop][index]);
+      });
+      return dataRow;
+    }
+
+    function isEmpty(row) {
+      for (var i = component.indexColumn ? 1 : 0, len = row.length; i < len; i++) {
+        if (row[i] != null) return false;
+      }
+      return true;
+    }
+
+    function handleNewDataRow(dataPoint) {
+      var dataRow = data2row(dataPoint);
+      if (isEmpty(dataRow)) return;
+      if (component.addNewRows) {
+        view.appendDataRow(dataRow, rowIndex);
+        rowIndex++;
+      } else {
+        view.replaceDataRow(dataRow, 0);
+        rowIndex++;
       }
     }
 
-    /**
-      Causes the table to move the "current" pointer to the current model step.
-      This desaturates the table region corresponding to times after the current point.
-    */
-    function redrawCurrentStepPointer() {
-      view.clearSelection();
-      view.addSelection(model.stepCounter()+1);
+    function sampleAddedHandler(evt) {
+      handleNewDataRow(evt.data);
+    }
+
+    function sampleChangedHandler(evt) {
+      var rowIndex = evt.data.index;
+      var dataRow = data2row(evt.data.dataPoint, rowIndex);
+      if (component.addNewRows) {
+        view.replaceDataRow(dataRow, rowIndex);
+      } else {
+        view.replaceDataRow(dataRow, 0);
+      }
+    }
+
+    function dataResetHandler(evt) {
+      var data = evt.data;
+      var length = dataSet.maxLength(properties);
+      var dataRow;
+
+      if (component.addNewRows) {
+        var dataRows = [];
+        rowIndex = 0;
+        for (; rowIndex < length; rowIndex++) {
+          dataRows.push(nthRow(data, rowIndex));
+        }
+        view.clear();
+        view.appendDataRows(dataRows, 0);
+      } else {
+        dataRow = nthRow(data, length - 1);
+        view.replaceDataRow(dataRow, 0);
+        rowIndex = length;
+      }
+    }
+
+    function dataTruncatedHandler(evt) {
+      var dataLength = dataSet.maxLength(properties);
+      rowIndex = dataLength;
+      if (component.addNewRows) {
+        view.removeDataRows(dataLength);
+      } else {
+        view.replaceDataRow(nthRow(evt.data, dataLength - 1), 0);
+      }
     }
 
     function registerModelListeners() {
-      // Namespace listeners to '.tableController' so we can eventually remove them all at once
-      model.on('tick.'+namespace, function () {
-        if (component.addNewRows) {
-          appendPropertyRow();
-        } else {
-          replacePropertyRow();
-        }
-      });
+      /** -- Old methods not yet converted to new dataset
+
+      Probably they shouldn't be converted at all. It's data set responsibility.
 
       model.on('stepBack.'+namespace, redrawCurrentStepPointer);
       model.on('stepForward.'+namespace, redrawCurrentStepPointer);
@@ -166,16 +265,8 @@ define(function (require) {
       model.on('invalidation.'+namespace, function() {
         replacePropertyRow();
       });
-      model.on('reset.'+namespace, modelResetHandler);
-    }
 
-    function modelResetHandler() {
-      if (component.clearDataOnReset) {
-        tableData = $.extend(true, [], component.tableData);
-        headerData = $.extend(true, [], component.headerData);
-        rowIndex = 0;
-        updateTable();
-      }
+      **/
     }
 
     // Public API.
@@ -185,13 +276,8 @@ define(function (require) {
       */
       modelLoadedCallback: function() {
         model = interactivesController.getModel();
-        tableData = $.extend(true, [], component.tableData);
-        headerData = $.extend(true, [], component.headerData);
-        rowIndex = 0;
+        registerModelListeners();
         updateTable();
-        if (component.streamDataFromModel) {
-          registerModelListeners();
-        }
       },
 
       resize: function () {
@@ -199,20 +285,12 @@ define(function (require) {
       },
 
       getData: function(propArray) {
-        var i, row, index, j, result = [], rowResult;
-        for(i = 0; i < tableData.length; i++) {
-          row = tableData[i];
-          rowResult = [];
-          for(j = 0; j < propArray.length; j++) {
-            index = component.propertyColumns.indexOf(propArray[j]);
-            if(component.indexColumn) {
-              index++;
-            }
-            rowResult.push(row[index]);
-          }
-          result.push(rowResult);
-        }
-        return [result];
+        var data = dataSet.getData();
+        var result = {};
+        propArray.forEach(function (prop) {
+          result[prop] = data[prop];
+        });
+        return result;
       },
 
       /**
@@ -220,9 +298,37 @@ define(function (require) {
       */
       appendDataPropertiesToComponent: appendPropertyRow,
 
+      addDataToCell: function (row, col, val) {
+        // Index column is purely stored by view, it isn't present in DataSet.
+        if (component.indexColumn) col--;
+        var property = properties[col];
+
+        if (row === rowIndex) {
+          // Extend table when new non-empty data is added to "nonexistent" (in data model) row.
+          if (val === "") return;
+          var values = {};
+          values[property] = val;
+          dataSet.appendDataPoint(properties, values);
+          return;
+        }
+        dataSet.editDataPoint(row, property, val);
+      },
+
+      getDataInCell: function (rowIndex, colIndex) {
+        // Index column is purely stored by view, it isn't present in DataSet.
+        if (component.indexColumn) colIndex--;
+        var property = properties[colIndex];
+        return  dataSet.getPropertyValue(rowIndex, property);
+      },
+
       // Returns view container.
       getViewContainer: function () {
         return $element;
+      },
+
+      // Returns the view object.
+      getView: function() {
+        return view;
       },
 
       // Returns serialized component definition.
@@ -231,7 +337,11 @@ define(function (require) {
         var result = $.extend(true, {}, component);
         // add headerData and tableData
         result.headerData = columns;
-        result.tableData = tableData;
+        if (!component.dataSet) {
+          // Include data directly in component definition only when no external data set is
+          // referenced by table. When some external data set is used, it will serialize data.
+          result.tableData = dataSet.serializeData();
+        }
         return result;
       }
     };

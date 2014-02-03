@@ -103,19 +103,19 @@
       "options": [
         {
           "text": "Select a pair of molecules",
-          "loadModel": "instructions"
+          "action": "loadModel('instructions');"
         },
         {
           "text": "Pull apart two non-polar molecules",
-          "loadModel": "npPulling"
+          "action": "loadModel('npPulling');"
         },
         {
           "text": "Pull apart two polar molecules",
-          "loadModel": "polarPulling"
+          "action": "loadModel('polarPulling');"
         },
         {
           "text": "Pull apart a non-polar and polar molecules",
-          "loadModel": "polarNpPulling"
+          "action": "loadModel('polarNpPulling');"
         }
       ]
     },
@@ -123,7 +123,7 @@
       "type": "button",
       "id": "reset",
       "text": "Reset",
-      "action": "reload();"
+      "action": "reloadModel();"
     }
   ]
 }

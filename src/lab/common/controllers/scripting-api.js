@@ -6,6 +6,41 @@ define(function (require) {
   var alert = require('common/alert');
   var namespaceCount = 0;
 
+  // This object is the outer context in which each script function is executed. This prevents at
+  // least inadvertent reliance by the script on unintentinally exposed globals. Note that this
+  // object is shared by the all instances of functions created in Scripting API context
+  // (see makeFunctionInScriptContext).
+  var shadowedGlobals = {};
+
+  function errorForKey(key) {
+    return function() {
+      throw new ReferenceError(key + " is not defined");
+    };
+  }
+
+  // Make shadowedGlobals contain keys for all globals (properties of 'window').
+  // Also make set and get of any such property throw a ReferenceError exactly like
+  // reading or writing an undeclared variable in strict mode.
+  function setShadowedGlobals() {
+    var keys = Object.getOwnPropertyNames(window),
+        key,
+        i,
+        len,
+        err;
+
+    for (i = 0, len = keys.length; i < len; i++) {
+      key = keys[i];
+      if (!shadowedGlobals.hasOwnProperty(key)) {
+        err = errorForKey(key);
+
+        Object.defineProperty(shadowedGlobals, key, {
+          set: err,
+          get: err
+        });
+      }
+    }
+  }
+
   //
   // Define the scripting API used by 'action' scripts on interactive elements.
   //
@@ -15,8 +50,7 @@ define(function (require) {
   // script context; and scripts are run in strict mode so they don't
   // accidentally expose or read globals.
   //
-  return function ScriptingAPI (interactivesController) {
-    var model;
+  return function ScriptingAPI (interactivesController, model) {
 
     // Note. Normally, scripting API methods should not create event listeners to be added to the
     // interactivesController, because doing so from an onLoad script results in adding a new event
@@ -96,7 +130,6 @@ define(function (require) {
         }
 
         return {
-
           isInteger: isInteger,
           isArray: isArray,
           randomInteger: randomInteger,
@@ -127,9 +160,13 @@ define(function (require) {
             return model.unfreeze.apply(model, arguments);
           },
 
-          loadModel: function loadModel(modelId) {
+          // optional 'parameters' list of values to pass into the loaded model
+          //
+          // TODO remove optional parameter list when interactives have parameters that
+          //      exist beyond model loading
+          loadModel: function loadModel(modelId, parameters) {
             model.stop();
-            interactivesController.loadModel(modelId, null);
+            interactivesController.loadModel(modelId, null, parameters);
           },
 
           getLoadedModelId: function getLoadedModel() {
@@ -155,8 +192,9 @@ define(function (require) {
            * e.g. callAt(23, ...) in MD2D model context will be executed at time 50,
            * if timeStepsPerTick = 50 and timeStep = 1.
            *
-           * callAt action will only occur the first time the model reaches the specified time,
-           * but not after the model is scrubbed forward and backward (using tick history).
+           * callAt action will occur when the model reaches the specified time and the simulation
+           * is running at the moment. Note that just stepping forward and backward in time won't
+           * trigger action again, but if you step back and start the simulation, then it will.
            *
            * @param  {number} time     Time defined in model native time unit (e.g. fs for MD2D).
            * @param  {function} action Function containing user-defined script.
@@ -178,7 +216,17 @@ define(function (require) {
               model.removeObserver('time', checkTime);
             }
 
+            function onStartHandler() {
+              // This callback handles situation in which user moved back in time using tick
+              // history and clicked play again. Setup checking again. Note that startChecking()
+              // is idempotent so we can call it many times.
+              if (model.properties.time < time) {
+                startChecking();
+              }
+            }
+
             onModelReset(startChecking);
+            this.onStart(onStartHandler);
             startChecking();
           },
 
@@ -194,8 +242,9 @@ define(function (require) {
            * if timeStepsPerTick = 50 and timeStep = 1.
            *
            * callEvery action for time N * interval (for any integer N >= 1) will only be called
-           * the first time the model time exceeds N * interval time. After the model is scrubbed
-           * forward and backward using (using tick history), action *won't* be called again.
+           * when the model time exceeds N * interval time. Note that just stepping forward and
+           * backward in time won't trigger action again, but if you step back and start the
+           * simulation, then it will.
            *
            * @param {number}   interval Interval on how often to execute the script,
            *                            defined in model native time unit (e.g. fs for MD2D).
@@ -215,13 +264,22 @@ define(function (require) {
               lastCall = 0;
             }
 
+            function onStartHandler() {
+              // This callback handles situation in which user moved back in time using tick
+              // history and clicked play again.
+              while (lastCall > model.properties.time) {
+                lastCall -= interval;
+              }
+            }
+
             model.addObserver('time', checkTime);
             onModelReset(resetState);
+            this.onStart(onStartHandler);
           },
 
           /**
            * Sets a custom click handler for objects of a given type.
-           * Basic type which is always supported is "plot". It is empty
+           * Basic type which is always supported is "background". It is empty
            * area of a model. Various models can support different clickable
            * types. Please see the model documentation to check what
            * other object types are supported.
@@ -231,7 +289,7 @@ define(function (require) {
            * object and try to use it.
            *
            * MD2D specific notes:
-           * Supported types: "plot", "atom", "obstacle", "image", "textBox".
+           * Supported types: "background", "atom", "obstacle", "image", "textBox".
            * TODO: move it to MD2D related docs in the future.
            *
            * @param {string}   type    Name of the type of clickable objects.
@@ -293,6 +351,21 @@ define(function (require) {
           },
 
           /**
+            Clears data set completely.
+           */
+          clearDataSet: function clearDataSet(name) {
+            interactivesController.getDataSet(name).clearData();
+          },
+
+          /**
+            Resets data sat to its initial data. When initial data is not provided, clears data
+            set (in such case this function behaves exactly like .clearDataSet()).
+           */
+          resetDataSet: function clearDataSet(name) {
+            interactivesController.getDataSet(name).resetData();
+          },
+
+          /**
             Used when manually adding points to a graph or a table.
             Normally the graph or table property streamDataFromModel should be false
             when using this function.
@@ -311,13 +384,6 @@ define(function (require) {
             var comp = interactivesController.getComponent(compID);
             if (comp !== undefined) {
               comp.setAttributes(opts);
-            }
-          },
-
-          getComponentData: function getComponentData(compID, propArray) {
-            var comp = interactivesController.getComponent(compID);
-            if (comp !== undefined && comp.getData) {
-              return comp.getData(propArray);
             }
           },
 
@@ -343,11 +409,28 @@ define(function (require) {
             if (!component) {
               throw new Error("Component " + componentID + " not found.");
             }
-            if (!component.syncAxisRangesToPropertyRanges) {
+            if (!component.scrollXAxisToZero) {
               throw new Error("Component " + componentID + " does not support scrollXAxisToZero.");
             }
 
             component.scrollXAxisToZero();
+          },
+
+          resetGraphSelection: function resetGraphSelectionDomain(componentID) {
+            var component = interactivesController.getComponent(componentID);
+
+            if (!component) {
+              throw new Error("Component " + componentID + " not found.");
+            }
+            if (!component.selectionDomain) {
+              throw new Error("Component " + componentID + " does not support selectionDomain.");
+            }
+            if (!component.selectionEnabled) {
+              throw new Error("Component " + componentID + " does not support selectionEnabled.");
+            }
+
+            component.selectionDomain(null);
+            component.selectionEnabled(false);
           },
 
           start: function start() {
@@ -356,7 +439,7 @@ define(function (require) {
           },
 
           onStart: function onStart(handler) {
-            model.on("play.custom-script", handler);
+            model.on("play.custom-script" + (namespaceCount++), handler);
           },
 
           stop: function stop() {
@@ -367,12 +450,28 @@ define(function (require) {
             model.on("stop.custom-script", handler);
           },
 
-          reset: function reset(options) {
-            interactivesController.resetModel(options);
+          /**
+           * Reload the model. The interactives controller will emit a 'willResetModel'.
+           * The willResetModel observers can ask to wait for asynchronous confirmation before
+           * the model is actually reloaded.
+           * @param  {object} options hash of options, supported properties:
+           *                         * propertiesToRetain - a list of properties to save before
+           *                           the model reload and restore after reload.
+           *                         * cause - cause of the reload action, it can be e.g. "reload"
+           *                           or "new-run". It will be passed to "modelLoaded" event handlers.
+           */
+          reloadModel: function reloadModel(options) {
+            interactivesController.reloadModel(options);
           },
 
-          reload: function reload() {
-            interactivesController.reloadModel();
+          /**
+           * Reload the interactive. The interactives controller will emit a 'willResetModel',
+           * as obviously the interactive reload causes the model to be restored to its initial
+           * state too. The willResetModel observers can ask to wait for asynchronous confirmation
+           * before the interactive and model is actually reloaded.
+           */
+          reloadInteractive: function reloadInteractive() {
+            interactivesController.reloadInteractive();
           },
 
           stepForward: function stepForward() {
@@ -461,6 +560,27 @@ define(function (require) {
       }()),
 
       /**
+       * Current model.
+       */
+      get model() {
+        return model;
+      },
+
+      /**
+       * InteractivesController instance.
+       */
+      get intController() {
+        return interactivesController;
+      },
+
+      /**
+       * Bind a new model to Scripting API.
+       */
+      bindModel: function (newModel) {
+        model = newModel;
+      },
+
+      /**
         Freeze Scripting API
         Make the scripting API immutable once defined
       */
@@ -472,7 +592,7 @@ define(function (require) {
         Extend Scripting API
       */
       extend: function (ModelScriptingAPI) {
-        $.extend(this.api, new ModelScriptingAPI(this.api, model));
+        $.extend(this.api, new ModelScriptingAPI(this));
       },
 
       /**
@@ -505,16 +625,8 @@ define(function (require) {
         what scripting API and semantics we want to support.
       */
       makeFunctionInScriptContext: function () {
-
-            // This object is the outer context in which the script is executed. Every time the script
-            // is executed, it contains the value 'undefined' for all the currently defined globals.
-            // This prevents at least inadvertent reliance by the script on unintentinally exposed
-            // globals.
-
-        var shadowedGlobals = {},
-
             // First n-1 arguments to this function are the names of the arguments to the script.
-            argumentsToScript = Array.prototype.slice.call(arguments, 0, arguments.length - 1),
+        var argumentsToScript = Array.prototype.slice.call(arguments, 0, arguments.length - 1),
 
             // Last argument is the function body of the script, as a string or array of strings.
             scriptSource = arguments[arguments.length - 1],
@@ -524,31 +636,6 @@ define(function (require) {
             scriptFunction;
 
         if (typeof scriptSource !== 'string') scriptSource = scriptSource.join('      \n');
-
-        // Make shadowedGlobals contain keys for all globals (properties of 'window')
-        // Also make set and get of any such property throw a ReferenceError exactly like
-        // reading or writing an undeclared variable in strict mode.
-        function setShadowedGlobals() {
-          var keys = Object.getOwnPropertyNames(window),
-              key,
-              i,
-              len,
-              err;
-
-          for (i = 0, len = keys.length; i < len; i++) {
-            key = keys[i];
-            if (!shadowedGlobals.hasOwnProperty(key)) {
-              err = (function(key) {
-                return function() { throw new ReferenceError(key + " is not defined"); };
-              }(key));
-
-              Object.defineProperty(shadowedGlobals, key, {
-                set: err,
-                get: err
-              });
-            }
-          }
-        }
 
         scriptFunctionMakerSource =
           "with (shadowedGlobals) {\n" +
@@ -582,15 +669,6 @@ define(function (require) {
         };
       }
     };
-
-    // Since this first-draft iteration of the scripting api has no real support for multiple
-    // models, we can freely stash the single model locally.
-    function cacheModel() {
-      model = interactivesController.getModel();
-    }
-
-    cacheModel();
-    interactivesController.on('modelLoaded', cacheModel);
 
     return controller;
   };

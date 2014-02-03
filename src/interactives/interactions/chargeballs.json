@@ -3,7 +3,8 @@
   "publicationStatus": "public",
   "subtitle": "Explore how charged objects interact.",
   "about": "Change the charge on each sphere to positive or negative. Observe how the charges affect the interaction between the spheres.",
-  "aspectRatio": 1.8,
+  "aspectRatio": 1.9112627986348123,
+  "fontScale": 1.0089285714285714,
   "models": [
     {
       "type": "md2d",
@@ -19,7 +20,7 @@
     {
       "type": "text",
       "id":"left-label",
-      "text":"**Charge left ball**"
+      "text":"**Charge left shpere**"
     },
     {
       "type": "button",
@@ -36,7 +37,7 @@
     {
       "type": "text",
       "id":"right-label",
-      "text":"**Charge right ball**"
+      "text":"**Charge right sphere**"
     },
     {
       "type": "button",
@@ -54,7 +55,7 @@
       "type": "button",
       "id": "reset",
       "text": "Reset",
-      "action": "reload();"
+      "action": "reloadModel();"
     }
   ],
   "layout": {
@@ -77,12 +78,14 @@
       "id": "left",
       "top": "model.top + model.height/5",
       "right": "model.left",
+      "width": "8em",
       "align": "center"
     },
     {
       "id": "right",
       "top": "model.top + model.height/5",
       "left": "model.right",
+      "width": "8em",
       "align": "center"
     },
     {

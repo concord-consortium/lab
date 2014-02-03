@@ -24,6 +24,13 @@
       }
     }
   ],
+  "parameters": [
+    {
+      "name": "solvent",
+      "initialValue": "water",
+      "onChange": "setSolvent(value);"
+    }
+  ],
   "components": [
     {
       "type": "checkbox",
@@ -34,6 +41,7 @@
     {
       "type": "pulldown",
       "id": "select-solvent",
+      "property": "solvent",
       "options": [
         {
           "text": "Select the solvent type",
@@ -41,16 +49,16 @@
           "selected": true
         },
         {
-          "text": "vacuum",
-          "action": "setSolvent('vacuum');"
+          "text": "Vacuum",
+          "value": "vacuum"
         },
         {
-          "text": "oil",
-          "action": "setSolvent('oil');"
+          "text": "Oil",
+          "value": "oil"
         },
         {
-          "text": "water",
-          "action": "setSolvent('water');"
+          "text": "Water",
+          "value": "water"
         }
       ]
     },
@@ -143,6 +151,7 @@
     {
       "type": "pulldown",
       "id": "select-color-scheme",
+      "property": "aminoAcidColorScheme",
       "options": [
         {
           "text": "Select the color scheme for the amino acids",
@@ -150,20 +159,20 @@
           "selected": true
         },
         {
-          "text": "none",
-          "action": "set({aminoAcidColorScheme: 'none'});"
+          "text": "None",
+          "value": "none"
         },
         {
-          "text": "charge",
-          "action": "set({aminoAcidColorScheme: 'charge'});"
+          "text": "Charge",
+          "value": "charge"
         },
         {
-          "text": "hydrophobicity",
-          "action": "set({aminoAcidColorScheme: 'hydrophobicity'});"
+          "text": "Hydrophobicity",
+          "value": "hydrophobicity"
         },
         {
-          "text": "charge and hydrophobicity",
-          "action": "set({aminoAcidColorScheme: 'chargeAndHydro'});"
+          "text": "Charge and hydrophobicity",
+          "value": "chargeAndHydro"
         }
       ]
     },

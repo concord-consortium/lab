@@ -121,13 +121,13 @@
 */
 
 define(function (require) {
-
-
-  var version = "0.0.1",
-      average_row,
-      browser_detect = require('./browser-detect'),
+  var browser_detect = require('./browser-detect'),
       what_browser = browser_detect.what_browser,
-      _isMobile = browser_detect.isMobile;
+
+      _isMobile = browser_detect.isMobile,
+      _browser = browser_detect.what_browser(),
+
+      average_row;
 
   function renderToTable(benchmarks_table, benchmarksThatWereRun, results) {
     var i = 0,
@@ -311,9 +311,19 @@ define(function (require) {
 
   // Return Public API.
   return {
-    version: version,
+    /**
+     * Browser description.
+     */
+    get browser() {
+      return _browser;
+    },
+    /**
+     * Triggers recalculation of browser description and returns the result.
+     * Depreciated, use .browser property instead.
+     */
     what_browser: function() {
-      return what_browser();
+      _browser = what_browser();
+      return _browser;
     },
     get isMobile() {
       return _isMobile;

@@ -2,6 +2,9 @@
   "title": "Seeing Intermolecular Attractions",
   "publicationStatus": "public",
   "subtitle": "A very simple interactive with polar molecules on the left and non-polar molecules on the right.",
+  "category": "Chemistry",
+  "subCategory": "Interactions",
+  "screenshot": "http://screenshots.lab.concord.org/intermolecular-attractions-intro.png",
   "about": [
     "All matter is attracted to all other matter. How does this work?",
     "",

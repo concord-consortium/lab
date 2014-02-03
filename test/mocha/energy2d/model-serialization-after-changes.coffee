@@ -3,7 +3,7 @@ assert  = require 'assert'
 helpers = require '../../helpers'
 helpers.setupBrowserEnvironment()
 
-Model      = requirejs 'energy2d/modeler'
+Model      = requirejs 'models/energy2d/modeler'
 arrayTypes = requirejs 'common/array-types'
 
 modelJSON =

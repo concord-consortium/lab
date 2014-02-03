@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?> 
-<java version="1.6.0_41" class="java.beans.XMLDecoder"> 
+<java version="1.6.0_65" class="java.beans.XMLDecoder"> 
  <object id="Element0" class="org.concord.mw2d.models.Element"> 
   <void property="mass"> 
    <double>0.033</double> 
@@ -44,7 +44,7 @@
    <double>0.0010000000474974513</double> 
   </void> 
   <void property="mass"> 
-   <double>0.0020833333333333333</double>
+   <double>0.008333333333333333</double> 
   </void> 
   <void property="sigma"> 
    <double>28.0</double> 
@@ -307,16 +307,16 @@
   <void property="boundary"> 
    <object class="org.concord.mw2d.models.RectangularBoundary$Delegate"> 
     <void property="height"> 
-     <double>300.0</double> 
+     <double>400.0</double> 
     </void> 
     <void property="viewSize"> 
      <object class="java.awt.Dimension"> 
-      <int>500</int> 
-      <int>300</int> 
+      <int>650</int> 
+      <int>400</int> 
      </object> 
     </void> 
     <void property="width"> 
-     <double>500.0</double> 
+     <double>650.0</double> 
     </void> 
    </object> 
   </void> 
@@ -349,20 +349,20 @@
    <void method="put"> 
     <string>date</string> 
     <object class="java.util.Date"> 
-     <long>1362590846000</long> 
+     <long>1385961132000</long> 
     </object> 
    </void> 
    <void method="put"> 
     <string>url</string> 
-    <string>/Users/rklancer/dev/lab/imports/legacy-mw-content/inquiry-space/pendulum/spring-mass$0.mml</string> 
+    <string>/Users/ddamelin/Development/lab/imports/legacy-mw-content/inquiry-space/pendulum/spring-mass$0.mml</string> 
    </void> 
    <void method="put"> 
     <string>size</string> 
-    <long>11669</long> 
+    <long>11691</long> 
    </void> 
    <void method="put"> 
     <string>codebase</string> 
-    <string>/Users/rklancer/dev/lab/imports/legacy-mw-content/inquiry-space/pendulum</string> 
+    <string>/Users/ddamelin/Development/lab/imports/legacy-mw-content/inquiry-space/pendulum</string> 
    </void> 
   </void> 
   <void property="quantumRule"> 
@@ -404,7 +404,7 @@
    <boolean>false</boolean> 
   </void> 
   <void property="rx"> 
-   <double>250.0</double> 
+   <double>325.0</double> 
   </void> 
   <void property="ry"> 
    <double>25.0</double> 
@@ -418,7 +418,7 @@
    <boolean>false</boolean> 
   </void> 
   <void property="rx"> 
-   <double>250.0</double> 
+   <double>325.0</double> 
   </void> 
   <void property="ry"> 
    <double>99.9</double> 

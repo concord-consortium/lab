@@ -10,8 +10,8 @@ define(function (require) {
    *
    * @constructor
    */
-  function AboutDialog() {
-    BasicDialog.call(this, {dialogClass: "about-dialog"});
+  function AboutDialog(parentSelector) {
+    BasicDialog.call(this, {dialogClass: "about-dialog", appendTo: parentSelector});
   }
   inherit(AboutDialog, BasicDialog);
 

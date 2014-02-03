@@ -1,10 +1,11 @@
 {
-  "title": "Sunlight, Infrared, CO2 and the Ground",
-  "publicationStatus": "draft",
-  "subtitle": "Explore how light interacts with both the ground and CO2",
-  "about": "",
+  "title": "Sunlight, Infrared, CO₂ and the Ground",
+  "publicationStatus": "public",
+  "subtitle": "Explore how light interacts with both the ground and CO₂.",
   "aspectRatio": 1.7,
   "fontScale": 0.8,
+  "helpOnLoad": false,
+  "about": "Note: When loading the *Infrared on CO₂* model the infrared coming from the bottom of the model is emitted from the ground.",
   "models": [
     {
       "type": "md2d",
@@ -42,16 +43,28 @@
   "parameters": [
     {
       "name": "lightSourceEnabled",
+      "initialValue": true,
       "onChange": [
         "if (value) {",
         "  turnOnLightSource();",
         "} else {",
         "  turnOffLightSource();",
         "}"
-      ],
-      "initialValue": true
+      ]
+    },
+    {
+      "name": "slowMotion",
+      "initialValue": false,
+      "onChange": [
+        "if (value) {",
+        "  set('timeStep', 0.18);",
+        "} else {",
+        "  set('timeStep', 0.4180000126361847);",
+        "}"
+      ]
     }
   ],
+  "outputs": [],
   "filteredOutputs": [
     {
       "name": "averageTemperature",
@@ -62,67 +75,111 @@
       "unitType": "temperature"
     }
   ],
+  "helpTips": [],
+  "hideExportDataControl": false,
   "components": [
     {
-      "type": "text",
       "id": "text-select-model",
-      "text": "**Select a model**"
-    },
-    {
       "type": "text",
-      "id": "text-photon-key",
-      "text": "*Photons*"
+      "text": "**Select a model**",
+      "width": "auto",
+      "height": "auto",
+      "tooltip": ""
     },
     {
-      "type": "radio",
+      "id": "text-photon-key",
+      "type": "text",
+      "text": "*Photons*",
+      "width": "auto",
+      "height": "auto",
+      "tooltip": ""
+    },
+    {
       "id": "select-model",
+      "type": "radio",
+      "orientation": "vertical",
+      "label": "",
+      "labelOn": "top",
       "options": [
         {
           "text": "Sun on ground",
-          "loadModel": "sun-on-ground",
-          "selected": true
+          "selected": true,
+          "action": "loadModel('sun-on-ground');"
         },
         {
           "text": "Sun on CO₂",
-          "loadModel": "sun-on-co2"
+          "action": "loadModel('sun-on-co2');"
         },
         {
           "text": "Infrared on CO₂",
-          "loadModel": "ir-on-co2"
+          "action": "loadModel('ir-on-co2');"
         },
         {
           "text": "Sun on ground and CO₂",
-          "loadModel": "sun-on-ground-and-co2"
+          "action": "loadModel('sun-on-ground-and-co2');"
         }
-      ]
+      ],
+      "disabled": false,
+      "tooltip": ""
     },
     {
-      "type": "barGraph",
       "id": "thermometer",
+      "type": "barGraph",
       "property": "averageTemperature",
-      "title": "Temperature",
-      "labels": 0,
       "min": 0,
-      "max": 3000
+      "max": 3000,
+      "title": "Temperature",
+      "titleOn": "right",
+      "labels": 0,
+      "units": false,
+      "gridLines": 10,
+      "labelFormat": "0.1f",
+      "barWidth": "2em",
+      "height": "100%",
+      "barColor": "#e23c34",
+      "fillColor": "#fff",
+      "tooltip": ""
     },
     {
-      "type": "checkbox",
       "id": "enable-light-source",
+      "type": "checkbox",
       "text": "Light source on",
       "textOn": "right",
-      "property": "lightSourceEnabled"
+      "width": "auto",
+      "height": "auto",
+      "property": "lightSourceEnabled",
+      "disabled": false,
+      "tooltip": ""
     },
     {
-      "type": "checkbox",
       "id": "ke-shading",
+      "type": "checkbox",
       "text": "Display heat in molecules",
-      "property": "keShading"
+      "textOn": "right",
+      "width": "auto",
+      "height": "auto",
+      "property": "keShading",
+      "disabled": false,
+      "tooltip": ""
     },
     {
-      "type": "image",
+      "id": "slow-mo",
+      "type": "checkbox",
+      "text": "Slow motion",
+      "textOn": "right",
+      "width": "auto",
+      "height": "auto",
+      "property": "slowMotion",
+      "disabled": false,
+      "tooltip": ""
+    },
+    {
       "id": "key-photon",
+      "type": "image",
       "src": "photonKey.svg",
-      "width": "10em"
+      "width": "10em",
+      "height": "auto",
+      "tooltip": ""
     }
   ],
   "layout": {
@@ -148,7 +205,8 @@
         "enable-light-source"
       ],
       [
-        "ke-shading"
+        "ke-shading",
+        "slow-mo"
       ]
     ]
   },

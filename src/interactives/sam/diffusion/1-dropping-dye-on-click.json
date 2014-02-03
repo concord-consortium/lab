@@ -3,6 +3,9 @@
   "publicationStatus": "public",
   "subtitle": "Add a drop of dye anywhere in the container, and watch it diffuse through the water.",
   "aspectRatio": 1.25,
+  "category": "Biology",
+  "subCategory": "Molecular biology",
+  "screenshot": "http://screenshots.lab.concord.org/1-dropping-dye-on-click.png",
   "about": [
     "Click in the model to add a drop of dye.  Watch how the molecules move through the water.",
     "Trace an individual molecule to see how it moves through the liquid."
@@ -26,7 +29,7 @@
         "    markAtoms(atomsToMark);",
         "  });",
         "}",
-        "onClick('plot', onClickHandler);",
+        "onClick('background', onClickHandler);",
         "onClick('atom', onClickHandler);"
       ]
     }

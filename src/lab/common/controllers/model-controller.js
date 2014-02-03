@@ -8,7 +8,7 @@ define(function (require) {
   var global = (function() { return this; }());
 
   function ModelController(modelUrl, modelOptions, interactivesController,
-                                  Model, ModelContainer, ScriptingAPI, Benchmarks) {
+                           Model, ModelContainer, ScriptingAPI, Benchmarks) {
     var controller,
         model,
         benchmarks,
@@ -21,13 +21,20 @@ define(function (require) {
         // event dispatcher
         dispatch = d3.dispatch('modelLoaded', 'modelReset', 'modelSetupComplete');
 
-    // ------------------------------------------------------------
-    //
-    // Main callback from model process
-    //
-    // Pass this function to be called by the model on every model step
-    //
-    // ------------------------------------------------------------
+    function tickStartHandler() {
+      // Use seedrandom library (see vendor/seedrandom) that substitutes an explicitly seeded
+      // RC4-based algorithm for Math.random(). When interactive random seed is constant, it ensures
+      // that simulations will look the same for different users even if physics engine uses random
+      // values. Note that we set seed each tick to be sure that it's always the same before
+      // performing simulation step. Otherwise, it's possible that simulations won't be repeatable
+      // if e.g. user uses tick history or triggers any code path that calls Math.random()
+      // between ticks.
+      // Note that event if .randomSeed is based on entropy (so, it's almost random), this still
+      // ensures that e.g. when users steps back in tick history and clicks play, he will see
+      // the same results like for the first time.
+      Math.seedrandom(interactivesController.randomSeed + model.get("time"));
+    }
+
     function tickHandler() {
       performance.enterScope("js-rendering");
       controller.modelContainer.update();
@@ -42,6 +49,7 @@ define(function (require) {
       model = new Model(modelOptions, {
         waitForSetup: true
       });
+      model.on('tickStart.modelController', tickStartHandler);
       model.on('tick.modelController', tickHandler);
       model.on('reset.modelController', resetHandler);
     }
@@ -54,40 +62,32 @@ define(function (require) {
       dispatch.modelReset(resetCause);
     }
 
-    // ------------------------------------------------------------
-    //
-    // Create Model Player
-    //
-    // ------------------------------------------------------------
-    function setupModelPlayer() {
-
-      // ------------------------------------------------------------
-      //
-      // Create container view for model
-      //
-      // ------------------------------------------------------------
-      modelContainer = new ModelContainer(model, controller.modelUrl);
-    }
-
     /**
       Note: newModelConfig, newinteractiveViewConfig are optional. Calling this without
       arguments will simply reload the current model.
     */
+    // REF TODO rename to load
     function reload(newModelUrl, newModelOptions, suppressEvents) {
       // Since we won't call model.reset() (instead, we will discard the model) we need to make sure
       // that the model knows to dispatch a willReset event.
-      if (model.willReset) {
+      if (model && model.willReset) {
         model.willReset();
       }
 
       modelUrl = newModelUrl || modelUrl;
       modelOptions = newModelOptions || modelOptions;
       setupModel();
-      modelContainer.bindModel(model, modelUrl);
+
+      if (modelContainer) {
+        modelContainer.bindModel(model, modelUrl);
+      } else {
+        modelContainer = new ModelContainer(model, controller.modelUrl);
+      }
 
       if (!suppressEvents) {
         dispatch.modelLoaded(ModelController.LOAD_CAUSE.RELOAD);
       }
+
     }
 
     // ------------------------------------------------------------
@@ -174,21 +174,7 @@ define(function (require) {
 
       enableKeyboardHandlers: function () {
         return model.get("enableKeyboardHandlers");
-      },
-
-      /**
-        Call this method once all post-load setup of the model object has been completed. It will
-        cause the model to execute any post-load setup and issue its 'ready' event, if any.
-
-        In general, this method must be called in order to put the model in a runnable state.
-      */
-      modelSetupComplete: function() {
-        if (model.ready) {
-          model.ready();
-        }
-        dispatch.modelSetupComplete();
       }
-
     };
 
     // ------------------------------------------------------------
@@ -197,23 +183,26 @@ define(function (require) {
     //
     // ------------------------------------------------------------
 
-    if (labConfig.environment === 'production') {
-      try {
+    // REF TODO ugly
+    if (modelOptions != null) {
+      if (labConfig.environment === 'production') {
+        try {
+          setupModel();
+        } catch(e) {
+          alert(e);
+          throw new Error(e);
+        }
+      } else {
         setupModel();
-      } catch(e) {
-        alert(e);
-        throw new Error(e);
       }
-    } else {
-      setupModel();
-      // publish model so it can be inspected at console
-      global.getModel = function() {
-        return model;
-      };
     }
 
+    // publish model so it can be inspected at console
+    global.getModel = function() {
+      return model;
+    };
+
     benchmarks = new Benchmarks(controller);
-    setupModelPlayer();
     return controller;
   }
 

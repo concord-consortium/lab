@@ -12,7 +12,7 @@
         "controlButtons": "play_reset"
       },
       "onLoad": [
-        "onClick('plot', function(x, y) {",
+        "onClick('background', function(x, y) {",
         "  set('temp', getTemperatureAt(x, y));",
         "});",
         "onClick('part', function(x, y, d, i) {",

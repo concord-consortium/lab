@@ -25,7 +25,7 @@ define(function () {
    * @param {AboutDialog} aboutDialog
    * @param {ShareDialog} shareDialog
    */
-  return function setupBanner(controller, interactive, model, creditsDialog, aboutDialog, shareDialog) {
+  return function setupBanner(controller, interactive, creditsDialog, aboutDialog, shareDialog) {
     var components = {},
         template = [],
         layout = {},
@@ -129,7 +129,30 @@ define(function () {
       });
     }
 
-    if (controller.helpSystem) {
+    createElementInContainer(
+    {
+      "type": "div",
+      "id": "interactive-reload-icon",
+      "content": '<i class="icon-repeat"></i>',
+      "onClick": function () {
+        controller.reloadInteractive();
+      },
+      "tooltip": "Reload interactive"
+    },
+    {
+      "id": "banner-reload",
+      "fontScale": topBarFontScale,
+      "top": "0",
+      "height": topBarHeight + "em",
+      "padding-top": topBarVerticalPadding + "em",
+      "padding-bottom": topBarVerticalPadding + "em",
+      "left": "0.7em",
+      "padding-right": "1em",
+      "align": "left",
+      "aboveOthers": true
+    });
+
+    if (interactive.helpTips.length > 0) {
       createElementInContainer(
       {
         "type": "div",
@@ -152,12 +175,13 @@ define(function () {
         "padding-top": topBarVerticalPadding + "em",
         "padding-bottom": topBarVerticalPadding + "em",
         // "banner-right" can be undefined, so check it.
-        "left": "0.7em",
+        "left": "banner-reload.right",
         "padding-right": "1em",
         "align": "left",
         "aboveOthers": true
       });
 
+      // Note that help system has to be initialized before we setup banner!
       controller.helpSystem.on("start.icon", function () {
         var $icon = $("#help-icon > i");
         $icon.addClass("icon-remove-sign active");

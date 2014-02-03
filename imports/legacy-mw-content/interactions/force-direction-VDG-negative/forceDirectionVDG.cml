@@ -24,7 +24,7 @@
     &lt;p&gt;
       
     &lt;/p&gt;
-    &lt;table width=&quot;100%&quot; border=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+    &lt;table cellpadding=&quot;0&quot; width=&quot;100%&quot; border=&quot;0&quot;&gt;
       &lt;tr&gt;
         &lt;th scope=&quot;col&quot; align=&quot;center&quot; colspan=&quot;2&quot;&gt;
           Explore Direction of Forces
@@ -40,7 +40,7 @@
       &lt;/tr&gt;
       &lt;tr&gt;
         &lt;th scope=&quot;row&quot; align=&quot;right&quot;&gt;
-          &lt;input script_selected=&quot;script:mw2d:1:set line[0].visible on;&quot; type=&quot;checkbox&quot; id=&quot;checkbox&quot; script_deselected=&quot;script:mw2d:1:set line[0].visible off;&quot; name=&quot;checkbox&quot; checked=&quot;checked&quot;&gt;
+          &lt;input id=&quot;checkbox&quot; script_selected=&quot;script:mw2d:1:set line[0].visible on;&quot; checked=&quot;checked&quot; script_deselected=&quot;script:mw2d:1:set line[0].visible off;&quot; type=&quot;checkbox&quot; name=&quot;checkbox&quot;&gt;
           
         &lt;/th&gt;
         &lt;td&gt;
@@ -49,7 +49,7 @@
       &lt;/tr&gt;
       &lt;tr&gt;
         &lt;th scope=&quot;row&quot; align=&quot;right&quot;&gt;
-          &lt;input type=&quot;checkbox&quot; script_selected=&quot;script:mw2d:1:set line[%VDG].visible on;&quot; id=&quot;checkbox2&quot; script_deselected=&quot;script:mw2d:1:set line[%VDG].visible off;&quot; name=&quot;checkbox2&quot;&gt;
+          &lt;input id=&quot;checkbox2&quot; script_selected=&quot;script:mw2d:1:set line[%VDG].visible on;&quot; script_deselected=&quot;script:mw2d:1:set line[%VDG].visible off;&quot; type=&quot;checkbox&quot; name=&quot;checkbox2&quot;&gt;
           
         &lt;/th&gt;
         &lt;td&gt;
@@ -66,7 +66,7 @@
       &lt;/tr&gt;
       &lt;tr&gt;
         &lt;th scope=&quot;row&quot; align=&quot;right&quot;&gt;
-          &lt;input type=&quot;checkbox&quot; script_selected=&quot;script:mw2d:1:set %tracingOn 1&quot; id=&quot;checkbox3&quot; script_deselected=&quot;script:mw2d:1:set %tracingOn 0&quot; name=&quot;checkbox3&quot;&gt;
+          &lt;input id=&quot;checkbox3&quot; script_selected=&quot;script:mw2d:1:set %tracingOn 1&quot; script_deselected=&quot;script:mw2d:1:set %tracingOn 0&quot; type=&quot;checkbox&quot; name=&quot;checkbox3&quot;&gt;
           
         &lt;/th&gt;
         &lt;td&gt;
@@ -78,7 +78,7 @@
           &amp;#160;
         &lt;/th&gt;
         &lt;td&gt;
-          &lt;input value=&quot;clear trace&quot; type=&quot;submit&quot; id=&quot;button&quot; script=&quot;script:mw2d:1:runtask clearVectors;&quot; name=&quot;button&quot;&gt;
+          &lt;input id=&quot;button&quot; script=&quot;script:mw2d:1:runtask clearVectors;&quot; value=&quot;clear trace&quot; type=&quot;submit&quot; name=&quot;button&quot;&gt;
         &lt;/td&gt;
       &lt;/tr&gt;
     &lt;/table&gt;

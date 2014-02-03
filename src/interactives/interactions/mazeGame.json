@@ -20,8 +20,8 @@
         "textBoxes": [
           {
             "text": "50",
-            "x": 6.25,
-            "y": 1.6,
+            "x": 6.30,
+            "y": 0.4,
             "layer": 2,
             "width": 0.25,
             "textAlign": "center",
@@ -139,6 +139,7 @@
       "name": "max-countdown-time",
       "initialValue": 50,
       "onChange": [
+        "set('max-model-time', (value/2)*10000);",
         "setTextBoxProperties(0,{text: format('0.0f')(value)});"
       ]
     }
@@ -178,7 +179,7 @@
       "type": "button",
       "id": "reset",
       "text": "Reset",
-      "action": "reload();"
+      "action": "reloadModel();"
     },
     {
       "type": "pulldown",

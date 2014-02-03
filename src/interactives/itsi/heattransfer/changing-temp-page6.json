@@ -89,31 +89,31 @@
       "options": [
         {
           "text": "Vacuum",
-          "loadModel": "vacuum"
+          "action": "loadModel('vacuum');"
         },
         {
           "text": "Thick short bar",
-          "loadModel": "thick-short-bar"
+          "action": "loadModel('thick-short-bar');"
         },
         {
           "text": "Thin short bar",
-          "loadModel": "thin-short-bar"
+          "action": "loadModel('thin-short-bar');"
         },
         {
           "text": "Thick long bar",
-          "loadModel": "thick-long-bar"
+          "action": "loadModel('thick-long-bar');"
         },
         {
           "text": "Thin long bar",
-          "loadModel": "thin-long-bar"
+          "action": "loadModel('thin-long-bar');"
         },
         {
           "text": "Gas",
-          "loadModel": "gas"
+          "action": "loadModel('gas');"
         },
         {
           "text": "Sponge",
-          "loadModel": "sponge"
+          "action": "loadModel('sponge');"
         }
       ]
     },

@@ -1,23 +1,24 @@
 {
   "type": "md2d",
   "imagePath": "",
+  "width": 4,
+  "height": 3,
+  "unitsScheme": "md2d",
   "lennardJonesForces": true,
   "coulombForces": true,
   "temperatureControl": true,
-  "width": 4,
-  "height":  3,
-  "unitsScheme": "md2d",
-  "viscosity": 1,
+  "targetTemperature": 4952.2219931146,
   "gravitationalField": false,
-  "timeStepsPerTick": 50,
   "timeStep": 1,
   "dielectricConstant": 1,
   "realisticDielectricEffect": true,
-  "solventForceType": 0,
   "solventForceFactor": 1.25,
+  "solventForceType": 0,
   "additionalSolventForceMult": 4,
   "additionalSolventForceThreshold": 10,
   "polarAAEpsilon": -2,
+  "viscosity": 1,
+  "timeStepsPerTick": 50,
   "DNAState": "dna",
   "DNA": "",
   "DNAMutations": true,
@@ -31,6 +32,7 @@
     "viewPortY": 0,
     "viewPortDrag": false,
     "backgroundColor": "#eeeeee",
+    "showClock": true,
     "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
@@ -39,14 +41,53 @@
     "showChargeSymbols": true,
     "showVDWLines": false,
     "VDWLinesCutoff": "medium",
-    "showClock": true,
     "showVelocityVectors": false,
     "showForceVectors": false,
     "showElectricField": false,
     "electricFieldDensity": 18,
     "electricFieldColor": "auto",
     "showAtomTrace": false,
-    "images": [],
+    "images": [
+      {
+        "imageUri": "above-bottom.png",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 1,
+        "imageX": 0.12,
+        "imageY": 2.55,
+        "visible": true
+      },
+      {
+        "imageUri": "above-top.png",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 1,
+        "imageLayerPosition": 1,
+        "imageX": 1.73,
+        "imageY": 2.76,
+        "visible": true
+      },
+      {
+        "imageUri": "beneath-bottom.png",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageLayerPosition": 2,
+        "imageX": 0.18,
+        "imageY": 1.28,
+        "visible": true
+      },
+      {
+        "imageUri": "beneath-top.png",
+        "imageHostIndex": 0,
+        "imageHostType": "",
+        "imageLayer": 2,
+        "imageLayerPosition": 3,
+        "imageX": 1.88,
+        "imageY": 1.42,
+        "visible": true
+      }
+    ],
     "imageMapping": {},
     "textBoxes": [],
     "xlabel": false,
@@ -64,50 +105,14 @@
       "width": 0.01,
       "length": 2
     },
-    "forceVectorsDirectionOnly": false,
     "forceVectors": {
       "color": "#169C30",
       "width": 0.01,
       "length": 2
     },
-    "images": [
-      {
-        "imageUri": "above-bottom.png",
-        "imageHostIndex": 0,
-        "imageHostType": "",
-        "imageLayer": 1,
-        "imageX": 0.12,
-        "imageY": 2.55
-      },
-      {
-        "imageUri": "above-top.png",
-        "imageHostIndex": 0,
-        "imageHostType": "",
-        "imageLayer": 1,
-        "imageLayerPosition": 1,
-        "imageX": 1.73,
-        "imageY": 2.76
-      },
-      {
-        "imageUri": "beneath-bottom.png",
-        "imageHostIndex": 0,
-        "imageHostType": "",
-        "imageLayer": 2,
-        "imageLayerPosition": 2,
-        "imageX": 0.18,
-        "imageY": 1.28
-      },
-      {
-        "imageUri": "beneath-top.png",
-        "imageHostIndex": 0,
-        "imageHostType": "",
-        "imageLayer": 2,
-        "imageLayerPosition": 3,
-        "imageX": 1.88,
-        "imageY": 1.42
-      }
-    ]
+    "forceVectorsDirectionOnly": false
   },
+  "pairwiseLJProperties": [],
   "elements": {
     "mass": [
       20,
@@ -138,7 +143,6 @@
       -855310
     ]
   },
-  "pairwiseLJProperties": [],
   "atoms": {
     "x": [
       1.2669779155182745,
@@ -253,7 +257,7 @@
       0
     ],
     "externalAy": [
-     0
+      0
     ],
     "friction": [
       0
@@ -285,6 +289,5 @@
     "visible": [
       true
     ]
-  },
-  "targetTemperature": 4952.2219931146
+  }
 }

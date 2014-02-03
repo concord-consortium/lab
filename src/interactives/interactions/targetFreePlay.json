@@ -1,13 +1,14 @@
 {
   "title": "Target Game (Free Play)",
-  "publicationStatus": "draft",
+  "publicationStatus": "public",
   "subtitle": "Can you steer a charged particle to a target by using charged objects?",
-  "aspectRatio": 1.12,
-  "fontScale": 0.95,
+  "aspectRatio": 1.27,
+  "fontScale": 0.65,
+  "helpOnLoad": true,
   "about": [
     "Use the *Launch a positive particle* button to shoot a positive particle across the game board.",
     "Place any number of charged objects in any location to steer the positive particle to the target.",
-    "Can you get the charged particle into the target?"
+    "Can you get the charged particle to hit the target?"
   ],
   "models": [
     {
@@ -24,29 +25,34 @@
         }
       },
       "onLoad": [
+        "set('loadedLevelID', 'level1');",
+        "set('selectedLevelID', 'level1');",
         "setShapeProperties(3, {lineColor: 'rgb(255,0,0)', lineWeight: 7});",
         "set('atomTraceColor','yellow');",
         "var timeStepsPerTick = get('timeStepsPerTick'),",
         "    collisionPadding = 0.075;",
-        "onClick('plot', function(x, y, d, i) {",
-        "  addAtom({x: x, y: y, charge: get('chargeSign')*get('chargeMagnitude'), pinned: true});",
+        "onClick('background', function(x, y, d, i) {",
+        "  if (get('chargeSign') !== -99) {",
+        "    if( addAtom({x: x, y: y, charge: get('chargeSign')*get('chargeMagnitude'), pinned: true}) ) {",
+        "      get('atomIndices').push( getNumberOfAtoms()-1 );",
+        "      get('atomOriginalSign').push( get('chargeSign') );",
+        "    }",
+        "  }",
         "});",
         "callEvery(timeStepsPerTick, function() {",
-        "  console.log(getCurrentModelNamespace());",
         "  var target = getShapeProperties(2);",
         "  if (atomsWithinRect(target.x, target.y, target.width, target.height).length > 0) {",
-        "    alert('You won!');",
+        "    alert('Congratulations! You hit the target.');",
         "    stop();",
         "  }",
         "  for (var i = 0; i < 7; i++) {",
         "    target = getObstacleProperties(i);",
         "    if (atomsWithinRect(target.x - collisionPadding, target.y - collisionPadding, target.width + 2*collisionPadding, target.height + 2*collisionPadding).length > 0) {",
-        "      alert('You lose!');",
+        "      alert('You hit a barrier. Try again.');",
         "      stop();",
         "    }",
         "  }",
-        "});",
-        "start();"
+        "});"
       ]
     },
     {
@@ -63,23 +69,28 @@
         }
       },
       "onLoad": [
+        "set('loadedLevelID', 'level2');",
+        "set('selectedLevelID', 'level2');",
         "setShapeProperties(3, {lineColor: 'rgb(255,0,0)', lineWeight: 7});",
         "set('atomTraceColor','yellow');",
         "var timeStepsPerTick = get('timeStepsPerTick'),",
-        "    collisionPadding = 0.1;",
-        "onClick('plot', function(x, y, d, i) {",
-        "  addAtom({x: x, y: y, charge: get('chargeSign')*get('chargeMagnitude'), pinned: true});",
+        "    collisionPadding = 0.075;",
+        "onClick('background', function(x, y, d, i) {",
+        "  if( addAtom({x: x, y: y, charge: get('chargeSign')*get('chargeMagnitude'), pinned: true}) ) {",
+        "    get('atomIndices').push( getNumberOfAtoms()-1 );",
+        "    get('atomOriginalSign').push( get('chargeSign') );",
+        "  }",
         "});",
         "callEvery(timeStepsPerTick, function() {",
         "  var target = getShapeProperties(2);",
         "  if (atomsWithinRect(target.x, target.y, target.width, target.height).length > 0) {",
-        "    alert('You won!');",
+        "    alert('Congratulations! You hit the target.');",
         "    stop();",
         "  }",
         "  for (var i = 0; i < 9; i++) {",
         "    target = getObstacleProperties(i);",
         "    if (atomsWithinRect(target.x - collisionPadding, target.y - collisionPadding, target.width + 2*collisionPadding, target.height + 2*collisionPadding).length > 0) {",
-        "      alert('You lose!');",
+        "      alert('You hit a barrier. Try again.');",
         "      stop();",
         "    }",
         "  }",
@@ -91,19 +102,53 @@
   "parameters": [
     {
       "name": "chargeSign",
-      "initialValue": 1
+      "initialValue": 1,
+      "onChange": [
+        "if (value === -99) {",
+        "   onClick('atom', function(x, y, d, i) {",
+        "     removeAtom(i);",
+        "   });",
+        "}",
+        "else {",
+        "   onClick('atom', function () {});",
+        "}"
+      ]
+    },
+    {
+      "name": "atomOriginalSign",
+      "initialValue": []
+    },
+    {
+      "name": "atomIndices",
+      "initialValue": []
     },
     {
       "name": "chargeMagnitude",
       "initialValue": 1,
       "onChange": [
         "batch( function() {",
-        "  var prop;",
-        "  for( var i = 0; i < getNumberOfAtoms(); i++ ) {",
-        "    prop = getAtomProperties(i);",
-        "    setAtomProperties(i, {charge: prop.charge / Math.abs(prop.charge) * get('chargeMagnitude')});",
+        "  var prop,",
+        "      indices = get('atomIndices'),",
+        "      sign = get('atomOriginalSign');",
+        "  for( var j, i = 0; i < indices.length; i++ ) {",
+        "    j = indices[i];",
+        "    prop = getAtomProperties(j);",
+        "    setAtomProperties(i, {charge: sign[j] * get('chargeMagnitude')});",
         "  }",
         "});"
+      ]
+    },
+    {
+      "name": "loadedLevelID",
+      "initialValue": "level1"
+    },
+    {
+      "name": "selectedLevelID",
+      "initialValue": "level1",
+      "onChange": [
+        "if (value !== get('loadedLevelID')) {",
+        "  loadModel(value, ['showElectricField', 'showForceVectors'])",
+        "}"
       ]
     }
   ],
@@ -129,7 +174,21 @@
       "id": "reset",
       "text": "Reset",
       "action": [
-        "reset();"
+        "reloadModel({",
+        "  propertiesToRetain: ['showElectricField', 'showForceVectors']",
+        "});"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "try-again",
+      "text": "Try again",
+      "action": [
+        "var idx = atomsWithinRect(0,0,get('width'),get('height'),1);",
+        "if (idx.length > 0) {",
+        "  untraceAtom(idx[0]);",
+        "  removeAtom(idx[0]);",
+        "}"
       ]
     },
     {
@@ -151,12 +210,16 @@
       "property": "chargeSign",
       "options": [
         {
-          "text": "Negative",
+          "text": "Add negative",
           "value": -1
         },
         {
-          "text": "Positive",
+          "text": "Add positive",
           "value": 1
+        },
+        {
+          "text": "Delete object",
+          "value": -99
         }
       ]
     },
@@ -164,15 +227,15 @@
       "type": "radio",
       "id": "select-level",
       "orientation": "horizontal",
+      "property": "selectedLevelID",
       "options": [
         {
           "text": "Level 1",
-          "loadModel": "level1",
-          "selected": true
+          "value": "level1"
         },
         {
           "text": "Level 2",
-          "loadModel": "level2"
+          "value": "level2"
         }
       ]
     },
@@ -202,7 +265,7 @@
     {
       "type": "text",
       "id": "label-charge-place-toggle",
-      "text": "**Add object with that with charge:**"
+      "text": "**Click in game to:**"
     },
     {
       "type": "text",
@@ -210,10 +273,33 @@
       "text": "**Set charge amount on placed objects:**"
     }
   ],
+  "helpTips": [
+    {
+      "text": [
+        "The goal of this game is to guide a positive particle to the target using other charged objects."
+      ]
+    },
+    {
+      "component": "select-add-atom-type",
+      "text": [
+        "Select *Add negative* or *Add positive* to add charged objects to the game board. You can ",
+        "drag charged objects around the board, or select *Delete object* and click ",
+        "on a charged object to remove it."
+      ]
+    },
+    {
+      "component": "try-again",
+      "text": "Use *Try again* to keep objects for another try."
+    },
+    {
+      "component": "reset",
+      "text": "Use *Reset* to remove all charged objects and reset controls."
+    }
+  ],
   "layout": {
     "bottom": [
       ["label-charge-place-toggle", "select-add-atom-type"],
-      ["add-atom", "reset", "select-level"],
+      ["add-atom", "try-again", "select-level", "reset"],
       ["label-select-placed-object-charge", "select-charge-magnitude"],
       ["select-show-electric-field", "select-show-force-vectors"]
     ]

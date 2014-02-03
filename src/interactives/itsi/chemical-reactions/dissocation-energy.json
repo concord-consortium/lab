@@ -1,0 +1,126 @@
+{
+  "title": "Making and Breaking Bonds: Dissociation Energy A₂ <--> 2A",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": [
+    "A chemical reaction can occur in three different ways:",
+    "",
+    "- A chemical bond is formed.",
+    "- A chemical bond is broken.",
+    "- One or more electrons are transferred between atoms or molecules.",
+    "",
+    "Explore reactions in which chemical bonds are formed and broken with this model.",
+    "Press run, then try heating and cooling the atoms to see how temperature affects ",
+    "the balance between bond formation and breaking."
+  ],
+  "aspectRatio": 1.725,
+  "models": [
+    {
+      "type": "md2d",
+      "id": "making-breaking.json",
+      "url": "models/md2d/itsi/chemical-reactions/dissociation-energy.json",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      },
+      "onLoad": [
+        "setTemperatureOfAtoms([0,1,2,3,4,5,6,7,8,9], get('targetT'));"
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "dissociationEnergy",
+      "initialValue": 0.94,
+      "onChange": [
+        "setBondEnergy('1-1', get('dissociationEnergy'));"
+      ]
+    },
+    {
+     "name": "targetT",
+     "initialValue": 3000,
+     "onChange": "setTemperatureOfAtoms([0,1,2,3,4,5,6,7,8,9], get('targetT'));"
+    }
+  ],
+  "components": [
+    {
+      "type": "text",
+      "id": "title",
+      "text": "Dissociation Energy: A₂ <--> 2A"
+    },
+    {
+      "id": "ke-shading",
+      "type": "checkbox",
+      "text": "KE shading",
+      "textOn": "right",
+      "width": "auto",
+      "height": "auto",
+      "property": "keShading",
+      "disabled": false,
+      "tooltip": ""
+    },
+    {
+      "type": "slider",
+      "id": "temperature-slider",
+      "min": 200,
+      "max": 10200,
+      "labels": [
+        {
+          "value": 200,
+          "label": "Low"
+        },
+        {
+          "value": 10200,
+          "label": "High"
+        }
+      ],
+      "steps": 1000,
+      "title": "Temperature",
+      "width": "100%",
+      "property": "targetT"
+    },
+    {
+      "type": "slider",
+      "id": "dissociation-slider",
+      "min": 0,
+      "max": 3,
+      "labels": [
+        {
+          "value": 0,
+          "label": "Low"
+        },
+        {
+          "value": 3,
+          "label": "High"
+        }
+      ],
+      "steps": 200,
+      "title": "Dissociation Energy",
+      "width": "100%",
+      "property": "dissociationEnergy"
+    }
+  ],
+  "template": [
+    {
+      "id": "above",
+      "bottom": "model.top",
+      "left": "model.left",
+      "width": "model.width",
+      "align": "center"
+    },
+    {
+      "id": "right",
+      "top": "model.top",
+      "left": "model.right",
+      "height": "model.height",
+      "align": "center"
+    }
+  ],
+  "layout": {
+    "above": ["title"],
+    "right": [
+      ["temperature-slider"],
+      ["dissociation-slider"],
+      ["ke-shading"]
+    ]
+  }
+}

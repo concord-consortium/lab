@@ -1,0 +1,239 @@
+{
+  "title": "Dual Sensor",
+  "publicationStatus": "draft",
+  "subtitle": "Testing the Dual Sensor model type",
+  "aspectRatio": 1.3,
+  "helpOnLoad": false,
+  "about": "",
+  "fontScale": 0.9,
+  "models": [
+    {
+      "type": "dual-sensor",
+      "id": "signal1",
+      "url": "models/sensor/dual-sensor.json",
+      "viewOptions": {
+        "controlButtons": "reset",
+        "controlButtonStyle": "text",
+        "showClock": true
+      },
+      "onLoad": [
+        "function setGraphRange() {",
+        "  if (!get('isNewRunInProgress')) {",
+        "    syncAxisRangesToPropertyRanges('propertiesGraph');",
+        "  }",
+        "  resetGraphSelection('propertiesGraph');",
+        "}",
+        "function setGraphRange2() {",
+        "  if (!get('isNewRunInProgress')) {",
+        "    syncAxisRangesToPropertyRanges('propertiesGraph2');",
+        "  }",
+        "  resetGraphSelection('propertiesGraph2');",
+        "}",
+        "function setGraphRanges() {",
+        "  setGraphRange();",
+        "  setGraphRange2();",
+        "}",
+        "function setButtonState() {",
+        "  setComponentDisabled('start-button', !get('isPlayable'));",
+        "  setComponentDisabled('stop-button', get('isStopped'));",
+        "  setComponentDisabled('new-run-button', !get('hasPlayed'));",
+        "  setComponentDisabled('analyze-data-button', !(get('hasPlayed') && get('isStopped') && canExportData() && isUnexportedDataPresent()));",
+        "}",
+        "onPropertyChange('isPlayable', setButtonState);",
+        "onPropertyChange('isStopped', setButtonState);",
+        "onPropertyChange('hasPlayed', setButtonState);",
+        "setButtonState();",
+        "onPropertyChange('sensorType', function() {",
+        "  if (get('sensorType') && !get('isNewRunInProgress')) {",
+        "    setGraphRange();",
+        "    if (get('sensorType2')) { setComponentDisabled('start-button', false); }",
+        "  }",
+        "});",
+        "onPropertyChange('sensorType2', function() {",
+        "  if (get('sensorType2') && !get('isNewRunInProgress')) {",
+        "    setGraphRange2();",
+        "    if (get('sensorType')) { setComponentDisabled('start-button', false); }",
+        "  }",
+        "});",
+        "callEvery(1, function() {",
+        "   if ((Math.floor(getTime()) >= get('experimentDuration')) && get('durationEnabled')) {",
+        "     stop();",
+        "     setComponentDisabled('start-button',true);",
+        "   }",
+        "});",
+        "onPropertyChange('collectionTime', setGraphRanges);",
+        "onPropertyChange('durationEnabled', function(){ setComponentDisabled('duration-slider', !(get('durationEnabled'))); });",
+        "setGraphRanges();"
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "isNewRunInProgress",
+      "initialValue": false
+    },
+    {
+      "name": "experimentDuration",
+      "initialValue": 5,
+      "onChange": "set('collectionTime', value*1.1);"
+    },
+    {
+      "name": "durationEnabled",
+      "initialValue": true
+    }
+  ],
+  "hideExportDataControl": true,
+  "components": [
+    {
+      "type": "graph",
+      "id": "propertiesGraph",
+      "title": " ",
+      "xlabel": "Time (s)",
+      "ymin": 0,
+      "ymax": 6,
+      "xmax": 30,
+      "xTickCount": 6,
+      "xFormatter": ".2s",
+      "yFormatter": ".2s",
+      "properties": [
+        "sensorReading"
+      ],
+      "enableSelectionButton": true,
+      "clearSelectionOnLeavingSelectMode": true,
+      "resetAxesOnReset": false
+    },
+    {
+      "type": "graph",
+      "id": "propertiesGraph2",
+      "title": " ",
+      "xlabel": "Time (s)",
+      "ymin": 0,
+      "ymax": 6,
+      "xmax": 30,
+      "xTickCount": 6,
+      "xFormatter": ".2s",
+      "yFormatter": ".2s",
+      "properties": [
+        "sensorReading2"
+      ],
+      "enableSelectionButton": true,
+      "clearSelectionOnLeavingSelectMode": true,
+      "resetAxesOnReset": false
+    },
+    {
+      "type": "slider",
+      "id": "duration-slider",
+      "min": 1,
+      "max": 30,
+      "displayValue": "return format('.0f')(value)",
+      "labels": [
+        {
+          "value": 1,
+          "label": "1"
+        },
+        {
+          "value": 30,
+          "label": "30"
+        }
+      ],
+      "steps": 29,
+      "width": "8.5em",
+      "title": "Duration of Exp. (s)",
+      "property": "experimentDuration"
+    },
+    {
+      "type": "checkbox",
+      "id": "duration-enabled-checkbox",
+      "property": "durationEnabled"
+    },
+    {
+      "type": "button",
+      "id": "start-button",
+      "text": "Start",
+      "tooltip": "Start the experiment run.",
+      "action": [
+        "start();",
+        "setComponentDisabled('start-button', true);"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "stop-button",
+      "text": "Stop",
+      "tooltip": "Stop the experiment run.",
+      "action": "stop();"
+    },
+    {
+      "type": "button",
+      "id": "new-run-button",
+      "text": "New Run",
+      "tooltip": "Set up a new experiment run.",
+      "action": [
+        "resetModel({",
+        "  propertiesToRetain: ['sensorType','sensorType2','experimentDuration', 'durationEnabled', 'tareValue', 'tareValue2'],",
+        "  cause: 'new-run'",
+        "});",
+        "scrollXAxisToZero('propertiesGraph');",
+        "scrollXAxisToZero('propertiesGraph2');"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "analyze-data-button",
+      "text": "Analyze Data",
+      "tooltip": "Put data from the experiment run into DataGames.",
+      "action": [
+        "exportData();",
+        "setComponentDisabled('analyze-data-button', !isUnexportedDataPresent());"
+      ]
+    }
+  ],
+  "layout": {
+    "sensor1-graph": [
+      "propertiesGraph"
+    ],
+    "sensor2-graph": [
+      "propertiesGraph2"
+    ],
+    "container-bottom": [
+      "start-button",
+      "stop-button",
+      "analyze-data-button",
+      "new-run-button",
+      "duration-slider",
+      "duration-enabled-checkbox"
+    ]
+  },
+  "exports": {
+    "selectionComponents": ["propertiesGraph","propertiesGraph2"],
+    "perRun": ["sensorType","sensorType2"],
+    "perTick": ["sensorReading","sensorReading2"]
+  },
+  "template": [
+    {
+      "id": "sensor1-graph",
+      "top": "model.bottom * 0.7",
+      "width": "interactive.width",
+      "height": "(interactive.height - model.height - container-bottom.height) * 0.55",
+      "padding-right": "1em"
+    },
+    {
+      "id": "sensor2-graph",
+      "top": "sensor1-graph.bottom * 0.95",
+      "width": "interactive.width",
+      "height": "(interactive.height - (model.height + container-bottom.height)) * 0.55",
+      "padding-right": "1em"
+    },
+    {
+      "id": "model-left",
+      "top": "model.top",
+      "right": "model.left",
+      "padding-right": "0.5em"
+    },
+    {
+      "id": "container-bottom",
+      "width": "sensor2-graph.width",
+      "bottom": "interactive.bottom"
+    }
+  ]
+}

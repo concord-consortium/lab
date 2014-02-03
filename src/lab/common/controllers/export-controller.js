@@ -22,6 +22,7 @@ define(function (require) {
     var perRun  = (spec.perRun || []).slice(),
         perTick = ['displayTime'].concat(spec.perTick.slice()),
         runNumber = 1,
+        selectionComponents = (spec.selectionComponents || []).slice(),
         perTickValues,
         controller,
         model,
@@ -200,25 +201,28 @@ define(function (require) {
     }
 
     function registerInteractiveListeners() {
+      interactivesController.on('modelLoaded.exportController', function(cause) {
+        handleModelInitialization('modelLoaded', cause);
+      });
+      interactivesController.on('modelReset.exportController', function(cause) {
+        handleModelInitialization('modelReset', cause);
+      });
       // Currently there is no need to namespace these particular listeners, because interactive
       // controller uses a *special* on() method that doesn't just delegate to d3.dispatch; in fact
       // it doesn't understand namespacing!
-      interactivesController.on('modelLoaded', function(cause) {
-        handleModelInitialization('modelLoaded', cause);
-      });
-
-      interactivesController.on('modelReset', function(cause) {
-        handleModelInitialization('modelReset', cause);
-      });
-
       interactivesController.on('willResetModel', willResetModelHandler);
     }
 
     function handleModelInitialization(eventName, cause) {
+      model = interactivesController.getModel();
+      resetData();
+      registerModelListeners();
 
       if (eventName === 'modelLoaded') {
         if (cause === 'reload') {
           logAction("reloaded the model", savedPerRunData);
+        } else if (cause === 'new-run') {
+          logAction("set up a new run", savedPerRunData);
         } else {
           logAction("loaded a model");
         }
@@ -268,19 +272,9 @@ define(function (require) {
       return ret;
     }
 
-    // Initialization.
-
-    model = interactivesController.getModel();
-
     registerInteractiveListeners();
 
     return controller = {
-
-      modelLoadedCallback: function() {
-        model = interactivesController.getModel();
-        resetData();
-        registerModelListeners();
-      },
 
       canExportData: function() {
         return ExportController.canExportData();
@@ -288,6 +282,35 @@ define(function (require) {
 
       isUnexportedDataPresent: function() {
         return isUnexportedDataPresent;
+      },
+
+      selectedData: function() {
+        var i, component, domain, min = Infinity, max = -Infinity, outputData = [];
+
+        for (i = 0; i < selectionComponents.length; i++) {
+          component = interactivesController.getComponent(selectionComponents[i]);
+          if (component && component.selectionDomain) {
+            domain = component.selectionDomain();
+            if (domain !== null && domain.length == 2) {
+              if (min > domain[0]) {
+                min = domain[0];
+              }
+              if (max < domain[1]) {
+                max = domain[1];
+              }
+            }
+          }
+        }
+
+        if (min < Infinity || max > -Infinity) {
+          // filter the data to only that data which fails within this domain
+          outputData = perTickValues.filter(function(point) {
+            return point[0] > min && point[0] < max;
+          });
+        } else {
+          outputData = perTickValues;
+        }
+        return outputData;
       },
 
       exportData: function() {
@@ -310,8 +333,8 @@ define(function (require) {
           });
         }
 
-        perRunPropertyLabels[0] = "Run";
-        perRunPropertyValues[0] = runNumber++;
+        perRunPropertyLabels[0] = "Row";
+        perRunPropertyValues[0] = null;
 
         for (i = 0; i < perRun.length; i++) {
           perRunPropertyLabels[i+1] = getLabelForProperty(perRun[i]);
@@ -322,7 +345,7 @@ define(function (require) {
           perTickLabels[i] = getLabelForProperty(perTick[i]);
         }
 
-        dgExporter.exportData(perRunPropertyLabels, perRunPropertyValues, perTickLabels, perTickValues);
+        dgExporter.exportData(perRunPropertyLabels, perRunPropertyValues, perTickLabels, this.selectedData());
         dgExporter.openTable();
 
         // all data was just exported

@@ -8,6 +8,7 @@
     %script{:src => "vendor/jquery/jquery.min.js", :type => "text/javascript"}
     %script{:type => "text/javascript"}
       $(document).ready(function() { if (!Modernizr.svg) { $('body').prepend('<div class="warning">Sorry, but you\'ll need to upgrade your browser to use the models and visualizations. <a href="browser-upgrade.html">Learn more</a> &raquo;</div>'); } });
+    %link{:href => "lab/lab.css", :rel => "stylesheet", :type => "text/css"}/
     %link{:href => "index.css", :rel => "stylesheet", :type => "text/css"}/
     = ANALYTICS
     = FONTFACE_LINK
@@ -73,6 +74,7 @@
 
       .column2
         .item-list
+          %h2 Interactive Components
           %p
             The following different
             %a{:href => 'doc/models/index.html'} model types
@@ -97,6 +99,9 @@
             %li
               %a{:href => 'experiments/dsp/dsp.html'} Digital Signal Processing Graphs
 
+          %p
+            %a{:href => 'examples.html'} Examples of the above components
+
           %h2 Performance
           %p
             From the beginning we've kept a close eye on performance and extensibility. Performance
@@ -104,7 +109,10 @@
             simpler models also run acceptably on tablets and smartphones.
           %p
             Performance benchmarking can be run for every Interactive displayed in the
-            Interactive Browser.
+            Interactive Browser or using:
+            %ul
+              %li
+                %a{:href => "benchmark.html"} Automated Benchmarking Page
 
           %h2 Testing
           %ul

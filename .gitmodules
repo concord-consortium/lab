@@ -67,9 +67,31 @@
 [submodule "vendor/fonts/Font-Awesome"]
 	path = vendor/fonts/Font-Awesome
 	url = git://github.com/FortAwesome/Font-Awesome.git
-[submodule "test/vendor/jsdom"]
-	path = test/vendor/jsdom
-	url = git://github.com/tmpvar/jsdom.git
 [submodule "vendor/fingerprintjs"]
 	path = vendor/fingerprintjs
 	url = https://github.com/Valve/fingerprintjs
+[submodule "vendor/pixi.js"]
+	path = vendor/pixi.js
+	url = https://github.com/concord-consortium/pixi.js.git
+[submodule "vendor/fastclick"]
+	path = vendor/fastclick
+	url = https://github.com/ftlabs/fastclick.git
+[submodule "vendor/lab-sensor-applet-interface"]
+	path = vendor/lab-sensor-applet-interface
+	url = git://github.com/concord-consortium/lab-sensor-applet-interface.git
+[submodule "vendor/lab-sensor-applet-interface-dist"]
+	path = vendor/lab-sensor-applet-interface-dist
+	url = git://github.com/concord-consortium/lab-sensor-applet-interface-dist.git
+[submodule "vendor/seedrandom"]
+	path = vendor/seedrandom
+	url = https://github.com/davidbau/seedrandom.git
+[submodule "vendor/lab-grapher"]
+	path = vendor/lab-grapher
+	url = https://github.com/concord-consortium/lab-grapher.git
+[submodule "vendor/chosen"]
+	path = vendor/chosen
+	url = https://github.com/harvesthq/chosen.git
+	branch = gh-pages
+[submodule "vendor/sensor-labquest-2-interface"]
+	path = vendor/sensor-labquest-2-interface
+	url = https://github.com/concord-consortium/sensor-labquest-2-interface.git

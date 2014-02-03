@@ -85,14 +85,14 @@ group :build do
       command("make public/imports")
     end
 
-    watch(/^src\/(.+)\.sass$/) do |match|
+    watch(/^src\/(.+)(\.sass)|(\.scss)$/) do |match|
       path = match[1]
       puts path
       if path =~ /^sass\//
         delete_css
         command("make")
       else
-        command("bin/sass -I src --require ./src/helpers/sass/lab_fontface.rb src/#{path}.sass public/#{path}.css")
+        command("bin/sass -I src -I public --require ./src/helpers/sass/lab_fontface.rb src/#{path}.sass public/#{path}.css")
       end
     end
 
@@ -146,15 +146,6 @@ group :build do
   unless ENV['LAB_USE_LIVE_RELOAD'] == 'NO' then
     guard 'livereload' do
       watch(/^(public\/).+\.(css|js|html|json)/)
-    end
-  end
-
-  guard 'markdown', :kram_ops => { :toc_levels => [2,3,4,5] } do
-    watch "readme.md" do |m|
-      "readme.md|public/readme.html|src/layouts/readme.html.erb"
-    end
-    watch "license.md" do |m|
-      "license.md|public/license.html|src/layouts/license.html.erb"
     end
   end
 end

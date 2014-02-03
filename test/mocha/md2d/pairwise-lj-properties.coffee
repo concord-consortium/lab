@@ -1,8 +1,8 @@
 helpers = require '../../helpers'
 helpers.setupBrowserEnvironment()
 
-PairwiseLJProperties = requirejs 'cs!md2d/models/engine/pairwise-lj-properties'
-Model                = requirejs 'md2d/models/modeler'
+PairwiseLJProperties = requirejs 'cs!models/md2d/models/engine/pairwise-lj-properties'
+Model                = requirejs 'models/md2d/models/modeler'
 
 describe "PairwiseLJProperties", ->
   describe "[basic tests of the class]", ->

@@ -53,7 +53,8 @@
         "imageHostType": "",
         "imageLayer": 1,
         "imageX": 2.96,
-        "imageY": 3.26
+        "imageY": 3.26,
+        "visible": true
       }
     ],
     "imageMapping": {},
@@ -1096,10 +1097,10 @@
     "radiationlessEmissionProbability": 0.16109616,
     "lightSource": {
       "on": true,
-      "angleOfIncidence": -2.6179938,
       "frequency": 13.92,
+      "radiationPeriod": 784,
       "numberOfBeams": 5,
-      "radiationPeriod": 784
+      "angleOfIncidence": -2.6179938
     }
   }
 }

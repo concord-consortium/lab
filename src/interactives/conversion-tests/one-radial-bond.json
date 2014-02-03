@@ -19,7 +19,7 @@
       "type": "button",
       "id": "subtract-velocity",
       "text": "&#8656; Subtract X Velocity",
-      "action": "var props = getAtomProperties(0); props.vx -= 0.00002; setAtomProperties(0, props); props = getAtomProperties(1); props.vx -= 0.00002; setAtomProperties(1, props);"
+      "action": "var props = getAtomProperties(0); setAtomProperties(0, {vx: props.vx - 0.00002}); props = getAtomProperties(1); setAtomProperties(1, {vx: props.vx - 0.00002});"
     },
     {
       "type": "pulldown",
@@ -76,7 +76,7 @@
       "type": "button",
       "id": "add-velocity",
       "text": "Add X Velocity &#8658;",
-      "action": "var props = getAtomProperties(0); props.vx += 0.00002; setAtomProperties(0, props); props = getAtomProperties(1); props.vx += 0.00002; setAtomProperties(1, props);"
+      "action": "var props = getAtomProperties(0); setAtomProperties(0, {vx: props.vx + 0.00002}); props = getAtomProperties(1); setAtomProperties(1, {vx: props.vx + 0.00002});"
     },
     {
       "type": "graph",

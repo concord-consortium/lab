@@ -18,8 +18,8 @@ requirejs.config({
 });
 
 // Export API for Node.js scripts.
-exports.Modeler   = requirejs('md2d/models/modeler');
+exports.Modeler   = requirejs('models/md2d/models/modeler');
 // Used by MML -> JSON conversion script.
 exports.validator = requirejs('common/validator');
-exports.metadata  = requirejs('md2d/models/metadata');
-exports.Solvent   = requirejs('cs!md2d/models/solvent');
+exports.metadata  = requirejs('models/md2d/models/metadata');
+exports.Solvent   = requirejs('cs!models/md2d/models/solvent');

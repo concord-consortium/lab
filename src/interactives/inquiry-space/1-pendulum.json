@@ -1,0 +1,381 @@
+{
+  "title": "Pendulum",
+  "publicationStatus": "public",
+  "subtitle": "Explore some factors that affect the period of a pendulum.",
+  "about": [
+    "Press the play button. Watch the graph to see how the angle of the pendulum changes as it",
+    "swings back and forth. Use the graph to determine the period of the pendulum. Adjust the",
+    "scale by dragging the numbers on the axes. Change each variable – gravity, rod length,",
+    "starting angle and mass – and observe how each one affects the period. Can you explain why?",
+    "Try the damping slider. Does damping change the period?"
+  ],
+  "aspectRatio": 1.5,
+  "fontScale": 0.8,
+  "models": [
+    {
+      "type": "md2d",
+      "id": "pendulum1$0",
+      "url": "imports/legacy-mw-content/converted/inquiry-space/pendulum/pendulum1$0.json",
+      "viewOptions": {
+        "controlButtons": "reset",
+        "controlButtonStyle": "text",
+        "gridLines": true,
+        "showClock": true,
+        "velocityVectors": {
+          "length": 10
+        }
+      },
+      "modelOptions": {
+        "unitsScheme": "mks",
+        "timeStepsPerTick": 167,
+        "timeStep": 1,
+        "modelSampleRate": 60
+      },
+      "onLoad": [
+        "function setGraphRange() {",
+        "  setComponentAttributes('propertiesGraph', {'xmax': get('experimentDuration')*1.1});",
+        "}",
+        "function setButtonState() {",
+        "  setComponentDisabled('start-button', get('hasPlayed'));",
+        "  setComponentDisabled('stop-button', get('isStopped'));",
+        "  setComponentDisabled('new-run-button', !get('hasPlayed'));",
+        "  setComponentDisabled('analyze-data-button', !(get('hasPlayed') && get('isStopped') && canExportData() && isUnexportedDataPresent()));",
+        "}",
+        "function resetAngle() {",
+        "  set({startingAngle: get('startingAngle')});",
+        "}",
+        "function stopMotion() {",
+        "  stop();",
+        "  setAtomProperties(1, { vx: 0, vy: 0 });",
+        "}",
+        "onPropertyChange('rodLength', resetAngle);",
+        "onPropertyChange('ballMass', resetAngle);",
+        "onPropertyChange('gravitationalField', resetAngle);",
+        "onPropertyChange('damping', resetAngle);",
+        "onPropertyChange('startingAngle', stopMotion);",
+        "onPropertyChange('isPlayable', setButtonState);",
+        "onPropertyChange('isStopped', setButtonState);",
+        "onPropertyChange('hasPlayed', setButtonState);",
+        "setButtonState();",
+        "callEvery(1, function() {",
+        "   if ((Math.floor(getTime()) >= get('experimentDuration')) && get('durationEnabled')) {",
+        "     stop();",
+        "     setComponentDisabled('start-button',true);",
+        "   }",
+        "});",
+        "onPropertyChange('experimentDuration', setGraphRange);",
+        "onPropertyChange('durationEnabled', function(){ setComponentDisabled('duration-slider', !(get('durationEnabled'))); });",
+        "setGraphRange();",
+        "setComponentDisabled('stop-button', true);",
+        "setComponentDisabled('start-button', false);"
+       ]
+    }
+  ],
+  "outputs": [
+    {
+      "name": "currentAngle",
+      "unitAbbreviation": "°",
+      "label": "Angle",
+      "value": [
+        "var a0 = getAtomProperties(0),",
+        "    a1 = getAtomProperties(1),",
+        "    ang = Math.atan2(a1.y-a0.y, a1.x-a0.x) * rad2deg;",
+        "return (a1.x < a0.x && a1.y >= a0.y) ? ang - 270 : ang + 90;"
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "experimentDuration",
+      "initialValue": 5
+    },
+    {
+      "name": "durationEnabled",
+      "initialValue": true
+    },
+    {
+      "name": "gravity",
+      "label": "Gravity",
+      "unitType": "acceleration",
+      "onChange": "set('gravitationalField', value);",
+      "initialValue": 9.8
+    },
+    {
+      "name": "rodLength",
+      "label": "Rod length",
+      "unitAbbreviation": "cm",
+      "onChange": "var len = value/100, a0 = getAtomProperties(0), a1 = getAtomProperties(1), angle = Math.atan((a1.x-a0.x)/(a0.y-a1.y)); setRadialBondProperties(0, { length: len }); setAtomProperties(1, {x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0});",
+      "initialValue": 100
+    },
+    {
+      "name": "startingAngle",
+      "label": "Starting angle",
+      "unitAbbreviation": "°",
+      "onChange": "var a0 = getAtomProperties(0), angle = value*deg2rad, len = getRadialBondProperties(0).length; setAtomProperties(1, {x: a0.x+Math.sin(angle)*len, y: a0.y-Math.cos(angle)*len, vx: 0, vy: 0});",
+      "initialValue": 45
+    },
+    {
+      "name": "ballMass",
+      "label": "Ball mass",
+      "unitAbbreviation": "g",
+      "onChange": "setElementProperties(3, { mass: value/1000 });",
+      "initialValue": 250
+    },
+    {
+      "name": "damping",
+      "label": "Damping",
+      "unitType": "dampingCoefficient",
+      "onChange": "setAtomProperties(1, { friction: value });",
+      "initialValue": 0
+    }
+  ],
+  "exports": {
+    "perRun": [
+      "gravity",
+      "rodLength",
+      "startingAngle",
+      "ballMass",
+      "damping"
+    ],
+    "perTick": [
+      "currentAngle"
+    ]
+  },
+  "hideExportDataControl": true,
+  "components": [
+    {
+      "type": "button",
+      "id": "start-button",
+      "text": "Start",
+      "tooltip": "Start the experiment run.",
+      "action": [
+        "start();",
+        "setComponentDisabled('start-button', true);"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "stop-button",
+      "text": "Stop",
+      "tooltip": "Stop the experiment run.",
+      "action": "stop();"
+    },
+    {
+      "type": "button",
+      "id": "new-run-button",
+      "text": "New Run",
+      "tooltip": "Set up a new experiment run.",
+      "action": [
+        "reloadModel({",
+        "  propertiesToRetain: ['gravity', 'rodLength', 'startingAngle', 'ballMass', 'damping','experimentDuration', 'durationEnabled'],",
+        "  cause: 'new-run'",
+        "});"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "analyze-data-button",
+      "text": "Analyze Data",
+      "tooltip": "Put data from the experiment run into DataGames.",
+      "action": [
+        "exportData();",
+        "setComponentDisabled('analyze-data-button', !isUnexportedDataPresent());"
+      ]
+    },
+    {
+      "type": "slider",
+      "id": "duration-slider",
+      "min": 1,
+      "max": 30,
+      "displayValue": "return format('.0f')(value)",
+      "labels": [
+        {
+          "value": 1,
+          "label": "1"
+        },
+        {
+          "value": 30,
+          "label": "30"
+        }
+      ],
+      "steps": 29,
+      "width": "8.5em",
+      "title": "Duration of Exp. (s)",
+      "property": "experimentDuration"
+    },
+    {
+      "type": "checkbox",
+      "id": "duration-enabled-checkbox",
+      "property": "durationEnabled"
+    },
+    {
+      "type": "slider",
+      "id": "gravity-slider",
+      "min": 0.8,
+      "max": 19.8,
+      "displayValue": "return format('.1f')(value)",
+      "labels": [
+        {
+          "value": 1,
+          "label": "1"
+        },
+        {
+          "value": 20,
+          "label": "20"
+        }
+      ],
+      "steps": 38,
+      "title": "Gravity (m/s²)",
+      "property": "gravity"
+    },
+    {
+      "type": "slider",
+      "id": "length-slider",
+      "min": 10,
+      "max": 200,
+      "displayValue": "return format('f')(value)",
+      "labels": [
+        {
+          "value": 10,
+          "label": "10 cm"
+        },
+        {
+          "value": 200,
+          "label": "2 m"
+        }
+      ],
+      "steps": 19,
+      "title": "Rod length (cm)",
+      "property": "rodLength"
+    },
+    {
+      "type": "slider",
+      "id": "angle-slider",
+      "min": 0,
+      "max": 90,
+      "displayValue": "return format('f')(value)",
+      "labels": [
+        {
+          "value": 0,
+          "label": "0"
+        },
+        {
+          "value": 90,
+          "label": "90"
+        }
+      ],
+      "steps": 45,
+      "title": "Starting angle (&deg;)",
+      "property": "startingAngle"
+    },
+    {
+      "type": "slider",
+      "id": "mass-slider",
+      "min": 10,
+      "max": 400,
+      "displayValue": "return format('f')(value)",
+      "labels": [
+        {
+          "value": 10,
+          "label": "10"
+        },
+        {
+          "value": 400,
+          "label": "400"
+        }
+      ],
+      "steps": 39,
+      "title": "Mass of the ball (g)",
+      "property": "ballMass"
+    },
+    {
+      "type": "slider",
+      "id": "damping-slider",
+      "min": 0,
+      "max": 1,
+      "displayValue": "return format('.2f')(value)",
+      "labels": [
+        {
+          "value": 0,
+          "label": "0"
+        },
+        {
+          "value": 1.0,
+          "label": "1"
+        }
+      ],
+      "steps": 20,
+      "title": "Damping (Newton per m/s)",
+      "property": "damping"
+    },
+    {
+      "type": "numericOutput",
+      "id": "current-angle-display",
+      "property": "currentAngle",
+      "displayValue": "return format('f')(value)"
+    },
+    {
+      "type": "graph",
+      "id": "propertiesGraph",
+      "title": "Pendulum Angle",
+      "xlabel": "Time  (s)",
+      "ymin": -100,
+      "ymax": 100,
+      "xmax": 10,
+      "xTickCount": 5,
+      "yTickCount": 6,
+      "xFormatter": ".2r",
+      "yFormatter": ".2s",
+      "properties": [
+        "currentAngle"
+      ],
+      "resetAxesOnReset": false
+    }
+  ],
+  "layout": {
+    "right": [
+      "propertiesGraph"
+    ],
+    "bottom": [
+      [
+        "start-button",
+        "stop-button",
+        "analyze-data-button",
+        "new-run-button",
+        "duration-slider",
+        "duration-enabled-checkbox"
+      ],
+      [
+        "gravity-slider",
+        "length-slider",
+        "angle-slider"
+      ],
+      [
+        "mass-slider",
+        "damping-slider",
+        "current-angle-display"
+      ]
+    ]
+  },
+  "template": [
+    {
+      "id": "top",
+      "bottom": "model.top",
+      "width": "interactive.width"
+    },
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "padding-top": "0.5em"
+    },
+    {
+      "id": "right",
+      "top": "model.top",
+      "left": "model.right",
+      "right": "interactive.right",
+      "height": "model.height",
+      "padding-left": "1em",
+      "padding-right": "0.5em"
+    }
+  ]
+}

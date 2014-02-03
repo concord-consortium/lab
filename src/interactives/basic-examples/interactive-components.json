@@ -79,12 +79,12 @@
         },
         {
           "text": "Load Oil and Water",
-          "loadModel": "page3$1",
+          "action": "loadModel('page3$1');",
           "selected": true
         },
         {
           "text": "Load Oil and Water Mixed",
-          "loadModel": "oilAndWaterMix"
+          "action": "loadModel('oilAndWaterMix');"
         }
       ]
     },
@@ -94,16 +94,16 @@
       "options": [
         {
           "text": "Boiling Point",
-          "loadModel": "page3$0-with-heatbath",
+          "action": "loadModel('page3$0-with-heatbath');",
           "selected": true
         },
         {
           "text": "Oil and Water",
-          "loadModel": "page3$1"
+          "action": "loadModel('page3$1');"
         },
         {
           "text": "Oil and Water Mixed",
-          "loadModel": "oilAndWaterMix"
+          "action": "loadModel('oilAndWaterMix');"
         },
         {
           "text": "Show alert dialog",
@@ -122,16 +122,16 @@
       "options": [
         {
           "text": "Boiling Point",
-          "loadModel": "page3$0-with-heatbath",
+          "action": "loadModel('page3$0-with-heatbath');",
           "selected": true
         },
         {
           "text": "Oil and Water",
-          "loadModel": "page3$1"
+          "action": "loadModel('page3$1');"
         },
         {
           "text": "Oil and Water Mixed",
-          "loadModel": "oilAndWaterMix"
+          "action": "loadModel('oilAndWaterMix');"
         },
         {
           "text": "Show alert dialog",

@@ -1,0 +1,23 @@
+{
+  "title": "Introducing Light and Photons",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "light1$0",
+      "url": "models/md2d/sam/light-matter/introducing-light-and-photons.json",
+      "importedFrom": "imports/legacy-mw-content/rites/light1$0.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "components": [
+  ],
+  "layout": {
+    "bottom": [
+    ]
+  }
+}

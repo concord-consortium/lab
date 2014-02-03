@@ -79,19 +79,19 @@
       "options": [
         {
           "text": "instructionBox.png",
-          "loadModel": "png"
+          "action": "loadModel('png');"
         },
         {
           "text": "instructionBox.svg",
-          "loadModel": "svg1"
+          "action": "loadModel('svg1');"
         },
         {
           "text": "instructionBox2.svg",
-          "loadModel": "svg2"
+          "action": "loadModel('svg2');"
         },
         {
           "text": "instructionBox3.svg",
-          "loadModel": "svg3"
+          "action": "loadModel('svg3');"
         }
       ]
     }

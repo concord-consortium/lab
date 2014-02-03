@@ -18,4 +18,4 @@ requirejs.config({
 
 // Used by E2D -> JSON conversion script.
 exports.validator = requirejs('common/validator');
-exports.metadata  = requirejs('energy2d/metadata');
+exports.metadata  = requirejs('models/energy2d/metadata');

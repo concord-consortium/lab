@@ -34,7 +34,9 @@ define(function() {
         // Retrieve all of the SelectBoxIt methods and call selectOption(). Note that we have to call
         // .toString() as numeric values are interpreted as option index by selectBoxIt. See:
         // http://gregfranko.com/jquery.selectBoxIt.js/#Methods
-        $select.data("selectBox-selectBoxIt").selectOption(selection.toString());
+        // Also note that we have to call trim, as otherwise selectBoxIt won't recognize passed
+        // string as an option if there are unnecessary whitespace characters.
+        $select.data("selectBox-selectBoxIt").selectOption(selection.toString().trim());
       },
 
       render: function(parent) {

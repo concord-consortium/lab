@@ -31,7 +31,6 @@
         "unitsScheme": "mks"
       },
       "onLoad": [
-        "set('targetTemperature',500);",
         "set({ timeStep: 0.00015, timeStepsPerTick: 75, modelSampleRate: 'default' });",
         "onPropertyChange('time', function(t) {",
         "  var atoms               = atomsWithinRect(6.75, 0, 0.25, 1.96, 2);",
@@ -130,7 +129,7 @@
       "id": "reset-barrier",
       "text": "Reset experiment",
       "action": [
-        "reload();"
+        "reloadModel();"
       ]
     },
     {
@@ -159,7 +158,7 @@
     {
       "type": "barGraph",
       "id": "thermometer",
-      "property": "temperature",
+      "property": "targetTemperature",
       "title": "Thermometer",
       "labels": 0,
       "min": 0,

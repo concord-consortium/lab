@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang='en' xml:lang='en' xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+<%
+extend ::Kramdown::Utils::Html
+title = ''
+h = @converter.root.children.find {|c| c.type == :header}
+if h
+  collector = lambda {|c| c.children.collect {|cc| cc.type == :text ? escape_html(cc.value, :text) : collector.call(cc)}.join('')}
+  title = collector.call(h)
+end
+%>
+    <title>
+      <%= title %>
+    </title>
+    <meta content='text/xhtml; charset=utf-8' http-equiv='content-type'>
+    <meta content='all' name='distribution'>
+    <meta content='all' name='robots'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300italic,400,300,700&amp;subset=latin,greek,latin-ext' rel='stylesheet' type='text/css' />
+    <link href="readme.css" media="screen" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <div id="main">
+      <%= @body %>
+    </div>
+    <script src="vendor/hijs/hijs.js"></script>
+  </body>
+</html>

@@ -1,8 +1,8 @@
 helpers = require '../../helpers'
 helpers.setupBrowserEnvironment()
 
-GeneticEngine = requirejs 'md2d/models/engine/genetic-engine'
-Model         = requirejs 'md2d/models/modeler'
+GeneticEngine = requirejs 'models/md2d/models/engine/genetic-engine'
+Model         = requirejs 'models/md2d/models/modeler'
 
 describe "GeneticEngine", ->
   describe "[basic tests of the class]", ->

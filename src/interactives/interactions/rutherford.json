@@ -3,6 +3,7 @@
   "publicationStatus": "draft",
   "subtitle": "",
   "about": "",
+  "aspectRatio": 1.06,
   "models": [
     {
       "type": "md2d",
@@ -10,14 +11,210 @@
       "url": "imports/legacy-mw-content/converted/interactions/rutherford-experiment/rutherford$0.json",
       "importedFrom": "imports/legacy-mw-content/interactions/rutherford-experiment/rutherford$0.mml",
       "viewOptions": {
-        "controlButtons": "play_reset"
-      }
+        "controlButtons": "",
+        "electricFieldDensity": 24,
+        "electricFieldColor": "rgb(0,255,0)",
+        "chargeShading": false
+      },
+      "onLoad": [
+        "setAtomProperties(0, {charge: 2});",
+        "setElementProperties(0,{sigma: 0.14});",
+        "set('atomTraceColor','yellow');",
+        "set('timeStepsPerTick',50);",
+        "var height  = get('height'),",
+        "    alphaCharge = 0.5,",
+        "    offset  = 0.3,",
+        "    yBottom = offset,",
+        "    yTop    = get('height') - offset,",
+        "    xLeft   = offset,",
+        "    xRight  = get('width') - offset,",
+        "    xCenter = getAtomProperties(0).x,",
+        "    yCenter = getAtomProperties(0).y,",
+        "    tbdx    = [],",
+        "    tbdy    = [],",
+        "    ringOffset = 1,",
+        "    ringIndex  = 0,",
+        "    ringN      = 100;",
+        "for (var i = 0; i < ringN; i++) {",
+        "  addShape({",
+        "    type: 'ellipse',",
+        "    x: 10, y: 10,",
+        "    width: 0.01,",
+        "    height: 0.01,",
+        "    lineColor: 'white',",
+        "    color: 'white'",
+        "  });",
+        "}",
+        "for (var i = 0, props; i < 9; i++) {",
+        "  props = getTextBoxProperties(i);",
+        "  tbdx.push( props.x - xCenter );",
+        "  tbdy.push( props.y - yCenter );",
+        "}",
+        "set('tbdx',tbdx);",
+        "set('tbdy',tbdy);",
+        "onPropertyChange('time', function(time){",
+        "  batch(function(){",
+        "    var y, props, dx, dy, inside,",
+        "        scaledRadius = get('chargeRadius');",
+        "    if( time % 1000 === 0 ) {",
+        "      y = offset + randomFloat() * (height - 2*offset);",
+        "      addAtom({x: offset, y: y, element: 0, vx: 0.005, vy: 0, charge: alphaCharge});",
+        "    }",
+        "    // note atom[0] is the positive particle in the center",
+        "    // and this takes advantage that the engine does not modify",
+        "    // the atoms N < i when removing atom i",
+        "    for (var i = getNumberOfAtoms() - 1; i > 0; i--) {",
+        "      props = getAtomProperties(i);",
+        "      if (props.x > xRight) {",
+        "        removeAtom(i);",
+        "      } else if (props.y < yBottom) {",
+        "        removeAtom(i);",
+        "      } else if (props.y > yTop) {",
+        "        removeAtom(i);",
+        "      } else if (props.x < xLeft) {",
+        "        removeAtom(i);",
+        "      } else {",
+        "        // remove charge if within radius, or add charge back if outside again",
+        "        dx = props.x - xCenter;",
+        "        dy = props.y - yCenter;",
+        "        inside = Math.max(Math.abs(dx),Math.abs(dy)) < scaledRadius;",
+        "        if (props.charge > 0 && inside) {",
+        "          setAtomProperties(i, {charge: 0});",
+        "        } else if (props.charge === 0 && !inside) {",
+        "          setAtomProperties(i, {charge: alphaCharge});",
+        "        }",
+        "      }",
+        "    }",
+        "  });",
+        "  if (time % 100 === 0) {",
+        "    batch(function(){",
+        "      for (var i = 1, N = getNumberOfAtoms(); i < N; i++) {",
+        "        props = getAtomProperties(i);",
+        "        setShapeProperties(ringIndex + ringOffset, {x: props.x, y: props.y});",
+        "        ringIndex = (ringIndex + 1) % ringN;",
+        "      }",
+        "    });",
+        "  }",
+        "});",
+        "// now that the model is fully loaded, update the chargeRadius rendering.",
+        "set('chargeRadius',get('chargeRadius'));"
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "tbdx",
+      "initialValue": [],
+      "onChange": []
+    },
+    {
+      "name": "tbdy",
+      "initialValue": [],
+      "onChange": []
+    },
+    {
+      "name": "chargeRadius",
+      "initialValue": 1.5,
+      "onChange": [
+        "var xCenter = getAtomProperties(0).x,",
+        "    yCenter = getAtomProperties(0).y,",
+        "    x = xCenter - value,",
+        "    y = yCenter - value,",
+        "    d = 2*value,",
+        "    tbdx = get('tbdx'),",
+        "    tbdy = get('tbdy');",
+        "if (tbdx === undefined || tbdx.length == 0) return; // do not render before onLoad finishes",
+        "batch(function(){",
+        "  var c = 218 - Math.floor(170*(1 - value/1.5)),",
+        "      atomColor = 'rgb(' + c + ',' + c + ',255)';",
+        "  setShapeProperties(0, {color: atomColor});",
+        "  for (var i = 1, N = getNumberOfShapes(); i < N; i++) {",
+        "    setShapeProperties(i, {x: 10, y: 10});",
+        "  }",
+        "  while(getNumberOfAtoms() > 1) removeAtom();",
+        "  setShapeProperties(0,{x: x, y: y, width: d, height: d});",
+        "  for( var i = 0; i < 9; i++) {",
+        "    setTextBoxProperties(i,{",
+        "      x: xCenter + tbdx[i] * value / 1.5 - (1 - value/1.5)*0.125,",
+        "      y: yCenter + tbdy[i] * value / 1.5 + (1 - value/1.5)*0.125",
+        "    });",
+        "  }",
+        "});"
+      ]
     }
   ],
   "components": [
+    {
+      "type": "button",
+      "id": "shoot-alpha-particles",
+      "text": "Shoot alpha particles",
+      "action": [
+        "setComponentDisabled('select-radius',true);",
+        "setComponentDisabled('shoot-alpha-particles', true);",
+        "start();"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "stop-alpha-particles",
+      "text": "Stop",
+      "action": [
+        "stop();",
+        "setComponentDisabled('shoot-alpha-particles', true);"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "reset",
+      "text": "Reset",
+      "action": [
+        "stop();",
+        "reloadModel({",
+        "  propertiesToRetain: ['chargeRadius']",
+        "});",
+        "setComponentDisabled('select-radius', false);",
+        "setComponentDisabled('shoot-alpha-particles', false)"
+      ]
+    },
+    {
+      "type": "slider",
+      "id": "select-radius",
+      "title": "Set Spread of Positive Charge",
+      "min": 0.1,
+      "max": 1.5,
+      "steps": 30,
+      "property": "chargeRadius",
+      "labels": [
+        {
+          "value": 0.1,
+          "label": "concentrated"
+        },
+        {
+          "value": 1.5,
+          "label": "diffuse"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "select-show-electric-field",
+      "property": "showElectricField",
+      "text": "Show electric field"
+    }
   ],
   "layout": {
     "bottom": [
+      ["shoot-alpha-particles", "stop-alpha-particles", "reset", "select-show-electric-field"],
+      ["select-radius"]
     ]
-  }
+  },
+  "template": [
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "left": "model.left",
+      "width": "model.width",
+      "align": "center"
+    }
+  ]
 }

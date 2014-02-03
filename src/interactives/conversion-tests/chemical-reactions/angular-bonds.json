@@ -1,0 +1,328 @@
+{
+  "title": "Angular Bonds",
+  "publicationStatus": "public",
+  "aspectRatio": 0.8,
+  "fontScale": 0.8,
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "model1",
+      "onLoad": [
+        "for(var i = 0; i < 30; i++) addRandomAtom(i % 2);"
+      ],
+      "model": {
+        "useChemicalReactions": true,
+        "targetTemperature": 1000,
+        "chemicalReactions": {},
+        "timeStep": 0.5,
+        "width": 10,
+        "height": 5,
+        "atoms": {
+          "x": [
+            5
+          ],
+          "y": [
+            2.5
+          ],
+          "vx": [
+            0.001
+          ],
+          "vy": [
+            0.001
+          ],
+          "element": [
+            2
+          ]
+        },
+        "elements": {
+          "mass": [
+            120,
+            24,
+            36
+          ],
+          "sigma": [
+            0.30,
+            0.37,
+            0.50
+          ],
+          "epsilon": [
+            -0.1,
+            -0.1,
+            -0.1
+          ],
+          "color": [
+            -13159,
+            -9066941,
+            -9092186
+          ]
+        }
+      },
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      }
+    }
+  ],
+  "parameters": [
+    {
+      "name": "yellowAtomsValence",
+      "initialValue": 1,
+      "onChange": "setValenceElectrons(0, value);"
+    },
+    {
+      "name": "greenAtomsValence",
+      "initialValue": 6,
+      "onChange": "setValenceElectrons(1, value);"
+    },
+    {
+      "name": "purpleAtomsValence",
+      "initialValue": 4,
+      "onChange": "setValenceElectrons(2, value);"
+    },
+    {
+      "name": "00Energy",
+      "initialValue": 0.01,
+      "onChange": "setBondEnergy('0-0', value);"
+    },
+    {
+      "name": "11Energy",
+      "initialValue": 0.01,
+      "onChange": "setBondEnergy('1-1', value);"
+    },
+    {
+      "name": "22Energy",
+      "initialValue": 0.01,
+      "onChange": "setBondEnergy('2-2', value);"
+    },
+    {
+      "name": "01Energy",
+      "initialValue": 0.01,
+      "onChange": "setBondEnergy('0-1', value);"
+    },
+    {
+      "name": "02Energy",
+      "initialValue": 10,
+      "onChange": "setBondEnergy('0-2', value);"
+    },
+    {
+      "name": "12Energy",
+      "initialValue": 10,
+      "onChange": "setBondEnergy('1-2', value);"
+    }
+  ],
+  "components": [
+    {
+      "type": "checkbox",
+      "id": "heat-bath-checbox",
+      "text": "Heat bath",
+      "property": "temperatureControl"
+    },
+    {
+      "type": "slider",
+      "id": "temp-slider",
+      "min": 100,
+      "max": 2000,
+      "displayValue": "return format('.0f')(value)",
+      "labels": [
+        {
+          "value": 100,
+          "label": "100"
+        },
+        {
+          "value": 2000,
+          "label": "2000"
+        }
+      ],
+      "steps": 19,
+      "title": "Temperature (K)",
+      "property": "targetTemperature"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "text": "Valence electrons count:"
+    },
+    {
+      "type": "slider",
+      "id": "yellow-slider",
+      "property": "yellowAtomsValence",
+      "min": 1,
+      "max": 8,
+      "steps": 7,
+      "title": "yellow atoms",
+      "displayValue": "return value"
+    },
+    {
+      "type": "slider",
+      "id": "green-slider",
+      "property": "greenAtomsValence",
+      "min": 1,
+      "max": 8,
+      "steps": 7,
+      "title": "green atoms",
+      "displayValue": "return value"
+    },
+    {
+      "type": "slider",
+      "id": "pruple-slider",
+      "property": "purpleAtomsValence",
+      "min": 1,
+      "max": 8,
+      "steps": 7,
+      "title": "purple atoms",
+      "displayValue": "return value"
+    },
+    {
+      "type": "text",
+      "id": "label-energy",
+      "text": "Bond energies (eV):"
+    },
+    {
+      "type": "slider",
+      "id": "0-0-slider",
+      "property": "00Energy",
+      "min": 0,
+      "max": 10,
+      "steps": 1000,
+      "title": "yellow-yellow bond:",
+      "displayValue": "return format('.2f')(value);"
+    },
+    {
+      "type": "slider",
+      "id": "1-1-slider",
+      "property": "11Energy",
+      "min": 0,
+      "max": 10,
+      "steps": 1000,
+      "title": "green-green bond:",
+      "displayValue": "return format('.2f')(value);"
+    },
+    {
+      "type": "slider",
+      "id": "2-2-slider",
+      "property": "22Energy",
+      "min": 0,
+      "max": 10,
+      "steps": 1000,
+      "title": "purple-purple bond:",
+      "displayValue": "return format('.2f')(value);"
+    },
+    {
+      "type": "slider",
+      "id": "0-1-slider",
+      "property": "01Energy",
+      "min": 0,
+      "max": 10,
+      "steps": 1000,
+      "title": "yellow-green bond:",
+      "displayValue": "return format('.2f')(value);"
+    },
+    {
+      "type": "slider",
+      "id": "0-2-slider",
+      "property": "02Energy",
+      "min": 0,
+      "max": 10,
+      "steps": 1000,
+      "title": "yellow-purple bond:",
+      "displayValue": "return format('.2f')(value);"
+    },
+    {
+      "type": "slider",
+      "id": "1-2-slider",
+      "property": "12Energy",
+      "min": 0,
+      "max": 10,
+      "steps": 1000,
+      "title": "green-purple bond:",
+      "displayValue": "return format('.2f')(value);"
+    },
+    {
+      "type": "graph",
+      "id": "energy-graph",
+      "title": "Energy (KE:red, PE:green, TE:blue)",
+      "xlabel": "Time (ps)",
+      "ylabel": "Energy (eV)",
+      "ymin": -8,
+      "ymax": 8,
+      "xmax": 10,
+      "xTickCount": 10,
+      "yTickCount": 10,
+      "xFormatter": ".2r",
+      "yFormatter": ".2s",
+      "properties": [
+        "kineticEnergy",
+        "potentialEnergy",
+        "totalEnergy"
+      ]
+    }
+  ],
+  "template": [
+    {
+      "id": "right-padding",
+      "top": "model.top",
+      "left": "model.right",
+      "padding-right": "1em"
+    },
+    {
+      "id": "under-model",
+      "top": "model.bottom",
+      "left": "model.left",
+      "padding-left": "1.5em",
+      "padding-top": "0.5em"
+    },
+    {
+      "id": "col1",
+      "top": "under-model.bottom",
+      "left": "model.left",
+      "padding-top": "0.5em",
+      "padding-left": "1em"
+    },
+    {
+      "id": "col2",
+      "top": "under-model.bottom",
+      "left": "col1.right",
+      "padding-top": "0.5em",
+      "padding-left": "1em"
+    },
+    {
+      "id": "col3",
+      "top": "under-model.bottom",
+      "left": "col2.right",
+      "padding-top": "2.6em",
+      "padding-left": "1em"
+    },
+    {
+      "id": "bottom",
+      "top": "col2.bottom",
+      "width": "interactive.width",
+      "bottom": "interactive.bottom"
+    }
+  ],
+  "layout": {
+    "under-model": [
+      "heat-bath-checbox", "temp-slider"
+    ],
+    "bottom": [
+      "energy-graph"
+    ],
+    "col1": [
+      ["label"],
+      ["yellow-slider"],
+      ["green-slider"],
+      ["pruple-slider"]
+    ],
+    "col2": [
+      ["label-energy"],
+      ["0-0-slider"],
+      ["1-1-slider"],
+      ["2-2-slider"]
+    ],
+    "col3": [
+      ["0-1-slider"],
+      ["0-2-slider"],
+      ["1-2-slider"]
+    ]
+  }
+}

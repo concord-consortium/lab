@@ -16,7 +16,10 @@
       },
       "onLoad": [
         "function setGraphRange() {",
-        "  syncAxisRangesToPropertyRanges('propertiesGraph');",
+        "  if (!get('isNewRunInProgress')) {",
+        "    syncAxisRangesToPropertyRanges('propertiesGraph');",
+        "  }",
+        "  resetGraphSelection('propertiesGraph');",
         "}",
         "function setButtonState() {",
         "  setComponentDisabled('start-button', !get('isPlayable'));",
@@ -77,6 +80,8 @@
       "properties": [
         "sensorReading"
       ],
+      "enableSelectionButton": true,
+      "clearSelectionOnLeavingSelectMode": true,
       "resetAxesOnReset": false
     },
     {
@@ -128,15 +133,11 @@
       "text": "New Run",
       "tooltip": "Set up a new experiment run.",
       "action": [
-        "var tareValue = get('tareValue');",
-        "set('isNewRunInProgress', true);",
-        "reset({",
-        "  retainParameters: ['sensorType','experimentDuration', 'durationEnabled'],",
+        "resetModel({",
+        "  propertiesToRetain: ['sensorType','experimentDuration', 'durationEnabled', 'tareValue'],",
         "  cause: 'new-run'",
         "});",
-        "set('tareValue', tareValue);",
-        "scrollXAxisToZero('propertiesGraph');",
-        "set('isNewRunInProgress', false);"
+        "scrollXAxisToZero('propertiesGraph');"
       ]
     },
     {
@@ -164,6 +165,7 @@
     ]
   },
   "exports": {
+    "selectionComponents": ["propertiesGraph"],
     "perRun": ["sensorType"],
     "perTick": ["sensorReading"]
   },

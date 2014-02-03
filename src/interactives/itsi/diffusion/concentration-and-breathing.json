@@ -1,0 +1,213 @@
+{
+  "title": "Concentration and Breathing",
+  "publicationStatus": "draft",
+  "subtitle": "Exchanging gases across a cell membrane",
+  "about": [
+    ""
+  ],
+  "aspectRatio": 1.725,
+  "fontScale": 0.8,
+  "models": [
+    {
+      "type": "md2d",
+      "id": "model1",
+      "url": "models/md2d/itsi/diffusion/concentration-and-breathing/concentration-and-breathing.json",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "imageMapping": { }
+      },
+      "onLoad": [
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "name": "nInsideO2",
+      "value": "return atomsWithinRect(2, 0.45, 2.17, 1.6, 0).length;"
+    },
+    {
+      "name": "nOutsideO2",
+      "value": "return getNumberOfAtoms() - atomsWithinRect(2, 0.45, 2.17, 1.6, 0).length;"
+    },
+    {
+      "name": "insideConcentrationO2",
+      "value": [
+      "  return (get('nInsideO2') / 75) * 100;"
+      ]
+    },
+    {
+      "name": "outsideConcentrationO2",
+      "value": [
+      "  return (get('nOutsideO2') / 300) * 100;"
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "setCountTrigger",
+      "initialValue": 0,
+      "onChange": [
+        "var c={x: 3, y: 2},vx,vy,w,h,i,nAtomsToAdd,calcCoords,atomsToRemove,nAtomsToFetch;",
+        "stop();",
+        "w = get('width');",
+        "h = get('height');",
+        "calcCoords = function() {",
+        "  c.x = randomFloat(w);",
+        "  c.y = randomFloat(h);",
+        "};",
+        "batch(function(){",
+        "  nAtomsToAdd = get('initialOutsideO2') - get('nOutsideO2');",
+        "  while (nAtomsToAdd > 0) {",
+        "    calcCoords();",
+        "    while (c.x >= 2 && c.x <= 4.17 && c.y >= 0.45 && c.y <= 2.05) {",
+        "      calcCoords();",
+        "    }",
+        "    vx = randomFloat(0.001)-0.0005;",
+        "    vy = randomFloat(0.001)-0.0005;",
+        "    if (addAtom({x: c.x, y: c.y, vx: vx, vy: vy, element: 0})) nAtomsToAdd--;",
+        "  }",
+        "  while (nAtomsToAdd < 0) {",
+        "    nAtomsToFetch = Math.ceil(Math.abs(nAtomsToAdd));",
+        "    atomsToRemove = randomAtoms(nAtomsToFetch).sort(function(a,b){return b-a});",
+        "    if (atomsToRemove.length === 0) { return; };",
+        "    for (i = 0; i < atomsToRemove.length; i++) {",
+        "      c = getAtomProperties(atomsToRemove[i]);",
+        "      if (!(c.x >= 2 && c.x <= 4.17 && c.y >= 0.45 && c.y <= 2.05)) {",
+        "        removeAtom(atomsToRemove[i]);",
+        "        nAtomsToAdd++;",
+        "      }",
+        "    }",
+        "  }",
+        "});",
+        "set('targetTemperature',500);"
+      ]
+    },
+    {
+      "name": "initialOutsideO2",
+      "initialValue": 220,
+      "onChange": [ "set('setCountTrigger',get('setCountTrigger')+1);"]
+    }
+  ],
+  "components": [
+    {
+      "type": "text",
+      "id": "cell-above-label",
+      "text": "Red Blood Cell"
+    },
+    {
+      "type": "text",
+      "id": "bar-label",
+      "text": "O₂ Conc."
+    },
+    {
+      "type": "text",
+      "id": "disclaimer",
+      "text": "Note: Real red blood cells are not shaped like a square. This shape was used for technical reasons to make the model easier to construct."
+    },
+    {
+      "type": "text",
+      "id": "empty",
+      "text": ""
+    },
+    {
+      "type": "barGraph",
+      "id": "outside-concentration-O2",
+      "min": 0,
+      "max": 100,
+      "labels": 0,
+      "barColor": "#a2b5ff",
+      "fillColor": "#fff",
+      "title": "Out",
+      "titleOn": "top",
+      "height": "13em",
+      "barWidth": "1em",
+      "property": "outsideConcentrationO2"
+    },
+    {
+      "type": "barGraph",
+      "id": "inside-concentration-O2",
+      "min": 0,
+      "max": 100,
+      "labels": 0,
+      "barColor": "#ffafaf",
+      "fillColor": "#fff",
+      "title": "In",
+      "titleOn": "top",
+      "height": "13em",
+      "barWidth": "1em",
+      "property": "insideConcentrationO2"
+    },
+    {
+      "type": "slider",
+      "id": "select-outside-concentration-o2",
+      "min": 0,
+      "max": 300,
+      "labels": [
+        {
+          "value": 0,
+          "label": "Low<br/><span style='font-size: 0.9em;'>distant tissue</span>"
+        },
+        {
+          "value": 300,
+          "label": "High<br/><span style='font-size: 0.9em;'>near lung</span>"
+        }
+      ],
+      "steps": 26,
+      "title": "Outside O₂ Concentration",
+      "property": "initialOutsideO2"
+    }
+  ],
+  "layout": {
+    "right-outside": [
+      [
+        "bar-label"
+      ],
+      [
+        "outside-concentration-O2","inside-concentration-O2"
+      ]
+    ],
+    "below": [
+      ["select-outside-concentration-o2"]
+    ],
+    "below-right": [
+      "disclaimer"
+    ],
+    "above-center": [
+      "cell-above-label"
+    ]
+  },
+  "template": [
+    {
+      "id": "below",
+      "top": "model.bottom",
+      "left": "model.left",
+      "width": "model.width",
+      "padding-top": "0.7em",
+      "align": "center"
+    },
+    {
+      "id": "below-right",
+      "top": "model.bottom",
+      "right": "interactive.right",
+      "width": "14em",
+      "padding-top": "0.7em",
+      "align": "center"
+    },
+    {
+      "id": "above-center",
+      "width": "model.width",
+      "left": "model.left",
+      "bottom": "model.top",
+      "height": "1.5em",
+      "align": "center"
+    },
+    {
+      "id": "right-outside",
+      "left": "model.right",
+      "top": "above-center.top",
+      "height": "model.height",
+      "width": "13em",
+      "align": "center"
+    }
+  ]
+}

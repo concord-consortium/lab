@@ -6,7 +6,10 @@ define(function(require) {
   var parentOrigin,
       listeners = {},
       structuredClone = require('iframe-phone/structured-clone'),
-      controller;
+      controller,
+      isInitialized = false,
+      connected = false,
+      postMessageQueue = [];
 
   function postToTarget(message, target) {
     // See http://dev.opera.com/articles/view/window-postmessage-messagechannel/#crossdoc
@@ -19,15 +22,33 @@ define(function(require) {
     }
   }
 
-  function post(message) {
-    postToTarget(message, parentOrigin);
+  function post(type, content) {
+    var message;
+    // Message object can be constructed from 'type' and 'content' arguments or it can be passed
+    // as the first argument.
+    if (arguments.length === 1 && typeof type === 'object' && typeof type.type === 'string') {
+      message = type;
+    } else {
+      message = {
+        type: type,
+        content: content
+      };
+    }
+    if (connected) {
+      postToTarget(message, parentOrigin);
+    } else {
+      postMessageQueue.push(message);
+    }
   }
 
   // Only the initial 'hello' message goes permissively to a '*' target (because due to cross origin
   // restrictions we can't find out our parent's origin until they voluntarily send us a message
   // with it.)
-  function postHello(message) {
-    postToTarget(message, '*');
+  function postHello() {
+    postToTarget({
+      type: 'hello',
+      origin: document.location.href.match(/(.*?\/\/.*?)\//)[1]
+    }, '*');
   }
 
   function addListener(type, fn) {
@@ -51,32 +72,37 @@ define(function(require) {
       if (typeof messageData === 'string') messageData = JSON.parse(messageData);
 
       // We don't know origin property of parent window until it tells us.
-      if (!parentOrigin) {
+      if (!connected && messageData.type === 'hello') {
         // This is the return handshake from the embedding window.
-        if (messageData.type === 'hello') {
-          parentOrigin = messageData.origin;
+        parentOrigin = messageData.origin;
+        connected = true;
+        while(postMessageQueue.length > 0) {
+          post(postMessageQueue.shift());
         }
       }
 
       // Perhaps-redundantly insist on checking origin as well as source window of message.
       if (message.origin === parentOrigin) {
-        if (listeners[messageData.type]) listeners[messageData.type](messageData);
+        if (listeners[messageData.type]) listeners[messageData.type](messageData.content);
       }
    }
 
+  /**
+    Initialize communication with the parent frame. This should not be called until the app's custom
+    listeners are registered (via our 'addLIstener' public method) because, once we open the
+    communication, the parent window may send any messages it may have queued. Messages for which
+    we don't have handlers will be silently ignored.
+  */
   function initialize() {
+    if (isInitialized) {
+      return;
+    }
+    isInitialized = true;
     if (window.parent === window) return;
 
     // We kick off communication with the parent window by sending a "hello" message. Then we wait
     // for a handshake (another "hello" message) from the parent window.
-    postHello({
-      type: 'hello',
-      origin: document.location.href.match(/(.*?\/\/.*?)\//)[1]
-    });
-
-    // Make sure that even if initialize() is called many times,
-    // only one instance of messageListener will be registered as listener.
-    // So, add closure function instead of anonymous function created here.
+    postHello();
     window.addEventListener('message', messageListener, false);
   }
 

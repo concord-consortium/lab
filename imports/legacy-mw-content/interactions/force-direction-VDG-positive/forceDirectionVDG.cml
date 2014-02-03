@@ -24,7 +24,7 @@
     &lt;p&gt;
       
     &lt;/p&gt;
-    &lt;table width=&quot;100%&quot; border=&quot;0&quot; cellpadding=&quot;0&quot;&gt;
+    &lt;table cellpadding=&quot;0&quot; width=&quot;100%&quot; border=&quot;0&quot;&gt;
       &lt;tr&gt;
         &lt;th scope=&quot;col&quot; align=&quot;center&quot; colspan=&quot;2&quot;&gt;
           Explore Direction of Forces
@@ -40,7 +40,7 @@
       &lt;/tr&gt;
       &lt;tr&gt;
         &lt;th scope=&quot;row&quot; align=&quot;right&quot;&gt;
-          &lt;input script_selected=&quot;script:mw2d:1:set line[0].visible on;&quot; type=&quot;checkbox&quot; id=&quot;checkbox&quot; script_deselected=&quot;script:mw2d:1:set line[0].visible off;&quot; name=&quot;checkbox&quot; checked=&quot;checked&quot;&gt;
+          &lt;input id=&quot;checkbox&quot; script_selected=&quot;script:mw2d:1:set line[0].visible on;&quot; checked=&quot;checked&quot; script_deselected=&quot;script:mw2d:1:set line[0].visible off;&quot; type=&quot;checkbox&quot; name=&quot;checkbox&quot;&gt;
           
         &lt;/th&gt;
         &lt;td&gt;
@@ -49,7 +49,7 @@
       &lt;/tr&gt;
       &lt;tr&gt;
         &lt;th scope=&quot;row&quot; align=&quot;right&quot;&gt;
-          &lt;input type=&quot;checkbox&quot; script_selected=&quot;script:mw2d:1:set line[%VDG].visible on;&quot; id=&quot;checkbox2&quot; script_deselected=&quot;script:mw2d:1:set line[%VDG].visible off;&quot; name=&quot;checkbox2&quot;&gt;
+          &lt;input id=&quot;checkbox2&quot; script_selected=&quot;script:mw2d:1:set line[%VDG].visible on;&quot; script_deselected=&quot;script:mw2d:1:set line[%VDG].visible off;&quot; type=&quot;checkbox&quot; name=&quot;checkbox2&quot;&gt;
           
         &lt;/th&gt;
         &lt;td&gt;

@@ -40,9 +40,14 @@ jsconfig = <<HEREDOC
 // this file is generated during build process by: ./script/generate-js-config.rb
 define(function (require) {
   var actualRoot = require('common/actual-root'),
+      urlHelper  = require('common/url-helper'),
       publicAPI;
   publicAPI = #{JSON.pretty_generate(CONFIG[:jsconfig])};
   publicAPI.actualRoot = actualRoot;
+  publicAPI.urlHelper  = new urlHelper(publicAPI);
+  publicAPI.getVersionedUrl = function(load_learner_data) {
+   return publicAPI.urlHelper.getVersionedUrl(load_learner_data);
+  }
   return publicAPI;
 });
 HEREDOC

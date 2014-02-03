@@ -1,3 +1,5 @@
+## Lab: License
+
 The [Concord Consortium Lab project](https://github.com/concord-consortium/lab)
 is Copyright 2012 (c) by the Concord Consortium and is distributed under
 any of the following licenses:
@@ -87,6 +89,11 @@ Here is a list of projects and resources included in the in the `vendor/` direct
 26. [mustache](https://github.com/janl/mustache.js): [MIT](http://www.opensource.org/licenses/MIT)
 27. [markdown-js](https://github.com/evilstreak/markdown-js): [MIT](http://www.opensource.org/licenses/MIT)
 28. [fingerprintjs](https://github.com/Valve/fingerprintjs): [MIT](http://www.opensource.org/licenses/MIT)
+29. [pixi.js](https://github.com/GoodBoyDigital/pixi.js): [MIT](http://www.opensource.org/licenses/MIT)
+30. [canvg](https://code.google.com/p/canvg): [MIT](http://www.opensource.org/licenses/MIT)
+31. [fastclick](https://github.com/ftlabs/fastclick): [MIT](http://www.opensource.org/licenses/MIT)
+32. [seedrandom](https://github.com/davidbau/seedrandom): [BSD](http://www.opensource.org/licenses/BSD-2-Clause)
+33. [chosen](https://github.com/harvesthq/chosen): [MIT](http://www.opensource.org/licenses/MIT)
 
 In addition there are three fontface directories in `vendor/fonts` that are distributed
 under compatible open source licenses:

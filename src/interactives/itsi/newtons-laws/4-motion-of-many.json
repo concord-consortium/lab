@@ -1,0 +1,228 @@
+{
+  "title": "The motion of many atoms",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "aspectRatio": 1.725,
+  "fontScale": 0.7,
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "page4_itsisu$0",
+      "url": "imports/legacy-mw-content/converted/itsi/newtonv2/page4_itsisu$0.json",
+      "importedFrom": "imports/legacy-mw-content/itsi/newtonv2/page4_itsisu$0.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "atomTraceColor": "white",
+        "markColor": "#ccccff"
+      },
+      "onLoad": [
+        "var idx, tracedAtom = -1, tracedAtoms = [], markedAtoms = [];",
+        "onPropertyChange('addDepressed', function(depressed) {",
+        "  if (depressed) {",
+        "    setComponentDisabled('remove-button', true);",
+        "    setComponentDisabled('trace-button', true);",
+        "    setComponentDisabled('highlight-button', true);",
+        "    setComponentAttributes('add-button', {text: 'Cancel'});",
+        "  } else {",
+        "    setComponentDisabled('remove-button', false);",
+        "    setComponentDisabled('trace-button', false);",
+        "    setComponentDisabled('highlight-button', false);",
+        "    setComponentAttributes('add-button', {text: 'Add'});",
+        "  }",
+        "});",
+        "onPropertyChange('removeDepressed', function(depressed) {",
+        "  if (depressed) {",
+        "    setComponentDisabled('add-button', true);",
+        "    setComponentDisabled('trace-button', true);",
+        "    setComponentDisabled('highlight-button', true);",
+        "    setComponentAttributes('remove-button', {text: 'Cancel'});",
+        "  } else {",
+        "    setComponentDisabled('add-button', false);",
+        "    setComponentDisabled('trace-button', false);",
+        "    setComponentDisabled('highlight-button', false);",
+        "    setComponentAttributes('remove-button', {text: 'Remove'});",
+        "  }",
+        "});",
+        "onPropertyChange('traceDepressed', function(depressed) {",
+        "  if (depressed) {",
+        "    setComponentDisabled('remove-button', true);",
+        "    setComponentDisabled('add-button', true);",
+        "    setComponentDisabled('highlight-button', true);",
+        "    setComponentAttributes('trace-button', {text: 'Cancel'});",
+        "  } else {",
+        "    setComponentDisabled('remove-button', false);",
+        "    setComponentDisabled('add-button', false);",
+        "    setComponentDisabled('highlight-button', false);",
+        "    setComponentAttributes('trace-button', {text: 'Trace'});",
+        "  }",
+        "});",
+        "onPropertyChange('highlightDepressed', function(depressed) {",
+        "  if (depressed) {",
+        "    setComponentDisabled('remove-button', true);",
+        "    setComponentDisabled('trace-button', true);",
+        "    setComponentDisabled('add-button', true);",
+        "    setComponentAttributes('highlight-button', {text: 'Cancel'});",
+        "  } else {",
+        "    setComponentDisabled('remove-button', false);",
+        "    setComponentDisabled('trace-button', false);",
+        "    setComponentDisabled('add-button', false);",
+        "    setComponentAttributes('highlight-button', {text: 'Highlight'});",
+        "  }",
+        "});",
+        "onClick('atom', function(x,y,d,i) {",
+        "  if (get('removeDepressed')) {",
+        "    removeAtom(i);",
+        "  } else if (get('highlightDepressed')) {",
+        "    idx = markedAtoms.indexOf(i);",
+        "    if (idx !== -1 ) {",
+        "      markedAtoms.splice(idx, 1);",
+        "    } else {",
+        "      markedAtoms.push(i);",
+        "    }",
+        "    markAtoms(markedAtoms);",
+        "  } else if (get('traceDepressed')) {",
+        "    // Tracing only supports one atom at a time for now",
+        "    // idx = tracedAtoms.indexOf(i);",
+        "    // if (idx !== -1 ) {",
+        "    //   tracedAtoms = tracedAtoms.splice(idx, 1);",
+        "    //   untraceAtom(i);",
+        "    // } else {",
+        "    //   tracedAtoms.push(i);",
+        "    //   traceAtom(i);",
+        "    // }",
+        "    if (tracedAtom != i) {",
+        "      if (tracedAtom != -1) {",
+        "        untraceAtom(tracedAtom);",
+        "        setAtomProperties(tracedAtom, {element: 3});",
+        "      }",
+        "      traceAtom(i);",
+        "      setAtomProperties(i, {element: 2});",
+        "      tracedAtom = i;",
+        "    } else {",
+        "      untraceAtom(i);",
+        "      setAtomProperties(i, {element: 3});",
+        "      tracedAtom = -1;",
+        "    }",
+        "  }",
+        "});",
+        "onClick('background', function(x,y) {",
+        "  if (get('addDepressed')) {",
+        "    addAtom({element: 3, x: x, y: y, vx: randomFloat(0.001)-0.0005, vy: randomFloat(0.001)-0.0005});",
+        "  }",
+        "});"
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "addDepressed",
+      "initialValue": false
+    },
+    {
+      "name": "removeDepressed",
+      "initialValue": false
+    },
+    {
+      "name": "traceDepressed",
+      "initialValue": false
+    },
+    {
+      "name": "highlightDepressed",
+      "initialValue": false
+    }
+  ],
+  "components": [
+    {
+      "type": "text",
+      "id": "instructions",
+      "text": [
+        "To the right is an empty model in which you can place ",
+        "any number of atoms. First, try adding just two or three ",
+        "atoms, and then trace their paths."
+      ]
+    },
+    {
+      "type": "text",
+      "id": "challenge",
+      "text": [
+        "**Challenge**: Highlight an atom, and make it behave like ",
+        "one of Brown's tiny particles that he observed in his ",
+        "microscope."
+      ]
+    },
+    {
+      "type": "button",
+      "id": "add-button",
+      "text": "Add",
+      "tooltip": "Click this button, then click within the model area. A new atom will be added wherever you click.",
+      "action": [
+        "set('addDepressed', !get('addDepressed'));"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "remove-button",
+      "text": "Remove",
+      "tooltip": "Click this button, then click on an atom within the model area. The atom you click on will be removed.",
+      "action": [
+        "set('removeDepressed', !get('removeDepressed'));"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "trace-button",
+      "text": "Trace",
+      "tooltip": "Click this button, then click on an atom within the model area. The atom you click on will generate a trace line.",
+      "action": [
+        "set('traceDepressed', !get('traceDepressed'));"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "highlight-button",
+      "text": "Highlight",
+      "tooltip": "Click this button, then click on an atom within the model area. The atom you click on will be highlighted.",
+      "action": [
+        "set('highlightDepressed', !get('highlightDepressed'));"
+      ]
+    }
+  ],
+  "template": [
+    {
+      "id": "left-top",
+      "top": "model.top",
+      "right": "model.left",
+      "height": "9em",
+      "width": "14em",
+      "padding-right": "0.7em",
+      "align": "left"
+    },
+    {
+      "id": "left",
+      "top": "left-top.bottom",
+      "right": "model.left",
+      "height": "9em",
+      "width": "14em",
+      "padding-right": "0.7em",
+      "align": "center"
+    },
+    {
+      "id": "left-bottom",
+      "top": "left.bottom",
+      "right": "model.left",
+      "height": "5em",
+      "width": "14em",
+      "padding-right": "0.7em",
+      "align": "left"
+    }
+  ],
+  "layout": {
+    "left-top": ["instructions"],
+    "left": [
+      ["add-button","remove-button"],
+      ["trace-button","highlight-button"]
+    ],
+    "left-bottom": ["challenge"]
+  }
+}

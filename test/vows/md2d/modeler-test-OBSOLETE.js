@@ -7,7 +7,7 @@
 
 //     Model = requirejs('md2d/models/modeler'),
 
-//     suite = vows.describe("md2d/models/modeler");
+//     suite = vows.describe("models/md2d/models/modeler");
 
 
 // var atoms = [],

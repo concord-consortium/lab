@@ -1,8 +1,12 @@
 {
   "title": "Hydrogen-Oxygen Reaction",
-  "publicationStatus": "draft",
+  "publicationStatus": "public",
   "subtitle": "",
-  "about": "",
+  "about": [
+    "This model presents Hydrogen-Oxygen reaction without a heat bath.",
+    "It means that the total energy should be conserved, but you should be able to see a rapid",
+    "growth of the kinetic energy."
+  ],
   "models": [
     {
       "type": "md2d",
@@ -14,6 +18,7 @@
         "atomNumbers": true
       },
       "modelOptions": {
+        "temperatureControl": false,
         "chemicalReactions": {
           "valenceElectrons": [
             1,
@@ -43,41 +48,10 @@
     {
       "name": "slow-motion",
       "initialValue": false,
-      "onChange": "if (value) set('timeStep', 0.025); else set('timeStep', 0.25);"
+      "onChange": "if (value) set('timeStep', 0.02); else set('timeStep', 0.08);"
     }
   ],
   "components": [
-    {
-        "type": "slider",
-        "id": "temp-slider",
-        "min": 0,
-        "max": 1000,
-        "displayValue": "return format('g')(value)",
-        "width": "20em",
-        "labels": [
-          {
-            "value": 0.0,
-            "label": "0 K"
-          },
-          {
-            "value": 500,
-            "label": "500 K"
-          },
-          {
-            "value": 1000,
-            "label": "1000 K"
-          }
-        ],
-        "steps": 500,
-        "title": "Target temperature",
-        "property": "targetTemperature"
-    },
-    {
-      "type": "checkbox",
-      "id": "heat-bath-checkbox",
-      "text": "Heat bath",
-      "property": "temperatureControl"
-    },
     {
       "type": "checkbox",
       "id": "slow-motion-checkbox",
@@ -95,12 +69,56 @@
       "min": 0,
       "max": 10000,
       "averagePeriod": 2500
+    },
+    {
+      "type": "graph",
+      "id": "energy-graph",
+      "title": "Energy (KE:red, PE:green, TE:blue)",
+      "xlabel": "Time (ps)",
+      "ylabel": "Energy (eV)",
+      "ymin": -80,
+      "ymax": 10,
+      "xmax": 30,
+      "xTickCount": 10,
+      "yTickCount": 10,
+      "xFormatter": ".2r",
+      "yFormatter": ".2s",
+      "properties": [
+        "kineticEnergy",
+        "potentialEnergy",
+        "totalEnergy"
+      ]
+    }
+  ],
+  "template": [
+    {
+      "id": "lower-right",
+      "bottom": "model.bottom",
+      "left": "model.right",
+      "padding-left": "1em",
+      "padding-right": "0.5em"
+    },
+    {
+      "id": "right",
+      "top": "model.top",
+      "left": "model.right",
+      "bottom": "lower-right.top",
+      "padding-left": "1em",
+      "padding-right": "0.5em"
+    },
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "width": "interactive.width",
+      "height": "10em",
+      "padding-top": "0.5em"
     }
   ],
   "layout": {
     "bottom": [
-      "temp-slider",
-      "heat-bath-checkbox",
+      "energy-graph"
+    ],
+    "lower-right": [
       "slow-motion-checkbox"
     ],
     "right": [

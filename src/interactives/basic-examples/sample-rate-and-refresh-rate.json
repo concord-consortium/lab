@@ -57,19 +57,19 @@
         },
         {
           "text": "Monatomic Gas",
-          "loadModel": "simple-gas$0"
+          "action": "loadModel('simple-gas$0');"
         },
         {
           "text": "Multiatomic Gas",
-          "loadModel": "multiatomic-gas$0"
+          "action": "loadModel('multiatomic-gas$0');"
         },
         {
           "text": "Pendulum",
-          "loadModel": "pendulum1$0"
+          "action": "loadModel('pendulum1$0');"
         },
         {
           "text": "Plastic Forces",
-          "loadModel": "plasticforcesimple$0"
+          "action": "loadModel('plasticforcesimple$0');"
         }
       ]
     },

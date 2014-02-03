@@ -1,8 +1,8 @@
 helpers = require '../../helpers'
 helpers.setupBrowserEnvironment()
 
-AtomTransition = requirejs 'md2d/models/atom-transition'
-Model          = requirejs 'md2d/models/modeler'
+AtomTransition = requirejs 'models/md2d/models/atom-transition'
+Model          = requirejs 'models/md2d/models/modeler'
 
 ###
   Note that this is quick tests of the AtomTransition subclass.

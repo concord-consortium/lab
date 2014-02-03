@@ -23,6 +23,21 @@ define(function() {
         defaultValue: ""
       },
 
+      // optional: used by activity finder (pt: http://bit.ly/IGmyks)
+      category: {
+        defaultValue: ""
+      },
+
+      // optional: used by activity finder (pt: http://bit.ly/IGmyks)
+      subCategory: {
+        defaultValue: ""
+      },
+
+      // optional: used by activity finder (pt: http://bit.ly/IGpo96)
+      screenshot: {
+        defaultValue: ""
+      },
+
       // optional: holds path of html or cml page this Interactive was imported from
       importedFrom: {},
 
@@ -32,6 +47,10 @@ define(function() {
 
       fontScale: {
         defaultValue: 1
+      },
+
+      randomSeed: {
+        required: false
       },
 
       helpOnLoad: {
@@ -46,6 +65,16 @@ define(function() {
 
       parameters: {
         // List of custom parameters.
+        defaultValue: []
+      },
+
+      dataSets: {
+        // List of data sets.
+        defaultValue: []
+      },
+
+      propertiesToRetain: {
+        // List of properties that should be retained during model reload or reset.
         defaultValue: []
       },
 
@@ -153,6 +182,32 @@ define(function() {
       unitAbbreviation: {}
     },
 
+    dataSet: {
+      name: {
+        required: true
+      },
+      properties: {
+        defaultValue: []
+      },
+      serializableProperties: {
+        // You can provide a list of properties that should be serialized, e.g.:
+        // ["prop1", "prop2", "time"]
+        // or use special values: "all" or "none".
+        defaultValue: "all"
+      },
+      streamDataFromModel: {
+        defaultValue: true
+      },
+      clearOnModelReset: {
+        // Note that "model reset" in general includes actions like:
+        // - reset
+        // - reload
+        // - new model load
+        defaultValue: true
+      },
+      initialData: {}
+    },
+
     filteredOutput: {
       name: {
         required: true
@@ -177,6 +232,10 @@ define(function() {
     },
 
     exports: {
+      selectionComponents: {
+        required: false,
+        defaultValue: []
+      },
       perRun: {
         required: false,
         defaultValue: []
@@ -420,14 +479,20 @@ define(function() {
         defaultValue: "auto"
       },
       property: {
-        conflictsWith: ["initialValue"]
+        conflictsWith: ["initialValue", "action"]
       },
-      onClick: {
-        // Script executed on user click, optional.
+      retainProperty: {
+        // If property binding is used (so 'property' is defined), this flag decides whether
+        // property should be retained during model reload / reset or not.
+        defaultValue: true
+      },
+      action: {
+        // Script executed when checkbox is changed, optional.
+        conflictsWith: ["property"]
       },
       initialValue: {
         // Note that 'initialValue' makes sense only for checkboxes without property binding.
-        // Do not use checkbox as setter.
+        // Do not use checkbox as setter of a given property.
         conflictsWith: ["property"]
       },
       disabled: {
@@ -477,6 +542,11 @@ define(function() {
         // If you use property binding, do not mix it with action scripts and initial values.
         conflictsWith: ["initialValue", "action"]
       },
+      retainProperty: {
+        // If property binding is used (so 'property' is defined), this flag decides whether
+        // property should be retained during model reload / reset or not.
+        defaultValue: true
+      },
       action: {
         conflictsWith: ["property"]
       },
@@ -515,6 +585,11 @@ define(function() {
         // Pulldown can be also connected to a model property.
         // In such case, options should define "value", not "action".
       },
+      retainProperty: {
+        // If property binding is used (so 'property' is defined), this flag decides whether
+        // property should be retained during model reload / reset or not.
+        defaultValue: true
+      },
       disabled: {
         defaultValue: false
       },
@@ -541,8 +616,7 @@ define(function() {
         // selection.
         conflictsWith: ["value"]
       },
-      disabled: {},
-      loadModel: {}
+      disabled: {}
     },
 
     radio: {
@@ -568,6 +642,11 @@ define(function() {
       property: {
         // Radio can be also connected to a model property.
         // In such case, options should define "value", not "action".
+      },
+      retainProperty: {
+        // If property binding is used (so 'property' is defined), this flag decides whether
+        // property should be retained during model reload / reset or not.
+        defaultValue: true
       },
       disabled: {
         defaultValue: false
@@ -595,8 +674,7 @@ define(function() {
         // selection.
         conflictsWith: ["value"]
       },
-      disabled: {},
-      loadModel: {}
+      disabled: {}
     },
 
     numericOutput: {
@@ -684,17 +762,29 @@ define(function() {
       title: {
         defaultValue: null
       },
-      clearDataOnReset: {
-        defaultValue: true
+      dataSet: {
+        // Optional. When external data set is referenced, then properties listed in "conflictsWith"
+        // array should be defined inside data set definition, not in table definition.
+        conflictsWith: ["tableData", "clearOnModelReset", "streamDataFromModel"]
+      },
+      tableData: {
+        conflictsWith: ["dataSet"]
+      },
+      clearOnModelReset: {
+        conflictsWith: ["dataSet"]
       },
       streamDataFromModel: {
-        defaultValue: true
+        conflictsWith: ["dataSet"]
       },
       addNewRows: {
         defaultValue: true
       },
       visibleRows: {
         defaultValue: 4
+      },
+      showBlankRow: {
+        // If true, a new blank row will be always visible.
+        defaultValue: false
       },
       indexColumn: {
         defaultValue: true
@@ -703,9 +793,6 @@ define(function() {
         defaultValue: []
       },
       headerData: {
-        defaultValue: []
-      },
-      tableData: {
         defaultValue: []
       },
       width: {
@@ -726,13 +813,21 @@ define(function() {
       type: {
         required: true
       },
-      clearDataOnReset: {
-        defaultValue: true
+      dataSet: {
+        // Optional. When external data set is referenced, then properties listed in "conflictsWith"
+        // array should be defined inside data set definition, not in table definition.
+        conflictsWith: ["dataPoints", "clearOnModelReset", "streamDataFromModel"]
       },
-      resetAxesOnReset: {
-        defaultValue: true
+      dataPoints: {
+        conflictsWith: ["dataSet"]
+      },
+      clearOnModelReset: {
+        conflictsWith: ["dataSet"]
       },
       streamDataFromModel: {
+        conflictsWith: ["dataSet"]
+      },
+      resetAxesOnReset: {
         defaultValue: true
       },
       enableAutoScaleButton: {
@@ -741,8 +836,17 @@ define(function() {
       enableAxisScaling: {
         defaultValue: true
       },
-      dataPoints: {
-        defaultValue: []
+      autoScaleX: {
+        defaultValue: true
+      },
+      autoScaleY: {
+        defaultValue: true
+      },
+      enableSelectionButton: {
+        defaultValue: false
+      },
+      clearSelectionOnLeavingSelectMode: {
+        defaultValue: false
       },
       markAllDataPoints: {
         defaultValue: false
@@ -772,7 +876,7 @@ define(function() {
         defaultValue: "100%"
       },
       xlabel: {
-        defaultValue: "Model Time (ps)"
+        defaultValue: "auto"
       },
       xmin: {
         defaultValue: 0
@@ -781,7 +885,7 @@ define(function() {
         defaultValue: 20
       },
       ylabel: {
-        defaultValue: ""
+        defaultValue: "auto"
       },
       ymin: {
         defaultValue: 0

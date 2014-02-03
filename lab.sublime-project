@@ -22,7 +22,7 @@
       "name": "JSHint",
       // without shelling out I could not get jshint to respect the --config setting
       "shell": true,
-      "cmd": ["$project_path/node_modules/.bin/jshint $file --show-non-errors"],
+      "cmd": ["$project_path/node_modules/.bin/jshint $file --show-non-errors --verbose"],
       "file_regex": "(.+js).+((?<=line\\s)\\d+).+((?<=col\\s)\\d+),\\s(.+$)",
       "selector": "source.js"
     }

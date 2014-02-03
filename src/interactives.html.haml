@@ -9,6 +9,8 @@
     %link{:href => "vendor/jquery-ui/jquery-ui.css", :rel => "stylesheet", :type => "text/css"}/
     %link{:href => "vendor/jquery-context-menu/jquery.contextMenu.css", :rel => "stylesheet", :type => "text/css"}/
     %link{:href => "vendor/jquery-selectBoxIt/jquery.selectBoxIt.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "vendor/chosen/chosen.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "lab/lab.css", :rel => "stylesheet", :type => "text/css"}/
     %link{:href => "interactives.css", :rel => "stylesheet", :type => "text/css"}/
     %script{:src => "vendor/modernizr/modernizr.js", :type => "text/javascript"}
     %script{:type => "text/javascript"}
@@ -57,13 +59,13 @@
               %input#curriculum-filter.serialize{:type => :checkbox, :name => 'curriculum-filter', :checked => 'checked'}
             %label{:for => 'examples-filter'}
               Examples
-              %input#examples-filter.serialize{:type => :checkbox, :name => 'examples-filter'}
+              %input#examples-filter.serialize{:type => :checkbox, :name => 'examples-filter', :checked => 'checked'}
             %label{:for => 'tests-filter'}
               Tests
-              %input#tests-filter.serialize{:type => :checkbox, :name => 'tests-filter'}
+              %input#tests-filter.serialize{:type => :checkbox, :name => 'tests-filter', :checked => 'checked'}
             %label{:for => 'benchmarks-filter'}
               Benchmarks
-              %input#benchmarks-filter.serialize{:type => :checkbox, :name => 'benchmarks-filter'}
+              %input#benchmarks-filter.serialize{:type => :checkbox, :name => 'benchmarks-filter', :checked => 'checked'}
 
             %span.title publication status:
             %label{:for => 'public'}
@@ -71,7 +73,7 @@
               %input#public.serialize{:type => :checkbox, :name => 'public', :checked => "checked"}
             %label{:for => 'draft'}
               Draft*
-              %input#draft.serialize{:type => :checkbox, :name => 'draft'}
+              %input#draft.serialize{:type => :checkbox, :name => 'draft', :checked => 'checked'}
             %label{:for => 'broken'}
               Broken**
               %input#broken.serialize{:type => :checkbox, :name => 'broken'}
@@ -84,11 +86,10 @@
       #interactive-title
     #interactive-error-dialog
     #content.standard-interactive-layout
-      #responsive-content
-        #interactive-container{:tabindex => 0}
-        #firefox-warning-pane.warning-pane
-          %p
-            %a(href='http://blog.concord.org/serious-performance-regression-in-firefox-18-and-newer' class='opens-in-new-window' target='_blank') Firefox v18-22 performance issue ...
+      #interactive-container{:tabindex => 0}
+      #firefox-warning-pane.warning-pane
+        %p
+          %a(href='http://blog.concord.org/serious-performance-regression-in-firefox-18-and-newer' class='opens-in-new-window' target='_blank') Firefox v18-22 performance issue ...
     #extras-bottom
       #extras-bottom-banner Extras
 
@@ -191,9 +192,20 @@
               take a screen capture of your model or interactive.
             #image_output
               (no snapshot taken yet)
+            #authored_screenshot
+              %img#authored_screenshot_img
+
+        %li.extras-item.ui-state-default
+          .extras-item-banner
+            %a#learner_url{:target => '_blank'}
+              LearnerUrl
+          .extras-item-content
+            .extras-item-description
+              A link to the embeddable suitable for bundling with learner data.
 
     = LAB_JS
     = LAB_SHUTTERBUG
     = LAB_MODEL_LIST
+    %script{:src => "embeddable.js", :type => "text/javascript"}
     %script{:src => "application.js", :type => "text/javascript"}
 

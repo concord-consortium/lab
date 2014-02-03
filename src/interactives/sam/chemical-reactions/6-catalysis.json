@@ -1,0 +1,130 @@
+{
+  "title": "Catalysis",
+  "publicationStatus": "public",
+  "subtitle": "",
+  "helpOnLoad": true,
+  "about": [
+    "Below is a model containing reactants which will form the reaction:",
+    "",
+    "###A₂ + B₂ --> 2 AB###",
+    "",
+    "In this case the model has been set so the activation energy is high. Try running the",
+    "reaction with and without a catalyst to see the effect catalysts have on chemical reactions.",
+    "",
+    "##Experimenting with the model##",
+    "",
+    "1. Run the model to observe what happens without a catalyst.",
+    "2. Pause the model.",
+    "3. Add a few (3 - 4) catalyst atoms to the container by clicking the button.",
+    "4. Run the model again, and observe how the catalyst affects the reaction."
+  ],
+  "models": [
+    {
+      "type": "md2d",
+      "id": "catalysis",
+      "url": "imports/legacy-mw-content/converted/sam-activities/chemical-reactions/catalysis/catalysis$0.json",
+      "importedFrom": "imports/legacy-mw-content/sam-activities/chemical-reactions/catalysis/catalysis$0.mml",
+      "viewOptions": {
+        "controlButtons": "play_reset"
+      },
+      "modelOptions": {
+        "chemicalReactions": {
+          "valenceElectrons": [
+            1,
+            7,
+            7,
+            7
+          ],
+          "bondEnergy": {
+            "default": 0.4,
+            "1-1": 0.4,
+            "2-2": 0.4,
+            "3-3": 0,
+            "1-2": 2
+          },
+          "activationEnergy": {
+            "default": 5,
+            "3+1-1": 0.01,
+            "3+2-2": 0.01,
+            "1+2-3": 0.01,
+            "2+1-3": 0.01
+          }
+        }
+      },
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "imageMapping": {
+          "formulaA2andB2to2AB.gif": "formulaA2andB2to2AB.svg"
+        }
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "name": "reactionComplete",
+      "value": [
+        "var atoms = getNumberOfAtoms(function (a) { return a.element === 1 || a.element === 2; });",
+        "var expectedBonds = 0;",
+        "var props, el1, el2;",
+        "for(var i = 0, len = getNumberOfRadialBonds(); i < len; i++) {",
+        "  props = getRadialBondProperties(i);",
+        "  el1 = getAtomProperties(props.atom1).element;",
+        "  el2 = getAtomProperties(props.atom2).element;",
+        "  if ((el1 === 1 && el2 === 2) || (el1 === 2 && el2 === 1))",
+        "    expectedBonds += 1;",
+        "}",
+        "return atoms > 0 ? expectedBonds / (0.5 * atoms) * 100 : 0;"
+      ],
+      "unitAbbreviation": "%"
+    }
+  ],
+  "parameters": [
+    {
+      "name": "slowMotion",
+      "initialValue": false,
+      "onChange": "if (value) set('timeStep', 0.2); else set('timeStep', 1.2);"
+    }
+  ],
+  "components": [
+    {
+      "id": "reaction-complete",
+      "type": "barGraph",
+      "property": "reactionComplete",
+      "title": "Reaction Complete",
+      "labels": 10,
+      "labelFormat": ".0f",
+      "units": true,
+      "min": 0,
+      "max": 100,
+      "averagePeriod": 10000
+    },
+    {
+      "id": "slow-motion",
+      "type": "checkbox",
+      "text": "Slow motion",
+      "property": "slowMotion"
+    },
+    {
+      "id": "add-catalyst",
+      "type": "button",
+      "text": "Add catalyst",
+      "action": "addRandomAtom(3);"
+    }
+  ],
+  "helpTips": [
+    {
+      "text": [
+        "##Experimenting with the model##",
+        "",
+        "1. Run the model to observe what happens without a catalyst.",
+        "2. Pause the model.",
+        "3. Add a few (3 - 4) catalyst atoms to the container by clicking the button.",
+        "4. Run the model again, and observe how the catalyst affects the reaction."
+      ]
+    }
+  ],
+  "layout": {
+    "right": ["reaction-complete"],
+    "bottom": ["slow-motion", "add-catalyst"]
+  }
+}

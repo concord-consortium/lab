@@ -135,7 +135,6 @@
         "     },",
         "   },",
         "   opts = xAxisParams[value];",
-        "opts.dataPoints = getComponentData('experiment-table', [value, 'period']);",
         "setComponentAttributes('parameter-graph', opts);"
       ],
       "initialValue": "rodLength"
@@ -357,7 +356,7 @@
     {
       "type": "table",
       "id": "last-run-table",
-      "clearDataOnReset": true,
+      "clearOnModelReset": true,
       "streamDataFromModel": true,
       "addNewRows": false,
       "visibleRows": 1,
@@ -374,7 +373,7 @@
       "type": "table",
       "id": "experiment-table",
       "title": "Experiment Table",
-      "clearDataOnReset": false,
+      "clearOnModelReset": false,
       "streamDataFromModel": false,
       "visibleRows": 4,
       "indexColumn": true,
@@ -390,7 +389,7 @@
       "type": "graph",
       "id": "parameter-graph",
       "title": "Parameter Graph",
-      "clearDataOnReset": false,
+      "clearOnModelReset": false,
       "streamDataFromModel": false,
       "markAllDataPoints": true,
       "showRulersOnSelection": true,

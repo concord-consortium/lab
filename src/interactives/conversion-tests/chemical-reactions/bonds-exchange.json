@@ -1,8 +1,12 @@
 {
   "title": "Bonds Exchange",
-  "publicationStatus": "draft",
+  "publicationStatus": "public",
   "subtitle": "",
-  "about": "",
+  "about": [
+    "Watch the enegry graph. Each reaction (new bond creation) should result in total energy",
+    "drop. Note that heat bath is enabled. If it was disabled, you would see kinetic energy",
+    "increase and potentail energy drop."
+  ],
   "models": [
     {
       "type": "md2d",

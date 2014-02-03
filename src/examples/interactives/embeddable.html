@@ -1,0 +1,15 @@
+<html>
+  <head>
+  	<script>
+  	  // This will fix URLS like:
+  	  //   http://lab.concord.org/examples/interactives/embeddable.html#examples/interactives/interactives/samples/1-oil-and-water-shake.json
+  	  // or more commonly:
+  	  //   http://lab.concord.org/examples/interactives/embeddable.html#interactives/samples/1-oil-and-water-shake.json
+  	  // These urls were published and shared before spring 2013 so they need to continue to work.
+  	  window.location = window.location.href.toString().replace(/examples\/interactives\//g, "");
+  	</script>
+  </head>
+  <body>
+  	You should be redirected to the updated location for this page.
+  </body>
+</html>

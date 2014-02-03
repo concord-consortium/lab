@@ -31,7 +31,7 @@
       "type": "checkbox",
       "id": "temperature-control-action",
       "text": "Temperature Control (action defined)",
-      "onClick": "set({temperatureControl: value})"
+      "action": "set({temperatureControl: value})"
     }
   ],
   "layout": {

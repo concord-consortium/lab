@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+<language>UTF-8</language>
+<page_title>Chemical Reactions and Stoichiometry: Limiting reactions.</page_title>
+<referenced_files>combustion.mml, combustionLimited.mml, fuelHint.html</referenced_files>
+<text>
+
+     
+</text>
+<section start="0" end="9">
+<paragraph start="0" end="1">
+<Alignment>1</Alignment>
+<content start="0" end="1">
+</content>
+
+</paragraph>
+<paragraph start="1" end="2">
+<Alignment>1</Alignment>
+<content start="1" end="2">
+</content>
+
+</paragraph>
+<paragraph start="2" end="8">
+<SpaceBelow>10.0</SpaceBelow>
+<content start="2" end="3">
+<component><class>org.concord.modeler.PageTextBox</class>
+<width>190.0</width>
+<height>90.0</height>
+<title>&lt;html&gt;
+  &lt;head&gt;
+    
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;table border=&quot;0&quot; cellspacing=&quot;0&quot; width=&quot;190&quot; align=&quot;center&quot; cellpadding=&quot;0&quot;&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;left&quot; colspan=&quot;2&quot;&gt;
+          &lt;strong&gt;Choose a Reaction&lt;/strong&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td width=&quot;28&quot; align=&quot;right&quot;&gt;
+          &lt;input type=&quot;radio&quot; script=&quot;script:mw:1:load combustion.mml&quot; name=&quot;RadioGroup1&quot; value=&quot;radio&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td width=&quot;154&quot;&gt;
+          perfect ratio
+        &lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td align=&quot;right&quot;&gt;
+          &lt;input type=&quot;radio&quot; script=&quot;script:mw:1:load combustionLimited.mml&quot; name=&quot;RadioGroup1&quot; value=&quot;radio&quot;&gt;
+          
+        &lt;/td&gt;
+        &lt;td&gt;
+          limiting reactant
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</title>
+<opaque>false</opaque>
+</component></content>
+
+<content start="3" end="4">
+<component><class>org.concord.mw2d.activity.ChemContainer</class>
+<resource>page7$0.mml</resource><menubar>false</menubar></component></content>
+
+<content start="4" end="6">
+</content>
+
+<content start="6" end="7">
+<component><class>org.concord.modeler.PageBarGraph</class>
+<modelclass>org.concord.mw2d.models.ReactionModel</modelclass>
+<model>4</model>
+<timeseries>Channel 0</timeseries>
+<description>% Fuel Reacted</description>
+<datatype>1</datatype>
+<samplingpoints>10</samplingpoints>
+<multiplier>100.0</multiplier>
+<max_fraction_digits>0</max_fraction_digits>
+<width>80</width>
+<height>280</height>
+<tick>true</tick>
+<major_tick>10</major_tick>
+<nstep>10</nstep>
+<label>true</label>
+<title>true</title>
+<bgcolor>-1a1a1b</bgcolor>
+<minimum>0.0</minimum>
+<maximum>100.0</maximum>
+<value>0.0</value>
+</component></content>
+
+<content start="7" end="8">
+</content>
+
+</paragraph>
+<paragraph start="8" end="9">
+</paragraph>
+</section>
+</document>

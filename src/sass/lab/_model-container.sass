@@ -7,6 +7,12 @@
   &.draggable:hover
     cursor: move
   @include user-select(none)
+
+  & > .container
+    // Disable blinking effect on iOS when user taps a model container. Events are manually
+    // dispatched and if user taps an atom on canvas, the whole container will blink.
+    -webkit-tap-highlight-color: rgba(0,0,0,0)
+
   // Radial bonds.
   .radialbond1, .radialbond2
     fill: none
@@ -105,33 +111,16 @@
     .polymerase-over, .polymerase-under, .dna3
       pointer-events: none
 
-  // Attraction forces.
-  line.attractionforce
-    stroke: #aaa
-    stroke-width: 2.5
-    stroke-dasharray: 3 2
-
   // Electric field vectors.
   .vector-electric-field
     stroke-width: 0.5px // affected by viewBox transform
 
-  // Various elements.
-  text.modelTimeLabel
-    font-size: 1em
-
-  text.title
-    font-size: 1.0em
-
-  text.xlabel
-    font-size: 0.85em
-
-  text.ylabel
-    font-size: 0.85em
-
-  g.y
+  g.y, g.x
+    fill: #555
     font-size: 0.75em
-  g.x
-    font-size: 0.75em
+  .xlabel, .ylabel
+    fill: #555
+    font-size: 0.85em
 
   div.tooltip
     display: none
@@ -158,5 +147,15 @@
 
   // Sensor model. Shrink the components so they fit into 1 model width.
   &.sensor-model-container
+    .address-input
+      input
+        font-size: 0.9em
+        width: 15em
+        border-radius: 0.4em
+        border: none
+        padding: 0.25em 0.5em
+    .message
+      width: 25em
+      font-style: italic
     .component
       font-size: 0.9em

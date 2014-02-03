@@ -10,16 +10,16 @@ MARKDOWN_COMPILER = bin/kramdown
 VOWS = find test/vows -type f -name '*.js' -o -name '*.coffee' ! -name '.*' | xargs ./node_modules/.bin/vows --isolate --dot-matrix
 MOCHA = find test/mocha -type f -name '*.js' -o -name '*.coffee' ! -name '.*' | xargs node_modules/.bin/mocha --reporter dot
 
-SASS_COMPILER = bin/sass -I src --require ./src/helpers/sass/lab_fontface.rb
+SASS_COMPILER = ./bin/sass -I src -I public -r ./src/helpers/sass/lab_fontface.rb
 R_OPTIMIZER = ./node_modules/.bin/r.js
 GENERATE_INTERACTIVE_INDEX = ruby src/helpers/process-interactives.rb
 
 LAB_SRC_FILES := $(shell find src/lab -type f ! -name '.*' -print)
-MD2D_SRC_FILES := $(shell find src/lab/md2d -type f ! -name '.*' -print)
+MD2D_SRC_FILES := $(shell find src/lab/models/md2d -type f ! -name '.*' -print)
+
 GRAPHER_SRC_FILES := $(shell find src/lab/grapher -type f ! -name '.*' -print)
 IMPORT_EXPORT_SRC_FILES := $(shell find src/lab/import-export -type f ! -name '.*' -print)
 IFRAME_PHONE_SRC_FILES := $(shell find src/lab/iframe-phone -type f ! -name '.*' -print)
-SENSOR_APPLET_SRC_FILES := $(shell find src/lab/sensor-applet -type f ! -name '.*' -print)
 
 COMMON_SRC_FILES := $(shell find src/lab/common -type f ! -name '.*' -print)
 
@@ -30,6 +30,7 @@ COMMON_SRC_FILES += src/lab/lab.config.js
 FONT_FOLDERS := $(shell find vendor/fonts -mindepth 1 -maxdepth 1)
 
 SASS_LAB_LIBRARY_FILES := $(shell find src/sass/lab -name '*.sass')
+SHUTTERBUG_GEM := $(shell bundle show shutterbug)
 
 # targets
 
@@ -49,23 +50,24 @@ COFFEESCRIPT_FILES += $(shell find src/examples -name '*.coffee' -exec echo {} \
 COFFEESCRIPT_FILES += $(shell find src/experiments -name '*.coffee' -exec echo {} \; | sed s'/src\/\(.*\)\.coffee/public\/\1.js/' )
 vpath %.coffee src
 
-MARKDOWN_FILES := $(shell find src -name '*.md' -and -not -path "src/sass/*" -exec echo {} \; | grep -v vendor | sed s'/src\/\(.*\)\.md/public\/\1.html/' )
-vpath %.md src
+MARKDOWN_FILES := $(patsubst %.md, public/%.html, $(wildcard *.md)) public/examples.html
+DEV_MARKDOWN_FILES := $(patsubst %.md, public/%.html, $(wildcard developer-doc/*.md))
 
 LAB_JS_FILES = \
 	public/lab/lab.js \
 	public/lab/lab.grapher.js \
 	public/lab/lab.import-export.js \
-	public/lab/lab.iframe-phone.js \
-	public/lab/lab.sensor-applet.js
+	public/lab/lab.iframe-phone.js
 
-# default target executed when running make
+# default target executed when running make. Run the $(MAKE) public task rather than simply
+# declaring a dependency on 'public' because 'bundle install' and 'npm install' might update some
+# sources, and we want to recompute stale dependencies after that.
 .PHONY: all
 all: \
 	vendor/d3/d3.js \
 	node_modules \
-	bin \
-	public
+	bin
+	$(MAKE) public
 
 # install Ruby Gem development dependencies
 .PHONY: bin
@@ -82,6 +84,7 @@ everything:
 .PHONY: src
 src: \
 	$(MARKDOWN_FILES) \
+	$(DEV_MARKDOWN_FILES) \
 	$(LAB_JS_FILES) \
 	$(LAB_JS_FILES:.js=.min.js) \
 	$(HAML_FILES) \
@@ -163,11 +166,6 @@ jnlp-all: clean-jnlp \
 clean-jnlp:
 	rm -rf public/jnlp
 
-# create symbolic link to support references to old location for Interactives
-.PHONY: symbolic-links
-symbolic-links:
-	cd public/examples; if [ ! -L interactives ]; then ln -s ../ interactives; fi
-
 # ------------------------------------------------
 #
 #   Testing
@@ -199,7 +197,7 @@ test-src: test/layout.html \
 	public/vendor/jquery/jquery.min.js \
 	public/vendor/jquery-ui/jquery-ui.min.js \
 	public/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js \
-	public/vendor/jquery-selectBoxIt \
+	public/vendor/jquery-selectBoxIt/jquery.selectBoxIt.min.js \
 	public/vendor/jquery-context-menu \
 	src/lab/lab.version.js \
 	src/lab/lab.config.js
@@ -270,15 +268,11 @@ submodule-update-tags:
 # ------------------------------------------------
 
 node_modules: node_modules/d3 \
-	node_modules/jsdom \
 	node_modules/arrays
 	npm install
 
 node_modules/d3:
 	npm install vendor/d3
-
-node_modules/jsdom:
-	npm install test/vendor/jsdom
 
 node_modules/arrays:
 	npm install src/modules/arrays
@@ -296,6 +290,7 @@ public: \
 	public/resources \
 	public/examples \
 	public/doc \
+	public/developer-doc \
 	public/experiments \
 	public/imports \
 	public/jnlp
@@ -320,6 +315,9 @@ public/doc/interactives:
 
 public/doc/models:
 	mkdir -p public/doc/models
+
+public/developer-doc:
+	mkdir -p public/developer-doc
 
 .PHONY: public/experiments
 public/experiments:
@@ -377,12 +375,12 @@ public/lab:
 
 public/lab/lab.json: \
 	src/lab/common/controllers/interactive-metadata.js \
-	src/lab/energy2d/metadata.js \
-	src/lab/md2d/models/metadata.js \
-	src/lab/sensor/metadata.js \
-	src/lab/signal-generator/metadata.js \
+	src/lab/models/energy2d/metadata.js \
+	src/lab/models/md2d/models/metadata.js \
+	src/lab/models/sensor/metadata.js \
+	src/lab/models/signal-generator/metadata.js \
 	src/lab/iframe-model/metadata.js \
-	src/lab/solar-system/models/metadata.js
+	src/lab/models/solar-system/models/metadata.js
 	node src/helpers/lab.json.js
 
 public/lab/lab.js: \
@@ -431,10 +429,6 @@ public/lab/lab.iframe-phone.js: \
 	$(IFRAME_PHONE_SRC_FILES)
 	$(R_OPTIMIZER) -o src/lab/iframe-phone/iframe-phone.build.js
 
-public/lab/lab.sensor-applet.js: \
-	$(SENSOR_APPLET_SRC_FILES)
-	$(R_OPTIMIZER) -o src/lab/sensor-applet/sensor-applet.build.js
-
 # ------------------------------------------------
 #
 #   public/vendor
@@ -450,7 +444,7 @@ public/vendor: \
 	public/vendor/jquery/jquery.min.js \
 	public/vendor/jquery-ui/jquery-ui.min.js \
 	public/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js \
-	public/vendor/jquery-selectBoxIt \
+	public/vendor/jquery-selectBoxIt/jquery.selectBoxIt.min.js \
 	public/vendor/tinysort/jquery.tinysort.js \
 	public/vendor/jquery-context-menu \
 	public/vendor/science.js \
@@ -465,7 +459,14 @@ public/vendor: \
 	public/vendor/text \
 	public/vendor/domReady \
 	public/vendor/fingerprintjs \
+	public/vendor/shutterbug/shutterbug.js \
+	public/vendor/shutterbug/README.md \
+	public/vendor/shutterbug/LICENSE.md \
+	public/vendor/lab-sensor-applet-interface-dist \
+	public/vendor/sensor-labquest-2-interface/sensor-labquest-2-interface.js \
+	public/vendor/chosen/chosen.jquery.min.js \
 	public/favicon.ico
+
 
 public/vendor/dsp.js:
 	mkdir -p public/vendor/dsp.js
@@ -487,16 +488,35 @@ public/vendor/d3-plugins:
 	cp vendor/d3-plugins/cie/README.md public/vendor/d3-plugins/cie/README.md
 
 public/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js: \
-	public/vendor/jquery-ui-touch-punch
+	public/vendor/jquery-ui-touch-punch \
+	vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js \
+	vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.js
 	cp vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js public/vendor/jquery-ui-touch-punch
+	cp vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.js public/vendor/jquery-ui-touch-punch
 
 public/vendor/jquery-ui-touch-punch:
 	mkdir -p public/vendor/jquery-ui-touch-punch
 
+public/vendor/jquery-selectBoxIt/jquery.selectBoxIt.min.js: \
+	vendor/jquery-selectBoxIt/src/javascripts/jquery.selectBoxIt.js \
+	vendor/jquery-selectBoxIt/src/javascripts/jquery.selectBoxIt.min.js \
+	vendor/jquery-selectBoxIt/src/stylesheets/jquery.selectBoxIt.css \
+	public/vendor/jquery-selectBoxIt
+	cp vendor/jquery-selectBoxIt/src/javascripts/jquery.selectBoxIt.js public/vendor/jquery-selectBoxIt
+	cp vendor/jquery-selectBoxIt/src/javascripts/jquery.selectBoxIt.min.js public/vendor/jquery-selectBoxIt
+	cp vendor/jquery-selectBoxIt/src/stylesheets/jquery.selectBoxIt.css public/vendor/jquery-selectBoxIt
+
 public/vendor/jquery-selectBoxIt:
 	mkdir -p public/vendor/jquery-selectBoxIt
-	cp vendor/jquery-selectBoxIt/src/javascripts/jquery.selectBoxIt.min.js public/vendor/jquery-selectBoxIt/jquery.selectBoxIt.min.js
-	cp vendor/jquery-selectBoxIt/src/stylesheets/jquery.selectBoxIt.css public/vendor/jquery-selectBoxIt/jquery.selectBoxIt.css
+
+public/vendor/chosen/chosen.jquery.min.js: \
+	public/vendor/chosen
+	cp vendor/chosen/chosen.jquery.min.js public/vendor/chosen
+	cp vendor/chosen/chosen.css public/vendor/chosen
+	cp vendor/chosen/*.png public/vendor/chosen
+
+public/vendor/chosen:
+	mkdir -p public/vendor/chosen
 
 public/vendor/jquery-context-menu:
 	mkdir -p public/vendor/jquery-context-menu
@@ -611,6 +631,33 @@ public/vendor/fingerprintjs:
 	cp vendor/fingerprintjs/fingerprint.min.js public/vendor/fingerprintjs
 	cp vendor/fingerprintjs/README.md public/vendor/fingerprintjs
 
+public/vendor/shutterbug:
+	mkdir -p public/vendor/shutterbug
+
+public/vendor/shutterbug/shutterbug.js: public/vendor/shutterbug \
+	vendor/shutterbug/shutterbug.js
+	sed -e s'/CONVERT_PATH/shutterbug\/make_snapshot/' vendor/shutterbug/shutterbug.js > public/vendor/shutterbug/shutterbug.js
+
+public/vendor/shutterbug/README.md: public/vendor/shutterbug \
+	vendor/shutterbug/README.md
+	cp vendor/shutterbug/README.md public/vendor/shutterbug
+
+public/vendor/shutterbug/LICENSE.md: public/vendor/shutterbug \
+	vendor/shutterbug/LICENSE.md
+	cp vendor/shutterbug/LICENSE.md public/vendor/shutterbug
+
+public/vendor/lab-sensor-applet-interface-dist: vendor/lab-sensor-applet-interface-dist
+	mkdir -p public/vendor/lab-sensor-applet-interface-dist
+	cp -r vendor/lab-sensor-applet-interface-dist/* public/vendor/lab-sensor-applet-interface-dist/
+
+public/vendor/sensor-labquest-2-interface/sensor-labquest-2-interface.js: \
+	public/vendor/sensor-labquest-2-interface \
+	vendor/sensor-labquest-2-interface/dist/sensor-labquest-2-interface.js
+	cp vendor/sensor-labquest-2-interface/dist/sensor-labquest-2-interface.js public/vendor/sensor-labquest-2-interface/
+
+public/vendor/sensor-labquest-2-interface:
+	mkdir -p public/vendor/sensor-labquest-2-interface
+
 public/favicon.ico:
 	cp -f src/favicon.ico public/favicon.ico
 
@@ -630,6 +677,27 @@ vendor/jquery-ui/dist/jquery-ui.min.js: vendor/jquery-ui
 vendor/jquery-ui:
 	git submodule update --init --recursive
 
+vendor/lab-sensor-applet-interface-dist:
+	git submodule update --init --recursive
+
+vendor/sensor-labquest-2-interface/dist/sensor-labquest-2-interface.js:
+	git submodule update --init --recursive
+
+vendor/shutterbug:
+	mkdir -p vendor/shutterbug
+
+vendor/shutterbug/shutterbug.js: vendor/shutterbug \
+	$(SHUTTERBUG_GEM)/lib/shutterbug/handlers/shutterbug.js
+	cp $(SHUTTERBUG_GEM)/lib/shutterbug/handlers/shutterbug.js vendor/shutterbug
+
+vendor/shutterbug/README.md: vendor/shutterbug \
+	$(SHUTTERBUG_GEM)/README.md
+	cp $(SHUTTERBUG_GEM)/README.md vendor/shutterbug
+
+vendor/shutterbug/LICENSE.md: vendor/shutterbug \
+	$(SHUTTERBUG_GEM)/LICENSE.md
+	cp $(SHUTTERBUG_GEM)/LICENSE.md vendor/shutterbug
+
 # ------------------------------------------------
 #
 #   targets for generating html, js, and css resources
@@ -643,7 +711,7 @@ public/lab/lab.mw-helpers.js: src/mw-helpers/*.coffee
 test/%.html: test/%.html.haml
 	haml $< $@
 
-public/%.html: src/%.html.haml
+public/%.html: src/%.html.haml script/setup.rb
 	haml -r ./script/setup.rb $< $@
 
 public/%.html: src/%.html
@@ -654,13 +722,18 @@ public/%.css: src/%.css
 
 public/grapher.css: src/grapher.sass \
 	src/sass/lab/_colors.sass \
-	src/sass/lab/_grapher.sass
+	src/sass/lab/_bar_graph.sass \
+	src/sass/lab/_graphs.sass
 	$(SASS_COMPILER) src/grapher.sass public/grapher.css
 
 public/%.css: %.scss
 	$(SASS_COMPILER) $< $@
 
-public/%.css: %.sass $(SASS_LAB_LIBRARY_FILES)
+public/lab-grapher.scss:
+	cp vendor/lab-grapher/css/lab-grapher.css public/lab-grapher.scss
+
+public/%.css: %.sass $(SASS_LAB_LIBRARY_FILES) \
+	public/lab-grapher.scss
 	@echo $($<)
 	$(SASS_COMPILER) $< $@
 
@@ -668,9 +741,25 @@ public/%.js: %.coffee
 	@rm -f $@
 	$(COFFEESCRIPT_COMPILER) --compile --print $< > $@
 
-public/%.html: %.md
+# replace relative references to .md files for the static build
+# look for pattern like ](*.md) replace with ](*.html)
+# the ':' is hack so it doesn't match absolute http:// urls
+# the second command is necessary to match anchor references in md files
+%.md.static: %.md
 	@rm -f $@
-	$(MARKDOWN_COMPILER) $< --toc-levels 2..6 --template src/layouts/$*.html.erb > $@
+	sed -e s';\](\([^):]*\)\.md);\](\1.html);' -e s';\](\([^):]*\)\.md\(#[^)]*\));\](\1.html\2);' $< > $@
+
+public/developer-doc/%.html: developer-doc/%.md.static
+	@rm -f $@
+	$(MARKDOWN_COMPILER) -i GFM $< --template src/layouts/developer-doc.html.erb > $@
+
+public/examples.html: src/examples.md.static
+	@rm -f $@
+	$(MARKDOWN_COMPILER) $< --toc-levels 2..6 --template src/layouts/top-level.html.erb > $@
+
+public/%.html: %.md.static
+	@rm -f $@
+	$(MARKDOWN_COMPILER) $< --toc-levels 2..6 --template src/layouts/top-level.html.erb > $@
 
 public/interactives/%.json: src/interactives/%.json
 	@cp $< $@
@@ -681,6 +770,9 @@ public/models/%.json: src/models/%.json
 .PHONY: public/interactives.json
 public/interactives.json: $(INTERACTIVE_FILES)
 	$(GENERATE_INTERACTIVE_INDEX)
+
+# delete the .md.static files and don't bother creating them if they don't need to be
+.INTERMEDIATE: %.md.static src/examples.md.static
 
 # ------------------------------------------------
 #

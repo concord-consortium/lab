@@ -1,0 +1,432 @@
+{
+  "title": "Dynamic Equilibrium",
+  "publicationStatus": "draft",
+  "subtitle": "Exchanging gases across a cell membrane",
+  "about": [
+    "Cell membranes are composed of two layers of phospholipids (a phospholipid bilayer). Some molecules are capable of crossing this membrane directly, without use of specific membrane channels.",
+    "",
+    "Oxygen and carbon dioxide are two molecules that can freely cross the cell membrane. In aerobic cells, oxygen is necessary for cell functioning and carbon dioxide is produced as a waste molecule. Hence, the cell “wants” oxygen to enter and carbon dioxide to leave. But molecules don’t move only in one direction–they diffuse randomly across the membrane.",
+    "",
+    "Set up the model with high oxygen and low carbon dioxide outside the cell and low oxygen and high carbon dioxide inside the cell. In which direction do the oxygen and carbon dioxide molecules move?"
+  ],
+  "aspectRatio": 1.725,
+  "fontScale": 0.8,
+  "models": [
+    {
+      "type": "md2d",
+      "id": "model1",
+      "url": "models/md2d/itsi/diffusion/permeable-membrane/permeable-membrane.json",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "imageMapping": {
+          "membraneNoPores.png": "membrane.svg",
+          "oxygenCO2Key.png": "oxygenCO2Key.svg"
+        }
+      },
+      "onLoad": [
+        "onSelect(function (x, y, w, h) { markAtoms(atomsWithinRect(x, y, w, h)); });"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "name": "nLeftO2",
+      "value": "return atomsWithinRect(0, 0, get('width')/2, get('height'), 0).length;"
+    },
+    {
+      "name": "nLeftCO2",
+      "value": "return atomsWithinRect(0, 0, get('width')/2, get('height'), 1).length;"
+    },
+    {
+      "name": "nRightO2",
+      "value": "return atomsWithinRect(get('width')/2, 0, get('width')/2, get('height'), 0).length;"
+    },
+    {
+      "name": "nRightCO2",
+      "value": "return atomsWithinRect(get('width')/2, 0, get('width')/2, get('height'), 1).length;"
+    },
+    {
+      "name": "leftConcentrationO2",
+      "value": [
+      "  return get('nLeftO2') / (get('width') / 2 * get('height') * 0.1);"
+      ]
+    },
+    {
+      "name": "leftConcentrationCO2",
+      "value": [
+      "  return get('nLeftCO2') / (get('width') / 2 * get('height') * 0.1);"
+      ]
+    },
+    {
+      "name": "rightConcentrationO2",
+      "value": [
+      "  return get('nRightO2') / (get('width') / 2 * get('height') * 0.1);"
+      ]
+    },
+    {
+      "name": "rightConcentrationCO2",
+      "value": [
+      "  return get('nRightCO2') / (get('width') / 2 * get('height') * 0.1);"
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "setCountTrigger",
+      "initialValue": 0,
+      "onChange": [
+        "var x,y,vx,vy,w,h,i,nAtomsToAdd;",
+        "stop();",
+        "batch(function(){",
+        "  for (i = getNumberOfAtoms(); i > 0; i--) {",
+        "    removeAtom(0);",
+        "  }",
+        "});",
+        "w = get('width');",
+        "h = get('height');",
+        "batch(function(){",
+        "  nAtomsToAdd = get('initialLeftO2');",
+        "  while (nAtomsToAdd > 0) {",
+        "    x = randomFloat(w/2);",
+        "    y = randomFloat(h);",
+        "    vx = randomFloat(0.02)-0.01;",
+        "    vy = randomFloat(0.02)-0.01;",
+        "    if (addAtom({x: x, y: y, vx: vx, vy: vy, element: 0})) nAtomsToAdd--;",
+        "  }",
+        "  nAtomsToAdd = get('initialLeftCO2');",
+        "  while (nAtomsToAdd > 0) {",
+        "    x = randomFloat(w/2);",
+        "    y = randomFloat(h);",
+        "    vx = randomFloat(0.02)-0.01;",
+        "    vy = randomFloat(0.02)-0.01;",
+        "    if (addAtom({x: x, y: y, vx: vx, vy: vy, element: 1})) nAtomsToAdd--;",
+        "  }",
+        "  nAtomsToAdd = get('initialRightO2');",
+        "  while (nAtomsToAdd > 0) {",
+        "    x = randomFloat(w/2);",
+        "    y = randomFloat(h);",
+        "    vx = randomFloat(0.02)-0.01;",
+        "    vy = randomFloat(0.02)-0.01;",
+        "    if (addAtom({x: w/2+x, y: y, vx: vx, vy: vy, element: 0})) nAtomsToAdd--;",
+        "  }",
+        "  nAtomsToAdd = get('initialRightCO2');",
+        "  while (nAtomsToAdd > 0) {",
+        "    x = randomFloat(w/2);",
+        "    y = randomFloat(h);",
+        "    vx = randomFloat(0.02)-0.01;",
+        "    vy = randomFloat(0.02)-0.01;",
+        "    if (addAtom({x: w/2+x, y: y, vx: vx, vy: vy, element: 1})) nAtomsToAdd--;",
+        "  }",
+        "});",
+        "set('targetTemperature',500);"
+      ]
+    },
+    {
+      "name": "initialLeftCO2",
+      "initialValue": 0,
+      "onChange": [ "set('setCountTrigger',get('setCountTrigger')+1);"]
+    },
+    {
+      "name": "initialLeftO2",
+      "initialValue": 0,
+      "onChange": [ "set('setCountTrigger',get('setCountTrigger')+1);"]
+    },
+    {
+      "name": "initialRightCO2",
+      "initialValue": 0,
+      "onChange": [ "set('setCountTrigger',get('setCountTrigger')+1);"]
+    },
+    {
+      "name": "initialRightO2",
+      "initialValue": 0,
+      "onChange": [ "set('setCountTrigger',get('setCountTrigger')+1);"]
+    },
+    {
+      "name": "markingAtoms",
+      "initialValue": false,
+      "onChange": [
+        "if (value) { ",
+        "  onSelect(function (x, y, w, h) { markAtoms(atomsWithinRect(x, y, w, h)); });",
+        "} else {",
+        "  onSelect(null);",
+        "}"
+      ]
+    }
+  ],
+  "components": [
+    {
+      "type": "text",
+      "id": "inside-above-label",
+      "text": "Inside cell"
+    },
+    {
+      "type": "text",
+      "id": "outside-above-label",
+      "text": "Outside cell"
+    },
+    {
+      "type": "text",
+      "id": "membrane-above-label",
+      "text": "Membrane"
+    },
+    {
+      "type": "text",
+      "id": "inside-right-label",
+      "text": "Inside cell"
+    },
+    {
+      "type": "text",
+      "id": "outside-right-label",
+      "text": "Outside cell"
+    },
+    {
+      "type": "barGraph",
+      "id": "left-concentration-CO2",
+      "fontScale": 0.5,
+      "min": 0,
+      "max": 100,
+      "labels": 0,
+      "barColor": "rgb(143,113,178)",
+      "fillColor": "rgb(225,243,253)",
+      "title": "CO₂",
+      "titleOn": "top",
+      "height": "15em",
+      "barWidth": "1em",
+      "property": "leftConcentrationCO2"
+    },
+    {
+      "type": "barGraph",
+      "id": "left-concentration-O2",
+      "min": 0,
+      "max": 100,
+      "labels": 0,
+      "barColor": "rgb(242,234,27)",
+      "fillColor": "rgb(225,243,253)",
+      "title": "O₂",
+      "titleOn": "top",
+      "height": "15em",
+      "barWidth": "1em",
+      "property": "leftConcentrationO2"
+    },
+    {
+      "type": "barGraph",
+      "id": "right-concentration-CO2",
+      "min": 0,
+      "max": 100,
+      "labels": 0,
+      "barColor": "rgb(143,113,178)",
+      "fillColor": "rgb(243,222,223)",
+      "title": "CO₂",
+      "titleOn": "top",
+      "height": "15em",
+      "barWidth": "1em",
+      "property": "rightConcentrationCO2"
+    },
+    {
+      "type": "barGraph",
+      "id": "right-concentration-O2",
+      "min": 0,
+      "max": 100,
+      "labels": 0,
+      "barColor": "rgb(242,234,27)",
+      "fillColor": "rgb(243,222,223)",
+      "title": "O₂",
+      "titleOn": "top",
+      "height": "15em",
+      "barWidth": "1em",
+      "property": "rightConcentrationO2"
+    },
+    {
+      "type": "pulldown",
+      "id": "select-left-concentration-co2",
+      "property": "initialLeftCO2",
+      "label": "CO₂",
+      "labelOn": "right",
+      "options": [
+        {
+          "text": "None",
+          "value": 0
+        },
+        {
+          "text": "Low",
+          "value": 10
+        },
+        {
+          "text": "High",
+          "value": 50
+        }
+      ]
+    },
+    {
+      "type": "pulldown",
+      "id": "select-left-concentration-o2",
+      "property": "initialLeftO2",
+      "label": "O₂",
+      "labelOn": "right",
+      "options": [
+        {
+          "text": "None",
+          "value": 0
+        },
+        {
+          "text": "Low",
+          "value": 10
+        },
+        {
+          "text": "High",
+          "value": 50
+        }
+      ]
+    },
+    {
+      "type": "pulldown",
+      "id": "select-right-concentration-co2",
+      "property": "initialRightCO2",
+      "label": "CO₂",
+      "labelOn": "left",
+      "options": [
+        {
+          "text": "None",
+          "value": 0
+        },
+        {
+          "text": "Low",
+          "value": 10
+        },
+        {
+          "text": "High",
+          "value": 50
+        }
+      ]
+    },
+    {
+      "type": "pulldown",
+      "id": "select-right-concentration-o2",
+      "property": "initialRightO2",
+      "label": "O₂",
+      "labelOn": "left",
+      "options": [
+        {
+          "text": "None",
+          "value": 0
+        },
+        {
+          "text": "Low",
+          "value": 10
+        },
+        {
+          "text": "High",
+          "value": 50
+        }
+      ]
+    }
+  ],
+  "layout": {
+    "right-inside": [
+      [
+        "inside-right-label"
+      ],
+      [
+        "left-concentration-O2",
+        "left-concentration-CO2"
+      ]
+    ],
+    "right-outside": [
+      [
+        "outside-right-label"
+      ],
+      [
+        "right-concentration-O2",
+        "right-concentration-CO2"
+      ]
+    ],
+    "bottom-left": [
+      [
+        "select-left-concentration-o2"
+      ],
+      [
+        "select-left-concentration-co2"
+      ]
+    ],
+    "bottom-right": [
+      [
+        "select-right-concentration-o2"
+      ],
+      [
+        "select-right-concentration-co2"
+      ]
+    ],
+    "below": [
+    ],
+    "above-left": [
+      "inside-above-label"
+    ],
+    "above-right": [
+      "outside-above-label"
+    ],
+    "above-center": [
+      "membrane-above-label"
+    ]
+  },
+  "template": [
+    {
+      "id": "bottom-left",
+      "top": "model.bottom",
+      "left": "model.left",
+      "width": "9.5em",
+      "align": "right"
+    },
+    {
+      "id": "bottom-right",
+      "top": "model.bottom",
+      "right": "model.right",
+      "width": "model.width/2",
+      "align": "right"
+    },
+    {
+      "id": "below",
+      "top": "bottom-left.bottom",
+      "left": "model.left",
+      "width": "model.width",
+      "align": "center"
+    },
+    {
+      "id": "above-left",
+      "left": "model.left",
+      "bottom": "model.top",
+      "width": "model.width/3",
+      "height": "2em",
+      "align": "left"
+    },
+    {
+      "id": "above-right",
+      "right": "model.right",
+      "bottom": "model.top",
+      "width": "model.width/3",
+      "height": "2em",
+      "align": "right"
+    },
+    {
+      "id": "above-center",
+      "right": "above-right.left",
+      "left": "above-left.right",
+      "bottom": "model.top",
+      "height": "2em",
+      "align": "center"
+    },
+    {
+      "id": "right-inside",
+      "left": "model.right",
+      "top": "above-right.top",
+      "height": "model.height",
+      "align": "center"
+    },
+    {
+      "id": "right-outside",
+      "left": "right-inside.right",
+      "top": "above-right.top",
+      "height": "model.height",
+      "align": "center"
+    }
+  ]
+}

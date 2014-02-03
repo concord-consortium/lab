@@ -157,27 +157,27 @@
       "options": [
         {
           "text": "Select a pair of molecules",
-          "loadModel": "instructions"
+          "action": "loadModel('instructions');"
         },
         {
           "text": "Small molecules",
-          "loadModel": "npSmallStraight"
+          "action": "loadModel('npSmallStraight');"
         },
         {
           "text": "Large straight molecules",
-          "loadModel": "npLargeStraight"
+          "action": "loadModel('npLargeStraight');"
         },
         {
           "text": "Large straight and bent",
-          "loadModel": "npStraightJagged"
+          "action": "loadModel('npStraightJagged');"
         },
         {
           "text": "Large straight and circular",
-          "loadModel": "npStraightRound"
+          "action": "loadModel('npStraightRound');"
         },
         {
           "text": "Large curved and circular",
-          "loadModel": "npCurvedRound"
+          "action": "loadModel('npCurvedRound');"
         }
       ]
     },
@@ -185,7 +185,7 @@
       "type": "button",
       "id": "reset",
       "text": "Reset",
-      "action": "reload();"
+      "action": "reloadModel();"
     }
   ]
 }

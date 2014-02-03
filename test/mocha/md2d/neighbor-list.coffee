@@ -1,7 +1,7 @@
 helpers = require '../../helpers'
 helpers.setupBrowserEnvironment()
 
-NeighborList = requirejs 'md2d/models/engine/neighbor-list'
+NeighborList = requirejs 'models/md2d/models/engine/neighbor-list'
 
 describe "Neighbor List", ->
   neighborList = null

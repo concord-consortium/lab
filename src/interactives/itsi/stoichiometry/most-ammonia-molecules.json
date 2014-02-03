@@ -1,6 +1,7 @@
 {
-  "title": "most-ammonia-molecules",
+  "title": "Ammonia Molecules",
   "publicationStatus": "draft",
+  "aspectRatio": 1.725,
   "subtitle": "",
   "about": "",
   "models": [
@@ -10,14 +11,35 @@
       "url": "imports/legacy-mw-content/converted/itsi/stoichiometry/most-ammonia-molecules$0.json",
       "importedFrom": "imports/legacy-mw-content/itsi/stoichiometry/most-ammonia-molecules$0.mml",
       "viewOptions": {
-        "controlButtons": "play_reset"
+        "controlButtons": ""
+      },
+      "modelOptions": {
+        "timeStep": 0.2,
+        "chemicalReactions": {
+          "createAngularBonds": true,
+          "valenceElectrons": [
+            1,
+            1,
+            1,
+            3
+          ],
+          "bondEnergy": {
+            "default": 6,
+            "2-3": 10,
+            "2-2": 0,
+            "3-3": 0
+          },
+          "activationEnergy": {
+            "default": 10.2,
+            "2+3-3": 0.02,
+            "3+2-2": 0.02
+          }
+        }
       }
     }
   ],
   "components": [
   ],
   "layout": {
-    "bottom": [
-    ]
   }
 }

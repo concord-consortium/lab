@@ -3,6 +3,9 @@
   "publicationStatus": "public",
   "subtitle": "Explore how the code embedded in DNA is translated into a protein.",
   "aspectRatio": 1.2,
+  "category": "Biology",
+  "subCategory": "Genetics",
+  "screenshot": "http://screenshots.lab.concord.org/1-dna-to-protein.png",
   "about": [
     "Click **Transcribe** to zoom into the cell nucleus and see the chromosome unravel to expose the strands of DNA. The DNA separates and an mRNA strand is created by matching complementary nucleotides.",
     "",
@@ -118,7 +121,7 @@
       "type": "button",
       "id": "reset",
       "text": "Reset",
-      "action": "reload();"
+      "action": "reloadModel();"
     },
     {
       "type": "button",

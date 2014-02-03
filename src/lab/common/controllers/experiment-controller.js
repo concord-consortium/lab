@@ -3,10 +3,9 @@
 define(function (require) {
   var metadata  = require('common/controllers/interactive-metadata'),
       validator = require('common/validator'),
-      Dataset   = require('common/models/dataset'),
-      experimentControllerCount = 0;
+      Dataset   = require('common/models/dataset');
 
-  return function ExperimentController(experimentDefinition, interactivesController, onLoadScripts) {
+  return function ExperimentController(experimentDefinition, interactivesController) {
         // Public API.
     var controller,
         model,
@@ -18,8 +17,6 @@ define(function (require) {
         outputs,
         destinations,
         stateButtons,
-        onResetScript,
-        onResetFunc,
         onLoadFunc,
         // the state transition button components
         startRun,
@@ -30,13 +27,9 @@ define(function (require) {
         // arrays of components (graphs or tables) that data are sent to ...
         timeSeriesDestinations,
         parameterSeriesDestinations,
-        timeSeriesGraph,
-
-        namespace = "experimentController" + (++experimentControllerCount);
+        timeSeriesGraph;
 
     function initialize() {
-      scriptingAPI = interactivesController.getScriptingAPI();
-      model = interactivesController.getModel();
       // Validate component definition, use validated copy of the properties.
       experimentDefinition = validator.validateCompleteness(metadata.experiment, experimentDefinition);
       timeSeries    = experimentDefinition.timeSeries;
@@ -44,11 +37,31 @@ define(function (require) {
       outputs       = experimentDefinition.parameters.outputs;
       destinations  = experimentDefinition.destinations;
       stateButtons  = experimentDefinition.stateButtons;
-      onResetScript = experimentDefinition.onReset;
-      if (onLoadScripts.length > 0) {
-        onLoadFunc  = onLoadScripts[0];
-      }
       timeSeriesDatasets = [];
+
+      interactivesController.on("modelLoaded.experimentController", function () {
+        scriptingAPI = interactivesController.getScriptingAPI();
+        model = interactivesController.getModel();
+        setupModelParameters();
+      });
+
+      setup();
+    }
+
+    function setupModelParameters() {
+      model.defineParameter('experimentCleared', { initialValue: false }, function () {
+        if (model.get('experimentCleared')) {
+          goToNextRun();
+          model.set('experimentCleared', false);
+        }
+      });
+      model.defineParameter('experimentRunning', { initialValue: false }, function () {
+        if (model.get('experimentRunning')) {
+          goToRunStarted();
+        } else {
+          goToRunStopped();
+        }
+      });
     }
 
     function setup() {
@@ -96,22 +109,6 @@ define(function (require) {
         }
       }
 
-      function setupModelParameters() {
-        model.defineParameter('experimentCleared', { initialValue: false }, function () {
-          if (model.get('experimentCleared')) {
-            goToNextRun();
-            model.set('experimentCleared', false);
-          }
-        });
-        model.defineParameter('experimentRunning', { initialValue: false }, function () {
-          if (model.get('experimentRunning')) {
-            goToRunStarted();
-          } else {
-            goToRunStopped();
-          }
-        });
-      }
-
       function setupStateButtonActions() {
         startRun.setAction("set('experimentRunning', true);");
         stopRun.setAction("set('experimentRunning', false);");
@@ -127,18 +124,15 @@ define(function (require) {
           saveRun.setDisabled(true);
         });
         nextRun.setAction("set('experimentCleared', true);");
-        clearAll.setAction("reload();");
+        clearAll.setAction(function () {
+          interactivesController.reloadInteractive();
+        });
       }
 
       // setup experiment ...
       setupStateButtons();
       setupDestinationComponents();
-      setupModelParameters();
       setupStateButtonActions();
-      goToReloadedState();
-      if (onResetScript) {
-        onResetFunc = scriptingAPI.makeFunctionInScriptContext(onResetScript);
-      }
     }
 
     function addOlderRunsToGraph() {
@@ -162,20 +156,6 @@ define(function (require) {
       for (var i = 0; i < inputs.length; i++) {
         model.freeze(inputs[i]);
       }
-    }
-
-    // transition to reloaded state
-    function goToReloadedState() {
-      startRun.setDisabled(false);
-      stopRun.setDisabled(true);
-      saveRun.setDisabled(true);
-      nextRun.setDisabled(true);
-      clearAll.setDisabled(true);
-      timeSeriesDatasets = [];
-      if (timeSeriesGraph) {
-        timeSeriesGraph.clearDataSets();
-      }
-      unfreezeInputParameters();
     }
 
     function goToRunStarted() {
@@ -203,37 +183,16 @@ define(function (require) {
       saveRun.setDisabled(true);
       nextRun.setDisabled(true);
       model.set('experimentCleared', false);
-      interactivesController.resetModel({retainParameters: inputs});
+      interactivesController.reloadModel({propertiesToRetain: inputs, cause: "new-run"});
       unfreezeInputParameters();
-      if (onResetFunc) {
-        onLoadFunc.apply(onResetFunc, null);
-      }
       addOlderRunsToGraph();
-    }
-
-    function registerModelListeners() {
-      // Namespace listeners to '.tableController' so we can eventually remove them all at once
-      model.on('tick.'+namespace, function() {
-        return null;
-      });
-      model.on('invalidation.'+namespace, function() {
-        return null;
-      });
-      model.on('reset.'+namespace, function() {
-        return null;
-      });
     }
 
     // Public API.
     controller = {
-      /**
-        Called by the interactives controller when the model finishes loading.
-      */
-      modelLoadedCallback: function() {
-        scriptingAPI = interactivesController.getScriptingAPI();
-        model = interactivesController.getModel();
-        registerModelListeners();
-        setup();
+
+      setOnLoadScript: function(onLoadScript) {
+        onLoadFunc = onLoadScript;
       },
 
       // Returns serialized component definition.

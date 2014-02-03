@@ -26,40 +26,84 @@
   :name: "Science of Atoms and Molecules: Light and Matter"
   :category: Curriculum
 
+- :path: sam/chemical-reactions
+  :name: "Science of Atoms and Molecules: Chemical Reactions"
+  :category: Curriculum
+
 - :path: inquiry-examples/pendulum
   :name: "Inquiry Examples: Pendulums"
   :category: Curriculum
 
-- :path: inquiry-space/pendulum
-  :name: "Inquiry Space: Pendulums"
+- :path: inquiry-space
+  :name: "Inquiry Space"
+  :category: Curriculum
+
+- :path: itsi/atoms-and-energy
+  :name: "ITSI: Atoms and Energy"
+  :category: Curriculum
+
+- :path: itsi/bond-types
+  :name: "ITSI: Bond Types"
+  :category: Curriculum
+
+- :path: itsi/chemical-reactions
+  :name: "ITSI: Chemical Reactions"
   :category: Curriculum
 
 - :path: itsi/crystal
   :name: "ITSI: Crystals"
   :category: Curriculum
 
-- :path: itsi/states-of-matter
-  :name: "ITSI: States of Matter"
-  :category: Curriculum
-
-- :path: itsi/gas-laws
-  :name: "ITSI: Gas Laws"
-  :category: Curriculum
-
-- :path: itsi/heattransfer
-  :name: "ITSI: Heat Transfer"
-  :category: Curriculum
-
-- :path: itsi/stoichiometry
-  :name: "ITSI: Stoichiometry"
+- :path: itsi/diffusion
+  :name: "ITSI: Diffusion and Osmosis"
   :category: Curriculum
 
 - :path: itsi/dissolving
   :name: "ITSI: Dissolving"
   :category: Curriculum
 
+- :path: itsi/electrostatics
+  :name: "ITSI: Electrostatics"
+  :category: Curriculum
+
 - :path: itsi/energy2d
   :name: "ITSI: Energy2D"
+  :category: Curriculum
+
+- :path: itsi/gas-laws
+  :name: "ITSI: Gas Laws"
+  :category: Curriculum
+
+- :path: itsi/heat-and-temperature
+  :name: "ITSI: Heat and Temperature"
+  :category: Curriculum
+
+- :path: itsi/heats-of-reaction
+  :name: "ITSI: Heat of Reactions"
+  :category: Curriculum
+
+- :path: itsi/heattransfer
+  :name: "ITSI: Heat Transfer"
+  :category: Curriculum
+
+- :path: itsi/newtons-laws
+  :name: "ITSI: Newton's Laws"
+  :category: Curriculum
+
+- :path: itsi/protein-structure
+  :name: "ITSI: Protein Structure"
+  :category: Curriculum
+
+- :path: itsi/reaction-kinetics
+  :name: "ITSI: Reaction Kinetics"
+  :category: Curriculum
+
+- :path: itsi/states-of-matter
+  :name: "ITSI: States of Matter"
+  :category: Curriculum
+
+- :path: itsi/stoichiometry
+  :name: "ITSI: Stoichiometry"
   :category: Curriculum
 
 - :path: interactions

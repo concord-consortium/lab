@@ -212,7 +212,7 @@
       "type": "table",
       "id": "experiment-table",
       "title": "Experiment Table",
-      "clearDataOnReset": false,
+      "clearOnModelReset": false,
       "streamDataFromModel": false,
       "visibleRows": 4,
       "height": "12em",

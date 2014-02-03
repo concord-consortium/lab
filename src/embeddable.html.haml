@@ -8,6 +8,7 @@
     %link{:href => "vendor/jquery-ui/jquery-ui.css", :rel => "stylesheet", :type => "text/css"}/
     %link{:href => "vendor/jquery-context-menu/jquery.contextMenu.css", :rel => "stylesheet", :type => "text/css"}/
     %link{:href => "vendor/jquery-selectBoxIt/jquery.selectBoxIt.css", :rel => "stylesheet", :type => "text/css"}/
+    %link{:href => "lab/lab.css", :rel => "stylesheet", :type => "text/css"}/
     %link{:href => "embeddable.css", :rel => "stylesheet", :type => "text/css"}/
     %script{:src => "vendor/modernizr/modernizr.js", :type => "text/javascript"}
     %script{:type => "text/javascript"}
@@ -15,13 +16,43 @@
     = LAB_JS_DEPENDENCIES
     = ANALYTICS
   %body
-    #responsive-content
-      #interactive-container{:tabindex => 0}
+    #interactive-container{:tabindex => 0}
 
-      #firefox-warning-pane.warning-pane
-        %p
-          %a(href='http://blog.concord.org/serious-performance-regression-in-firefox-18-and-newer' class='opens-in-new-window' target='_blank') Firefox v18-22 performance issue ...
+    #firefox-warning-pane.warning-pane
+      %p
+        %a(href='http://blog.concord.org/serious-performance-regression-in-firefox-18-and-newer' class='opens-in-new-window' target='_blank') Firefox v18-22 performance issue ...
 
     = LAB_JS
     %script{:src => "embeddable.js", :type => "text/javascript"}
+    :javascript
+      (function() {
+        var interactiveUrl,
+            hash = document.location.hash;
+
+        $(window).bind('hashchange', function() {
+          if (document.location.hash !== hash) {
+            location.reload();
+          }
+        });
+
+        if (!hash) return;
+
+        interactiveUrl = hash.substr(1, hash.length);
+        Embeddable.load(interactiveUrl, '#interactive-container', {
+          controllerReady: function(controller){
+            controller.on("modelLoaded.application", function() {
+              document.title = "Lab Interactive: " + controller.interactive.title;
+              Embeddable.sendGAPageview();
+            });
+          },
+          redirect: function(path){
+            // Let our parent know we are redirecting
+            if (window.parent) {
+              window.parent.postMessage(JSON.stringify({type: "redirect", content: path}), '*');
+            }
+            location.hash = "#" + path;
+          }
+        });
+      }());
+
     = LAB_SHUTTERBUG_EMBEDDABLE

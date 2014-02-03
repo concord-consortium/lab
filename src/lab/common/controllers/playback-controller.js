@@ -3,7 +3,11 @@
 define(function (require) {
 
   var inherit              = require('common/inherit'),
-      InteractiveComponent = require('common/controllers/interactive-component');
+      detectFontChange     = require('common/layout/detect-font-change'),
+      InteractiveComponent = require('common/controllers/interactive-component'),
+
+      // Font used by time display
+      FONT_SPEC = "bold 2em Lato";
 
   /**
    * Playback controller.
@@ -33,6 +37,11 @@ define(function (require) {
     this._scriptingAPI = null;
     /** @private */
     this._interactivesController = interactivesController;
+
+    detectFontChange({
+      font: FONT_SPEC,
+      onchange: $.proxy(this._showClockChanged, this)
+    });
   }
   inherit(PlaybackController, InteractiveComponent);
 
@@ -44,23 +53,30 @@ define(function (require) {
       this.$element.removeClass('text').addClass('video');
 
       /** @private */
-      this._$reset = $('<a class="reset"><i class="icon-step-backward"></i></a>').appendTo(this.$element);
+      this._$reset = $('<button class="reset"><i class="icon-step-backward"></i></button>').appendTo(this.$element);
       /** @private */
-      this._$playPause = $('<a class="play-pause"><i class="icon-play"></i><i class="icon-pause"></i></a>').appendTo(this.$element);
+      this._$playPause = $('<button class="play-pause"><i class="icon-play"></i><i class="icon-pause"></i></button>').appendTo(this.$element);
       /** @private */
       this._$timeDisplay = $('<span class="time-display">').appendTo(this._$playPause);
 
+      // Canvas is much faster that native HTML text, especially on mobile devices. See:
+      // https://www.pivotaltracker.com/story/show/58879086
       /** @private */
-      this._$stepBackward = $('<a class="step"><i class="icon-backward"></i></a>').insertBefore(this._$playPause);
+      this._$timeCanvas = $('<canvas>').appendTo(this._$timeDisplay);
       /** @private */
-      this._$stepForward = $('<a class="step"><i class="icon-forward"></i></a>').insertAfter(this._$playPause);
+      this._timeCtx = this._$timeCanvas[0].getContext("2d");
+
+      /** @private */
+      this._$stepBackward = $('<button class="step"><i class="icon-backward"></i></button>').insertBefore(this._$playPause);
+      /** @private */
+      this._$stepForward = $('<button class="step"><i class="icon-forward"></i></button>').insertAfter(this._$playPause);
 
       this._$reset.after('<div class="spacer reset">');
       this._$stepBackward.after('<div class="spacer step">');
       this._$stepForward.before('<div class="spacer step">');
 
       // Bind click handlers.
-      this._$reset.on("click", scriptingAPI.reload);
+      this._$reset.on("click", scriptingAPI.reloadModel);
 
       this._$playPause.on("click", $.proxy(function () {
         if (this._modelStopped) {
@@ -91,7 +107,7 @@ define(function (require) {
       this._$reset = $('<button class="reset">Reset</button>').appendTo(this.$element);
 
       // Bind click handlers
-      this._$reset.on('click', scriptingAPI.reload);
+      this._$reset.on('click', scriptingAPI.reloadModel);
       this._$start.on('click', scriptingAPI.start);
       this._$stop.on('click', scriptingAPI.stop);
 
@@ -139,11 +155,21 @@ define(function (require) {
    * @private
    */
   PlaybackController.prototype._simulationStateChanged = function () {
-    this._modelStopped = this._model.isStopped();
+    var modelStopped = this._model.isStopped();
     // Coerce undefined to *true* for models that don't have isPlayable property
-    this._modelPlayable = this._model.properties.isPlayable === false ? false : true;
+    var modelPlayable = this._model.properties.isPlayable === false ? false : true;
 
-    this._updateButtonStatesFor[this.controlButtonStyle].call(this);
+    // Update button states only if modelStopped/modelPlayable actually changed. (Since they're
+    // model properties, we are called every tick, unfortunately -- the optimization assumption
+    // made by PropertySupport is that all model properties are *physics* properties which are
+    // almost certain to change every tick, so it doesn't check to see if they really changed.)
+    // update-button-states adds and removes classes, which at the very least adds a distracting
+    // entry to Dev Tools timeline view every tick.
+    if (modelStopped !== this._modelStopped || modelPlayable !== this._modelPlayable) {
+      this._modelStopped = modelStopped;
+      this._modelPlayable = modelPlayable;
+      this._updateButtonStatesFor[this.controlButtonStyle].call(this);
+    }
   };
 
   /**
@@ -175,7 +201,11 @@ define(function (require) {
     if (!this._showClock || this.controlButtonStyle !== 'video') {
       return;
     }
-    this._$timeDisplay.html(this._timeDesc.format(this._model.get("displayTime")));
+    // Canvas is much faster that native HTML text, especially on mobile devices. See:
+    // https://www.pivotaltracker.com/story/show/58879086
+    this._timeCtx.clearRect(0, 0, this._canvWidth, this._canvHeigth);
+    this._timeCtx.fillText(this._timeDesc.format(this._model.get("displayTime")),
+                           this._canvWidth, this._canvHeigth * 0.85);
   };
 
 
@@ -197,7 +227,7 @@ define(function (require) {
       } else if (mode === "play_reset_step") {
         this.$element.find(".spacer, .step, .reset, .play-pause").removeClass("hidden");
       }
-      $buttons = this.$element.find("a");
+      $buttons = this.$element.find("button");
       $buttons.removeClass("first");
       $buttons.removeClass("last");
       $buttons = $buttons.not(".hidden");
@@ -276,6 +306,28 @@ define(function (require) {
     this._controlButtonStyleChanged();
     this._controlButtonChoicesChanged();
     this._simulationStateChanged();
+    this._showClockChanged();
+  };
+
+  /**
+   * Implements optional callback supported by Interactive Controller.
+   */
+  PlaybackController.prototype.resize = function () {
+
+    if ( !this._$timeCanvas ) {
+      return;
+    }
+
+    // Oversample canvas, so text will look good on Retina-like displays.
+    this._canvWidth = this._$timeCanvas.width() * 2;
+    this._canvHeigth = this._$timeCanvas.height() * 2;
+    this._$timeCanvas.attr("width", this._canvWidth);
+    this._$timeCanvas.attr("height", this._canvHeigth);
+
+    this._timeCtx.font = FONT_SPEC;
+    this._timeCtx.fillStyle = "#939598";
+    this._timeCtx.textAlign = "right";
+
     this._showClockChanged();
   };
 

@@ -1,6 +1,6 @@
 {
   "name": "lab",
-  "version": "0.5.12",
+  "version": "0.7.2",
   "description": "HTML5-based scientific models, visualizations, graphing, and probeware",
   "keywords": [
     "molecule",
@@ -22,25 +22,26 @@
   },
   "dependencies": {
     "optimist": ">=0.6.0",
-    "coffee-script": ">=1.6.3",
+    "coffee-script": "~1.7.0",
     "requirejs": ">=2.1.8",
     "amdefine": ">=0.0.8",
-    "mustache": ">=0.7.2",
+    "mustache": "~0.7.2",
     "backbone": ">=1.0.0",
     "underscore": ">=1.5.1",
     "uglify-js": ">=2.4.0",
     "markdown": ">=0.5.0"
   },
   "devDependencies": {
+    "jsdom": ">=0.8.9",
     "sizzle": ">=1.1.0",
     "vows": "0.7.0",
     "node-inspector": "0.3.4",
     "jshint": ">=2.1.10",
-    "cheerio": ">=0.12.1",
+    "cheerio": "0.12.4",
     "jade": ">=0.35.0",
     "mkdirp": "0.3.2",
-    "mocha": "1.12.x",
-    "should": ">=2.0.1",
+    "mocha": "~1.17.1",
+    "should": "3.0.1",
     "sinon": ">=1.7.3",
     "mocha-phantomjs": ">=3.1.x",
     "chai": ">=1.7.2"

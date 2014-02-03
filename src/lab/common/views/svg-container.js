@@ -7,8 +7,40 @@
 define(function (require) {
   // Dependencies.
   var performance           = require('common/performance'),
+      benchmark             = require('common/benchmark/benchmark'),
       getNextTabIndex       = require('common/views/tab-index'),
-      console               = require('common/console');
+      HitTestingHelper      = require('common/views/hit-testing-helper'),
+      console               = require('common/console'),
+      PIXI                  = require('pixi'),
+
+      CANVAS_OVERSAMPLING = 2,
+
+      MAX_Z_INDEX = 1000;
+
+    // Assume that we can have *only one* Pixi renderer.
+    // This is caused by the Pixi bug: https://github.com/GoodBoyDigital/pixi.js/issues/181
+    function getPixiRenderer(w, h) {
+      if (getPixiRenderer.instance == null) {
+        var browser = benchmark.browser;
+        var newRenderer;
+        if (browser.browser === 'Firefox' && browser.oscpu.match(/Mac OS X 10.6/)) {
+          // Work around GPU driver brokenness on some hardware running OS X 10.6 by not using
+          // WebGL. Note Chrome automatically disables WebGL when using the problematic driver.
+          // (Note that sometimes the separator between 10 and 6 is a '.' and sometimes a '_' so
+          // use of the '.' matcher works is required)
+          newRenderer = function(w, h, view, transparent) {
+            return new PIXI.CanvasRenderer(w, h, view, transparent);
+          };
+        } else {
+          newRenderer = PIXI.autoDetectRenderer;
+        }
+        getPixiRenderer.instance = newRenderer(w * CANVAS_OVERSAMPLING, h * CANVAS_OVERSAMPLING, null, true);
+      } else {
+        getPixiRenderer.instance.resize(w, h);
+      }
+      return getPixiRenderer.instance;
+    }
+    getPixiRenderer.instance = null;
 
   return function SVGContainer(model, modelUrl, Renderer, opt) {
         // Public API object to be returned.
@@ -19,13 +51,23 @@ define(function (require) {
 
         $el,
         node,
-        emsize,
-        fontSizeInPixels,
-        vis1, vis, plot, viewportG,
-        cx, cy,
-        padding, size, modelSize, viewport,
 
-        // Basic scaling functions for positio, it transforms model units to "pixels".
+        plotContainer, backgroundContainer, foregroundContainer,
+
+        backgroundRect, backgroundGroup, foregroundGroup, brushContainer,
+
+        pixiRenderers, pixiStages, pixiContainers,
+
+        hitTestingHelper,
+        viewportZIndex = 0,
+
+        cx, cy,
+        viewport, viewPortZoom,
+
+        model2canvas    = d3.scale.linear(),
+        model2canvasInv = d3.scale.linear(),
+
+        // Basic scaling functions for position, it transforms model units to "pixels".
         // Use it for positions of objects rendered inside the view.
         //
         // This function is exposed in public API. Never ever recreated it, as
@@ -42,9 +84,6 @@ define(function (require) {
         // function.
         model2pxInv = d3.scale.linear(),
 
-        gridContainer,
-        brushContainer,
-
         clickHandler,
         dragHandler,
         // d3.svg.brush object used to implement select action. It should be
@@ -53,51 +92,24 @@ define(function (require) {
 
         dispatch = d3.dispatch("viewportDrag"),
 
-        renderer,
+        renderer;
 
-        offsetLeft, offsetTop;
+    function nextViewportZIndex() {
+      return viewportZIndex++;
+    }
 
     function getFontSizeInPixels() {
       return parseFloat($el.css('font-size')) || 18;
     }
 
-    // Padding is based on the calculated font-size used for the model view container.
-    function updatePadding() {
-      fontSizeInPixels = getFontSizeInPixels();
-      // Convert value to "em", using 18px as a basic font size.
-      // It doesn't have to reflect true 1em value in current context.
-      // It just means, that we assume that for 18px font-size,
-      // padding and playback have scale 1.
-      emsize = fontSizeInPixels / 18;
-
-      padding = {
-         "top":    0 * emsize,
-         "right":  0 * emsize,
-         "bottom": 0 * emsize,
-         "left":   0 * emsize
-      };
-
-      if (model.get("xunits") || model.get("yunits")) {
-        padding.bottom += (fontSizeInPixels * 1.2);
-        padding.left +=   (fontSizeInPixels * 1.3);
-        padding.top +=    (fontSizeInPixels/2);
-        padding.right +=  (fontSizeInPixels/2);
-      }
-
-      if (model.get("xlabel") || model.get("ylabel")) {
-        padding.bottom += (fontSizeInPixels * 0.8);
-        padding.left +=   (fontSizeInPixels * 0.8);
-      }
-    }
-
     function scale() {
       var viewPortWidth = model.get("viewPortWidth"),
           viewPortHeight = model.get("viewPortHeight"),
-          viewPortZoom = model.get("viewPortZoom") || 1,
           viewPortX = model.get("viewPortX"),
           viewPortY = model.get("viewPortY"),
-          aspectRatio,
-          width, height;
+          aspectRatio, modelSize;
+
+      viewPortZoom = model.get("viewPortZoom") || 1;
 
       // Model size in model units.
       modelSize = {
@@ -124,37 +136,28 @@ define(function (require) {
 
       aspectRatio = viewport.width / viewport.height;
 
-      updatePadding();
-
       cx = $el.width();
-      width = cx - padding.left  - padding.right;
-      height = width / aspectRatio;
-      cy = height + padding.top  + padding.bottom;
+      cy = cx / aspectRatio;
       node.style.height = cy + "px";
-
-      // Plot size in px.
-      size = {
-        "width":  cx - padding.left - padding.right,
-        "height": cy - padding.top  - padding.bottom
-      };
-
-      size = {
-        "width":  width,
-        "height": height
-      };
-
-      offsetTop  = node.offsetTop + padding.top;
-      offsetLeft = node.offsetLeft + padding.left;
 
       // Basic model2px scaling function for position.
       model2px
         .domain([0, viewport.width])
-        .range([0, size.width]);
+        .range([0, cx]);
+
+      model2canvas
+        .domain([0, viewport.scaledWidth])
+        .range([0, cx * CANVAS_OVERSAMPLING]);
 
       // Inverted model2px scaling function for position (for y-coordinates, domain can be inverted).
       model2pxInv
         .domain([viewport.height, 0])
-        .range(origin === 'bottom-left' ? [0, size.height] : [size.height, 0]);
+        .range(origin === 'bottom-left' ? [0, cy] : [cy, 0]);
+
+      model2canvasInv
+        .domain([viewport.scaledHeight, 0])
+        .range(origin === 'bottom-left' ? [0, cy * CANVAS_OVERSAMPLING] :
+                                          [cy * CANVAS_OVERSAMPLING, 0]);
 
       if (selectBrush) {
         // Update brush to use new scaling functions.
@@ -165,30 +168,38 @@ define(function (require) {
     }
 
     function redrawGridLinesAndLabels() {
+      var fsize = 0.7 * getFontSizeInPixels(),
           // Overwrite default model2px and model2pxInv to display correct units.
-      var model2px = d3.scale.linear().domain([viewport.x, viewport.x + viewport.scaledWidth]).range([0, size.width]),
-          model2pxInv = d3.scale.linear().domain([viewport.y, viewport.y - viewport.scaledHeight]).range([0, size.height]),
+          model2px = d3.scale.linear().domain([viewport.x + 0.07 * viewport.scaledWidth, viewport.x + viewport.scaledWidth]).range([0.07 * cx, cx]),
+          model2pxInv = d3.scale.linear().domain([viewport.y, viewport.y - 0.93 * viewport.scaledHeight]).range([0, 0.93 * cy]),
           tx = function(d) { return "translate(" + model2px(d) + ",0)"; },
           ty = function(d) { return "translate(0," + model2pxInv(d) + ")"; },
           stroke = function(d) { return d ? "#ccc" : "#666"; },
           fx = model2px.tickFormat(5),
           fy = model2pxInv.tickFormat(5),
           lengthUnits = model.getUnitDefinition ? model.getUnitDefinition('length') : "",
-          xlabel, ylabel;
+          drawXunits = model.get("xunits"),
+          drawYunits = model.get("yunits"),
+          drawXLabel = model.get("xlabel"),
+          drawYLabel = model.get("ylabel"),
+          xlabel,
+          ylabel;
 
       if (d3.event && d3.event.transform) {
         d3.event.transform(model2px, model2pxInv);
       }
 
+      plotContainer.selectAll("g.x, g.y").remove();
+
       // Regenerate x-ticks…
-      var gx = gridContainer.selectAll("g.x")
+      var gx = plotContainer.selectAll("g.x")
           .data(model2px.ticks(5), String)
           .attr("transform", tx)
           .classed("axes", true);
 
       gx.select("text").text(fx);
 
-      var gxe = gx.enter().insert("g", "a")
+      var gxe = gx.enter().append("g")
           .attr("class", "x")
           .attr("transform", tx);
 
@@ -196,39 +207,38 @@ define(function (require) {
         gxe.append("line")
             .attr("stroke", stroke)
             .attr("y1", 0)
-            .attr("y2", size.height);
+            .attr("y2", cy - (drawXLabel ? fsize : 0) - (drawXunits ? fsize : 0));
       } else {
         gxe.selectAll("line").remove();
       }
 
+      // x-axis label
+      xlabel = plotContainer.selectAll("text.xlabel").data(drawXLabel ? [lengthUnits.pluralName] : []);
+      xlabel.enter().append("text");
+      xlabel
+          .attr("class", "axis")
+          .attr("class", "xlabel")
+          .attr("x", cx / 2)
+          .attr("y", cy)
+          .attr("dy", "-0.1em")
+          .style("text-anchor", "middle")
+          .text(String);
+      xlabel.exit().remove();
+
       // x-axis units
-      if (model.get("xunits")) {
+      if (drawXunits) {
         gxe.append("text")
             .attr("class", "xunits")
-            .attr("y", size.height)
-            .attr("dy", fontSizeInPixels*0.8 + "px")
+            .attr("y", cy)
+            .attr("dy", model.get("xlabel") ? "-1em" : "-0.1em")
             .attr("text-anchor", "middle")
             .text(fx);
       } else {
         gxe.select("text.xunits").remove();
       }
 
-      gx.exit().remove();
-
-      // x-axis label
-      xlabel = vis.selectAll("text.xlabel").data(model.get("xlabel") ? [lengthUnits.pluralName] : []);
-      xlabel.enter().append("text")
-          .attr("class", "axis")
-          .attr("class", "xlabel")
-          .attr("x", size.width / 2)
-          .attr("y", size.height)
-          .attr("dy", (fontSizeInPixels * 1.6) + "px")
-          .style("text-anchor", "middle");
-      xlabel.text(String);
-      xlabel.exit().remove();
-
       // Regenerate y-ticks…
-      var gy = gridContainer.selectAll("g.y")
+      var gy = plotContainer.selectAll("g.y")
           .data(model2pxInv.ticks(5), String)
           .attr("transform", ty)
           .classed("axes", true);
@@ -236,7 +246,7 @@ define(function (require) {
       gy.select("text")
           .text(fy);
 
-      var gye = gy.enter().insert("g", "a")
+      var gye = gy.enter().append("g")
           .attr("class", "y")
           .attr("transform", ty)
           .attr("background-fill", "#FFEEB6");
@@ -244,41 +254,48 @@ define(function (require) {
       if (model.get("gridLines")) {
         gye.append("line")
             .attr("stroke", stroke)
-            .attr("x1", 0)
-            .attr("x2", size.width);
+            .attr("x1", (drawYLabel ? fsize : 0) + (drawYunits ? 2 * fsize : 0))
+            .attr("x2", cx);
       } else {
         gye.selectAll("line").remove();
       }
 
+      // y-axis label
+      ylabel = plotContainer.selectAll("text.ylabel").data(drawYLabel ? [lengthUnits.pluralName] : []);
+      ylabel.enter().append("text");
+      ylabel
+          .attr("class", "axis")
+          .attr("class", "ylabel")
+          .attr("transform","translate(0 " + (cy * 0.5) + ") rotate(-90)")
+          .attr("dy", "0.75em")
+          .style("text-anchor","middle")
+          .text(String);
+      ylabel.exit().remove();
+
       // y-axis units
-      if (model.get("yunits")) {
+      if (drawYunits) {
         gye.append("text")
             .attr("class", "yunits")
-            .attr("x", "-0.3em")
-            .attr("dy", fontSizeInPixels/6 + "px")
-            .attr("text-anchor", "end")
+            .attr("dy", "0.34em")
+            .attr("dx", model.get("ylabel") ? "1em" : "0.1em")
             .text(fy);
       } else {
         gxe.select("text.yunits").remove();
       }
-
-      gy.exit().remove();
-
-      // y-axis label
-      ylabel = vis.selectAll("text.ylabel").data(model.get("ylabel") ? [lengthUnits.pluralName] : []);
-      ylabel.enter().append("text")
-          .attr("class", "axis")
-          .attr("class", "ylabel")
-          .style("text-anchor","middle")
-          .attr("transform","translate(" + -fontSizeInPixels * 1.6 + " " + size.height / 2 + ") rotate(-90)");
-      ylabel.text(String);
-      ylabel.exit().remove();
     }
 
     // Setup background.
     function setupBackground() {
-      // Just set the color.
-      plot.attr("fill", model.get("backgroundColor") || "rgba(0, 0, 0, 0)");
+      var color = model.get("backgroundColor") || "rgba(0, 0, 0, 0)";
+      backgroundRect.attr("fill", color);
+      // Set color of PIXI.Stage to fix an issue with outlines around the objects that are visible
+      // when WebGL renderer is being used. It only happens when PIXI.Stage background is different
+      // from model container background. It's necessary to convert color into number, as PIXI
+      // accepts only numbers. D3 helps us handle color names like "red", "green" etc. It doesn't
+      // support rgba values, so ingore alpha channel.
+      pixiStages.forEach(function (pixiStage) {
+        pixiStage.setBackgroundColor(parseInt(d3.rgb(color.replace("rgba", "rgb")).toString().substr(1), 16));
+      });
     }
 
     function mousedown() {
@@ -291,25 +308,65 @@ define(function (require) {
       }
     }
 
+    function basicSVGAttrs() {
+      return this.attr({
+        // TODO confirm xmlns def is required?
+        'xmlns': 'http://www.w3.org/2000/svg',
+        'xmlns:xmlns:xlink': 'http://www.w3.org/1999/xlink', // hack: doubling xmlns: so it doesn't disappear once in the DOM
+        'overflow': 'hidden' // Important in IE! Otherwise content won't be clipped by SVG container
+      });
+    }
+
+    function layeredOnTop() {
+      return this.style({
+        position: "absolute",
+        top: 0,
+        left: 0
+      });
+    }
+
     function renderContainer() {
       var viewBox;
 
-      // Update cx, cy, size, viewport and modelSize variables.
-      scale();
-
       // Create container, or update properties if it already exists.
-      if (vis === undefined) {
-        vis1 = d3.select(node).append("svg")
-          .attr({
-            'xmlns': 'http://www.w3.org/2000/svg',
-            'xmlns:xmlns:xlink': 'http://www.w3.org/1999/xlink', // hack: doubling xmlns: so it doesn't disappear once in the DOM
-            overflow: 'hidden'
-          });
+      if (plotContainer === undefined) {
 
-        vis = vis1.append("g").attr("class", "particle-container-vis");
+        plotContainer = d3.select(node).append("svg")
+          .attr("class", "root-layer container plot-container")
+          .style("z-index", nextViewportZIndex())
+          .call(basicSVGAttrs);
 
-        plot = vis.append("rect")
-            .attr("class", "plot");
+        backgroundRect = plotContainer.append("rect")
+          .attr("class", "container-background background");
+
+        backgroundContainer = d3.select(node).append("svg")
+          .attr("class", "root-layer container background-container svg-viewport")
+          .style("z-index", nextViewportZIndex())
+          .call(basicSVGAttrs);
+
+        backgroundGroup = backgroundContainer.append("g");
+
+        foregroundContainer = d3.select(node).append("svg")
+          .attr("class", "root-layer container foreground-container svg-viewport")
+          .style("z-index", MAX_Z_INDEX)
+          // IE bug: without background color the layer will be transparent for mouse events
+          // when there is some underlying canvas. See:
+          // https://www.pivotaltracker.com/story/show/58418116
+          .style("background-color", "rgba(0,0,0,0)")
+          .on("contextmenu", function() {
+            // Disable default context menu on foreground container, as otherwise it  covers all
+            // possible context menu that can be used by layers beneath.
+            d3.event.preventDefault();
+          })
+          .call(basicSVGAttrs);
+
+        foregroundGroup = foregroundContainer.append("g");
+
+        brushContainer = foregroundContainer.append("g")
+          .attr("class", "brush-container");
+
+        // Root layers should overlap each other.
+        d3.select(node).selectAll(".root-layer").call(layeredOnTop);
 
         if (model.get("enableKeyboardHandlers")) {
           d3.select(node)
@@ -317,23 +374,22 @@ define(function (require) {
             .on("mousedown", mousedown);
         }
 
-        gridContainer = vis.append("g").attr("class", "grid-container");
-        // Create and arrange "layers" of the final image (g elements). Note
-        // that order of their creation is significant.
-        // TODO: containers should be initialized by renderers. It's weird
-        // that top-level view defines containers for elements that it's
-        // unaware of.
-        viewportG = vis.append("svg").attr("class", "viewport");
-        brushContainer = vis.append("g").attr("class", "brush-container");
+        pixiRenderers = [];
+        pixiStages = [];
+        pixiContainers = [];
 
-      } else {
-        // TODO: ?? what g, why is it here?
-        vis.selectAll("g.x").remove();
-        vis.selectAll("g.y").remove();
+        // Setup custom hit testing similar to one provided natively by SVG. So layers can overlap,
+        // but only real objects (elements inside layer) will block mouse events.
+        hitTestingHelper = new HitTestingHelper(foregroundContainer.node());
+        hitTestingHelper.addLayer(plotContainer.node());
+        hitTestingHelper.addLayer(backgroundContainer.node());
       }
 
-      // Set new dimensions of the top-level SVG container.
-      vis1
+      // Update cx, cy, size, viewport and modelSize variables.
+      scale();
+
+      // Dimension/position of all the root layers
+      d3.select(node).selectAll('.root-layer')
         .attr({
           width: cx,
           height: cy
@@ -344,11 +400,21 @@ define(function (require) {
           height: cy + "px"
         });
 
+      pixiRenderers.forEach(function (pixiRenderer) {
+        pixiRenderer.resize(cx * CANVAS_OVERSAMPLING, cy * CANVAS_OVERSAMPLING);
+        $(pixiRenderer.view).css({
+          width: cx,
+          height: cy
+        });
+      });
+
       viewBox = model2px(viewport.x) + " " +
                 model2pxInv(viewport.y) + " " +
                 model2px(viewport.scaledWidth) + " " +
                 model2px(viewport.scaledHeight);
-      viewportG.attr({
+
+      // Apply the viewbox to all "viewport" layers we have created
+      d3.select(node).selectAll(".svg-viewport").attr({
         viewBox: viewBox,
         x: 0,
         y: 0,
@@ -356,12 +422,24 @@ define(function (require) {
         height: model2px(viewport.height)
       });
 
+      pixiContainers.forEach(function (pixiContainer) {
+        // It would be nice to set position of PIXI.Stage object, but it doesn't work. We have
+        // to use nested PIXI.DisplayObjectContainer:
+        pixiContainer.pivot.x = model2canvas(viewport.x);
+        pixiContainer.pivot.y = model2canvasInv(viewport.y);
+        // This would also work:
+        // pixiContainer.scale.x = pixiContainer.scale.y = (modelSize.maxX - modelSize.minX) /
+        //                                                  viewport.scaledWidth;
+        // and would be pretty fast, however sprites will be pixelated. To ensure that quality isn't
+        // affected it's better to modify .model2canvas() functions.
+      });
+
       // Update padding, as it can be changed after rescaling.
-      vis
-        .attr("transform", "translate(" + padding.left + "," + padding.top + ")");
+      // TODO move this up to where other attrs are set on 'layers'. It doesn't look like 'padding'
+      // is changed between here and there (and if it *is*, that needs to be made more explicit.)
 
       // Rescale main plot.
-      vis.select("rect.plot")
+      backgroundRect
         .attr({
           width: model2px(viewport.width),
           height: model2px(viewport.height),
@@ -370,6 +448,7 @@ define(function (require) {
         });
 
       redrawGridLinesAndLabels();
+      api.renderCanvas();
     }
 
     // Support viewport dragging behavior.
@@ -388,7 +467,7 @@ define(function (require) {
         // other nodes will work again. It's based on the d3 implementation,
         // please see drag() function here:
         // https://github.com/mbostock/d3/blob/master/src/behavior/drag.js
-        vis1.on("mousedown.drag", null)
+        plotContainer.on("mousedown.drag", null)
             .on("touchstart.drag", null)
             .classed("draggable", false);
         return;
@@ -401,6 +480,13 @@ define(function (require) {
         ys.length = 0;
         ts.length = 0;
         updateArrays();
+
+        // Prevent default on mousemove. It's necessary when we deal with synthetic mouse
+        // events translated from touch events. Then we have to prevent default action (panning,
+        // zooming etc.).
+        d3.select(window).on("mousemove.viewport-drag", function () {
+          d3.event.preventDefault();
+        });
       }).on("drag", function () {
         var dx = dragOpt === "y" ? 0 : model2px.invert(d3.event.dx),
             dy = dragOpt === "x" ? 0 : model2px.invert(d3.event.dy);
@@ -409,6 +495,8 @@ define(function (require) {
         dispatch.viewportDrag();
         updateArrays();
       }).on("dragend", function () {
+        d3.select(window).on("mousemove.viewport-drag", null);
+
         updateArrays();
         var last = xs.length - 1,
             dt = ts[last] - ts[0];
@@ -425,7 +513,7 @@ define(function (require) {
         d3.timer(step);
       });
 
-      vis1.call(dragBehavior).classed("draggable", true);
+      plotContainer.call(dragBehavior).classed("draggable", true);
 
       function updateArrays() {
         xs.push(model.properties.viewPortX);
@@ -467,7 +555,7 @@ define(function (require) {
       var selector;
       for (selector in clickHandler) {
         if (clickHandler.hasOwnProperty(selector)) {
-          vis.selectAll(selector).on("click.custom", null);
+          plotContainer.selectAll(selector).on("click.custom", null);
         }
       }
     }
@@ -488,6 +576,7 @@ define(function (require) {
                                    renderContainer);
       model.addPropertiesListener(["viewPortDrag"],
                                    viewportDragging);
+
     }
 
     api = {
@@ -497,20 +586,20 @@ define(function (require) {
       get node() {
         return node;
       },
-      get svg() {
-        return vis1;
-      },
-      get vis() {
-        return vis;
-      },
-      get viewport() {
-        return viewportG;
+      get foregroundContainer() {
+        return foregroundContainer;
       },
       get model2px() {
         return model2px;
       },
+      get model2canvas() {
+        return model2canvas;
+      },
       get model2pxInv() {
         return model2pxInv;
+      },
+      get model2canvasInv() {
+        return model2canvasInv;
       },
       get setFocus() {
         return setFocus;
@@ -521,16 +610,93 @@ define(function (require) {
       get url() {
         return modelUrl;
       },
+      get clickHandler() {
+        return clickHandler;
+      },
       get dragHandler() {
         return dragHandler;
       },
 
+      get hitTestCallback() {
+        return hitTestingHelper.hitTestCallback;
+      },
+
+      get mouseupCallback() {
+        return hitTestingHelper.mouseupCallback;
+      },
+
       repaint: function() {
         setupBackground();
+        if (renderer.repaint) renderer.repaint();
+
         api.updateClickHandlers();
 
-        if (renderer.repaint) renderer.repaint();
+        api.renderCanvas();
       },
+
+      /**
+        Renderers call this method to append a "viewport" svg <g> element on behalf of a renderer.
+
+        Viewport svgs are drawn to the exact same dimensions at the exact same screen coordinates
+        (they overlap each other exactly.) Viewports added later are drawn above viewports added
+        earlier, but are transparent.
+
+        Viewports can contain layering <g> elements;
+
+        What makes the viewports special is that their viewBox attribute is automatically adjusted
+        when the model viewport (visible part of the model) is adjusted. Renderers can just draw to
+        the viewport element without needing to think about
+
+        Viewports are added in front of all viewports previously added. At the moment, they cannot
+        be reordered.
+      */
+      appendViewport: function() {
+        var parent = pixiRenderers.length > 0 ? foregroundGroup : backgroundGroup;
+        return parent.append("g");
+      },
+
+      /**
+        Please see .appendViewport() docs.
+        The main difference is that it returns PIXI.DisplayObjectContainer object and related
+        canvas (where container will be rendered) instead of SVG group element.
+
+        Note that mousemove events will be always passed to this viewport.
+       */
+      appendPixiViewport: function() {
+        var pixiRenderer, pixiStage;
+        var browser;
+        var newRenderer;
+
+        if (pixiRenderers.length === 0) {
+          pixiRenderer = getPixiRenderer(cx, cy);
+          pixiStage = new PIXI.Stage(null);
+
+          node.appendChild(pixiRenderer.view);
+          d3.select(pixiRenderer.view)
+            .attr("class", "pixi-viewport")
+            .style("z-index", nextViewportZIndex())
+            .call(layeredOnTop);
+
+          pixiRenderers.push(pixiRenderer);
+          pixiStages.push(pixiStage);
+
+          // Cascade events into this viewport.
+          hitTestingHelper.addLayer(pixiRenderer.view);
+          hitTestingHelper.passMouseMove(foregroundContainer.node(), pixiRenderers[0].view);
+        }
+
+        var pixiContainer = new PIXI.DisplayObjectContainer();
+        pixiStages[0].addChild(pixiContainer);
+        pixiContainers.push(pixiContainer);
+
+        // We return container instead of stage, as we can apply view port transformations to it.
+        // Stage transformations seem to be ignored by the PIXI renderer.
+        return {
+          pixiContainer: pixiContainer,
+          canvas: pixiRenderers[0].view
+        };
+      },
+
       resize: function() {
         renderContainer();
         api.repaint();
@@ -540,20 +706,33 @@ define(function (require) {
         }
 
         if (renderer.resize) renderer.resize();
+
+        api.renderCanvas();
       },
 
       setup: function() {
         if (renderer.setup) renderer.setup(model);
+
+        api.renderCanvas();
       },
 
       update: function() {
         if (renderer.update) renderer.update();
+
+        api.renderCanvas();
+      },
+
+      renderCanvas: function() {
+        var i, len;
+        // For now we follow that each Pixi viewport has just one PIXI.Stage.
+        for (i = 0, len = pixiRenderers.length; i < len; i++) {
+          pixiRenderers[i].render(pixiStages[i]);
+        }
       },
 
       getHeightForWidth: function (width) {
         var aspectRatio = viewport.width / viewport.height;
-        width = width - padding.left  - padding.right;
-        return width / aspectRatio + padding.top + padding.bottom;
+        return width / aspectRatio;
       },
 
       bindModel: function(newModel, newModelUrl) {
@@ -611,12 +790,12 @@ define(function (require) {
         clickHandler[selector] = handler;
         api.updateClickHandlers();
       },
+
       /**
        * Applies all custom click handlers to objects matching selector
        * Note that this function should be called each time when possibly
        * clickable object is added or repainted!
        */
-
       updateClickHandlers: function () {
         var selector;
 
@@ -624,7 +803,7 @@ define(function (require) {
           return function (d, i) {
             if (d3.event.defaultPrevented) return;
             // Get current coordinates relative to the plot area!
-            var coords = d3.mouse(plot.node()),
+            var coords = d3.mouse(backgroundRect.node()),
                 x = model2px.invert(coords[0]),
                 y = model2pxInv.invert(coords[1]);
             console.log("[view] click at (" + x.toFixed(3) + ", " + y.toFixed(3) + ")");
@@ -636,7 +815,7 @@ define(function (require) {
           if (clickHandler.hasOwnProperty(selector)) {
             // Use 'custom' namespace to don't overwrite other click handlers which
             // can be added by default.
-            vis.selectAll(selector).on("click.custom", getClickHandler(clickHandler[selector]));
+            d3.selectAll(selector).on("click.custom", getClickHandler(clickHandler[selector]));
           }
         }
       },
@@ -669,7 +848,17 @@ define(function (require) {
         selectBrush = d3.svg.brush()
           .x(model2px)
           .y(model2pxInv)
+          .on("brushstart.select", function() {
+            // Prevent default on mousemove. It's necessary when we deal with synthetic mouse
+            // events translated from touch events. Then we have to prevent default action (panning,
+            // zooming etc.).
+            d3.select(window).on("mousemove.select", function () {
+              d3.event.preventDefault();
+            });
+          })
           .on("brushend.select", function() {
+            d3.select(window).on("mousemove.select", null);
+
             var r = selectBrush.extent(),
                 x      = r[0][0],
                 y      = r[0][1],
@@ -732,7 +921,10 @@ define(function (require) {
     // DOM element.
     node = $el[0];
 
-    init();
+    // REF TODO ugly
+    if (model) {
+      init();
+    }
     renderer = new Renderer(api, model);
 
     return api;

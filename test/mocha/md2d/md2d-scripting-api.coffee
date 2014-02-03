@@ -10,7 +10,7 @@ helpers.withIsolatedRequireJSAndViewsMocked (requirejs) ->
   interactive =
     "title": "Test Interactive"
     "models": [
-      "type": "generic-model"
+      "type": "md2d"
       "id": "model1"
       "url": "model1"
     ]
@@ -59,3 +59,63 @@ helpers.withIsolatedRequireJSAndViewsMocked (requirejs) ->
         script.atomsWithinTriangle(0, 0, 5, 10, 10, 0, 1).should.eql []
         script.atomsWithinTriangle(0, 0, 5, 10, 10, 0, 2).should.eql []
         script.atomsWithinTriangle(0, 0, 5, 10, 10, 0, 3).should.eql []
+
+    describe "addKEToAtoms", ->
+      before ->
+        loadModel({width: 10, height: 10})
+
+      err = 1e-4
+
+      it "should add given amout of KE to group of atoms", ->
+        should.exist script.addKEToAtoms
+        script.addAtom x: 1, y: 1, element: 0
+        script.addAtom x: 2, y: 2, element: 0
+        script.addAtom x: 3, y: 3, element: 0
+
+        script.get("totalEnergy").should.be.approximately 0, err
+        script.get("kineticEnergy").should.be.approximately 0, err
+        script.get("potentialEnergy").should.be.approximately 0, err
+
+        script.addKEToAtoms 2
+
+        script.get("totalEnergy").should.be.approximately 2, err
+        script.get("kineticEnergy").should.be.approximately 2, err
+        script.get("potentialEnergy").should.be.approximately 0, err
+
+
+        script.addKEToAtoms 2, [0, 1, 2]
+
+        script.get("totalEnergy").should.be.approximately 4, err
+        script.get("kineticEnergy").should.be.approximately 4, err
+        script.get("potentialEnergy").should.be.approximately 0, err
+
+        a0 = script.getAtomProperties 0
+        a1 = script.getAtomProperties 1
+        a2 = script.getAtomProperties 2
+
+        script.addKEToAtoms 2, [1]
+
+        script.get("totalEnergy").should.be.approximately 6, err
+        script.get("kineticEnergy").should.be.approximately 6, err
+        script.get("potentialEnergy").should.be.approximately 0, err
+
+        newA0 = script.getAtomProperties 0
+        newA1 = script.getAtomProperties 1
+        newA2 = script.getAtomProperties 2
+
+        newA0.should.eql a0
+        newA2.should.eql a2
+        newA1.vx.should.be.above a1.vx
+        newA1.vy.should.be.above a1.vy
+
+        script.addKEToAtoms -10
+
+        # Energy *should not* change as it's impossible to remove 10eV when KE is only 6eV.
+        script.get("totalEnergy").should.be.approximately 6, err
+        script.get("kineticEnergy").should.be.approximately 6, err
+        script.get("potentialEnergy").should.be.approximately 0, err
+
+
+
+
+

@@ -715,6 +715,22 @@ define(function() {
         };
 
         /**
+          The 'isPropertyWritable' method mixed into 'target' returns information whether
+          the property named 'key' is writable.
+         */
+        target.hasProperty = function(key) {
+          return propertyInformation[key] != null;
+        };
+
+        /**
+          The 'isPropertyWritable' method mixed into 'target' returns information whether
+          the property named 'key' is writable.
+         */
+        target.isPropertyWritable = function(key) {
+          return propertyInformation[key].descriptor.writable;
+        };
+
+        /**
           The 'getPropertyDescription' method mixed into 'target' simply returns the object passed
           in as the 'description' property of the descriptor passed to `defineProperty` when the
           property named 'key' was defined.

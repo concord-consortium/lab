@@ -2,6 +2,9 @@
   "title": "Seeing Specific Heat and Latent Heat",
   "publicationStatus": "public",
   "subtitle": "Seeing Specific Heat and Latent Heat in a Melting Experiment",
+  "category": "Chemistry",
+  "subCategory": "States of mater",
+  "screenshot": "http://screenshots.lab.concord.org/latentheat2.png",
   "aspectRatio": 2.1,
   "fontScale": 0.8,
   "about": [
@@ -36,37 +39,21 @@
       "id": "latentheat2$0",
       "url": "imports/legacy-mw-content/converted/student/stateofmatter/latentheat2$0.json",
       "viewOptions": {
-        "controlButtons": "play_reset_step"
+        "showClock": false,
+        "controlButtons": ""
       },
       "modelOptions": {
         "timeStep": 2.5
       },
       "onLoad": [
         "setComponentDisabled('start-heating', false);",
-        "callEvery(200, function() {",
+        "callEvery(300, function() {",
         "  if (get('experimentRunning')) {",
-        "    var numAtoms, i, props, newVx, newVy, ratio, vXConstant, vYConstant;",
-        "    batch(function(){",
-        "      numAtoms = getNumberOfAtoms()",
-        "      for(i=0; i<numAtoms; i++){",
-        "        // The idea here is to add the same amount of KE to every atom, and to keep",
-        "        // the direction of the velocity the same",
-        "        props = getAtomProperties(i);",
-        "        ratio = props.vx*props.vx/(props.vy*props.vy);",
-        "        vXConstant = 0.000000002*ratio/(1+ratio);",
-        "        vYConstant = 0.000000002 - vXConstant;",
-        "        if(props.vx >= 0) newVx =  Math.sqrt(vXConstant+props.vx*props.vx);",
-        "        if(props.vx < 0) newVx = - Math.sqrt(vXConstant+props.vx*props.vx);",
-        "        if(props.vy >= 0) newVy =  Math.sqrt(vYConstant+props.vy*props.vy);",
-        "        if(props.vy < 0) newVy = - Math.sqrt(vYConstant+props.vy*props.vy);",
-        "        setAtomProperties(i, {vx:newVx, vy:newVy});",
-        "      }",
-        "    });",
-        "    var runningTime = get('time') - get('timeExperimentStarted');",
-        "    set('experimentTime', runningTime);",
-        "    if (runningTime > 150000) stop();",
+        "    var energy_to_add = 0.35;",
+        "    addKEToAtoms(energy_to_add);",
+        "    if (get('temperatureFiltered') > 2900) stop();",
         "  }",
-        "});"
+         "});"
       ]
     }
   ],
@@ -82,19 +69,8 @@
    ],
   "parameters": [
     {
-      "name": "timeExperimentStarted",
-      "initialValue": 0,
-      "onChange": ""
-    },
-    {
       "name": "experimentRunning",
       "initialValue": false,
-      "onChange": ""
-    },
-    {
-      "name": "experimentTime",
-      "label": "Experiment time",
-      "initialValue": 0,
       "onChange": ""
     }
   ],
@@ -127,27 +103,17 @@
       "text": "Start adding heat",
       "action": [
         "if (isStopped()) {",
-        "  setComponentDisabled('start-heating', true);",
         "  start();",
         "}",
-        "set('timeExperimentStarted', get('time'));",
+        "setComponentDisabled('start-heating', true);",
         "set('experimentRunning', true);"
       ]
     },
     {
       "type": "button",
-      "id": "reset-experiment",
-      "text": "Reset experiment",
-      "action": [
-        "reload();",
-        "set('experimentRunning', false);"
-      ]
-    },
-    {
-      "type": "numericOutput",
-      "id": "experiment-time",
-      "property": "experimentTime",
-      "displayValue": "return format('.1f')(value/1000)"
+      "id": "reset",
+      "text": "Reset",
+      "action": "reloadModel();"
     },
     {
       "type": "graph",
@@ -156,9 +122,9 @@
       "xlabel": "Total energy",
       "ylabel": "Temperature (K)",
       "ymin": 0,
-      "ymax": 2500,
+      "ymax": 3000,
       "xmin": -160,
-      "xmax": 40,
+      "xmax": 50,
       "lines": false,
       "lineWidth": 2,
       "yTickCount": 5,
@@ -179,7 +145,7 @@
       "temperature-energy-graph"
     ],
     "bottom": [
-      "start-heating", "reset-experiment", "experiment-time"
+      "start-heating", "reset"
     ]
   },
   "template": [

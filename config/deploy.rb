@@ -104,9 +104,4 @@ namespace :deploy do
   task :status do
     run "cd /var/www/app; git log -1"
   end
-
-  desc "create symbolic link from old urls to root dir"
-  task :create_symbolic_links do
-    run "cd /var/www/app; make symbolic-links"
-  end
 end

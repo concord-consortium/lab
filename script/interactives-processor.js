@@ -13,7 +13,7 @@
     > processor = require('./script/interactives-processor.js')
     > processor.processInteractives()
 **/
-require('coffee-script');
+require('coffee-script/register');
 
 var mkdirp = require('mkdirp'),
     fs = require('fs'),

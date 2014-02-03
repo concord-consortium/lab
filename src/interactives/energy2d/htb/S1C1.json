@@ -52,11 +52,11 @@
       "options": [
         {
           "text": "The left side has lower specific heat.",
-          "loadModel": "S1C1"
+          "action": "loadModel('S1C1');"
         },
         {
           "text": "The right side has lower specific heat.",
-          "loadModel": "S1C2"
+          "action": "loadModel('S1C2');"
         }
       ]
     },

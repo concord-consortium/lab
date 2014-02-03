@@ -7,15 +7,19 @@
 
 define(function (require) {
 
-  var labConfig    = require('lab.config'),
-      layoutConfig = require('common/layout/semantic-layout-config'),
+  var layoutConfig = require('common/layout/semantic-layout-config'),
       arrays       = require('arrays'),
       console      = require('common/console'),
       alert        = require('common/alert');
 
-  return function SemanticLayout($interactiveContainer) {
+  return function SemanticLayout() {
         // Public API.
     var layout,
+
+        // Manin container of the interactive. Font scaling will be applied to it.
+        $mainContainer,
+        // Parent of all containers, it should equal to $mainContainer or one of its children.
+        $containersParent,
 
         // Array of containers specifications.
         containerSpecList,
@@ -87,8 +91,8 @@ define(function (require) {
           canonicalHeight = canonicalWidth / aspectRatio,
           containerScale, font;
 
-      containerScale = Math.min($interactiveContainer.width() / canonicalWidth,
-                                $interactiveContainer.height() / canonicalHeight);
+      containerScale = Math.min($mainContainer.width() / canonicalWidth,
+                                $mainContainer.height() / canonicalHeight);
 
       padding = containerScale * 10;
 
@@ -99,29 +103,13 @@ define(function (require) {
         font = layoutConfig.minFontSize;
       }
 
-      // Set font-size of #responsive-content element. So, if application author
-      // wants to avoid rescaling of font-size for some elements, they should not
-      // be included in #responsive-content DIV.
-      // TODO: #responsive-content ID is hardcoded, change it?
-      $("#responsive-content").css("font-size", font + "em");
+      // Set font-size of interactive container.
+      $mainContainer.css("font-size", font + "em");
       fontSizeChanged = true;
-    }
-
-    function setupBackground() {
-      var colors = layoutConfig.containerColors,
-          id, i, len;
-
-      for (i = 0, len = containerSpecList.length; i < len; i++) {
-        id = containerSpecList[i].id;
-        $containerByID[id].css("background", labConfig.authoring ? colors[i % colors.length] : "");
-      }
     }
 
     function createContainers() {
       var container, id, prop, i, ii;
-
-      // Cleanup interactive container.
-      $interactiveContainer.empty();
 
       $containerByID = {};
       containerSpecByID = {};
@@ -130,7 +118,7 @@ define(function (require) {
         container = containerSpecList[i];
         id = container.id;
         containerSpecByID[id] = container;
-        $containerByID[id] = $("<div id='" + id + "'>").appendTo($interactiveContainer);
+        $containerByID[id] = $("<div id='" + id + "'>").appendTo($containersParent);
         $containerByID[id].css({
           "display": "inline-block",
           "position": "absolute"
@@ -440,8 +428,7 @@ define(function (require) {
     // Public API.
     layout = {
       /**
-       * Setups interactive layout. Cleanups interactive container, creates new containers and places
-       * components inside them.
+       * Setups interactive layout. Creates new containers and places components inside them.
        *
        * This method should be called each time when at least one of the following objects is changed:
        *  - layout template,
@@ -450,13 +437,19 @@ define(function (require) {
        *  - model controller,
        *  - font scale.
        *
+       * @param {jQuery} $newMainContainer Top-most container, font scalling will be applied to it.
+       * @param {jQuery} $newContainersParent Element that will be a parent for containers
+       *                 (can be equal to main container or one of its children).
        * @param {array} newContainers List of layout containers.
        * @param {Object} newContainersContent Hash of components locations, e.g. {"bottom": ["button", "textLabel"]}.
        * @param {Object} newComponents Hash of components controllers. Keys are IDs of the components.
        * @param {number} newFontScale Aspect ratio, floating point number, typically around 1.3.
        * @param {number} newFontScale Font scale, floating point number, typically between 0.5 and 1.5.
        */
-      initialize: function(newContainers, newContainersContent, newComponents, newAspectRatio, newFontScale) {
+      initialize: function($newMainContainer, $newContainersParent, newContainers, newContainersContent, newComponents, newAspectRatio, newFontScale) {
+        $mainContainer = $newMainContainer;
+        $containersParent = $newContainersParent;
+
         containerSpecList = newContainers;
         containersContent = newContainersContent;
         componentByID = newComponents;
@@ -468,6 +461,8 @@ define(function (require) {
 
         // After .initialize() call client code has to call .setupModel().
         modelController = null;
+
+        $mainContainer.addClass("lab-responsive-content");
       },
 
       /**
@@ -495,7 +490,7 @@ define(function (require) {
           "position": "absolute",
           "z-index": "0"
         });
-        $modelContainer.appendTo($interactiveContainer);
+        $modelContainer.appendTo($containersParent);
         $containerByID.model = $modelContainer;
       },
 
@@ -519,8 +514,8 @@ define(function (require) {
         console.time('[layout] update');
 
         reset();
-        availableWidth  = $interactiveContainer.width();
-        availableHeight = $interactiveContainer.height();
+        availableWidth  = $mainContainer.width();
+        availableHeight = $mainContainer.height();
         modelWidth = availableWidth; // optimization
 
         // 0. Set font size of the interactive-container based on its size.
@@ -531,7 +526,6 @@ define(function (require) {
         while (--redraws > 0 && !resizeModelContainer()) {
           positionContainers();
         }
-        console.log('[layout] update: ' + (layoutConfig.iterationsLimit - redraws) + ' iterations');
 
         // 2. Notify components that their containers have new sizes.
         modelController.resize();
@@ -540,9 +534,6 @@ define(function (require) {
             componentByID[id].resize();
           }
         }
-
-        // 3. Set / remove colors of containers depending on the value of Lab.config.authoring
-        setupBackground();
 
         console.timeEnd('[layout] update');
 

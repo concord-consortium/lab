@@ -77,7 +77,7 @@
     {
       "type": "graph",
       "id": "propertiesGraph",
-      "title": "temperature vs time",
+      "title": "Temperature vs time",
       "xmin": -10,
       "xmax": 200000,
       "xFormatter": ".2s",
@@ -93,7 +93,7 @@
       "type": "graph",
       "id": "energyGraph",
       "title": "Energy of the System (KE:red, PE:green, TE:blue)",
-      "xlabel": "Model Time (ps)",
+      "xlabel": "Model time (ps)",
       "xmin": -10,
       "xmax": 200000,
       "xFormatter": ".2s",

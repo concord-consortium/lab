@@ -74,4 +74,4 @@ define(function() {
 
 """
 
-fs.writeFileSync '../../lab/md2d/models/aminoacids-props.js', finalContent
+fs.writeFileSync '../../lab/models/md2d/models/aminoacids-props.js', finalContent

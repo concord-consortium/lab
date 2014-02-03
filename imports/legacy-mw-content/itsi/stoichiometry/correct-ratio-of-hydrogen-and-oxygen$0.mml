@@ -292,22 +292,29 @@
   <void property="boundary"> 
    <object class="org.concord.mw2d.models.RectangularBoundary$Delegate"> 
     <void property="height"> 
-     <double>238.0</double> 
+     <double>250.0</double> 
     </void> 
     <void property="viewSize"> 
      <object class="java.awt.Dimension"> 
-      <int>400</int> 
+      <int>860</int> 
       <int>250</int> 
      </object> 
     </void> 
     <void property="width"> 
-     <double>388.0</double> 
+     <double>860.0</double> 
     </void> 
     <void property="x"> 
      <double>6.0</double> 
     </void> 
     <void property="y"> 
      <double>6.0</double> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="heatBath"> 
+   <object class="org.concord.mw2d.models.HeatBath"> 
+    <void property="expectedTemperature"> 
+     <double>1500.0</double> 
     </void> 
    </object> 
   </void> 
@@ -349,6 +356,17 @@
   </void> 
  </object> 
  <object class="org.concord.mw2d.AtomisticView$State"> 
+  <void property="elementColors"> 
+   <void index="1"> 
+    <int>-9066941</int> 
+   </void> 
+   <void index="2"> 
+    <int>-16776961</int> 
+   </void> 
+   <void index="3"> 
+    <int>-2539040</int> 
+   </void> 
+  </void>
   <void property="colorCode"> 
    <string>None</string> 
   </void> 

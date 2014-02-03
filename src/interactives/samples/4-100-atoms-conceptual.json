@@ -16,18 +16,15 @@
       "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/100-atoms$0.json",
       "viewOptions": {
         "controlButtons": "play_reset"
-      },
-      "onLoad": ""
+      }
     }
   ],
-  "components": [
+  "parameters": [
     {
-      "type": "checkbox",
-      "id": "charged-box",
-      "text": "Charge",
-      "property": "chargeShading",
-      "onClick": [
-        "batch(function() {",
+      "name": "charge",
+      "initialValue": false,
+      "onChange": [
+        "batch(function(){",
         "  var count = getNumberOfAtoms();",
         "  var chargeVal;",
         "  if (value) { chargeVal = 1.5 } else { chargeVal = 0; }",
@@ -35,15 +32,28 @@
         "    setAtomProperties(i, {charge: chargeVal}, false, false);",
         "    chargeVal *= -1;",
         "  }",
+        "  set('chargeShading', value);",
         "});"
       ]
+    },
+    {
+      "name": "epsilon",
+      "initialValue": 0.14,
+      "onChange": "setElementProperties(2, { epsilon: -value });"
+    }
+  ],
+  "components": [
+    {
+      "type": "checkbox",
+      "id": "charged-box",
+      "text": "Charge",
+      "property": "charge"
     },
     {
       "type": "slider",
       "id": "epsilon-slider",
       "min": 0.075,
       "max": 0.3,
-      "initialValue": 0.14,
       "displayValue": "",
       "labels": [
         {
@@ -57,14 +67,13 @@
       ],
       "steps": 199,
       "title": "Van der Waals attraction",
-      "action": "setElementProperties(2, { epsilon: -value });"
+      "property": "epsilon"
     },
     {
       "type": "slider",
       "id": "temperature-slider",
       "min": 10,
       "max": 5000,
-      "initialValue": 400,
       "displayValue": "",
       "labels": [
         {
@@ -82,7 +91,7 @@
       ],
       "steps": 499,
       "title": "Temperature",
-      "action": "set({ targetTemperature: value });"
+      "property": "targetTemperature"
     },
     {
       "type": "barGraph",

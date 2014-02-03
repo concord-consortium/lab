@@ -1,0 +1,252 @@
+{
+  "title": "Radioactivity Model + Graph + Graph + Table",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "aspectRatio": 1,
+  "fontScale": 1,
+  "helpOnLoad": false,
+  "about": "",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "syringe$0",
+      "url": "imports/legacy-mw-content/converted/rites/empty.json",
+      "onLoad": [
+        "set('timeStep',1);",
+        "set('timeStepsPerTick',1);",
+        "var count = 0,",
+        "    isotope = [],",
+        "    parents = 1000,",
+        "    parents0 = parents,",
+        "    parents1 = parents,",
+        "    daughters = 0;",
+        "batch(function(){",
+        "  while(count < parents){",
+        "    if( addAtom({pinned: true, x: Math.random()*get('width'), y: Math.random()*get('height'), element: 0}) ) {",
+        "      ++count;",
+        "      isotope.push(0);",
+        "    }",
+        "  }",
+        "  set('numElementsParent', count);",
+        "});",
+        "appendDataPropertiesToComponent('half-life-time-table');",
+        "onPropertyChange('time',function(t){",
+        "  batch(function(){",
+        "    var decaying = true;",
+        "    for(var i = 0; i < isotope.length; i++) {",
+        "      if (isotope[i] === 0 && Math.random() < 0.05) {",
+        "        setAtomProperties(i,{element: 1});",
+        "        isotope[i] = 1;",
+        "        --parents; ++daughters;",
+        "        --parents0;",
+        "        if (parents0 <= 0.5 * parents1) {",
+        "          parents1 = parents0;",
+        "          // TODO this has some odd behavior if the stop comes early in a tick",
+        "          decaying = false;",
+        "          break;",
+        "        }",
+        "      }",
+        "    }",
+        "    set('numElementsParent',parents);",
+        "    set('numElementsChild',daughters);",
+        "    if (!decaying) {",
+        "      stop();",
+        "      set('numHalfLives', get('numHalfLives')+1);",
+        "      appendDataPropertiesToComponent('half-life-time-table');",
+        "    }",
+        "  });",
+        "});"
+      ],
+      "viewOptions": {
+        "controlButtons": ""
+      }
+    }
+  ],
+  "parameters": [
+    {
+      "name": "numElementsParent",
+      "initialValue": 1000,
+      "label": "Parent isotopes"
+    },
+    {
+      "name": "numElementsChild",
+      "initialValue": 0,
+      "label": "Daughter isotopes"
+    },
+    {
+      "name": "numHalfLives",
+      "initialValue": 0,
+      "label": "Half life"
+    }
+  ],
+  "outputs": [],
+  "filteredOutputs": [],
+  "helpTips": [],
+  "hideExportDataControl": false,
+  "components": [
+    {
+      "id": "num-atoms-parent",
+      "type": "numericOutput",
+      "property": "numElementsParent",
+      "label": " ",
+      "units": "",
+      "orientation": "horizontal",
+      "width": "auto",
+      "height": "auto",
+      "tooltip": ""
+    },
+    {
+      "id": "num-atoms-child",
+      "type": "numericOutput",
+      "property": "numElementsChild",
+      "label": " ",
+      "units": "",
+      "orientation": "horizontal",
+      "width": "auto",
+      "height": "auto",
+      "tooltip": ""
+    },
+    {
+      "id": "label-parents",
+      "type": "text",
+      "text": "Parent isotopes",
+      "width": "auto",
+      "height": "auto",
+      "tooltip": ""
+    },
+    {
+      "id": "label-daughters",
+      "type": "text",
+      "text": "Daughter isotopes",
+      "width": "auto",
+      "height": "auto",
+      "tooltip": ""
+    },
+    {
+      "id": "run-model",
+      "type": "button",
+      "action": [
+        "start()"
+      ],
+      "text": "Go",
+      "width": "",
+      "height": "",
+      "disabled": false,
+      "tooltip": ""
+    },
+    {
+      "id": "reset-model",
+      "type": "button",
+      "action": "reloadModel()",
+      "text": "Reset",
+      "width": "",
+      "height": "",
+      "disabled": false,
+      "tooltip": ""
+    },
+    {
+      "id": "half-life-time-table",
+      "type": "table",
+      "title": null,
+      "clearOnModelReset": true,
+      "streamDataFromModel": false,
+      "addNewRows": true,
+      "visibleRows": 4,
+      "indexColumn": false,
+      "propertyColumns": [
+        "numHalfLives",
+        "numElementsParent",
+        "numElementsChild",
+        {
+          "name": "Total Isotopes",
+          "format": "r"
+        },
+        {
+          "name": "Parents",
+          "units": "%",
+          "format": ".2r"
+        },
+        {
+          "name": "Daughters",
+          "units": "%",
+          "format": ".2r"
+        }
+      ],
+      "width": "100%",
+      "height": "12em",
+      "tooltip": ""
+    },
+    {
+      "id": "authored-half-life-time-table",
+      "type": "table",
+      "title": null,
+      "clearOnModelReset": false,
+      "streamDataFromModel": false,
+      "addNewRows": true,
+      "visibleRows": 4,
+      "indexColumn": false,
+      "propertyColumns": [
+        {
+          "name": "Run #",
+          "format": "r",
+          "editable": false
+        },
+        {
+          "name": "% of non-decayed isotopes that decayed",
+          "format": "r"
+        }
+      ],
+      "tableData": {
+        "Run #": [1, 2, 3],
+        "% of non-decayed isotopes that decayed": []
+      },
+      "width": "60%",
+      "height": "7em",
+      "tooltip": ""
+    }
+  ],
+  "layout": {
+    "right": [
+      [
+        "run-model"
+      ],
+      [
+        "reset-model"
+      ],
+      [
+        "label-parents"
+      ],
+      [
+        "num-atoms-parent"
+      ],
+      [
+        "label-daughters"
+      ],
+      [
+        "num-atoms-child"
+      ]
+    ],
+    "bottom": [
+      [
+        "half-life-time-table",
+        "authored-half-life-time-table"
+      ]
+    ]
+  },
+  "template": [
+    {
+      "id": "right",
+      "left": "model.right",
+      "top": "model.top"
+    },
+    {
+      "id": "bottom",
+      "left": "model.left",
+      "top": "model.bottom",
+      "width": "interactive.width",
+      "padding-right": "1em",
+      "padding-bottom": "1em",
+      "padding-top": "0.5em"
+    }
+  ]
+}
