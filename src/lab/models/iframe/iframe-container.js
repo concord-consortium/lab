@@ -1,6 +1,6 @@
 /*global $, define: false */
 define(function(require) {
-  var IFramePhone = require('iframe-phone/iframe-phone');
+  var iframePhone = require('iframe-phone');
 
   return function IFrameContainer(model, modelUrl) {
     var _model = model,
@@ -13,7 +13,7 @@ define(function(require) {
                  "style='width:100%;height:100%' src='" + model.get('url') + "'>" +
           "</iframe>");
         // TODO try cleaning up any old iframephone for the old model
-        model.iframePhone = new IFramePhone($el.find('#iframe-model')[0]);
+        model.iframePhone = new iframePhone.ParentEndpoint($el.find('#iframe-model')[0]);
     }
 
     addIFrame(model);

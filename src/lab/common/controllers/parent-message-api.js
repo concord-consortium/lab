@@ -1,25 +1,26 @@
 /*global define:false*/
 
 define(function(require) {
-  var parentMessageController = require('common/parent-message-controller'),
-      benchmark               = require('common/benchmark/benchmark'),
-      config                  = require('lab.config');
+  var benchmark   = require('common/benchmark/benchmark');
+  var config      = require('lab.config');
+  var iframePhone = require('iframe-phone');
 
   // Defines the default postMessage API used to communicate with parent window (i.e., an embedder)
   return function(controller) {
-    var model;
+    // iframeEndpoint is a singleton (iframe can't have multiple parents).
+    var iframeEndpoint = iframePhone.getIFrameEndpoint();
 
-    parentMessageController.removeAllListeners();
+    iframeEndpoint.removeAllListeners();
 
     function sendPropertyValue(propertyName) {
-      parentMessageController.post('propertyValue', {
+      iframeEndpoint.post('propertyValue', {
         name: propertyName,
         value: model.get(propertyName)
       });
     }
 
     // on message 'setFocus' call view.setFocus
-    parentMessageController.addListener('setFocus', function() {
+    iframeEndpoint.addListener('setFocus', function() {
       var view = controller.modelController.modelContainer;
       if (view && view.setFocus) {
         view.setFocus();
@@ -27,47 +28,47 @@ define(function(require) {
     });
 
     // on message 'getLearnerUrl' return config.getVersionedUrl(loadLearnerData)
-    parentMessageController.addListener('getLearnerUrl', function() {
-      parentMessageController.post('setLearnerUrl', config.getVersionedUrl(true));
+    iframeEndpoint.addListener('getLearnerUrl', function() {
+      iframeEndpoint.post('setLearnerUrl', config.getVersionedUrl(true));
     });
 
     // on message 'loadInteractive' call controller.loadInteractive
-    parentMessageController.addListener('loadInteractive', function(content) {
+    iframeEndpoint.addListener('loadInteractive', function(content) {
       if (controller && controller.loadInteractive) {
         controller.loadInteractive(content);
       }
     });
 
     // on message 'loadModel' call controller.loadModel
-    parentMessageController.addListener('loadModel', function(content) {
+    iframeEndpoint.addListener('loadModel', function(content) {
       if (controller && controller.loadModel) {
         controller.loadModel(content.modelId, content.modelObject);
       }
     });
 
     // on message 'getModelState' call and return controller.modelController.state()
-    parentMessageController.addListener('getModelState', function() {
+    iframeEndpoint.addListener('getModelState', function() {
       if (controller && controller.modelController) {
-        parentMessageController.post('modelState', controller.modelController.state());
+        iframeEndpoint.post('modelState', controller.modelController.state());
       }
     });
 
     // on message 'getInteractiveState' call and return controller.serialize() result
-    parentMessageController.addListener('getInteractiveState', function() {
+    iframeEndpoint.addListener('getInteractiveState', function() {
       if (controller && controller.modelController) {
-        parentMessageController.post('interactiveState', controller.serialize());
+        iframeEndpoint.post('interactiveState', controller.serialize());
       }
     });
 
     // on message 'runBenchmarks' call controller.runBenchmarks
-    parentMessageController.addListener('runBenchmarks', function() {
+    iframeEndpoint.addListener('runBenchmarks', function() {
       var modelController, benchmarks;
       if (controller && controller.modelController) {
         modelController = controller.modelController;
         benchmarks = controller.benchmarks.concat(modelController.benchmarks);
         benchmark.bench(benchmarks, function(results) {
           console.log(results);
-          parentMessageController.post('returnBenchmarks', {
+          iframeEndpoint.post('returnBenchmarks', {
             results: results,
             benchmarks: benchmarks
           });
@@ -79,7 +80,7 @@ define(function(require) {
     // uses D3 disaptch on model to trigger events
     // pass in message.properties ([names]) to also send model properties
     // in content object when triggering in parent Frame
-    parentMessageController.addListener('listenForDispatchEvent', function(content) {
+    iframeEndpoint.addListener('listenForDispatchEvent', function(content) {
       var eventName    = content.eventName,
           properties   = content.properties,
           values       = {},
@@ -93,23 +94,23 @@ define(function(require) {
             values[propertyName] = model.get(propertyName);
           }
         }
-        parentMessageController.post(eventName, values);
+        iframeEndpoint.post(eventName, values);
       });
     });
 
     // Remove an existing Listener for events in the model
-    parentMessageController.addListener('removeListenerForDispatchEvent', function(content) {
+    iframeEndpoint.addListener('removeListenerForDispatchEvent', function(content) {
       model.on(content, null);
     });
 
     // on message 'get' propertyName: return a 'propertyValue' message
-    parentMessageController.addListener('get', function(content) {
+    iframeEndpoint.addListener('get', function(content) {
       sendPropertyValue(content);
     });
 
     // on message 'observe' propertyName: send 'propertyValue' once, and then every time
     // the property changes.
-    parentMessageController.addListener('observe', function(content) {
+    iframeEndpoint.addListener('observe', function(content) {
       model.addPropertiesListener(content, function() {
         sendPropertyValue(content);
       });
@@ -118,26 +119,26 @@ define(function(require) {
     });
 
     // on message 'set' propertyName: set the relevant property
-    parentMessageController.addListener('set', function(content) {
+    iframeEndpoint.addListener('set', function(content) {
       model.set(content.name, content.value);
     });
 
-    parentMessageController.addListener('tick', function(content) {
+    iframeEndpoint.addListener('tick', function(content) {
       model.tick(Number(content));
     });
 
-    parentMessageController.addListener('play', function() {
+    iframeEndpoint.addListener('play', function() {
       model.start();
     });
 
-    parentMessageController.addListener('stop', function() {
+    iframeEndpoint.addListener('stop', function() {
       model.stop();
     });
 
-    parentMessageController.initialize();
+    iframeEndpoint.initialize();
 
     controller.on('modelLoaded.parentMessageAPI', function() {
-      parentMessageController.post('modelLoaded');
+      iframeEndpoint.post('modelLoaded');
     });
 
     return {
