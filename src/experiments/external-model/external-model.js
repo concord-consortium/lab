@@ -27,13 +27,9 @@ function stop() {
   iframeEndpoint.post({type:'stop.iframe-model'});
 }
 
-iframeEndpoint.initialize();
 iframeEndpoint.addListener('play', start);
 iframeEndpoint.addListener('stop', stop);
-// we are also going to get a listenForDispatchEvent message to add a listener for:
-//   'play.iframe-model', 'stop.iframe-model'
-// for now we aren't handling addDispatchListener,
-// we just send off hard coded the notification of the events.
+iframeEndpoint.initialize();
 
 $("#start").click(start);
 $("#stop").click(stop);
