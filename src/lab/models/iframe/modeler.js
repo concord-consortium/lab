@@ -103,12 +103,12 @@ define(function(require) {
 
   IFrameModel.prototype._addListeners = function () {
     var context = this;
-    this._phone.addDispatchListener('play.iframe-model', function () {
+    this._phone.addListener('play.iframe-model', function () {
       context._stopped = false;
       // notify that we are playing
       context._dispatch.play();
     });
-    this._phone.addDispatchListener('stop.iframe-model', function () {
+    this._phone.addListener('stop.iframe-model', function () {
       context._stopped = true;
       // notify that we are stopped
       context._dispatch.stop();
