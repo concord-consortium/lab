@@ -1,0 +1,21 @@
+{
+  "title": "JSmol model",
+  "publicationStatus": "public",
+  "subtitle": "This is an external JSmol model included using Lab iframe model type",
+  "about": "",
+  "models": [
+    {
+      "type": "iframe-model",
+      "id": "iframe-model",
+      "model": {
+        "url": "http://concord-consortium.github.io/jsmol-models/embeddable.html",
+        "width": 640,
+        "height": 420
+      },
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "showClock": false
+      }
+    }
+  ]
+}
