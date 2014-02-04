@@ -90,6 +90,7 @@ end
 LAB_JS_ADDITIONAL_DEPENDENCIES = case CONFIG[:environment]
 when 'production'
   <<-HEREDOC
+<script src='vendor/iframe-phone/iframe-phone.js' type='text/javascript'></script>
 <script src='vendor/codemirror/lib/codemirror.js' type='text/javascript'></script>
 <script src='vendor/codemirror/mode/javascript/javascript.js' type='text/javascript'></script>
 <script src='vendor/codemirror/addon/fold/foldcode.js' type='text/javascript'></script>
@@ -101,6 +102,7 @@ when 'production'
   HEREDOC
 else
   <<-HEREDOC
+<script src='vendor/iframe-phone/iframe-phone.js' type='text/javascript'></script>
 <script src='vendor/codemirror/lib/codemirror.js' type='text/javascript'></script>
 <script src='vendor/codemirror/mode/javascript/javascript.js' type='text/javascript'></script>
 <script src='vendor/codemirror/addon/fold/foldcode.js' type='text/javascript'></script>

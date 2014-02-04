@@ -1,4 +1,4 @@
-/*global Lab, _, $, jQuery, d3, Shutterbug, CodeMirror, controllers, alert, modelList, benchmark, _gaq, DEVELOPMENT: true, AUTHORING: true */
+/*global Lab, iframePhone, _, $, jQuery, d3, Shutterbug, CodeMirror, controllers, alert, modelList, benchmark, _gaq, DEVELOPMENT: true, AUTHORING: true */
 /*jshint boss:true */
 
 (function() {
@@ -12,7 +12,7 @@
       descriptionByPath,
       interactives,
       groups,
-      iframePhone,
+      parentPhone,
       shutterbug,
 
       $content = $("#content"),
@@ -208,7 +208,7 @@
           interactive.fontScale = fontScale;
           interactive.aspectRatio = aspectRatio;
           descriptionByPath[interactiveUrl].aspectRatio = aspectRatio;
-          iframePhone.post('loadInteractive', interactive);
+          parentPhone.post('loadInteractive', interactive);
           // Update editor.
           editor.setValue(JSON.stringify(interactive, null, indent));
           console.log("new aspect ratio: " + aspectRatio);
@@ -217,29 +217,29 @@
     });
     $content.css("border", "none");
     // initiate communication with Interactive in iframe and setup callback
-    iframePhone = new Lab.IFramePhone($iframe[0], null, function() {
+    parentPhone = new iframePhone.ParentEndpoint($iframe[0], null, function() {
       // On a Interactive Browser page with an iframe send the
       // focus to the Interactive.
       if (isFullIFramePage()) {
-        iframePhone.post('setFocus');
+        parentPhone.post('setFocus');
       }
-      iframePhone.post('getInteractiveState');
-      iframePhone.addListener('interactiveState', function(content) {
+      parentPhone.post('getInteractiveState');
+      parentPhone.addListener('interactiveState', function(content) {
         interactive = content;
         setupFullPage();
       });
       // example of how to get the a versioned learner url --
       // where the URL is decorated with query params, and possibly
       // the url points to versioned release of the framework.
-      iframePhone.post('getLearnerUrl');
-      iframePhone.addListener('setLearnerUrl', function(content) {
+      parentPhone.post('getLearnerUrl');
+      parentPhone.addListener('setLearnerUrl', function(content) {
         $("#learner_url").attr('href',content);
       });
     });
 
     // add basic redirect listener, this might be called before the iframe-phone even
     // receives a 'hello' message
-    iframePhone.addListener('redirect', redirectHandler);
+    parentPhone.addListener('redirect', redirectHandler);
   }
 
   function setupFullPage() {
@@ -752,7 +752,7 @@
         if(isFullPage()) {
           controller.loadInteractive(interactive, '#interactive-container');
         } else {
-          iframePhone.post('loadInteractive', interactive);
+          parentPhone.post('loadInteractive', interactive);
           $interactiveTitle.text(interactive.title);
           $('#interactive-subtitle').text(interactive.subtitle);
         }
@@ -769,8 +769,8 @@
           interactiveState = controller.serialize();
           editor.setValue(JSON.stringify(interactiveState, null, indent));
         } else {
-          iframePhone.post('getInteractiveState');
-          iframePhone.addListener('interactiveState', function(content) {
+          parentPhone.post('getInteractiveState');
+          parentPhone.addListener('interactiveState', function(content) {
             editor.setValue(JSON.stringify(content, null, indent));
           });
         }
@@ -788,7 +788,7 @@
         if (editMode && isFullIFramePage()) {
           interactive.aspectRatio = aspectRatio;
           descriptionByPath[interactiveUrl].aspectRatio = aspectRatio;
-          iframePhone.post('loadInteractive', interactive);
+          parentPhone.post('loadInteractive', interactive);
           // Update editor.
           editor.setValue(JSON.stringify(interactive, null, indent));
           console.log("new aspect ratio: " + aspectRatio);
@@ -824,8 +824,8 @@
         modelState = controller.modelController.state();
         modelEditor.setValue(JSON.stringify(modelState, null, indent));
       } else {
-        iframePhone.post('getModelState');
-        iframePhone.addListener('modelState', function(content) {
+        parentPhone.post('getModelState');
+        parentPhone.addListener('modelState', function(content) {
           modelEditor.setValue(JSON.stringify(content, null, indent));
         });
       }
@@ -856,7 +856,7 @@
         if(isFullPage()) {
           controller.loadModel(interactive.models[0].id, modelJson);
         } else {
-          iframePhone.post('loadModel', { modelId: interactive.models[0].id, modelObject: modelJson });
+          parentPhone.post('loadModel', { modelId: interactive.models[0].id, modelObject: modelJson });
         }
       });
 
@@ -964,8 +964,8 @@
           function() { $runBenchmarksButton.attr('disabled', true); },
           function() { $runBenchmarksButton.attr('disabled', false); });
       } else {
-        iframePhone.post('runBenchmarks');
-        iframePhone.addListener('returnBenchmarks', function(content) {
+        parentPhone.post('runBenchmarks');
+        parentPhone.addListener('returnBenchmarks', function(content) {
           Lab.benchmark.renderToTable(benchmarksTable, content.benchmarks, content.results);
         });
       }
@@ -1057,8 +1057,8 @@
       var privateName = name + '.modelEnergyGraph';
       if (_model) {
         _model.on(privateName, func); // for now
-      } else if (iframePhone) {
-        iframePhone.addDispatchListener(privateName, func, props);
+      } else if (parentPhone) {
+        parentPhone.addDispatchListener(privateName, func, props);
       }
     }
 
@@ -1066,8 +1066,8 @@
       var privateName = name + '.modelEnergyGraph';
       if (_model) {
         _model.on(privateName, null); // for now
-      } else if (iframePhone) {
-        iframePhone.removeDispatchListener(privateName);
+      } else if (parentPhone) {
+        parentPhone.removeDispatchListener(privateName);
       }
     }
 
@@ -1228,8 +1228,8 @@
         callback();
       }
       setupShowHideLHandler();
-    } else if (iframePhone) {
-      iframePhone.addListener('propertyValue', function(content) {
+    } else if (parentPhone) {
+      parentPhone.addListener('propertyValue', function(content) {
         if (content.name === 'displayTimePerTick') {
           energyGraphSamplePeriod = content.value;
           renderModelEnergyGraph();
@@ -1239,7 +1239,7 @@
           setupShowHideLHandler();
         }
       });
-      iframePhone.post('get', 'displayTimePerTick');
+      parentPhone.post('get', 'displayTimePerTick');
     } else {
       renderModelEnergyGraph();
       if (callback && typeof callback === "function") {
