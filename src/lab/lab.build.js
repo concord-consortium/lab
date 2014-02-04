@@ -68,6 +68,7 @@
   // Additional modules.
   paths: {
     'lab-grapher': '../../vendor/lab-grapher/dist/lab-grapher',
+    'iframe-phone': '../../vendor/iframe-phone/dist/iframe-phone',
     'text': '../../vendor/text/text',
     'cs' :'../../vendor/require-cs/cs',
     'coffee-script': '../../vendor/coffee-script/extras/coffee-script',

@@ -95,3 +95,6 @@
 [submodule "vendor/sensor-labquest-2-interface"]
 	path = vendor/sensor-labquest-2-interface
 	url = https://github.com/concord-consortium/sensor-labquest-2-interface.git
+[submodule "vendor/iframe-phone"]
+	path = vendor/iframe-phone
+	url = https://github.com/concord-consortium/iframe-phone.git
