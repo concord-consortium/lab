@@ -126,6 +126,31 @@ define(function (require) {
       clonedEvent.initMouseEvent(e.type, e.bubbles, e.cancelable, e.view, e.detail, e.screenX, e.screenY, e.clientX, e.clientY, e.ctrlKey, e.altKey, e.shiftKey, e.metaKey, e.button, e.relatedTarget);
       clonedEvent.target = target;
       clonedEvent.forwardedTouchEvent = e.forwardedTouchEvent;
+      // IE 9+ creates events with pageX and pageY set to 0.
+      // Trying to modify the properties throws an error,
+      // so we define getters to return the correct values.
+      // Solution based on the approach used in: https://github.com/jquery/jquery-simulate
+      if (clonedEvent.pageX === 0 && clonedEvent.pageY === 0 && Object.defineProperty) {
+        var doc = document.documentElement;
+        var body = document.body;
+        var clientX = e.clientX;
+        var clientY = e.clientY;
+
+        Object.defineProperty(clonedEvent, "pageX", {
+          get: function() {
+            return clientX +
+              (doc && doc.scrollLeft || body && body.scrollLeft || 0) -
+              (doc && doc.clientLeft || body && body.clientLeft || 0);
+          }
+        });
+        Object.defineProperty(clonedEvent, "pageY", {
+          get: function() {
+            return clientY +
+              (doc && doc.scrollTop || body && body.scrollTop || 0) -
+              (doc && doc.clientTop || body && body.clientTop || 0);
+          }
+        });
+      }
       return clonedEvent;
     }
 
