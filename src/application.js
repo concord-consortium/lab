@@ -1059,7 +1059,11 @@
       if (_model) {
         _model.on(privateName, func); // for now
       } else if (parentPhone) {
-        parentPhone.addDispatchListener(privateName, func, props);
+        parentPhone.addListener(privateName, func);
+        parentPhone.post('listenForDispatchEvent', {
+          eventName: privateName,
+          properties: props
+        });
       }
     }
 
@@ -1068,7 +1072,8 @@
       if (_model) {
         _model.on(privateName, null); // for now
       } else if (parentPhone) {
-        parentPhone.removeDispatchListener(privateName);
+        parentPhone.post('removeListenerForDispatchEvent', privateName);
+        parentPhone.removeListener(privateName);
       }
     }
 
