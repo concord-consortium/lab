@@ -20,7 +20,7 @@ $(function () {
 
   var $info = $("#info");
   var $iframe = $("#iframe-interactive");
-  var iframePhone;
+  var phone;
   var fingerprint = new Fingerprint().get();
 
   var resultsKeys = (function () {
@@ -34,7 +34,7 @@ $(function () {
   function start() {
     readHost();
     // Download interactives.json (interactives list + short description) and connect
-    // to the iframe using Lab.IFramePhone.
+    // to the iframe using iframe phone.
     $.get(interactivesJSONRoot + "interactives.json").done(function(results) {
       if (typeof results === 'string') {
         results = JSON.parse(results);
@@ -168,7 +168,7 @@ $(function () {
     console.log("Model loaded");
     if (benchamrkEnabled) {
       console.log("Starting benchmark");
-      iframePhone.post({ type: "runBenchmarks" });
+      phone.post({ type: "runBenchmarks" });
     }
   }
 
@@ -210,7 +210,7 @@ $(function () {
   // 1. Setup start / stop buttons.
   $("#start").on("click", start);
   $("#stop").on("click", stop).prop("disabled", true);
-  // 2. Setup IFramePhone. Note that we have to do it just once.
-  iframePhone = new Lab.IFramePhone($iframe[0], null, modelLoaded);
-  iframePhone.addListener("returnBenchmarks", benchmarkResultsReceived);
+  // 2. Setup phone. Note that we have to do it just once.
+  phone = new iframePhone.ParentEndpoint($iframe[0], null, modelLoaded);
+  phone.addListener("returnBenchmarks", benchmarkResultsReceived);
 });
