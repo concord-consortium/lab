@@ -207,26 +207,8 @@ define(function(require) {
         viewportY = model.get("viewPortY") || 0;
       }
 
-      var pageX = e.pageX,
-          pageY = e.pageY;
-
-      // IE9 doesn't set pageX and pageY for simulated events. Both values will be equal to 0. Even
-      // if user really clicks (0, 0) point, this won't break anything. We will just do some
-      // unnecessary work. It isn't very likely and too expensive anyway.
-      if (!pageX && !pageY) {
-        // This workaround is borrowed from jQuery source (jQuery.Event class):
-        var eventDoc = e.target.ownerDocument || document,
-            doc = eventDoc.documentElement,
-            body = eventDoc.body;
-
-        pageX = e.clientX + (doc && doc.scrollLeft || body && body.scrollLeft || 0) -
-                            (doc && doc.clientLeft || body && body.clientLeft || 0);
-        pageY = e.clientY + (doc && doc.scrollTop  || body && body.scrollTop  || 0) -
-                            (doc && doc.clientTop  || body && body.clientTop  || 0);
-      }
-
-      POINT_CACHE.x = m2px.invert((pageX - targetOffset.left) * targetOversampling) + viewportX;
-      POINT_CACHE.y = m2pxInv.invert((pageY - targetOffset.top) * targetOversampling) + viewportY;
+      POINT_CACHE.x = m2px.invert((e.pageX - targetOffset.left) * targetOversampling) + viewportX;
+      POINT_CACHE.y = m2pxInv.invert((e.pageY - targetOffset.top) * targetOversampling) + viewportY;
       return POINT_CACHE;
     }
 
