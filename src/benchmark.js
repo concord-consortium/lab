@@ -1,4 +1,4 @@
-/*global Lab, Fingerprint, alert*/
+/*global Lab, iframePhone, Fingerprint, alert*/
 
 /**
  * IMPORTANT: to test a specific Lab version, you have to ensure that interactives.json file
@@ -211,6 +211,7 @@ $(function () {
   $("#start").on("click", start);
   $("#stop").on("click", stop).prop("disabled", true);
   // 2. Setup phone. Note that we have to do it just once.
-  phone = new iframePhone.ParentEndpoint($iframe[0], null, modelLoaded);
+  phone = new iframePhone.ParentEndpoint($iframe[0]);
+  phone.addListener("modelLoaded", modelLoaded);
   phone.addListener("returnBenchmarks", benchmarkResultsReceived);
 });

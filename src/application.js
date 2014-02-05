@@ -217,7 +217,8 @@
     });
     $content.css("border", "none");
     // initiate communication with Interactive in iframe and setup callback
-    parentPhone = new iframePhone.ParentEndpoint($iframe[0], null, function() {
+    parentPhone = new iframePhone.ParentEndpoint($iframe[0]);
+    parentPhone.addListener("modelLoaded", function() {
       // On a Interactive Browser page with an iframe send the
       // focus to the Interactive.
       if (isFullIFramePage()) {
