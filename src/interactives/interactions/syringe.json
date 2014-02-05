@@ -113,7 +113,7 @@
     {
       "type": "button",
       "id": "plunger-release",
-      "text": "Release plunger ⬄",
+      "text": "Release plunger ⇔",
       "width": "14em",
       "action": [
         "setObstacleProperties(get('index-plunger'), {externalAx: 0, vx: 0, mass: 5000});",
