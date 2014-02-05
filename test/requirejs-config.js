@@ -11,6 +11,7 @@ exports.labConfig = {
     'sensor-applet': '../../vendor/lab-sensor-applet-interface-dist/sensor-applet-interface',
     'labquest2-interface': '../../vendor/sensor-labquest-2-interface/dist/sensor-labquest-2-interface',
     'lab-grapher': '../../vendor/lab-grapher/dist/lab-grapher',
+    'iframe-phone': '../../vendor/iframe-phone/dist/iframe-phone',
     'seedrandom': '../../vendor/seedrandom/seedrandom'
   }
 };
