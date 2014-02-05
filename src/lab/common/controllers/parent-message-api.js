@@ -7,6 +7,7 @@ define(function(require) {
 
   // Defines the default postMessage API used to communicate with parent window (i.e., an embedder)
   return function(controller) {
+    var model;
     // iframeEndpoint is a singleton (iframe can't have multiple parents).
     var iframeEndpoint = iframePhone.getIFrameEndpoint();
 
