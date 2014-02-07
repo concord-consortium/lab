@@ -2,6 +2,12 @@
   "title": "snowflake",
   "publicationStatus": "draft",
   "subtitle": "",
+  "category": "",
+  "subCategory": "",
+  "screenshot": "",
+  "aspectRatio": 1.3,
+  "fontScale": 1,
+  "helpOnLoad": false,
   "about": "",
   "models": [
     {
@@ -13,12 +19,70 @@
       }
     }
   ],
+  "propertiesToRetain": [],
+  "parameters": [],
+  "outputs": [],
+  "filteredOutputs": [
+    {
+      "name": "temperatureFiltered",
+      "unitType": "temperature",
+      "label": "Temperature",
+      "property": "temperature",
+      "type": "RunningAverage",
+      "period": 1000
+    }
+   ],
+  "helpTips": [],
+  "hideExportDataControl": false,
+  "dataSets": [],
   "components": [
-
+      {
+      "id": "cool",
+      "type": "button",
+      "action": ["setTemperatureOfAllAtoms(get('temperatureFiltered')*0.7)"],
+      "text": "Cool",
+      "width": "",
+      "height": "",
+      "disabled": false,
+      "tooltip": ""
+    },
+    {
+      "id": "heat",
+      "type": "button",
+      "action": ["setTemperatureOfAllAtoms(get('temperatureFiltered')*1.3)"],
+      "text": "Heat",
+      "width": "",
+      "height": "",
+      "disabled": false,
+      "tooltip": ""
+    },
+    {
+      "id": "thermometer",
+      "type": "barGraph",
+      "property": "temperatureFiltered",
+      "min": 0,
+      "max": 20000,
+      "title": "",
+      "titleOn": "right",
+      "labels": 0,
+      "units": false,
+      "gridLines": 10,
+      "labelFormat": "3r",
+      "barWidth": "2em",
+      "height": "100%",
+      "barColor": "#e23c34",
+      "fillColor": "#fff",
+      "tooltip": ""
+    }
   ],
   "layout": {
+    "right": [
+      "thermometer"
+    ],
     "bottom": [
-
+      "cool",
+      "heat"
     ]
-  }
+  },
+  "template": "simple"
 }
