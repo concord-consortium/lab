@@ -11,6 +11,22 @@ define(function () {
     @param: parent Common Scripting API
   */
   return function IframeScriptingAPI (parent) {
+
+    // Overwrite original .bindModel method of parent Scripting API.
+    // Iframe model can send a "registerScriptingAPIFunc" message to register new Scripting API
+    // function that in fact would be a shortcut for .post() call.
+    var orgBindModel = parent.bindModel;
+    parent.bindModel = function() {
+      orgBindModel.apply(parent, arguments);
+
+      parent.model.iframePhone.addListener("registerScriptingAPIFunc", function (name) {
+        if (parent.api[name] != null) return;
+        parent.api[name] = function (content) {
+          parent.model.iframePhone.post(name, content);
+        };
+      });
+    };
+
     return {
       /**
        * Posts a custom message to iframe model.
