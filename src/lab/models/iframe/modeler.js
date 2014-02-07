@@ -34,10 +34,15 @@ define(function(require) {
     });
 
     labModelerMixin.mixInto(this);
+    // Use custom .set() instead of one provided by property support module.
+    // Custom version is also a bit looser, it lets you define properties dynamically.
+    // Setter of newly added property will post message to iframe model.
+    this.set = customSet;
 
     this._phone = null;
     this._stopped = true;
     this._initialProperties = initialProperties;
+    this._propertySupport = labModelerMixin.propertySupport;
     this._dispatch = labModelerMixin.dispatchSupport;
 
     // The default model controller asumes 'tick' is a defined event
@@ -52,6 +57,46 @@ define(function(require) {
     }, undefined);
     // END OF HACK
   }
+
+  function customSet(key, value) {
+    var context = this;
+    if (typeof key !== 'string') {
+      var hash = key;
+      Object.keys(hash).forEach(function (key) {
+        context.set(key, hash[key]);
+      });
+      return;
+    }
+
+    if (!this.hasProperty(key)) {
+      this._propertySupport.defineProperty(key, {
+        type: "mainProperty",
+        writable: true,
+        set: function (value) {
+          context._phone.post("set", {name: key, value: value});
+        },
+        includeInHistoryState: false,
+        beforeSetCallback: this._propertySupport.invalidatingChangePreHook,
+        afterSetCallback: this._propertySupport.invalidatingChangePostHook
+      });
+    }
+
+    // This will call setter defined above and post message to iframe.
+    this.properties[key] = value;
+  }
+
+  // If property is not defined in metadata, it means it's a custom property related
+  // to specific iframe model. Use custom set method to define it and send message to iframe.
+  // labModelerMixin will automatically define and set only properties that are present in metadata.
+  IFrameModel.prototype._defineModelSpecificProperties = function() {
+    var initialProperties = this._initialProperties;
+    var context = this;
+    Object.keys(initialProperties).forEach(function (name) {
+      if (!metadata.mainProperties[name] && !metadata.viewOptions[name]) {
+        context.set(name, initialProperties[name]);
+      }
+    });
+  };
 
   /**************** public methods ****************/
 
@@ -93,6 +138,7 @@ define(function(require) {
     set: function (val) {
       this._phone = val;
       this._addListeners();
+      this._defineModelSpecificProperties();
     },
     get: function () {
       return this._phone;
