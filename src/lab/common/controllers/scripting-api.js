@@ -599,7 +599,7 @@ define(function (require) {
         Allow console users to try script actions
       */
       exposeScriptingAPI: function () {
-        window.script = $.extend({}, this.api);
+        window.script = this.api;
         window.script.run = function(source, args) {
           var prop,
               argNames = [],
