@@ -10,12 +10,33 @@
       "model": {
         "url": "http://concord-consortium.github.io/jsmol-models/embeddable.html",
         "width": 640,
-        "height": 420
+        "height": 420,
+        "showAxes": "TRUE"
       },
       "viewOptions": {
         "controlButtons": "play_reset",
         "showClock": false
       }
+    }
+  ],
+  "components": [
+    {
+      "id": "axes",
+      "type": "checkbox",
+      "text": "showAxes",
+      "property": "showAxes"
+    },
+    {
+      "id": "vdw-on",
+      "type": "button",
+      "text": "Turn on isosurface",
+      "action": "post('jsmolScript', 'select *;isosurface vdw');"
+    },
+    {
+      "id": "vdw-off",
+      "type": "button",
+      "text": "Turn off isosurface",
+      "action": "jsmolScript('isosurface delete');"
     }
   ]
 }
