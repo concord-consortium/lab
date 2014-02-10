@@ -1045,29 +1045,32 @@ define(function(require) {
     }
 
     function setupFirefox1823Warning() {
-      var $firefoxWarningPane,
-        pos,
-        top,
-        left,
-        b = benchmark.what_browser(); // we need to recalc this for FF, for some reason
-
-      if (b.browser === "Firefox" && b.version >= "18" && b.version < "23") {
-        $firefoxWarningPane = $("#firefox-warning-pane");
-        pos = modelView.pos();
-        top = pos.bottom - $firefoxWarningPane.height();
-        left = pos.right - $firefoxWarningPane.width();
-        $firefoxWarningPane.css({
-          display: "inline",
-          top: top - 5,
-          left: left - 15,
-          'z-index': 100
+      var b = benchmark.what_browser(); // we need to recalc this for FF, for some reason
+      if (true || b.browser === "Firefox" &&
+          b.version >= "18" && b.version < "23") {
+        var $warning = modelView.$el.parent().find("#ff1823warning");
+        if ($warning.length === 0) {
+          $warning = $("<div id='ff1823warning' class='warning-pane'>" +
+                       "<a href='http://blog.concord.org/serious-performance-regression-in-firefox-18-and-newer' " +
+                       "class='opens-in-new-window' target='_blank'>" +
+                       "Firefox v18-22 performance issue...</a></div>");
+          $warning.on("click", function () {
+            $(this).fadeOut();
+          });
+          $warning.appendTo(modelView.$el.parent());
+        }
+        var pos = modelView.pos();
+        $warning.css({
+          width: pos.width - 20,
+          top: pos.bottom - $warning.height() - 10,
+          left: pos.left + 10
         });
       }
     }
 
     function setupFirefox27Warning() {
       var b = benchmark.what_browser(); // we need to recalc this for FF, for some reason
-      if (b.oscpu.indexOf("Windows") !== -1 &&
+      if (false && b.oscpu.indexOf("Windows") !== -1 &&
           b.browser === "Firefox" &&
           b.version >= "27" && b.version < "28") {
         var $warning = modelView.$el.parent().find("#ff27warning");
@@ -1082,11 +1085,9 @@ define(function(require) {
         }
         var pos = modelView.pos();
         $warning.css({
-          display: "inline",
           width: pos.width - 20,
           top: pos.bottom - $warning.height() - 10,
-          left: pos.left + 10,
-          'z-index': 100
+          left: pos.left + 10
         });
       }
     }
