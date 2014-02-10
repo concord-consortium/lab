@@ -1046,7 +1046,7 @@ define(function(require) {
 
     function setupFirefox1823Warning() {
       var b = benchmark.what_browser(); // we need to recalc this for FF, for some reason
-      if (true || b.browser === "Firefox" &&
+      if (b.browser === "Firefox" &&
           b.version >= "18" && b.version < "23") {
         var $warning = modelView.$el.parent().find("#ff1823warning");
         if ($warning.length === 0) {
@@ -1070,7 +1070,7 @@ define(function(require) {
 
     function setupFirefox27Warning() {
       var b = benchmark.what_browser(); // we need to recalc this for FF, for some reason
-      if (false && b.oscpu.indexOf("Windows") !== -1 &&
+      if (b.oscpu.indexOf("Windows") !== -1 &&
           b.browser === "Firefox" &&
           b.version >= "27" && b.version < "28") {
         var $warning = modelView.$el.parent().find("#ff27warning");
