@@ -1075,9 +1075,9 @@ define(function(require) {
           b.version >= "27" && b.version < "28") {
         var $warning = modelView.$el.parent().find("#ff27warning");
         if ($warning.length === 0) {
-          $warning = $("<div id='ff27warning' class='warning-pane'>Firefox v27 has broken SVG " +
-                       "implementation what can lead to rendering issues. We recommend to use " +
-                       "a different browser until Firefox v28 is available.</div>");
+          $warning = $("<div id='ff27warning' class='warning-pane'>SVG implementation is broken " +
+                       "on Firefox v27, which can cause rendering issues. We recommend using " +
+                       "a different browser until Firefox v28 becomes available.</div>");
           $warning.on("click", function () {
             $(this).fadeOut();
           });
