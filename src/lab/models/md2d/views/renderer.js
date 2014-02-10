@@ -1044,7 +1044,7 @@ define(function(require) {
       }
     }
 
-    function setupFirefoxWarning() {
+    function setupFirefox1823Warning() {
       var $firefoxWarningPane,
         pos,
         top,
@@ -1060,6 +1060,32 @@ define(function(require) {
           display: "inline",
           top: top - 5,
           left: left - 15,
+          'z-index': 100
+        });
+      }
+    }
+
+    function setupFirefox27Warning() {
+      var b = benchmark.what_browser(); // we need to recalc this for FF, for some reason
+      if (b.oscpu.indexOf("Windows") !== -1 &&
+          b.browser === "Firefox" &&
+          b.version >= "27" && b.version < "28") {
+        var $warning = modelView.$el.parent().find("#ff27warning");
+        if ($warning.length === 0) {
+          $warning = $("<div id='ff27warning' class='warning-pane'>Firefox v27 has broken SVG " +
+                       "implementation what can lead to rendering issues. We recommend to use " +
+                       "a different browser until Firefox v28 is available.</div>");
+          $warning.on("click", function () {
+            $(this).fadeOut();
+          });
+          $warning.appendTo(modelView.$el.parent());
+        }
+        var pos = modelView.pos();
+        $warning.css({
+          display: "inline",
+          width: pos.width - 20,
+          top: pos.bottom - $warning.height() - 10,
+          left: pos.left + 10,
           'z-index': 100
         });
       }
@@ -1232,7 +1258,8 @@ define(function(require) {
       model.on('removeElectricField', setupElectricField);
       model.on('changeElectricField', setupElectricField);
 
-      setupFirefoxWarning();
+      setupFirefox1823Warning();
+      setupFirefox27Warning();
 
       isSetup = true;
     }
@@ -1280,7 +1307,8 @@ define(function(require) {
       imagesRenderer.setup();
       drawTextBoxes();
       drawSymbolImages();
-      setupFirefoxWarning();
+      setupFirefox1823Warning();
+      setupFirefox27Warning();
       if (useQuantumDynamics) {
         enterAndUpdatePhotons();
       }
