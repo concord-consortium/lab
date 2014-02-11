@@ -93,24 +93,19 @@ define(function (require) {
     // Called when a model is about to be reset or reloaded, and there is unexported data in a DG
     // environment.
     function handleDataDiscard(resetRequest) {
-      var $textarea;
-      var $label;
 
       // Yuck, but here we go.
       modalAlert(
         "<p>You're setting up a new run without saving your data. Please indicate why:</p>" +
         "<form id='export-alert-form'>" +
-        "  <p><input type='radio' name='reason' value='trying-things-out'>I'm just trying things out.</input></p>" +
-        "  <p><input type='radio' name='reason' value='strange-data'>The data looks strange.</input></p>" +
-        "  <p><input type='radio' name='reason' value='making-adjustments'>I'm making adjustments before collecting data.</input></p>" +
+        "  <p><input type='radio' name='reason' value='trying-things-out'>Just trying things out.</input></p>" +
+        "  <p><input type='radio' name='reason' value='experiment-worked-strange-data'>Experiment worked, but data doesn't seem right or could be better.</input></p>" +
+        "  <p><input type='radio' name='reason' value='problem-occurred'>Problem occurred during the experiment.</input></p>" +
         "  <p><input type='radio' name='reason' value='other'>Other</input></p>" +
-        "  <label class='lab-disabled'><em>Please explain &quot;other&quot; responses below</em></label>"+
-        "  <textarea disabled class='lab-disabled' rows='4' style='width:100%'></textarea>" +
         "</form>", {
         OK: function() {
           logAction('discarded data', getCurrentPerRunData(), {
-            reasonCode: $(this).find('input[name=reason]:checked').val(),
-            reasonText: $(this).find('textarea').val()
+            reasonCode: $(this).find('input[name=reason]:checked').val()
           });
           $(this).remove();
           resetRequest.proceed();
@@ -118,23 +113,6 @@ define(function (require) {
         Cancel: function() {
           $(this).remove();
           resetRequest.cancel();
-        }
-      });
-
-      $label = $('#export-alert-form label');
-      $textarea = $('#export-alert-form textarea');
-
-      $('#export-alert-form input[name=reason]').on('change', function() {
-        var isOtherChecked = $('#export-alert-form input[name=reason]:checked').val() === 'other';
-
-        $label
-          .toggleClass('lab-disabled', !isOtherChecked);
-        $textarea
-          .toggleClass('lab-disabled', !isOtherChecked)
-          .prop('disabled', !isOtherChecked);
-
-        if (isOtherChecked) {
-          $textarea.focus();
         }
       });
     }
