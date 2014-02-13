@@ -142,6 +142,10 @@
   :name: "Sensor Interactives"
   :category: Tests
 
+- :path: iframe-model
+  :name: "IFrame Model Interactives"
+  :category: Tests
+
 - :path: conversion-tests
   :name: "Physics Conversion Tests"
   :category: Tests

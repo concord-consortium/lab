@@ -1,0 +1,26 @@
+{
+  "title": "IFrame model example",
+  "publicationStatus": "draft",
+  "subtitle": "Testing the IFrame model type",
+  "about": "",
+  "models": [
+    {
+      "type": "iframe-model",
+      "id": "iframe-model",
+      "url": "models/iframe-model/iframe-model.json",
+      "modelOptions":{
+        "url": "/experiments/external-model/index.html"
+      },
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "showClock": false
+      }
+    }
+  ],
+  "parameters": [
+  ],
+  "components": [
+  ],
+  "layout": {
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "title": "JSmol model",
+  "publicationStatus": "public",
+  "subtitle": "This is an external JSmol model included using Lab iframe model type",
+  "about": [
+    "Open Interactive JSON editor to see three ways of communication with JSmol model:",
+    "",
+    "- one way property binding (*showAxes*),",
+    "- direct *.post('jsmolScript', '<script source>')* calls,",
+    "- convenience method provided by JSmol embeddable page, e.g. *jsmolScript('<script source>')*",
+    "  which is equal to *.post('jsmolScript', '<script source>')*.",
+    "",
+    "To check what message types and convenience methods are supported by JSmol model, please see",
+    "source of [JSmol embeddable page](http://concord-consortium.github.io/jsmol-models/embeddable.html)",
+    "or [JSmol models github repository](https://github.com/concord-consortium/jsmol-models)."
+  ],
+  "models": [
+    {
+      "type": "iframe-model",
+      "id": "iframe-model",
+      "model": {
+        "url": "http://concord-consortium.github.io/jsmol-models/embeddable.html",
+        "width": 640,
+        "height": 420,
+        "showAxes": "TRUE"
+      },
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "showClock": false
+      }
+    }
+  ],
+  "components": [
+    {
+      "id": "axes",
+      "type": "checkbox",
+      "text": "showAxes",
+      "property": "showAxes"
+    },
+    {
+      "id": "vdw-on",
+      "type": "button",
+      "text": "Turn on isosurface",
+      "action": "post('jsmolScript', 'select *;isosurface vdw');"
+    },
+    {
+      "id": "vdw-off",
+      "type": "button",
+      "text": "Turn off isosurface",
+      "action": "jsmolScript('isosurface delete');"
+    }
+  ]
+}

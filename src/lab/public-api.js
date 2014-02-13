@@ -9,7 +9,6 @@ define(function (require) {
   // Require public-api modules.
   require('grapher/public-api');
   require('import-export/public-api');
-  require('iframe-phone/public-api');
 
   // Create or get 'Lab' global object (namespace).
   window.Lab = window.Lab || {};

@@ -10,6 +10,7 @@ var labMetaData = {
         "energy2d":         requirejs('models/energy2d/metadata'),
         "sensor":           requirejs('models/sensor/metadata'),
         "signal-generator": requirejs('models/signal-generator/metadata'),
+        "iframe-model":     requirejs('models/iframe/metadata'),
         "solar-system":     requirejs('models/solar-system/models/metadata')
       }
     };

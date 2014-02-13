@@ -19,7 +19,6 @@ MD2D_SRC_FILES := $(shell find src/lab/models/md2d -type f ! -name '.*' -print)
 
 GRAPHER_SRC_FILES := $(shell find src/lab/grapher -type f ! -name '.*' -print)
 IMPORT_EXPORT_SRC_FILES := $(shell find src/lab/import-export -type f ! -name '.*' -print)
-IFRAME_PHONE_SRC_FILES := $(shell find src/lab/iframe-phone -type f ! -name '.*' -print)
 
 COMMON_SRC_FILES := $(shell find src/lab/common -type f ! -name '.*' -print)
 
@@ -56,8 +55,7 @@ DEV_MARKDOWN_FILES := $(patsubst %.md, public/%.html, $(wildcard developer-doc/*
 LAB_JS_FILES = \
 	public/lab/lab.js \
 	public/lab/lab.grapher.js \
-	public/lab/lab.import-export.js \
-	public/lab/lab.iframe-phone.js
+	public/lab/lab.import-export.js
 
 # default target executed when running make. Run the $(MAKE) public task rather than simply
 # declaring a dependency on 'public' because 'bundle install' and 'npm install' might update some
@@ -379,6 +377,7 @@ public/lab/lab.json: \
 	src/lab/models/md2d/models/metadata.js \
 	src/lab/models/sensor/metadata.js \
 	src/lab/models/signal-generator/metadata.js \
+	src/lab/models/iframe/metadata.js \
 	src/lab/models/solar-system/models/metadata.js
 	node src/helpers/lab.json.js
 
@@ -424,9 +423,6 @@ public/lab/lab.import-export.js: \
 	$(COMMON_SRC_FILES)
 	$(R_OPTIMIZER) -o src/lab/import-export/import-export.build.js
 
-public/lab/lab.iframe-phone.js: \
-	$(IFRAME_PHONE_SRC_FILES)
-	$(R_OPTIMIZER) -o src/lab/iframe-phone/iframe-phone.build.js
 
 # ------------------------------------------------
 #
@@ -463,6 +459,7 @@ public/vendor: \
 	public/vendor/shutterbug/LICENSE.md \
 	public/vendor/lab-sensor-applet-interface-dist \
 	public/vendor/sensor-labquest-2-interface/sensor-labquest-2-interface.js \
+	public/vendor/iframe-phone/iframe-phone.js \
 	public/vendor/chosen/chosen.jquery.min.js \
 	public/favicon.ico
 
@@ -656,6 +653,14 @@ public/vendor/sensor-labquest-2-interface/sensor-labquest-2-interface.js: \
 
 public/vendor/sensor-labquest-2-interface:
 	mkdir -p public/vendor/sensor-labquest-2-interface
+
+public/vendor/iframe-phone/iframe-phone.js: \
+	public/vendor/iframe-phone \
+	vendor/iframe-phone/dist/iframe-phone.js
+	cp vendor/iframe-phone/dist/iframe-phone.js public/vendor/iframe-phone/
+
+public/vendor/iframe-phone:
+	mkdir -p public/vendor/iframe-phone
 
 public/favicon.ico:
 	cp -f src/favicon.ico public/favicon.ico

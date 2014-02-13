@@ -8,8 +8,8 @@
         position:absolute;
         background-color:#abc;
         left:50px;
-        width:90px;
-        height:90px;
+        width:100px;
+        height:100px;
         margin:5px;
       }
     </style>
@@ -17,10 +17,16 @@
   <body>
     <p>This is an example of a model that is created outside of Lab.
        The intention is to embed it in a Lab interactive as an new 'iframe-model'.
+       This version is extra wide to demonstrate sizing.
     </p>
+    <hr style="width:1000px; margin-left:0px">
     <button id="start">start</button> <button id="stop">stop</button>
 
     <div class="block"></div>
     <script src="external-model.js"></script>
+    <script>
+      rightTarget = "850px";
+      leftTarget = "50px";
+    </script>
   </body>
 </html>
