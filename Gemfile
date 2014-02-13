@@ -6,7 +6,7 @@ gem "haml",               "~> 4.0.0"
 gem 'active_support',     "~> 3"
 gem 'i18n',               "~> 0.6.4"
 gem "gitlab-grit",        "~> 2.6.0"
-gem "shutterbug",         "~> 0.1.2"
+gem "shutterbug",         "~> 0.2.1"
 
 group :app do
   gem "rack",               "~> 1.5.2"
