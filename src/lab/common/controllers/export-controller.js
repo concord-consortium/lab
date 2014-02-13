@@ -99,9 +99,9 @@ define(function (require) {
         "<p>You're setting up a new run without saving your data. Please indicate why:</p>" +
         "<form id='export-alert-form'>" +
         "  <p><input type='radio' name='reason' value='trying-things-out'>Just trying things out.</input></p>" +
-        "  <p><input type='radio' name='reason' value='experiment-worked-strange-data'>Experiment worked, but data doesn't seem right or could be better.</input></p>" +
-        "  <p><input type='radio' name='reason' value='problem-occurred'>Problem occurred during the experiment.</input></p>" +
-        "  <p><input type='radio' name='reason' value='other'>Other</input></p>" +
+        "  <p><input type='radio' name='reason' value='experiment-worked-not-satisfied'>Experiment worked, but not satisfied with the data.</input></p>" +
+        "  <p><input type='radio' name='reason' value='something-went-wrong'>Something went wrong during the experiment.</input></p>" +
+        "  <p><input type='radio' name='reason' value='other'>Other.</input></p>" +
         "</form>", {
         OK: function() {
           logAction('discarded data', getCurrentPerRunData(), {
