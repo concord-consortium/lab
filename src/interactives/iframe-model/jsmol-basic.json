@@ -22,7 +22,8 @@
         "url": "http://concord-consortium.github.io/jsmol-models/embeddable.html",
         "width": 640,
         "height": 420,
-        "showAxes": "TRUE"
+        "molecule": "jsmol/data/caffeine.mol",
+        "showAxes": true
       },
       "viewOptions": {
         "controlButtons": "play_reset",
