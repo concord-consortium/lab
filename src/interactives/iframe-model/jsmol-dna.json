@@ -8,7 +8,7 @@
       "type": "iframe-model",
       "id": "iframe-model",
       "model": {
-        "url": "http://localhost:8000/embeddable.html",
+        "url": "http://concord-consortium.github.io/jsmol-models/embeddable.html",
         "width": 640,
         "height": 270,
         "molecule": "models/dna/dna1.pdb"
