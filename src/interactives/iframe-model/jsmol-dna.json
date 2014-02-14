@@ -1,0 +1,163 @@
+{
+  "title": "The Double Helix",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "iframe-model",
+      "id": "iframe-model",
+      "model": {
+        "url": "http://concord-consortium.github.io/jsmol-models/embeddable.html",
+        "width": 640,
+        "height": 270,
+        "molecule": "models/dna/dna1.pdb"
+      },
+      "viewOptions": {
+        "controlButtons": "reset",
+        "showClock": false
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "text",
+      "id": "label-top",
+      "text": "**To zoom in, hold down SHIFT while you click and drag on the DNA**"
+    },
+    {
+      "type": "text",
+      "id": "label1",
+      "text": "Show DNA as"
+    },
+    {
+      "type": "radio",
+      "id": "show-as",
+      "label": "",
+      "options": [
+        {
+          "text": "spacefill atoms",
+          "action": ""
+        },
+        {
+          "text": "sticks",
+          "action": ""
+        },
+        {
+          "text": "ball & stick",
+          "action": ""
+        },
+        {
+          "text": "ladder",
+          "action": ""
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "label2",
+      "text": "Show or hide"
+    },
+    {
+      "type": "checkbox",
+      "id": "h-bonds",
+      "text": "H-bonds"
+    },
+    {
+      "type": "checkbox",
+      "id": "strand-1",
+      "text": "strand 1"
+    },
+    {
+      "type": "checkbox",
+      "id": "strand-2",
+      "text": "strand 2"
+    },
+    {
+      "type": "text",
+      "id": "label3",
+      "text": "Color by"
+    },
+    {
+      "type": "radio",
+      "id": "color-by",
+      "label": "",
+      "options": [
+        {
+          "text": "elements",
+          "action": ""
+        },
+        {
+          "text": "chains",
+          "action": ""
+        },
+        {
+          "text": "nucleotides (ACGT)",
+          "action": ""
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "label4",
+      "text": "Center of rotation"
+    },
+    {
+      "type": "checkbox",
+      "id": "click-to-center",
+      "text": "Click on an atom to center it"
+    }
+  ],
+  "template": [
+    {
+      "id": "bottom",
+      "top": "model.bottom",
+      "left": "model.left",
+      "right": "model.right",
+      "align": "center"
+    },
+    {
+      "id": "col1",
+      "top": "bottom.bottom",
+      "left": "interactive.left"
+    },
+    {
+      "id": "col2",
+      "top": "bottom.bottom",
+      "left": "col1.right"
+    },
+    {
+      "id": "col3",
+      "top": "bottom.bottom",
+      "left": "col2.right"
+    },
+    {
+      "id": "col4",
+      "top": "bottom.bottom",
+      "left": "col3.right"
+    }
+  ],
+  "layout": {
+    "bottom": [
+      "label-top"
+    ],
+    "col1": [
+      ["label1"],
+      ["show-as"]
+    ],
+    "col2": [
+      ["label2"],
+      ["h-bonds"],
+      ["strand-1"],
+      ["strand-2"]
+    ],
+    "col3": [
+      ["label3"],
+      ["color-by"]
+    ],
+    "col4": [
+      ["label4"],
+      ["click-to-center"]
+    ]
+  }
+}
