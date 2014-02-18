@@ -325,3 +325,7 @@
 - :path: external-projects/geniverse
   :name: "External Projects"
   :category: Curriculum
+
+- :path: external-projects/lawrence-hall
+  :name: "Lawernce Hall Interactives"
+  :category: Curriculum
