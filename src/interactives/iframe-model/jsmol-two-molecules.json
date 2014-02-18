@@ -1,0 +1,82 @@
+{
+  "title": "JSmol model with two molecules",
+  "publicationStatus": "public",
+  "subtitle": "Demo presenting multiple JSmol molecules and interactions with them",
+  "about": [
+    "Open Interactive JSON editor to see how two molecules are defined and how to commonicate with",
+    "them.",
+    "",
+    "You have to define special property **moleculesCount** after # in the JSmol embeddable page URL.",
+    "You cannot define this parameter inside standard model properties section.",
+    "",
+    "To communicate with models, you can use exactly the same techniques like for single molecule.",
+    "To define scope of JSmol script or property, use special prefixes: **m0:**, **m1:**, **m2:**, etc.",
+    "",
+    "When you do not specify prefix, script or property will be applied to **all** molecules."
+  ],
+  "models": [
+    {
+      "type": "iframe-model",
+      "id": "iframe-model",
+      "model": {
+        "url": "http://concord-consortium.github.io/jsmol-models/embeddable.html#moleculesCount=2",
+        "width": 640,
+        "height": 300,
+        "m0:molecule": "jsmol/data/caffeine.mol",
+        "m1:molecule": "jsmol/data/c60af.mol",
+        "showAxes": true,
+        "m0:showFrank": false,
+        "m1:showFrank": false
+      },
+      "viewOptions": {
+        "controlButtons": "reset",
+        "showClock": false
+      }
+    }
+  ],
+  "components": [
+    {
+      "id": "axes",
+      "type": "checkbox",
+      "text": "Show axes",
+      "property": "showAxes"
+    },
+    {
+      "id": "frank-left",
+      "type": "checkbox",
+      "text": "m0:showFrank",
+      "property": "m0:showFrank"
+    },
+    {
+      "id": "frank-right",
+      "type": "checkbox",
+      "text": "m1:showFrank",
+      "property": "m1:showFrank"
+    },
+    {
+      "id": "vdw-on-left",
+      "type": "button",
+      "text": "Turn on isosurface in the left model",
+      "action": "post('jsmolScript', 'm0: select *;isosurface vdw');"
+    },
+    {
+      "id": "vdw-on-right",
+      "type": "button",
+      "text": "Turn on isosurface in the right model",
+      "action": "post('jsmolScript', 'm1: select *;isosurface vdw');"
+    },
+    {
+      "id": "vdw-off",
+      "type": "button",
+      "text": "Turn off isosurface in both models",
+      "action": "jsmolScript('isosurface delete');"
+    }
+  ],
+  "layout": {
+    "bottom": [
+      ["axes", "frank-left", "frank-right"],
+      ["vdw-on-left", "vdw-on-right"],
+      ["vdw-off"]
+    ]
+  }
+}
