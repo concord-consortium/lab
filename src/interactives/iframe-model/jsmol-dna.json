@@ -48,18 +48,16 @@
       "name": "strand1",
       "initialValue": true,
       "onChange": [
-        "return; /* code below (directly imported from Classic MW example) breaks jsmol! */",
-        "if (value) post('jsmolScript', 'exit; select all; labels off; display displayed or :I; refresh;');",
-        "else       post('jsmolScript', 'exit; select all; labels off; display displayed and not :I; refresh;');"
+        "if (value) post('jsmolScript', 'select all; labels off; display displayed or :I; refresh;');",
+        "else       post('jsmolScript', 'select all; labels off; display displayed and not :I; refresh;');"
       ]
     },
     {
       "name": "strand2",
       "initialValue": true,
       "onChange": [
-        "return; /* code below (directly imported from Classic MW example) breaks jsmol! */",
-        "if (value) post('jsmolScript', 'exit; select all; labels off; display displayed or :J; refresh;');",
-        "else       post('jsmolScript', 'exit; select all; labels off; display displayed and not :J; refresh;');"
+        "if (value) post('jsmolScript', 'select all; labels off; display displayed or :J; refresh;');",
+        "else       post('jsmolScript', 'select all; labels off; display displayed and not :J; refresh;');"
       ]
     },
     {
