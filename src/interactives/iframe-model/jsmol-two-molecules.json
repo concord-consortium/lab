@@ -20,8 +20,6 @@
       "id": "iframe-model",
       "model": {
         "url": "http://resources.models.concord.org/jsmol/embeddable.html#moleculesCount=2",
-        "width": 640,
-        "height": 300,
         "m0:molecule": "jsmol/data/caffeine.mol",
         "m1:molecule": "jsmol/data/c60af.mol",
         "showAxes": true,
@@ -29,8 +27,8 @@
         "m1:showFrank": false
       },
       "viewOptions": {
-        "controlButtons": "reset",
-        "showClock": false
+        "aspectRatio": 2.2,
+        "controlButtons": "reset"
       }
     }
   ],

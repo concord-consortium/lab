@@ -2,7 +2,7 @@
 define(function(require) {
   var iframePhone = require('iframe-phone');
 
-  return function IFrameContainer(model, modelUrl) {
+  return function IFrameContainer(model) {
     var _model = model,
         $el = $("<div id='model-container' class='container'></div>");
 
@@ -21,8 +21,7 @@ define(function(require) {
     return  {
       $el: $el,
       getHeightForWidth: function(width) {
-        var aspectRatio = _model.get('width')/_model.get('height');
-        return width/aspectRatio;
+        return width / _model.get('aspectRatio');
       },
       resize: function() {},
 
@@ -37,7 +36,7 @@ define(function(require) {
       // this causes the iframe to reload even if the url is the same.
       // This can make the reset be slow, so in the reset case it would be better to optimize
       // this to send some reset event to the iframe instead.
-      bindModel: function(newModel, newModelUrl) {
+      bindModel: function(newModel) {
         $el.find('#iframe-model').remove();
         addIFrame(newModel);
         _model = newModel;

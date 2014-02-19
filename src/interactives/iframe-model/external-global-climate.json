@@ -9,13 +9,10 @@
       "id": "iframe-model",
       "url": "models/iframe-model/iframe-model.json",
       "modelOptions":{
-        "url": "http://concord-consortium.github.io/agentscript-models/global-climate/global-climate-1.html",
-        "width": 640,
-        "height": 480
+        "url": "http://concord-consortium.github.io/agentscript-models/global-climate/global-climate-1.html"
       },
       "viewOptions": {
-        "controlButtons": "",
-        "showClock": false
+        "controlButtons": ""
       }
     }
   ],

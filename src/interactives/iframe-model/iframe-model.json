@@ -12,8 +12,7 @@
         "url": "/experiments/external-model/index.html"
       },
       "viewOptions": {
-        "controlButtons": "play_reset",
-        "showClock": false
+        "controlButtons": "play_reset"
       }
     }
   ],

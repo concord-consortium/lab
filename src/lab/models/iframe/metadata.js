@@ -10,21 +10,18 @@ define(function() {
       },
       url: {
         immutable: true
-      },
-      width: {
-        defaultValue: 150
-      },
-      height: {
-        defaultValue: 150
       }
     },
     viewOptions: {
+      aspectRatio: {
+        defaultValue: 1.55
+      },
       showClock: {
-        defaultValue: true,
+        defaultValue: false,
         propertyChangeInvalidates: false
       },
       controlButtons: {
-        defaultValue: "play_reset",
+        defaultValue: "reset",
         propertyChangeInvalidates: false
       }
     }

@@ -9,13 +9,11 @@
       "id": "iframe-model",
       "url": "models/iframe-model/iframe-model.json",
       "modelOptions":{
-        "url": "/embeddable.html#interactives/sam/gas-laws/3-volume-pressure-relationship.json",
-        "width": 130,
-        "height": 100
+        "url": "/embeddable.html#interactives/sam/gas-laws/3-volume-pressure-relationship.json"
       },
       "viewOptions": {
-        "controlButtons": "play_reset",
-        "showClock": false
+        "aspectRatio": 1.3,
+        "controlButtons": "play_reset"
       }
     }
   ],

@@ -20,14 +20,12 @@
       "id": "iframe-model",
       "model": {
         "url": "http://resources.models.concord.org/jsmol/embeddable.html",
-        "width": 640,
-        "height": 420,
         "molecule": "jsmol/data/caffeine.mol",
         "showAxes": true
       },
       "viewOptions": {
-        "controlButtons": "play_reset",
-        "showClock": false
+        "aspectRatio": 1.7,
+        "controlButtons": "play_reset"
       }
     }
   ],

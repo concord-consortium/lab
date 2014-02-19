@@ -9,13 +9,11 @@
       "id": "iframe-model",
       "model": {
         "url": "http://resources.models.concord.org/jsmol/embeddable.html",
-        "width": 640,
-        "height": 270,
         "molecule": "models/dna/dna1.pdb"
       },
       "viewOptions": {
-        "controlButtons": "",
-        "showClock": false
+        "aspectRatio": 2.35,
+        "controlButtons": ""
       },
       "onLoad": [
         "post('jsmolScript', 'script models/dna/dna-horizontal.spt;');",

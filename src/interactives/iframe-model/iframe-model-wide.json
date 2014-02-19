@@ -9,13 +9,11 @@
       "id": "iframe-model",
       "url": "models/iframe-model/iframe-model.json",
       "modelOptions":{
-        "url": "/experiments/external-model/wide.html",
-        "width": 1000,
-        "height": 400
+        "url": "/experiments/external-model/wide.html"
       },
       "viewOptions": {
-        "controlButtons": "play_reset",
-        "showClock": false
+        "aspectRatio": 2,
+        "controlButtons": "play_reset"
       }
     }
   ],
