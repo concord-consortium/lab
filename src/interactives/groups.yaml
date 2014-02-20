@@ -130,6 +130,10 @@
   :name: "VISUAL: Plate Techtonics"
   :category: Curriculum
 
+- :path: jsmol
+  :name: "JSmol Interactives"
+  :category: Curriculum
+
 - :path: basic-examples
   :name: "Basic Interactive Examples"
   :category: Examples
