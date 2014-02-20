@@ -75,8 +75,8 @@
       "type": "button",
       "action": "markAtoms(randomAtoms(2));",
       "text": "Mark two molecules",
-      "width": "200px",
-      "height": "30px",
+      "width": "15em",
+      "height": "2em",
       "disabled": false,
       "tooltip": ""
     },
@@ -85,8 +85,8 @@
       "type": "button",
       "action": "traceAtom(randomAtoms(1));",
       "text": "Trace a random molecule",
-      "width": "200px",
-      "height": "30px",
+      "width": "15em",
+      "height": "2em",
       "disabled": false,
       "tooltip": ""
     },
