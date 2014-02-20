@@ -514,13 +514,19 @@ define(function (require) {
       // See: https://www.pivotaltracker.com/story/show/63386470
       // Components have choice whether to attach themselves to .lab-interactive-container
       // or .lab-fastclick-container.
-      $fastClickContainer = $('<div class="lab-fastclick-container"></div>');
+      $fastClickContainer = $('<div class="lab-fastclick-container">');
       $fastClickContainer.appendTo($interactiveContainer);
       FastClick.attach($fastClickContainer[0]);
 
-      creditsDialog = new CreditsDialog(".lab-fastclick-container");
-      aboutDialog = new AboutDialog(".lab-fastclick-container");
-      shareDialog = new ShareDialog(".lab-fastclick-container");
+      // We have to create a new container for dialogs. When jQuery UI dialog is open, it moves
+      // all its sibling elements before itself (kind of z indexing). It means all the siblings
+      // are removed from DOM and then added again. Besides performance it can cause unwanted
+      // effects in some cases (e.g. iframe content is reloaded). Separate container that contains
+      // only dialogs ensures that it won't happen.
+      $fastClickContainer.append('<div class="lab-dialog-container">');
+      creditsDialog = new CreditsDialog(".lab-dialog-container");
+      aboutDialog = new AboutDialog(".lab-dialog-container");
+      shareDialog = new ShareDialog(".lab-dialog-container");
 
       // Each time we load a new interactive, we assume that it would be an "initial" model load.
       // This flag is used to decide whether parameters should be retained or not.
