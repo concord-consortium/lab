@@ -1,0 +1,88 @@
+{
+  "title": "Unshared Electrons and the \"Bent\" Shape",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "iframe-model",
+      "id": "iframe-model",
+      "model": {
+        "url": "http://localhost:9191/embeddable.html",
+        "molecule": "models/unshared-electrons/nh2cl_extra.mol"
+      },
+      "viewOptions": {
+        "controlButtons": ""
+      },
+      "onLoad": [
+        "post('jsmolScript', 'script models/unshared-electrons/initialization.spt;');"
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "view",
+      "initialValue": "hide electrons",
+      "onChange": [
+        "switch(value) {",
+        "  case 'shared electrons':",
+        "  post('jsmolScript', 'script models/unshared-electrons/p6-shared.spt');",
+        "  return;",
+        "  case 'unshared electrons':",
+        "  post('jsmolScript', 'script models/unshared-electrons/p6-unshared.spt');",
+        "  return;",
+        "  case 'both':",
+        "  post('jsmolScript', 'isosurface on;');",
+        "  return;",
+        "  case 'hide electrons':",
+        "  post('jsmolScript', 'isosurface off;');",
+        "  return;",
+        "}"
+      ]
+    },
+    {
+      "name": "spin",
+      "initialValue": true,
+      "onChange": "post('jsmolScript', 'spin ' + (value ? 'on' : 'off'));"
+    }
+  ],
+  "components": [
+    {
+      "type": "radio",
+      "id": "view",
+      "property": "view",
+      "orientation": "horizontal",
+      "label": "View",
+      "options": [
+        {
+          "text": "shared electrons",
+          "value": "shared electrons"
+        },
+        {
+          "text": "unshared electrons",
+          "value": "unshared electrons"
+        },
+        {
+          "text": "both",
+          "value": "both"
+        },
+        {
+          "text": "hide electrons",
+          "value": "hide electrons"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "spin",
+      "text": "Spin",
+      "property": "spin"
+    }
+  ],
+  "layout": {
+    "bottom": [
+      ["view"],
+      ["spin"]
+    ]
+  }
+}
