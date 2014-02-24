@@ -1,0 +1,209 @@
+{
+  "title": "Electron Geometry",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "iframe-model",
+      "id": "iframe-model",
+      "model": {
+        "url": "http://resources.models.concord.org/jsmol/embeddable.html#moleculesCount=3",
+        "m0:molecule": "models/electron-geometry/co2.mol",
+        "m1:molecule": "models/electron-geometry/bf3.pdb",
+        "m2:molecule": "models/electron-geometry/methane.mol"
+      },
+      "viewOptions": {
+        "aspectRatio": 1.95,
+        "controlButtons": ""
+      },
+      "onLoad": [
+        "post('jsmolScript', 'm0: script models/electron-geometry/co2-initialization.spt;');",
+        "post('jsmolScript', 'm1: script models/electron-geometry/bf3-initialization.spt;');",
+        "post('jsmolScript', 'm2: script models/electron-geometry/methane-initialization.spt;');"
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "m0Spin",
+      "initialValue": true,
+      "onChange": "post('jsmolScript', 'm0: spin ' + (value ? 'on' : 'off'));"
+    },
+    {
+      "name": "m1Spin",
+      "initialValue": true,
+      "onChange": "post('jsmolScript', 'm1: spin ' + (value ? 'on' : 'off'));"
+    },
+    {
+      "name": "m2Spin",
+      "initialValue": true,
+      "onChange": "post('jsmolScript', 'm2: spin ' + (value ? 'on' : 'off'));"
+    },
+    {
+      "name": "m0View",
+      "initialValue": "electron-geometry",
+      "onChange": [
+        "switch(value) {",
+        "  case 'electron geometry':",
+        "  post('jsmolScript', 'm0: set display normal; monitor on; select all; spacefill 0.06; wireframe off');",
+        "  return;",
+        "  case 'molecular shape':",
+        "  post('jsmolScript', 'm0: set display normal; select all; monitor off; spacefill 20%; wireframe 0.12');",
+        "  return;",
+        "  case 'both':",
+        "  post('jsmolScript', 'm0: set display normal; select all; monitor on; spacefill 20%; wireframe 0.12');",
+        "  return;",
+        "}"
+      ]
+    },
+    {
+      "name": "m1View",
+      "initialValue": "electron-geometry",
+      "onChange": [
+        "switch(value) {",
+        "  case 'electron geometry':",
+        "  post('jsmolScript', 'm1: set display normal; monitor on; select all; spacefill 0.06; wireframe off');",
+        "  return;",
+        "  case 'molecular shape':",
+        "  post('jsmolScript', 'm1: set display normal; select all; monitor off; spacefill 20%; wireframe 0.12');",
+        "  return;",
+        "  case 'both':",
+        "  post('jsmolScript', 'm1: set display normal; select all; monitor on; spacefill 20%; wireframe 0.12');",
+        "  return;",
+        "}"
+      ]
+    },
+    {
+      "name": "m2View",
+      "initialValue": "electron-geometry",
+      "onChange": [
+        "switch(value) {",
+        "  case 'electron geometry':",
+        "  post('jsmolScript', 'm2: set display normal; monitor on; select all; spacefill 0.06; wireframe off');",
+        "  return;",
+        "  case 'molecular shape':",
+        "  post('jsmolScript', 'm2: set display normal; select all; monitor off; spacefill 20%; wireframe 0.12');",
+        "  return;",
+        "  case 'both':",
+        "  post('jsmolScript', 'm2: set display normal; select all; monitor on; spacefill 20%; wireframe 0.12');",
+        "  return;",
+        "}"
+      ]
+    }
+  ],
+  "components": [
+    {
+      "type": "checkbox",
+      "id": "m0-spin",
+      "text": "Spin",
+      "property": "m0Spin"
+    },
+    {
+      "type": "checkbox",
+      "id": "m1-spin",
+      "text": "Spin",
+      "property": "m1Spin"
+    },
+    {
+      "type": "checkbox",
+      "id": "m2-spin",
+      "text": "Spin",
+      "property": "m2Spin"
+    },
+    {
+      "type": "pulldown",
+      "id": "m0-view",
+      "property": "m0View",
+      "label": "View",
+      "options": [
+        {
+          "text": "electron geometry",
+          "value": "electron geometry"
+        },
+        {
+          "text": "molecular shape",
+          "value": "molecular shape"
+        },
+        {
+          "text": "both",
+          "value": "both"
+        }
+      ]
+    },
+     {
+      "type": "pulldown",
+      "id": "m1-view",
+      "property": "m1View",
+      "label": "View",
+      "options": [
+        {
+          "text": "electron geometry",
+          "value": "electron geometry"
+        },
+        {
+          "text": "molecular shape",
+          "value": "molecular shape"
+        },
+        {
+          "text": "both",
+          "value": "both"
+        }
+      ]
+    },
+     {
+      "type": "pulldown",
+      "id": "m2-view",
+      "property": "m2View",
+      "label": "View",
+      "options": [
+        {
+          "text": "electron geometry",
+          "value": "electron geometry"
+        },
+        {
+          "text": "molecular shape",
+          "value": "molecular shape"
+        },
+        {
+          "text": "both",
+          "value": "both"
+        }
+      ]
+    }
+  ],
+  "template": [
+    {
+      "id": "bottom-m0",
+      "top": "model.bottom",
+      "left": "model.left",
+      "width": "model.width * 0.3333"
+    },
+    {
+      "id": "bottom-m1",
+      "top": "model.bottom",
+      "left": "bottom-m0.right",
+      "width": "model.width * 0.3333"
+    },
+    {
+      "id": "bottom-m2",
+      "top": "model.bottom",
+      "left": "bottom-m1.right",
+      "width": "model.width * 0.3333"
+    }
+  ],
+  "layout": {
+    "bottom-m0": [
+      ["m0-view"],
+      ["m0-spin"]
+    ],
+    "bottom-m1": [
+      ["m1-view"],
+      ["m1-spin"]
+    ],
+    "bottom-m2": [
+      ["m2-view"],
+      ["m2-spin"]
+    ]
+  }
+}
