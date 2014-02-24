@@ -1,0 +1,75 @@
+{
+  "title": "The Porous Membrane",
+  "publicationStatus": "draft",
+  "subtitle": "",
+  "about": "",
+  "models": [
+    {
+      "type": "iframe-model",
+      "id": "iframe-model",
+      "model": {
+        "url": "http://resources.models.concord.org/jsmol/embeddable.html",
+        "molecule": "models/porous-membrane/aquaporeMem.pdb"
+      },
+      "viewOptions": {
+        "aspectRatio": 1,
+        "controlButtons": ""
+      },
+      "onLoad": [
+        "post('jsmolScript', 'script models/porous-membrane/initialization0.spt;');",
+        "post('jsmolScript', 'script models/porous-membrane/initialization1.spt;');"
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "animation-scene",
+      "initialValue": 0,
+      "onChange": [
+        "if (value < 0 || value > 7) return;",
+        "post('jsmolScript', 'echo \"\"; script models/porous-membrane/scene' + value + '.spt;');"
+      ]
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "play",
+      "text": "Play movie",
+      "action": [
+        "var stopTime = [1, 2, 1, 1, 4, 1, 3, 0];",
+        "for (var i = 0; i < 8; i++) {",
+        "  set('animation-scene', i);",
+        "  post('jsmolScript', 'delay ' + stopTime[i] + ';');",
+        "}"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "next-scene",
+      "text": "Go to next scene",
+      "action": [
+        "var newScene = get('animation-scene') + 1;",
+        "if (newScene > 7) return;",
+        "set('animation-scene', newScene);"
+      ]
+    },
+    {
+      "type": "button",
+      "id": "prev-scene",
+      "text": "Go to previous scene",
+      "action": [
+        "var newScene = get('animation-scene') - 1;",
+        "if (newScene < 0) return;",
+        "set('animation-scene', newScene);"
+      ]
+    }
+  ],
+  "layout": {
+    "right": [
+      ["play"],
+      ["next-scene"],
+      ["prev-scene"]
+    ]
+  }
+}
