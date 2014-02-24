@@ -8,7 +8,7 @@
       "type": "iframe-model",
       "id": "iframe-model",
       "model": {
-        "url": "http://localhost:9191/embeddable.html",
+        "url": "http://resources.models.concord.org/jsmol/embeddable.html",
         "molecule": "models/unshared-electrons/nh2cl_extra.mol"
       },
       "viewOptions": {
