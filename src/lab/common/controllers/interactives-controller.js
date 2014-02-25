@@ -662,9 +662,6 @@ define(function (require) {
 
       // When all components are created, we can initialize semantic layout.
       setupLayout();
-
-      // setup messaging with embedding parent window
-      parentMessageAPI = new ParentMessageAPI(controller);
     }
 
     function createModelController(type, modelUrl, modelOptions) {
@@ -1475,7 +1472,14 @@ define(function (require) {
     controller.on("resize.share-dialog", function () {
       shareDialog.updateIframeSize();
     });
-    loadInteractive(interactiveReference);
+
+    // Setup messaging with embedding parent window.
+    parentMessageAPI = new ParentMessageAPI(controller);
+
+    // Load interactive if it's provided.
+    if (interactiveReference != null) {
+      loadInteractive(interactiveReference);
+    }
 
     return controller;
   };
