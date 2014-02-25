@@ -8,7 +8,7 @@
       "type": "iframe-model",
       "id": "iframe-model",
       "model": {
-        "url": "http://localhost:9191/embeddable.html",
+        "url": "http://resources.models.concord.org/jsmol/embeddable.html",
         "molecule": "models/energy-levels/h.jvxl"
       },
       "viewOptions": {
@@ -140,7 +140,7 @@
     {
       "type": "image",
       "id": "axes",
-      "src": "http://localhost:9191/models/energy-levels/axes.svg",
+      "src": "http://resources.models.concord.org/jsmol/models/energy-levels/axes.svg",
       "width": "100%",
       "height": "100%"
     },
