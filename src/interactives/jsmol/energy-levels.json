@@ -17,7 +17,8 @@
       },
       "onLoad": [
         "post('jsmolScript', 'script models/energy-levels/initialization.spt;');",
-        "post('jsmolScript', 'echo 1s orbital; isosurface delete sign orange violet phase atomicOrbital 1 0 0;');"
+        "post('jsmolScript', 'echo 1s orbital; isosurface delete sign orange violet phase atomicOrbital 1 0 0;');",
+        "set('1s', true);"
       ]
     }
   ],
