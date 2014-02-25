@@ -5,8 +5,8 @@ define(function(require) {
   var CENTER = 1;
 
   return function ImagesRenderer(modelView, model) {
-    // A collection of Image objects for each <image> src that has been seen by the renderer.
-    var imagesBySrc = {};
+    // A collection of image dimensions for each <image> src that has been seen by the renderer.
+    var imgDimBySrc = {};
 
     // Nested arrays of data about the requested images, ready to be joined to the d3 selection.
     var imageData;
@@ -19,20 +19,34 @@ define(function(require) {
     // Image finishes loading it will update the width and height of any images in the image
     // container which have the same src.
     function loadImage(src) {
-      if (imagesBySrc[src]) {
+      if (imgDimBySrc[src]) {
         return;
       }
+
+      // Create placeholder, it will be updated when image is loaded.
+      imgDimBySrc[src] = {
+        width: 0,
+        height: 0
+      };
 
       var image = new Image();
       image.src = src;
       image.onload = function() {
+        // IE11 workaround - without adding an image to DOM, we can't get its correct dimensions.
+        // When image src refers to an SVG image, its width and height will be always reported as 0.
+        // See: https://www.pivotaltracker.com/story/show/66376534
+        var $image = $(image).appendTo("body");
+        var imageDim = imgDimBySrc[src];
+        imageDim.width = $image.width();
+        imageDim.height = $image.height();
+        $image.remove();
         // Resize and recenter any instances of this image currently in the DOM.
         d3.select(modelView.node)
           .selectAll('image').each(function() {
             if (d3.select(this).attr('xlink:href') === src) {
               d3.select(this)
-                .attr('width', scaleImageLength(image.width))
-                .attr('height', scaleImageLength(image.height))
+                .attr('width', scaleImageLength(imageDim.width))
+                .attr('height', scaleImageLength(imageDim.height))
                 .attr('transform', translateImage);
             }
           });
@@ -45,8 +59,6 @@ define(function(require) {
         //   .selectAll('image[*|href="' + src + '"')
         //   .attr(...)
       };
-
-      imagesBySrc[src] = image;
     }
 
     // Images prepared for Classic MW have 1 pixel == 0.1 Angstrom (0.01 nm). Therefore, convert
@@ -158,7 +170,7 @@ define(function(require) {
       if (d.referencePoint === UPPER_LEFT) {
         return "";
       }
-      var image = imagesBySrc[d.src];
+      var image = imgDimBySrc[d.src];
       return "translate(" + (-scaleImageLength(image.width/2)) + "," +
                             (-scaleImageLength(image.height/2)) +")";
     }
@@ -176,8 +188,8 @@ define(function(require) {
             'xlink:href': function(d) { return d.src; },
             x: function(d) { return d.x; },
             y: function(d) { return d.y; },
-            height: function (d) { return scaleImageLength(imagesBySrc[d.src].height); },
-            width:  function (d) { return scaleImageLength(imagesBySrc[d.src].width); },
+            height: function (d) { return scaleImageLength(imgDimBySrc[d.src].height); },
+            width:  function (d) { return scaleImageLength(imgDimBySrc[d.src].width); },
             transform: translateImage,
             'pointer-events': function(d) { return d.capturesPointer ? 'auto' : 'none'; }
           });
