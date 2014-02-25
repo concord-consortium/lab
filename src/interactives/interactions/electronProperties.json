@@ -82,7 +82,7 @@
         "  untraceAtom(0);",
         "  removeAtom(0);",
         "}",
-        "addAtom({element: 2, x: 0.5, y: get('particleY'), vx: 0.001, vy: 0, charge: 0.01});",
+        "addAtom({element: 2, x: 0.5, y: get('particleY'), vx: 0.001, vy: 0, charge: 1});",
         "start();",
         "traceAtom(0);"
       ]
@@ -96,7 +96,7 @@
         "  untraceAtom(0);",
         "  removeAtom(0);",
         "}",
-        "addAtom({element: 2, x: 0.5, y: get('particleY'), vx: 0.001, vy: 0, charge: -0.01});",
+        "addAtom({element: 2, x: 0.5, y: get('particleY'), vx: 0.001, vy: 0, charge: -1});",
         "start();",
         "traceAtom(0);"
       ]
@@ -110,7 +110,7 @@
         "  untraceAtom(0);",
         "  removeAtom(0);",
         "}",
-        "addAtom({element: 0, x: 0.5, y: get('particleY'), vx: 0.001, vy: 0, charge: -0.01});",
+        "addAtom({element: 0, x: 0.5, y: get('particleY'), vx: 0.001, vy: 0, charge: -1});",
         "start();",
         "traceAtom(0);"
       ]
@@ -191,6 +191,26 @@
       "onChange": []
     },
     {
+      "name": "plateWidth",
+      "initialValue": 2.15
+    },
+    {
+      "name": "plateCenterX",
+      "initialValue": 3.875
+    },
+    {
+      "name": "upperPlateY",
+      "initialValue": 2.88
+    },
+    {
+      "name": "lowerPlateY",
+      "initialValue": 2.88
+    },
+    {
+      "name": "plateHeight",
+      "initialValue": 0.2
+    },
+    {
       "name": "isSlowMotionEnabled",
       "initialValue": false,
       "onChange": "set('timeStep', value ? 0.1 : 1);"
@@ -216,24 +236,50 @@
         "    shapePropsBottom = getShapeProperties(2),",
         "    negText = '',",
         "    posText = '',",
-        "    plateStrengthScale = get('superChargePlates') ? 1 : 0.001;",
+        "    plateStrengthScale = get('superChargePlates') ? 1 : 0.001,",
+        "    plateStrengthDividend = 10000000;",
         "if (!shapePropsTop.type) return;",
+        "if (plateStrengthScale < 1) {",
+        "  setImageProperties(1,{imageUri: 'plate_pos_weak.png'});",
+        "  setImageProperties(0,{imageUri: 'plate_neg_weak.png'});",
+        "  shapePropsTop.y = get('upperPlateY') + get('plateHeight')/2,",
+        "  shapePropsTop.height = get('plateHeight')/2,",
+        "  shapePropsTop.x = get('plateCenterX') - get('plateWidth')/4,",
+        "  shapePropsTop.width = get('plateWidth')/2",
+        "  shapePropsBottom.height = get('plateHeight')/2,",
+        "  shapePropsBottom.x = get('plateCenterX') - get('plateWidth')/4,",
+        "  shapePropsBottom.width = get('plateWidth')/2",
+        "} else {",
+        "  setImageProperties(1,{imageUri: 'plate_pos.png'});",
+        "  setImageProperties(0,{imageUri: 'plate_neg.png'});",
+        "  shapePropsTop.y = get('upperPlateY'),",
+        "  shapePropsTop.height = get('plateHeight'),",
+        "  shapePropsTop.x = get('plateCenterX') - get('plateWidth')/2,",
+        "  shapePropsTop.width = get('plateWidth')",
+        "  shapePropsBottom.height = get('plateHeight'),",
+        "  shapePropsBottom.x = get('plateCenterX') - get('plateWidth')/2,",
+        "  shapePropsBottom.width = get('plateWidth')",
+        "}",
+        "setShapeProperties(3,shapePropsTop);",
+        "setShapeProperties(2,shapePropsBottom);",
         "if (value < 0) {",
         "  setImageProperties(1,{imageY: shapePropsTop.y + shapePropsTop.height - 0.02, imageX: shapePropsTop.x + 0.05});",
         "  setImageProperties(0,{imageY: shapePropsBottom.y + shapePropsBottom.height - 0.02, imageX: shapePropsBottom.x + 0.05});",
         "  setShapeProperties(2,{color: blue});",
         "  setShapeProperties(3,{color: red});",
-        "  setElectricFieldProperties(0,{intensity: mag/100000*plateStrengthScale, orientation: 'N'});",
+        "  setElectricFieldProperties(0,{intensity: mag/plateStrengthDividend*plateStrengthScale, orientation: 'N'});",
         "} else if (value > 0) {",
         "  setImageProperties(0,{imageY: shapePropsTop.y + shapePropsTop.height - 0.02, imageX: shapePropsTop.x + 0.05});",
         "  setImageProperties(1,{imageY: shapePropsBottom.y + shapePropsBottom.height - 0.02, imageX: shapePropsBottom.x + 0.05});",
         "  setShapeProperties(2,{color: red});",
         "  setShapeProperties(3,{color: blue});",
-        "  setElectricFieldProperties(0,{intensity: mag/100000*plateStrengthScale, orientation: 'S'});",
+        "  setElectricFieldProperties(0,{intensity: mag/plateStrengthDividend*plateStrengthScale, orientation: 'S'});",
         "} else {",
         "  setImageProperties(0,{imageY: 10});",
         "  setImageProperties(1,{imageY: 10});",
-        "  setElectricFieldProperties(0,{intensity: mag/100000*plateStrengthScale, orientation: 'N'});",
+        "  setElectricFieldProperties(0,{intensity: mag/plateStrengthDividend*plateStrengthScale, orientation: 'N'});",
+        "  setShapeProperties(2,{color: white});",
+        "  setShapeProperties(3,{color: white});",
         "}"
       ]
     }
