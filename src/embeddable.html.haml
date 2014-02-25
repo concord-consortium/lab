@@ -31,9 +31,7 @@
           }
         });
 
-        if (!hash) return;
-
-        interactiveUrl = hash.substr(1, hash.length);
+        interactiveUrl = hash.substr(1, hash.length) || null;
         Embeddable.load(interactiveUrl, '#interactive-container', {
           controllerReady: function(controller){
             controller.on("modelLoaded.application", function() {

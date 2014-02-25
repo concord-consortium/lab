@@ -1,4 +1,4 @@
-/*global Lab, _, $, jQuery, d3, controllers, alert, model, _gaq, AUTHORING: true */
+/*global Lab, $, _gaq, Embeddable: true, AUTHORING: true */
 /*jshint boss:true */
 
 // Strawman setting for telling the interactive to be in "author mode",
@@ -32,6 +32,18 @@ Embeddable.load = function(interactiveUrl, containerSelector, callbacks) {
 
   callbacks = callbacks || {};
 
+  function loadLabInteractive(interactiveJSON) {
+    Embeddable.controller = new Lab.InteractivesController(interactiveJSON, containerSelector);
+    if (callbacks.controllerReady) callbacks.controllerReady(Embeddable.controller);
+  }
+
+  if (interactiveUrl == null) {
+    // Load empty interactive that waits for Interactive JSON that can be provided by parent
+    // page using iframe-phone.
+    loadLabInteractive(null);
+    return;
+  }
+
   $.get(interactiveUrl).done(function(results) {
     if (typeof results === 'string') results = JSON.parse(results);
 
@@ -43,9 +55,7 @@ Embeddable.load = function(interactiveUrl, containerSelector, callbacks) {
         throw new Error("Redirecting interactive loaded without a redirect handler");
       }
     }
-
-    Embeddable.controller = new Lab.InteractivesController(results, containerSelector);
-    if(callbacks.controllerReady) callbacks.controllerReady(Embeddable.controller);
+    loadLabInteractive(results);
   })
   .fail(function() {
     document.title = "Interactive not found";
