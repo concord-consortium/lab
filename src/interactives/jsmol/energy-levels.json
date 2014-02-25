@@ -29,9 +29,12 @@
         "/* It's a workaround, as we can't create globally available function that could do the same thing.",
         "   Change value of this parameter to 'true' to clear other parameters. */",
         "if (!value) return;",
+        "/* Freeze currently selected level so user can't 'uncheck' it directly. */",
+        "freeze(value);",
         "var params = ['1s', '2s', '2p', '3s', '3p', '3d', '4s', '4p', '4d', '4f'];",
         "params.splice(params.indexOf(value), 1);",
         "params.forEach(function (param) {",
+        "  unfreeze(param);",
         "  set(param, false);",
         "});",
         "set('clear-all', false);"
