@@ -1,18 +1,23 @@
 {
-  "title": "Phase change and temperature",
+  "title": "Charged and Neutral Atoms",
   "publicationStatus": "sample",
-  "subtitle": "",
+  "subtitle": "Explore Coulomb and intermolecular attractions.",
   "category": "",
   "subCategory": "",
   "screenshot": "",
-  "aspectRatio": 1.2988505747126438,
+  "aspectRatio": 1.2988505747126437,
   "fontScale": 1,
   "helpOnLoad": false,
   "about": [
-    "Explore how energy and the attraction between moleucles affect how molecules move in this simulation."
+    "There are two kinds of attractive forces shown in this model: Coulomb forces (the attraction between ions)",
+    "and Van der Waals forces (an additional attractive force between all atoms).",
+    "",
+    "What kinds of patterns tend to form with charged and neutral atoms? How does changing the Van der Waals",
+    "attraction or charging the atoms affect the melting and boiling point of the substance?"
   ],
   "models": [
     {
+      "timeStepsPerTick": 20,
       "type": "md2d",
       "id": "100-atoms-charged",
       "url": "imports/legacy-mw-content/converted/conversion-and-physics-examples/100-atoms$0.json",
@@ -20,6 +25,8 @@
       "viewOptions": {
         "controlButtons": "play_reset",
         "markColor": "#00b5ff"
+
+
       }
     }
   ],
@@ -51,27 +58,25 @@
   "filteredOutputs": [],
   "helpTips": [],
   "hideExportDataControl": false,
-  "dataSets": [],
   "components": [
-    {
-      "id": "charged-box",
-      "type": "checkbox",
-      "text": "KE Shading",
-      "textOn": "right",
-      "width": "auto",
-      "height": "auto",
-      "property": "keShading",
-      "retainProperty": true,
-      "disabled": false,
-      "tooltip": ""
-    },
+     {
+       "id": "charged-box",
+       "type": "checkbox",
+       "text": "KE Shading",
+       "textOn": "right",
+       "width": "auto",
+       "height": "auto",
+       "property": "keShading",
+       "disabled": false,
+       "tooltip": ""
+     },
     {
       "id": "mark-two-atoms",
       "type": "button",
       "action": "markAtoms(randomAtoms(2));",
       "text": "Mark two molecules",
-      "width": "15em",
-      "height": "2em",
+      "width": "200px",
+      "height": "30px",
       "disabled": false,
       "tooltip": ""
     },
@@ -80,8 +85,8 @@
       "type": "button",
       "action": "traceAtom(randomAtoms(1));",
       "text": "Trace a random molecule",
-      "width": "15em",
-      "height": "2em",
+      "width": "200px",
+      "height": "30px",
       "disabled": false,
       "tooltip": ""
     },
@@ -102,10 +107,10 @@
           "label": "B"
         },
         {
-          "value": 0.15,
+          "value": 0.150,
           "label": "C"
         },
-        {
+       {
           "value": 0.225,
           "label": "D"
         },
@@ -118,7 +123,6 @@
       "height": "auto",
       "displayValue": "return format('.3f')(value)",
       "property": "epsilon",
-      "retainProperty": true,
       "disabled": false,
       "tooltip": ""
     },
@@ -126,16 +130,17 @@
       "id": "temperature-slider",
       "type": "slider",
       "min": 10,
-      "max": 2774,
-      "steps": 100,
+      "max": 5000,
+      "steps": 499,
       "title": "Energy",
       "labels": [
         {
           "value": 200,
           "label": " Low"
         },
+
         {
-          "value": 2774,
+          "value": 5000,
           "label": "High"
         }
       ],
@@ -143,7 +148,6 @@
       "height": "auto",
       "displayValue": "",
       "property": "targetTemperature",
-      "retainProperty": true,
       "disabled": false,
       "tooltip": ""
     },
@@ -151,40 +155,39 @@
       "id": "thermometer",
       "type": "barGraph",
       "property": "temperature",
-      "min": 0,
-      "max": 2774,
       "title": "Thermometer (celsius)",
       "titleOn": "right",
+      "min": 0,
+      "max": 5000,
+      "titleOn": "right",
+
       "labels": [
         {
           "value": 0,
           "label": "-273 c"
         },
         {
-          "value": 273,
-          "label": "0 c"
+          "value": 1000,
+          "label": "726 c"
         },
         {
-          "value": 773,
-          "label": "500 c"
+          "value": 2000,
+          "label": "1726 c"
         },
         {
-          "value": 1273,
-          "label": "1000 c"
+          "value": 3000,
+          "label": "2726 c"
         },
         {
-          "value": 1773,
-          "label": "1500 c"
+          "value": 4000,
+          "label": "3726 c"
         },
         {
-          "value": 2273,
-          "label": "2000 c"
-        },
-        {
-          "value": 2773,
-          "label": "2500 c"
+          "value": 5000,
+          "label": "4726 c"
         }
       ],
+
       "units": false,
       "gridLines": 10,
       "labelFormat": "3r",
@@ -193,6 +196,7 @@
       "barColor": "#e23c34",
       "fillColor": "#fff",
       "tooltip": ""
+
     }
   ],
   "layout": {
@@ -206,6 +210,7 @@
         "charged-box",
         "temperature-slider",
         "trace-atom"
+
       ]
     ]
   },
