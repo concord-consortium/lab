@@ -38,10 +38,6 @@
         %span.title select Interactive:
         %select#select-interactive
         %form#render-controls.controls
-          %span.title render in:
-          %label{:for => 'render-in-iframe'}
-            iframe
-            %input#render-in-iframe.serialize{:type => :checkbox, :name => 'render-in-iframe', :checked => 'checked'}
           %span.title size:
           %select#select-interactive-size.serialize{:name => "select-interactive-size"}
             %option{:value => "tiny"} tiny

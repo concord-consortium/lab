@@ -58,14 +58,6 @@
       widthBeforeEditMode,
       editMode = false;
 
-  function isFullIFramePage() {
-    return ($("#render-in-iframe").is(':checked'));
-  }
-
-  function isFullPage(){
-    return (!isFullIFramePage());
-  }
-
   interactivesPromise = $.get('interactives.json');
 
   interactivesPromise.done(function(results) {
@@ -155,35 +147,7 @@
       });
     });
 
-    if(isFullIFramePage()) {
-      // If we are on a Full Interactive Browser page with render in iframe
-      // enabled then *don't* create an instance of the Interatactive
-      // Just setup the rest of the page and embed the Interactive in an iframe
-      embedIframeInteractive();
-    } else {
-      // On all the other versions of this page we need to create an
-      // instance of the Interactive now.
-      controller = null;
-      interactive = null;
-      model = null;
-      Embeddable.load(interactiveUrl, '#interactive-container', {
-        controllerReady: function(_controller){
-          controller = _controller;
-          controller.on("modelLoaded.application", function() {
-            model = controller.getModel();
-            interactive = controller.serialize();
-            setupFullPage();
-          });
-        },
-        notFound: function(){
-          controller = null;
-          interactive = null;
-          model = null;
-          setupFullPage();
-        },
-        redirect: redirectHandler
-      });
-    }
+    embedIframeInteractive();
     Embeddable.sendGAPageview();
   }
 
@@ -219,11 +183,7 @@
     // initiate communication with Interactive in iframe and setup callback
     parentPhone = new iframePhone.ParentEndpoint($iframe[0]);
     parentPhone.addListener("modelLoaded", function() {
-      // On a Interactive Browser page with an iframe send the
-      // focus to the Interactive.
-      if (isFullIFramePage()) {
-        parentPhone.post('setFocus');
-      }
+      parentPhone.post('setFocus');
       parentPhone.post('getInteractiveState');
       parentPhone.addListener('interactiveState', function(content) {
         interactive = content;
@@ -331,43 +291,18 @@
       return;
     }
 
-    if(isFullPage()) {
-      // Interactive Browser with Interactive embedding in DOM (not in iframe)
-      // set keyboard focus on MD2D view
-      // FIXME: generalize when multiple model types implemented
-      controller.modelController.modelContainer.setFocus();
-      $("#json-model-link").attr("href", origin + Lab.config.actualRoot + jsonModelPath);
-      // $selectInteractiveSize.attr('disabled', 'disabled');
-      setupCodeEditor();
-      setupModelCodeEditor();
-      setupSnapshotButton();
-      setupBenchmarks();
-      // pass in the model
-      setupEnergyGraph(model);
-      setupAtomDataTable();
-      $("#extras-bottom").show();
-      $selectInteractiveSize.removeAttr('disabled');
-      $content.resizable({
-        helper: "ui-resizable-helper",
-        resize: controller.resize
-      });
-      if (typeof Shutterbug !== 'undefined') {
-        shutterbug = new Shutterbug('#interactive-container', '#image_output');
-      }
-    } else {
-      // Interactive Browser with Interactive embedding in iframe
-      // data table not working in iframe embedding mode yet
-      $("#model-datatable").hide();
+    // Interactive Browser with Interactive embedding in iframe
+    // data table not working in iframe embedding mode yet
+    $("#model-datatable").hide();
 
-      if (typeof Shutterbug !== 'undefined') {
-        shutterbug = new Shutterbug("#iframe-interactive","#image_output");
-      }
-      setupCodeEditor();
-      setupModelCodeEditor();
-      setupSnapshotButton();
-      setupBenchmarks();
-      setupEnergyGraph(null, function() { });
+    if (typeof Shutterbug !== 'undefined') {
+      shutterbug = new Shutterbug("#iframe-interactive","#image_output");
     }
+    setupCodeEditor();
+    setupModelCodeEditor();
+    setupSnapshotButton();
+    setupBenchmarks();
+    setupEnergyGraph(null, function() { });
     // All the extra items are sortable
     // $(".sortable").sortable({
     //   axis: "y",
@@ -403,18 +338,7 @@
         height = parseInt(width, 10) / intAspectRatio + "px";
 
     saveOptionsToCookie();
-    if (isFullPage()) {
-      $content.width(width).height(height);
-      // Window size is not change, so we have to call "resize()"
-      // method manually.
-      if (controller) {
-        controller.resize();
-      }
-    } else {
-      $("#iframe-wrapper").width(width).height(height);
-      // No need to call controller.resize(), as interactive controller
-      // automatically binds to the window resize event.
-    }
+    $("#iframe-wrapper").width(width).height(height);
   }
 
   $selectInteractiveSize.change(selectInteractiveSizeHandler);
@@ -502,16 +426,6 @@
     $selectInteractive.chosen();
     chosenApplied = true;
     updateNextPreviousInteractiveStatus();
-  }
-
-  function setupEmbeddableAuthorPage() {
-    var origin;
-    origin = document.location.href.match(/(.*?\/\/.*?)\//)[1];
-
-    jsonModelPath = interactive.models[0].url;
-    $jsonModelLink.attr("href", origin + Lab.config.actualRoot + jsonModelPath);
-
-    setupCodeEditor();
   }
 
   function restoreOptionsFromCookie() {
@@ -750,13 +664,9 @@
           alert("Interactive JSON syntax error: " + e.message);
           throw new Error("Interactive JSON syntax error: " + e.message);
         }
-        if(isFullPage()) {
-          controller.loadInteractive(interactive, '#interactive-container');
-        } else {
-          parentPhone.post('loadInteractive', interactive);
-          $interactiveTitle.text(interactive.title);
-          $('#interactive-subtitle').text(interactive.subtitle);
-        }
+        parentPhone.post('loadInteractive', interactive);
+        $interactiveTitle.text(interactive.title);
+        $('#interactive-subtitle').text(interactive.subtitle);
         if (aspectRatioChanged) selectInteractiveSizeHandler();
       });
 
@@ -766,15 +676,10 @@
 
       $updateJsonFromInteractiveButton.on('click', function() {
         var interactiveState;
-        if(isFullPage()) {
-          interactiveState = controller.serialize();
-          editor.setValue(JSON.stringify(interactiveState, null, indent));
-        } else {
-          parentPhone.post('getInteractiveState');
-          parentPhone.addListener('interactiveState', function(content) {
-            editor.setValue(JSON.stringify(content, null, indent));
-          });
-        }
+        parentPhone.post('getInteractiveState');
+        parentPhone.addListener('interactiveState', function(content) {
+          editor.setValue(JSON.stringify(content, null, indent));
+        });
       });
 
       $editModeCheckbox.on('change', function () {
@@ -786,7 +691,7 @@
         widthBeforeEditMode = w;
         editMode = $editModeCheckbox.prop("checked");
 
-        if (editMode && isFullIFramePage()) {
+        if (editMode) {
           interactive.aspectRatio = aspectRatio;
           descriptionByPath[interactiveUrl].aspectRatio = aspectRatio;
           parentPhone.post('loadInteractive', interactive);
@@ -821,15 +726,10 @@
 
     function serializeModelAndUpdateEditor() {
       var modelState;
-      if(isFullPage()) {
-        modelState = controller.modelController.state();
-        modelEditor.setValue(JSON.stringify(modelState, null, indent));
-      } else {
-        parentPhone.post('getModelState');
-        parentPhone.addListener('modelState', function(content) {
-          modelEditor.setValue(JSON.stringify(content, null, indent));
-        });
-      }
+      parentPhone.post('getModelState');
+      parentPhone.addListener('modelState', function(content) {
+        modelEditor.setValue(JSON.stringify(content, null, indent));
+      });
     }
 
     if (!modelEditor) {
@@ -854,11 +754,7 @@
           alert("Model JSON syntax error: " + e.message);
           throw new Error("Model JSON syntax error: " + e.message);
         }
-        if(isFullPage()) {
-          controller.loadModel(interactive.models[0].id, modelJson);
-        } else {
-          parentPhone.post('loadModel', { modelId: interactive.models[0].id, modelObject: modelJson });
-        }
+        parentPhone.post('loadModel', { modelId: interactive.models[0].id, modelObject: modelJson });
       });
 
       $autoFormatModelJsonButton.on('click', function() {
@@ -956,20 +852,10 @@
         $("#show-benchmarks").prop("checked", true).change();
       }
 
-      if(isFullPage()) {
-        modelController = controller.modelController;
-        // Run interactive benchmarks + model benchmarks.
-        Lab.benchmark.run(controller.benchmarks.concat(modelController.benchmarks),
-          benchmarksTable,
-          function(results) { console.log(results); },
-          function() { $runBenchmarksButton.attr('disabled', true); },
-          function() { $runBenchmarksButton.attr('disabled', false); });
-      } else {
-        parentPhone.post('runBenchmarks');
-        parentPhone.addListener('returnBenchmarks', function(content) {
-          Lab.benchmark.renderToTable(benchmarksTable, content.benchmarks, content.results);
-        });
-      }
+      parentPhone.post('runBenchmarks');
+      parentPhone.addListener('returnBenchmarks', function(content) {
+        Lab.benchmark.renderToTable(benchmarksTable, content.benchmarks, content.results);
+      });
 
       if (Lab.config.benchmarkAPIurl) {
         $submitBenchmarksButton.removeAttr("disabled");
