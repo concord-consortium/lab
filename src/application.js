@@ -1,4 +1,4 @@
-/*global Lab, iframePhone, _, $, jQuery, d3, Shutterbug, CodeMirror, controllers, alert, modelList, benchmark, _gaq, DEVELOPMENT: true, AUTHORING: true */
+/*global Lab, iframePhone, _, $, Shutterbug, CodeMirror, Fingerprint, Embeddable, alert, modelList, AUTHORING: true */
 /*jshint boss:true */
 
 (function() {
@@ -35,7 +35,6 @@
 
       applicationCallbacks,
 
-      controller,
       indent = 2,
 
       interactiveUrl,
@@ -224,8 +223,7 @@
   }
 
   function finishSetupFullPage() {
-    var javaMWhref,
-        $embeddableLink = $("#embeddable-link"),
+    var $embeddableLink = $("#embeddable-link"),
         $dataGamesLink = $("#datagames-link"),
         $dataGamesStagingLink = $("#datagames-staging-link"),
         dgGameSpecification,
@@ -555,9 +553,10 @@
 
     $selectInteractiveGroups.empty();
     _.each(groups, function(group) {
-      var publicFilter = $("#public").is(':checked'),
-      draftFilter = $("#draft").is(':checked'),
-      interactiveGroups = interactives.filter(function (interactive) {
+      var publicFilter = $("#public").is(':checked');
+      var draftFilter = $("#draft").is(':checked');
+
+      interactives.filter(function (interactive) {
         if (interactive.groupKey !== group.path) return false;
         if (interactive.publicationStatus === 'sample') return true;
         if (publicFilter && interactive.publicationStatus === 'public') return true;
@@ -630,7 +629,6 @@
         $autoFormatInteractiveJsonButton = $("#autoformat-interactive-json-button"),
         $editModeCheckbox = $("#edit-mode"),
         $interactiveTextArea = $("#interactive-text-area"),
-        $editor = $("#editor"),
         $editorContent = $("#editor-content"),
         foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
 
@@ -675,7 +673,6 @@
       });
 
       $updateJsonFromInteractiveButton.on('click', function() {
-        var interactiveState;
         parentPhone.post('getInteractiveState');
         parentPhone.addListener('interactiveState', function(content) {
           editor.setValue(JSON.stringify(content, null, indent));
@@ -725,7 +722,6 @@
         modelJson;
 
     function serializeModelAndUpdateEditor() {
-      var modelState;
       parentPhone.post('getModelState');
       parentPhone.addListener('modelState', function(content) {
         modelEditor.setValue(JSON.stringify(content, null, indent));
@@ -845,8 +841,7 @@
     }).change();
 
     $runBenchmarksButton.on('click', function() {
-      var modelController,
-          benchmarksTable = document.getElementById("model-benchmark-results");
+      var benchmarksTable = document.getElementById("model-benchmark-results");
 
       if (!$showBenchmarks.prop("checked")) {
         $("#show-benchmarks").prop("checked", true).change();
@@ -871,7 +866,7 @@
 
     $submitBenchmarksButton.on('click', function() {
       var data = {},
-          headers = headers = $('#model-benchmark-results th');
+          headers = $('#model-benchmark-results th');
 
       // create data object directly from the table element
       headers.each(function(i) {
@@ -900,19 +895,6 @@
         modelEnergyGraph,
         modelEnergyData = [];
 
-    // private functions
-    function modelStepCounter() {
-      if (_model) {
-        return _model.stepCounter();
-      }
-    }
-
-    function modelIsNewStep() {
-      if (_model) {
-        return _model.isNewStep();
-      }
-    }
-
     function getKineticEnergy() {
       if (_model) {
         return _model.get('kineticEnergy');
@@ -923,21 +905,6 @@
       if (_model) {
         return _model.get('potentialEnergy');
       }
-    }
-
-    function modelSampleSizeInPs() {
-      var timeStepsPerTick, timeStep;
-
-      if (_model) {
-        timeStepsPerTick = _model.get('timeStepsPerTick');
-        timeStep    = _model.get('timeStep');
-        return _model.get("timeStepsPerTick") * _model.get("timeStep")/100;
-      }
-      else {
-        timeStepsPerTick = 60;
-        timeStep = 10;
-      }
-      return timeStepsPerTick * timeStep / 10000;
     }
 
     function addEventHook(name, func, props) {
@@ -975,7 +942,7 @@
         }
       }, ['tickCounter']);
 
-      addEventHook('reset', function(props) {
+      addEventHook('reset', function() {
         renderModelEnergyGraph();
       }, ['displayTimePerTick']);
 
@@ -1008,7 +975,7 @@
         renderModelEnergyGraph();
       });
 
-      addEventHook('stepForward', function(props) {
+      addEventHook('stepForward', function() {
         if (_model.isNewStep()) {
           updateModelEnergyGraph();
         } else {
@@ -1016,7 +983,7 @@
         }
       });
 
-      addEventHook('stepBack', function(props) {
+      addEventHook('stepBack', function() {
         modelEnergyGraph.updateOrRescale(_model.stepCounter());
       });
     }
@@ -1139,217 +1106,4 @@
       }
     }
   }
-
-  //
-  // Atom Data Table
-  //
-  function setupAtomDataTable() {
-    var $modelDatatableContent = $("#model-datatable-content"),
-        $modelDatatableResults = $("#model-datatable-results"),
-        $modelDatatableStats = $("#model-datatable-stats");
-
-    // private functions
-    function renderModelDatatable(reset) {
-      var i,
-          nodes = model.getAtoms(),
-          atoms = [],
-          $thead =  $('#model-datatable-results>thead'),
-          $tbody =  $('#model-datatable-results>tbody'),
-          titlerows = $modelDatatableResults.find(".title"),
-          datarows = $modelDatatableResults.find(".data"),
-          timeFormatter = d3.format("5.0f"),
-          timePrefix = "",
-          timeSuffix = " (fs)",
-          column_titles = ['x', 'y', 'vx', 'vy', 'ax', 'ay', 'px', 'py', 'speed', 'charge', 'radius', 'friction', 'visible', 'element', 'mass'],
-          i_formatter = d3.format(" 2d"),
-          charge_formatter = d3.format(" 1.1f"),
-          f2_formatter = d3.format(" 1.2f"),
-          f_formatter = d3.format(" 3.3f  "),
-          e_formatter = d3.format(" 3.3e  "),
-          formatters = [f_formatter, f_formatter, e_formatter,
-                        e_formatter, e_formatter, e_formatter,
-                        e_formatter, e_formatter, e_formatter,
-                        charge_formatter, f2_formatter, f2_formatter, i_formatter, i_formatter, i_formatter];
-
-      atoms.length = nodes.length;
-      reset = reset || false;
-
-      function add_row($el, kind, rownum) {
-        var $row = $("<tr>");
-        kind = kind || "data";
-        $row.addClass(kind);
-        if (typeof rownum === "number") {
-          $row.attr("id", "row_" + rownum);
-        }
-        $el.append($row);
-        return $row;
-      }
-
-      function add_data($row, content) {
-        var $el = $("<td>");
-        $el.text(content);
-        $row.append($el);
-      }
-
-      function add_molecule_data(index) {
-        var i,
-            value,
-            textValue,
-            column,
-            $row = $tbody.find(".data#row_" + index),
-            $cells = $row.find('td');
-
-        if ($cells.length > 0) {
-          $cells[0].textContent = index;
-          for(i = 0; i < column_titles.length; i++) {
-            column = column_titles[i];
-            value = nodes[index][column];
-            textValue = formatters[i](value);
-            $cells[i+1].textContent = textValue;
-          }
-        } else {
-          add_data($row, index);
-          for(i = 0; i < column_titles.length; i++) {
-            column = column_titles[i];
-            value = nodes[index][column];
-            textValue = formatters[i](value);
-            add_data($row, textValue);
-          }
-        }
-      }
-
-      function columnSort(e) {
-        var $heading = $(this),
-            ascending = "asc",
-            descending = "desc",
-            sortOrder;
-
-        sortOrder = ascending;
-        if ($heading.hasClass(ascending)) {
-          $heading.removeClass(ascending);
-          $heading.addClass(descending);
-          sortOrder = descending;
-        } else if ($heading.hasClass(descending)) {
-          $heading.removeClass(descending);
-          $heading.addClass(ascending);
-          sortOrder = ascending;
-        } else {
-          $heading.addClass(descending);
-          sortOrder = descending;
-        }
-        $heading.siblings().removeClass("sorted");
-        $tbody.find("tr").tsort('td:eq('+$heading.index()+')',
-          {
-            sortFunction:function(a, b) {
-              var anum = Math.abs(parseFloat(a.s)),
-                  bnum = Math.abs(parseFloat(b.s));
-              if (sortOrder === ascending) {
-                return anum === bnum ? 0 : (anum > bnum ? 1 : -1);
-              } else {
-                return anum === bnum ? 0 : (anum < bnum ? 1 : -1);
-              }
-            }
-          }
-        );
-        $heading.addClass("sorted");
-        e.preventDefault();
-      }
-
-      function add_column_headings($title_row, titles) {
-        var i,
-            $el;
-
-        $el = $("<th>");
-        $el.text("atom");
-        $title_row.append($el);
-        $el.click(columnSort);
-        i = -1; while (++i < titles.length) {
-          $el = $("<th>");
-          $el.text(titles[i]);
-          $title_row.append($el);
-          $el.click(columnSort);
-        }
-      }
-
-      function add_data_rows(n) {
-        var i = -1, j = datarows.length;
-        while (++i < n) {
-          if (i >= j) {
-            add_row($tbody, 'data', i);
-          }
-        }
-        while (--j >= i) {
-          $tbody.remove(datarows[i]);
-        }
-        return $tbody.find(".data");
-      }
-
-      $modelDatatableStats.text(timePrefix + timeFormatter(model.get('time')) + timeSuffix);
-
-      if (titlerows.length === 0) {
-        var $title_row = add_row($thead, "title");
-        add_column_headings($title_row, column_titles);
-        datarows = add_data_rows(atoms.length);
-      }
-      if (reset) {
-        datarows = add_data_rows(model.getNumberOfAtoms());
-      }
-      i = -1; while (++i < atoms.length) {
-        add_molecule_data(i);
-      }
-    }
-
-    function addEventListeners() {
-      model.on("tick.dataTable", function() {
-        renderModelDatatable();
-      });
-      model.on('play.dataTable', function() {
-        renderModelDatatable();
-      });
-      model.on('reset.dataTable', function() {
-        renderModelDatatable(true);
-      });
-      model.on('seek.dataTable', function() {
-        renderModelDatatable();
-      });
-      model.on('stepForward.dataTable', function() {
-        renderModelDatatable();
-      });
-      model.on('stepBack.dataTable', function() {
-        renderModelDatatable();
-      });
-      model.on('addAtom.dataTable', function() {
-        renderModelDatatable(true);
-      });
-      model.on('removeAtom.dataTable', function() {
-        renderModelDatatable(true);
-      });
-    }
-
-    function removeEventListeners() {
-      model.on("tick.dataTable", null);
-      model.on('play.dataTable', null);
-      model.on('reset.dataTable', null);
-      model.on('seek.dataTable', null);
-      model.on('stepForward.dataTable', null);
-      model.on('stepBack.dataTable', null);
-      if (model.type == 'md2d') {
-        model.on('addAtom.dataTable', null);
-        model.on('removeAtom.dataTable', null);
-      }
-    }
-
-    // Initialization
-    $showModelDatatable.change(function() {
-      if (this.checked) {
-        addEventListeners();
-        $modelDatatableContent.show(100);
-        renderModelDatatable(true);
-      } else {
-        removeEventListeners();
-        $modelDatatableContent.hide(100);
-      }
-    }).change();
-  }
-
 }());
