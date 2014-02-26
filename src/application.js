@@ -40,7 +40,6 @@
       interactiveUrl,
       interactive,
       hash,
-      model,
 
       editor,
       modelEditor,
@@ -300,7 +299,7 @@
     setupModelCodeEditor();
     setupSnapshotButton();
     setupBenchmarks();
-    setupEnergyGraph(null, function() { });
+    setupEnergyGraph();
     // All the extra items are sortable
     // $(".sortable").sortable({
     //   axis: "y",
@@ -889,29 +888,15 @@
   // If an Interactive is instanced on this page pass in the model object,
   // otherwize we'll assume the Interactive is embedded in an iframe.
   //
-  function setupEnergyGraph(_model, callback) {
+  function setupEnergyGraph() {
     var $modelEnergyGraphContent = $("#model-energy-graph-content"),
         energyGraphSamplePeriod,
         modelEnergyGraph,
         modelEnergyData = [];
 
-    function getKineticEnergy() {
-      if (_model) {
-        return _model.get('kineticEnergy');
-      }
-    }
-
-    function getPotentialEnergy() {
-      if (_model) {
-        return _model.get('potentialEnergy');
-      }
-    }
-
     function addEventHook(name, func, props) {
       var privateName = name + '.modelEnergyGraph';
-      if (_model) {
-        _model.on(privateName, func); // for now
-      } else if (parentPhone) {
+      if (parentPhone) {
         parentPhone.addListener(privateName, func);
         parentPhone.post('listenForDispatchEvent', {
           eventName: privateName,
@@ -922,9 +907,7 @@
 
     function removeEventHook(name) {
       var privateName = name + '.modelEnergyGraph';
-      if (_model) {
-        _model.on(privateName, null); // for now
-      } else if (parentPhone) {
+      if (parentPhone) {
         parentPhone.post('removeListenerForDispatchEvent', privateName);
         parentPhone.removeListener(privateName);
       }
@@ -959,41 +942,8 @@
       }, ['tickCounter']);
     }
 
-    function addRegularEventListeners() {
-      addEventHook("tick", function() {
-        updateModelEnergyGraph();
-      });
-
-      addEventHook('play', function() {
-        if (modelEnergyGraph.numberOfPoints() && _model.stepCounter() < modelEnergyGraph.numberOfPoints()) {
-          resetModelEnergyData(model.stepCounter());
-          modelEnergyGraph.resetSamples(modelEnergyData);
-        }
-      });
-
-      addEventHook('reset', function() {
-        renderModelEnergyGraph();
-      });
-
-      addEventHook('stepForward', function() {
-        if (_model.isNewStep()) {
-          updateModelEnergyGraph();
-        } else {
-          modelEnergyGraph.updateOrRescale(_model.stepCounter());
-        }
-      });
-
-      addEventHook('stepBack', function() {
-        modelEnergyGraph.updateOrRescale(_model.stepCounter());
-      });
-    }
-
     function addEventListeners() {
-      if (_model) {
-        addRegularEventListeners();
-      } else {
-        addIframeEventListeners();
-      }
+      addIframeEventListeners();
     }
 
     function removeEventListeners() {
@@ -1038,8 +988,8 @@
     // Add another sample of model KE, PE, and TE to the arrays in resetModelEnergyData
     function updateModelEnergyData(props) {
 
-      var ke = props ? props.kineticEnergy   : getKineticEnergy(),
-          pe = props ? props.potentialEnergy : getPotentialEnergy(),
+      var ke = props ? props.kineticEnergy   : undefined,
+          pe = props ? props.potentialEnergy : undefined,
           te = ke + pe;
       modelEnergyData[0].push(ke);
       modelEnergyData[1].push(pe);
@@ -1080,30 +1030,17 @@
 
     // Intitialization
     energyGraphSamplePeriod = 1;
-    if (_model) {
-      energyGraphSamplePeriod = model.get('displayTimePerTick');
-      renderModelEnergyGraph();
-      if (callback && typeof callback === "function") {
-        callback();
-      }
-      setupShowHideLHandler();
-    } else if (parentPhone) {
+    if (parentPhone) {
       parentPhone.addListener('propertyValue', function(content) {
         if (content.name === 'displayTimePerTick') {
           energyGraphSamplePeriod = content.value;
           renderModelEnergyGraph();
-          if (callback && typeof callback === "function") {
-            callback();
-          }
           setupShowHideLHandler();
         }
       });
       parentPhone.post('get', 'displayTimePerTick');
     } else {
       renderModelEnergyGraph();
-      if (callback && typeof callback === "function") {
-        callback();
-      }
     }
   }
 }());
