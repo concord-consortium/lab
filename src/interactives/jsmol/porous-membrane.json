@@ -23,12 +23,8 @@
   ],
   "parameters": [
     {
-      "name": "animation-scene",
-      "initialValue": 0,
-      "onChange": [
-        "if (value < 0 || value > 7) return;",
-        "post('jsmolScript', 'echo \"\"; script models/porous-membrane/scene' + value + '.spt;');"
-      ]
+      "name": "scene",
+      "initialValue": 0
     }
   ],
   "components": [
@@ -39,8 +35,8 @@
       "action": [
         "var stopTime = [1, 2, 1, 1, 4, 1, 3, 0];",
         "for (var i = 0; i < 8; i++) {",
-        "  set('animation-scene', i);",
-        "  post('jsmolScript', 'delay ' + stopTime[i] + ';');",
+        "  set('scene', i);",
+        "  post('jsmolScript', 'echo \"\"; script models/porous-membrane/scene' + i + '.spt; delay ' + stopTime[i] + ';');",
         "}"
       ]
     },
@@ -49,9 +45,10 @@
       "id": "next-scene",
       "text": "Go to next scene",
       "action": [
-        "var newScene = get('animation-scene') + 1;",
+        "var newScene = get('scene') + 1;",
         "if (newScene > 7) return;",
-        "set('animation-scene', newScene);"
+        "set('scene', newScene);",
+        "post('jsmolScript', 'echo \"\"; script models/porous-membrane/scene' + newScene + '.spt;');"
       ]
     },
     {
@@ -59,9 +56,10 @@
       "id": "prev-scene",
       "text": "Go to previous scene",
       "action": [
-        "var newScene = get('animation-scene') - 1;",
+        "var newScene = get('scene') - 1;",
         "if (newScene < 0) return;",
-        "set('animation-scene', newScene);"
+        "set('scene', newScene);",
+        "post('jsmolScript', 'exit; script models/porous-membrane/state' + newScene + '.spt;');"
       ]
     }
   ],
