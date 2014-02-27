@@ -8,7 +8,7 @@
   "aspectRatio": 1.3,
   "fontScale": 1,
   "helpOnLoad": false,
-  "about": "",
+  "about": "Click the play button, then heat the snowflake. Watch what happens at the molecular scale. What happens when you cool it again?",
   "models": [
     {
       "type": "md2d",
@@ -62,7 +62,7 @@
       "property": "temperatureFiltered",
       "min": 0,
       "max": 20000,
-      "title": "",
+      "title": "Thermometer",
       "titleOn": "right",
       "labels": 0,
       "units": false,
