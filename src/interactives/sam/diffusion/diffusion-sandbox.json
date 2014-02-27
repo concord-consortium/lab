@@ -11,6 +11,7 @@
       "url": "models/md2d/sam/diffusion/diffusion-sandbox-mml.json",
       "viewOptions": {
         "controlButtons": "play_reset",
+        "showClock": true,
         "showVelocityVectors": false
       }
     }

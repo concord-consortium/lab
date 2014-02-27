@@ -17,6 +17,7 @@
       "url": "imports/legacy-mw-content/converted/sam-activities/diffusion/page1/page1$0.json",
       "viewOptions": {
         "controlButtons": "play_reset",
+        "showClock": true,
         "imageMapping": {
           "waterDyeKey.png": "waterDyeKey.svg"
         }
