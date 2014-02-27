@@ -22,17 +22,3 @@ For this to work as intended python software properties must also be installed.
 Now install node and npm:
 
     $ sudo apt-get install nodejs npm
-
-Neither the Java run time environment nor the Java development kit are installed by
-default, both of which are used for the java projects.
-
-    sudo apt-get install  default-jre openjdk-6-jdk
-
-The Ruby Gem Nokogiri requires libxslt and libxml2, install them with:
-
-    sudo apt-get install libxslt-dev libxml2-dev
-
-Final note, before you `make everything` setup the project configurations files by copying the
-configuration samples:
-
-    cp config/config.sample.yml config/config.yml
