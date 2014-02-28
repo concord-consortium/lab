@@ -160,9 +160,6 @@ define(function (require) {
         // model reload / reset.
         propertiesRetainedByComponents = [],
 
-        // List of custom parameters which are used by the interactive.
-        customParametersByName = {},
-
         // Hash containing all public (see .addDataSet() method) data sets.
         publicDataSetsByName,
 
@@ -1090,11 +1087,6 @@ define(function (require) {
           // all updates to parameter value will be shared with its initial value.
           initialValues[parameter.name] = clone(parameter.initialValue);
         }
-        // Save reference to the definition which is finally used.
-        // Note that if parameter is defined both in interactive top-level scope
-        // and modelDefinitions section, one from model sections will be defined in this hash.
-        // It's necessary to update correctly values of parameters during serialization.
-        customParametersByName[parameter.name] = parameter;
       }
 
       model.set(initialValues);
@@ -1334,29 +1326,7 @@ define(function (require) {
         e.g. JSON.stringify(interactiveController.serialize());
       */
       serialize: function () {
-        var result, i, len, param, val;
-
-        // This is the tricky part.
-        // Basically, parameters can be defined in two places - in model definition object or just as a top-level
-        // property of the interactive definition. 'customParameters' list contains references to all parameters
-        // currently used by the interactive, no matter where they were specified. So, it's enough to process
-        // and update only these parameters. Because of that, later we can easily serialize interactive definition
-        // with updated values and avoid deciding whether this parameter is defined in 'modelDefinitions' section
-        // or top-level 'parameters' section. It will be updated anyway.
-        if (model !== undefined && model.get !== undefined) {
-          for (param in customParametersByName) {
-            if (customParametersByName.hasOwnProperty(param)) {
-              param = customParametersByName[param];
-              val = model.get(param.name);
-              if (val !== undefined) {
-                // Deep copy of the initial value. Otherwise, if value is an object or array, all
-                // updates to parameter value will be shared with its initial value.
-                param.initialValue = clone(val);
-              }
-            }
-          }
-        }
-
+        var result, i, len;
         // Copy basic properties from the initial definition, as they are immutable.
         // FIXME: this should be based on enumerating properties in the metadata. The issue is properties
         // added to the metadata like "importedFrom" have to be then manually added here.
@@ -1383,6 +1353,43 @@ define(function (require) {
           filteredOutputs: $.extend(true, [], interactive.filteredOutputs),
           helpTips: $.extend(true, [], interactive.helpTips)
         };
+
+        // Update parameters' initial values.
+        if (model !== undefined && model.get !== undefined) {
+          // Basically, parameters can be defined in two places - in model definition object or just as a top-level
+          // property of the interactive definition. Note that when particular parameter is defined in both places
+          // it means that the parameter from *model* definition will be used. That's why we keep track
+          // of parameters defined in the model definition.
+          var modelParams = (function() {
+            for (var i = 0, len = result.models.length; i < len; i++) {
+              if (result.models[i].id === currentModelID) {
+                return result.models[i].parameters || [];
+              }
+            }
+            return [];
+          }());
+          var interactiveParams = result.parameters;
+          var isModelParameter = {};
+          modelParams.forEach(function (param) {
+            isModelParameter[param.name] = true;
+            var val = model.get(param.name);
+            if (val !== undefined) {
+              // Deep copy of the initial value. Otherwise, if value is an object or array, all
+              // updates to parameter value will be shared with serialized value.
+              param.initialValue = clone(val);
+            }
+          });
+          interactiveParams.forEach(function (param) {
+            // The parameter is overwritten by model parameter and shouldn't be updated here.
+            if (isModelParameter[param.name]) return;
+            var val = model.get(param.name);
+            if (val !== undefined) {
+              // Deep copy of the initial value. Otherwise, if value is an object or array, all
+              // updates to parameter value will be shared with serialized value.
+              param.initialValue = clone(val);
+            }
+          });
+        }
 
         // add optional attributes to result if defined
         if (interactive.importedFrom !== undefined) {
