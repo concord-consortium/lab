@@ -44,6 +44,7 @@ define(function() {
 
     return view = {
       $el: $("<div id='model-container' class='container sensor-model-container' />"),
+      remoteAddress: null,
 
       bindModel: function(newModel, newModelUrl) {
         modelUrl = newModelUrl || modelUrl;
@@ -59,7 +60,6 @@ define(function() {
       // called once we're in the DOM
       setup: function() {
         view.$el.empty();
-
         view.$addressInput = $("<div class='address-input'><input type='text' name='address-input' placeholder='address of LabQuest2'></input></div>");
         sensorReadingView = new NumericOutputView({
           id: 'sensor-value-view',
@@ -82,6 +82,13 @@ define(function() {
         view.$el.find('div').addClass('component component-spacing');
         sensorReadingView.resize();
         setupModelObservers();
+
+        if (typeof(view.remoteAddress) == "string") {
+          view.$addressInput.find('input').val(view.remoteAddress);
+        }
+        view.$addressInput.find('input').on('change', function() {
+          view.remoteAddress = $(this).val();
+        });
 
         view.$connectButton.on('click', 'button', function() {
           model.connect(view.$addressInput.find('input').val());
