@@ -34,21 +34,18 @@ define(function (require) {
     var protocol = window.location.protocol;
     var base     = host;
 
-    if (load_learner) {
-      search = addParam(search,'load_learner_data','true');
-    }
-
-    if(this.has_versioned_home) {
+    if (this.has_versioned_home) {
       base   = this.versioned_home + this.version;
       search = addParam(search,'is_versioned_url','true');
-    }
-    else {
+    } else {
       search = addParam(search,'show_data_warning', 'true');
     }
     if (/^https?\:\/\//.test(base)) {
       return base + path + search + hash;
     }
-    return protocol + "//" + base + path + search + hash;
+    // Do not return hash with interactive URL when learner data will be provided later
+    // (no need to download and load interactive that will be immediately replaced).
+    return protocol + "//" + base + path + search + (load_learner ? "" : hash);
   };
 
 
