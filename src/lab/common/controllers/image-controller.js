@@ -37,7 +37,7 @@ define(function (require) {
       // If URL is external, we can setup it just once.
       this._$img.attr("src", this.component.src);
     } else if (this._resourcesUrl) {
-      this._$img.attr("src", this.component.src.replace(resourcesUrl, root + "/resources/"));
+      this._$img.attr("src", this.component.src.replace(resourcesUrl, root + "/lab/resources/"));
     }
 
     // When a dimension is different from "auto",

@@ -476,10 +476,10 @@
       <g class="brush-container"/>
     </svg>
     <g class="icon-container">
-      <image id="heat-bath" x="1%" width="36" height="36" preserveAspectRatio="xMinYMin" xlink:href="resources/upstatement/heatbath.svg" class="opaque-on-hover" style="display: none;">
+      <image id="heat-bath" x="1%" width="36" height="36" preserveAspectRatio="xMinYMin" xlink:href="lab/resources/upstatement/heatbath.svg" class="opaque-on-hover" style="display: none;">
         <title>Heatbath active</title>
       </image>
-      <image id="ke-gradient" x="0" width="39.6" height="108" preserveAspectRatio="xMinYMin" xlink:href="resources/upstatement/ke-gradient.svg" class="opaque-on-hover" style="display: none;">
+      <image id="ke-gradient" x="0" width="39.6" height="108" preserveAspectRatio="xMinYMin" xlink:href="lab/resources/upstatement/ke-gradient.svg" class="opaque-on-hover" style="display: none;">
         <title>Kinetic energy gradient</title>
       </image>
     </g>

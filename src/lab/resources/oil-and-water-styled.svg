@@ -261,11 +261,11 @@
         height: 1.1em;
         background-repeat: no-repeat;
         background-size: 100%;
-        background-image: url("/resources/upstatement/unchecked.svg"); }
+        background-image: url("/lab/resources/upstatement/unchecked.svg"); }
         .interactive-radio .fakeCheckable.checked {
           background-repeat: no-repeat;
           background-size: 100%;
-          background-image: url("/resources/upstatement/checked.svg"); }
+          background-image: url("/lab/resources/upstatement/checked.svg"); }
 
     .interactive-pulldown {
       font-size: 1em; }
@@ -677,45 +677,45 @@
     .fullscreen {
       background-repeat: no-repeat;
       background-size: 90%;
-      background-image: url("/resources/layout/fullscreen.svg"); }
+      background-image: url("/lab/resources/layout/fullscreen.svg"); }
       .fullscreen:hover {
         background-repeat: no-repeat;
         background-size: 90%;
-        background-image: url("/resources/layout/fullscreen-dark.svg"); }
+        background-image: url("/lab/resources/layout/fullscreen-dark.svg"); }
 
     body:-moz-full-screen .fullscreen {
       background-repeat: no-repeat;
       background-size: 90%;
-      background-image: url("/resources/layout/fullscreen-exit.svg"); }
+      background-image: url("/lab/resources/layout/fullscreen-exit.svg"); }
       body:-moz-full-screen .fullscreen:hover {
         background-repeat: no-repeat;
         background-size: 90%;
-        background-image: url("/resources/layout/fullscreen-exit-dark.svg"); }
+        background-image: url("/lab/resources/layout/fullscreen-exit-dark.svg"); }
 
     body:-webkit-full-screen .fullscreen {
       background-repeat: no-repeat;
       background-size: 90%;
-      background-image: url("/resources/layout/fullscreen-exit.svg"); }
+      background-image: url("/lab/resources/layout/fullscreen-exit.svg"); }
       body:-webkit-full-screen .fullscreen:hover {
         background-repeat: no-repeat;
         background-size: 90%;
-        background-image: url("/resources/layout/fullscreen-exit-dark.svg"); }
+        background-image: url("/lab/resources/layout/fullscreen-exit-dark.svg"); }
 
     body:fullscreen .fullscreen {
       background-repeat: no-repeat;
       background-size: 90%;
-      background-image: url("/resources/layout/fullscreen-exit.svg"); }
+      background-image: url("/lab/resources/layout/fullscreen-exit.svg"); }
       body:fullscreen .fullscreen:hover {
         background-repeat: no-repeat;
         background-size: 90%;
-        background-image: url("/resources/layout/fullscreen-exit-dark.svg"); }
+        background-image: url("/lab/resources/layout/fullscreen-exit-dark.svg"); }
 
     .credits {
-      background: url("/resources/layout/cc-logo.png") no-repeat;
+      background: url("/lab/resources/layout/cc-logo.png") no-repeat;
       background-size: 80%;
       background-position: 0.3em 0.2em; }
       .credits:hover {
-        background-image: url("/resources/layout/cc-logo-dark.png"); }
+        background-image: url("/lab/resources/layout/cc-logo-dark.png"); }
 
     #responsive-content .context-menu-list {
       min-width: 5em;
@@ -838,12 +838,12 @@
         background-repeat: no-repeat;
         background-position: 2%;
         background-size: auto 90%;
-        background-image: url("/resources/plus.svg"); }
+        background-image: url("/lab/resources/plus.svg"); }
       #responsive-content .aminoacids-menu .neg-charge {
         background-repeat: no-repeat;
         background-position: 2%;
         background-size: auto 90%;
-        background-image: url("/resources/minus.svg"); }
+        background-image: url("/lab/resources/minus.svg"); }
       #responsive-content .aminoacids-menu .hydrophobic {
         background-color: #f3c35d; }
       #responsive-content .aminoacids-menu .hydrophobic.marked {
@@ -860,7 +860,7 @@
         background-repeat: no-repeat;
         background-position: 4%;
         background-size: auto 40%;
-        background-image: url("/resources/col.svg"); }
+        background-image: url("/lab/resources/col.svg"); }
       #responsive-content .aminoacids-menu .hydrophilic-category {
         font-size: 1.1em;
         font-weight: bold;
@@ -869,12 +869,12 @@
         background-repeat: no-repeat;
         background-position: 4%;
         background-size: auto 40%;
-        background-image: url("/resources/col.svg"); }
+        background-image: url("/lab/resources/col.svg"); }
       #responsive-content .aminoacids-menu .expanded {
         background-repeat: no-repeat;
         background-position: 4%;
         background-size: auto 40%;
-        background-image: url("/resources/exp.svg"); }
+        background-image: url("/lab/resources/exp.svg"); }
 
     .dna-edit-dialog {
       font-size: 0.9em; }

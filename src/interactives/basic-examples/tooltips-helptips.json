@@ -95,7 +95,7 @@
       "type": "image",
       "id": "image",
       "width": "10em",
-      "src": "http://lab.concord.org/resources/layout/cc-logo.png",
+      "src": "http://lab.concord.org/lab/resources/layout/cc-logo.png",
       "tooltip": "I'm an image component!"
     },
     {

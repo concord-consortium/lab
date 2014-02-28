@@ -230,7 +230,7 @@
       "type": "image",
       "id": "image-absolute-path",
       "width": "10em",
-      "src": "http://lab.concord.org/resources/layout/cc-logo.png"
+      "src": "http://lab.concord.org/lab/resources/layout/cc-logo.png"
     }
   ],
   "layout": {

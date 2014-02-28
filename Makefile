@@ -358,7 +358,7 @@ convert-all-mml:
 	./src/helpers/md2d/post-batch-processor.rb
 
 public/resources:
-	cp -R ./src/resources ./public/
+	cp -R ./src/lab/resources ./public/lab/
 
 # ------------------------------------------------
 #

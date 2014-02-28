@@ -15,7 +15,7 @@
     "",
     "* An item in a bulleted list\n    * A subitem, indented with 4 spaces\n",
     "",
-    "Inline image: ![Alt text](/resources/heatbath.gif \"CC logo\")",
+    "Inline image: ![Alt text](/lab/resources/heatbath.gif \"CC logo\")",
     "",
     "Inline [link](http://daringfireball.net/projects/markdown/syntax \"Markdown Syntax\") pointing to Markdown Syntax description."
   ],
@@ -73,7 +73,7 @@
     {
       "id": "image",
       "type": "text",
-      "text": "Inline image: ![Alt text](/resources/heatbath.gif \"CC logo\")"
+      "text": "Inline image: ![Alt text](/lab/resources/heatbath.gif \"CC logo\")"
     },
     {
       "id": "link",

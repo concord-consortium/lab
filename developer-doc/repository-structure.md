@@ -220,10 +220,10 @@ and **`src/experiments/`** and not in the target directories of the same names i
 **`public`**. Change made in **`public`** will be overwritten during the next
 build process.
 
-### src/resources
+### src/lab/resources
 
-The **[src/resources/](https://github.com/concord-consortium/lab/tree/master/src/resources)** directory contains image resources and are copied directly to
-**`public/resources`**.
+The **[src/lab/resources/](https://github.com/concord-consortium/lab/tree/master/src/lab/resources)** directory contains image resources and are copied directly to
+**`public/lab/resources`**.
 
 ### src/sass
 

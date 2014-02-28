@@ -175,7 +175,7 @@ define(function (require) {
             "width": m2px(W.BACKB),
             "height": m2px(H.BACKB),
             "preserveAspectRatio": "none",
-            "xlink:href": "resources/dna/Backbone_" + backbone + ".svg"
+            "xlink:href": "lab/resources/dna/Backbone_" + backbone + ".svg"
           });
         }
 
@@ -213,7 +213,7 @@ define(function (require) {
           "x": function (d) { return m2px(W.BACKB) / 2 - m2px(W[d.type + "_GLOW"]) / 2; },
           "width": function (d) { return m2px(W[d.type + "_GLOW"]); },
           "height": function (d) { return m2px(H[d.type + "_GLOW"]); },
-          "xlink:href": function (d) { return "resources/dna/NucleotideGlow_" + d.type + ".svg"; }
+          "xlink:href": function (d) { return "lab/resources/dna/NucleotideGlow_" + d.type + ".svg"; }
         });
         nucleoSVGUpdate = nucleo.select(".nucleo-shape > svg");
         nucleoSVGUpdate.attr({
