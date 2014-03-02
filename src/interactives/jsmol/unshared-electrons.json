@@ -1,8 +1,12 @@
 {
   "title": "Unshared Electrons and the \"Bent\" Shape",
   "publicationStatus": "draft",
-  "subtitle": "",
-  "about": "",
+  "subtitle": "Why is water not linear?",
+  "about": [
+    "Use the 3D model to see how unshared electrons repel ",
+    "those that are shared in the bonds between hydrogen ",
+    "and oxygen, causing the molecule to have a \"bent\" shape."
+  ],
   "models": [
     {
       "type": "iframe-model",

@@ -1,8 +1,16 @@
 {
-  "title": "An Atom's Energy Levels",
+  "title": "Energy Levels of a Hydrogen Atom",
   "publicationStatus": "draft",
-  "subtitle": "",
-  "about": "",
+  "subtitle": "Explore the orbital shapes of hydrogen's electron.",
+  "about": [
+    "The likely location of an electron around the nucleus of an atom ",
+    "is called an orbital. The shape of an orbital depends on the energy ",
+    "state of the electron.",
+    "",
+    "A neutral hydrogen atom has one electron. Click in the boxes to set the ",
+    "energy of that electron and see the orbital shape describing where you are ",
+    "likely to find that electron around the nucleus."
+  ],
   "models": [
     {
       "type": "iframe-model",

@@ -1,8 +1,11 @@
 {
-  "title": "The Double Helix",
+  "title": "DNA: The Double Helix",
   "publicationStatus": "draft",
-  "subtitle": "",
-  "about": "",
+  "subtitle": "Explore the structure of DNA.",
+  "about": [
+    "Use the controls to explore this fragment of a much longer DNA strand.",
+    "Can you find the four different base-pairs that DNA is constructed from?"
+  ],
   "models": [
     {
       "type": "iframe-model",
