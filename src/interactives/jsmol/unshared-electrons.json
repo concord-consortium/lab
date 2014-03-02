@@ -36,10 +36,10 @@
         "  post('jsmolScript', 'script models/unshared-electrons/p6-unshared.spt');",
         "  return;",
         "  case 'both':",
-        "  post('jsmolScript', 'isosurface on;');",
+        "  post('jsmolScript', 'script models/unshared-electrons/p6-both.spt');",
         "  return;",
         "  case 'hide electrons':",
-        "  post('jsmolScript', 'isosurface off;');",
+        "  post('jsmolScript', 'lcaocartoon delete');",
         "  return;",
         "}"
       ]
