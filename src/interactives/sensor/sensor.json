@@ -1,7 +1,7 @@
 {
   "title": "Sensor",
-  "publicationStatus": "draft",
-  "subtitle": "Testing the Sensor model type",
+  "publicationStatus": "public",
+  "subtitle": "Collect data from Vernier Go and LabQuest Mini interfaces",
   "about": "",
   "fontscale": 0.9,
   "models": [

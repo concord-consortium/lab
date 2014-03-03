@@ -1,7 +1,7 @@
 {
   "title": "Dual Sensor",
-  "publicationStatus": "draft",
-  "subtitle": "Testing the Dual Sensor model type",
+  "publicationStatus": "public",
+  "subtitle": "Collect data from two sensors simultaneously connected ot a Vernier LabQuest Mini interface.",
   "aspectRatio": 1.3,
   "helpOnLoad": false,
   "about": "",

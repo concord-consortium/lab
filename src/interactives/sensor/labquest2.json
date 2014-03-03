@@ -1,7 +1,7 @@
 {
   "title": "LabQuest2 Sensor",
   "publicationStatus": "draft",
-  "subtitle": "Testing the labquest2 model type",
+  "subtitle": "Collect data wirelessly from Vernier LabQuest2 interface.",
   "about": "",
   "fontscale": 0.9,
   "models": [
