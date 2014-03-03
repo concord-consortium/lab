@@ -15,6 +15,15 @@ define(function() {
         defaultValue: "public"
       },
 
+      labEnvironment: {
+        // An indicator of which Lab environment the interactive is compatible with.
+        // Possible values:
+        // - "production"
+        // - "staging"
+        // - "development"
+        defaultValue: "production"
+      },
+
       subtitle: {
         defaultValue: ""
       },

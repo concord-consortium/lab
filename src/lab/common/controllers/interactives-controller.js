@@ -1334,6 +1334,7 @@ define(function (require) {
         result = {
           title: interactive.title,
           publicationStatus: interactive.publicationStatus,
+          labEnvironment: interactive.labEnvironment,
           subtitle: interactive.subtitle,
           category: interactive.category,
           subCategory: interactive.subCategory,
