@@ -1,9 +1,9 @@
 {
   "title": "Electron Geometry",
-  "publicationStatus": "draft",
+  "publicationStatus": "public",
   "subtitle": "Explore examples of different molecular shapes",
   "about": [
-    "The shapes molecules have are due to the pattern of shared and unshared electrons.",
+    "Molecules assume different shapes due to patterns of shared and unshared electrons.",
     "In these examples all electrons affecting the shape of the molecules are shared ",
     "in the covalent bonds holding the atoms together to form the molecules."
   ],

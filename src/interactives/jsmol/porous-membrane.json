@@ -1,10 +1,10 @@
 {
   "title": "Aquapores",
-  "publicationStatus": "draft",
+  "publicationStatus": "public",
   "subtitle": "Explore an interactive 3D model of an aquapore.",
   "about": [
     "The passage of water into and out of cells is crucial to their function. ",
-    "However, water cannot directly pass through these membranes. Instead water ",
+    "However, water cannot directly pass through these membranes. Instead, water ",
     "moves through channels made by proteins that bridge the inside and outside ",
     "of a cell. Use this interactive to explore the structure of an aquapore channel, which ",
     "allows only water to pass into and out of a cell."

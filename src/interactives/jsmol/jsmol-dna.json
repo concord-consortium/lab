@@ -1,10 +1,10 @@
 {
   "title": "DNA: The Double Helix",
-  "publicationStatus": "draft",
+  "publicationStatus": "public",
   "subtitle": "Explore the structure of DNA.",
   "about": [
     "Use the controls to explore this fragment of a much longer DNA strand.",
-    "Can you find the four different base-pairs that DNA is constructed from?"
+    "Can you find the four different base pairs that DNA is constructed from?"
   ],
   "models": [
     {
@@ -105,7 +105,7 @@
     {
       "type": "text",
       "id": "label-top",
-      "text": "**To zoom in, hold down SHIFT while you click and drag on the DNA**"
+      "text": "**To zoom in or out, hold down SHIFT while you click and drag on the DNA**"
     },
     {
       "type": "text",
