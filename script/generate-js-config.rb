@@ -26,6 +26,7 @@ CONFIG[:jsconfig][:sharing] = true  if CONFIG[:jsconfig][:sharing] == nil
 CONFIG[:jsconfig][:logging] = true  if CONFIG[:jsconfig][:logging] == nil
 CONFIG[:jsconfig][:tracing] = false if CONFIG[:jsconfig][:tracing] == nil
 CONFIG[:jsconfig][:authoring] = false if CONFIG[:jsconfig][:authoring] == nil
+CONFIG[:jsconfig][:rootUrl] = "" if CONFIG[:jsconfig][:rootUrl] == nil
 CONFIG[:jsconfig][:actualRoot] = "" if CONFIG[:jsconfig][:actualRoot] == nil
 CONFIG[:jsconfig][:fontface] = "Open Sans" if CONFIG[:jsconfig][:fontface] == nil
 CONFIG[:jsconfig][:environment] = CONFIG[:environment]
