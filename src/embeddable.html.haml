@@ -31,6 +31,7 @@
           }
         });
 
+        Lab.config.rootUrl = "lab";
         interactiveUrl = hash.substr(1, hash.length) || null;
         Embeddable.load(interactiveUrl, '#interactive-container', {
           controllerReady: function(controller){
