@@ -48,6 +48,7 @@ define(function(require) {
         isPlayable,
         canConnect,
         canTare,
+        canControl,
         isSensorTareable,
         message,
         model;
@@ -94,6 +95,7 @@ define(function(require) {
     function initializeStateVariables() {
       isStopped = true;
       canConnect = false;
+      canControl = true;
       stepCounter = 0;
       time = 0;
       rawSensorValue = undefined;
@@ -300,6 +302,14 @@ define(function(require) {
           this.gotoState('starting');
         },
 
+        controlEnabled: function() {
+          message = "Connected.";
+        },
+
+        controlDisabled: function() {
+          message = "Connected. Press start on your LabQuest2 to begin.";
+        },
+
         sessionChanged: function() {
           labquest2Interface.stopPolling();
           labquest2Interface.startPolling();
@@ -359,7 +369,11 @@ define(function(require) {
 
       started: {
         enterState: function() {
-          message = "Collecting data.";
+          if (canControl) {
+            message = "Collecting data.";
+          } else {
+            message = "Collecting data. Press stop on your LabQuest2 to end.";
+          }
           isStopped = false;
           setColumn();
 
@@ -375,6 +389,14 @@ define(function(require) {
         },
 
         data: handleData,
+
+        controlEnabled: function() {
+          message = "Collecting data.";
+        },
+
+        controlDisabled: function() {
+          message = "Collecting data. Press stop on your LabQuest2 to end.";
+        },
 
         stop: function() {
           labquest2Interface.requestStop().catch(function() {
@@ -531,6 +553,15 @@ define(function(require) {
       }
     });
 
+    labquest2Interface.on('controlEnabled',  function() {
+      canControl = true;
+      message = "Connected.";
+    });
+
+    labquest2Interface.on('controlDisabled', function() {
+      canControl = false;
+    });
+
     labModelerMixin = new LabModelerMixin({
       metadata: metadata,
       setters: {},
@@ -614,6 +645,12 @@ define(function(require) {
       label: "Can begin connecting to the LabQuest2?"
     }, function() {
       return canConnect;
+    });
+
+    model.defineOutput('canControl', {
+      label: "Can remotely start/stop the LabQuest2?"
+    }, function() {
+      return canControl;
     });
 
     model.defineOutput('needsReload', {
