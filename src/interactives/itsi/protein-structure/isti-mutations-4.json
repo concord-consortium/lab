@@ -1,5 +1,5 @@
 {
-  "title": "DNA Mutations",
+  "title": "ITSI DNA Mutations 4",
   "publicationStatus": "draft",
   "subtitle": "Explore how changing the DNA sequence can change the amino acid sequence of a protein.",
   "aspectRatio": 1.725,
@@ -21,7 +21,7 @@
         "enableKeyboardHandlers": false
       },
       "modelOptions": {
-        "DNA": "ATGCCAGGCGGCGAGAGCTTGCTAATTGGCTTATAG",
+        "DNA": "AGATTTGGGCTCATGCTAGCTATAGTAGTA",
         "DNAState": "dna"
       }
     }
