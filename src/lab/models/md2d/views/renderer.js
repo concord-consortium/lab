@@ -1089,7 +1089,7 @@ define(function(require) {
                 b.browser === "Safari" &&
                 b.version.indexOf("6.1") === 0;
       }, "saf61DNAwarning", "This model may have visual problems on Safari 6. We recommend " +
-                            "upgrading Safari, or using another browser");
+                            "upgrading Safari, or using another browser.");
     }
 
     function setupMiscOptions() {
