@@ -1044,41 +1044,14 @@ define(function(require) {
       }
     }
 
-    function setupFirefox1823Warning() {
+    function setupBrowserWarning() {
       var b = benchmark.what_browser(); // we need to recalc this for FF, for some reason
-      if (b.browser === "Firefox" &&
-          b.version >= "18" && b.version < "23") {
-        var $warning = modelView.$el.parent().find("#ff1823warning");
-        if ($warning.length === 0) {
-          $warning = $("<div id='ff1823warning' class='warning-pane'>" +
-                       "<a href='http://blog.concord.org/serious-performance-regression-in-firefox-18-and-newer' " +
-                       "class='opens-in-new-window' target='_blank'>" +
-                       "Firefox v18-22 performance issue...</a></div>");
-          $warning.on("click", function () {
-            $(this).fadeOut();
-          });
-          $warning.appendTo(modelView.$el.parent());
-        }
-        var pos = modelView.pos();
-        $warning.css({
-          width: pos.width - 20,
-          top: pos.bottom - $warning.height() - 10,
-          left: pos.left + 10
-        });
-      }
-    }
 
-    function setupFirefox27Warning() {
-      var b = benchmark.what_browser(); // we need to recalc this for FF, for some reason
-      if (b.oscpu.indexOf("Windows") !== -1 &&
-          b.browser === "Firefox" &&
-          b.version >= "27" && b.version < "28") {
-        var $warning = modelView.$el.parent().find("#ff27warning");
+      function setupWarningPane(testFunc, id, htmlContent) {
+        if (!testFunc()) return;
+        var $warning = modelView.$el.parent().find("#" + id);
         if ($warning.length === 0) {
-          $warning = $("<div id='ff27warning' class='warning-pane'>Because of a problem in " +
-                       "Firefox 27 with certain types of graphics (SVG), you may see minor " +
-                       "visual problems with some models. We recommend using another browser " +
-                       "until Firefox 28 becomes available.</div>");
+          $warning = $("<div id='" + id + "' class='warning-pane'>" + htmlContent + "</div>");
           $warning.on("click", function () {
             $(this).fadeOut();
           });
@@ -1091,6 +1064,32 @@ define(function(require) {
           left: pos.left + 10
         });
       }
+
+      // Firefox 18-23  warning:
+      setupWarningPane(function () {
+         return b.browser === "Firefox" &&
+                b.version >= "18" && b.version < "23";
+      }, "ff1823warning", "<a href='http://blog.concord.org/serious-performance-regression-in-firefox-18-and-newer' " +
+                          "class='opens-in-new-window' target='_blank'>" +
+                          "Firefox v18-22 performance issue...</a>)");
+
+      // Firefox 27 + Windows warning:
+      setupWarningPane(function () {
+         return b.browser === "Firefox" &&
+                b.oscpu.indexOf("Windows") !== -1 &&
+                b.version >= "27" && b.version < "28";
+      }, "ff27warning", "Because of a problem in " +
+                        "Firefox 27 with certain types of graphics (SVG), you may see minor " +
+                        "visual problems with some models. We recommend using another browser " +
+                        "until Firefox 28 becomes available.");
+
+      // Safari 6.1 + DNA models warning:
+      setupWarningPane(function () {
+         return model.get("DNA") &&
+                b.browser === "Safari" &&
+                b.version.indexOf("6.1") === 0;
+      }, "saf61DNAwarning", "This model may have visual problems on Safari 6. We recommend " +
+                            "upgrading Safari, or using another browser");
     }
 
     function setupMiscOptions() {
@@ -1260,8 +1259,7 @@ define(function(require) {
       model.on('removeElectricField', setupElectricField);
       model.on('changeElectricField', setupElectricField);
 
-      setupFirefox1823Warning();
-      setupFirefox27Warning();
+      setupBrowserWarning();
 
       isSetup = true;
     }
@@ -1309,8 +1307,7 @@ define(function(require) {
       imagesRenderer.setup();
       drawTextBoxes();
       drawSymbolImages();
-      setupFirefox1823Warning();
-      setupFirefox27Warning();
+      setupBrowserWarning();
       if (useQuantumDynamics) {
         enterAndUpdatePhotons();
       }
