@@ -14,7 +14,7 @@
       "type": "iframe-model",
       "id": "iframe-model",
       "model": {
-        "url": "http://resources.models.concord.org/jsmol/embeddable.html",
+        "url": "http://localhost:9191/embeddable.html",
         "molecule": "models/porous-membrane/aquaporeMem.pdb"
       },
       "viewOptions": {
@@ -42,7 +42,11 @@
         "var stopTime = [1, 2, 1, 1, 4, 1, 3, 0];",
         "for (var i = 0; i < 8; i++) {",
         "  set('scene', i);",
-        "  post('jsmolScript', 'echo \"\"; script models/porous-membrane/scene' + i + '.spt; delay ' + stopTime[i] + ';');",
+        "  post('jsmolScript', 'set echo bottom center; font echo 12 sansserif; color echo pink;'+",
+        "                      'echo \"running scene ' + i + '...\";'+",
+        "                      'set echo top center; echo \"\";'+",
+        "                      'script models/porous-membrane/scene' + i + '.spt; delay ' + stopTime[i] + ';'+",
+        "                      'set echo bottom center; echo \"\";');",
         "}"
       ]
     },
@@ -54,7 +58,11 @@
         "var newScene = get('scene') + 1;",
         "if (newScene > 7) return;",
         "set('scene', newScene);",
-        "post('jsmolScript', 'echo \"\"; script models/porous-membrane/scene' + newScene + '.spt;');"
+        "  post('jsmolScript', 'set echo bottom center; font echo 12 sansserif; color echo pink;'+",
+        "                      'echo \"running scene ' + newScene + '...\";'+",
+        "                      'set echo top center; echo \"\";'+",
+        "                      'script models/porous-membrane/scene' + newScene + '.spt;'+",
+        "                      'set echo bottom center; echo \"\";');"
       ]
     },
     {
@@ -65,7 +73,11 @@
         "var newScene = get('scene') - 1;",
         "if (newScene < 0) return;",
         "set('scene', newScene);",
-        "post('jsmolScript', 'exit; script models/porous-membrane/state' + newScene + '.spt;');"
+        "post('jsmolScript', 'exit; set echo bottom center; font echo 12 sansserif; color echo pink;'+",
+        "/* 'delay 0.001' in the script below is needed to show the message. Otherwise text isn't rendered. */",
+        "                    'echo \"loading previous scene…\"; delay 0.001;'+",
+        "                    'set echo top center; echo \"\";'+",
+        "                    'script models/porous-membrane/state' + newScene + '.spt;');"
       ]
     }
   ],
