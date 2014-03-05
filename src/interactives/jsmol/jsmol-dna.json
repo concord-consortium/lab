@@ -105,7 +105,7 @@
     {
       "type": "text",
       "id": "label-top",
-      "text": "**To zoom in or out, hold down SHIFT while you click and drag on the DNA**"
+      "text": "**To zoom in or out, SHIFT-click or pinch while you drag on the DNA**"
     },
     {
       "type": "text",
