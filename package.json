@@ -1,6 +1,6 @@
 {
   "name": "lab",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "HTML5-based scientific models, visualizations, graphing, and probeware",
   "keywords": [
     "molecule",
@@ -12,10 +12,19 @@
     "d3"
   ],
   "homepage": "http://lab.dev.concord.org/",
-  "author": {
-    "name": "Stephen Bannasch",
-    "url": "https://github.com/stepheneb"
-  },
+  "contributors": [
+    "Stephen Bannasch (https://github.com/stepheneb)",
+    "Piotr Janik (https://github.com/pjanik)",
+    "Richard Klancer (https://github.com/rklancer",
+    "Sam Fentress (https://github.com/sfentress)",
+    "Noah Paessel (https://github.com/knowuh)",
+    "Aaron Unger (https://github.com/psndcsrv)",
+    "Dan Damelin (https://github.com/ddamelin)",
+    "William Day (https://github.com/wday)",
+    "Scott Cytacki (https://github.com/scytacki)",
+    "Willy Wu (https://github.com/willy-vvu)",
+    "Jen Goree (https://github.com/jengoree)"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/concord-consortium/lab.git"
