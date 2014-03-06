@@ -1011,9 +1011,7 @@ define (require) ->
 
           # Then find sigma and epsilon values.
           epsilon = epsilonProps.find("object[idref=#{pairID}], object[id=#{pairID}]").next().text()
-          sigma = sigmaProps.find("object[idref=#{pairID}], object[id=#{pairID}]").next().text() or
-                  # This is needed when cheerio >= 0.13 is used, not sure why.
-                  sigmaProps.find("object[idref=#{pairID}], object[id=#{pairID}]").find("double").text()
+          sigma = sigmaProps.find("object[idref=#{pairID}], object[id=#{pairID}]").next().text()
 
           # Scale sigma to nm.
           [sigma] = toNextgenLengths sigma
