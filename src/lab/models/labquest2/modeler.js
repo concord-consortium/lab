@@ -63,10 +63,15 @@ define(function(require) {
         if (sensorDefinition) {
           description = {
             label: sensorDefinition.measurementName,
-            unitType: sensorDefinition.measurementType,
+            format: '.2f',
             min: sensorDefinition.minReading,
             max: sensorDefinition.maxReading
           };
+          if (unitsDefinition.units[sensorDefinition.measurementType]) {
+            description.unitType = sensorDefinition.measurementType;
+          } else {
+            description.unitAbbreviation = dataColumn.units;
+          }
           isSensorTareable = sensorDefinition.tareable;
           sensorName = sensorDefinition.sensorName;
         } else {
