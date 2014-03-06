@@ -205,8 +205,12 @@ define(function (require) {
     }
     function _labelsChangedHandler(labels) {
       // Set label provided by dataset only if graph component description doesn't specify ylabel.
-      var yLabel = labels[properties[Y_LABEL_PROP_IDX]];
-      var xLabel = labels[xProperties[X_LABEL_PROP_IDX]];
+      var yProp = properties[Y_LABEL_PROP_IDX];
+      var xProp = xProperties[X_LABEL_PROP_IDX];
+
+      // If the change is triggered via listener, the values will be wrapped in the 'data' property...
+      var yLabel = labels[yProp] || labels.data[yProp];
+      var xLabel = labels[xProp] || labels.data[xProp];
       if (!isLabelExplicit(component.ylabel)) {
         grapher.yLabel(yLabel);
       }
