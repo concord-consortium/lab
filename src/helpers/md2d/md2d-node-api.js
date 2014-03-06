@@ -13,6 +13,7 @@ requirejs.config({
   baseUrl: path.normalize(__dirname + '/../../lab'),
   nodeRequire: require,
   paths: {
+    'browserified-cheerio': '../../vendor/browserified-cheerio/browserified-cheerio',
     'cs' :'../../vendor/require-cs/cs'
   }
 });
@@ -20,6 +21,4 @@ requirejs.config({
 // Export API for Node.js scripts.
 exports.Modeler   = requirejs('models/md2d/models/modeler');
 // Used by MML -> JSON conversion script.
-exports.validator = requirejs('common/validator');
-exports.metadata  = requirejs('models/md2d/models/metadata');
-exports.Solvent   = requirejs('cs!models/md2d/models/solvent');
+exports.parseMML = requirejs('cs!mml-converter/mml-converter');
