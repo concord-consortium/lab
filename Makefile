@@ -19,6 +19,7 @@ MD2D_SRC_FILES := $(shell find src/lab/models/md2d -type f ! -name '.*' -print)
 
 GRAPHER_SRC_FILES := $(shell find src/lab/grapher -type f ! -name '.*' -print)
 IMPORT_EXPORT_SRC_FILES := $(shell find src/lab/import-export -type f ! -name '.*' -print)
+MML_CONVERTER_SRC_FILES := $(shell find src/lab/mml-converter -type f ! -name '.*' -print)
 
 COMMON_SRC_FILES := $(shell find src/lab/common -type f ! -name '.*' -print)
 
@@ -55,6 +56,7 @@ DEV_MARKDOWN_FILES := $(patsubst %.md, public/%.html, $(wildcard developer-doc/*
 LAB_JS_FILES = \
 	public/lab/lab.js \
 	public/lab/lab.grapher.js \
+	public/lab/lab.mml-converter.js \
 	public/lab/lab.import-export.js
 
 # default target executed when running make. Run the $(MAKE) public task rather than simply
@@ -423,6 +425,11 @@ public/lab/lab.import-export.js: \
 	$(COMMON_SRC_FILES)
 	$(R_OPTIMIZER) -o src/lab/import-export/import-export.build.js
 
+public/lab/lab.mml-converter.js: \
+	$(MML_CONVERTER_SRC_FILES) \
+	$(LAB_SRC_FILES) \
+	$(COMMON_SRC_FILES)
+	$(R_OPTIMIZER) -o src/lab/mml-converter/mml-converter.build.js
 
 # ------------------------------------------------
 #
