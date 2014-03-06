@@ -14,7 +14,7 @@
       "type": "iframe-model",
       "id": "iframe-model",
       "model": {
-        "url": "http://localhost:9191/embeddable.html",
+        "url": "http://resources.models.concord.org/jsmol/embeddable.html",
         "molecule": "models/porous-membrane/aquaporeMem.pdb"
       },
       "viewOptions": {
