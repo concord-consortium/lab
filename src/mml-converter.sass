@@ -1,0 +1,50 @@
+$header-background-color1: rgba(58, 135, 139, 1.0)
+$header-background-color2: rgba(140, 187, 184, 1.0)
+$header-font-color: #f8f8f8
+
+@import 'sass/bourbon/bourbon'
+@import 'sass/neat/neat'
+
+html
+  font-family: Lato, Verdana, Geneva, sans-serif
+
+body
+  margin: 0
+
+label
+  display: block
+
+#header
+  @include linear-gradient($header-background-color1, $header-background-color2, $fallback: $header-background-color1)
+  color: $header-font-color
+  padding: 1.5em 1em
+  position: relative
+  min-height: 5em
+  h1
+    display: inline-block
+    margin: 0em 1em 0em 0em
+    a
+      color: $header-font-color
+      text-decoration: none
+
+  #logo
+    position: absolute
+    top: 1em
+    right: 1em
+
+.column
+  display: inline-block
+  vertical-align: top
+  margin-left: 32px
+  width: 45%
+  height: 80%
+
+textarea
+  min-width: 100%
+  max-width: 100%
+  min-height: 500px
+
+button
+  font-size: 25px
+  margin: 10px 0 0 32px
+  display: block
