@@ -94,6 +94,7 @@ Here is a list of projects and resources included in the in the `vendor/` direct
 31. [fastclick](https://github.com/ftlabs/fastclick): [MIT](http://www.opensource.org/licenses/MIT)
 32. [seedrandom](https://github.com/davidbau/seedrandom): [BSD](http://www.opensource.org/licenses/BSD-2-Clause)
 33. [chosen](https://github.com/harvesthq/chosen): [MIT](http://www.opensource.org/licenses/MIT)
+34. [cheerio](https://github.com/MatthewMueller/cheerio): [MIT](http://www.opensource.org/licenses/MIT)
 
 In addition there are three fontface directories in `vendor/fonts` that are distributed
 under compatible open source licenses:
