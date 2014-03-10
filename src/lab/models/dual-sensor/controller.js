@@ -5,12 +5,11 @@ define(function (require) {
   var ModelController   = require('common/controllers/model-controller'),
       Model             = require('models/dual-sensor/modeler'),
       ModelContainer    = require('models/dual-sensor/view'),
-      ScriptingAPI      = require('models/dual-sensor/scripting-api'),
-      Benchmarks        = function() {};
+      ScriptingAPI      = require('models/dual-sensor/scripting-api');
 
   return function (modelUrl, modelOptions, interactiveController) {
     var controller = new ModelController(modelUrl, modelOptions, interactiveController,
-      Model, ModelContainer, ScriptingAPI, Benchmarks);
+      Model, ModelContainer, ScriptingAPI);
 
     // Note to self: modelController doesn't emit modelLoaded when the model first loads.
     // This was unexpected...

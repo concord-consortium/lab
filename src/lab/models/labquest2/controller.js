@@ -5,12 +5,11 @@ define(function (require) {
   var ModelController   = require('common/controllers/model-controller'),
       Model             = require('./modeler'),
       ModelContainer    = require('./view'),
-      ScriptingAPI      = require('./scripting-api'),
-      Benchmarks        = function() {};
+      ScriptingAPI      = require('./scripting-api');
 
   return function (modelUrl, modelOptions, interactiveController) {
     var controller = new ModelController(modelUrl, modelOptions, interactiveController,
-      Model, ModelContainer, ScriptingAPI, Benchmarks);
+      Model, ModelContainer, ScriptingAPI);
 
     // Note to self: modelController doesn't emit modelLoaded when the model first loads.
     // This was unexpected...

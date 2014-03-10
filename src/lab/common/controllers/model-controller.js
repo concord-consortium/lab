@@ -202,7 +202,7 @@ define(function (require) {
       return model;
     };
 
-    benchmarks = new Benchmarks(controller);
+    benchmarks = typeof Benchmarks === "function" ? new Benchmarks(controller) : [];
     return controller;
   }
 
