@@ -1441,6 +1441,13 @@ define(function (require) {
 
       benchmarks: [
         {
+          name: "interactive",
+          numeric: false,
+          run: function(done) {
+            done(window.location.pathname + window.location.hash);
+          }
+        },
+        {
           name: "layout (iterations)",
           numeric: true,
           formatter: d3.format("g"),

@@ -138,14 +138,6 @@ define(function () {
           var elapsedModelTime = controller.model.get('time') - start;
           done(elapsedModelTime / (controller.model.get('timeStepsPerTick') * controller.model.get('timeStep')) * 1000 / TEST_TIME);
         }
-      },
-
-      {
-        name: "interactive",
-        numeric: false,
-        run: function(done) {
-          done(window.location.pathname + window.location.hash);
-        }
       }
     ];
 

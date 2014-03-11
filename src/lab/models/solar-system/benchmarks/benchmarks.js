@@ -113,13 +113,6 @@ define(function (require) {
           // seconds, making the whole process much longer.
           done(gapsSum / count);
         }
-      },
-      {
-        name: "interactive",
-        numeric: false,
-        run: function(done) {
-          done(window.location.pathname + window.location.hash);
-        }
       }
     ];
 

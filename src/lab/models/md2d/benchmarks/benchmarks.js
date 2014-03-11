@@ -84,13 +84,6 @@ define(function (require) {
         run: function(done) {
           done((controller.model.stepCounter() - startCounter) * 1000 / TEST_TIME);
         }
-      },
-      {
-        name: "interactive",
-        numeric: false,
-        run: function(done) {
-          done(window.location.pathname + window.location.hash);
-        }
       }
     ];
   };
