@@ -25,7 +25,7 @@ define(function (require) {
   function ShareDialog(parentSelector) {
     var hash           = location.hash,
         origin         = location.href.match(/(.*?\/\/.*?)\//)[1],
-        embeddablePath = location.pathname.replace(/\/[^\/]+$/, "/embeddable.html");
+        embeddablePath = location.pathname;
 
     BasicDialog.call(this, {dialogClass: "share-dialog", appendTo: parentSelector});
 
