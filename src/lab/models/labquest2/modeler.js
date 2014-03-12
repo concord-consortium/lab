@@ -100,7 +100,7 @@ define(function(require) {
     function initializeStateVariables() {
       isStopped = true;
       canConnect = false;
-      canControl = true;
+      canControl = labquest2Interface.canControl;
       stepCounter = 0;
       time = 0;
       rawSensorValue = undefined;
@@ -271,6 +271,12 @@ define(function(require) {
           isStopped = true;
 
           setColumn();
+
+          if (canControl) {
+            this.controlEnabled();
+          } else {
+            this.controlDisabled();
+          }
 
           if (labquest2Interface.isCollecting) {
             this.gotoState('started');
@@ -560,7 +566,6 @@ define(function(require) {
 
     labquest2Interface.on('controlEnabled',  function() {
       canControl = true;
-      message = "Connected.";
     });
 
     labquest2Interface.on('controlDisabled', function() {
