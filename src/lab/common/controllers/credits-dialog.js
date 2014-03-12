@@ -29,6 +29,8 @@ define(function (require) {
           nextGenUrl: 'http://mw.concord.org/nextgen/'
         },
         hash = document.location.hash,
+        origin         = location.href.match(/(.*?\/\/.*?)\//)[1],
+        embeddablePath = location.pathname,
         utmString;
 
     this.set("title", "Credits: " + interactive.title);
@@ -36,7 +38,7 @@ define(function (require) {
     if (labConfig.homeForSharing) {
       view.interactiveCreditsUrl = labConfig.homeForSharing + labConfig.homeEmbeddablePath + hash;
     } else {
-      view.interactiveCreditsUrl = labConfig.home + labConfig.homeEmbeddablePath + hash;
+      view.interactiveCreditsUrl = origin + embeddablePath + hash;
     }
 
     if (labConfig.utmCampaign) {

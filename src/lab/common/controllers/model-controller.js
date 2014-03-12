@@ -185,16 +185,7 @@ define(function (require) {
 
     // REF TODO ugly
     if (modelOptions != null) {
-      if (labConfig.environment === 'production') {
-        try {
-          setupModel();
-        } catch(e) {
-          alert(e);
-          throw new Error(e);
-        }
-      } else {
-        setupModel();
-      }
+      setupModel();
     }
 
     // publish model so it can be inspected at console

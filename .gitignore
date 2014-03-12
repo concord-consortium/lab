@@ -3,7 +3,6 @@
 /bin
 /public
 /src/lab/lab.version.js
-/src/lab/lab.config.js
 /src/lab/git-commit
 /src/lab/git-dirty
 /src/lab/git-branch-name

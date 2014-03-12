@@ -1,40 +1,9 @@
 ---
-# environment can be 'development' or 'production'
-# production:
-#  - delivers minimized javascript resources
-#  - sets JavaScript variable: Lab.config.environment = 'production'
-# development:
-#  - delivers un-minimized javascript resources
-#  - sets JavaScript variable: Lab.config.environment = 'development'
-#  - enables rack-livereload
-:environment: development
 :server:
   development:
     :hostname: localhost:9292
   production:
     :hostname: lab.concord.org
-:jsconfig:
-  # This can be set optionally set to true to disable links to DataGames and Java models
-  # Can even be done dynamically: LAB_STATIC=true ./script/generate-js-config.rb
-  :static: false
-  :sharing: true
-  :logging: true
-  :tracing: false
-  :home: http://lab.concord.org
-  # Set :homeForSharing to the host where shared Interactives are found
-  # if you don't want to share the ones on the actual server.
-  # Example if you host the Interactives on a static S3 site and want the
-  # sharing links to point to the same Interactives at http://lab.concord.org
-  :homeForSharing:
-  :homeInteractivePath: /interactives.html
-  :homeEmbeddablePath: /embeddable.html
-  :benchmarkAPIurl: https://script.google.com/macros/s/AKfycbzosXAVPdVRFUrF6FRI42dzQb2IGLnF9GlIbj9gUpeWpXALKgM/exec
-  :actualRoot: ""
-  :utmCampaign:
-  :fontface: Lato
-  # used as the basis for urls that lock in the Lab engine, should be blank
-  # everywhere other than production I think:
-  :versioned_home: http://lab.concord.org/version/
 :google_analytics:
   :account_id:
 # password and alias for Java siging certificate.
