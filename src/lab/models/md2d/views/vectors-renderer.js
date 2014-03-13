@@ -4,6 +4,10 @@ define(function(require) {
   // Dependencies.
   var PIXI = require('pixi');
 
+  function logistic(x) {
+    return 1 / (1 + Math.exp(-x));
+  }
+
   return function VectorsRenderer(pixiContainer, config) {
     // Public API object to be returned.
     var api,
@@ -21,7 +25,10 @@ define(function(require) {
         // Physical vector properties (functions!).
         xFunc, yFunc, vxFunc, vyFunc,
         // Visual vector properties.
-        alphaFunc, length, width, color, dirOnly;
+        alphaFunc, length, width, color, dirOnly, dirFieldType,
+
+        // Switchable function that renders needle or vector
+        renderVector;
 
     function readOptions() {
       count = config.count;
@@ -37,6 +44,7 @@ define(function(require) {
       width = config.width;
       color = config.color;
       dirOnly = config.dirOnly;
+      dirFieldType = config.dirFieldType;
 
       m2px = config.m2px;
       m2pxInv = config.m2pxInv;
@@ -71,7 +79,35 @@ define(function(require) {
       return new PIXI.Texture.fromCanvas(canv);
     }
 
-    function renderVector(i) {
+    function getNeedleTexture() {
+      var canv = document.createElement("canvas");
+      var ctx = canv.getContext("2d");
+
+      // Smoothly range the needle's aspect ratio from 5:1 when width is ~60px to 3:1 when width is
+      // ~30px. Needle doesn't look good "fat" when long, and shouldn't be too narrow when short.
+      var MIN_FRACTION = 1/5;
+      var MAX_FRACTION = 1/3;
+      var LOW_LENGTH_THRESHOLD  = 30;
+      var HIGH_LENGTH_THRESHOLD = 60;
+      var l = m2px(length);
+      var x = (l - LOW_LENGTH_THRESHOLD) / (HIGH_LENGTH_THRESHOLD - LOW_LENGTH_THRESHOLD);
+      var fraction = MIN_FRACTION + logistic(-8 * (x - 0.5)) * (MAX_FRACTION - MIN_FRACTION);
+      var w = l * fraction;
+
+      canv.height = l;
+      canv.width = w;
+
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(w * 0.5, l);
+      ctx.lineTo(w, 0);
+      ctx.fillStyle = color;
+      ctx.fill();
+
+      return new PIXI.Texture.fromCanvas(canv);
+    }
+
+    function renderStandardVector(i) {
       var vec = viewVectors[i],
           x = xFunc(i),
           y = yFunc(i),
@@ -115,6 +151,17 @@ define(function(require) {
       arrowHead.rotation = rot;
     }
 
+    function renderNeedle(i) {
+      var needle = viewVectors[i];
+      var x = xFunc(i);
+      var y = yFunc(i);
+
+      needle.position.x = m2px(x);
+      needle.position.y = m2pxInv(y);
+      needle.rotation = Math.PI + Math.atan2(vxFunc(i), vyFunc(i));
+      needle.alpha = alphaFunc(i);
+    }
+
 
     api = {
       setup: function () {
@@ -133,21 +180,38 @@ define(function(require) {
 
         viewVectors = [];
 
-        tex = getVectorTexture();
-        for (i = 0; i < count; ++i) {
-          vec = new PIXI.Sprite(tex);
-          vec.anchor.x = 0.5;
-          vec.scale.x = m2px(width);
-          vec.i = i;
-          viewVectors.push(vec);
-          container.addChild(vec);
-        }
-        tex = getVectorArrowheadTexture();
-        for (i = 0; i < count; ++i) {
-          arrowHead = new PIXI.Sprite(tex);
-          arrowHead.anchor.x = 0.5;
-          viewVectors[i].arrowHead = arrowHead;
-          container.addChild(arrowHead);
+        if (dirFieldType === "needle") {
+          tex = getNeedleTexture();
+          for (i = 0; i < count; ++i) {
+            vec = new PIXI.Sprite(tex);
+            // Should pivot on center
+            vec.anchor.x = 0.5;
+            vec.anchor.y = 0.5;
+            vec.i = i;
+            viewVectors.push(vec);
+            container.addChild(vec);
+          }
+
+          renderVector = renderNeedle;
+        } else {
+          tex = getVectorTexture();
+          for (i = 0; i < count; ++i) {
+            vec = new PIXI.Sprite(tex);
+            vec.anchor.x = 0.5;
+            vec.scale.x = m2px(width);
+            vec.i = i;
+            viewVectors.push(vec);
+            container.addChild(vec);
+          }
+          tex = getVectorArrowheadTexture();
+          for (i = 0; i < count; ++i) {
+            arrowHead = new PIXI.Sprite(tex);
+            arrowHead.anchor.x = 0.5;
+            viewVectors[i].arrowHead = arrowHead;
+            container.addChild(arrowHead);
+          }
+
+          renderVector = renderStandardVector;
         }
 
         api.update();

@@ -110,13 +110,20 @@ define(function(require) {
       }),
       electricFieldRenderer = new VectorsRenderer(vectorsBelowPixi.pixiContainer, {
         get show() { return model.get("showElectricField"); },
-        get length() { return Math.sqrt(3 * model.get("width") / model.get("electricFieldDensity")); },
+        get length() {
+          if (model.get("electricFieldRenderingType") === "needle") {
+            return 0.8 * model.get("width") / model.get("electricFieldDensity");
+          } else {
+            return Math.sqrt(3 * model.get("width") / model.get("electricFieldDensity"));
+          }
+        },
         get width() { return 0.01; },
         get color() {
           var c = model.get("electricFieldColor");
           return c !== "auto" ? c : contrastingColor(model.get("backgroundColor"));
         },
         get dirOnly() { return true; },
+        get dirFieldType() { return model.get("electricFieldRenderingType"); },
         get count() { return modelElectricField.length; },
         x: function (i) { return modelElectricField[i].x; },
         y: function (i) { return modelElectricField[i].y; },
@@ -1216,7 +1223,7 @@ define(function(require) {
         redrawClickableObjects(repaint));
 
       // Vectors:
-      model.addPropertiesListener(["electricFieldDensity", "showElectricField", "electricFieldColor"],
+      model.addPropertiesListener(["electricFieldDensity", "showElectricField", "electricFieldColor", "electricFieldRenderingType"],
         setupElectricField);
       model.addPropertiesListener(["showVelocityVectors", "velocityVectors"], function () {
         velocityVectorsRenderer.setup();

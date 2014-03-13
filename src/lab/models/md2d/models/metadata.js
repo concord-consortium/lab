@@ -214,6 +214,10 @@ define(function() {
         // However any custom color can be specified.
         defaultValue: "auto"
       },
+      electricFieldRenderingType: {
+        defaultValue: "arrow",
+        storeInTickHistory: true
+      },
       showAtomTrace: {
         storeInTickHistory: true,
         defaultValue: false
