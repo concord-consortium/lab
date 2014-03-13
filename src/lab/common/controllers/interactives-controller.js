@@ -47,6 +47,7 @@ define(function (require) {
         'iframe-model':     require('models/iframe/controller'),
         'sensor':           require('models/sensor/controller'),
         'dual-sensor':      require('models/dual-sensor/controller'),
+        'sensor-server':    require('models/sensor-server/controller'),
         'labquest2':        require('models/labquest2/controller'),
         'energy2d':         require('models/energy2d/controllers/controller')
       },

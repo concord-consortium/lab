@@ -82,6 +82,7 @@
     'mustache': '../../node_modules/mustache/mustache',
     'markdown': '../../node_modules/markdown/lib/markdown',
     'sensor-applet': '../../vendor/lab-sensor-applet-interface-dist/sensor-applet-interface',
+    'sensor-server-interface': '../../vendor/sensor-server-interface/dist/sensor-server-interface',
     'labquest2-interface': '../../vendor/sensor-labquest-2-interface/dist/sensor-labquest-2-interface'
   },
 

@@ -67,3 +67,6 @@
 [submodule "vendor/iframe-phone"]
 	path = vendor/iframe-phone
 	url = https://github.com/concord-consortium/iframe-phone.git
+[submodule "vendor/sensor-server-interface"]
+	path = vendor/sensor-server-interface
+	url = https://github.com/concord-consortium/sensor-server-interface.git
