@@ -2,7 +2,6 @@
 
 # Utilities
 JS_COMPILER = ./node_modules/uglify-js/bin/uglifyjs -c -m -
-COFFEESCRIPT_COMPILER = ./node_modules/coffee-script/bin/coffee
 MARKDOWN_COMPILER = bin/kramdown
 
 # Turns out that just pointing Vows at a directory doesn't work, and its test matcher matches on
@@ -43,11 +42,6 @@ SASS_FILES += $(shell find src -name '*.scss' -and -not -path "src/sass/*" -exec
 vpath %.sass src
 vpath %.scss src
 
-COFFEESCRIPT_FILES := $(shell find src/doc -name '*.coffee' -exec echo {} \; | sed s'/src\/\(.*\)\.coffee/public\/\1.js/' )
-COFFEESCRIPT_FILES += $(shell find src/examples -name '*.coffee' -exec echo {} \; | sed s'/src\/\(.*\)\.coffee/public\/\1.js/' )
-COFFEESCRIPT_FILES += $(shell find src/experiments -name '*.coffee' -exec echo {} \; | sed s'/src\/\(.*\)\.coffee/public\/\1.js/' )
-vpath %.coffee src
-
 MARKDOWN_FILES := $(patsubst %.md, public/%.html, $(wildcard *.md)) public/examples.html
 DEV_MARKDOWN_FILES := $(patsubst %.md, public/%.html, $(wildcard developer-doc/*.md))
 
@@ -87,7 +81,6 @@ src: \
 	$(LAB_JS_FILES:.js=.min.js) \
 	$(HAML_FILES) \
 	$(SASS_FILES) \
-	$(COFFEESCRIPT_FILES) \
 	$(INTERACTIVE_FILES) \
 	public/interactives.html \
 	public/embeddable.html \
@@ -643,10 +636,6 @@ vendor/shutterbug/LICENSE.md: vendor/shutterbug \
 #
 # ------------------------------------------------
 
-public/lab/lab.mw-helpers.js: src/mw-helpers/*.coffee
-	cat $^ | $(COFFEESCRIPT_COMPILER) --stdio --print > $@
-	@chmod ug+w $@
-
 test/%.html: test/%.html.haml
 	haml $< $@
 
@@ -675,10 +664,6 @@ public/%.css: %.sass $(SASS_LAB_LIBRARY_FILES) \
 	public/lab-grapher.scss
 	@echo $($<)
 	$(SASS_COMPILER) $< $@
-
-public/%.js: %.coffee
-	@rm -f $@
-	$(COFFEESCRIPT_COMPILER) --compile --print $< > $@
 
 # replace relative references to .md files for the static build
 # look for pattern like ](*.md) replace with ](*.html)
@@ -730,10 +715,6 @@ sl:
 .PHONY: m
 m:
 	@echo $(MARKDOWN_FILES)
-
-.PHONY: c
-c:
-	@echo $(COFFEESCRIPT_FILES)
 
 .PHONY: cm
 cm:
