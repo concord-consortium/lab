@@ -280,10 +280,7 @@ public: \
 	public/lab \
 	public/vendor \
 	public/resources \
-	public/examples \
-	public/doc \
 	public/developer-doc \
-	public/experiments \
 	public/jnlp
 	script/update-git-commit-and-branch.rb
 	$(MAKE) src
@@ -294,25 +291,8 @@ public: \
 copy-resources-to-public:
 	rsync -aq --exclude='helpers/' --exclude='layouts/' --exclude='modules/' --exclude='sass/' --exclude='vendor/' --exclude='lab/' --filter '+ */' --exclude='*.haml' --exclude='*.sass' --exclude='*.scss' --exclude='*.yaml' --exclude='*.coffee' --exclude='*.rb' --exclude='*.md' src/ public/
 
-public/examples:
-	mkdir -p public/examples
-
-public/doc: \
-	public/doc/interactives \
-	public/doc/models
-
-public/doc/interactives:
-	mkdir -p public/doc/interactives
-
-public/doc/models:
-	mkdir -p public/doc/models
-
 public/developer-doc:
 	mkdir -p public/developer-doc
-
-.PHONY: public/experiments
-public/experiments:
-	mkdir -p public/experiments
 
 .PHONY: public/jnlp
 public/jnlp:
