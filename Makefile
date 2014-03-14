@@ -42,7 +42,7 @@ SASS_FILES += $(shell find src -name '*.scss' -and -not -path "src/sass/*" -exec
 vpath %.sass src
 vpath %.scss src
 
-MARKDOWN_FILES := $(patsubst %.md, public/%.html, $(wildcard *.md)) public/examples.html
+MARKDOWN_FILES := $(patsubst %.md, public/%.html, $(wildcard *.md))
 DEV_MARKDOWN_FILES := $(patsubst %.md, public/%.html, $(wildcard developer-doc/*.md))
 
 LAB_JS_FILES = \
@@ -82,15 +82,9 @@ src: \
 	$(HAML_FILES) \
 	$(SASS_FILES) \
 	$(INTERACTIVE_FILES) \
-	public/interactives.html \
 	public/embeddable.html \
-	public/browser-check.html \
 	public/application.js \
 	public/lab/lab.json
-
-# rebuild html files that use partials based on settings in project configuration
-public/interactives.html: config/config.yml
-public/embeddable.html: config/config.yml
 
 .PHONY: clean
 clean:
@@ -646,10 +640,6 @@ public/developer-doc/%.html: developer-doc/%.md.static
 	@rm -f $@
 	$(MARKDOWN_COMPILER) -i GFM $< --template src/layouts/developer-doc.html.erb > $@
 
-public/examples.html: src/examples.md.static
-	@rm -f $@
-	$(MARKDOWN_COMPILER) $< --toc-levels 2..6 --template src/layouts/top-level.html.erb > $@
-
 public/%.html: %.md.static
 	@rm -f $@
 	$(MARKDOWN_COMPILER) $< --toc-levels 2..6 --template src/layouts/top-level.html.erb > $@
@@ -661,7 +651,7 @@ public/models/%.json: src/models/%.json
 	@cp $< $@
 
 # delete the .md.static files and don't bother creating them if they don't need to be
-.INTERMEDIATE: %.md.static src/examples.md.static
+.INTERMEDIATE: %.md.static
 
 # ------------------------------------------------
 #
