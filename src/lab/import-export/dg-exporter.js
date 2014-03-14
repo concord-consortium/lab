@@ -3,7 +3,8 @@
 
 define(function(require) {
 
-  var console = require('common/console');
+  var console = require('common/console'),
+      config  = require('lab.config');
 
   return {
     gameName: 'Next Gen MW',
@@ -22,7 +23,7 @@ define(function(require) {
     },
 
     isDgGameControllerDefined: function() {
-      if (Lab.config.dataGamesProxyPrefix) {
+      if (config.dataGamesProxyPrefix) {
         return !!(window.parent && window.parent.DG && window.parent.DG.currGameController);
       } else {
         return false;
