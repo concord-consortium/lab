@@ -92,7 +92,6 @@ src: \
 	public/interactives.html \
 	public/embeddable.html \
 	public/browser-check.html \
-	public/interactives.json \
 	public/application.js \
 	public/lab/lab.json
 
@@ -285,7 +284,6 @@ public: \
 	public/doc \
 	public/developer-doc \
 	public/experiments \
-	public/imports \
 	public/jnlp
 	script/update-git-commit-and-branch.rb
 	$(MAKE) src
