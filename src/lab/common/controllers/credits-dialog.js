@@ -28,9 +28,9 @@ define(function (require) {
           concordUrl: 'http://concord.org',
           nextGenUrl: 'http://mw.concord.org/nextgen/'
         },
-        hash = document.location.hash,
-        origin         = location.href.match(/(.*?\/\/.*?)\//)[1],
-        embeddablePath = location.pathname,
+        hash           = document.location.hash,
+        origin         = document.location.href.match(/(.*?\/\/.*?)\//)[1],
+        embeddablePath = document.location.pathname,
         utmString;
 
     this.set("title", "Credits: " + interactive.title);

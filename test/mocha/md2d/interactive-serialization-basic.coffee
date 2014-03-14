@@ -20,12 +20,7 @@ helpers.withIsolatedRequireJSAndViewsMocked (requirejs) ->
       arrayTypes.floatType = "Float64Array"
 
     describe "serialization right after initialization should return object equal to original JSON input", ->
-      # Limit test only to interactives from 'conversion-test' directory.
-      # However, you can change path to e.g. './src/examples/interactives/interactives'
-      # and perform a really comprehensive, slow tests of all interactives serialization.
-      # Nested directories are supported.
-      # TODO: change path to (...)/interactives directory, when the slow mocha tests problem is fixed.
-      path = './src/interactives/conversion-tests'
+      path = './src/interactives'
       queue = fs.readdirSync path
       # Use only absolute paths.
       queue = queue.map (file) -> "#{path}/#{file}"
@@ -41,7 +36,6 @@ helpers.withIsolatedRequireJSAndViewsMocked (requirejs) ->
 
         else if endsWith inputFile, ".json"
           do (inputFile) ->
-            console.log inputFile
             # Process JSON file.
             it "testing: #{inputFile}", ->
               interactiveJSON = fs.readFileSync(inputFile).toString()
