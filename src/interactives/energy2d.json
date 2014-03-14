@@ -16,13 +16,11 @@
     "objects using the sliders below the model. Repeat steps 1-3",
     "for two more different temperature setups."
   ],
-  "importedFrom": "imports/energy2d/content-htb/S1A.html",
   "models": [
     {
       "type": "energy2d",
       "id": "S1A1",
-      "url": "imports/energy2d/models-json/S1A1.json",
-      "importedFrom": "imports/energy2d/models-xml/S1A1.e2d",
+      "url": "models/lab-version/1/energy2d/energy2d.json",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

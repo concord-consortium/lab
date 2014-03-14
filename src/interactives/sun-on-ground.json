@@ -10,7 +10,7 @@
     {
       "type": "md2d",
       "id": "sun-on-ground",
-      "url": "imports/legacy-mw-content/converted/sam-activities/light-matter/greenhouse-gases/sunOnGround.json",
+      "url": "models/lab-version/1/sun-on-ground/sunOnGround.json",
       "viewOptions": {
         "controlButtons": "play_reset"
       }
@@ -18,7 +18,7 @@
     {
       "type": "md2d",
       "id": "sun-on-co2",
-      "url": "imports/legacy-mw-content/converted/sam-activities/light-matter/greenhouse-gases/sunOnCO2.json",
+      "url": "models/lab-version/1/sun-on-ground/sunOnCO2.json",
       "viewOptions": {
         "controlButtons": "play_reset"
       }
@@ -26,7 +26,7 @@
     {
       "type": "md2d",
       "id": "sun-on-ground-and-co2",
-      "url": "imports/legacy-mw-content/converted/sam-activities/light-matter/greenhouse-gases/sunOnGroundAndCO2.json",
+      "url": "models/lab-version/1/sun-on-ground/sunOnGroundAndCO2.json",
       "viewOptions": {
         "controlButtons": "play_reset"
       }
@@ -34,7 +34,7 @@
     {
       "type": "md2d",
       "id": "ir-on-co2",
-      "url": "imports/legacy-mw-content/converted/sam-activities/light-matter/greenhouse-gases/IROnCO2.json",
+      "url": "models/lab-version/1/sun-on-ground/IROnCO2.json",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

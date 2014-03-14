@@ -12,8 +12,7 @@
     {
       "type": "md2d",
       "id": "act2model$0",
-      "url": "imports/legacy-mw-content/converted/interactions/distance-and-force/act2model$0.json",
-      "importedFrom": "imports/legacy-mw-content/interactions/distance-and-force/act2model$0.mml",
+      "url": "models/lab-version/1/act2model/act2model.json",
       "viewOptions": {
         "controlButtons": "",
         "electricFieldDensity": 24,

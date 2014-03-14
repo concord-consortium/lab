@@ -8,7 +8,7 @@
     {
       "type": "sensor",
       "id": "signal1",
-      "url": "models/sensor/sensor.json",
+      "url": "models/lab-version/1/sensor/sensor.json",
       "viewOptions": {
         "controlButtons": "reset",
         "controlButtonStyle": "text",
