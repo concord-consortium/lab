@@ -12,7 +12,6 @@ MOCHA = find test/mocha -type f -name '*.js' -o -name '*.coffee' ! -name '.*' | 
 
 SASS_COMPILER = ./bin/sass -I src -I public -r ./src/helpers/sass/lab_fontface.rb
 R_OPTIMIZER = ./node_modules/.bin/r.js
-GENERATE_INTERACTIVE_INDEX = ruby src/helpers/process-interactives.rb
 
 LAB_SRC_FILES := $(shell find src/lab -type f ! -name '.*' -print)
 MD2D_SRC_FILES := $(shell find src/lab/models/md2d -type f ! -name '.*' -print)
@@ -197,8 +196,6 @@ test-src: test/layout.html \
 	public/vendor/jquery-selectBoxIt/jquery.selectBoxIt.min.js \
 	public/vendor/jquery-context-menu \
 	src/lab/lab.version.js
-	mkdir -p public/imports/legacy-mw-content/converted/conversion-and-physics-examples
-	./node-bin/convert-mml-files --path=imports/legacy-mw-content/conversion-and-physics-examples/
 	@echo 'Running Mocha tests ...'
 	@$(MOCHA)
 	@echo 'Running Vows tests ...'
@@ -322,38 +319,6 @@ public/experiments:
 .PHONY: public/jnlp
 public/jnlp:
 	mkdir -p public/jnlp
-
-# ------------------------------------------------
-#
-#   public/imports
-#
-# Copy model resources imported from legacy Java applications and
-# process model-definitions generating JSON forms.
-#
-# ------------------------------------------------
-
-# MML->JSON conversion uses MD2D models for validation and default values handling
-# so it depends on appropriate sources.
-.PHONY: public/imports
-public/imports: \
-	$(MD2D_SRC_FILES) \
-	$(COMMON_SRC_FILES)
-	mkdir -p public/imports
-	rsync -aq imports/ public/imports/
-	$(MAKE) convert-mml
-	rsync -aq --exclude 'converted/***' --filter '+ */'  --prune-empty-dirs --exclude '*.mml' --exclude '*.cml' --exclude '.*' --exclude '/*' public/imports/legacy-mw-content/ public/imports/legacy-mw-content/converted/
-
-.PHONY: convert-mml
-convert-mml:
-	./node-bin/convert-mml-files
-	./node-bin/create-mml-html-index
-	./src/helpers/md2d/post-batch-processor.rb
-
-.PHONY: convert-all-mml
-convert-all-mml:
-	./node-bin/convert-mml-files -a
-	./node-bin/create-mml-html-index
-	./src/helpers/md2d/post-batch-processor.rb
 
 public/resources:
 	cp -R ./src/lab/resources ./public/lab/
@@ -762,10 +727,6 @@ public/interactives/%.json: src/interactives/%.json
 
 public/models/%.json: src/models/%.json
 	@cp $< $@
-
-.PHONY: public/interactives.json
-public/interactives.json: $(INTERACTIVE_FILES)
-	$(GENERATE_INTERACTIVE_INDEX)
 
 # delete the .md.static files and don't bother creating them if they don't need to be
 .INTERMEDIATE: %.md.static src/examples.md.static
