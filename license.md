@@ -52,49 +52,21 @@ Here is a list of projects and resources included in the in the `vendor/` direct
 17. [require-cs](https://github.com/requirejs/domReady): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
     and [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause)
 18. [coffe-script](https://github.com/jashkenas/coffee-script): [MIT](http://www.opensource.org/licenses/MIT)
-19. [Codemirror2](https://github.com/marijnh/CodeMirror2): [MIT](http://www.opensource.org/licenses/MIT)
-    Codemirror2 includes a number of modules from third parties. All of the modules are licensed under either the MIT or BSD
-    license except for the following which are excluded during the Make process where resources from `vendor/` are
-    generated and copied to `server/public/vendor/`.
-
-    **Licensing of Excluded Modules**
-
-    1.   vendor/codemirror2/mode/go/index.html: no license ...
-    2.   vendor/codemirror2/mode/rst/index.html: ...??
-    3.   vendor/codemirror2/mode/verilog//index.html: GPL
-
-    **Licensing of included Modules**
-
-    1.   vendor/codemirror2/mode/coffeescript/LICENSE
-    2.   vendor/codemirror2/mode/pascal/LICENSE: MIT
-    3.   vendor/codemirror2/mode/perl/LICENSE: MIT
-    4.   vendor/codemirror2/mode/python/LICENSE: MIT
-    5.   vendor/codemirror2/mode/r/LICENSE: BSD
-    6.   vendor/codemirror2/mode/ruby/LICENSE: BSD
-    7.   vendor/codemirror2/mode/rpm/spec/index.html: same as codemirror2
-    8.   vendor/codemirror2/mode/xquery/LICENSE: MIT
-    9.   vendor/codemirror2/mode/xquery/index.html: MIT
-    10.  vendor/codemirror2/mode/xquery/xquery.js: MIT
-    11.  vendor/codemirror2/theme/xq-dark.css: MIT
-    12.  vendor/codemirror2/lib/util/foldcode.js: MIT
-
-20. [jQuery UI Touch Punch](http://http://touchpunch.furf.com/): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
+19. [jQuery UI Touch Punch](http://http://touchpunch.furf.com/): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
     and [GPL v2.0](http://www.opensource.org/licenses/GPL-2.0).
-21. [jQuery Context Menu](http://medialize.github.com/jQuery-contextMenu/): dual-licensed under
+20. [jQuery Context Menu](http://medialize.github.com/jQuery-contextMenu/): dual-licensed under
     [MIT](http://www.opensource.org/licenses/MIT) and [GPL v3.0](http://opensource.org/licenses/GPL-3.0).
-22. [backbone](https://github.com/documentcloud/backbone): [MIT](http://www.opensource.org/licenses/MIT)
-23. [underscore](https://github.com/documentcloud/underscore): [MIT](http://www.opensource.org/licenses/MIT)
-24. [postMessage structured clone detection](https://gist.github.com/4583494): [MIT](http://www.opensource.org/licenses/MIT)
-25. [jQuery selectBoxIt](https://github.com/gfranko/jQuery.selectBoxIt.js): [MIT](http://www.opensource.org/licenses/MIT)
-26. [mustache](https://github.com/janl/mustache.js): [MIT](http://www.opensource.org/licenses/MIT)
-27. [markdown-js](https://github.com/evilstreak/markdown-js): [MIT](http://www.opensource.org/licenses/MIT)
-28. [fingerprintjs](https://github.com/Valve/fingerprintjs): [MIT](http://www.opensource.org/licenses/MIT)
-29. [pixi.js](https://github.com/GoodBoyDigital/pixi.js): [MIT](http://www.opensource.org/licenses/MIT)
-30. [canvg](https://code.google.com/p/canvg): [MIT](http://www.opensource.org/licenses/MIT)
-31. [fastclick](https://github.com/ftlabs/fastclick): [MIT](http://www.opensource.org/licenses/MIT)
-32. [seedrandom](https://github.com/davidbau/seedrandom): [BSD](http://www.opensource.org/licenses/BSD-2-Clause)
-33. [chosen](https://github.com/harvesthq/chosen): [MIT](http://www.opensource.org/licenses/MIT)
-34. [cheerio](https://github.com/MatthewMueller/cheerio): [MIT](http://www.opensource.org/licenses/MIT)
+21. [backbone](https://github.com/documentcloud/backbone): [MIT](http://www.opensource.org/licenses/MIT)
+22. [underscore](https://github.com/documentcloud/underscore): [MIT](http://www.opensource.org/licenses/MIT)
+23. [postMessage structured clone detection](https://gist.github.com/4583494): [MIT](http://www.opensource.org/licenses/MIT)
+24. [jQuery selectBoxIt](https://github.com/gfranko/jQuery.selectBoxIt.js): [MIT](http://www.opensource.org/licenses/MIT)
+25. [mustache](https://github.com/janl/mustache.js): [MIT](http://www.opensource.org/licenses/MIT)
+26. [markdown-js](https://github.com/evilstreak/markdown-js): [MIT](http://www.opensource.org/licenses/MIT)
+27. [pixi.js](https://github.com/GoodBoyDigital/pixi.js): [MIT](http://www.opensource.org/licenses/MIT)
+28. [canvg](https://code.google.com/p/canvg): [MIT](http://www.opensource.org/licenses/MIT)
+29. [fastclick](https://github.com/ftlabs/fastclick): [MIT](http://www.opensource.org/licenses/MIT)
+30. [seedrandom](https://github.com/davidbau/seedrandom): [BSD](http://www.opensource.org/licenses/BSD-2-Clause)
+31. [cheerio](https://github.com/MatthewMueller/cheerio): [MIT](http://www.opensource.org/licenses/MIT)
 
 In addition there are three fontface directories in `vendor/fonts` that are distributed
 under compatible open source licenses:

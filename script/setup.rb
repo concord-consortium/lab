@@ -87,34 +87,6 @@ else
   HEREDOC
 end
 
-LAB_JS_ADDITIONAL_DEPENDENCIES = case CONFIG[:environment]
-when 'production'
-  <<-HEREDOC
-<script src='vendor/iframe-phone/iframe-phone.js' type='text/javascript'></script>
-<script src='vendor/codemirror/lib/codemirror.js' type='text/javascript'></script>
-<script src='vendor/codemirror/mode/javascript/javascript.js' type='text/javascript'></script>
-<script src='vendor/codemirror/addon/fold/foldcode.js' type='text/javascript'></script>
-<script src='vendor/codemirror/addon/fold/collapserange.js' type='text/javascript'></script>
-<script src='vendor/codemirror/addon/format/formatting.js' type='text/javascript'></script>
-<script src='vendor/codemirror/addon/edit/matchbrackets.js' type='text/javascript'></script>
-<script src='vendor/codemirror/addon/edit/closebrackets.js' type='text/javascript'></script>
-<script src='vendor/chosen/chosen.jquery.min.js' type='text/javascript'></script>
-  HEREDOC
-else
-  <<-HEREDOC
-<script src='vendor/iframe-phone/iframe-phone.js' type='text/javascript'></script>
-<script src='vendor/codemirror/lib/codemirror.js' type='text/javascript'></script>
-<script src='vendor/codemirror/mode/javascript/javascript.js' type='text/javascript'></script>
-<script src='vendor/codemirror/addon/fold/foldcode.js' type='text/javascript'></script>
-<script src='vendor/codemirror/addon/fold/collapserange.js' type='text/javascript'></script>
-<script src='vendor/codemirror/addon/format/formatting.js' type='text/javascript'></script>
-<script src='vendor/codemirror/addon/edit/matchbrackets.js' type='text/javascript'></script>
-<script src='vendor/codemirror/addon/edit/closebrackets.js' type='text/javascript'></script>
-<script src='vendor/fingerprintjs/fingerprint.min.js' type='text/javascript'></script>
-<script src='vendor/chosen/chosen.jquery.min.js' type='text/javascript'></script>
-  HEREDOC
-end
-
 LAB_JS = case CONFIG[:environment]
 when 'production'
   <<-HEREDOC

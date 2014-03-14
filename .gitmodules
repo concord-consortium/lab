@@ -37,9 +37,6 @@
 [submodule "vendor/domReady"]
 	path = vendor/domReady
 	url = git://github.com/requirejs/domReady.git
-[submodule "vendor/codemirror"]
-	path = vendor/codemirror
-	url = git://github.com/marijnh/CodeMirror.git
 [submodule "vendor/jquery-ui"]
 	path = vendor/jquery-ui
 	url = git://github.com/jquery/jquery-ui.git
@@ -67,9 +64,6 @@
 [submodule "vendor/fonts/Font-Awesome"]
 	path = vendor/fonts/Font-Awesome
 	url = git://github.com/FortAwesome/Font-Awesome.git
-[submodule "vendor/fingerprintjs"]
-	path = vendor/fingerprintjs
-	url = https://github.com/Valve/fingerprintjs
 [submodule "vendor/pixi.js"]
 	path = vendor/pixi.js
 	url = https://github.com/concord-consortium/pixi.js.git
@@ -88,10 +82,6 @@
 [submodule "vendor/lab-grapher"]
 	path = vendor/lab-grapher
 	url = https://github.com/concord-consortium/lab-grapher.git
-[submodule "vendor/chosen"]
-	path = vendor/chosen
-	url = https://github.com/harvesthq/chosen.git
-	branch = gh-pages
 [submodule "vendor/sensor-labquest-2-interface"]
 	path = vendor/sensor-labquest-2-interface
 	url = https://github.com/concord-consortium/sensor-labquest-2-interface.git

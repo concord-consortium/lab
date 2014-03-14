@@ -376,19 +376,16 @@ public/vendor: \
 	public/vendor/hijs \
 	public/vendor/mathjax \
 	public/vendor/fonts \
-	public/vendor/codemirror \
 	public/vendor/dsp.js \
 	public/vendor/requirejs \
 	public/vendor/text \
 	public/vendor/domReady \
-	public/vendor/fingerprintjs \
 	public/vendor/shutterbug/shutterbug.js \
 	public/vendor/shutterbug/README.md \
 	public/vendor/shutterbug/LICENSE.md \
 	public/vendor/lab-sensor-applet-interface-dist \
 	public/vendor/sensor-labquest-2-interface/sensor-labquest-2-interface.js \
 	public/vendor/iframe-phone/iframe-phone.js \
-	public/vendor/chosen/chosen.jquery.min.js \
 	public/favicon.ico
 
 
@@ -432,15 +429,6 @@ public/vendor/jquery-selectBoxIt/jquery.selectBoxIt.min.js: \
 
 public/vendor/jquery-selectBoxIt:
 	mkdir -p public/vendor/jquery-selectBoxIt
-
-public/vendor/chosen/chosen.jquery.min.js: \
-	public/vendor/chosen
-	cp vendor/chosen/chosen.jquery.min.js public/vendor/chosen
-	cp vendor/chosen/chosen.css public/vendor/chosen
-	cp vendor/chosen/*.png public/vendor/chosen
-
-public/vendor/chosen:
-	mkdir -p public/vendor/chosen
 
 public/vendor/jquery-context-menu:
 	mkdir -p public/vendor/jquery-context-menu
@@ -535,25 +523,6 @@ public/vendor/domReady:
 	cp vendor/domReady/domReady.js public/vendor/domReady
 	cp vendor/domReady/LICENSE public/vendor/domReady
 	cp vendor/domReady/README.md public/vendor/domReady
-
-public/vendor/codemirror:
-	mkdir -p public/vendor/codemirror
-	cp vendor/codemirror/LICENSE public/vendor/codemirror
-	cp vendor/codemirror/README.md public/vendor/codemirror
-	cp -R vendor/codemirror/lib public/vendor/codemirror
-	cp -R vendor/codemirror/addon public/vendor/codemirror
-	cp -R vendor/codemirror/mode public/vendor/codemirror
-	cp -R vendor/codemirror/theme public/vendor/codemirror
-	cp -R vendor/codemirror/keymap public/vendor/codemirror
-	# remove codemirror modules excluded by incompatible licensing
-	rm -rf public/vendor/codemirror/mode/go
-	rm -rf public/vendor/codemirror/mode/rst
-	rm -rf public/vendor/codemirror/mode/verilog
-
-public/vendor/fingerprintjs:
-	mkdir -p public/vendor/fingerprintjs
-	cp vendor/fingerprintjs/fingerprint.min.js public/vendor/fingerprintjs
-	cp vendor/fingerprintjs/README.md public/vendor/fingerprintjs
 
 public/vendor/shutterbug:
 	mkdir -p public/vendor/shutterbug
