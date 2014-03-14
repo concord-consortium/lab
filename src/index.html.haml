@@ -4,11 +4,8 @@
     %meta{:content => "text/html;charset=utf-8", "http-equiv" => "Content-Type"}/
     %title HTML5-based scientific models, visualizations, graphing, and probeware
     %script{:src => "vendor/modernizr/modernizr.js", :type => "text/javascript"}
-    %script{:src => "vendor/d3/d3.js", :type => "text/javascript"}
-    %script{:src => "vendor/jquery/jquery.min.js", :type => "text/javascript"}
     %script{:type => "text/javascript"}
       $(document).ready(function() { if (!Modernizr.svg) { $('body').prepend('<div class="warning">Sorry, but you\'ll need to upgrade your browser to use the models and visualizations. <a href="browser-upgrade.html">Learn more</a> &raquo;</div>'); } });
-    %link{:href => "lab/lab.css", :rel => "stylesheet", :type => "text/css"}/
     %link{:href => "index.css", :rel => "stylesheet", :type => "text/css"}/
     = ANALYTICS
     = FONTFACE_LINK
@@ -17,7 +14,7 @@
       %a#logo(href="http://www.concord.org/")
         %img(src="lab/resources/layout/cc-logo.png")
       %h1<
-        %a(href='index.html')> Lab
+        %a(href='index.html')> Lab Framework
         \: HTML5-based scientific models, visualizations, graphing, and probeware
 
     #under-header-links
@@ -51,84 +48,27 @@
             Lab Interactives are sharable, embeddable, and authorable components defined in JSON
             that wrap a model with additional inquiry-oriented user interface components such as
             buttons, checkboxes, sliders, graphs etc.
+
+          %h2 Examples (MD2D physics engine):
           %ul
             %li
-              %a{:href => 'interactives.html'} Browse all Interactives
-          %p
-            Here's an example Interactive using MD2D, our 2D Molecular dynamics engine for
-            exploring the emergent dynamics of a simple 2D model of charged and neutral atoms.
-          %blockquote
-            %p
-              Charged and Neutral Atoms: Explore Coulomb and intermolecular attractions.
-            .iframe-container
-              %iframe{:width => 400, :height => 315, :scrolling => "no", :allowfullscreen => "true", :webkitallowfullscreen => "true", :mozallowfullscreen => "true", :src => 'embeddable.html#interactives/samples/4-100-atoms-conceptual.json' }
-            %p
-              There are two kinds of attractive forces shown in this model: Coulomb forces
-              (the attraction between ions) and Van der Waals forces (an additional attractive
-              force between all atoms).
-            %p
-              What kinds of patterns tend to form with charged and neutral atoms? How does
-              changing the Van der Waals attraction or charging the atoms affect the melting
-              and boiling point of the substance?
-
-
-      .column2
-        .item-list
-          %h2 Interactive Components
-          %p
-            The following different
-            %a{:href => 'doc/models/index.html'} model types
-            can be used in Interactives.
+              %a{:href => 'embeddable.html#interactives/oil-and-water.json', :target => '_blank'} Oil and Water
+            %li
+              %a{:href => 'embeddable.html#interactives/amino-acids.json', :target => '_blank'} Protein Folding
+            %li
+              %a{:href => 'embeddable.html#interactives/pendulum.json', :target => '_blank'} Pendulum
+            %li
+              %a{:href => 'embeddable.html#interactives/chemical-reaction.json', :target => '_blank'} Chemical Reaction
+            %li
+              %a{:href => 'embeddable.html#interactives/sun-on-ground.json', :target => '_blank'} Sunlight, Infrared, CO₂ and the Ground
+            %li
+              %a{:href => 'embeddable.html#interactives/act2model.json', :target => '_blank'} Visualizing Electric Fields and Forces
+          %h2 Examples (other physics engine):
           %ul
             %li
-              %a{:href => 'doc/models/md2d/index.html'} Next Generation Molecular Workbench
+              %a{:href => 'embeddable.html#interactives/energy2d.json', :target => '_blank'} Energy2d
             %li
-              %a{:href => 'doc/models/energy2d/index.html'} Energy2D
+              %a{:href => 'embeddable.html#interactives/sensor.json', :target => '_blank'} Sensor
             %li
-              %a{:href => 'doc/models/solar-system/index.html'} Solar System
-            %li
-              %a{:href => 'doc/probeware/index.html'} Probeware
-
-          %p
-            Bar and line graphs can also be integrated into Interactives.
-          %ul
-            %li
-              %a{:href => 'examples/grapher/grapher.html'} Basic Grapher
-            %li
-              %a{:href => 'examples/grapher-bar-graph/bar-graph.html'} Bar Graph
-            %li
-              %a{:href => 'experiments/dsp/dsp.html'} Digital Signal Processing Graphs
-
-          %p
-            %a{:href => 'examples.html'} Examples of the above components
-
-          %h2 Performance
-          %p
-            From the beginning we've kept a close eye on performance and extensibility. Performance
-            is best running in the latest browsers running on desktop computers however many of the
-            simpler models also run acceptably on tablets and smartphones.
-          %p
-            Performance benchmarking can be run for every Interactive displayed in the
-            Interactive Browser or using:
-            %ul
-              %li
-                %a{:href => "benchmark.html"} Automated Benchmarking Page
-
-          %h2 Classic MW to NextGen Conversion
-          %p
-            Classic MW models can be easily converter to lightweight versions that work within Lab.
-            Save you Classic MW model and convert MML file to Lab JSON model.
-            %ul
-              %li
-                %a{:href => "mml-converter.html"} MML to JSON Converter
-
-          %h2 Testing
-          %ul
-            %li
-              %a{:href => 'doc/interactives/sampler/index.html'} Interactive Sampler
-            %li
-              %a{:href => 'doc/interactives/sampler/errors.html'} Embedded Interactives with Errors
-
-          %h3
-            %a{:href => 'experiments/index.html'} Experiments
+              %a{:href => 'embeddable.html#interactives/jsmol-two-molecules.json', :target => '_blank'} JSmol
 
