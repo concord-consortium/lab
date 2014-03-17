@@ -253,8 +253,9 @@ node_modules/arrays:
 public: \
 	copy-resources-to-public \
 	public/lab \
+	public/lab/jars/lab-sensor-applet-interface-dist \
+	public/lab/resources \
 	public/vendor \
-	public/resources \
 	public/developer-doc
 	script/update-git-commit-and-branch.rb
 	$(MAKE) src
@@ -268,14 +269,11 @@ copy-resources-to-public:
 public/developer-doc:
 	mkdir -p public/developer-doc
 
-public/resources:
-	cp -R ./src/lab/resources ./public/lab/
-
 # ------------------------------------------------
 #
 #   public/lab
 #
-# Generates the Lab Framework JavaScript resources
+#   Generates the Lab Framework JavaScript resources
 #
 # ------------------------------------------------
 
@@ -329,6 +327,17 @@ public/lab/lab.mml-converter.js: \
 	$(COMMON_SRC_FILES)
 	$(R_OPTIMIZER) -o src/lab/mml-converter/mml-converter.build.js
 
+public/lab/jars:
+	mkdir -p public/lab/jars
+
+public/lab/jars/lab-sensor-applet-interface-dist: \
+	vendor/lab-sensor-applet-interface-dist \
+	public/lab/jars
+	cp -R vendor/lab-sensor-applet-interface-dist/jars public/lab/jars/lab-sensor-applet-interface-dist
+
+public/lab/resources:
+	cp -R ./src/lab/resources ./public/lab/
+
 # ------------------------------------------------
 #
 #   public/vendor
@@ -360,7 +369,6 @@ public/vendor: \
 	public/vendor/shutterbug/shutterbug.js \
 	public/vendor/shutterbug/README.md \
 	public/vendor/shutterbug/LICENSE.md \
-	public/vendor/lab-sensor-applet-interface-dist \
 	public/vendor/sensor-labquest-2-interface/sensor-labquest-2-interface.js \
 	public/vendor/iframe-phone/iframe-phone.js \
 	public/favicon.ico
@@ -515,10 +523,6 @@ public/vendor/shutterbug/README.md: public/vendor/shutterbug \
 public/vendor/shutterbug/LICENSE.md: public/vendor/shutterbug \
 	vendor/shutterbug/LICENSE.md
 	cp vendor/shutterbug/LICENSE.md public/vendor/shutterbug
-
-public/vendor/lab-sensor-applet-interface-dist: vendor/lab-sensor-applet-interface-dist
-	mkdir -p public/vendor/lab-sensor-applet-interface-dist
-	cp -r vendor/lab-sensor-applet-interface-dist/* public/vendor/lab-sensor-applet-interface-dist/
 
 public/vendor/sensor-labquest-2-interface/sensor-labquest-2-interface.js: \
 	public/vendor/sensor-labquest-2-interface \
