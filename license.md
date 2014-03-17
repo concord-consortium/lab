@@ -34,7 +34,6 @@ Here is a list of projects and resources included in the in the `vendor/` direct
 7.  [MathJax](https://github.com/mathjax/MathJax): [Apache 2.0](http://www.opensource.org/licenses/Apache-2.0)
 8.  [Modernizr](https://github.com/Modernizr/Modernizr): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
     and [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause)
-9.  [science.js](https://github.com/jasondavies/science.js): [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause)
 10. [sizzle](): triple-licensed under the [MIT](http://www.opensource.org/licenses/MIT),
     [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause), and
     [GPL v2.0](http://www.opensource.org/licenses/GPL-2.0).

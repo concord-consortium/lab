@@ -354,7 +354,6 @@ public/vendor: \
 	public/vendor/jquery-selectBoxIt/jquery.selectBoxIt.min.js \
 	public/vendor/tinysort/jquery.tinysort.js \
 	public/vendor/jquery-context-menu \
-	public/vendor/science.js \
 	public/vendor/modernizr \
 	public/vendor/sizzle \
 	public/vendor/hijs \
@@ -439,12 +438,6 @@ public/vendor/tinysort/jquery.tinysort.js: \
 	public/vendor/tinysort
 	cp -r vendor/tinysort/src/* public/vendor/tinysort
 	cp vendor/tinysort/README.md public/vendor/tinysort
-
-public/vendor/science.js:
-	mkdir -p public/vendor/science.js
-	cp vendor/science.js/science*.js public/vendor/science.js
-	cp vendor/science.js/LICENSE public/vendor/science.js
-	cp vendor/science.js/README.md public/vendor/science.js
 
 public/vendor/modernizr:
 	mkdir -p public/vendor/modernizr

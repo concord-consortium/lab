@@ -1,9 +1,6 @@
 [submodule "vendor/d3"]
 	path = vendor/d3
 	url = git://github.com/mbostock/d3.git
-[submodule "vendor/science.js"]
-	path = vendor/science.js
-	url = git://github.com/jasondavies/science.js.git
 [submodule "vendor/sizzle"]
 	path = vendor/sizzle
 	url = git://github.com/jquery/sizzle.git
