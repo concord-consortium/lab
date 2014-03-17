@@ -358,7 +358,6 @@ public/vendor: \
 	public/vendor/sizzle \
 	public/vendor/hijs \
 	public/vendor/fonts \
-	public/vendor/dsp.js \
 	public/vendor/requirejs \
 	public/vendor/text \
 	public/vendor/domReady \
@@ -368,13 +367,6 @@ public/vendor: \
 	public/vendor/sensor-labquest-2-interface/sensor-labquest-2-interface.js \
 	public/vendor/iframe-phone/iframe-phone.js \
 	public/favicon.ico
-
-
-public/vendor/dsp.js:
-	mkdir -p public/vendor/dsp.js
-	cp vendor/dsp.js/dsp.js public/vendor/dsp.js
-	cp vendor/dsp.js/LICENSE public/vendor/dsp.js/LICENSE
-	cp vendor/dsp.js/README public/vendor/dsp.js/README
 
 public/vendor/d3: vendor/d3
 	mkdir -p public/vendor/d3

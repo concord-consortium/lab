@@ -13,9 +13,6 @@
 [submodule "vendor/jquery"]
 	path = vendor/jquery
 	url = git://github.com/jquery/jquery.git
-[submodule "vendor/dsp.js"]
-	path = vendor/dsp.js
-	url = git://github.com/concord-consortium/dsp.js.git
 [submodule "vendor/requirejs"]
 	path = vendor/requirejs
 	url = git://github.com/jrburke/requirejs.git
