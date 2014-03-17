@@ -59,11 +59,7 @@
   "directories": {
     "bin": "node-bin"
   },
-  "files": [
-    "md-engine/2d-molecules.js",
-    "md-engine/2d-molecules.min.js"
-  ],
   "scripts": {
-    "test": "./node_modules/vows/bin/vows"
+    "test": "make test-src"
   }
 }
