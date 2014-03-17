@@ -40,8 +40,6 @@ Here is a list of projects and resources included in the in the `vendor/` direct
     and [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause)
 15. [text](https://github.com/requirejs/text): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
     and [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause)
-16. [domReady](https://github.com/requirejs/domReady): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
-    and [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause)
 17. [require-cs](https://github.com/requirejs/domReady): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
     and [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause)
 18. [coffe-script](https://github.com/jashkenas/coffee-script): [MIT](http://www.opensource.org/licenses/MIT)

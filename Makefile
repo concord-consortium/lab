@@ -357,9 +357,7 @@ public/vendor: \
 	public/vendor/modernizr \
 	public/vendor/hijs \
 	public/vendor/fonts \
-	public/vendor/requirejs \
 	public/vendor/text \
-	public/vendor/domReady \
 	public/vendor/shutterbug/shutterbug.js \
 	public/vendor/shutterbug/README.md \
 	public/vendor/shutterbug/LICENSE.md \
@@ -454,23 +452,11 @@ public/vendor/fonts: $(FONT_FOLDERS)
 	rm -rf public/vendor/fonts/Font-Awesome/less
 	rm -rf public/vendor/fonts/Font-Awesome/sass
 
-public/vendor/requirejs:
-	mkdir -p public/vendor/requirejs
-	cp vendor/requirejs/require.js public/vendor/requirejs
-	cp vendor/requirejs/LICENSE public/vendor/requirejs
-	cp vendor/requirejs/README.md public/vendor/requirejs
-
 public/vendor/text:
 	mkdir -p public/vendor/text
 	cp vendor/text/text.js public/vendor/text
 	cp vendor/text/LICENSE public/vendor/text
 	cp vendor/text/README.md public/vendor/text
-
-public/vendor/domReady:
-	mkdir -p public/vendor/domReady
-	cp vendor/domReady/domReady.js public/vendor/domReady
-	cp vendor/domReady/LICENSE public/vendor/domReady
-	cp vendor/domReady/README.md public/vendor/domReady
 
 public/vendor/shutterbug:
 	mkdir -p public/vendor/shutterbug
