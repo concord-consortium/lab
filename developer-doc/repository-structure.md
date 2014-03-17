@@ -32,9 +32,9 @@ directory includes JavaScript source code for the Lab JavaScript modules.
 During the build process individual files are copied into modules which are placed in
 the **`public/lab`** directory.
 
-#### src/lab/md2d
+#### src/lab/models/md2d
 
-The [md2d](https://github.com/concord-consortium/lab/tree/master/src/lab/md2d) model-type contains a basic
+The [md2d](https://github.com/concord-consortium/lab/tree/master/src/lab/models/md2d) model-type contains a basic
 **Next Generation Molecular Workbench* application. It built using a hybrid of a MVC design pattern
 with a dataflow architecture necessary for performance and consist of following units:
 
@@ -172,53 +172,39 @@ interactive.
 
 - [src/lab/import-export](https://github.com/concord-consortium/lab/tree/master/src/lab/import-export)
 
-#### src/lab/energy2d/
+#### src/lab/models/energy2d/
 
-The **[src/lab/energy2d](https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d)** model-type contains
+The **[src/lab/models/energy2d](https://github.com/concord-consortium/lab/tree/master/src/lab/models/energy2d)** model-type contains
 a basic **Energy2D* application*. It is a direct port of [Java Energy2D](http://energy.concord.org/energy2d/).
 Energy2D is also built over MVC design pattern and consist of following units:
 
-- Models - [`src/lab/energy2d/models`](https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d/models)
-- Views - [`src/lab/energy2d/views`](https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d/views)
-- Controllers - [`src/lab/energy2d/controllers`](https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d/controllers)
+- Models - [`src/lab/models/energy2d/models`](https://github.com/concord-consortium/lab/tree/master/src/lab/models/energy2d/models)
+- Views - [`src/lab/models/energy2d/views`](https://github.com/concord-consortium/lab/tree/master/src/lab/models/energy2d/views)
+- Controllers - [`src/lab/models/energy2d/controllers`](https://github.com/concord-consortium/lab/tree/master/src/lab/models/energy2d/controllers)
 
 and additionally:
 
-- Internal Utils - [`src/lab/energy2d/utils`](https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d/utils)
-- GPU Toolkit - [`src/lab/energy2d/gpu`](https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d/gpu)
+- Internal Utils - [`src/lab/models/energy2d/utils`](https://github.com/concord-consortium/lab/tree/master/src/lab/models/energy2d/utils)
+- GPU Toolkit - [`src/lab/models/energy2d/gpu`](https://github.com/concord-consortium/lab/tree/master/src/lab/models/energy2d/gpu)
 
 GPU Toolkit is a small set of utilities which wraps basic WebGL structures and objects, providing
 higher level API. It is useful, as Energy2D uses WebGL for General-Purpose Computing on
 Graphics Processing Unit. So, a lot of physics calculations are performed on the GPU if user's Web
 browser supports WebGL technology.
 
-The source code of the core physics engine is located in the [`src/lab/energy2d/models`](https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d/models) directory.
+The source code of the core physics engine is located in the [`src/lab/models/energy2d/models`](https://github.com/concord-consortium/lab/tree/master/src/lab/models/energy2d/models) directory.
 Especially important units are listed below:
 
-- Core Model [`src/lab/energy2d/models/core-model.js`](https://github.com/concord-consortium/lab/blob/master/src/lab/energy2d/models/core-model.js) - constructs all physics solvers,
+- Core Model [`src/lab/models/energy2d/models/core-model.js`](https://github.com/concord-consortium/lab/blob/master/src/lab/models/energy2d/models/core-model.js) - constructs all physics solvers,
 stores simulation data (arrays, textures) and delegates physics calculations to proper objects.
-- Physics Solvers [`src/lab/energy2d/models/physics-solvers`](https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d/models/physics-solvers) - directory containing sequential
+- Physics Solvers [`src/lab/models/energy2d/models/physics-solvers`](https://github.com/concord-consortium/lab/tree/master/src/lab/models/energy2d/models/physics-solvers) - directory containing sequential
 (plain JavaScritp) implementation of physics algorithms used by core model.
-- Physics Solvers GPU [`src/lab/energy2d/models/physics-solvers-gpu`](https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d/models/physics-solvers-gpu) - directory containing parallel
+- Physics Solvers GPU [`src/lab/models/energy2d/models/physics-solvers-gpu`](https://github.com/concord-consortium/lab/tree/master/src/lab/models/energy2d/models/physics-solvers-gpu) - directory containing parallel
 implementation (WebGL-based) of heat and fluid solvers.
 
 Necessary GLSL (GL Shading Language) sources are stored in separate files. They are loaded using
 RequireJS *text* plug-in which just allows to load plain text files. Finally, they are inlined in
 the resulting library due to the RequireJS optimization process.
-
-### src/examples/, src/doc/, and src/experiments/
-
-The
-**[src/examples/](https://github.com/concord-consortium/lab/tree/master/src/examples)**,
-**[src/doc](https://github.com/concord-consortium/lab/tree/master/src/doc)** and,
-**[src/experiments](https://github.com/concord-consortium/lab/tree/master/src/experiments)**
-directories contain additional resources for generating the html, css, and image resources
-for the matching target folders in **`public`**.
-
-**Note:** remember to make changes you want saved in the **`src/examples/`**, **`src/doc/`**,
-and **`src/experiments/`** and not in the target directories of the same names in
-**`public`**. Change made in **`public`** will be overwritten during the next
-build process.
 
 ### src/lab/resources
 

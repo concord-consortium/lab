@@ -4,8 +4,8 @@ HTML5-based open source scientific models, visualizations, graphing, and probewa
 [Concord Consortium](http://www.concord.org). This framework is deployed in the following places.
 These sites contain many examples of what it can do:
 
-- **[lab.concord.org](http://lab.concord.org)** _(production)_
-- **[lab.dev.concord.org](http://lab.dev.concord.org)** _(development)_
+- **[lab-framework.concord.org](http://lab.concord.org)** _(production)_
+- **[lab-framework.dev.concord.org](http://lab.dev.concord.org)** _(development)_
 
 ## Licensing
 
@@ -30,7 +30,6 @@ third-parties and are distributed under either BSD, MIT, or Apache 2.0 licenses.
 
 - [RVM, Ruby 2.0 and Bundler](developer-doc/setup-ruby.md)
 - [node.js and npm](developer-doc/setup-node.md)
-- [Java](developer-doc/setup-java.md)
 - [additional Linux notes](developer-doc/linux-notes.md)
 
 ### Setup the local Lab repository for development

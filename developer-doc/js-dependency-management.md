@@ -93,9 +93,9 @@ and may be reused by other modules).
 
 Your module will be built during Lab's build process. You may use one of the existing modules for
 reference in case of any troubles
-([`md2d`](https://github.com/concord-consortium/lab/tree/master/src/lab/md2d),
-[`energy2d`](https://github.com/concord-consortium/lab/tree/master/src/lab/energy2d) or
-[`grapher`](https://github.com/concord-consortium/lab/tree/master/src/lab/grapher)).
+([`lab`](https://github.com/concord-consortium/lab/tree/master/src/lab),
+[`import-export`](https://github.com/concord-consortium/lab/tree/master/src/lab/import-export) or
+[`mml-converter`](https://github.com/concord-consortium/lab/tree/master/src/lab/mml-converter)).
 
 ## Module Build Configuration - *.build.js file
 
@@ -124,10 +124,7 @@ replacement.
 
 If module exposes API using global variables, it should define it in `public-api.js` file. It is
 a typical RequireJS module, which just adds properties to `window` object. You can look at
-[`src/md2d/public-api.js`](https://github.com/concord-consortium/lab/blob/master/src/lab/md2d/public-api.js),
-[`src/energy2d/public-api.js`](https://github.com/concord-consortium/lab/blob/master/src/lab/energy2d/public-api.js)
-or [`src/grapher/public-api.js`](https://github.com/concord-consortium/lab/blob/master/src/lab/grapher/public-api.js)
-file for a reference.
+[`src/lab/public-api.js`](https://github.com/concord-consortium/lab/blob/master/src/lab/public-api.js) file for a reference.
 
 This files are **not necessary**, but **highly recommended** if module has to define some global
 variables. It is a convention used internally by Lab repository. Such files are enforcing clean

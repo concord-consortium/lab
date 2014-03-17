@@ -23,27 +23,6 @@ and Ajax interactions.
 [JQuery-UI](http://jqueryui.com/): abstractions for low-level interaction and
 animation, advanced effects and high-level, themeable widgets, built on top of the jQuery
 
-### Sizzle
-
-[sizzle](http://sizzlejs.com/): CSS selector engine designed to be easily dropped in to a
-host library.
-
-### Codemirror
-
-[Codemirror2](https://github.com/marijnh/CodeMirror2): in-browser code editor.
-
-### science.js
-
-[science.js](https://github.com/jasondavies/science.js): scientific and statistical
-computing methods.
-
-### dsp.js
-
-[dsp.js](https://github.com/corbanbrook/dsp.js): digital signal processing methods
-including functions for signal analysis and generation, Oscillators(sine, saw, square, triangle),
-Window functions (Hann, Hamming, etc), Envelopes(ADSR), IIR Filters(lowpass, highpass,
-bandpass, notch), FFT and DFT transforms, Delays, Reverb.
-
 ### Modernizr
 
 [modernizr](https://github.com/Modernizr/Modernizr): detect HTML5 and CSS3 features in browsers.
@@ -51,13 +30,6 @@ bandpass, notch), FFT and DFT transforms, Delays, Reverb.
 Lab Example: [`index.html.haml`](https://github.com/concord-consortium/lab/blob/master/src/index.html.haml#L12)
 uses Modernizer to check if the browser implents SVG and re-direct the user to an upgrade
 page if the feature is not presnet.
-
-### MathJax
-
-[MathJax](http://mathjax.com/) is a display engine for mathematics that works in all modern browsers.
-
-Lab Example: [`lennard-jones-potential.html.haml`](https://github.com/concord-consortium/lab/blob/master/src/doc/models/md2d/lennard-jones-potential/lennard-jones-potential.html.haml#L23-30)
-uses MathJax to display LaTeX formatted math equations.
 
 ### OpenSans Font
 
@@ -110,7 +82,6 @@ JavaScript environments, like Rhino and Node.
 
 Lab Example:
 
-
 All Lab's modules use RequireJS for dependency management and build process. Its application is widely
 described in [this section](#javascript-dependency-management-and-build-process---requrejs).
 
@@ -123,18 +94,6 @@ you don't have to manually do it when referencing CoffeeScript files using Requi
 
 - [repo](https://github.com/jashkenas/coffee-script)
 - [issues](https://github.com/jashkenas/coffee-script/issues)
-
-Lab Examples:
-
-1.  [`get-md2d-data.coffee`](https://github.com/concord-consortium/lab/blob/master/node-bin/get-md2d-data.coffee)
-    is a coffeescript program used to run the MD2D engine from the command line and generate data used
-    for physics validation tests.
-2.  [`PlaybackComponentSVG`](https://github.com/concord-consortium/lab/blob/master/src/lab/common/components/playback_svg.coffee)
-    is an object written in CoffeeScript that creates and manages the SVG-based Playback control widget
-    for the Molecule Container.
-3.  [`InteractivesController`](https://github.com/concord-consortium/lab/blob/master/src/lab/md2d/controllers/interactives-controller.js)
-    is an object written in plain JavaScript which references directly CoffeeScript file using RequireJS
-    (`Thermometer = require('cs!common/components/thermometer')`).
 
 [This section](#coffeescript-files-support) covers RequireJS support of CoffeeScript files.
 
@@ -220,18 +179,14 @@ is a library built on top of fog for creating and managing Lab server instances 
 
 - [repo](https://github.com/cloudhead/vows)
 
-Lab Examples:
+### Mocha
 
-1.  [`axis-test.js`](https://github.com/concord-consortium/lab/blob/master/test/lab/grapher/core/axis-test.js)
-    is used to test the drag UI logic for interactively re-scaling Graph axes.
-2.  [`arrays-test.js`](https://github.com/concord-consortium/lab/blob/master/test/lab/arrays/arrays-test.js)
-    is used to test the utility class for working with regular or Typed Arrays.
+[Mocha](http://visionmedia.github.io/mocha/) is a feature-rich JavaScript test framework running on Node.
 
 ### jsdom
 
 - [jsdom](http://jsdom.org)
 - [repo](https://github.com/tmpvar/jsdom)
-- [issues](https://github.com/tmpvar/jsdom/issues)
 
 ## Miscellaneous
 

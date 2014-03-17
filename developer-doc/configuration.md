@@ -3,21 +3,19 @@
 Configuration variables used by the runtime JavaScript code are available in the JavaScript global
 object `Lab.config`.
 
-In a full build environment the JavaScript configuration is set in the `:jsconfg` section of
-`config/config.yml`:
+Page that embeds Lab interactive should overwrite these configuration values
+before creating an instance of Lab.InteractivesController, e.g.:
 
-    :jsconfig:
-      :sharing: true
-      :home: http://lab.concord.org
-      :homeForSharing:
-      :homeInteractivePath: /examples/interactives/interactive.html
-      :homeEmbeddablePath: embeddable.html
-      :utmCampaign: <external-campaign-key>
+    Lab.config.rootUrl = "//some.website.com/lab";
+    controller = new Lab.InteractivesController(...)
+
+**`rootUrl`** A path that should point to the Lab distribution (content of public/lab folder).
+It's necessary to find resources (e.g. images) and Java JAR files (used by sensor model type).
+The default value for this is `lab` what assumes that Lab is hosted on the same server as
+embedding page in the `lab` directory.
 
 **`sharing`** A boolean attribute used to determine if the **Share** link in the Interactives will be enabled.
 The default value for this is `true`.
-
-**`home`** Url used to reference cannonical site when sharing is turned off.
 
 **`homeForSharing`** Set :homeForSharing to the host where shared Interactives are found
 if you don't want to share the ones on the actual server. Example if you host the
@@ -31,10 +29,6 @@ Interactives at "http://lab.concord.org"
 **`utmCampaign`** If present a UTM suffix is added to links in the About box.
 Set to a string which identifies the external organization.
 
-When the build environment is active these values are used to generate JavaScript code integrated
-into the project by the Ruby program:
-[`script/generate-js-config.rb`](https://github.com/concord-consortium/lab/blob/master/script/generate-js-config.rb)
-
 ## Interactive Share link
 
 Normally the **Share** link in an Interactive is enabled. The **Share** dialog allows a user to more easily
@@ -43,23 +37,10 @@ to embed the Interactive into a blog or web page.
 
 If you are hosting this content on an external server where supporting
 sharing is impractical in some manner you can disable the display of the Interactive **Share** link by setting
-`:sharing` in `config/config.yml` to `false`:
 
-    :jsconfig:
-      :sharing: false
-      :home: http://lab.concord.org
-      :homeForSharing: http://lab.concord.org
-      :homeInteractivePath: /examples/interactives/interactive.html
-      :homeEmbeddablePath: embeddable.html
-      :utmCampaign: <external-campaign-key>
+    Lab.config.share = false;
 
-The additional values for `:home`, `homeInteractivePath`, and `homeEmbeddablePath` are used to construct an
-additional paragraph in the Interactive **About** box providing a link to the Interactive on the production
-[site for the project](http://lab.concord.org).
-
-You can also enable Sharing **but** use a separate host for generating the sharing urls by entering a value
-for **homeForSharing**. If you are *also* hosting the the Lab Interactives in a subdirectory you must also
-set the values for **homeEmbeddablePath** and **homeInteractivePath** as shown above.
+The additional values for `homeForSharing` and `homeEmbeddablePath` can be used to construct a custom link for sharing an interactive.
 
 The value for `utmCampaign` is optional. If present and the **home** site has enabled Google Analytics
 setting a value for `utmCampaign` will allow better tracking of users who click through links in the
@@ -68,8 +49,7 @@ Interactive **About** box.
 ## Google Analytics
 
 In addition there is a optional section in `config/config.yml` which if present enables embedding google
-analytics script into the head of the main `index.html` and all html pages in the `examples/` and `doc/`
-directories. This includes all the Interactives which are located in `examples/interactives` directory.
+analytics script into the head of the main `index.html` and `embeddable.html' pages.
 
 Include your Google Analytics account number here to enable insertion of the Google Analytics
 script by the build system into the generated HTML pages.

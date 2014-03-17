@@ -1,12 +1,5 @@
 # Building Website
 
-## Generated Examples: `public/examples/`
-
-The `public/examples/` directory is automatically generated running `make` and is not part of the repository.
-
-When `bin/guard` is running any changes to files in the `src/examples/` directory cause automatic rebuilding
-of the associated files in the `public/examples/` directory.
-
 ## HTML and CSS Generation
 
 [Haml](http://haml-lang.com/) is used to generate most of the HTML in the `public/` directory.
