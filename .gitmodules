@@ -22,9 +22,6 @@
 [submodule "vendor/dsp.js"]
 	path = vendor/dsp.js
 	url = git://github.com/concord-consortium/dsp.js.git
-[submodule "vendor/d3-plugins"]
-	path = vendor/d3-plugins
-	url = git://github.com/d3/d3-plugins.git
 [submodule "vendor/requirejs"]
 	path = vendor/requirejs
 	url = git://github.com/jrburke/requirejs.git

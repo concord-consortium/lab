@@ -24,7 +24,6 @@ are in the specific folders included in the `vendor/` directory.
 Here is a list of projects and resources included in the in the `vendor/` directory and licenses:
 
 1.  [D3](http://d3js.org/): [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause)
-2.  [D3-plugins](https://github.com/d3/d3-plugins): [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause)
 3.  [hijs](https://github.com/cloudhead/hijs): [MIT](http://www.opensource.org/licenses/MIT)
 4.  [jQuery](https://github.com/jquery/jquery): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
     and [GPL v2.0](http://www.opensource.org/licenses/GPL-2.0).

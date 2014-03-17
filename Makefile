@@ -163,7 +163,6 @@ test-src: test/layout.html \
 	vendor/d3/d3.js \
 	node_modules \
 	public/vendor/d3 \
-	public/vendor/d3-plugins \
 	public/vendor/jquery/jquery.min.js \
 	public/vendor/jquery-ui/jquery-ui.min.js \
 	public/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js \
@@ -349,7 +348,6 @@ public/lab/resources:
 
 public/vendor: \
 	public/vendor/d3 \
-	public/vendor/d3-plugins \
 	public/vendor/jquery/jquery.min.js \
 	public/vendor/jquery-ui/jquery-ui.min.js \
 	public/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js \
@@ -385,13 +383,6 @@ public/vendor/d3: vendor/d3
 	cp vendor/d3/d3*.js public/vendor/d3
 	cp vendor/d3/LICENSE public/vendor/d3/LICENSE
 	cp vendor/d3/README.md public/vendor/d3/README.md
-
-public/vendor/d3-plugins:
-	mkdir -p public/vendor/d3-plugins/cie
-	cp vendor/d3-plugins/LICENSE public/vendor/d3-plugins/LICENSE
-	cp vendor/d3-plugins/README.md public/vendor/d3-plugins/README.md
-	cp vendor/d3-plugins/cie/*.js public/vendor/d3-plugins/cie
-	cp vendor/d3-plugins/cie/README.md public/vendor/d3-plugins/cie/README.md
 
 public/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js: \
 	public/vendor/jquery-ui-touch-punch \
