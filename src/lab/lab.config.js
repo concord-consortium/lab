@@ -10,10 +10,9 @@ define(function (require) {
     // Example if you host the Interactives on a static S3 site and want the
     // sharing links to point to the same Interactives at http://lab.concord.org
     "homeForSharing": "",
-    "homeInteractivePath": "/interactives.html",
     "homeEmbeddablePath": "/embeddable.html",
     // Root URL of Lab distribution, used to get Lab resources (e.g. DNA images).
-    "rootUrl": "",
+    "rootUrl": "lab",
     "dataGamesProxyPrefix": "",
     "fontface": "Lato",
     "utmCampaign": null,
