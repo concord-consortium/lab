@@ -357,7 +357,6 @@ public/vendor: \
 	public/vendor/modernizr \
 	public/vendor/sizzle \
 	public/vendor/hijs \
-	public/vendor/mathjax \
 	public/vendor/fonts \
 	public/vendor/dsp.js \
 	public/vendor/requirejs \
@@ -455,17 +454,6 @@ public/vendor/hijs:
 	cp vendor/hijs/hijs.js public/vendor/hijs
 	cp vendor/hijs/LICENSE public/vendor/hijs
 	cp vendor/hijs/README.md public/vendor/hijs
-
-public/vendor/mathjax:
-	mkdir -p public/vendor/mathjax
-	cp vendor/mathjax/MathJax.js public/vendor/mathjax
-	cp vendor/mathjax/LICENSE public/vendor/mathjax
-	cp vendor/mathjax/README.md public/vendor/mathjax
-	cp -R vendor/mathjax/jax public/vendor/mathjax
-	cp -R vendor/mathjax/extensions public/vendor/mathjax
-	cp -R vendor/mathjax/images public/vendor/mathjax
-	cp -R vendor/mathjax/fonts public/vendor/mathjax
-	cp -R vendor/mathjax/config public/vendor/mathjax
 
 public/vendor/fonts: $(FONT_FOLDERS)
 	mkdir -p public/vendor/fonts
