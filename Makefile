@@ -82,7 +82,6 @@ src: \
 	$(SASS_FILES) \
 	$(INTERACTIVE_FILES) \
 	public/embeddable.html \
-	public/application.js \
 	public/lab/lab.json
 
 .PHONY: clean
