@@ -6,10 +6,6 @@ require "./script/setup"
 ENVIRONMENT = CONFIG[:environment]
 puts "environment: #{ENVIRONMENT}"
 
-JNLP_APP_PATH = PUBLIC_PATH
-require './lib/rack/jnlp.rb'
-
-use Rack::Jnlp
 use Rack::ConditionalGet
 use Rack::ContentLength
 
