@@ -196,7 +196,7 @@ define(function(require) {
       notConnected: {
         enterState: function() {
           message = "Not connected.";
-          sensorServerInterface.startPolling("127.0.0.1:8088");
+          sensorServerInterface.startPolling("127.0.0.1:11180");
           this.gotoState('connecting');
         }
       },
