@@ -33,9 +33,6 @@ Here is a list of projects and resources included in the in the `vendor/` direct
     and [GPL v2.0](http://www.opensource.org/licenses/GPL-2.0).
 8.  [Modernizr](https://github.com/Modernizr/Modernizr): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
     and [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause)
-10. [sizzle](): triple-licensed under the [MIT](http://www.opensource.org/licenses/MIT),
-    [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause), and
-    [GPL v2.0](http://www.opensource.org/licenses/GPL-2.0).
 11. [OpenSans Font](http://www.google.com/webfonts/specimen/Open+Sans): [Apache 2.0](http://www.opensource.org/licenses/Apache-2.0)
 13. [requirejs](https://github.com/jrburke/requirejs): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
     and [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause)

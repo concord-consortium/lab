@@ -355,7 +355,6 @@ public/vendor: \
 	public/vendor/tinysort/jquery.tinysort.js \
 	public/vendor/jquery-context-menu \
 	public/vendor/modernizr \
-	public/vendor/sizzle \
 	public/vendor/hijs \
 	public/vendor/fonts \
 	public/vendor/requirejs \
