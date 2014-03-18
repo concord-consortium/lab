@@ -548,8 +548,9 @@ define(function (require) {
           NaN: NaN,
           isNaN: isNaN,
 
-          // Prevent us from overwriting window.undefined.
-          "undefined": undefined,
+          // Prevent sandbox from overwriting window.undefined (this can still happen in browsers
+          // that haven't implemented immutable undefined--mainly IE9, Safari 5)
+          undefined: void 0,
 
           // Rudimentary debugging functionality. Use Lab alert helper function.
           alert: alert,
