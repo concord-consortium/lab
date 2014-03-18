@@ -1506,7 +1506,7 @@ define (require) ->
         json.restraints = unroll restraints, 'atomIndex', 'k', 'x0', 'y0'
 
       if obstacles.length > 0
-        json.obstacles = unroll obstacles, 'x', 'y', 'vx', 'vy', 'externalAx', 'externalAy', 'friction',
+        json.obstacles = unroll obstacles, 'x', 'y', 'vx', 'vy', 'externalAx', 'externalAy', 'displayExternalAcceleration', 'friction',
           'height', 'width', 'mass', 'westProbe', 'northProbe', 'eastProbe', 'southProbe', 'color', 'visible'
 
       if shapes.length > 0
