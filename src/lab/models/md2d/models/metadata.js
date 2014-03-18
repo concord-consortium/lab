@@ -453,7 +453,7 @@ define(function() {
       // Externally applied vertical acceleration
       externalAy: {
         defaultValue: 0,
-        unitType: "accleration"
+        unitType: "acceleration"
       },
       // Damping coefficient per mass unit (= acceleration / velocity = 1 / time)
       friction: {
