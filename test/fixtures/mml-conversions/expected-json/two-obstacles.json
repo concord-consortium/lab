@@ -176,6 +176,10 @@
     "visible": [
       true,
       true
+    ],
+    "displayExternalAcceleration": [
+      true,
+      true
     ]
   }
 }

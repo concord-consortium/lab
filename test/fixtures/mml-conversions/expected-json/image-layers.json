@@ -288,6 +288,9 @@
     ],
     "visible": [
       true
+    ],
+    "displayExternalAcceleration": [
+      true
     ]
   }
 }

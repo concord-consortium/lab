@@ -208,6 +208,12 @@
       true,
       true,
       true
+    ],
+    "displayExternalAcceleration": [
+      true,
+      true,
+      true,
+      true
     ]
   }
 }

@@ -201,6 +201,9 @@
     ],
     "visible": [
       true
+    ],
+    "displayExternalAcceleration": [
+      true
     ]
   },
   "lines": {
