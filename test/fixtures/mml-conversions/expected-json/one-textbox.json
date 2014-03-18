@@ -5,7 +5,7 @@
   "coulombForces": true,
   "temperatureControl": false,
   "width": 3.5,
-  "height":  2,
+  "height": 2,
   "unitsScheme": "md2d",
   "viscosity": 0.25,
   "gravitationalField": false,
@@ -48,7 +48,24 @@
     "showAtomTrace": false,
     "images": [],
     "imageMapping": {},
-    "textBoxes": [],
+    "textBoxes": [
+      {
+        "text": "You will pull apart pairs of polar and\nnon-polar molecules to see the different\nstrengths of attraction.\nChoose a pair of molecules\nfrom the menu below.",
+        "x": 0.24,
+        "y": 1.73,
+        "layer": 1,
+        "color": "rgb(153,0,0)",
+        "hostType": "RectangularObstacle",
+        "hostIndex": 0,
+        "backgroundColor": "rgb(255,100,100)",
+        "anchor": "upper-left",
+        "fontSize": 0.14,
+        "calloutPoint": [
+          0.24,
+          1.73
+        ]
+      }
+    ],
     "xlabel": false,
     "ylabel": false,
     "xunits": false,
@@ -69,25 +86,7 @@
       "color": "#169C30",
       "width": 0.01,
       "length": 2
-    },
-    "textBoxes": [
-      {
-        "text": "You will pull apart pairs of polar and\nnon-polar molecules to see the different\nstrengths of attraction.\nChoose a pair of molecules\nfrom the menu below.",
-        "x": 0.24,
-        "y": 1.73,
-        "layer": 1,
-        "color": "rgb(153,0,0)",
-        "hostType": "RectangularObstacle",
-        "hostIndex": 0,
-        "backgroundColor": "rgb(255,100,100)",
-        "anchor": "upper-left",
-        "fontSize": 0.14,
-        "calloutPoint": [
-          0.24,
-          1.73
-        ]
-      }
-    ]
+    }
   },
   "elements": {
     "mass": [

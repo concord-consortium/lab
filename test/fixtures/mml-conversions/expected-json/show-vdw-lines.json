@@ -5,7 +5,7 @@
   "coulombForces": true,
   "temperatureControl": false,
   "width": 3.5,
-  "height":  2.2,
+  "height": 2.2,
   "unitsScheme": "md2d",
   "viscosity": 1,
   "gravitationalField": false,
@@ -48,7 +48,18 @@
     "showAtomTrace": false,
     "images": [],
     "imageMapping": {},
-    "textBoxes": [],
+    "textBoxes": [
+      {
+        "text": "Drag the molecules close to each other, \nand look for intermolecular attractions.",
+        "x": 0.53,
+        "y": 2.02,
+        "layer": 1,
+        "frame": "rounded rectangle",
+        "backgroundColor": "rgb(232,231,231)",
+        "fontSize": 0.12,
+        "anchor": "upper-left"
+      }
+    ],
     "xlabel": false,
     "ylabel": false,
     "xunits": false,
@@ -69,19 +80,7 @@
       "color": "#169C30",
       "width": 0.01,
       "length": 2
-    },
-    "textBoxes": [
-      {
-        "text": "Drag the molecules close to each other, \nand look for intermolecular attractions.",
-        "x": 0.53,
-        "y": 2.02,
-        "layer": 1,
-        "frame": "rounded rectangle",
-        "backgroundColor": "rgb(232,231,231)",
-        "fontSize": 0.12,
-        "anchor": "upper-left"
-      }
-    ]
+    }
   },
   "elements": {
     "mass": [

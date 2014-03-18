@@ -5,7 +5,7 @@
   "coulombForces": true,
   "temperatureControl": false,
   "width": 5,
-  "height":  5,
+  "height": 5,
   "unitsScheme": "md2d",
   "viscosity": 1,
   "gravitationalField": false,
@@ -163,7 +163,7 @@
     ],
     "length": [
       0.25,
-      0.20
+      0.2
     ],
     "strength": [
       2000,

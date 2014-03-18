@@ -4,7 +4,7 @@
   "lennardJonesForces": true,
   "coulombForces": true,
   "width": 3.5,
-  "height":  1.3,
+  "height": 1.3,
   "unitsScheme": "md2d",
   "viscosity": 1,
   "temperatureControl": false,
@@ -103,31 +103,87 @@
   },
   "pairwiseLJProperties": [],
   "atoms": {
-      "x": [ 1.6937647087861496, 1.6737613785243628 ],
-      "charge": [ 0, 0 ],
-      "friction": [ 0, 0 ],
-      "y": [ 0.3120344616498204, 1.0996635626415487 ],
-      "vy": [ 0.0009847885445086611, -0.00008357438829906968 ],
-      "element": [ 0, 1 ],
-      "vx": [ -0.0013633643668686385, -0.00013954172103068142 ],
-      "pinned": [ 0, 0 ]
+    "x": [
+      1.6937647087861496,
+      1.6737613785243628
+    ],
+    "charge": [
+      0,
+      0
+    ],
+    "friction": [
+      0,
+      0
+    ],
+    "y": [
+      0.3120344616498204,
+      1.0996635626415487
+    ],
+    "vy": [
+      0.0009847885445086611,
+      -0.00008357438829906968
+    ],
+    "element": [
+      0,
+      1
+    ],
+    "vx": [
+      -0.0013633643668686385,
+      -0.00013954172103068142
+    ],
+    "pinned": [
+      0,
+      0
+    ]
   },
   "obstacles": {
-      "x": [ 1.12 ],
-      "y": [ 0.44999999999999996 ],
-      "vx": [ 0 ],
-      "vy": [ 0 ],
-      "externalAx": [ 0 ],
-      "externalAy": [ 0 ],
-      "friction": [ 0 ],
-      "width": [ 1.11 ],
-      "height": [ 0.56 ],
-      "mass": [ "Infinity" ],
-      "westProbe": [ false ],
-      "northProbe": [ false ],
-      "eastProbe": [ false ],
-      "southProbe": [ false ],
-      "color": [ "rgb(0,0,255)" ],
-      "visible": [ true ]
+    "x": [
+      1.12
+    ],
+    "y": [
+      0.44999999999999996
+    ],
+    "vx": [
+      0
+    ],
+    "vy": [
+      0
+    ],
+    "externalAx": [
+      0
+    ],
+    "externalAy": [
+      0
+    ],
+    "friction": [
+      0
+    ],
+    "width": [
+      1.11
+    ],
+    "height": [
+      0.56
+    ],
+    "mass": [
+      "Infinity"
+    ],
+    "westProbe": [
+      false
+    ],
+    "northProbe": [
+      false
+    ],
+    "eastProbe": [
+      false
+    ],
+    "southProbe": [
+      false
+    ],
+    "color": [
+      "rgb(0,0,255)"
+    ],
+    "visible": [
+      true
+    ]
   }
 }

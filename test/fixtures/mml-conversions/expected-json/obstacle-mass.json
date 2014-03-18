@@ -4,7 +4,7 @@
   "lennardJonesForces": true,
   "coulombForces": true,
   "width": 9.11,
-  "height":  1.18,
+  "height": 1.18,
   "unitsScheme": "md2d",
   "viscosity": 1,
   "temperatureControl": false,
@@ -103,41 +103,63 @@
   },
   "pairwiseLJProperties": [],
   "atoms": {
-    "x": [
-    ],
-    "y": [
-    ],
-    "vx": [
-    ],
-    "vy": [
-    ],
-    "charge": [
-    ],
-    "friction": [
-    ],
-    "element": [
-    ],
-    "pinned": [
-    ]
+    "x": [],
+    "y": [],
+    "vx": [],
+    "vy": [],
+    "charge": [],
+    "friction": [],
+    "element": [],
+    "pinned": []
   },
   "obstacles": {
-      "color": [
-          "rgb(128,128,128)"
-      ],
-      "width": [ 1.26 ],
-      "y": [ 0.36 ],
-      "height": [ 0.51 ],
-      "x": [ 2.03 ],
-      "vx": [ 0 ],
-      "vy": [ 0 ],
-      "externalAx": [ 0 ],
-      "externalAy": [ 0 ],
-      "friction": [ 0 ],
-      "mass": [ 154224 ],
-      "westProbe": [ false ],
-      "northProbe": [ false ],
-      "eastProbe": [ false ],
-      "southProbe": [ false ],
-      "visible": [ true ]
+    "color": [
+      "rgb(128,128,128)"
+    ],
+    "width": [
+      1.26
+    ],
+    "y": [
+      0.36
+    ],
+    "height": [
+      0.51
+    ],
+    "x": [
+      2.03
+    ],
+    "vx": [
+      0
+    ],
+    "vy": [
+      0
+    ],
+    "externalAx": [
+      0
+    ],
+    "externalAy": [
+      0
+    ],
+    "friction": [
+      0
+    ],
+    "mass": [
+      154224
+    ],
+    "westProbe": [
+      false
+    ],
+    "northProbe": [
+      false
+    ],
+    "eastProbe": [
+      false
+    ],
+    "southProbe": [
+      false
+    ],
+    "visible": [
+      true
+    ]
   }
 }

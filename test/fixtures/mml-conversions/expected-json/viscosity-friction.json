@@ -6,7 +6,7 @@
   "viscosity": 0.25,
   "temperatureControl": true,
   "width": 4.38,
-  "height":  2.88,
+  "height": 2.88,
   "unitsScheme": "md2d",
   "gravitationalField": false,
   "timeStepsPerTick": 50,

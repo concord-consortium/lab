@@ -5,7 +5,7 @@
   "coulombForces": true,
   "temperatureControl": false,
   "width": 3,
-  "height":  1.5,
+  "height": 1.5,
   "unitsScheme": "md2d",
   "viscosity": 1,
   "gravitationalField": 8.000000000000001e-7,

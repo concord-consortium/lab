@@ -5,7 +5,7 @@
   "coulombForces": true,
   "temperatureControl": false,
   "width": 4.38,
-  "height":  2.88,
+  "height": 2.88,
   "unitsScheme": "md2d",
   "viscosity": 1,
   "gravitationalField": false,
@@ -103,21 +103,13 @@
   },
   "pairwiseLJProperties": [],
   "atoms": {
-    "x": [
-    ],
-    "y": [
-    ],
-    "vx": [
-    ],
-    "vy": [
-    ],
-    "charge": [
-    ],
-    "friction": [
-    ],
-    "element": [
-    ],
-    "pinned": [
-    ]
+    "x": [],
+    "y": [],
+    "vx": [],
+    "vy": [],
+    "charge": [],
+    "friction": [],
+    "element": [],
+    "pinned": []
   }
 }
