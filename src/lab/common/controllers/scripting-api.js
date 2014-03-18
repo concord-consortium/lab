@@ -543,6 +543,10 @@ define(function (require) {
           },
 
           Math: Math,
+          Infinity: Infinity,
+          isFinite: isFinite,
+          NaN: NaN,
+          isNaN: isNaN,
 
           // Prevent us from overwriting window.undefined.
           "undefined": undefined,
