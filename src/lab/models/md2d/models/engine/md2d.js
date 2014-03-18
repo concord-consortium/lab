@@ -820,6 +820,7 @@ define(function (require, exports) {
           obstacles.yPrev           = arrays.create(num, 0, arrayTypes.floatType);
           obstacles.color           = [];
           obstacles.visible         = arrays.create(num, 0, arrayTypes.uint8Type);
+          obstacles.displayExternalAcceleration = arrays.create(num, 0, arrayTypes.uint8Type);
 
           assignShortcutReferences.obstacles();
         },

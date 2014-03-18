@@ -455,6 +455,10 @@ define(function() {
         defaultValue: 0,
         unitType: "acceleration"
       },
+      // Whether to render arrows for the externally applied acceleration externalAx and externalAy
+      displayExternalAcceleration: {
+        defaultValue: true
+      },
       // Damping coefficient per mass unit (= acceleration / velocity = 1 / time)
       friction: {
         defaultValue: 0,

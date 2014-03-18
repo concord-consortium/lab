@@ -394,9 +394,11 @@ define(function(require) {
 
       // Append external force markers.
       obstacleGroup.each(function(d, i) {
-        // Fast path, if no forces are defined.
-        if (!obstacles.externalAx[i] && !obstacles.externalAy[i])
+        // Fast path
+        if ( ! obstacles.displayExternalAcceleration[i] ||
+             ( ! obstacles.externalAx[i] && ! obstacles.externalAy[i]) ) {
           return;
+        }
 
         // Note that arrows indicating obstacle external force use
         // the same options for styling like arrows indicating atom force.
