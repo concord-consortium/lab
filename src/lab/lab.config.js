@@ -1,7 +1,6 @@
 define(function (require) {
   var actualRoot = require('common/actual-root');
-  var urlHelper  = require('common/url-helper');
-  var publicAPI = {
+  return {
     "sharing": true,
     "logging": false,
     "tracing": false,
@@ -16,12 +15,18 @@ define(function (require) {
     "dataGamesProxyPrefix": "",
     "fontface": "Lato",
     "utmCampaign": null,
-    "versioned_home": "http://lab.concord.org/version/"
+    // You can set versioned home to function that accepts major version of Lab and returns
+    // URL of embeddable page that uses particular version of Lab, e.g.:
+    // Lab.config.versionedHome = function (version) {
+    //    return "http://some.domain.com/lab/embeddable-" + version + ".html";
+    // }
+    // When Lab receives 'getLearnerUrl' messaga via iframe phone, it will respond providing
+    // return value of this function.
+    "versionedHome": null,
+    // Note that actualRoot is calculated dynamically, actually it's not a configuration option!
+    // However it can be used by client code to quickly get actual root, as well as it's used
+    // by Lab itself.
+    // TODO: make it clearer, perhaps pull out actualRoot from config object.
+    "actualRoot": actualRoot
   };
-  publicAPI.actualRoot = actualRoot;
-  publicAPI.urlHelper = new urlHelper(publicAPI);
-  publicAPI.getVersionedUrl = function(load_learner_data) {
-   return publicAPI.urlHelper.getVersionedUrl(load_learner_data);
-  };
-  return publicAPI;
 });

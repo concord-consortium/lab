@@ -2,7 +2,7 @@
 
 define(function(require) {
   var benchmark   = require('common/benchmark/benchmark');
-  var config      = require('lab.config');
+  var urlHelper   = require('common/url-helper');
   var iframePhone = require('iframe-phone');
 
   // Defines the default postMessage API used to communicate with parent window (i.e., an embedder)
@@ -28,9 +28,9 @@ define(function(require) {
       }
     });
 
-    // on message 'getLearnerUrl' return config.getVersionedUrl(loadLearnerData)
+    // on message 'getLearnerUrl' return urlHelper.getVersionedUrl()
     iframeEndpoint.addListener('getLearnerUrl', function() {
-      iframeEndpoint.post('setLearnerUrl', config.getVersionedUrl(true));
+      iframeEndpoint.post('setLearnerUrl', urlHelper.getVersionedUrl());
     });
 
     // on message 'loadInteractive' call controller.loadInteractive
