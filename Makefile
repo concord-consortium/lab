@@ -161,6 +161,7 @@ test-src: test/layout.html \
 	vendor/d3 \
 	vendor/d3/d3.js \
 	node_modules \
+    copy-resources-to-public \
 	public/vendor/d3 \
 	public/vendor/jquery/jquery.min.js \
 	public/vendor/jquery-ui/jquery-ui.min.js \
