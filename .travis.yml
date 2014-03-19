@@ -25,8 +25,9 @@ rvm:
 before_script:
   - cp config/config.sample.yml config/config.yml
   - travis_retry bundle install --binstubs
-  - make clean-for-tests
+  - make clean
+  - make
   # see: http://about.travis-ci.org/docs/user/gui-and-headless-browsers/
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
-script: "make test-src"
+script: "make test"
