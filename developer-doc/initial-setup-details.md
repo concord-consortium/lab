@@ -7,7 +7,7 @@ The readme contains the following steps for initial setup:
 3. `cp config/config.sample.yml config/config.yml`
 4. `make everything`
 5. open another new terminal and run `bin/rackup config.ru`
-6. open http://localhost:9292
+6. open http://localhost:9191
 7. (optional) open a new terminal and run `bin/guard`
 8. (optional) `cp -vn script/post-commit .git/hooks/`
 
@@ -81,7 +81,7 @@ the files in public. It does contain a dynamic extension:
 
 Alternatively you can use `python -m SimpleHTTPServer` to run a python server. Currently it won't handle the applets and it won't support snapshots, but you might not need those features.
 
-### 6. open http://localhost:9292
+### 6. open http://localhost:9191
 
 Now that the files in public are built and a server is running you can view the Lab site locally.
 

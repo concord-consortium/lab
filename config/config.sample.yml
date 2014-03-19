@@ -1,7 +1,7 @@
 ---
 :server:
   development:
-    :hostname: localhost:9292
+    :hostname: localhost:9191
   production:
     :hostname: lab.concord.org
 :google_analytics:
