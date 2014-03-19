@@ -41,7 +41,7 @@ third-parties and are distributed under either BSD, MIT, or Apache 2.0 licenses.
 5. open another new terminal and run `bin/rackup config.ru`
 6. open http://localhost:9191
 7. (optional) open a new terminal and run `bin/guard`
-8. (optional) `cp -vn script/post-commit .git/hooks/`
+8. (optional) `mkdir .git/hooks; cp -vn script/post-commit .git/hooks/`
 
 It is recommended that you review the [initial setup details](developer-doc/initial-setup-details.md).
 They describe what each of the steps above does.
