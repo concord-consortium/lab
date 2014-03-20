@@ -525,6 +525,17 @@ define(function(require) {
       disconnected: {
         enterState: function() {
           message = "Disconnected.";
+          canConnect = true;
+          labquest2Interface.stopPolling();
+        },
+
+        leaveState: function() {
+          canConnect = false;
+        },
+
+        connect: function(address) {
+          labquest2Interface.startPolling(address);
+          this.gotoState('connecting');
         }
       }
     });
@@ -539,10 +550,8 @@ define(function(require) {
 
         if ( ! handled ) {
           // special handling of any events not handled by the current state:
-          if (eventName === 'connectionTimedOut') {
-            stateMachine.gotoState('disconnected');
-          } else if (eventName === 'sessionChanged') {
-            labquest2Interface.stopPolling();
+          if (eventName === 'connectionTimedOut' ||
+              eventName === 'sessionChanged') {
             stateMachine.gotoState('disconnected');
           }
         }
