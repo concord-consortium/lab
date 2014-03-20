@@ -13,8 +13,7 @@ define(function (require) {
   return {
     getVersionedUrl: function () {
       if (config.versionedHome && version.repo.last_tag) {
-        var majorVersion = version.repo.last_tag.split(".")[0];
-        return config.versionedHome(majorVersion);
+        return config.versionedHome(version.repo.last_tag);
       }
       var host     = window.location.host;
       var path     = window.location.pathname;
