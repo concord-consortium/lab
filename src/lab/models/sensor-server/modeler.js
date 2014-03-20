@@ -161,7 +161,10 @@ define(function(require) {
       },
 
       tare: function() {
+        var oldPlayable = isPlayable;
+        isPlayable = false;
         handle('tare');
+        isPlayable = oldPlayable;
       },
 
       willReset: function() {
