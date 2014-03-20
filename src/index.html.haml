@@ -4,72 +4,73 @@
     %meta{:content => "text/html;charset=utf-8", "http-equiv" => "Content-Type"}/
     %title HTML5-based scientific models, visualizations, graphing, and probeware
     %script{:src => "vendor/modernizr/modernizr.js", :type => "text/javascript"}
+    %script{:src => "vendor/jquery/jquery.min.js", :type => "text/javascript"}
     %script{:type => "text/javascript"}
       $(document).ready(function() { if (!Modernizr.svg) { $('body').prepend('<div class="warning">Sorry, but you\'ll need to upgrade your browser to use the models and visualizations. <a href="browser-upgrade.html">Learn more</a> &raquo;</div>'); } });
     %link{:href => "index.css", :rel => "stylesheet", :type => "text/css"}/
     = ANALYTICS
     = FONTFACE_LINK
   %body
-    #header
-      %a#logo(href="http://www.concord.org/")
-        %img(src="lab/resources/layout/cc-logo.png")
-      %h1<
-        %a(href='index.html')> Lab Framework
-        \: HTML5-based scientific models, visualizations, graphing, and probeware
+    %h1 Lab Framework: HTML5-based scientific models, visualizations, graphing, and probeware
 
-    #under-header-links
-      %a{:href => 'readme.html'} Read Me
-      &nbsp;&nbsp;
-      %a{:href => 'license.html'} License
-      &nbsp;&nbsp;
-      %a{:href => 'https://github.com/concord-consortium/lab'} Github Repository
-      &nbsp;&nbsp;
-      %a{:href => 'https://github.com/concord-consortium/lab/issues'} Github Issues
-      &nbsp;&nbsp;
-      %a{:href => 'https://www.pivotaltracker.com/projects/442903'} Pivotal Tracker Project
-      &nbsp;&nbsp;
-      %a{:href => 'https://groups.google.com/group/lab-models'} Developer Mail List
-      &nbsp;&nbsp;
-      %a{:href => 'https://travis-ci.org/concord-consortium/lab'} CIS (travis-ci)
-      &nbsp;&nbsp;
-      %a{:href => 'browser-check.html'} Browser Check
+    .column1
+      %p
+        In November 2011 the Google Foundation awarded Concord Consortium a grant to develop an
+        HTML5 version of Molecular Workbench our award-winning Java-based physics simulation.
+        We've extended these goals and have created a general framework we call Lab for integrating
+        both simulations running in multiple modeling engines and data collection from sensors and
+        probes.
+      %p
+        Lab Interactives are sharable, embeddable, and authorable components defined in JSON
+        that wrap a model with additional inquiry-oriented user interface components such as
+        buttons, checkboxes, sliders, graphs etc.
 
+      %h2 Examples
+      %p MD2D model type
+      %ul
+        %li
+          %a{:href => 'embeddable.html#interactives/oil-and-water.json', :target => '_blank'} Oil and Water
+        %li
+          %a{:href => 'embeddable.html#interactives/amino-acids.json', :target => '_blank'} Protein Folding
+        %li
+          %a{:href => 'embeddable.html#interactives/pendulum.json', :target => '_blank'} Pendulum
+        %li
+          %a{:href => 'embeddable.html#interactives/chemical-reaction.json', :target => '_blank'} Chemical Reaction
+        %li
+          %a{:href => 'embeddable.html#interactives/sun-on-ground.json', :target => '_blank'} Sunlight, Infrared, CO₂ and the Ground
+        %li
+          %a{:href => 'embeddable.html#interactives/act2model.json', :target => '_blank'} Visualizing Electric Fields and Forces
+      %p Other model types
+      %ul
+        %li
+          %a{:href => 'embeddable.html#interactives/energy2d.json', :target => '_blank'} Energy2d
+        %li
+          %a{:href => 'embeddable.html#interactives/sensor.json', :target => '_blank'} Sensor
+        %li
+          %a{:href => 'embeddable.html#interactives/jsmol-two-molecules.json', :target => '_blank'} JSmol
 
-    #content
-      .column1
-        .item-list
-          %p
-            In November 2011 the Google Foundation awarded Concord Consortium a grant to develop an
-            HTML5 version of Molecular Workbench our award-winning Java-based physics simulation.
-            We've extended these goals and have created a general framework we call Lab for integrating
-            both simulations running in multiple modeling engines and data collection from sensors and
-            probes.
-          %p
-            Lab Interactives are sharable, embeddable, and authorable components defined in JSON
-            that wrap a model with additional inquiry-oriented user interface components such as
-            buttons, checkboxes, sliders, graphs etc.
+      %h2 Would you like to see more examples?
+      %p
+        Please visit the
+        %a{:href => 'http://lab.concord.org'}Concord Consortium interactives page
+        to see our full set of interactives built using the Lab framework.
 
-          %h2 Examples
-          %p MD2D model type
-          %ul
-            %li
-              %a{:href => 'embeddable.html#interactives/oil-and-water.json', :target => '_blank'} Oil and Water
-            %li
-              %a{:href => 'embeddable.html#interactives/amino-acids.json', :target => '_blank'} Protein Folding
-            %li
-              %a{:href => 'embeddable.html#interactives/pendulum.json', :target => '_blank'} Pendulum
-            %li
-              %a{:href => 'embeddable.html#interactives/chemical-reaction.json', :target => '_blank'} Chemical Reaction
-            %li
-              %a{:href => 'embeddable.html#interactives/sun-on-ground.json', :target => '_blank'} Sunlight, Infrared, CO₂ and the Ground
-            %li
-              %a{:href => 'embeddable.html#interactives/act2model.json', :target => '_blank'} Visualizing Electric Fields and Forces
-          %p Other model types
-          %ul
-            %li
-              %a{:href => 'embeddable.html#interactives/energy2d.json', :target => '_blank'} Energy2d
-            %li
-              %a{:href => 'embeddable.html#interactives/sensor.json', :target => '_blank'} Sensor
-            %li
-              %a{:href => 'embeddable.html#interactives/jsmol-two-molecules.json', :target => '_blank'} JSmol
-
+    .column2
+      %ul
+        %li
+          %a(href="http://www.concord.org/")
+            %img(src="lab/resources/layout/cc-logo.png")
+        %li
+          %a{:href => 'readme.html'} Read Me
+        %li
+          %a{:href => 'license.html'} License
+        %li
+          %a{:href => 'https://github.com/concord-consortium/lab'} Github Repository
+        %li
+          %a{:href => 'https://github.com/concord-consortium/lab/issues'} Github Issues
+        %li
+          %a{:href => 'https://www.pivotaltracker.com/projects/442903'} Pivotal Tracker Project
+        %li
+          %a{:href => 'https://groups.google.com/group/lab-models'} Developer Mail List
+        %li
+          %a{:href => 'https://travis-ci.org/concord-consortium/lab'} CIS (travis-ci)

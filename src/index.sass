@@ -4,159 +4,48 @@ $directory: "."
 @import 'sass/lab/fonts'
 @import 'sass/lab/common'
 
-a
-  font-weight: 600
-
-iframe
-  border: none
-
-.iframe-container
-  margin-bottom: 0.5em
-
-#header
-  @include linear-gradient(#3a878b, #8cbbb8, $fallback: #3a878b)
-  color: #fff
-  padding: .5em 1em
-  position: relative
-  font-size: 1em
-  font-weight: 600
-  h1
-    margin-right: 11em
-    a
-      color: #fff
-  a#logo
-    display: block
-    height: 3.25em
-    margin: -1.625em 0 0
-    position: absolute
-    right: 2.25em
-    top: 50%
-    width: 10.5em
-    img
-      border: none
-      height: 3.25em
-      width: 10.5em
-
-@media screen and (max-width: 480px)
-  #header
-    h1
-      margin-right: 0
-    a#logo
-      clear: both
-      display: block
-      float: none
-      margin: 1em 0 0
-      position: relative
-      right: auto
-      top: auto
-
-#under-header-links
+html
   margin: 0em
-  padding: 0.5em 1em 0.5em 1em
-  font-size: 90%
-  background-color: #F0F0F0
+  padding: 0em
 
-a
-  color: #3a878b
-  &:hover
-    color: #da5936
+body
+  font-family: labFontface(), Verdana, Geneva, sans-serif
+  margin: 0
+  padding: 15px
+  background-color: #fff
+  color: #3f3f3f
 
-p
-  margin: 1em 0em 0.5em 1em
-  padding: 0em 0em 0em 0em
+h1
+  color: #333
+  font-family: labFontface(), georgia, times, 'times new roman', serif
+  font-weight: 600
+  font-size: 1.3em
+  a
+    text-decoration: none
 
 ul
-  margin: 1em 0em 1em 0em
-  padding: 0em 0em 0em 0em
-  li
-    margin: 0.3em 0.2em 0.3em 0.2em
-    padding: 0em 0em 0em 0em
+  list-style-type: none
 
-#content
-  width: 100%
-
-#experiments-divider
-  margin: 1em 1em 0em 1em
-  border-top: 2px solid #d0d0d0
-
-.column1
-  width: 45%
-  max-width: 80em
-  vertical-align: top
-  display: inline-block
-
-.column2
-  width: 45%
-  max-width: 80em
-  margin-left: 1em
-  vertical-align: top
-  display: inline-block
-
-.item-list
-  padding: 0.5em 1em 0em 1em
-  p
-    margin-left: 0em
-    padding: 0em
-    a
-      text-decoration: none
-  blockquote
-    margin: 0.5em 1.5em 0.5em 1em
-    p
-      font-size: 90%
-      font-style: italic
-  ul
-    list-style-type: none
-    margin: .5em 0em 0.5em 0em
-    padding: 0em
-    li
-      margin: .5em 0.2em 0em 0.5em
-      padding: 0em
-      font-weight: 400
-      p
-        margin-left: 1em
-        margin-top: 0.5em
-        padding: 0em
-        font-weight: normal
-      ul
-        list-style-type: none
-        margin: .2em 0em 0em 1em
-        padding: 0em
-        li
-          font-size: 90%
-          margin: .2em 0.2em 0em 0em
-          padding: 0em
-  ol
-    margin: .5em 0 0
-    padding: 0
-    li
-      margin: .5em 0.2em 0 0
-      padding: 0
-
-.content
-  h2, h3, p
-    margin: 0.5em 1em 0.5em 1em
-    a
-      text-decoration: none
-  ul
-    margin: 1em 1em 1em 2em
-  .float-right
-    float: right
-    margin: .01em 1em 0 1em
-@media screen and (max-width: 700px)
-  .content
-    .float-right
-      clear: both
-      float: none
-
-.framed
-  img
-    margin: 1em
-    max-width: 600px
-    width: 100%
+a
+  text-decoration: none
+  font-weight: 500
+  color: #028288
+  &:visited
+    color: #028288
+  &:hover
+    color: #009BA3
 
 .warning
-  background: #fcc
-  font-size: .9em
-  margin: 0
-  padding: .5em
-  text-align: center !important
+  background: #FFE5E5
+  padding: 10px
+  border-radius: 20px
+
+.column1
+  display: inline-block
+  width: 700px
+
+.column2
+  display: inline-block
+  vertical-align: top
+  width: 200px
+
