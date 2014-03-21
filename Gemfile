@@ -7,6 +7,7 @@ gem 'active_support',     "~> 3"
 gem 'i18n',               "~> 0.6.4"
 gem "gitlab-grit",        "~> 2.6.0"
 gem "shutterbug",         "~> 0.2.1"
+gem "s3_website",         "~> 1.7.0"
 
 group :app do
   gem "rack",               "~> 1.5.2"
@@ -66,7 +67,6 @@ group :development do
   gem "thor",               "~> 0.18.1"
   gem "capistrano",         "~> 2.15.5"
   gem "rvm-capistrano",     "~> 1.4.0"
-  gem "s3_website",         "~> 1.7.0"
 
   # debuggers
   gem "pry"
