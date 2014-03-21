@@ -562,7 +562,8 @@ public/%.css: src/%.css
 public/grapher.css: src/grapher.sass \
 	src/sass/lab/_colors.sass \
 	src/sass/lab/_bar_graph.sass \
-	src/sass/lab/_graphs.sass
+	src/sass/lab/_graphs.sass \
+	public/lab-grapher.scss
 	$(SASS_COMPILER) src/grapher.sass public/grapher.css
 
 public/%.css: %.scss
