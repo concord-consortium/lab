@@ -1,0 +1,6 @@
+s3_id: <%= ENV['S3_ACCESS_KEY_ID'] %>
+s3_secret: <%= ENV['S3_SECRET_KEY'] %>
+s3_bucket: lab-s3.concord.org
+s3_endpoint: us-east-1
+
+ignore_on_server: ^(?!<%= Regexp.escape(ENV['TRAVIS_BRANCH']) %>)

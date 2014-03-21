@@ -31,3 +31,8 @@ before_script:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
 script: "make test"
+env:
+  global:
+  - secure: "0vTh/6CdVgi1g9sHSCtiJuURDPNTgiX5eAu98W6UZhACVC3mLKG+DeBLY0U8PPlv9oK8pJggAwRQiUWdmc214tDk7ZkrHXx02S8EQgDL1Xy57wLhismlVJOFapMA1wkI/pCHADtc1ycYo6lYGhEDzGswjktxNImk2d9APYSrA4A="
+  - secure: "A430lxRQcBORvdmn7a5EHW6ffPt+iO+KC5ZqvR/sCuh/SRJDrPvGgY5+D4T6xAAybwNLDddUdbxZ3ACUT7oUVFbRNEJzfLSo6ugkMeK+BnABckG4Bh9BEAI4xhqiune09qBDoxwpAKQBCXGKS5q06snabbkfLjx2H+yPqGHCsSE="
+after_success: "script/s3-deploy.sh"

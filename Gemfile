@@ -66,6 +66,7 @@ group :development do
   gem "thor",               "~> 0.18.1"
   gem "capistrano",         "~> 2.15.5"
   gem "rvm-capistrano",     "~> 1.4.0"
+  gem "s3_website",         "~> 1.7.0"
 
   # debuggers
   gem "pry"
