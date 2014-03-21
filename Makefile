@@ -114,15 +114,7 @@ clean-finish:
 	rm -f src/lab/lab.version.js
 	# Remove Node modules.
 	rm -rf node_modules
-	-$(MAKE) submodule-update || $(MAKE) submodule-update-tags
-	# Remove generated products in vendor libraries
-	rm -f vendor/jquery/dist/jquery*.js
-	rm -f vendor/jquery-ui/dist/jquery-ui*.js
-	# hack to always download a new copy of grunt-contrib-jshint
-	# because of packaging issues with an unresolved jshint depedency when
-	# an older version of jshint is installed
-	if [ -d vendor/jquery/node_modules/grunt-contrib-jshint ]; then rm -rf vendor/jquery/node_modules/grunt-contrib-jshint; fi
-	if [ -d vendor/jquery-ui/node_modules/grunt-contrib-jshint ]; then rm -rf vendor/jquery-ui/node_modules/grunt-contrib-jshint; fi
+	$(MAKE) prepare-submodules
 
 # public dir cleanup.
 .PHONY: clean-public
@@ -135,6 +127,18 @@ clean-archives:
 	rm -rf version
 	rm -rf public/version
 
+.PHONY: prepare-submodules
+prepare-submodules:
+	-$(MAKE) submodule-update || $(MAKE) submodule-update-tags
+	# Remove generated products in vendor libraries
+	rm -f vendor/jquery/dist/jquery*.js
+	rm -f vendor/jquery-ui/dist/jquery-ui*.js
+	# hack to always download a new copy of grunt-contrib-jshint
+	# because of packaging issues with an unresolved jshint depedency when
+	# an older version of jshint is installed
+	if [ -d vendor/jquery/node_modules/grunt-contrib-jshint ]; then rm -rf vendor/jquery/node_modules/grunt-contrib-jshint; fi
+	if [ -d vendor/jquery-ui/node_modules/grunt-contrib-jshint ]; then rm -rf vendor/jquery-ui/node_modules/grunt-contrib-jshint; fi	
+
 # ------------------------------------------------
 #
 #   Testing
@@ -143,7 +147,8 @@ clean-archives:
 
 .PHONY: test
 test: test/layout.html \
-	vendor/d3 \
+    node_modules/d3 \
+    node_modules/arrays \
 	public \
 	$(LAB_JS_FILES) \
 	$(JS_FILES:.js=.min.js)
