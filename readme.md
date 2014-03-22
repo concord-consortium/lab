@@ -38,9 +38,9 @@ third-parties and are distributed under either BSD, MIT, or Apache 2.0 licenses.
 2. `cd lab`
 3. `cp config/config.sample.yml config/config.yml`
 4. `make everything`
-5. open another new terminal and run `bin/rackup config.ru`
+5. open another new terminal and run `rackup`
 6. open http://localhost:9191
-7. (optional) open a new terminal and run `bin/guard`
+7. (optional) open a new terminal and run `guard`
 8. (optional) `mkdir .git/hooks; cp -vn script/post-commit .git/hooks/`
 
 It is recommended that you review the [initial setup details](developer-doc/initial-setup-details.md).

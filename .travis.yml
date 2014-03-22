@@ -22,7 +22,7 @@ language: ruby
 rvm:
   - "2.0.0"
 before_install: sudo apt-get install libicu-dev
-bundler_args: --binstubs --without development
+bundler_args: --without development
 before_script:
   - cp config/config.sample.yml config/config.yml
   - travis_retry npm install

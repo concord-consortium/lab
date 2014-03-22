@@ -50,6 +50,8 @@ namespace :deploy do
 
   desc "update Ruby Gems with bundle install"
   task :bundle_install do
+    # currently our servers are misconfigured so '--binstubs' is needed to
+    # have access to the gem binary wrappers
     run "cd /var/www/app; bundle install --binstubs"
   end
 

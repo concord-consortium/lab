@@ -148,7 +148,7 @@ automatically start the build process when needed.
 - [guard-markdown](https://github.com/darwalenator/guard-markdown)
 - [guard-livereload](https://github.com/guard/guard-livereload)
 
-Lab Example: Starting Guard with `bin/guard` loads and runs the configuration in [`Guardfile`](https://github.com/concord-consortium/lab/blob/master/Guardfile).
+Lab Example: Starting Guard with `guard` loads and runs the configuration in [`Guardfile`](https://github.com/concord-consortium/lab/blob/master/Guardfile).
 
 ### Thor
 

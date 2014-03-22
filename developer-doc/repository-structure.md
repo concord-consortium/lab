@@ -121,8 +121,8 @@ Hashbang scripts for starting these executables (i.e., files which start with th
 [`packages.json`](https://github.com/concord-consortium/lab/blob/master/package.json) file
 specifies [`node-bin`](https://github.com/concord-consortium/lab/tree/master/node-bin) as the
 location of the executable scripts which `npm` should make available whenever Lab is imported into
-another project as a Node module. (For developer convenience, `bin/` is being reserved for Ruby
-executables made available via Bundler.)
+another project as a Node module. (FIXME: `bin/` was being reserved for Ruby
+executables made available via Bundler, but that is no longer necessary)
 
 ##### MD2D simulation stepping
 

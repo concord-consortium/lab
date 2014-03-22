@@ -92,7 +92,7 @@ group :build do
         delete_css
         command("make")
       else
-        command("bin/sass -I src -I public --require ./src/helpers/sass/lab_fontface.rb src/#{path}.sass public/#{path}.css")
+        command("sass -I src -I public --require ./src/helpers/sass/lab_fontface.rb src/#{path}.sass public/#{path}.css")
       end
     end
 

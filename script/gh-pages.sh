@@ -11,11 +11,11 @@ cat <<heredoc
 heredoc
 exit
 fi
-if ps aux | grep -v grep | grep 'ruby bin/guard' > /dev/null
+if ps aux | grep -v grep | grep 'ruby guard' > /dev/null
 then
 cat <<heredoc
 
-*** shut down bin/guard first to generate a gh-pages branch
+*** shut down guard first to generate a gh-pages branch
 
 heredoc
 exit
@@ -36,8 +36,8 @@ git add --all .
 git commit -am "generated from commit: `git --git-dir ../.git log -1 --format="%H%n%n%an <%ae>%n%cd%n%n    %s%n%n    %b"`"
 git push origin gh-pages
 cd ..
-bin/haml -r ./script/setup.rb src/interactives.html.haml public/interactives.html
-bin/haml -r ./script/setup.rb src/embeddable.html.haml public/embeddable.html
+haml -r ./script/setup.rb src/interactives.html.haml public/interactives.html
+haml -r ./script/setup.rb src/embeddable.html.haml public/embeddable.html
 rm -f src/lab/lab.config.js; make public/lab/lab.js
 else
 cat <<heredoc

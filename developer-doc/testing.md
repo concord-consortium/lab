@@ -12,10 +12,10 @@ Running the tests:
     ................................. . . .. . . .
     x OK > 40 honored (0.012s)
 
-If you are running `bin/guard` the tests run automatically anytime a change is made in the JavaScript
+If you are running `guard` the tests run automatically anytime a change is made in the JavaScript
 files in the `src/` or `test/` directory.
 
-The results of the tests are displayed in the console that `bin/guard` is running in.
+The results of the tests are displayed in the console that `guard` is running in.
 
 If the bottom of the console window is viewable you will see new test results whenever you save a changes.
 

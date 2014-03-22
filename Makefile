@@ -2,14 +2,14 @@
 
 # Utilities
 JS_COMPILER = ./node_modules/uglify-js/bin/uglifyjs -c -m -
-MARKDOWN_COMPILER = bin/kramdown
+MARKDOWN_COMPILER = kramdown
 
 # Turns out that just pointing Vows at a directory doesn't work, and its test matcher matches on
 # the test's title, not its pathname. So we need to find everything in test/vows first.
 VOWS = find test/vows -type f -name '*.js' -o -name '*.coffee' ! -name '.*' | xargs ./node_modules/.bin/vows --isolate --dot-matrix
 MOCHA = find test/mocha -type f -name '*.js' -o -name '*.coffee' ! -name '.*' | xargs node_modules/.bin/mocha --reporter dot
 
-SASS_COMPILER = ./bin/sass -I src -I public -r ./src/helpers/sass/lab_fontface.rb
+SASS_COMPILER = sass -I src -I public -r ./src/helpers/sass/lab_fontface.rb
 R_OPTIMIZER = ./node_modules/.bin/r.js
 
 LAB_SRC_FILES := $(shell find src/lab -type f ! -name '.*' -print)
@@ -57,14 +57,8 @@ LAB_JS_FILES = \
 .PHONY: all
 all: \
 	vendor/d3/d3.js \
-	node_modules \
-	bin
+	node_modules
 	$(MAKE) public
-
-# install Ruby Gem development dependencies
-.PHONY: bin
-bin:
-	bundle install --binstubs --quiet
 
 # clean, make ...
 .PHONY: everything
@@ -93,7 +87,7 @@ clean:
 	# Would be nice if bundle install had a --withall option to cancel this persistence.
 	rm -rf .bundle
 	# install/update Ruby Gems
-	bundle install --binstubs
+	bundle install
 	$(MAKE) clean-finish
 
 # Like clean without installing development-related Ruby Gems,intended
@@ -103,7 +97,7 @@ clean:
 clean-for-tests:
 	ruby script/check-development-dependencies.rb
 	# install/update Ruby Gems
-	bundle install --binstubs --without development app
+	bundle install --without development app
 	$(MAKE) clean-finish
 
 # public dir cleanup.

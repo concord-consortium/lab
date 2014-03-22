@@ -11,11 +11,11 @@ cat <<heredoc
 heredoc
 exit
 fi
-if ps aux | grep -v grep | grep 'ruby bin/guard' > /dev/null
+if ps aux | grep -v grep | grep 'ruby guard' > /dev/null
 then
 cat <<heredoc
 
-*** shut down bin/guard first before generating an archive of the gh-pages
+*** shut down guard first before generating an archive of the gh-pages
     branch in public/
 
 heredoc
