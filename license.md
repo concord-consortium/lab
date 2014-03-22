@@ -24,39 +24,38 @@ are in the specific folders included in the `vendor/` directory.
 Here is a list of projects and resources included in the in the `vendor/` directory and licenses:
 
 1.  [D3](http://d3js.org/): [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause)
-2.  [hijs](https://github.com/cloudhead/hijs): [MIT](http://www.opensource.org/licenses/MIT)
-3.  [jQuery](https://github.com/jquery/jquery): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
+2.  [jQuery](https://github.com/jquery/jquery): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
     and [GPL v2.0](http://www.opensource.org/licenses/GPL-2.0).
-4.  [jQuery-UI](https://github.com/jquery/jquery-ui): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
+3.  [jQuery-UI](https://github.com/jquery/jquery-ui): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
     and [GPL v2.0](http://www.opensource.org/licenses/GPL-2.0).
-5.  [TinySort](https://github.com/Sjeiti/TinySort): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
+4.  [TinySort](https://github.com/Sjeiti/TinySort): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
     and [GPL v2.0](http://www.opensource.org/licenses/GPL-2.0).
-6.  [Modernizr](https://github.com/Modernizr/Modernizr): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
+5.  [Modernizr](https://github.com/Modernizr/Modernizr): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
     and [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause)
-7. [OpenSans Font](http://www.google.com/webfonts/specimen/Open+Sans): [Apache 2.0](http://www.opensource.org/licenses/Apache-2.0)
-8. [requirejs](https://github.com/jrburke/requirejs): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
+6. [OpenSans Font](http://www.google.com/webfonts/specimen/Open+Sans): [Apache 2.0](http://www.opensource.org/licenses/Apache-2.0)
+7. [requirejs](https://github.com/jrburke/requirejs): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
     and [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause)
-9. [almond](https://github.com/jrburke/almond): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
+8. [almond](https://github.com/jrburke/almond): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
     and [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause)
-10. [text](https://github.com/requirejs/text): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
+9. [text](https://github.com/requirejs/text): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
     and [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause)
-11. [require-cs](https://github.com/requirejs/domReady): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
+10. [require-cs](https://github.com/requirejs/domReady): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
     and [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause)
-12. [coffe-script](https://github.com/jashkenas/coffee-script): [MIT](http://www.opensource.org/licenses/MIT)
-13. [jQuery UI Touch Punch](http://http://touchpunch.furf.com/): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
+11. [coffe-script](https://github.com/jashkenas/coffee-script): [MIT](http://www.opensource.org/licenses/MIT)
+12. [jQuery UI Touch Punch](http://http://touchpunch.furf.com/): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
     and [GPL v2.0](http://www.opensource.org/licenses/GPL-2.0).
-14. [jQuery Context Menu](http://medialize.github.com/jQuery-contextMenu/): dual-licensed under
+13. [jQuery Context Menu](http://medialize.github.com/jQuery-contextMenu/): dual-licensed under
     [MIT](http://www.opensource.org/licenses/MIT) and [GPL v3.0](http://opensource.org/licenses/GPL-3.0).
-15. [backbone](https://github.com/documentcloud/backbone): [MIT](http://www.opensource.org/licenses/MIT)
-16. [underscore](https://github.com/documentcloud/underscore): [MIT](http://www.opensource.org/licenses/MIT)
-17. [jQuery selectBoxIt](https://github.com/gfranko/jQuery.selectBoxIt.js): [MIT](http://www.opensource.org/licenses/MIT)
-18. [mustache](https://github.com/janl/mustache.js): [MIT](http://www.opensource.org/licenses/MIT)
-19. [markdown-js](https://github.com/evilstreak/markdown-js): [MIT](http://www.opensource.org/licenses/MIT)
-20. [pixi.js](https://github.com/GoodBoyDigital/pixi.js): [MIT](http://www.opensource.org/licenses/MIT)
-21. [canvg](https://code.google.com/p/canvg): [MIT](http://www.opensource.org/licenses/MIT)
-22. [fastclick](https://github.com/ftlabs/fastclick): [MIT](http://www.opensource.org/licenses/MIT)
-23. [seedrandom](https://github.com/davidbau/seedrandom): [BSD](http://www.opensource.org/licenses/BSD-2-Clause)
-24. [cheerio](https://github.com/MatthewMueller/cheerio): [MIT](http://www.opensource.org/licenses/MIT)
+14. [backbone](https://github.com/documentcloud/backbone): [MIT](http://www.opensource.org/licenses/MIT)
+15. [underscore](https://github.com/documentcloud/underscore): [MIT](http://www.opensource.org/licenses/MIT)
+16. [jQuery selectBoxIt](https://github.com/gfranko/jQuery.selectBoxIt.js): [MIT](http://www.opensource.org/licenses/MIT)
+17. [mustache](https://github.com/janl/mustache.js): [MIT](http://www.opensource.org/licenses/MIT)
+18. [markdown-js](https://github.com/evilstreak/markdown-js): [MIT](http://www.opensource.org/licenses/MIT)
+19. [pixi.js](https://github.com/GoodBoyDigital/pixi.js): [MIT](http://www.opensource.org/licenses/MIT)
+20. [canvg](https://code.google.com/p/canvg): [MIT](http://www.opensource.org/licenses/MIT)
+21. [fastclick](https://github.com/ftlabs/fastclick): [MIT](http://www.opensource.org/licenses/MIT)
+22. [seedrandom](https://github.com/davidbau/seedrandom): [BSD](http://www.opensource.org/licenses/BSD-2-Clause)
+23. [cheerio](https://github.com/MatthewMueller/cheerio): [MIT](http://www.opensource.org/licenses/MIT)
 
 In addition there are three fontface directories in `vendor/fonts` that are distributed
 under compatible open source licenses:

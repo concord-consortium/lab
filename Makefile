@@ -42,9 +42,6 @@ SASS_FILES += $(shell find src -name '*.scss' -and -not -path "src/sass/*" -exec
 vpath %.sass src
 vpath %.scss src
 
-MARKDOWN_FILES := $(patsubst %.md, public/%.html, $(wildcard *.md))
-DEV_MARKDOWN_FILES := $(patsubst %.md, public/%.html, $(wildcard developer-doc/*.md))
-
 LAB_JS_FILES = \
 	public/lab/lab.js \
 	public/lab/lab.grapher.js \
@@ -68,8 +65,7 @@ everything:
 
 .PHONY: src
 src: \
-	$(MARKDOWN_FILES) \
-	$(DEV_MARKDOWN_FILES) \
+	public/license.html \
 	$(LAB_JS_FILES) \
 	$(LAB_JS_FILES:.js=.min.js) \
 	$(HAML_FILES) \
@@ -319,7 +315,6 @@ public/vendor: \
 	public/vendor/tinysort/jquery.tinysort.js \
 	public/vendor/jquery-context-menu \
 	public/vendor/modernizr \
-	public/vendor/hijs \
 	public/vendor/fonts \
 	public/vendor/text \
 	public/vendor/shutterbug/shutterbug.js \
@@ -402,12 +397,6 @@ public/vendor/sizzle:
 	cp vendor/sizzle/sizzle.js public/vendor/sizzle
 	cp vendor/sizzle/LICENSE public/vendor/sizzle
 	cp vendor/sizzle/README public/vendor/sizzle
-
-public/vendor/hijs:
-	mkdir -p public/vendor/hijs
-	cp vendor/hijs/hijs.js public/vendor/hijs
-	cp vendor/hijs/LICENSE public/vendor/hijs
-	cp vendor/hijs/README.md public/vendor/hijs
 
 public/vendor/fonts: $(FONT_FOLDERS)
 	mkdir -p public/vendor/fonts
@@ -541,21 +530,9 @@ public/%.css: %.sass $(SASS_LAB_LIBRARY_FILES) \
 	@echo $($<)
 	$(SASS_COMPILER) $< $@
 
-# replace relative references to .md files for the static build
-# look for pattern like ](*.md) replace with ](*.html)
-# the ':' is hack so it doesn't match absolute http:// urls
-# the second command is necessary to match anchor references in md files
-%.md.static: %.md
+public/%.html: %.md
 	@rm -f $@
-	sed -e s';\](\([^):]*\)\.md);\](\1.html);' -e s';\](\([^):]*\)\.md\(#[^)]*\));\](\1.html\2);' $< > $@
-
-public/developer-doc/%.html: developer-doc/%.md.static
-	@rm -f $@
-	$(MARKDOWN_COMPILER) -i GFM $< --template src/layouts/developer-doc.html.erb > $@
-
-public/%.html: %.md.static
-	@rm -f $@
-	$(MARKDOWN_COMPILER) $< --toc-levels 2..6 --template src/layouts/top-level.html.erb > $@
+	$(MARKDOWN_COMPILER) $< --template src/layouts/kramdown.html.erb > $@
 
 public/interactives/%.json: src/interactives/%.json
 	@cp $< $@
@@ -583,10 +560,6 @@ s:
 .PHONY: s1
 sl:
 	@echo $(SASS_LAB_LIBRARY_FILES)
-
-.PHONY: m
-m:
-	@echo $(MARKDOWN_FILES)
 
 .PHONY: cm
 cm:

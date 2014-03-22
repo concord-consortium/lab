@@ -1,9 +1,6 @@
 [submodule "vendor/d3"]
 	path = vendor/d3
 	url = git://github.com/mbostock/d3.git
-[submodule "vendor/hijs"]
-	path = vendor/hijs
-	url = git://github.com/cloudhead/hijs.git
 [submodule "vendor/modernizr"]
 	path = vendor/modernizr
 	url = git://github.com/Modernizr/Modernizr.git
