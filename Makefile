@@ -88,21 +88,6 @@ clean:
 	rm -rf .bundle
 	# install/update Ruby Gems
 	bundle install
-	$(MAKE) clean-finish
-
-# Like clean without installing development-related Ruby Gems,intended
-# to make testing faster on a continuous integration server.
-# Minimal project build and run tests: make clean-for-tests; make test-src
-.PHONY: clean-for-tests
-clean-for-tests:
-	ruby script/check-development-dependencies.rb
-	# install/update Ruby Gems
-	bundle install --without development app
-	$(MAKE) clean-finish
-
-# public dir cleanup.
-.PHONY: clean-finish
-clean-finish:
 	mkdir -p public
 	$(MAKE) clean-public
 	rm -f src/lab/lab.version.js
@@ -152,26 +137,6 @@ test: test/layout.html \
 	@echo 'Vows tests ...'
 	@$(VOWS)
 	@echo
-
-# Run all tests WITHOUT trying to build Lab JS first. Run 'make test' to build & test.
-# Minimal project build and run tests: make clean-for-tests; make test-src
-.PHONY: test-src
-test-src: test/layout.html \
-	vendor/d3 \
-	vendor/d3/d3.js \
-	node_modules \
-    copy-resources-to-public \
-	public/vendor/d3 \
-	public/vendor/jquery/jquery.min.js \
-	public/vendor/jquery-ui/jquery-ui.min.js \
-	public/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js \
-	public/vendor/jquery-selectBoxIt/jquery.selectBoxIt.min.js \
-	public/vendor/jquery-context-menu \
-	src/lab/lab.version.js
-	@echo 'Running Mocha tests ...'
-	@$(MOCHA)
-	@echo 'Running Vows tests ...'
-	@$(VOWS)
 
 # run vows test WITHOUT trying to build Lab JS first. Run 'make; make test-mocha' to build & test.
 .PHONY: test-vows
