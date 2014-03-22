@@ -65,7 +65,6 @@ If you think you'd like to contribute to Lab as an external developer:
 
 ## More Documentation
 
-- [Static Distribution](developer-doc/static-distribution.md)
 - [Project Configuration](developer-doc/configuration.md)
 - [Continuous Integration on Travis](developer-doc/travis.md)
 - [Repository Structure](developer-doc/repository-structure.md)
