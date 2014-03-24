@@ -42,7 +42,7 @@ Here is a list of projects and resources included in the in the `vendor/` direct
 10. [require-cs](https://github.com/requirejs/domReady): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
     and [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause)
 11. [coffe-script](https://github.com/jashkenas/coffee-script): [MIT](http://www.opensource.org/licenses/MIT)
-12. [jQuery UI Touch Punch](http://http://touchpunch.furf.com/): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
+12. [jQuery UI Touch Punch](http://touchpunch.furf.com/): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
     and [GPL v2.0](http://www.opensource.org/licenses/GPL-2.0).
 13. [jQuery Context Menu](http://medialize.github.com/jQuery-contextMenu/): dual-licensed under
     [MIT](http://www.opensource.org/licenses/MIT) and [GPL v3.0](http://opensource.org/licenses/GPL-3.0).
@@ -56,6 +56,8 @@ Here is a list of projects and resources included in the in the `vendor/` direct
 21. [fastclick](https://github.com/ftlabs/fastclick): [MIT](http://www.opensource.org/licenses/MIT)
 22. [seedrandom](https://github.com/davidbau/seedrandom): [BSD](http://www.opensource.org/licenses/BSD-2-Clause)
 23. [cheerio](https://github.com/MatthewMueller/cheerio): [MIT](http://www.opensource.org/licenses/MIT)
+24. [lab-grapher](https://github.com/concord-consortium/lab-grapher): triple-licensed the same as the Lab licenses
+25. [lab-sensor-applet-interface-dist](https://github.com/concord-consortium/lab-sensor-applet-interface-dist): triple-licensed the same as Lab, with exceptions for some binary libraries provided by Vernier
 
 In addition there are three fontface directories in `vendor/fonts` that are distributed
 under compatible open source licenses:
@@ -72,60 +74,6 @@ of the CSS used in the Lab project and are distributed under the MIT license.
 
 1.  [Bourbon](https://github.com/thoughtbot/bourbon): [MIT](http://www.opensource.org/licenses/MIT)
 2.  [Neat](https://github.com/thoughtbot/neat): [MIT](http://www.opensource.org/licenses/MIT)
-
-The files in the `src/imports/` directory which are copied to the `imports/` directory
-when a distribution is created are all Copyright 2012 (c) by the Concord Consortium and distributed
-under various open source licenses. These resources represent some of the authored content for our earlier
-work on the Java versions of Molecular Workbench and Energy2D and are distributed here to aid in the
-conversion of these resources to HTML5 for the Lab project.
-
-Java files in `src/jnlp`
-
-The files in the `src/jnlp` directory are compiled Java Jar archives and are copied to `server/public/jnlp/`
-when a runnable distribution is created during the build process.
-
-The only files in this directory are the native Java JNI libraries for accessin g the Vernier GoIO probeware.
-
-These files consist of code developed at Concord Consortium and licensed under the Lab license and the
-[Vernier GoIO SDK](http://www.vernier.com/downloads/software-development-kits/go-sdk/) distributed by
-Vernier as Public Domain software ([git mirror](https://github.com/concord-consortium/goio_sdk)).
-
-Java files in the `java` directory.
-
-Some of these files are also Copyright 2012 (c) by the Concord Consortium and distributed
-under various open source licenses. These resources represent our earlier work to support the Java versions
-of our computational simulations and probeware.
-
-Some of the files are from third parties.
-
-Here is a list of files in the `java` directory, their authorship and licenses:
-
-1.  JDom (external), an XML processing library: `java/jdom/jdom-1.0.jar`. JDom has an [Apache-like license
-    with the attribution clause removed](http://www.jdom.org/docs/faq.html#a0030)
-
-2.  JUG: Java UUID generator (external): `java/jug/jug-1.1.2.jar`. [JUG](http://jug.safehaus.org/Download)
-    v2 of JUG is available under: LGPL 2.1 and ASL 2.0, we are using v1.1.2 which is only under the LGPL 2.1
-
-3.  The Java Molecular Workbench files in this directory: `java/mw`` (CC and external). The Java version
-    of Molecular Workbench is distributed under the GNU General Public License. The Molecular Workbench
-    jar also includes code from the external GPL-licensed JMol project.
-    [Java Molecular Workbench source code](http://svn.concord.org/svn/projects/trunk/common/java/simulations/mw/)
-
-4.  The NetLogo jar file in this directory: `java/nlogo` is distributed under the
-    [GPL license](http://ccl.northwestern.edu/netlogo/docs/copyright.html) and created by:
-
-    Wilensky, U. (1999). NetLogo. http://ccl.northwestern.edu/netlogo/.
-    Center for Connected Learning and Computer-Based Modeling, Northwestern University, Evanston, IL.
-
-    And distributed here [github.com/NetLogo/NetLogo](https://github.com/NetLogo/NetLogo)
-
-5.  The rest of the files in the `src/jnlp/org/concord/` directory were created by Concord Consortium and are all
-    distributed under the Lab licenses.
-
-If you have downloaded the source code repository for the Lab project only the files in the `src/jnlp` directory
-are present in the repository.
-
-The initiation of a separate build task is required to integrate the rest of the Java resources.
 
 All other files distributed in the complete source code repository other than the ones specifically mentioned above
 are distributed under the Concord Consortium Lab project software license.
