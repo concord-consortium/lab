@@ -1,9 +1,10 @@
 # Repository structure
 
+
+
 ## vendor/
 
-[Third-party JavaScript runtime dependencies](#javascript-library-runtime-dependencies)
-for Lab are located in the
+Third-party JavaScript runtime dependencies for Lab are located in the
 **[`vendor/`](https://github.com/concord-consortium/lab/tree/master/vendor)**
 directory and are installed as git submodules
 the first time `make` is run in a new checkout of the source code repository.
@@ -27,7 +28,7 @@ code is either copied directly or used to generate resources  that are copied.
 
 ### src/lab/
 
-The **[src/lab\](https://github.com/concord-consortium/lab/tree/master/src/lab)**
+The **[src/lab](https://github.com/concord-consortium/lab/tree/master/src/lab)**
 directory includes JavaScript source code for the Lab JavaScript modules.
 During the build process individual files are copied into modules which are placed in
 the **`public/lab`** directory.
@@ -35,15 +36,11 @@ the **`public/lab`** directory.
 #### src/lab/models/md2d
 
 The [md2d](https://github.com/concord-consortium/lab/tree/master/src/lab/models/md2d) model-type contains a basic
-**Next Generation Molecular Workbench* application. It built using a hybrid of a MVC design pattern
-with a dataflow architecture necessary for performance and consist of following units:
-
-- Models - [`src/lab/md2d/models`](https://github.com/concord-consortium/lab/tree/master/src/lab/md2d/models)
-- Views - [`src/lab/md2d/views`](https://github.com/concord-consortium/lab/tree/master/src/lab/md2d/views)
-- Controllers - [`src/lab/md2d/controllers`](https://github.com/concord-consortium/lab/tree/master/src/lab/md2d/controllers)
+**Next Generation Molecular Workbench** application. It built using a hybrid of a MVC design pattern
+with a dataflow architecture necessary for performance.
 
 The source code of the core molecular dynamics engine is currently located in the
-[src/lab/md2d/models/engine](https://github.com/concord-consortium/lab/tree/master/src/lab/md2d/models/engine)
+[src/lab/models/md2d/models/engine](https://github.com/concord-consortium/lab/tree/master/src/lab/models/md2d/models/engine)
 directory, which is organized as a set of related RequireJS modules. These modules are compatible
 both with the Web browser environment and Node.
 
@@ -160,34 +157,13 @@ You can test how these parameters work using the
 [Model integration time step, period, and sample rate](interactives.html#interactives/basic-examples/sample-rate-and-refresh-rate.json)
 interactive.
 
-#### src/lab/grapher/
-
-- [src/lab/grapher](https://github.com/concord-consortium/lab/tree/master/src/lab/grapher)
-
-#### src/lab/common/
-
-- [src/lab/common](https://github.com/concord-consortium/lab/tree/master/src/lab/common)
-
-#### src/lab/import-export/
-
-- [src/lab/import-export](https://github.com/concord-consortium/lab/tree/master/src/lab/import-export)
-
 #### src/lab/models/energy2d/
 
 The **[src/lab/models/energy2d](https://github.com/concord-consortium/lab/tree/master/src/lab/models/energy2d)** model-type contains
 a basic **Energy2D* application*. It is a direct port of [Java Energy2D](http://energy.concord.org/energy2d/).
-Energy2D is also built over MVC design pattern and consist of following units:
+Energy2D is built with MVC design pattern.
 
-- Models - [`src/lab/models/energy2d/models`](https://github.com/concord-consortium/lab/tree/master/src/lab/models/energy2d/models)
-- Views - [`src/lab/models/energy2d/views`](https://github.com/concord-consortium/lab/tree/master/src/lab/models/energy2d/views)
-- Controllers - [`src/lab/models/energy2d/controllers`](https://github.com/concord-consortium/lab/tree/master/src/lab/models/energy2d/controllers)
-
-and additionally:
-
-- Internal Utils - [`src/lab/models/energy2d/utils`](https://github.com/concord-consortium/lab/tree/master/src/lab/models/energy2d/utils)
-- GPU Toolkit - [`src/lab/models/energy2d/gpu`](https://github.com/concord-consortium/lab/tree/master/src/lab/models/energy2d/gpu)
-
-GPU Toolkit is a small set of utilities which wraps basic WebGL structures and objects, providing
+[GPU Toolkit](https://github.com/concord-consortium/lab/tree/master/src/lab/models/energy2d/gpu) is a small set of utilities which wraps basic WebGL structures and objects, providing
 higher level API. It is useful, as Energy2D uses WebGL for General-Purpose Computing on
 Graphics Processing Unit. So, a lot of physics calculations are performed on the GPU if user's Web
 browser supports WebGL technology.
@@ -208,16 +184,17 @@ the resulting library due to the RequireJS optimization process.
 
 ### src/lab/resources
 
-The **[src/lab/resources/](https://github.com/concord-consortium/lab/tree/master/src/lab/resources)** directory contains image resources and are copied directly to
-**`public/lab/resources`**.
+The **[src/lab/resources/](https://github.com/concord-consortium/lab/tree/master/src/lab/resources)** 
+directory contains image resources and are copied directly to **`public/lab/resources`**.
 
 ### src/sass
 
-The **[src/sass/](https://github.com/concord-consortium/lab/tree/master/src/sass)** directory contains Sass templates and the Bourbon Sass library are are used
-during the build process to generate CSS resources.
+The **[src/sass/](https://github.com/concord-consortium/lab/tree/master/src/sass)** directory
+contains Sass templates and the Bourbon Sass library are are used during the build process to 
+generate CSS resources.
 
 ### src/helpers
 
 The **[src/helpers/](https://github.com/concord-consortium/lab/tree/master/src/helpers)** directory contains
 CoffeeScript and JavaScript modules as well as Ruby programs only used as part of the testing and
-build process and are not copied to **`public/resources`**.
+build process and are not copied to **`public/helpers`**.
