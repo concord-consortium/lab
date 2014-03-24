@@ -41,7 +41,7 @@ If you do end up having to install a new version of Ruby with RVM change out of 
 ### 3. `cp config/config.sample.yml config/config.yml`
 
 Copy the sample project configuration file to `config/config.yml`
-You can examine it and edit it if you want: [project configuration documentation](developer-doc/configuration.md)
+You can examine it and edit it if you want: [project configuration documentation](configuration.md)
 
 ### 4. `make everything`
 

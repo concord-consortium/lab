@@ -1,5 +1,12 @@
 # Project Configuration
 
+There are 2 forms of configuring the Lab framework.
+
+- **run time configuration** by the page including lab.js or lab.min.js
+- **build time configuration** by modifying the config/config.yml before building
+
+## Run Time Configuration
+
 Configuration variables used by the runtime JavaScript code are available in the JavaScript global
 object `Lab.config`.
 
@@ -29,7 +36,7 @@ Interactives at "http://lab.concord.org"
 **`utmCampaign`** If present a UTM suffix is added to links in the About box.
 Set to a string which identifies the external organization.
 
-## Interactive Share link
+### Interactive Share link
 
 Normally the **Share** link in an Interactive is enabled. The **Share** dialog allows a user to more easily
 share the Interactive in an email or IM, and also provides generated HTML content that can be copied and pasted
@@ -46,28 +53,30 @@ The value for `utmCampaign` is optional. If present and the **home** site has en
 setting a value for `utmCampaign` will allow better tracking of users who click through links in the
 Interactive **About** box.
 
-## Google Analytics
+### Runtime Google Analytics
 
-In addition there is a optional section in `config/config.yml` which if present enables embedding google
-analytics script into the head of the main `index.html` and `embeddable.html' pages.
+If the global `_gaq` is defined, then Lab will send some events to Google Analytics. This is done
+through trackEvent method in `src/lab/common/controllers/scripting-api.js`. So if you want this to happen then the
+page embedding `lab.js` or `lab.min.js` should include the standard Google Analytics script setting things up.
 
-Include your Google Analytics account number here to enable insertion of the Google Analytics
-script by the build system into the generated HTML pages.
+If you want this standard script to be added to the embeddable.html page which is created by the build system
+see the **Build Time Configuration** below.
+
+### Setting defaults
+
+The default values for these configuration options are located in `src/lab/lab.config.js`. That file gets compiled
+into `lab/lab.js` and `lab/lab.min.js`. So if you have a distribution archive you can change the settings without
+recompiling by editing those built files. 
+
+## Build Time Configuration
+
+Build Time Configuration is done by editing the `config/config.yml` file.
+
+### Google Analytics
 
     :google_analytics:
       :account_id: <account-id>
 
-The content from which the embedded Google Analytics script is generated is contained in this Ruby file:
-[`script/setup.rb`](https://github.com/concord-consortium/lab/blob/master/script/setup.rb).
-
-## Limitations changing configuration in an archive distribution
-
-If you have downloaded a distribution archive you can manually modify the code that initializes the JavaScript
-runtime configuration in the files: `lab/lab.js` and `lab/lab.min.js`. Editing the value for `Lab.config.sharing`
-in these files will affect the JavaScript runtime settings when these files are loaded.
-
-Additionally you can turn on UTM suffixes by adding a string value to `Lab.config.utmCampaign``.
-
-However generation and insertion of the Google Analytics script into HTML pages can only be done by
-setting a value for the `:google_analytics :account_id` and running the build process.
-
+If this section is present in config.yml, the standard google analytics script will be added to the 
+`index.html` and `embeddable.html` pages. The script that is embedded on those html pages is located in 
+`script/setup.rb`.
