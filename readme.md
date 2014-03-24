@@ -66,7 +66,6 @@ If you think you'd like to contribute to Lab as an external developer:
 ## More Documentation
 
 - [Project Configuration](developer-doc/configuration.md)
-- [Continuous Integration on Travis](developer-doc/travis.md)
 - [Repository Structure](developer-doc/repository-structure.md)
 - [Javascript Dependency Management and Build Process](developer-doc/js-dependency-management.md)
 - [Testing](developer-doc/testing.md)
