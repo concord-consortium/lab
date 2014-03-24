@@ -73,7 +73,6 @@ If you think you'd like to contribute to Lab as an external developer:
 - [Physical Constants and Units](developer-doc/physical-constants-and-units.md)
 - [Deployment](developer-doc/deployment.md)
 - [References](developer-doc/references.md)
-- [Dependencies](developer-doc/dependencies.md)
 - [Java Resources](developer-doc/java.md)
 - [Building Website](developer-doc/website.md)
 

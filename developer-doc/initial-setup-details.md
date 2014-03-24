@@ -84,7 +84,7 @@ Now that the files in public are built and a server is running you can view the 
 
 ### 7. (optional) open a new terminal and run `guard`
 
-Start watching the `src/` and `test/` directories with [Guard](dependencies.md#guard) and when files are
+Start watching the `src/` and `test/` directories with Guard and when files are
 changed automatically generate the JavaScript Lab modules, the examples, and run the tests.
 
 In addition changes in `src/lab/` generate the associated Lab modules in `lab/` and copy these modules
