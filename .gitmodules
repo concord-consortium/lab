@@ -13,9 +13,6 @@
 [submodule "vendor/almond"]
 	path = vendor/almond
 	url = git://github.com/jrburke/almond.git
-[submodule "vendor/jquery-ui"]
-	path = vendor/jquery-ui
-	url = git://github.com/jquery/jquery-ui.git
 [submodule "vendor/tinysort"]
 	path = vendor/tinysort
 	url = git://github.com/Sjeiti/TinySort.git
@@ -67,3 +64,6 @@
 [submodule "vendor/sensor-server-interface"]
 	path = vendor/sensor-server-interface
 	url = https://github.com/concord-consortium/sensor-server-interface.git
+[submodule "vendor/components-jqueryui"]
+	path = vendor/components-jqueryui
+	url = https://github.com/components/jqueryui
