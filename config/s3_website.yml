@@ -3,7 +3,17 @@ s3_secret: <%= ENV['S3_SECRET_KEY'] %>
 s3_bucket: lab-s3.concord.org
 s3_endpoint: us-east-1
 
+<% if ENV['TRAVIS_BRANCH'] == 'production' %>
+# in this case we are going to deploy this branch to the top level of the domain
+# so we need to ignore the version and branch folders 
+ignore_on_server: ^(?!version\/|branch\/)
+<% else %>
+# in this case we are going to deploy this code to a subfolder of either the branch 
+# or version folder. So ignore everything except this folder.
 ignore_on_server: ^(?!<%= Regexp.escape(ENV['DEPLOY_DIR']) %>)
+<% end %>
 max_age:
-  "version/**/*": 31536000
-  "branch/**/*": 300
+  "version/**/*": 31536000 # 1 year in seconds
+  "branch/**/*": 300       # 5 minutes in seconds
+# currently the production files at the root are not set with a max_age this is the
+# same as what is done currently.
