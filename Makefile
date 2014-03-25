@@ -105,12 +105,6 @@ clean-archives:
 .PHONY: prepare-submodules
 prepare-submodules:
 	-$(MAKE) submodule-update || $(MAKE) submodule-update-tags
-	# Remove generated products in vendor libraries
-	rm -f vendor/jquery/dist/jquery*.js
-	# hack to always download a new copy of grunt-contrib-jshint
-	# because of packaging issues with an unresolved jshint depedency when
-	# an older version of jshint is installed
-	if [ -d vendor/jquery/node_modules/grunt-contrib-jshint ]; then rm -rf vendor/jquery/node_modules/grunt-contrib-jshint; fi
 
 # ------------------------------------------------
 #
@@ -357,12 +351,12 @@ public/vendor/jquery-context-menu:
 	cp vendor/jquery-context-menu/src/jquery.contextMenu.css public/vendor/jquery-context-menu
 
 public/vendor/jquery/jquery.min.js: \
-	vendor/jquery/dist/jquery.min.js \
+	vendor/jquery \
 	public/vendor/jquery
-	cp vendor/jquery/dist/jquery*.js public/vendor/jquery
-	cp vendor/jquery/dist/jquery.min.map public/vendor/jquery
+	cp vendor/jquery/jquery.js public/vendor/jquery
+	cp vendor/jquery/jquery.min.js public/vendor/jquery
+	cp vendor/jquery/jquery.min.map public/vendor/jquery
 	cp vendor/jquery/MIT-LICENSE.txt public/vendor/jquery
-	cp vendor/jquery/README.md public/vendor/jquery
 
 public/vendor/jquery:
 	mkdir -p public/vendor/jquery
@@ -458,13 +452,8 @@ public/vendor/iframe-phone:
 public/favicon.ico:
 	cp -f src/favicon.ico public/favicon.ico
 
-vendor/jquery/dist/jquery.min.js: vendor/jquery
-	cd vendor/jquery; npm install; \
-	 npm install grunt-cli; \
-	 ./node_modules/grunt-cli/bin/grunt
-
 vendor/jquery:
-	git submodule update --init --recursive
+	git submodule update
 
 vendor/components-jqueryui:
 	git submodule update
