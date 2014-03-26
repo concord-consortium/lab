@@ -7,7 +7,8 @@ gem 'active_support',     "~> 3"
 gem 'i18n',               "~> 0.6.4"
 gem "gitlab-grit",        "~> 2.6.0"
 gem "shutterbug",         "~> 0.2.1"
-gem "s3_website",         "~> 1.7.0"
+gem "s3_website",  :git => 'git://github.com/concord-consortium/s3_website.git',
+                   :branch => 'optimize-diff-calculation'
 
 group :app do
   gem "rack",               "~> 1.5.2"
