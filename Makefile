@@ -77,12 +77,6 @@ src: \
 .PHONY: clean
 clean:
 	ruby script/check-development-dependencies.rb
-	# remove the .bundle dir in case we are running this after running: make clean-for-tests
-	# which creates a persistent bundle grouping after installing just the minimum
-	# necessary set of gems for running tests using the arguments: --without development app
-	# Would be nice if bundle install had a --withall option to cancel this persistence.
-	rm -rf .bundle
-	# install/update Ruby Gems
 	bundle install
 	mkdir -p public
 	$(MAKE) clean-public
@@ -200,16 +194,15 @@ node_modules/arrays:
 #   public/
 #
 # ------------------------------------------------
-
+.PHONY: public
 public: \
 	copy-resources-to-public \
 	public/lab \
 	public/lab/jars/lab-sensor-applet-interface-dist \
 	public/lab/resources \
 	public/vendor \
-	public/developer-doc
-	script/update-git-commit-and-branch.rb
-	$(MAKE) src
+	public/developer-doc \
+	src
 
 # copy everything (including symbolic links) except files that are
 # used to generate resources from src/ to public/
@@ -248,19 +241,9 @@ public/lab/lab.js: \
 
 src/lab/lab.version.js: \
 	script/generate-js-version.rb \
-	src/lab/git-commit \
-	src/lab/git-dirty \
-	src/lab/git-branch-name
+	.git/HEAD \
+	.git/refs/*
 	./script/generate-js-version.rb
-
-src/lab/git-commit:
-	./script/update-git-commit-and-branch.rb
-
-src/lab/git-branch-name:
-	./script/update-git-commit-and-branch.rb
-
-src/lab/git-dirty:
-	./script/update-git-commit-and-branch.rb
 
 public/lab/lab.grapher.js: \
 	$(GRAPHER_SRC_FILES) \

@@ -1,2 +1,0 @@
-#!/bin/sh
-(cd $GIT_DIR/.. && ./script/update-git-commit-and-branch.rb)
