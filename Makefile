@@ -1,7 +1,7 @@
 # See the README for installation instructions.
 
 # Utilities
-JS_COMPILER = ./node_modules/uglify-js/bin/uglifyjs -c -m -
+JS_COMPILER = ./node_modules/uglify-js/bin/uglifyjs -c warnings=false -m -
 MARKDOWN_COMPILER = kramdown
 
 # Turns out that just pointing Vows at a directory doesn't work, and its test matcher matches on
@@ -10,7 +10,7 @@ VOWS = find test/vows -type f -name '*.js' -o -name '*.coffee' ! -name '.*' | xa
 MOCHA = find test/mocha -type f -name '*.js' -o -name '*.coffee' ! -name '.*' | xargs node_modules/.bin/mocha --reporter dot
 
 SASS_COMPILER = sass -I src -I public -r ./src/helpers/sass/lab_fontface.rb
-R_OPTIMIZER = ./node_modules/.bin/r.js
+R_OPTIMIZER = ./node_modules/.bin/r.js -o
 
 LAB_SRC_FILES := $(shell find src/lab -type f ! -name '.*' -print)
 MD2D_SRC_FILES := $(shell find src/lab/models/md2d -type f ! -name '.*' -print)
@@ -237,7 +237,7 @@ public/lab/lab.json: \
 public/lab/lab.js: \
 	$(LAB_SRC_FILES) \
 	src/lab/lab.version.js
-	$(R_OPTIMIZER) -o src/lab/lab.build.js
+	$(R_OPTIMIZER) src/lab/lab.build.js logLevel=2
 
 src/lab/lab.version.js: \
 	script/generate-js-version.rb \
@@ -248,18 +248,18 @@ src/lab/lab.version.js: \
 public/lab/lab.grapher.js: \
 	$(GRAPHER_SRC_FILES) \
 	$(COMMON_SRC_FILES)
-	$(R_OPTIMIZER) -o src/lab/grapher/grapher.build.js
+	$(R_OPTIMIZER) src/lab/grapher/grapher.build.js logLevel=2
 
 public/lab/lab.import-export.js: \
 	$(IMPORT_EXPORT_SRC_FILES) \
 	$(COMMON_SRC_FILES)
-	$(R_OPTIMIZER) -o src/lab/import-export/import-export.build.js
+	$(R_OPTIMIZER) src/lab/import-export/import-export.build.js logLevel=2
 
 public/lab/lab.mml-converter.js: \
 	$(MML_CONVERTER_SRC_FILES) \
 	$(LAB_SRC_FILES) \
 	$(COMMON_SRC_FILES)
-	$(R_OPTIMIZER) -o src/lab/mml-converter/mml-converter.build.js
+	$(R_OPTIMIZER) src/lab/mml-converter/mml-converter.build.js logLevel=2
 
 public/lab/jars:
 	mkdir -p public/lab/jars
