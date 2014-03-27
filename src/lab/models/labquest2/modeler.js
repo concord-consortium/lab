@@ -354,6 +354,10 @@ define(function(require) {
           this.gotoState('errorStarting');
         },
 
+        stop: function() {
+          this.gotoState('canceling');
+        },
+
         collectionStarted: function() {
           this.gotoState('started');
         }
@@ -453,6 +457,51 @@ define(function(require) {
           if (isAllDataReceived()) {
             this.gotoState('connected');
           }
+        }
+      },
+
+      canceling: {
+        enterState: function() {
+          message = "Canceling data collection...";
+          isStopped = true;
+        },
+
+        data: handleData,
+
+        cancelRequestFailed: function() {
+          this.gotoState('errorCanceling');
+        },
+
+        collectionStarted: function() {
+          labquest2Interface.requestStop().catch(function() {
+            handle('cancelRequestFailed');
+          });
+        },
+
+        collectionStopped: function() {
+          this.gotoState('collectionStopped');
+        }
+      },
+
+      errorCanceling: {
+        enterState: function() {
+          message = "Error canceling data collection.";
+          simpleAlert("Could not cancel data collection. Make sure that (remote starting) is enabled", {
+            OK: function() {
+              $(this).dialog("close");
+              handle('dismissErrorStopping');
+            }
+          });
+        },
+
+        data: handleData,
+
+        collectionStopped: function() {
+          this.gotoState('collectionStopped');
+        },
+
+        dismissErrorStopping: function() {
+          this.gotoState('started');
         }
       },
 
