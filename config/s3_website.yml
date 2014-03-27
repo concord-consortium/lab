@@ -10,7 +10,7 @@ ignore_on_server: ^(version/|branch/)
 <% else %>
 # in this case we are going to deploy this code to a subfolder of either the branch 
 # or version folder. So ignore everything except this folder.
-ignore_on_server: ^(?!<%= Regexp.escape(ENV['DEPLOY_DIR']) %>)
+ignore_on_server: ^(?!<%= Regexp.escape(ENV['DEPLOY_DIR']) %>|<%= Regexp.escape(ENV['DEPLOY_ARCHIVE']) %>)
 <% end %>
 max_age:
   "version/**/*": 31536000 # 1 year in seconds
