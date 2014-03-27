@@ -48,6 +48,7 @@ define(function(require) {
         isPlayable,
         canConnect,
         canTare,
+        canPossiblyTare,
         canControl,
         isSensorTareable,
         message,
@@ -269,7 +270,7 @@ define(function(require) {
       connected: {
         enterState: function() {
           message = "Connected.";
-          canTare = true;
+          canPossiblyTare = true;
           isPlayable = true;
           isStopped = true;
 
@@ -287,7 +288,7 @@ define(function(require) {
         },
 
         leaveState: function() {
-          canTare = false;
+          canPossiblyTare = false;
           isPlayable = false;
         },
 
@@ -621,6 +622,7 @@ define(function(require) {
       if (dataColumn) {
         model.makeInvalidatingChange(function() {
           liveSensorValue = dataColumn.liveValue;
+          canTare = canPossiblyTare && dataColumn.data.length == 0;
         });
       }
     });
