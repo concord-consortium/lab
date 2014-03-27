@@ -27,6 +27,7 @@ end
 
 # get the latest (nearest) tagged version see: http://bit.ly/1aORIhz
 def last_tagged_version
+  system("git fetch --tags")
   %x[git describe --tags --abbrev=0].chomp
 end
 
@@ -35,7 +36,12 @@ head = repo.head
 head_commit_sha = `git log -1 --pretty="%H"`.strip
 commit = repo.commit(head_commit_sha)
 
-branch_name = head.name if head != nil
+if ENV['TRAVIS_BRANCH']
+  # if this is a tag build then the branch name will actually be the tag name
+  branch_name = ENV['TRAVIS_BRANCH']
+elsif head != nil
+  branch_name = head.name
+end
 
 short_message = ERB::Util.html_escape(commit.short_message.gsub("\n", "\\n"))
 message = ERB::Util.html_escape(commit.message.gsub("\n", "\\n"))
