@@ -207,6 +207,11 @@ define(function(require) {
         };
 
         canvg(canv, mustache.render(atomSVG, tplData));
+
+        // WebGL complains if the texture size is < 2px x 2px
+        if (canv.width < 2) canv.width = 2;
+        if (canv.height < 2) canv.height = 2;
+
         elementTex[key] = new PIXI.Texture.fromCanvas(canv);
         // canvg starts a timer, we don't need or want that timer
         canv.svg.stop();
