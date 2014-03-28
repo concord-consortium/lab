@@ -1,6 +1,7 @@
 define(function() {
 
   var NumericOutputView = require('common/views/numeric-output-view'),
+      BasicDialog       = require('common/controllers/basic-dialog'),
       viewState = require('common/views/view-state');
 
   return function(model, modelUrl) {
@@ -51,6 +52,30 @@ define(function() {
 
       model.addObserver('message', setMessageText);
       setMessageText();
+    }
+
+    function chooseSensorPopup() {
+      var dialog = new BasicDialog({
+        width: "60%",
+        dialogClass: 'interactive-dialog no-close',
+        closeOnEscape: false,
+        title: "Choose a sensor:",
+        buttons: {
+          OK: function() {
+            console.log("OK Clicked");
+            $(this).dialog("close");
+            // TODO Change the model's selected sensor
+          },
+          Cancel: function() {
+            console.log("Cancel Clicked");
+            $(this).dialog("close");
+            // TODO Make sure the model continues using the previously selected sensor
+          }
+        }
+      });
+
+      dialog.setContent("Some content + the list of available sensors");
+      dialog.open();
     }
 
     return view = {
@@ -107,6 +132,7 @@ define(function() {
           model.connect(view.$addressInput.find('input').val());
         });
         view.$zeroButton.on('click', 'button', model.tare);
+        view.$selectSensorButton.on('click', 'button', chooseSensorPopup);
       },
 
       resize: function() {
