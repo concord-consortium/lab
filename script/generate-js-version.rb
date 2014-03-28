@@ -27,7 +27,6 @@ end
 
 # get the latest (nearest) tagged version see: http://bit.ly/1aORIhz
 def last_tagged_version
-  system("git fetch --tags")
   %x[git describe --tags --abbrev=0].chomp
 end
 
