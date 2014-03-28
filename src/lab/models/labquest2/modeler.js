@@ -50,6 +50,7 @@ define(function(require) {
         canTare,
         canPossiblyTare,
         canControl,
+        hasMultipleSensors,
         isSensorTareable,
         message,
         model;
@@ -102,6 +103,7 @@ define(function(require) {
       isStopped = true;
       canConnect = false;
       canControl = labquest2Interface.canControl;
+      hasMultipleSensors = false;
       stepCounter = 0;
       time = 0;
       rawSensorValue = undefined;
@@ -114,10 +116,13 @@ define(function(require) {
       var dataset = labquest2Interface.datasets[0];
       var newDataColumn;
 
+      hasMultipleSensors = dataset.columns.length > 2;
+
       timeColumn = _.find(dataset.columns, function(column) {
         return column.units === 's';
       });
 
+      // TODO Select the column chosen by the user
       newDataColumn = _.find(dataset.columns, function(column) {
         return column.units !== 's';
       });
@@ -724,6 +729,12 @@ define(function(require) {
       label: "Can remotely start/stop the LabQuest2?"
     }, function() {
       return canControl;
+    });
+
+    model.defineOutput('hasMultipleSensors', {
+      label: "Are multiple sensors connected to the LabQuest2?"
+    }, function() {
+      return hasMultipleSensors;
     });
 
     model.defineOutput('needsReload', {

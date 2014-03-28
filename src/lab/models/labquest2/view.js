@@ -27,6 +27,14 @@ define(function() {
       }
     }
 
+    function setHasMultipleSensorsState() {
+      if (model.properties.hasMultipleSensors) {
+        viewState.enableView(view.$selectSensorButton);
+      } else {
+        viewState.disableView(view.$selectSensorButton);
+      }
+    }
+
     function setMessageText() {
       view.$message.text(model.properties.message);
     }
@@ -37,6 +45,9 @@ define(function() {
 
       model.addObserver('canConnect', setCanConnectState);
       setCanConnectState();
+
+      model.addObserver('hasMultipleSensors', setHasMultipleSensorsState);
+      setHasMultipleSensorsState();
 
       model.addObserver('message', setMessageText);
       setMessageText();
@@ -69,6 +80,7 @@ define(function() {
 
         view.$connectButton = $("<div class='interactive-button'><button>Connect</button></div>");
         view.$zeroButton = $("<div class='interactive-button'><button>Zero</button></div>");
+        view.$selectSensorButton = $("<div class='interactive-button'><button>Select Sensor</button></div>");
         view.$message = $("<div class='message'></div>");
         view.$sensorReading = sensorReadingView.render().addClass("horizontal");
 
@@ -77,6 +89,7 @@ define(function() {
           .append(view.$connectButton)
           .append(view.$sensorReading)
           .append(view.$zeroButton)
+          .append(view.$selectSensorButton)
           .append(view.$message);
 
         view.$el.find('div').addClass('component component-spacing');
