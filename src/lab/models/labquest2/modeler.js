@@ -105,7 +105,10 @@ define(function(require) {
       canConnect = false;
       canControl = labquest2Interface.canControl;
       hasMultipleSensors = false;
-      selectedSensor = -1;
+      // Set selectedSensor if it hasn't been set yet
+      if (typeof(selectedSensor) === "undefined" || selectedSensor === null) {
+        selectedSensor = -1;
+      }
       stepCounter = 0;
       time = 0;
       rawSensorValue = undefined;
