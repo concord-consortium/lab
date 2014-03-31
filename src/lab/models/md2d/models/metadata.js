@@ -829,6 +829,12 @@ define(function() {
       },
       visible: {
         defaultValue: true
+      },
+      rotation: {
+        defaultValue: 0
+      },
+      opacity: {
+        defaultValue: 1
       }
     },
 

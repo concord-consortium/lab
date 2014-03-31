@@ -1,4 +1,4 @@
-define(function(requiree) {
+define(function() {
 
   var labConfig = require('lab.config');
   var UPPER_LEFT = 0;
@@ -47,7 +47,7 @@ define(function(requiree) {
               d3.select(this)
                 .attr('width', scaleImageLength(imageDim.width))
                 .attr('height', scaleImageLength(imageDim.height))
-                .attr('transform', translateImage);
+                .attr('transform', transform);
             }
           });
 
@@ -111,6 +111,8 @@ define(function(requiree) {
           srcIndex:         countBySrc[src] === undefined ? (countBySrc[src] = 0) : ++countBySrc[src],
           x:                x,
           y:                y,
+          rotation:         desc.rotation,
+          opacity:          desc.opacity,
           referencePoint:   referencePoint,
           capturesPointer:  capturesPointer,
           zOrder:           desc.imageLayerPosition || 0,
@@ -172,14 +174,32 @@ define(function(requiree) {
       return basePath + (imageMapping[imageDescription.imageUri] || imageDescription.imageUri);
     }
 
-    // A 2d translation that centers the image, if required.
-    function translateImage(d) {
+    // Rotate and translate the image according to x, y, width, height, and rotation
+    function transform(d) {
+      var dim = imgDimBySrc[d.src];
+      var halfWidth  = scaleImageLength(dim.width  / 2);
+      var halfHeight = scaleImageLength(dim.height / 2);
+      var x;
+      var y;
+      var t;
+
       if (d.referencePoint === UPPER_LEFT) {
-        return "";
+        x = d.x;
+        y = d.y;
+      } else {
+        // center of object should be at (d.x, d.y), so upper left corner needs to be translated by
+        // a half-width and a half-length less.
+        x = d.x - halfWidth;
+        y = d.y - halfHeight;
       }
-      var image = imgDimBySrc[d.src];
-      return "translate(" + (-scaleImageLength(image.width/2)) + "," +
-                            (-scaleImageLength(image.height/2)) +")";
+
+      if (d.rotation === 0) {
+        t = ["translate(", x, ", ", y, ")"];
+      } else {
+        // invert sign of rotation so that rotations occur in standard (counterclockwise) direction
+        t = ["translate(", x, ", ", y, ") rotate(", -d.rotation, ",", halfWidth, ",", halfHeight, ")"];
+      }
+      return t.join('');
     }
 
     // Called whenever the set of images or their ordering change in some way.
@@ -196,15 +216,14 @@ define(function(requiree) {
           images.enter()
             .append('image')
             .attr('xlink:href', function(d) { return d.src; });
+
           images.attr({
-            x: function(d) { return d.x; },
-            y: function(d) { return d.y; },
-            height: function (d) { return scaleImageLength(imgDimBySrc[d.src].height); },
-            width:  function (d) { return scaleImageLength(imgDimBySrc[d.src].width); },
-            transform: translateImage,
-            'pointer-events': function(d) { return d.capturesPointer ? 'auto' : 'none'; }
-          });
-          images.style('display', function(d) { return d.visible ? '' : 'none'; });
+            height:           function (d) { return scaleImageLength(imgDimBySrc[d.src].height); },
+            width:            function (d) { return scaleImageLength(imgDimBySrc[d.src].width); },
+            opacity:          function (d) { return d.opacity; },
+            'pointer-events': function(d) { return d.capturesPointer ? 'auto' : 'none'; },
+            transform:        transform
+          }).style('display', function(d) { return d.visible ? '' : 'none'; });
 
           images.exit().remove();
         });
@@ -217,10 +236,7 @@ define(function(requiree) {
       // No need for a nested selection as all images are already bound to the correct data items.
       // Just need to let d3 know it should reapply x, y because the data items have been updated.
       d3.select(modelView.node).selectAll('.image-container image')
-        .attr({
-          x: function(d) { return d.x; },
-          y: function(d) { return d.y; },
-        });
+        .attr('transform', transform);
      }
 
     function bindModel(_model) {
