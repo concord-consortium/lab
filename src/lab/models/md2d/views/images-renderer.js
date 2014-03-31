@@ -1,4 +1,4 @@
-define(function(require) {
+define(function(requiree) {
 
   var labConfig = require('lab.config');
   var UPPER_LEFT = 0;
@@ -70,10 +70,13 @@ define(function(require) {
     // Sets 'imageData' to a nested array of information about the requested images which can be
     // joined to the nested d3 selection in setup() in order to append the actual <image> elements.
     function setupImageData() {
+      var countsBySrc = [{}, {}];
       imageData = [[], []];
 
       (model.properties.images || []).forEach(function(desc) {
-        var layer = desc.imageLayer === 1 ? imageData[1] : imageData[0];
+        var layerIndex = desc.imageLayer === 1 ? 1 : 0;
+        var layer = imageData[layerIndex];
+        var countBySrc = countsBySrc[layerIndex];
         var src = getImagePath(desc);
         var referencePoint;
         var capturesPointer;
@@ -102,6 +105,10 @@ define(function(require) {
         layer.push({
           imageDescription: desc,
           src:              src,
+          // Use src + srcIndex to create a unique key for images. This allows us to use a
+          // conservative data join and thereby avoid having to modify the href of <image> elements.
+          // That prevents the browser from issuing unnecessary requests.
+          srcIndex:         countBySrc[src] === undefined ? (countBySrc[src] = 0) : ++countBySrc[src],
           x:                x,
           y:                y,
           referencePoint:   referencePoint,
@@ -181,11 +188,15 @@ define(function(require) {
 
       d3.select(modelView.node).selectAll('.image-container')
         .data(imageData)
-        .each(function(d) {
-          var images = d3.select(this).selectAll('image').data(d);
-          images.enter().append('image');
+        .each(function(data) {
+          var images = d3.select(this)
+            .selectAll('image')
+            .data(data, function (d) { return d.src + '-' + d.srcIndex; });
+
+          images.enter()
+            .append('image')
+            .attr('xlink:href', function(d) { return d.src; });
           images.attr({
-            'xlink:href': function(d) { return d.src; },
             x: function(d) { return d.x; },
             y: function(d) { return d.y; },
             height: function (d) { return scaleImageLength(imgDimBySrc[d.src].height); },
