@@ -65,6 +65,7 @@ define(function() {
             console.log("OK Clicked");
             $(this).dialog("close");
             // TODO Change the model's selected sensor
+            model.setSelectedSensor($(this).find('input:checked').val());
           },
           Cancel: function() {
             console.log("Cancel Clicked");
@@ -73,8 +74,22 @@ define(function() {
           }
         }
       });
-
-      dialog.setContent("Some content + the list of available sensors");
+      var content = "",
+          sensors = model.connectedSensors(),
+          first = true,
+          selectedSensor = model.getSelectedSensor(),
+          i, checked;
+      for (i = 0; i < sensors.length; i++) {
+        if (sensors[i] !== 's') {
+          checked = "";
+          if (selectedSensor == i || first && selectedSensor == -1) {
+            checked = "checked ";
+          };
+          content += "<input type='radio' name='selected-sensor-index' value='" + i + "' " + checked + "/>" + sensors[i] + "<br/>";
+          first = false;
+        }
+      }
+      dialog.setContent(content);
       dialog.open();
     }
 

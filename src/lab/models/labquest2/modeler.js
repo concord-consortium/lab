@@ -38,6 +38,7 @@ define(function(require) {
         stateMachine,
         timeColumn,
         dataColumn,
+        selectedSensor,
         sensorName,
         isStopped,
         needsReload,
@@ -104,6 +105,7 @@ define(function(require) {
       canConnect = false;
       canControl = labquest2Interface.canControl;
       hasMultipleSensors = false;
+      selectedSensor = -1;
       stepCounter = 0;
       time = 0;
       rawSensorValue = undefined;
@@ -122,10 +124,14 @@ define(function(require) {
         return column.units === 's';
       });
 
-      // TODO Select the column chosen by the user
-      newDataColumn = _.find(dataset.columns, function(column) {
-        return column.units !== 's';
-      });
+      // Select the column chosen by the user
+      if (selectedSensor == -1) {
+        newDataColumn = _.find(dataset.columns, function(column) {
+          return column.units !== 's';
+        });
+      } else {
+        newDataColumn = dataset.columns[selectedSensor];
+      }
 
       if (dataColumn !== newDataColumn) {
         dataColumn = newDataColumn;
@@ -156,6 +162,17 @@ define(function(require) {
 
     function isAllDataReceived() {
       return isAllColumnDataReceieved(timeColumn) && (! dataColumn || isAllColumnDataReceieved(dataColumn));
+    }
+
+    function connectedSensors() {
+      var sensors = [],
+          dataset = labquest2Interface.datasets[0],
+          i, unit;
+
+      for (i=0; i < dataset.columns.length; i++) {
+        sensors.push(dataset.columns[i].units);
+      }
+      return sensors;
     }
 
     model = {
@@ -204,6 +221,15 @@ define(function(require) {
 
       stepCounter: function() {
         return stepCounter;
+      },
+
+      connectedSensors: connectedSensors,
+      getSelectedSensor: function() { return selectedSensor; },
+      setSelectedSensor: function(sensorIndex) {
+        if (selectedSensor != sensorIndex) {
+          selectedSensor = sensorIndex;
+          setColumn();
+        }
       },
 
       serialize: function () { return ""; }
