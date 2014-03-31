@@ -29,7 +29,7 @@ define(function() {
     }
 
     function setHasMultipleSensorsState() {
-      if (model.properties.hasMultipleSensors) {
+      if (model.properties.hasMultipleSensors && model.properties.isPlayable) {
         viewState.enableView(view.$selectSensorButton);
       } else {
         viewState.disableView(view.$selectSensorButton);
@@ -48,6 +48,7 @@ define(function() {
       setCanConnectState();
 
       model.addObserver('hasMultipleSensors', setHasMultipleSensorsState);
+      model.addObserver('isPlayable', setHasMultipleSensorsState);
       setHasMultipleSensorsState();
 
       model.addObserver('message', setMessageText);
