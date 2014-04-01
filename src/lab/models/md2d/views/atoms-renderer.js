@@ -3,9 +3,10 @@
 
 define(function(require) {
   // Dependencies.
-  var PIXI     = require('pixi'),
-      canvg    = require('canvg'),
-      mustache = require('mustache'),
+  var PIXI      = require('pixi'),
+      labConfig = require('lab.config'),
+      canvg     = require('canvg'),
+      mustache  = require('mustache'),
       AtomsInteractions = require('models/md2d/views/atoms-interactions'),
       detectFontChange  = require('common/layout/detect-font-change'),
 
@@ -15,7 +16,7 @@ define(function(require) {
         <style type="text/css"> \
         <![CDATA[ \
           text { \
-            font-family: Lato, "Open Sans", helvetica, sans-serif; \
+            font-family: "' + labConfig.fontface + '", helvetica, sans-serif; \
             font-size: {{ fontSize }}px; \
             font-weight: bold; \
             fill: #222; \
@@ -191,8 +192,7 @@ define(function(require) {
         // Would be nice to use same text below as in atomSVG. However, detection doesn't appear to
         // work if we supply multiple font-families to detectFontChange, so we need to watch changes
         // to each font family separately.
-        watchFont("bold " + label.fontSize + "px Lato");
-        watchFont("bold " + label.fontSize + "px \"Open Sans\"");
+        watchFont("bold " + label.fontSize + 'px "' + labConfig.fontface + '"');
 
         tplData = {
           width: excitation ? 4 * radius : 2 * radius,

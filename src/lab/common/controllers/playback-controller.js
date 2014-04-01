@@ -5,9 +5,9 @@ define(function (require) {
   var inherit              = require('common/inherit'),
       detectFontChange     = require('common/layout/detect-font-change'),
       InteractiveComponent = require('common/controllers/interactive-component'),
-
+      labConfig            = require('lab.config'),
       // Font used by time display
-      FONT_SPEC = "bold 2em Lato";
+      FONT_SPEC = "bold 2em " + labConfig.fontface;
 
   /**
    * Playback controller.
