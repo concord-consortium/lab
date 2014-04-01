@@ -73,4 +73,5 @@ If you think you'd like to contribute to Lab as an external developer:
 - [References](developer-doc/references.md)
 - [Java Resources](developer-doc/java.md)
 - [Building Website](developer-doc/website.md)
+- [Fonts](developer-doc/fonts.md)
 

@@ -36,6 +36,11 @@ Interactives at "http://lab.concord.org"
 **`utmCampaign`** If present a UTM suffix is added to links in the About box.
 Set to a string which identifies the external organization.
 
+**`fontface`** font-family name of the font. This only affects a few bits of text. The font-family for 
+the majority of text is configured using css. The font-family set in this fontface config is monitored
+so lab.js will know when the font is loaded. If it is a web font this loading can happen after the page
+loads, and some dimensions need to be updated after the font loads.
+
 ### Interactive Share link
 
 Normally the **Share** link in an Interactive is enabled. The **Share** dialog allows a user to more easily
