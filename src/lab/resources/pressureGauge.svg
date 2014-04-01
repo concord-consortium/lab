@@ -3,26 +3,26 @@
 	xml:space="preserve">
 <style type="text/css" >
   <![CDATA[
-  @font-face {
-    font-family: "Open Sans";
-    font-style: normal;
-    font-weight: normal;
-    src: url("/vendor/fonts/open-sans-fontfacekit/OpenSans-Regular-webfont.eot"), url("/vendor/fonts/open-sans-fontfacekit/OpenSans-Regular-webfont.ttf") format("truetype"); }
-
-  @font-face {
-    font-family: "Open Sans";
-    font-style: normal;
-    font-weight: bold;
-    src: url("/vendor/fonts/open-sans-fontfacekit/OpenSans-Bold-webfont.eot"), url("/vendor/fonts/open-sans-fontfacekit/OpenSans-Bold-webfont.ttf") format("truetype"); }
-
-  @font-face {
-    font-family: "Open Sans";
-    font-style: italic;
-    font-weight: normal;
-    src: url("/vendor/fonts/open-sans-fontfacekit/OpenSans-Italic-webfont.eot"), url("/vendor/fonts/open-sans-fontfacekit/OpenSans-Italic-webfont.ttf") format("truetype"); }
+     @font-face {
+       font-family: "Lato";
+       font-style: normal;
+       font-weight: normal;
+       src: url("../../vendor/fonts/lato-fontfacekit/Lato-Reg-webfont.eot"), url("../vendor/fonts/lato-fontfacekit/Lato-Reg-webfont.ttf") format("truetype"); }
+     
+     @font-face {
+       font-family: "Lato";
+       font-style: italic;
+       font-weight: normal;
+       src: url("../../vendor/fonts/lato-fontfacekit/Lato-RegIta-webfont.eot"), url("../../vendor/fonts/lato-fontfacekit/Lato-RegIta-webfont.ttf") format("truetype"); }
+     
+     @font-face {
+       font-family: "Lato";
+       font-style: normal;
+       font-weight: bold;
+       src: url("../../vendor/fonts/lato-fontfacekit/Lato-Bol-webfont.eot"), url("../../vendor/fonts/lato-fontfacekit/Lato-Bol-webfont.ttf") format("truetype"); }     
   ]]>
 </style>
-<text transform="matrix(1 0 0 1 0 10.3623)" fill="#B30000" style="font-family: 'Open Sans'; font-weight: bold; font-style: normal; font-size: 14px">Pressure Gauge</text>
+<text transform="matrix(1 0 0 1 0 10.3623)" fill="#B30000" style="font-family: Lato; font-weight: bold; font-style: normal; font-size: 14px">Pressure Gauge</text>
 <g>
 	<g>
 		<line fill="none" stroke="#B30000" stroke-width="2" stroke-miterlimit="10" x1="109.699" y1="15.029" x2="127.958" y2="27.313"/>

@@ -3,28 +3,28 @@
   <style type="text/css" >
     <![CDATA[
      @font-face {
-       font-family: "Open Sans";
+       font-family: "Lato";
        font-style: normal;
        font-weight: normal;
-       src: url("/vendor/fonts/open-sans-fontfacekit/OpenSans-Regular-webfont.eot"), url("/vendor/fonts/open-sans-fontfacekit/OpenSans-Regular-webfont.ttf") format("truetype"); }
-
+       src: url("../../vendor/fonts/lato-fontfacekit/Lato-Reg-webfont.eot"), url("../../vendor/fonts/lato-fontfacekit/Lato-Reg-webfont.ttf") format("truetype"); }
+     
      @font-face {
-       font-family: "Open Sans";
-       font-style: normal;
-       font-weight: bold;
-       src: url("/vendor/fonts/open-sans-fontfacekit/OpenSans-Bold-webfont.eot"), url("/vendor/fonts/open-sans-fontfacekit/OpenSans-Bold-webfont.ttf") format("truetype"); }
-
-     @font-face {
-       font-family: "Open Sans";
+       font-family: "Lato";
        font-style: italic;
        font-weight: normal;
-       src: url("/vendor/fonts/open-sans-fontfacekit/OpenSans-Italic-webfont.eot"), url("/vendor/fonts/open-sans-fontfacekit/OpenSans-Italic-webfont.ttf") format("truetype"); }
+       src: url("../../vendor/fonts/lato-fontfacekit/Lato-RegIta-webfont.eot"), url("../../vendor/fonts/lato-fontfacekit/Lato-RegIta-webfont.ttf") format("truetype"); }
+     
+     @font-face {
+       font-family: "Lato";
+       font-style: normal;
+       font-weight: bold;
+       src: url("../../vendor/fonts/lato-fontfacekit/Lato-Bol-webfont.eot"), url("../../vendor/fonts/lato-fontfacekit/Lato-Bol-webfont.ttf") format("truetype"); }     
     ]]>
   </style>
   <g class="molecule-container-vis" transform="translate(25,20)">
     <rect class="plot" width="450" height="350" style="fill: #eeeeee;"/>
     <g transform="translate(40,210)">
-      <text fill="#B30000" style="font-family: 'Open Sans'; font-weight: bold; font-style: normal; font-size: 14px">Text using Open Sans font  embedded as a text element</text>
+      <text fill="#B30000" style="font-family: 'Lato'; font-weight: bold; font-style: normal; font-size: 14px">Text using Lato font embedded as a text element</text>
     </g>
     <g class="main-container">
       <circle class="draggable" r="6.2500000931322575" cx="370.99170684814453" cy="114.24520611763002" style="fill-opacity: 1;"/>

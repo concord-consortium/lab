@@ -14,6 +14,6 @@
 	l1.262,11.026l1.264-17.447l1.263,13.119l1.263-0.143l1.264-13.178l1.262,18.131l1.263-11.854l1.263-0.917l1.264,11.685
 	l1.263-14.212l1.263,8.19l1.262,1.507l1.264-8.668l1.263,9.649l1.263-5.002l1.263-1.63l1.263,6.152l1.264-6.399l1.263,2.984
 	l1.263,1.538l1.262-4.435l1.264,4.341l1.263-1.793"/>
-<text transform="matrix(1 0 0 1 51.0156 64.8237)" font-family="'Lato-Regular'" font-size="14">Sunlight</text>
-<text transform="matrix(1 0 0 1 129.2178 64.8237)" font-family="'Lato-Regular'" font-size="14">Infrared</text>
+<text transform="matrix(1 0 0 1 51.0156 64.8237)" font-family="Lato, Verdana, Geneva, sans-serif" font-size="14">Sunlight</text>
+<text transform="matrix(1 0 0 1 129.2178 64.8237)" font-family="Lato, Verdana, Geneva, sans-serif" font-size="14">Infrared</text>
 </svg>
