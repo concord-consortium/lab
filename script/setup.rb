@@ -45,12 +45,6 @@ else
   ANALYTICS = ""
 end
 
-# setup partial for fontface
-FONTFACE = "Lato"
-FONTFACE_LINK = <<-HEREDOC
-<link href='//fonts.googleapis.com/css?family=Lato:300italic,700italic,300,400,400italic,700' rel='stylesheet' type='text/css'>
-  HEREDOC
-
 # setup partials for 'production' (minimized resources) or 'development'
 
 LAB_JS_DEPENDENCIES = case CONFIG[:environment]

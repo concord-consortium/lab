@@ -1,3 +1,4 @@
+- require_relative 'helpers/font-cdn'
 !!! 5
 %html
   %head
@@ -9,7 +10,7 @@
       $(document).ready(function() { if (!Modernizr.svg) { $('body').prepend('<div class="warning">Sorry, but you\'ll need to upgrade your browser to use the models and visualizations. <a href="browser-upgrade.html">Learn more</a> &raquo;</div>'); } });
     %link{:href => "index.css", :rel => "stylesheet", :type => "text/css"}/
     = ANALYTICS
-    = FONTFACE_LINK
+    = FontCDN.cssLink
   %body
     %h1 Lab Framework: HTML5-based scientific models, visualizations, graphing, and probeware
 
