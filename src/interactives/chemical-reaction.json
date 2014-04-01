@@ -17,7 +17,7 @@
     {
       "type": "md2d",
       "id": "page1$0",
-      "url": "models/lab-version/1/chemical-reaction/chemical-reaction.json",
+      "url": "models/chemical-reaction/chemical-reaction.json",
       "viewOptions": {
         "controlButtons": "play_reset",
         "imageMapping": {

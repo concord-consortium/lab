@@ -13,7 +13,7 @@
     {
       "type": "md2d",
       "id": "amino-acids$0",
-      "url": "models/lab-version/1/amino-acids/amino-acids.json",
+      "url": "models/amino-acids/amino-acids.json",
       "viewOptions": {
         "controlButtons": "play_reset_step",
         "showClock": false

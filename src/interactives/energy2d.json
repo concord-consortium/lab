@@ -20,7 +20,7 @@
     {
       "type": "energy2d",
       "id": "S1A1",
-      "url": "models/lab-version/1/energy2d/energy2d.json",
+      "url": "models/energy2d/energy2d.json",
       "viewOptions": {
         "controlButtons": "play_reset"
       }

@@ -15,7 +15,7 @@
     {
       "type": "md2d",
       "id": "pendulum1$0",
-      "url": "models/lab-version/1/pendulum/pendulum.json",
+      "url": "models/pendulum/pendulum.json",
       "viewOptions": {
         "controlButtons": "reset",
         "controlButtonStyle": "text",
