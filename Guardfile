@@ -32,8 +32,6 @@ group :build do
   guard 'sass', :input => 'src/examples', :output => 'public/examples', :all_on_start => false, :load_paths => ['src']
   guard 'sass', :input => 'src/doc',      :output => 'public/doc',      :all_on_start => false, :load_paths => ['src']
 
-  require "./src/helpers/sass/lab_fontface.rb"
-
   guard 'coffeescript', :input => 'src/examples', :output => 'public/examples', :all_on_start => false
   guard 'coffeescript', :input => 'src/doc',      :output => 'public/doc', :all_on_start => false
 
@@ -92,7 +90,7 @@ group :build do
         delete_css
         command("make")
       else
-        command("sass -I src -I public --require ./src/helpers/sass/lab_fontface.rb src/#{path}.sass public/#{path}.css")
+        command("sass -I src -I public src/#{path}.sass public/#{path}.css")
       end
     end
 

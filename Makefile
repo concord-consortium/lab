@@ -9,7 +9,7 @@ MARKDOWN_COMPILER = kramdown
 VOWS = find test/vows -type f -name '*.js' -o -name '*.coffee' ! -name '.*' | xargs ./node_modules/.bin/vows --isolate --dot-matrix
 MOCHA = find test/mocha -type f -name '*.js' -o -name '*.coffee' ! -name '.*' | xargs node_modules/.bin/mocha --reporter dot
 
-SASS_COMPILER = sass -I src -I public -r ./src/helpers/sass/lab_fontface.rb
+SASS_COMPILER = sass -I src -I public
 R_OPTIMIZER = ./node_modules/.bin/r.js -o
 
 LAB_SRC_FILES := $(shell find src/lab -type f ! -name '.*' -print)

@@ -46,22 +46,10 @@ else
 end
 
 # setup partial for fontface
-if CONFIG[:jsconfig] && CONFIG[:jsconfig][:fontface]
-  FONTFACE = CONFIG[:jsconfig][:fontface]
-else
-  FONTFACE = 'Open Sans'
-end
-
-FONTFACE_LINK = case FONTFACE
-when "Lato"
-  <<-HEREDOC
+FONTFACE = "Lato"
+FONTFACE_LINK = <<-HEREDOC
 <link href='//fonts.googleapis.com/css?family=Lato:300italic,700italic,300,400,400italic,700' rel='stylesheet' type='text/css'>
   HEREDOC
-else          # default is "Open Sans"
-  <<-HEREDOC
-<link href='//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300italic,400,300,700&amp;subset=latin,greek,latin-ext' rel='stylesheet' type='text/css'>
-  HEREDOC
-end
 
 # setup partials for 'production' (minimized resources) or 'development'
 

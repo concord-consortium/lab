@@ -59,12 +59,11 @@ Here is a list of projects and resources included in the in the `vendor/` direct
 24. [lab-grapher](https://github.com/concord-consortium/lab-grapher): triple-licensed the same as the Lab licenses
 25. [lab-sensor-applet-interface-dist](https://github.com/concord-consortium/lab-sensor-applet-interface-dist): triple-licensed the same as Lab, with exceptions for some binary libraries provided by Vernier
 
-In addition there are three fontface directories in `vendor/fonts` that are distributed
+In addition there are two fontface directories in `vendor/fonts` that are distributed
 under compatible open source licenses:
 
-1.  [Open Sans](http://www.google.com/webfonts/specimen/Open+Sans): [Apache 2.0](http://www.opensource.org/licenses/Apache-2.0)
-2.  [Lato](http://www.google.com/webfonts/specimen/Lato): [SIL Open Font License 1.1](http://opensource.org/licenses/OFL-1.1)
-3.  [Font Awesome](http://fortawesome.github.com/Font-Awesome/):
+1.  [Lato](http://www.google.com/webfonts/specimen/Lato): [SIL Open Font License 1.1](http://opensource.org/licenses/OFL-1.1)
+2.  [Font Awesome](http://fortawesome.github.com/Font-Awesome/):
     * The Font Awesome font is licensed under the [SIL Open Font License](http://scripts.sil.org/OFL)
     * Font Awesome CSS, LESS, and SASS files are licensed under the [MIT License](http://opensource.org/licenses/mit-license.html)
     * The Font Awesome pictograms are licensed under the [CC BY 3.0 License](http://creativecommons.org/licenses/by/3.0/). Attribution of author Dave Gandy <dave@davegandy.com> is not required but is appreciated.
