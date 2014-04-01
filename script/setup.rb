@@ -27,11 +27,12 @@ rescue Errno::ENOENT
 end
 
 # setup partial for Google Analytics
-if CONFIG[:google_analytics] && CONFIG[:google_analytics][:account_id]
+if ENV['GA_ACCOUNT_ID'] || (CONFIG[:google_analytics] && CONFIG[:google_analytics][:account_id])
+  account_id = ENV['GA_ACCOUNT_ID'] || CONFIG[:google_analytics][:account_id]
   ANALYTICS = <<-HEREDOC
   <script type="text/javascript">
     var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', '#{CONFIG[:google_analytics][:account_id]}']);
+    _gaq.push(['_setAccount', '#{account_id}']);
     _gaq.push(['_setAllowAnchor', true]);
     (function() {
     var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
