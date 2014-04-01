@@ -199,7 +199,6 @@ public: \
 	copy-resources-to-public \
 	public/lab \
 	public/lab/jars/lab-sensor-applet-interface-dist \
-	public/lab/resources \
 	public/vendor \
 	public/developer-doc \
 	src
@@ -209,6 +208,7 @@ public: \
 .PHONY: copy-resources-to-public
 copy-resources-to-public:
 	rsync -aq --exclude='helpers/' --exclude='layouts/' --exclude='modules/' --exclude='sass/' --exclude='vendor/' --exclude='lab/' --filter '+ */' --exclude='*.haml' --exclude='*.sass' --exclude='*.scss' --exclude='*.yaml' --exclude='*.coffee' --exclude='*.rb' --exclude='*.md' src/ public/
+	mkdir -p public/lab/resources
 	rsync -aq src/lab/resources/ public/lab/resources/
 
 public/developer-doc:
@@ -269,9 +269,6 @@ public/lab/jars/lab-sensor-applet-interface-dist: \
 	vendor/lab-sensor-applet-interface-dist \
 	public/lab/jars
 	cp -R vendor/lab-sensor-applet-interface-dist/jars public/lab/jars/lab-sensor-applet-interface-dist
-
-public/lab/resources:
-	cp -R ./src/lab/resources ./public/lab/
 
 # ------------------------------------------------
 #
