@@ -473,7 +473,7 @@ test/%.html: test/%.html.haml
 	haml $< $@
 
 public/%.html: src/%.html.haml script/setup.rb
-	haml -r ./script/setup.rb $< $@
+	haml -r ./script/setup.rb -r ./src/helpers/font-cdn.rb $< $@
 
 public/%.html: src/%.html
 	cp $< $@
