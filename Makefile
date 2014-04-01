@@ -209,6 +209,7 @@ public: \
 .PHONY: copy-resources-to-public
 copy-resources-to-public:
 	rsync -aq --exclude='helpers/' --exclude='layouts/' --exclude='modules/' --exclude='sass/' --exclude='vendor/' --exclude='lab/' --filter '+ */' --exclude='*.haml' --exclude='*.sass' --exclude='*.scss' --exclude='*.yaml' --exclude='*.coffee' --exclude='*.rb' --exclude='*.md' src/ public/
+	rsync -aq src/lab/resources/ public/lab/resources/
 
 public/developer-doc:
 	mkdir -p public/developer-doc
