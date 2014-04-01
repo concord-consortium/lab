@@ -106,12 +106,14 @@ define(function() {
       },
 
       getHeightForWidth: function() {
-        return "2.6em";
+        return "2.8em";
       },
 
       // called once we're in the DOM
       setup: function() {
         view.$el.empty();
+        view.$controlsContainer = $("<div></div>");
+        view.$statusContainer = $("<div></div>");
         view.$addressInput = $("<div class='address-input'><input type='text' name='address-input' placeholder='address of LabQuest2'></input></div>");
         sensorReadingView = new NumericOutputView({
           id: 'sensor-value-view',
@@ -125,15 +127,23 @@ define(function() {
         view.$message = $("<div class='message'></div>");
         view.$sensorReading = sensorReadingView.render().addClass("horizontal");
 
-        view.$el.css('zIndex', 4)
+        view.$controlsContainer
           .append(view.$addressInput)
           .append(view.$connectButton)
           .append(view.$sensorReading)
           .append(view.$zeroButton)
-          .append(view.$selectSensorButton)
+          .append(view.$selectSensorButton);
+
+        view.$statusContainer
           .append(view.$message);
 
-        view.$el.find('div').addClass('component component-spacing');
+        view.$el.css('zIndex', 4)
+          .append(view.$controlsContainer)
+          .append(view.$statusContainer);
+
+        view.$controlsContainer.find('div').addClass('component component-spacing');
+        view.$statusContainer.find('div').addClass('component component-spacing');
+
         sensorReadingView.resize();
         setupModelObservers();
 
