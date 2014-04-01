@@ -38,6 +38,7 @@ define(function(require) {
         stateMachine,
         timeColumn,
         dataColumn,
+        selectedSensor,
         sensorName,
         isStopped,
         needsReload,
@@ -47,6 +48,7 @@ define(function(require) {
         stepCounter,
         isPlayable,
         canTare,
+        hasMultipleSensors,
         isSensorTareable,
         message,
         model;
@@ -98,6 +100,11 @@ define(function(require) {
 
     function initializeStateVariables() {
       isStopped = true;
+      hasMultipleSensors = false;
+      // Set selectedSensor if it hasn't been set yet
+      if (typeof(selectedSensor) === "undefined" || selectedSensor === null) {
+        selectedSensor = -1;
+      }
       stepCounter = 0;
       time = 0;
       rawSensorValue = undefined;
@@ -110,11 +117,18 @@ define(function(require) {
       var dataset = sensorServerInterface.datasets[0];
       var newDataColumn;
 
+      hasMultipleSensors = dataset.columns.length > 2;
+
       // The sensor server always has column 0 as time
       timeColumn = dataset.columns[0];
 
       // TODO When we want to support multiple sensors, this will have to change.
-      newDataColumn = dataset.columns[1];
+      // Select the column chosen by the user
+      if (selectedSensor == -1) {
+        newDataColumn = dataset.columns[1];
+      } else {
+        newDataColumn = dataset.columns[selectedSensor];
+      }
 
       dataColumn = newDataColumn;
       setSensorReadingDescription();
@@ -144,6 +158,17 @@ define(function(require) {
 
     function isAllDataReceived() {
       return isAllColumnDataReceieved(timeColumn) && (! dataColumn || isAllColumnDataReceieved(dataColumn));
+    }
+
+    function connectedSensors() {
+      var sensors = [],
+          dataset = sensorServerInterface.datasets[0],
+          i, unit;
+
+      for (i=0; i < dataset.columns.length; i++) {
+        sensors.push(dataset.columns[i].units);
+      }
+      return sensors;
     }
 
     model = {
@@ -188,6 +213,15 @@ define(function(require) {
 
       stepCounter: function() {
         return stepCounter;
+      },
+
+      connectedSensors: connectedSensors,
+      getSelectedSensor: function() { return selectedSensor; },
+      setSelectedSensor: function(sensorIndex) {
+        if (selectedSensor != sensorIndex) {
+          selectedSensor = sensorIndex;
+          setColumn();
+        }
       },
 
       serialize: function () { return ""; }
@@ -602,6 +636,12 @@ define(function(require) {
       label: "Can set a tare value?"
     }, function() {
       return canTare && isSensorTareable;
+    });
+
+    model.defineOutput('hasMultipleSensors', {
+      label: "Are multiple sensors connected to the Sensor Server?"
+    }, function() {
+      return hasMultipleSensors;
     });
 
     model.defineOutput('needsReload', {

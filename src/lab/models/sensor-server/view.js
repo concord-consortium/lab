@@ -1,6 +1,7 @@
 define(function() {
 
   var NumericOutputView = require('common/views/numeric-output-view'),
+      BasicDialog       = require('common/controllers/basic-dialog'),
       viewState = require('common/views/view-state');
 
   return function(model, modelUrl) {
@@ -27,6 +28,14 @@ define(function() {
       // }
     }
 
+    function setHasMultipleSensorsState() {
+      if (model.properties.hasMultipleSensors && model.properties.isPlayable) {
+        viewState.enableView(view.$selectSensorButton);
+      } else {
+        viewState.disableView(view.$selectSensorButton);
+      }
+    }
+
     function setMessageText() {
       view.$message.text(model.properties.message);
     }
@@ -38,8 +47,50 @@ define(function() {
       model.addObserver('canConnect', setCanConnectState);
       setCanConnectState();
 
+      model.addObserver('hasMultipleSensors', setHasMultipleSensorsState);
+      model.addObserver('isPlayable', setHasMultipleSensorsState);
+      setHasMultipleSensorsState();
+
       model.addObserver('message', setMessageText);
       setMessageText();
+    }
+
+    function chooseSensorPopup() {
+      var dialog = new BasicDialog({
+        width: "60%",
+        dialogClass: 'interactive-dialog no-close',
+        closeOnEscape: false,
+        title: "Choose a sensor:",
+        buttons: {
+          OK: function() {
+            console.log("OK Clicked");
+            $(this).dialog("close");
+            // Change the model's selected sensor
+            model.setSelectedSensor($(this).find('input:checked').val());
+          },
+          Cancel: function() {
+            console.log("Cancel Clicked");
+            $(this).dialog("close");
+          }
+        }
+      });
+      var content = "",
+          sensors = model.connectedSensors(),
+          first = true,
+          selectedSensor = model.getSelectedSensor(),
+          i, checked;
+      for (i = 0; i < sensors.length; i++) {
+        if (sensors[i] !== 's') {
+          checked = "";
+          if (selectedSensor == i || first && selectedSensor == -1) {
+            checked = "checked ";
+          };
+          content += "<input type='radio' name='selected-sensor-index' value='" + i + "' " + checked + "/>" + sensors[i] + "<br/>";
+          first = false;
+        }
+      }
+      dialog.setContent(content);
+      dialog.open();
     }
 
     return view = {
@@ -54,12 +105,14 @@ define(function() {
       },
 
       getHeightForWidth: function() {
-        return "2.6em";
+        return "2.8em";
       },
 
       // called once we're in the DOM
       setup: function() {
         view.$el.empty();
+        view.$controlsContainer = $("<div></div>");
+        view.$statusContainer = $("<div></div>");
         // view.$addressInput = $("<div class='address-input'><input type='text' name='address-input' placeholder='address of LabQuest2'></input></div>");
         sensorReadingView = new NumericOutputView({
           id: 'sensor-value-view',
@@ -69,17 +122,27 @@ define(function() {
 
         // view.$connectButton = $("<div class='interactive-button'><button>Connect</button></div>");
         view.$zeroButton = $("<div class='interactive-button'><button>Zero</button></div>");
+        view.$selectSensorButton = $("<div class='interactive-button'><button>Select Sensor</button></div>");
         view.$message = $("<div class='message'></div>");
         view.$sensorReading = sensorReadingView.render().addClass("horizontal");
 
-        view.$el.css('zIndex', 4)
+        view.$controlsContainer
           // .append(view.$addressInput)
           // .append(view.$connectButton)
           .append(view.$sensorReading)
           .append(view.$zeroButton)
+          .append(view.$selectSensorButton);
+
+        view.$statusContainer
           .append(view.$message);
 
-        view.$el.find('div').addClass('component component-spacing');
+        view.$el.css('zIndex', 4)
+          .append(view.$controlsContainer)
+          .append(view.$statusContainer);
+
+        view.$controlsContainer.find('div').addClass('component component-spacing');
+        view.$statusContainer.find('div').addClass('component component-spacing');
+
         sensorReadingView.resize();
         setupModelObservers();
 
@@ -94,6 +157,7 @@ define(function() {
         //   model.connect(view.$addressInput.find('input').val());
         // });
         view.$zeroButton.on('click', 'button', model.tare);
+        view.$selectSensorButton.on('click', 'button', chooseSensorPopup);
       },
 
       resize: function() {
