@@ -55,8 +55,8 @@
         "y": 2.09,
         "layer": 1,
         "frame": "rounded rectangle",
-        "backgroundColor": "rgb(255,255,128)",
         "fontSize": 0.12,
+        "backgroundColor": "rgb(255,255,128)",
         "anchor": "upper-left"
       }
     ],
@@ -75,12 +75,12 @@
       "width": 0.01,
       "length": 2
     },
-    "forceVectorsDirectionOnly": false,
     "forceVectors": {
       "color": "#169C30",
       "width": 0.01,
       "length": 2
-    }
+    },
+    "forceVectorsDirectionOnly": false
   },
   "pairwiseLJProperties": [],
   "elements": {

@@ -55,12 +55,12 @@
         "y": 0.45,
         "layer": 1,
         "frame": "rounded rectangle",
+        "fontSize": 0.12,
         "calloutPoint": [
           6.5,
           0.51
         ],
         "backgroundColor": "rgb(0,255,0)",
-        "fontSize": 0.12,
         "anchor": "upper-left"
       },
       {
@@ -252,6 +252,16 @@
       0,
       0
     ],
+    "displayExternalAcceleration": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
     "friction": [
       0,
       0,
@@ -343,16 +353,6 @@
       "rgb(128,128,128)"
     ],
     "visible": [
-      true,
-      true,
-      true,
-      true,
-      true,
-      true,
-      true,
-      true
-    ],
-    "displayExternalAcceleration": [
       true,
       true,
       true,

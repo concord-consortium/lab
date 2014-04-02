@@ -259,6 +259,9 @@
     "externalAy": [
       0
     ],
+    "displayExternalAcceleration": [
+      true
+    ],
     "friction": [
       0
     ],
@@ -287,9 +290,6 @@
       "rgb(204,204,204)"
     ],
     "visible": [
-      true
-    ],
-    "displayExternalAcceleration": [
       true
     ]
   }

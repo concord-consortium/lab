@@ -31,8 +31,8 @@
     "viewPortY": 0,
     "viewPortDrag": false,
     "backgroundColor": "#eeeeee",
-    "markColor": "#f8b500",
     "showClock": true,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": false,
     "useThreeLetterCode": true,
@@ -64,13 +64,27 @@
       "width": 0.01,
       "length": 2
     },
-    "forceVectorsDirectionOnly": false,
     "forceVectors": {
       "color": "#169C30",
       "width": 0.01,
       "length": 2
-    }
+    },
+    "forceVectorsDirectionOnly": false
   },
+  "pairwiseLJProperties": [
+    {
+      "element1": 2,
+      "element2": 3,
+      "sigma": 0.3,
+      "epsilon": -0.20000000298023224
+    },
+    {
+      "element1": 0,
+      "element2": 1,
+      "sigma": 0.38754093170166015,
+      "epsilon": -0.3464285731315613
+    }
+  ],
   "elements": {
     "mass": [
       20,
@@ -101,20 +115,6 @@
       -855310
     ]
   },
-  "pairwiseLJProperties": [
-    {
-      "element1": 2,
-      "element2": 3,
-      "sigma": 0.3,
-      "epsilon": -0.20000000298023224
-    },
-    {
-      "element1": 0,
-      "element2": 1,
-      "sigma": 0.38754093170166015,
-      "epsilon": -0.3464285731315613
-    }
-  ],
   "atoms": {
     "x": [
       1.43,

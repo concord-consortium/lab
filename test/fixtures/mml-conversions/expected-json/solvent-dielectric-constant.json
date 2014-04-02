@@ -11,8 +11,8 @@
   "timeStep": 1,
   "dielectricConstant": 80,
   "realisticDielectricEffect": true,
-  "solventForceType": 1,
   "solventForceFactor": 1.25,
+  "solventForceType": 1,
   "additionalSolventForceMult": 4,
   "additionalSolventForceThreshold": 10,
   "polarAAEpsilon": -2,
@@ -31,8 +31,8 @@
     "viewPortY": 0,
     "viewPortDrag": false,
     "backgroundColor": "#B8EBF0",
-    "markColor": "#f8b500",
     "showClock": true,
+    "markColor": "#f8b500",
     "keShading": false,
     "chargeShading": true,
     "useThreeLetterCode": true,
@@ -64,13 +64,14 @@
       "width": 0.01,
       "length": 2
     },
-    "forceVectorsDirectionOnly": false,
     "forceVectors": {
       "color": "#169C30",
       "width": 0.01,
       "length": 2
-    }
+    },
+    "forceVectorsDirectionOnly": false
   },
+  "pairwiseLJProperties": [],
   "elements": {
     "mass": [
       20,
@@ -101,7 +102,6 @@
       -855310
     ]
   },
-  "pairwiseLJProperties": [],
   "atoms": {
     "x": [
       1.09,
