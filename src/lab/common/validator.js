@@ -94,8 +94,9 @@ define(function(require) {
     // object. Start with checking if all required values are provided,
     // and using default values if they are provided.
     // Later perform basic validation.
-    validateCompleteness: function (metadata, input) {
+    validateCompleteness: function (metadata, input, opts) {
       var result = {},
+          includeOnlySerializedProperties = opts && opts.includeOnlySerializedProperties,
           prop, propMetadata, defVal;
 
       if (arguments.length < 2) {
@@ -105,6 +106,11 @@ define(function(require) {
       for (prop in metadata) {
         if (metadata.hasOwnProperty(prop)) {
           propMetadata = metadata[prop];
+          // require explicit check for serialize === false, because the default value is true.
+          if (includeOnlySerializedProperties && propMetadata.serialize === false) {
+            continue;
+          }
+
           defVal = propMetadata.defaultValue;
 
           if (typeof input[prop] === "undefined") {

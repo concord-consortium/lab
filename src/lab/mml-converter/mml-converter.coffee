@@ -309,7 +309,7 @@ define (require) ->
           removeNaNProperties rawData
 
           # Validate all properties and provides default values for undefined values.
-          validatedData = validator.validateCompleteness metadata.obstacle, rawData
+          validatedData = validator.validateCompleteness metadata.obstacle, rawData, { includeOnlySerializedProperties: true }
 
           obstacles.push validatedData
 
@@ -367,7 +367,7 @@ define (require) ->
           removeNaNProperties rawData
 
           # Validate all properties and provides default values for undefined values.
-          validatedData = validator.validateCompleteness metadata.shape, rawData
+          validatedData = validator.validateCompleteness metadata.shape, rawData, { includeOnlySerializedProperties: true }
 
           rectangles.push validatedData
 
@@ -454,7 +454,7 @@ define (require) ->
           removeNaNProperties rawData
 
           # Validate all properties and provides default values for undefined values.
-          validatedData = validator.validateCompleteness metadata.shape, rawData
+          validatedData = validator.validateCompleteness metadata.shape, rawData, { includeOnlySerializedProperties: true }
 
           ellipses.push validatedData
 
@@ -528,7 +528,7 @@ define (require) ->
           removeNaNProperties rawData
 
           # Validate all properties and provides default values for undefined values.
-          validatedData = validator.validateCompleteness metadata.line, rawData
+          validatedData = validator.validateCompleteness metadata.line, rawData, { includeOnlySerializedProperties: true }
 
           lines.push validatedData
 
@@ -845,7 +845,7 @@ define (require) ->
         removeNaNProperties rawData
 
         # Validate all properties and provides default values for undefined values.
-        props = validator.validateCompleteness metadata.electricField, rawData
+        props = validator.validateCompleteness metadata.electricField, rawData, { includeOnlySerializedProperties: true }
 
         # Classic MW does weird things when it comes to intensity and orientation.
         # We can implement conversions that are used in Classic MW and simplify logic
@@ -981,7 +981,7 @@ define (require) ->
         removeNaNProperties elementRawData
 
         # Validate all properties and provides default values for undefined values.
-        elementValidatedData = validator.validateCompleteness metadata.element, elementRawData
+        elementValidatedData = validator.validateCompleteness metadata.element, elementRawData, { includeOnlySerializedProperties: true }
 
         elements.push elementValidatedData
 
@@ -1026,7 +1026,7 @@ define (require) ->
           removeNaNProperties ljProps
 
           # Validate all properties and provides default values for undefined values.
-          ljProps = validator.validateCompleteness metadata.pairwiseLJProperties, ljProps
+          ljProps = validator.validateCompleteness metadata.pairwiseLJProperties, ljProps, { includeOnlySerializedProperties: true }
 
           pairwiseLJProperties.push ljProps
 
@@ -1106,7 +1106,7 @@ define (require) ->
             removeNaNProperties restraintRawData
 
             # Validate all properties and provides default values for undefined values.
-            restraintValidatedData = validator.validateCompleteness metadata.restraint, restraintRawData
+            restraintValidatedData = validator.validateCompleteness metadata.restraint, restraintRawData, { includeOnlySerializedProperties: true }
 
             restraints.push restraintValidatedData
 
@@ -1119,7 +1119,7 @@ define (require) ->
           removeNaNProperties atomRawData
 
           # Validate all properties and provides default values for undefined values.
-          atomValidatedData = validator.validateCompleteness metadata.atom, atomRawData
+          atomValidatedData = validator.validateCompleteness metadata.atom, atomRawData, { includeOnlySerializedProperties: true }
 
           atoms.push atomValidatedData
 
@@ -1162,7 +1162,7 @@ define (require) ->
         removeNaNProperties radialBondRawData
 
         # Validate all properties and provides default values for undefined values.
-        radialBondValidatedData = validator.validateCompleteness metadata.radialBond, radialBondRawData
+        radialBondValidatedData = validator.validateCompleteness metadata.radialBond, radialBondRawData, { includeOnlySerializedProperties: true }
 
         radialBonds.push radialBondValidatedData
 
@@ -1191,7 +1191,7 @@ define (require) ->
         angularBondRawData = { atom1, atom2, atom3, angle, strength }
 
          # Validate all properties and provides default values for undefined values.
-        angularBondValidatedData = validator.validateCompleteness metadata.angularBond, angularBondRawData
+        angularBondValidatedData = validator.validateCompleteness metadata.angularBond, angularBondRawData, { includeOnlySerializedProperties: true }
 
         angularBonds.push angularBondValidatedData
 
@@ -1282,7 +1282,7 @@ define (require) ->
         #
         # reaction.parameters = reactionParameters
 
-        reaction = validator.validateCompleteness metadata.chemicalReactions, reaction
+        reaction = validator.validateCompleteness metadata.chemicalReactions, reaction, { includeOnlySerializedProperties: true }
 
       ###
         Quantum Dynamics
@@ -1405,7 +1405,7 @@ define (require) ->
           elementEnergyLevels
           radiationlessEmissionProbability
           lightSource
-        }
+        }, { includeOnlySerializedProperties: true }
 
 
       ### Convert array of hashes to a hash of arrays, for use by MD2D ###
@@ -1433,7 +1433,7 @@ define (require) ->
       # Revert back all NaNs to undefined, as they will be replaced by default values.
       removeNaNProperties json
       # Validate all properties and provides default values for undefined values.
-      json = validator.validateCompleteness metadata.mainProperties, json
+      json = validator.validateCompleteness metadata.mainProperties, json, { includeOnlySerializedProperties: true }
 
       # Properties which are managed by model, but they define view.
       # Model handles them, as they are e.g. stored in the history.
@@ -1469,7 +1469,7 @@ define (require) ->
       # Revert back all NaNs to undefined, as they will be replaced by default values.
       removeNaNProperties viewOptions
       # Validate all properties and provides default values for undefined values.
-      viewOptions = validator.validateCompleteness metadata.viewOptions, viewOptions
+      viewOptions = validator.validateCompleteness metadata.viewOptions, viewOptions, { includeOnlySerializedProperties: true }
 
       # remove properties that aren't to be serialzed:
       for own option of viewOptions
