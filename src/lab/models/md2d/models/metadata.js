@@ -8,6 +8,10 @@ define(function() {
         defaultValue: "md2d",
         immutable: true
       },
+      isBeingEdited: {
+        defaultValue: false,
+        serialize: false
+      },
       imagePath: {
         defaultValue: "",
         immutable: true
