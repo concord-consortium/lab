@@ -103,7 +103,7 @@ define(function(require) {
       hasMultipleSensors = false;
       // Set selectedSensor if it hasn't been set yet
       if (typeof(selectedSensor) === "undefined" || selectedSensor === null) {
-        selectedSensor = -1;
+        selectedSensor = { index: 1 };
       }
       stepCounter = 0;
       time = 0;
@@ -113,9 +113,18 @@ define(function(require) {
       dataColumn = undefined;
     }
 
+    function checkColumnAgainstSelected(dataset, idx) {
+        var colCandidate = dataset.columns[idx];
+        if (colCandidate && colCandidate.units === selectedSensor.units) {
+          selectedSensor.index = idx;
+          return true;
+        }
+        return false;
+    }
+
     function setColumn() {
       var dataset = sensorServerInterface.datasets[0];
-      var newDataColumn;
+      var newDataColumn,sIdx,colCandidate;
 
       hasMultipleSensors = dataset.columns.length > 2;
 
@@ -124,13 +133,29 @@ define(function(require) {
 
       // TODO When we want to support multiple sensors, this will have to change.
       // Select the column chosen by the user
-      if (selectedSensor == -1) {
-        newDataColumn = dataset.columns[1];
-      } else {
-        newDataColumn = dataset.columns[selectedSensor];
+      sIdx = selectedSensor.index;
+      if (sIdx >= dataset.columns.length) {
+        // we seem to be pointing past the number of columns there are. reset to that last column.
+        sIdx = dataset.columns.length - 1;
+      }
+      newDataColumn = dataset.columns[sIdx];
+      if (newDataColumn && selectedSensor.units && newDataColumn.units !== selectedSensor.units) {
+        // our selected column seems to have changed out from under us.
+        // If a sensor was added to the device, it could be one column higher
+        if (checkColumnAgainstSelected(dataset, sIdx+1)) {
+          newDataColumn = dataset.columns[sIdx+1];
+        } else if (sIdx > 1 && checkColumnAgainstSelected(dataset, sIdx-1)) {
+          // it wasn't the one after. let's check the one before.
+          newDataColumn = dataset.columns[sIdx-1];
+        } else {
+          // it seems to be none of them. Reset the selected sensor to the first one.
+          newDataColumn = dataset.columns[1];
+          selectedSensor.index = 1;
+        }
       }
 
       dataColumn = newDataColumn;
+      selectedSensor.units = dataColumn.units;
       setSensorReadingDescription();
 
       if ( ! dataColumn ) {
@@ -216,10 +241,11 @@ define(function(require) {
       },
 
       connectedSensors: connectedSensors,
-      getSelectedSensor: function() { return selectedSensor; },
+      getSelectedSensor: function() { return selectedSensor.index; },
       setSelectedSensor: function(sensorIndex) {
-        if (selectedSensor != sensorIndex) {
-          selectedSensor = sensorIndex;
+        if (selectedSensor.index != sensorIndex) {
+          selectedSensor.index = sensorIndex;
+          selectedSensor.units = null;
           tareValue = 0; // Also reset our tare value
           setColumn();
         }
