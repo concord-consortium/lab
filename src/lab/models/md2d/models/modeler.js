@@ -2014,9 +2014,9 @@ define(function(require) {
         delete propCopy.atoms.radical;
       }
 
-      removeAtomsArrayIfDefault("marked", metadata.atom.marked.defaultValue);
-      removeAtomsArrayIfDefault("visible", metadata.atom.visible.defaultValue);
-      removeAtomsArrayIfDefault("draggable", metadata.atom.draggable.defaultValue);
+      ['marked', 'visible', 'draggable', 'draggableWhenStopped'].forEach(function(prop) {
+        removeAtomsArrayIfDefault(prop, metadata.atom[prop].defaultValue);
+      });
 
       return propCopy;
     };

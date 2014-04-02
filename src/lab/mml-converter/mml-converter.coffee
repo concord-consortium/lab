@@ -1065,6 +1065,7 @@ define (require) ->
           visible   = getBooleanProperty $node, 'visible'
           marked    = getBooleanProperty $node, 'marked'
           movable   = getBooleanProperty $node, 'movable'
+          draggableWhenStopped = getBooleanProperty $node, 'draggable'
           # userField is *not* a boolean property. If it exists, assume that
           # atom is draggable. Otherwise, use default value.
           draggable = if getProperty $node, 'userField' then 1 else undefined
@@ -1077,6 +1078,7 @@ define (require) ->
           pinned    = Number pinned if pinned?
           visible   = Number visible if visible?
           marked    = Number marked if marked?
+          draggableWhenStopped = Number draggableWhenStopped if draggableWhenStopped?
 
           # unit conversions
           [x, y] = toNextgenCoordinates x, y
@@ -1111,7 +1113,7 @@ define (require) ->
             restraints.push restraintValidatedData
 
 
-          atomRawData = { element, x, y, vx, vy, charge, friction, radical, pinned, marked, visible, draggable }
+          atomRawData = { element, x, y, vx, vy, charge, friction, radical, pinned, marked, visible, draggable, draggableWhenStopped }
 
           # Unit conversion performed on undefined values can convert them to NaN.
           # Revert back all NaNs to undefined, as we do not expect any NaN
@@ -1219,6 +1221,7 @@ define (require) ->
       marked = (atom.marked for atom in atoms)
       visible = (atom.visible for atom in atoms)
       draggable = (atom.draggable for atom in atoms)
+      draggableWhenStopped = (atom.draggableWhenStopped for atom in atoms)
 
       id = atoms[0]?.element || 0
 
@@ -1494,6 +1497,7 @@ define (require) ->
         marked: marked
         visible: visible
         draggable: draggable
+        draggableWhenStopped: draggableWhenStopped
         excitation: excitation
 
       if radialBonds.length > 0
@@ -1534,9 +1538,11 @@ define (require) ->
         delete json.atoms[name] if array.every (i)-> i is defaultVal
 
       # Arrays which has only default values.
-      removeArrayIfDefault("marked", marked, metadata.atom.marked.defaultValue)
-      removeArrayIfDefault("visible", visible, metadata.atom.visible.defaultValue)
-      removeArrayIfDefault("draggable", draggable, metadata.atom.draggable.defaultValue)
+      removeDefaultArraysFor = (props...) ->
+        removeArrayIfDefault(prop, json.atoms[prop], metadata.atom[prop].defaultValue) for prop in props
+        null
+
+      removeDefaultArraysFor 'marked', 'visible', 'draggable', 'draggableWhenStopped'
 
       # Remove targetTemperature when heat-bath is disabled.
       delete json.targetTemperature if not json.temperatureControl

@@ -736,6 +736,7 @@ define(function (require, exports) {
           atoms.marked         = arrays.create(num, 0, arrayTypes.uint8Type);
           atoms.visible        = arrays.create(num, 0, arrayTypes.uint8Type);
           atoms.draggable      = arrays.create(num, 0, arrayTypes.uint8Type);
+          atoms.draggableWhenStopped = arrays.create(num, 1, arrayTypes.uint8Type);
 
           assignShortcutReferences.atoms();
         },

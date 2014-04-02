@@ -344,6 +344,9 @@ define(function() {
       draggable: {
         defaultValue: 0
       },
+      draggableWhenStopped: {
+        defaultValue: 1
+      },
       // Read-only values, can be set only by engine:
       radius: {
         readOnly: true,

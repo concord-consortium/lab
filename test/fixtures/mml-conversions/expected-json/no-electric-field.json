@@ -134,6 +134,10 @@
     "pinned": [
       1,
       0
+    ],
+    "draggableWhenStopped": [
+      0,
+      0
     ]
   }
 }
