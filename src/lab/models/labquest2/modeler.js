@@ -231,6 +231,7 @@ define(function(require) {
       setSelectedSensor: function(sensorIndex) {
         if (selectedSensor != sensorIndex) {
           selectedSensor = sensorIndex;
+          tareValue = 0; // Also reset our tare value
           setColumn();
         }
       },
