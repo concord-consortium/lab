@@ -143,8 +143,18 @@ define(function(require) {
       setCursorForAtom(getAtomUnder(p.x, p.y));
     }
 
+    function isAtomDraggable(atom) {
+      if ( ! atom ) {
+        return false;
+      }
+      if (model.isStopped()) {
+        return atom.draggableWhenStopped || model.properties.isBeingEdited;
+      }
+      return atom.draggable;
+    }
+
     function setCursorForAtom(atom) {
-      if (atom && (model.isStopped() || atom.draggable)) {
+      if (isAtomDraggable(atom)) {
         setCursor("move");
       } else {
         setCursor("auto");
@@ -214,7 +224,7 @@ define(function(require) {
 
     function dragBehavior(atom) {
       // Fast path, no dragging at all if model is running and atom isn't draggable.
-      if (!model.isStopped() && !atom.draggable) return;
+      if ( ! isAtomDraggable(atom) ) return;
 
       var i = atom.idx,
           p, x, y, originX, originY;
