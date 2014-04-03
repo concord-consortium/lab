@@ -45,6 +45,8 @@ define(function(require) {
         time,
         rawSensorValue,
         liveSensorValue,
+        lastLiveValueTimestamp,
+        liveValueLastChanged,
         stepCounter,
         isPlayable,
         canConnect,
@@ -113,6 +115,8 @@ define(function(require) {
       time = 0;
       rawSensorValue = undefined;
       liveSensorValue = undefined;
+      lastLiveValueTimestamp = 0;
+      liveValueLastChanged = 0;
       timeColumn = undefined;
       dataColumn = undefined;
     }
@@ -699,8 +703,21 @@ define(function(require) {
     labquest2Interface.on('statusReceived', function() {
       if (dataColumn) {
         model.makeInvalidatingChange(function() {
+          // Figure out if we're in "live" mode, or if we're still viewing old data
+          // (and therefore the live values aren't actually updating)
+          var liveMode = false,
+              now = new Date();
+          if ((dataColumn.liveValueTimeStamp - lastLiveValueTimestamp) > 0) {
+            liveMode = true;
+            lastLiveValueTimestamp = dataColumn.liveValueTimeStamp;
+            liveValueLastChanged = now;
+          } else {
+            if ((now - liveValueLastChanged) < 2000) {
+              liveMode = true;
+            }
+          }
           liveSensorValue = dataColumn.liveValue;
-          canTare = canPossiblyTare && dataColumn.data.length == 0;
+          canTare = canPossiblyTare && liveMode;
         });
       }
     });
