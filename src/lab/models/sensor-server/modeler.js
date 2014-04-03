@@ -246,7 +246,7 @@ define(function(require) {
         if (selectedSensor.index != sensorIndex) {
           selectedSensor.index = sensorIndex;
           selectedSensor.units = null;
-          tareValue = 0; // Also reset our tare value
+          model.properties.tareValue = 0; // Also reset our tare value
           setColumn();
         }
       },
