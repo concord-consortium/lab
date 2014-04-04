@@ -200,7 +200,6 @@ public: \
 	public/lab \
 	public/lab/jars/lab-sensor-applet-interface-dist \
 	public/vendor \
-	public/developer-doc \
 	src
 
 # copy everything (including symbolic links) except files that are
@@ -210,9 +209,6 @@ copy-resources-to-public:
 	rsync -aq --exclude='helpers/' --exclude='layouts/' --exclude='modules/' --exclude='sass/' --exclude='vendor/' --exclude='lab/' --filter '+ */' --exclude='*.haml' --exclude='*.sass' --exclude='*.scss' --exclude='*.yaml' --exclude='*.coffee' --exclude='*.rb' --exclude='*.md' src/ public/
 	mkdir -p public/lab/resources
 	rsync -aq src/lab/resources/ public/lab/resources/
-
-public/developer-doc:
-	mkdir -p public/developer-doc
 
 # ------------------------------------------------
 #
