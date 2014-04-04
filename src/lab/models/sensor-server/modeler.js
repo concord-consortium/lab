@@ -544,6 +544,11 @@ define(function(require) {
       disconnected: {
         enterState: function() {
           message = "Disconnected.";
+          sensorServerInterface.stopPolling();
+          var self = this;
+          setTimeout(function() {
+            self.gotoState('notConnected');
+          }, 2000);
         }
       }
     });
@@ -552,9 +557,6 @@ define(function(require) {
     // outputs update from closure variable state automatically.
     function handle(eventName) {
       var args = Array.prototype.slice.call(arguments, 0);
-      if (eventName !== "statusReceived") {
-        console.log("handling event: " + eventName, args);
-      }
 
       model.makeInvalidatingChange(function() {
         var handled = stateMachine.handleEvent.apply(stateMachine, args);
