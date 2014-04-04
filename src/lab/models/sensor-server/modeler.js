@@ -51,6 +51,7 @@ define(function(require) {
         hasMultipleSensors,
         isSensorTareable,
         message,
+        statusErrors,
         model;
 
     function setSensorReadingDescription() {
@@ -107,6 +108,7 @@ define(function(require) {
       }
       stepCounter = 0;
       time = 0;
+      statusErrors = 0;
       rawSensorValue = undefined;
       liveSensorValue = undefined;
       timeColumn = undefined;
@@ -260,6 +262,7 @@ define(function(require) {
       notConnected: {
         enterState: function() {
           message = "Not connected.";
+          statusErrors = 0;
           sensorServerInterface.startPolling("127.0.0.1:11180");
           this.gotoState('connecting');
         }
@@ -303,6 +306,10 @@ define(function(require) {
             }
           });
         },
+
+        // Ignore these in this state
+        statusErrored: function() {},
+        connectionTimedOut: function() {},
 
         dismiss: function() {
           this.gotoState('notConnected');
@@ -568,6 +575,11 @@ define(function(require) {
           } else if (eventName === 'sessionChanged') {
             sensorServerInterface.stopPolling();
             stateMachine.gotoState('disconnected');
+          } else if (eventName === 'statusErrored') {
+            statusErrors++;
+            if (statusErrors > 4) {
+              stateMachine.gotoState('disconnected');
+            }
           }
         }
       });
