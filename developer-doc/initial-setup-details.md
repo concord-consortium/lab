@@ -71,11 +71,10 @@ This is because of the limitation of the `file` protocol in browsers. Continue o
 ### 5. open another new terminal and run `rackup config.ru`
 
 Startup the Rack-based Lab server for local development. This is simple rack application that mainly just serves
-the files in public. It does contain a dynamic extension:
+the files in public. It includes live reload support, so if you are using guard your pages will be reloaded
+after they are updated by guard.
 
-- a [shutterbug](https://github.com/concord-consortium/shutterbug) service so you can take snapshots locally
-
-Alternatively you can use `python -m SimpleHTTPServer` to run a python server. Currently it won't handle the applets and it won't support snapshots, but you might not need those features.
+Alternatively you can use `python -m SimpleHTTPServer` to run a python server.
 
 ### 6. open http://localhost:9191
 

@@ -6,7 +6,6 @@ gem "haml",               "~> 4.0.0"
 gem 'activesupport',     "~> 3"
 gem 'i18n',               "~> 0.6.4"
 gem "gitlab-grit",        "~> 2.6.0"
-gem "shutterbug",         "~> 0.2.1"
 gem "s3_website",  :git => 'git://github.com/concord-consortium/s3_website.git',
                    :branch => 'optimize-diff-calculation'
 

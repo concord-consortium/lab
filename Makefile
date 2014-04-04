@@ -27,7 +27,6 @@ COMMON_SRC_FILES += src/lab/lab.version.js
 FONT_FOLDERS := $(shell find vendor/fonts -mindepth 1 -maxdepth 1)
 
 SASS_LAB_LIBRARY_FILES := $(shell find src/sass/lab -name '*.sass')
-SHUTTERBUG_GEM := $(shell bundle show shutterbug)
 
 # targets
 
@@ -284,9 +283,6 @@ public/vendor: \
 	public/vendor/tinysort/jquery.tinysort.js \
 	public/vendor/jquery-context-menu \
 	public/vendor/fonts \
-	public/vendor/shutterbug/shutterbug.js \
-	public/vendor/shutterbug/README.md \
-	public/vendor/shutterbug/LICENSE.md \
 	public/favicon.ico
 
 public/vendor/d3: vendor/d3
@@ -371,21 +367,6 @@ public/vendor/fonts: $(FONT_FOLDERS)
 	rm -rf public/vendor/fonts/Font-Awesome/less
 	rm -rf public/vendor/fonts/Font-Awesome/sass
 
-public/vendor/shutterbug:
-	mkdir -p public/vendor/shutterbug
-
-public/vendor/shutterbug/shutterbug.js: public/vendor/shutterbug \
-	vendor/shutterbug/shutterbug.js
-	sed -e s'/CONVERT_PATH/shutterbug\/make_snapshot/' vendor/shutterbug/shutterbug.js > public/vendor/shutterbug/shutterbug.js
-
-public/vendor/shutterbug/README.md: public/vendor/shutterbug \
-	vendor/shutterbug/README.md
-	cp vendor/shutterbug/README.md public/vendor/shutterbug
-
-public/vendor/shutterbug/LICENSE.md: public/vendor/shutterbug \
-	vendor/shutterbug/LICENSE.md
-	cp vendor/shutterbug/LICENSE.md public/vendor/shutterbug
-
 public/favicon.ico:
 	cp -f src/favicon.ico public/favicon.ico
 
@@ -403,21 +384,6 @@ vendor/sensor-labquest-2-interface/dist/sensor-labquest-2-interface.js:
 
 vendor/sensor-server-interface/dist/sensor-server-interface.js:
 	git submodule update --init --recursive
-
-vendor/shutterbug:
-	mkdir -p vendor/shutterbug
-
-vendor/shutterbug/shutterbug.js: vendor/shutterbug \
-	$(SHUTTERBUG_GEM)/lib/shutterbug/handlers/shutterbug.js
-	cp $(SHUTTERBUG_GEM)/lib/shutterbug/handlers/shutterbug.js vendor/shutterbug
-
-vendor/shutterbug/README.md: vendor/shutterbug \
-	$(SHUTTERBUG_GEM)/README.md
-	cp $(SHUTTERBUG_GEM)/README.md vendor/shutterbug
-
-vendor/shutterbug/LICENSE.md: vendor/shutterbug \
-	$(SHUTTERBUG_GEM)/LICENSE.md
-	cp $(SHUTTERBUG_GEM)/LICENSE.md vendor/shutterbug
 
 # ------------------------------------------------
 #
