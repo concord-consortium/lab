@@ -283,7 +283,6 @@ public/vendor: \
 	public/vendor/jquery-selectBoxIt/jquery.selectBoxIt.min.js \
 	public/vendor/tinysort/jquery.tinysort.js \
 	public/vendor/jquery-context-menu \
-	public/vendor/modernizr \
 	public/vendor/fonts \
 	public/vendor/shutterbug/shutterbug.js \
 	public/vendor/shutterbug/README.md \
@@ -357,11 +356,6 @@ public/vendor/tinysort/jquery.tinysort.js: \
 	public/vendor/tinysort
 	cp -r vendor/tinysort/src/* public/vendor/tinysort
 	cp vendor/tinysort/README.md public/vendor/tinysort
-
-public/vendor/modernizr:
-	mkdir -p public/vendor/modernizr
-	cp vendor/modernizr/modernizr.js public/vendor/modernizr
-	cp vendor/modernizr/readme.md public/vendor/modernizr
 
 public/vendor/sizzle:
 	mkdir -p public/vendor/sizzle

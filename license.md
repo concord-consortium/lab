@@ -30,34 +30,31 @@ Here is a list of projects and resources included in the in the `vendor/` direct
     and [GPL v2.0](http://www.opensource.org/licenses/GPL-2.0).
 4.  [TinySort](https://github.com/Sjeiti/TinySort): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
     and [GPL v2.0](http://www.opensource.org/licenses/GPL-2.0).
-5.  [Modernizr](https://github.com/Modernizr/Modernizr): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
+5. [requirejs](https://github.com/jrburke/requirejs): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
     and [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause)
-6. [OpenSans Font](http://www.google.com/webfonts/specimen/Open+Sans): [Apache 2.0](http://www.opensource.org/licenses/Apache-2.0)
-7. [requirejs](https://github.com/jrburke/requirejs): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
+6. [almond](https://github.com/jrburke/almond): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
     and [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause)
-8. [almond](https://github.com/jrburke/almond): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
+7. [text](https://github.com/requirejs/text): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
     and [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause)
-9. [text](https://github.com/requirejs/text): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
+8. [require-cs](https://github.com/requirejs/domReady): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
     and [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause)
-10. [require-cs](https://github.com/requirejs/domReady): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
-    and [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause)
-11. [coffe-script](https://github.com/jashkenas/coffee-script): [MIT](http://www.opensource.org/licenses/MIT)
-12. [jQuery UI Touch Punch](http://touchpunch.furf.com/): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
+9. [coffe-script](https://github.com/jashkenas/coffee-script): [MIT](http://www.opensource.org/licenses/MIT)
+10. [jQuery UI Touch Punch](http://touchpunch.furf.com/): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
     and [GPL v2.0](http://www.opensource.org/licenses/GPL-2.0).
-13. [jQuery Context Menu](http://medialize.github.com/jQuery-contextMenu/): dual-licensed under
+11. [jQuery Context Menu](http://medialize.github.com/jQuery-contextMenu/): dual-licensed under
     [MIT](http://www.opensource.org/licenses/MIT) and [GPL v3.0](http://opensource.org/licenses/GPL-3.0).
-14. [backbone](https://github.com/documentcloud/backbone): [MIT](http://www.opensource.org/licenses/MIT)
-15. [underscore](https://github.com/documentcloud/underscore): [MIT](http://www.opensource.org/licenses/MIT)
-16. [jQuery selectBoxIt](https://github.com/gfranko/jQuery.selectBoxIt.js): [MIT](http://www.opensource.org/licenses/MIT)
-17. [mustache](https://github.com/janl/mustache.js): [MIT](http://www.opensource.org/licenses/MIT)
-18. [markdown-js](https://github.com/evilstreak/markdown-js): [MIT](http://www.opensource.org/licenses/MIT)
-19. [pixi.js](https://github.com/GoodBoyDigital/pixi.js): [MIT](http://www.opensource.org/licenses/MIT)
-20. [canvg](https://code.google.com/p/canvg): [MIT](http://www.opensource.org/licenses/MIT)
-21. [fastclick](https://github.com/ftlabs/fastclick): [MIT](http://www.opensource.org/licenses/MIT)
-22. [seedrandom](https://github.com/davidbau/seedrandom): [BSD](http://www.opensource.org/licenses/BSD-2-Clause)
-23. [cheerio](https://github.com/MatthewMueller/cheerio): [MIT](http://www.opensource.org/licenses/MIT)
-24. [lab-grapher](https://github.com/concord-consortium/lab-grapher): triple-licensed the same as the Lab licenses
-25. [lab-sensor-applet-interface-dist](https://github.com/concord-consortium/lab-sensor-applet-interface-dist): triple-licensed the same as Lab, with exceptions for some binary libraries provided by Vernier
+12. [backbone](https://github.com/documentcloud/backbone): [MIT](http://www.opensource.org/licenses/MIT)
+13. [underscore](https://github.com/documentcloud/underscore): [MIT](http://www.opensource.org/licenses/MIT)
+14. [jQuery selectBoxIt](https://github.com/gfranko/jQuery.selectBoxIt.js): [MIT](http://www.opensource.org/licenses/MIT)
+15. [mustache](https://github.com/janl/mustache.js): [MIT](http://www.opensource.org/licenses/MIT)
+16. [markdown-js](https://github.com/evilstreak/markdown-js): [MIT](http://www.opensource.org/licenses/MIT)
+17. [pixi.js](https://github.com/GoodBoyDigital/pixi.js): [MIT](http://www.opensource.org/licenses/MIT)
+18. [canvg](https://code.google.com/p/canvg): [MIT](http://www.opensource.org/licenses/MIT)
+19. [fastclick](https://github.com/ftlabs/fastclick): [MIT](http://www.opensource.org/licenses/MIT)
+20. [seedrandom](https://github.com/davidbau/seedrandom): [BSD](http://www.opensource.org/licenses/BSD-2-Clause)
+21. [cheerio](https://github.com/MatthewMueller/cheerio): [MIT](http://www.opensource.org/licenses/MIT)
+23. [lab-grapher](https://github.com/concord-consortium/lab-grapher): triple-licensed the same as the Lab licenses
+24. [lab-sensor-applet-interface-dist](https://github.com/concord-consortium/lab-sensor-applet-interface-dist): triple-licensed the same as Lab, with exceptions for some binary libraries provided by Vernier
 
 In addition there are two fontface directories in `vendor/fonts` that are distributed
 under compatible open source licenses:
