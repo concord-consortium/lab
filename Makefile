@@ -293,8 +293,6 @@ public/vendor: \
 	public/vendor/shutterbug/shutterbug.js \
 	public/vendor/shutterbug/README.md \
 	public/vendor/shutterbug/LICENSE.md \
-	public/vendor/sensor-labquest-2-interface/sensor-labquest-2-interface.js \
-	public/vendor/sensor-server-interface/sensor-server-interface.js \
 	public/vendor/iframe-phone/iframe-phone.js \
 	public/favicon.ico
 
@@ -405,22 +403,6 @@ public/vendor/shutterbug/README.md: public/vendor/shutterbug \
 public/vendor/shutterbug/LICENSE.md: public/vendor/shutterbug \
 	vendor/shutterbug/LICENSE.md
 	cp vendor/shutterbug/LICENSE.md public/vendor/shutterbug
-
-public/vendor/sensor-labquest-2-interface/sensor-labquest-2-interface.js: \
-	public/vendor/sensor-labquest-2-interface \
-	vendor/sensor-labquest-2-interface/dist/sensor-labquest-2-interface.js
-	cp vendor/sensor-labquest-2-interface/dist/sensor-labquest-2-interface.js public/vendor/sensor-labquest-2-interface/
-
-public/vendor/sensor-labquest-2-interface:
-	mkdir -p public/vendor/sensor-labquest-2-interface
-
-public/vendor/sensor-server-interface/sensor-server-interface.js: \
-	public/vendor/sensor-server-interface \
-	vendor/sensor-server-interface/dist/sensor-server-interface.js
-	cp vendor/sensor-server-interface/dist/sensor-server-interface.js public/vendor/sensor-server-interface/
-
-public/vendor/sensor-server-interface:
-	mkdir -p public/vendor/sensor-server-interface
 
 public/vendor/iframe-phone/iframe-phone.js: \
 	public/vendor/iframe-phone \
