@@ -6,19 +6,19 @@
        font-family: "Lato";
        font-style: normal;
        font-weight: normal;
-       src: url("../../vendor/fonts/lato-fontfacekit/Lato-Reg-webfont.eot"), url("../../vendor/fonts/lato-fontfacekit/Lato-Reg-webfont.ttf") format("truetype"); }
+       src: url("../vendor/fonts/lato-fontfacekit/Lato-Reg-webfont.eot"), url("../vendor/fonts/lato-fontfacekit/Lato-Reg-webfont.ttf") format("truetype"); }
      
      @font-face {
        font-family: "Lato";
        font-style: italic;
        font-weight: normal;
-       src: url("../../vendor/fonts/lato-fontfacekit/Lato-RegIta-webfont.eot"), url("../../vendor/fonts/lato-fontfacekit/Lato-RegIta-webfont.ttf") format("truetype"); }
+       src: url("../vendor/fonts/lato-fontfacekit/Lato-RegIta-webfont.eot"), url("../vendor/fonts/lato-fontfacekit/Lato-RegIta-webfont.ttf") format("truetype"); }
      
      @font-face {
        font-family: "Lato";
        font-style: normal;
        font-weight: bold;
-       src: url("../../vendor/fonts/lato-fontfacekit/Lato-Bol-webfont.eot"), url("../../vendor/fonts/lato-fontfacekit/Lato-Bol-webfont.ttf") format("truetype"); }     
+       src: url("../vendor/fonts/lato-fontfacekit/Lato-Bol-webfont.eot"), url("../vendor/fonts/lato-fontfacekit/Lato-Bol-webfont.ttf") format("truetype"); }     
     ]]>
   </style>
   <g class="molecule-container-vis" transform="translate(25,20)">

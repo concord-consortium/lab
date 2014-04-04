@@ -7,19 +7,19 @@
        font-family: "Lato";
        font-style: normal;
        font-weight: normal;
-       src: url("../../vendor/fonts/lato-fontfacekit/Lato-Reg-webfont.eot"), url("../vendor/fonts/lato-fontfacekit/Lato-Reg-webfont.ttf") format("truetype"); }
+       src: url("../vendor/fonts/lato-fontfacekit/Lato-Reg-webfont.eot"), url("../vendor/fonts/lato-fontfacekit/Lato-Reg-webfont.ttf") format("truetype"); }
      
      @font-face {
        font-family: "Lato";
        font-style: italic;
        font-weight: normal;
-       src: url("../../vendor/fonts/lato-fontfacekit/Lato-RegIta-webfont.eot"), url("../../vendor/fonts/lato-fontfacekit/Lato-RegIta-webfont.ttf") format("truetype"); }
+       src: url("../vendor/fonts/lato-fontfacekit/Lato-RegIta-webfont.eot"), url("../vendor/fonts/lato-fontfacekit/Lato-RegIta-webfont.ttf") format("truetype"); }
      
      @font-face {
        font-family: "Lato";
        font-style: normal;
        font-weight: bold;
-       src: url("../../vendor/fonts/lato-fontfacekit/Lato-Bol-webfont.eot"), url("../../vendor/fonts/lato-fontfacekit/Lato-Bol-webfont.ttf") format("truetype"); }     
+       src: url("../vendor/fonts/lato-fontfacekit/Lato-Bol-webfont.eot"), url("../vendor/fonts/lato-fontfacekit/Lato-Bol-webfont.ttf") format("truetype"); }     
   ]]>
 </style>
 <text transform="matrix(1 0 0 1 0 10.3623)" fill="#B30000" style="font-family: Lato; font-weight: bold; font-style: normal; font-size: 14px">Pressure Gauge</text>

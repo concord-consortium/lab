@@ -18,13 +18,13 @@ screen = window.screen;
 Sizzle = require('sizzle');
 
 // Set up any vendored libraries that are normally included via script tag in the modules under test:
-require("../public/vendor/d3/d3.min.js");
-require("../public/vendor/jquery/jquery.js");
+require("../public/lab/vendor/d3/d3.min.js");
+require("../public/lab/vendor/jquery/jquery.js");
 $ = jQuery = window.jQuery;
 // Setup libraries which depend on jQuery.
-require("../public/vendor/jquery-ui/jquery-ui.js");
-require("../public/vendor/jquery-context-menu/jquery.contextMenu.js");
-require("../public/vendor/jquery-selectBoxIt/jquery.selectBoxIt.min.js");
+require("../public/lab/vendor/jquery-ui/jquery-ui.js");
+require("../public/lab/vendor/jquery-context-menu/jquery.contextMenu.js");
+require("../public/lab/vendor/jquery-selectBoxIt/jquery.selectBoxIt.min.js");
 
 // Additional environment features for testing.
 require("./env-assert");

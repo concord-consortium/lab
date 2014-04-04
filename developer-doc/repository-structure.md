@@ -13,7 +13,7 @@ Only the necessary JavaScript library files and other resources needed for runti
 with the associated README and LICENSE files are copied to **`public/vendor`** during
 the build process.
 
-All of the files copied to **`public/vendor`** are licensed and distributed under
+All of the files copied to **`public/lab/vendor`** are licensed and distributed under
 one or more of the following licenses:
 [Simplified BSD](http://www.opensource.org/licenses/BSD-2-Clause),
 [The BSD 3-Clause](http://www.opensource.org/licenses/BSD-3-Clause),

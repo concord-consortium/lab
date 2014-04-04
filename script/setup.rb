@@ -50,23 +50,23 @@ end
 LAB_JS_DEPENDENCIES = case CONFIG[:environment]
 when 'production'
   <<-HEREDOC
-<script src="vendor/d3/d3.min.js" type="text/javascript"></script>
-<script src="vendor/jquery/jquery.min.js" type="text/javascript"></script>
-<script src="vendor/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
-<script src="vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js" type="text/javascript"></script>
-<script src="vendor/jquery-context-menu/jquery.contextMenu.js" type="text/javascript"></script>
-<script src="vendor/jquery-selectBoxIt/jquery.selectBoxIt.min.js" type="text/javascript"></script>
-<script src='vendor/tinysort/jquery.tinysort.min.js' type='text/javascript'></script>
+<script src="lab/vendor/d3/d3.min.js" type="text/javascript"></script>
+<script src="lab/vendor/jquery/jquery.min.js" type="text/javascript"></script>
+<script src="lab/vendor/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
+<script src="lab/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js" type="text/javascript"></script>
+<script src="lab/vendor/jquery-context-menu/jquery.contextMenu.js" type="text/javascript"></script>
+<script src="lab/vendor/jquery-selectBoxIt/jquery.selectBoxIt.min.js" type="text/javascript"></script>
+<script src='lab/vendor/tinysort/jquery.tinysort.min.js' type='text/javascript'></script>
   HEREDOC
 else
   <<-HEREDOC
-<script src="vendor/d3/d3.js" type="text/javascript"></script>
-<script src="vendor/jquery/jquery.js" type="text/javascript"></script>
-<script src="vendor/jquery-ui/jquery-ui.js" type="text/javascript"></script>
-<script src="vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.js" type="text/javascript"></script>
-<script src="vendor/jquery-context-menu/jquery.contextMenu.js" type="text/javascript"></script>
-<script src="vendor/jquery-selectBoxIt/jquery.selectBoxIt.js" type="text/javascript"></script>
-<script src='vendor/tinysort/jquery.tinysort.js' type='text/javascript'></script>
+<script src="lab/vendor/d3/d3.js" type="text/javascript"></script>
+<script src="lab/vendor/jquery/jquery.js" type="text/javascript"></script>
+<script src="lab/vendor/jquery-ui/jquery-ui.js" type="text/javascript"></script>
+<script src="lab/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.js" type="text/javascript"></script>
+<script src="lab/vendor/jquery-context-menu/jquery.contextMenu.js" type="text/javascript"></script>
+<script src="lab/vendor/jquery-selectBoxIt/jquery.selectBoxIt.js" type="text/javascript"></script>
+<script src='lab/vendor/tinysort/jquery.tinysort.js' type='text/javascript'></script>
   HEREDOC
 end
 

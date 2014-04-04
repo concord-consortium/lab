@@ -198,7 +198,7 @@ public: \
 	copy-resources-to-public \
 	public/lab \
 	public/lab/jars/lab-sensor-applet-interface-dist \
-	public/vendor \
+	public/lab/vendor \
 	src
 
 # copy everything (including symbolic links) except files that are
@@ -267,105 +267,105 @@ public/lab/jars/lab-sensor-applet-interface-dist: \
 
 # ------------------------------------------------
 #
-#   public/vendor
+#   public/lab/vendor
 #
 # External frameworks are built from git submodules checked out into vendor/.
-# Just the generated libraries and licenses are copied to public/vendor
+# Just the generated libraries and licenses are copied to public/lab/vendor
 #
 # ------------------------------------------------
 
-public/vendor: \
-	public/vendor/d3 \
-	public/vendor/jquery/jquery.min.js \
-	public/vendor/jquery-ui/jquery-ui.min.js \
-	public/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js \
-	public/vendor/jquery-selectBoxIt/jquery.selectBoxIt.min.js \
-	public/vendor/tinysort/jquery.tinysort.js \
-	public/vendor/jquery-context-menu \
-	public/vendor/fonts \
+public/lab/vendor: \
+	public/lab/vendor/d3 \
+	public/lab/vendor/jquery/jquery.min.js \
+	public/lab/vendor/jquery-ui/jquery-ui.min.js \
+	public/lab/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js \
+	public/lab/vendor/jquery-selectBoxIt/jquery.selectBoxIt.min.js \
+	public/lab/vendor/tinysort/jquery.tinysort.js \
+	public/lab/vendor/jquery-context-menu \
+	public/lab/vendor/fonts \
 	public/favicon.ico
 
-public/vendor/d3: vendor/d3
-	mkdir -p public/vendor/d3
-	cp vendor/d3/d3*.js public/vendor/d3
-	cp vendor/d3/LICENSE public/vendor/d3/LICENSE
-	cp vendor/d3/README.md public/vendor/d3/README.md
+public/lab/vendor/d3: vendor/d3
+	mkdir -p public/lab/vendor/d3
+	cp vendor/d3/d3*.js public/lab/vendor/d3
+	cp vendor/d3/LICENSE public/lab/vendor/d3/LICENSE
+	cp vendor/d3/README.md public/lab/vendor/d3/README.md
 
-public/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js: \
-	public/vendor/jquery-ui-touch-punch \
+public/lab/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js: \
+	public/lab/vendor/jquery-ui-touch-punch \
 	vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js \
 	vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.js
-	cp vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js public/vendor/jquery-ui-touch-punch
-	cp vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.js public/vendor/jquery-ui-touch-punch
+	cp vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js public/lab/vendor/jquery-ui-touch-punch
+	cp vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.js public/lab/vendor/jquery-ui-touch-punch
 
-public/vendor/jquery-ui-touch-punch:
-	mkdir -p public/vendor/jquery-ui-touch-punch
+public/lab/vendor/jquery-ui-touch-punch:
+	mkdir -p public/lab/vendor/jquery-ui-touch-punch
 
-public/vendor/jquery-selectBoxIt/jquery.selectBoxIt.min.js: \
+public/lab/vendor/jquery-selectBoxIt/jquery.selectBoxIt.min.js: \
 	vendor/jquery-selectBoxIt/src/javascripts/jquery.selectBoxIt.js \
 	vendor/jquery-selectBoxIt/src/javascripts/jquery.selectBoxIt.min.js \
 	vendor/jquery-selectBoxIt/src/stylesheets/jquery.selectBoxIt.css \
-	public/vendor/jquery-selectBoxIt
-	cp vendor/jquery-selectBoxIt/src/javascripts/jquery.selectBoxIt.js public/vendor/jquery-selectBoxIt
-	cp vendor/jquery-selectBoxIt/src/javascripts/jquery.selectBoxIt.min.js public/vendor/jquery-selectBoxIt
-	cp vendor/jquery-selectBoxIt/src/stylesheets/jquery.selectBoxIt.css public/vendor/jquery-selectBoxIt
+	public/lab/vendor/jquery-selectBoxIt
+	cp vendor/jquery-selectBoxIt/src/javascripts/jquery.selectBoxIt.js public/lab/vendor/jquery-selectBoxIt
+	cp vendor/jquery-selectBoxIt/src/javascripts/jquery.selectBoxIt.min.js public/lab/vendor/jquery-selectBoxIt
+	cp vendor/jquery-selectBoxIt/src/stylesheets/jquery.selectBoxIt.css public/lab/vendor/jquery-selectBoxIt
 
-public/vendor/jquery-selectBoxIt:
-	mkdir -p public/vendor/jquery-selectBoxIt
+public/lab/vendor/jquery-selectBoxIt:
+	mkdir -p public/lab/vendor/jquery-selectBoxIt
 
-public/vendor/jquery-context-menu:
-	mkdir -p public/vendor/jquery-context-menu
-	cp vendor/jquery-context-menu/src/jquery.contextMenu.js public/vendor/jquery-context-menu
-	cp vendor/jquery-context-menu/src/jquery.contextMenu.css public/vendor/jquery-context-menu
+public/lab/vendor/jquery-context-menu:
+	mkdir -p public/lab/vendor/jquery-context-menu
+	cp vendor/jquery-context-menu/src/jquery.contextMenu.js public/lab/vendor/jquery-context-menu
+	cp vendor/jquery-context-menu/src/jquery.contextMenu.css public/lab/vendor/jquery-context-menu
 
-public/vendor/jquery/jquery.min.js: \
+public/lab/vendor/jquery/jquery.min.js: \
 	vendor/jquery \
-	public/vendor/jquery
-	cp vendor/jquery/jquery.js public/vendor/jquery
-	cp vendor/jquery/jquery.min.js public/vendor/jquery
-	cp vendor/jquery/jquery.min.map public/vendor/jquery
-	cp vendor/jquery/MIT-LICENSE.txt public/vendor/jquery
+	public/lab/vendor/jquery
+	cp vendor/jquery/jquery.js public/lab/vendor/jquery
+	cp vendor/jquery/jquery.min.js public/lab/vendor/jquery
+	cp vendor/jquery/jquery.min.map public/lab/vendor/jquery
+	cp vendor/jquery/MIT-LICENSE.txt public/lab/vendor/jquery
 
-public/vendor/jquery:
-	mkdir -p public/vendor/jquery
+public/lab/vendor/jquery:
+	mkdir -p public/lab/vendor/jquery
 
-public/vendor/jquery-ui/jquery-ui.min.js: \
+public/lab/vendor/jquery-ui/jquery-ui.min.js: \
 	vendor/components-jqueryui \
-	public/vendor/jquery-ui
-	cp vendor/components-jqueryui/MIT-LICENSE.txt public/vendor/jquery-ui
-	mkdir -p public/vendor/jquery-ui/i18n
-	cp vendor/components-jqueryui/ui/jquery-ui.js public/vendor/jquery-ui
-	cp vendor/components-jqueryui/ui/i18n/jquery-ui-i18n.js public/vendor/jquery-ui/i18n
-	cp vendor/components-jqueryui/ui/minified/jquery-ui.min.js public/vendor/jquery-ui
-	cp vendor/components-jqueryui/ui/minified/i18n/jquery-ui-i18n.min.js public/vendor/jquery-ui/i18n
-	cp vendor/components-jqueryui/themes/base/jquery-ui.css public/vendor/jquery-ui
-	cp vendor/components-jqueryui/themes/base/minified/jquery-ui.min.css public/vendor/jquery-ui
-	cp -r vendor/components-jqueryui/themes/base/images public/vendor/jquery-ui
+	public/lab/vendor/jquery-ui
+	cp vendor/components-jqueryui/MIT-LICENSE.txt public/lab/vendor/jquery-ui
+	mkdir -p public/lab/vendor/jquery-ui/i18n
+	cp vendor/components-jqueryui/ui/jquery-ui.js public/lab/vendor/jquery-ui
+	cp vendor/components-jqueryui/ui/i18n/jquery-ui-i18n.js public/lab/vendor/jquery-ui/i18n
+	cp vendor/components-jqueryui/ui/minified/jquery-ui.min.js public/lab/vendor/jquery-ui
+	cp vendor/components-jqueryui/ui/minified/i18n/jquery-ui-i18n.min.js public/lab/vendor/jquery-ui/i18n
+	cp vendor/components-jqueryui/themes/base/jquery-ui.css public/lab/vendor/jquery-ui
+	cp vendor/components-jqueryui/themes/base/minified/jquery-ui.min.css public/lab/vendor/jquery-ui
+	cp -r vendor/components-jqueryui/themes/base/images public/lab/vendor/jquery-ui
 
-public/vendor/jquery-ui:
-	mkdir -p public/vendor/jquery-ui
+public/lab/vendor/jquery-ui:
+	mkdir -p public/lab/vendor/jquery-ui
 
-public/vendor/tinysort:
-	mkdir -p public/vendor/tinysort
+public/lab/vendor/tinysort:
+	mkdir -p public/lab/vendor/tinysort
 
-public/vendor/tinysort/jquery.tinysort.js: \
-	public/vendor/tinysort
-	cp -r vendor/tinysort/src/* public/vendor/tinysort
-	cp vendor/tinysort/README.md public/vendor/tinysort
+public/lab/vendor/tinysort/jquery.tinysort.js: \
+	public/lab/vendor/tinysort
+	cp -r vendor/tinysort/src/* public/lab/vendor/tinysort
+	cp vendor/tinysort/README.md public/lab/vendor/tinysort
 
-public/vendor/sizzle:
-	mkdir -p public/vendor/sizzle
-	cp vendor/sizzle/sizzle.js public/vendor/sizzle
-	cp vendor/sizzle/LICENSE public/vendor/sizzle
-	cp vendor/sizzle/README public/vendor/sizzle
+public/lab/vendor/sizzle:
+	mkdir -p public/lab/vendor/sizzle
+	cp vendor/sizzle/sizzle.js public/lab/vendor/sizzle
+	cp vendor/sizzle/LICENSE public/lab/vendor/sizzle
+	cp vendor/sizzle/README public/lab/vendor/sizzle
 
-public/vendor/fonts: $(FONT_FOLDERS)
-	mkdir -p public/vendor/fonts
-	cp -R vendor/fonts public/vendor/
-	rm -rf public/vendor/fonts/Font-Awesome/.git*
-	rm -f public/vendor/fonts/Font-Awesome/.gitignore
-	rm -rf public/vendor/fonts/Font-Awesome/less
-	rm -rf public/vendor/fonts/Font-Awesome/sass
+public/lab/vendor/fonts: $(FONT_FOLDERS)
+	mkdir -p public/lab/vendor/fonts
+	cp -R vendor/fonts public/lab/vendor/
+	rm -rf public/lab/vendor/fonts/Font-Awesome/.git*
+	rm -f public/lab/vendor/fonts/Font-Awesome/.gitignore
+	rm -rf public/lab/vendor/fonts/Font-Awesome/less
+	rm -rf public/lab/vendor/fonts/Font-Awesome/sass
 
 public/favicon.ico:
 	cp -f src/favicon.ico public/favicon.ico
