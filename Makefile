@@ -289,7 +289,6 @@ public/vendor: \
 	public/vendor/jquery-context-menu \
 	public/vendor/modernizr \
 	public/vendor/fonts \
-	public/vendor/text \
 	public/vendor/shutterbug/shutterbug.js \
 	public/vendor/shutterbug/README.md \
 	public/vendor/shutterbug/LICENSE.md \
@@ -381,12 +380,6 @@ public/vendor/fonts: $(FONT_FOLDERS)
 	rm -f public/vendor/fonts/Font-Awesome/.gitignore
 	rm -rf public/vendor/fonts/Font-Awesome/less
 	rm -rf public/vendor/fonts/Font-Awesome/sass
-
-public/vendor/text:
-	mkdir -p public/vendor/text
-	cp vendor/text/text.js public/vendor/text
-	cp vendor/text/LICENSE public/vendor/text
-	cp vendor/text/README.md public/vendor/text
 
 public/vendor/shutterbug:
 	mkdir -p public/vendor/shutterbug
