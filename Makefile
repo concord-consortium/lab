@@ -293,7 +293,6 @@ public/vendor: \
 	public/vendor/shutterbug/shutterbug.js \
 	public/vendor/shutterbug/README.md \
 	public/vendor/shutterbug/LICENSE.md \
-	public/vendor/iframe-phone/iframe-phone.js \
 	public/favicon.ico
 
 public/vendor/d3: vendor/d3
@@ -403,14 +402,6 @@ public/vendor/shutterbug/README.md: public/vendor/shutterbug \
 public/vendor/shutterbug/LICENSE.md: public/vendor/shutterbug \
 	vendor/shutterbug/LICENSE.md
 	cp vendor/shutterbug/LICENSE.md public/vendor/shutterbug
-
-public/vendor/iframe-phone/iframe-phone.js: \
-	public/vendor/iframe-phone \
-	vendor/iframe-phone/dist/iframe-phone.js
-	cp vendor/iframe-phone/dist/iframe-phone.js public/vendor/iframe-phone/
-
-public/vendor/iframe-phone:
-	mkdir -p public/vendor/iframe-phone
 
 public/favicon.ico:
 	cp -f src/favicon.ico public/favicon.ico
