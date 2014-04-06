@@ -200,6 +200,8 @@ public: \
 	public/lab/jars/lab-sensor-applet-interface-dist \
 	public/lab/vendor \
 	src
+	rm -f public/lab.tar.gz
+	tar czf public/lab.tar.gz -C public lab
 
 # copy everything (including symbolic links) except files that are
 # used to generate resources from src/ to public/
