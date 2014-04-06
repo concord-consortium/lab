@@ -413,7 +413,8 @@ public/grapher.css: src/grapher.sass \
 public/%.css: %.scss
 	$(SASS_COMPILER) $< $@
 
-public/lab-grapher.scss:
+.INTERMEDIATE: public/lab-grapher.scss
+public/lab-grapher.scss: vendor/lab-grapher/css/lab-grapher.css
 	cp vendor/lab-grapher/css/lab-grapher.css public/lab-grapher.scss
 
 public/%.css: %.sass $(SASS_LAB_LIBRARY_FILES) \
