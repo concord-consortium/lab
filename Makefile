@@ -419,7 +419,6 @@ public/lab-grapher.scss: vendor/lab-grapher/css/lab-grapher.css
 
 public/%.css: %.sass $(SASS_LAB_LIBRARY_FILES) \
 	public/lab-grapher.scss
-	@echo $($<)
 	$(SASS_COMPILER) $< $@
 
 public/%.html: %.md
