@@ -157,7 +157,9 @@ define(function(require) {
       }
 
       dataColumn = newDataColumn;
-      selectedSensor.units = dataColumn.units;
+      if (dataColumn) {
+        selectedSensor.units = dataColumn.units;
+      }
       setSensorReadingDescription();
 
       if ( ! dataColumn ) {
