@@ -132,6 +132,11 @@ define(function(require) {
 
       // The sensor server always has column 0 as time
       timeColumn = dataset.columns[0];
+      if (dataset.columns.length > 1) {
+        message = "Ready to collect.";
+      } else {
+        message = "No sensors attached!"
+      }
 
       // TODO When we want to support multiple sensors, this will have to change.
       // Select the column chosen by the user
@@ -301,7 +306,7 @@ define(function(require) {
         enterState: function() {
           sensorServerInterface.stopPolling();
           message = "Connection failed.";
-          simpleAlert("Could not connect to the Sensor Server. Please make sure that the Sensor Server application is running on your machine.", {
+          simpleAlert("Could not connect to the Sensor Server. Please make sure that the Sensor Server application is running on your computer.", {
             OK: function() {
               $(this).dialog("close");
               handle('dismiss');
@@ -423,6 +428,7 @@ define(function(require) {
         enterState: function() {
           isStopped = false;
           setColumn();
+          message = "Collecting data.";
 
           // Check, just in case. Specifically, when errorStopping transitions here, collection
           // might have stopped in the meantime.
@@ -455,7 +461,7 @@ define(function(require) {
           message = "No data is available.";
 
           sensorServerInterface.requestStop();
-          simpleAlert("The LabQuest does not appear to be reporting data for the plugged-in device", {
+          simpleAlert("The Sensor Server does not appear to be reporting data for the plugged-in device", {
             OK: function() {
               $(this).dialog("close");
             }
