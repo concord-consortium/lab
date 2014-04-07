@@ -132,33 +132,40 @@ define(function(require) {
 
       // The sensor server always has column 0 as time
       timeColumn = dataset.columns[0];
-      if (dataset.columns.length > 1) {
-        message = "Ready to collect.";
-      } else {
-        message = "No sensors attached!"
-      }
-
-      // TODO When we want to support multiple sensors, this will have to change.
-      // Select the column chosen by the user
-      sIdx = selectedSensor.index;
-      if (sIdx >= dataset.columns.length && dataset.columns.length > 1) {
-        // we seem to be pointing past the number of columns there are. reset to that last column.
-        sIdx = dataset.columns.length - 1;
-      }
-      newDataColumn = dataset.columns[sIdx];
-      if (newDataColumn && selectedSensor.units && newDataColumn.units !== selectedSensor.units) {
-        // our selected column seems to have changed out from under us.
-        // If a sensor was added to the device, it could be one column higher
-        if (checkColumnAgainstSelected(dataset, sIdx+1)) {
-          newDataColumn = dataset.columns[sIdx+1];
-        } else if (sIdx > 1 && checkColumnAgainstSelected(dataset, sIdx-1)) {
-          // it wasn't the one after. let's check the one before.
-          newDataColumn = dataset.columns[sIdx-1];
+      if (sensorServerInterface.hasAttachedInterface) {
+        if (dataset.columns.length > 1) {
+          message = "Ready to collect.";
+          isPlayable = true;
         } else {
-          // it seems to be none of them. Reset the selected sensor to the first one.
-          newDataColumn = dataset.columns[1];
-          selectedSensor.index = 1;
+          message = "No sensors found."
+          isPlayable = false;
         }
+
+        // TODO When we want to support multiple sensors, this will have to change.
+        // Select the column chosen by the user
+        sIdx = selectedSensor.index;
+        if (sIdx >= dataset.columns.length && dataset.columns.length > 1) {
+          // we seem to be pointing past the number of columns there are. reset to that last column.
+          sIdx = dataset.columns.length - 1;
+        }
+        newDataColumn = dataset.columns[sIdx];
+        if (newDataColumn && selectedSensor.units && newDataColumn.units !== selectedSensor.units) {
+          // our selected column seems to have changed out from under us.
+          // If a sensor was added to the device, it could be one column higher
+          if (checkColumnAgainstSelected(dataset, sIdx+1)) {
+            newDataColumn = dataset.columns[sIdx+1];
+          } else if (sIdx > 1 && checkColumnAgainstSelected(dataset, sIdx-1)) {
+            // it wasn't the one after. let's check the one before.
+            newDataColumn = dataset.columns[sIdx-1];
+          } else {
+            // it seems to be none of them. Reset the selected sensor to the first one.
+            newDataColumn = dataset.columns[1];
+            selectedSensor.index = 1;
+          }
+        }
+      } else {
+        message = "No devices plugged in.";
+        isPlayable = false;
       }
 
       dataColumn = newDataColumn;
@@ -347,6 +354,9 @@ define(function(require) {
         columnRemoved: setColumn,
         columnTypeChanged: setColumn,
         columnMoved: setColumn,
+
+        interfaceConnected: setColumn,
+        interfaceRemoved: setColumn,
 
         tare: function() {
           if (dataColumn) {
