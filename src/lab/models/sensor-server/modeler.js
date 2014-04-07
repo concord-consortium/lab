@@ -136,7 +136,7 @@ define(function(require) {
       // TODO When we want to support multiple sensors, this will have to change.
       // Select the column chosen by the user
       sIdx = selectedSensor.index;
-      if (sIdx >= dataset.columns.length) {
+      if (sIdx >= dataset.columns.length && dataset.columns.length > 1) {
         // we seem to be pointing past the number of columns there are. reset to that last column.
         sIdx = dataset.columns.length - 1;
       }

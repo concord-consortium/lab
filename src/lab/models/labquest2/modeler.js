@@ -154,7 +154,7 @@ define(function(require) {
           return false;
         });
       }
-      if (sIdx >= dataset.columns.length) {
+      if (sIdx >= dataset.columns.length && dataset.columns.length > 1) {
         // we seem to be pointing past the number of columns there are. reset to that last column.
         sIdx = dataset.columns.length - 1;
 
@@ -183,7 +183,9 @@ define(function(require) {
       }
 
       dataColumn = newDataColumn;
-      selectedSensor.units = dataColumn.units;
+      if (dataColumn) {
+        selectedSensor.units = dataColumn.units;
+      }
       setSensorReadingDescription();
 
       if ( ! dataColumn ) {
