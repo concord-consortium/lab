@@ -122,7 +122,7 @@ define(function() {
 
         // view.$connectButton = $("<div class='interactive-button'><button>Connect</button></div>");
         view.$zeroButton = $("<div class='interactive-button'><button>Zero</button></div>");
-        view.$selectSensorButton = $("<div class='interactive-button'><button>Select Sensor</button></div>");
+        view.$selectSensorButton = $("<div class='interactive-button'><button>Select Sensor...</button></div>");
         view.$message = $("<div class='message'></div>");
         view.$sensorReading = sensorReadingView.render().addClass("horizontal");
 
