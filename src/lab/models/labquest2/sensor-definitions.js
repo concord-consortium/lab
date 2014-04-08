@@ -194,7 +194,23 @@ define(function() {
       "minReading": 0.0,
       "maxReading": 50.0
     },
+    "degC": {
+      "sensorName": "Temperature",
+      "measurementName": "Temperature",
+      "measurementType": "temperature",
+      "tareable": false,
+      "minReading": 0.0,
+      "maxReading": 50.0
+    },
     "°F": {
+      "sensorName": "Temperature",
+      "measurementName": "Temperature",
+      "measurementType": "temperature",
+      "tareable": false,
+      "minReading": 30.0,
+      "maxReading": 100.0
+    },
+    "degF": {
       "sensorName": "Temperature",
       "measurementName": "Temperature",
       "measurementType": "temperature",
@@ -235,12 +251,12 @@ define(function() {
       "maxReading": 1100.0
     },
     "m/s": {
-      "sensorName": "Flow Rate",
-      "measurementName": "Flow Rate",
-      "measurementType": "flow rate",
+      "sensorName": "Motion",
+      "measurementName": "Velocity",
+      "measurementType": "velocity",
       "tareable": true,
-      "minReading": 0.0,
-      "maxReading": 4.0
+      "minReading": -5.0,
+      "maxReading": 5.0
     },
     "ft/s": {
       "sensorName": "Anemometer",
