@@ -124,6 +124,16 @@ define(function(require) {
         return false;
     }
 
+    function hasCollectableSensors(dataset) {
+      if (dataset.columns.length < 2) {
+        return false;
+      }
+      if (dataset.columns.length == 2 && !dataset.columns[1].name) {
+        return false;
+      }
+      return true;
+    }
+
     function setColumn() {
       var dataset = sensorServerInterface.datasets[0];
       var newDataColumn,sIdx,colCandidate;
@@ -133,7 +143,7 @@ define(function(require) {
       // The sensor server always has column 0 as time
       timeColumn = dataset.columns[0];
       if (sensorServerInterface.hasAttachedInterface) {
-        if (dataset.columns.length > 1) {
+        if (hasCollectableSensors(dataset)) {
           message = "Ready to collect.";
           isPlayable = true;
         } else {
