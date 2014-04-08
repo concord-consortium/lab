@@ -154,6 +154,15 @@ define(function() {
           view.remoteAddress = $(this).val();
         });
 
+        // connect when the user hits enter
+        view.$addressInput.find('input').on('keypress', function(evt) {
+          var code = evt.keyCode || evt.which || 0;
+          if (code == 13 && model.properties.canConnect) {
+            model.connect(view.$addressInput.find('input').val());
+            evt.preventDefault();
+          }
+        });
+
         view.$connectButton.on('click', 'button', function() {
           model.connect(view.$addressInput.find('input').val());
         });
