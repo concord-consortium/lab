@@ -51,7 +51,7 @@ define(function(require) {
         isPlayable,
         canConnect,
         canTare,
-        canPossiblyTare,
+        liveMode,
         canControl,
         hasMultipleSensors,
         isSensorTareable,
@@ -354,7 +354,7 @@ define(function(require) {
       connected: {
         enterState: function() {
           message = "Connected.";
-          canPossiblyTare = true;
+          canTare = true;
           isPlayable = true;
           isStopped = true;
 
@@ -372,7 +372,7 @@ define(function(require) {
         },
 
         leaveState: function() {
-          canPossiblyTare = false;
+          canTare = false;
           isPlayable = false;
         },
 
@@ -384,7 +384,18 @@ define(function(require) {
 
         tare: function() {
           if (dataColumn) {
-            model.properties.tareValue = dataColumn.liveValue;
+            if (liveMode) {
+              model.properties.tareValue = dataColumn.liveValue;
+            } else {
+              canTare = false;
+              // Display a message that we need to be in liveMode before we can tare
+              simpleAlert("The LabQuest2 needs to be collecting live data in order to zero. Either set up a new run on the LabQuest2, or click the meter icon in the upper left.", {
+                OK: function() {
+                  $(this).dialog("close");
+                  canTare = true;
+                }
+              });
+            }
           }
         },
 
@@ -707,8 +718,7 @@ define(function(require) {
         model.makeInvalidatingChange(function() {
           // Figure out if we're in "live" mode, or if we're still viewing old data
           // (and therefore the live values aren't actually updating)
-          var liveMode = false,
-              now = new Date();
+          var now = new Date();
           if ((dataColumn.liveValueTimeStamp - lastLiveValueTimestamp) > 0) {
             liveMode = true;
             lastLiveValueTimestamp = dataColumn.liveValueTimeStamp;
@@ -716,10 +726,11 @@ define(function(require) {
           } else {
             if ((now - liveValueLastChanged) < 2000) {
               liveMode = true;
+            } else {
+              liveMode = false;
             }
           }
           liveSensorValue = dataColumn.liveValue;
-          canTare = canPossiblyTare && liveMode;
         });
       }
     });
