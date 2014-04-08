@@ -352,6 +352,7 @@ define(function (require) {
         var len;
         var touch;
         var target;
+        var mouseMoveEvent;
 
         for (i = 0, len = e.changedTouches.length; i < len; i++) {
           touch = e.changedTouches[i];
@@ -376,7 +377,15 @@ define(function (require) {
               // Cancel "click" event when finger has moved (> 10px at the moment).
               cancelClickFlag = didTouchMove(touch);
             }
-            target.dispatchEvent(createMouseEvent(touch, 'mousemove'));
+            mouseMoveEvent = createMouseEvent(touch, 'mousemove');
+            target.dispatchEvent(mouseMoveEvent);
+            // mousemove events can be captured and replaced by synthetic events (see .passMouseMove
+            // method). In such case 'defaultPreventedFlag' will be automatically set to correct
+            // value. However when event isn't captured and replaced by synthetic one, we have to
+            // check .defaultPrevented property manually.
+            if (!mouseMoveEvent.replacedBySynthetic) {
+              defaultPreventedFlag = mouseMoveEvent.defaultPrevented;
+            }
           } else if (e.type === 'touchend') {
             target.dispatchEvent(createMouseEvent(touch, 'mouseup'));
             touchId = null;
@@ -486,34 +495,31 @@ define(function (require) {
 
         addWindowEventListener('mousemove', function (e) {
           // Note that we have to check if 'e' is not a synthetic event that can be be dispatched by
-          // this handler. Otherwise we will enter infinite loop. We redispatch event even if we are
-          // not retargeting it to be able to set defaultPreventedFlag here, so the touch handling
-          // code can be simpler and always use that flag.
+          // this handler. Otherwise we will enter infinite loop.
           if (!e.synthetic) {
             var target, mouseEvent;
-
-            if (e.target === mmoveSource) {
-              target = mmoveTarget;
-            } else {
-              target = e.target;
-            }
-            if (target !== prevTarget) {
-              if (target === mmoveTarget) {
-                mmoveTarget.dispatchEvent(createMouseEvent(e, "mouseover", mmoveTarget, prevTarget));
-              } else if (prevTarget === mmoveTarget) {
-                mmoveTarget.dispatchEvent(createMouseEvent(e, "mouseout", mmoveTarget, target));
+            if (e.target !== mmoveSource) {
+              // Target is different from desired source, we can only dispatch mouseout and return.
+              if (prevTarget === mmoveTarget) {
+                mmoveTarget.dispatchEvent(createMouseEvent(e, "mouseout", mmoveTarget, e.target));
               }
+              prevTarget = e.target;
+              return;
+            }
+            target = mmoveTarget;
+            if (target !== prevTarget) {
+              mmoveTarget.dispatchEvent(createMouseEvent(e, "mouseover", mmoveTarget, prevTarget));
             }
             e.stopPropagation();
             e.preventDefault();
+            e.replacedBySynthetic = true;
             mouseEvent = retargetMouseEvent(e, target);
             mouseEvent.synthetic = true; // !!!
             // We don't support more sophisticated mousemove event passing, e.g. based on the hit
             // test results (yet?), so just set noop callback.
             api.hitTestCallback = noop;
             target.dispatchEvent(mouseEvent);
-            // Set the defaultPreventedFlag. That's why we redispatch event even if we don't change
-            // target of the event.
+            // Set the defaultPreventedFlag.
             defaultPreventedFlag = mouseEvent.defaultPrevented;
             prevTarget = target;
           }
