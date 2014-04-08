@@ -62,6 +62,12 @@ If you think you'd like to contribute to Lab as an external developer:
 4. Create your changes on a topic branch. Please include tests if you can. When your commits are ready
    push your topic branch to your fork and send a pull request.
 
+## Automated Browser Testing
+
+Lab framework tests are automated using open source support from [BrowserStack](http://www.browserstack.com/) and [SauceLabs](https://saucelabs.com/). 
+
+For more information, please visit [lab-selenium-tests repository](https://github.com/concord-consortium/lab-selenium-tests).
+
 ## More Documentation
 
 - [Project Configuration](developer-doc/configuration.md)
