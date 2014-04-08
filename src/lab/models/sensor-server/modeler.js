@@ -178,6 +178,11 @@ define(function(require) {
         isPlayable = false;
       }
 
+      if (newDataColumn && !newDataColumn.name) {
+        // If we don't have a sensor name, assume it's not really a sensor
+        newDataColumn = null;
+      }
+
       dataColumn = newDataColumn;
       if (dataColumn) {
         selectedSensor.units = dataColumn.units;
