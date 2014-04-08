@@ -123,20 +123,21 @@ define(function () {
         $fakeCheckable = $('<div class="fakeCheckable">');
         $fakeCheckables.push($fakeCheckable);
 
-        if (option.disabled) {
-          $option.attr("disabled", option.disabled);
-          $fakeCheckable.addClass("disabled");
-        }
-        if (option.selected) {
-          $option.attr("checked", option.selected);
-          $fakeCheckable.addClass("checked");
-        }
         $span = $('<span>')
           .addClass('option')
           .append($option)
           .append($fakeCheckable)
           .append($label);
         $div.append($span);
+
+        if (option.disabled) {
+          $option.attr("disabled", option.disabled);
+          $span.addClass('lab-disabled');
+        }
+        if (option.selected) {
+          $option.attr("checked", option.selected);
+          $fakeCheckable.addClass("checked");
+        }
 
         // Ensure that custom div (used for styling) is clickable.
         $fakeCheckable.on('touchstart click', customClickEvent);
