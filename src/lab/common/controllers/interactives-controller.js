@@ -524,7 +524,7 @@ define(function (require) {
       $fastClickContainer.append('<div class="lab-dialog-container">');
       creditsDialog = new CreditsDialog(".lab-dialog-container");
       aboutDialog = new AboutDialog(".lab-dialog-container");
-      shareDialog = new ShareDialog(".lab-dialog-container");
+      shareDialog = new ShareDialog(".lab-dialog-container", viewSelector);
 
       // Each time we load a new interactive, we assume that it would be an "initial" model load.
       // This flag is used to decide whether parameters should be retained or not.

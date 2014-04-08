@@ -19,10 +19,8 @@ define(function (require) {
    * Share Dialog. Inherits from Basic Dialog.
    *
    * @constructor
-   * @param {Object} interactive Interactive JSON definition.
-   * @param {InteractivesController} interactivesController
    */
-  function ShareDialog(parentSelector) {
+  function ShareDialog(parentSelector, interactiveContainerSelector) {
     var hash           = location.hash,
         origin         = location.href.match(/(.*?\/\/.*?)\//)[1],
         embeddablePath = location.pathname;
@@ -41,7 +39,7 @@ define(function (require) {
     this.setContent(mustache.render(shareDialogTpl, this._view, {copyright: copyrightTpl}));
 
     /** @private */
-    this._$interactiveContainer = $(parentSelector);
+    this._$interactiveContainer = $(interactiveContainerSelector);
     /** @private */
     this._$iframeSize = this.$element.find("#iframe-size");
     /** @private */
