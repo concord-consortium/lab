@@ -70,6 +70,9 @@ For more information, please visit [lab-selenium-tests repository](https://githu
 
 ## More Documentation
 
+SVG support is required to run Lab.
+IE 9+, FF, Chrome, Safari, iOS Safari, Chrome for Android all support SVG
+
 - [Project Configuration](developer-doc/configuration.md)
 - [Repository Structure](developer-doc/repository-structure.md)
 - [Javascript Dependency Management and Build Process](developer-doc/js-dependency-management.md)
