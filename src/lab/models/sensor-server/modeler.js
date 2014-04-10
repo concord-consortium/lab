@@ -128,7 +128,7 @@ define(function(require) {
       if (dataset.columns.length < 2) {
         return false;
       }
-      if (dataset.columns.length == 2 && !dataset.columns[1].name) {
+      if (dataset.columns.length == 2 && !dataset.columns[1].name && !dataset.columns[1].units) {
         return false;
       }
       return true;
