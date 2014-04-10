@@ -26,6 +26,14 @@ define(function() {
       "minReading": -50.0,
       "maxReading": 50.0
     },
+    "m/s^2": {
+      "sensorName": "Accelerometer",
+      "measurementName": "Acceleration",
+      "measurementType": "acceleration",
+      "tareable": true,
+      "minReading": -50.0,
+      "maxReading": 50.0
+    },
     "g": {
       "sensorName": "Accelerometer",
       "measurementName": "Acceleration",
