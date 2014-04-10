@@ -1,7 +1,8 @@
-define(function() {
+define(function(require) {
 
   var NumericOutputView = require('common/views/numeric-output-view'),
       BasicDialog       = require('common/controllers/basic-dialog'),
+      sensorDefinitions = require('./sensor-definitions'),
       viewState = require('common/views/view-state');
 
   return function(model, modelUrl) {
@@ -75,17 +76,27 @@ define(function() {
         }
       });
       var content = "",
+          label = "",
           sensors = model.connectedSensors(),
           first = true,
           selectedSensor = model.getSelectedSensor(),
-          i, checked;
+          i, checked, sensorDef;
       for (i = 0; i < sensors.length; i++) {
-        if (sensors[i] !== 's') {
+        if (sensors[i].units !== 's') {
           checked = "";
-          if (selectedSensor == i || first && selectedSensor == -1) {
+          if (sensors[i].name) {
+            sensorDef = { measurementName: sensors[i].name };
+          } else {
+            sensorDef = sensorDefinitions[sensors[i].units];
+            if (!sensorDef) {
+              sensorDef = { measurementName: "Unknown" };
+            }
+          }
+          label = sensorDef.measurementName + " (" + sensors[i].units + ")";
+          if (selectedSensor == i || (first && selectedSensor == -1)) {
             checked = "checked ";
           };
-          content += "<input type='radio' name='selected-sensor-index' value='" + i + "' " + checked + "/>" + sensors[i] + "<br/>";
+          content += "<input type='radio' name='selected-sensor-index' value='" + i + "' " + checked + "/>" + label + "<br/>";
           first = false;
         }
       }

@@ -222,7 +222,7 @@ define(function(require) {
           i, unit;
 
       for (i=0; i < dataset.columns.length; i++) {
-        sensors.push(dataset.columns[i].units);
+        sensors.push({units: dataset.columns[i].units, name: dataset.columns[i].name});
       }
       return sensors;
     }
