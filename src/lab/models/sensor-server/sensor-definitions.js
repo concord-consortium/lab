@@ -4,8 +4,8 @@ define(function() {
   return {
     "lux": {
       "sensorName": "Light",
-      "measurementName": "Illumination",
-      "measurementType": "illumination",
+      "measurementName": "Light Level",
+      "measurementType": "light level",
       "tareable": true,
       "minReading": 0.0,
       "maxReading": 6000.0
@@ -331,6 +331,14 @@ define(function() {
       "maxReading": 15.0
     },
     "dB": {
+      "sensorName": "Sound Level",
+      "measurementName": "Sound Level",
+      "measurementType": "sound level",
+      "tareable": true,
+      "minReading": 40.0,
+      "maxReading": 110.0
+    },
+    "dbA": {
       "sensorName": "Sound Level",
       "measurementName": "Sound Level",
       "measurementType": "sound level",
