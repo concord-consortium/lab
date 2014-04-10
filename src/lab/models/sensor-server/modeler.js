@@ -77,7 +77,7 @@ define(function(require) {
           sensorName = sensorDefinition.sensorName;
         } else {
           description = {
-            label: "Sensor Reading",
+            label: dataColumn.name || "Sensor Reading",
             unitAbbreviation: dataColumn.units,
             format: '.2f',
             min: 0,
@@ -92,7 +92,6 @@ define(function(require) {
         sensorName = "(no sensor)";
       }
 
-      console.log("resetting sensor description: ", description);
       propertySupport.setPropertyDescription('sensorReading',
         new PropertyDescription(unitsDefinition, description));
       propertySupport.setPropertyDescription('liveSensorReading',
