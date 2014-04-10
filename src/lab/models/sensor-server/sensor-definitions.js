@@ -8,14 +8,14 @@ define(function() {
       "measurementType": "light level",
       "tareable": true,
       "minReading": 0.0,
-      "maxReading": 6000.0
+      "maxReading": 2000.0
     },
     "m": {
       "sensorName": "Motion",
       "measurementName": "Position",
       "measurementType": "position",
       "tareable": true,
-      "minReading": 0.0,
+      "minReading": -2.0,
       "maxReading": 2.0
     },
     "m/s²": {
@@ -122,6 +122,14 @@ define(function() {
       "minReading": -30.0,
       "maxReading": 30.0
     },
+    "pH": {
+      "sensorName": "pH",
+      "measurementName": "pH",
+      "measurementType": "ph",
+      "tareable": false,
+      "minReading": 0.0,
+      "maxReading": 14.0
+    },
     "ppm": {
       "sensorName": "CO2 Gas",
       "measurementName": "CO2",
@@ -192,7 +200,7 @@ define(function() {
       "measurementType": "temperature",
       "tareable": false,
       "minReading": 0.0,
-      "maxReading": 50.0
+      "maxReading": 40.0
     },
     "degC": {
       "sensorName": "Temperature",
@@ -200,7 +208,7 @@ define(function() {
       "measurementType": "temperature",
       "tareable": false,
       "minReading": 0.0,
-      "maxReading": 50.0
+      "maxReading": 40.0
     },
     "°F": {
       "sensorName": "Temperature",
