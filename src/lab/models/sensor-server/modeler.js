@@ -452,6 +452,7 @@ define(function(require) {
         enterState: function() {
           isStopped = false;
           setColumn();
+          isPlayable = false;
           message = "Collecting data.";
 
           // Check, just in case. Specifically, when errorStopping transitions here, collection
