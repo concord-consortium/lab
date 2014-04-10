@@ -197,8 +197,8 @@ define(function(require) {
         isPlayable = false;
       }
 
-      if (newDataColumn && !newDataColumn.name) {
-        // If we don't have a sensor name, assume it's not really a sensor
+      if (newDataColumn && !newDataColumn.name && !newDataColumn.units) {
+        // If we don't have a sensor name and units, assume it's not really a sensor
         newDataColumn = null;
       }
 
