@@ -54,6 +54,26 @@ define(function(require) {
         statusErrors,
         model;
 
+    function updatePropertyRange(property, min, max) {
+      var descriptionHash;
+      var description;
+
+      descriptionHash = model.getPropertyDescription(property).getHash();
+      descriptionHash.min = min;
+      descriptionHash.max = max;
+
+      description = new PropertyDescription(unitsDefinition, descriptionHash);
+      propertySupport.setPropertyDescription(property, description);
+    }
+
+    // Updates min, max of displayTime to be [0..collectionTime]
+    function updateDisplayTimeRange() {
+      if (model.properties.collectionTime == null) {
+        return;
+      }
+      updatePropertyRange('displayTime', 0, model.properties.collectionTime);
+    }
+
     function setSensorReadingDescription() {
       var sensorDefinition;
       var description;
@@ -736,6 +756,9 @@ define(function(require) {
       sensorServerInterface.stopPolling();
       sensorServerInterface.requestStop();
     });
+
+    model.addObserver('collectionTime', updateDisplayTimeRange);
+    updateDisplayTimeRange();
 
     model.updateAllOutputProperties();
     stateMachine.gotoState('notConnected');

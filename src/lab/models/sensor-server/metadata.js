@@ -11,6 +11,9 @@ define(function() {
       sensorType: {
         defaultValue: null
       },
+      collectionTime: {
+        defaultValue: null
+      },
       tareValue: {
         defaultValue: 0
       }
