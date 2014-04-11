@@ -45,6 +45,7 @@ group :development do
   gem "librarian-chef", :git => 'git://github.com/applicationsonline/librarian-chef.git', :ref => '040490c4'
 
   gem "rack-nocache",       "~> 0.1.0"
+  gem 'rack-cors',          "~> 0.2.9"
 
   # http://about.travis-ci.org/docs/user/travis-lint/
   gem "travis-lint"

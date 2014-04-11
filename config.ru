@@ -1,7 +1,7 @@
 #\ -p 9191
 
 require 'rack-livereload'
-
+require 'rack/cors'
 require "./script/setup"
 
 ENVIRONMENT = CONFIG[:environment]
@@ -16,6 +16,13 @@ Rack::Mime::MIME_TYPES.merge!({
   ".cml" => "application/xml",
   ".e2d" => "application/xml"
 })
+
+use Rack::Cors do
+  allow do
+    origins '*'
+    resource '*', :headers => :any, :methods => [:get, :head]
+  end
+end
 
 # see: https://github.com/johnbintz/rack-livereload
 if ENVIRONMENT == 'development'
