@@ -6,7 +6,7 @@ define(function(require) {
       PropertyDescription   = require('common/property-description'),
       metadata              = require('./metadata'),
       StateMachine          = require('common/state-machine'),
-      sensorServerInterface = require('sensor-server-interface'),
+      sensorConnectorInterface = require('sensor-connector-interface'),
       unitsDefinition       = require('./units-definition'),
       sensorDefinitions     = require('./sensor-definitions'),
       BasicDialog           = require('common/controllers/basic-dialog'),
@@ -154,14 +154,14 @@ define(function(require) {
     }
 
     function setColumn() {
-      var dataset = sensorServerInterface.datasets[0];
+      var dataset = sensorConnectorInterface.datasets[0];
       var newDataColumn,sIdx,colCandidate;
 
       hasMultipleSensors = dataset.columns.length > 2;
 
-      // The sensor server always has column 0 as time
+      // The sensor connector always has column 0 as time
       timeColumn = dataset.columns[0];
-      if (sensorServerInterface.hasAttachedInterface) {
+      if (sensorConnectorInterface.hasAttachedInterface) {
         if (hasCollectableSensors(dataset)) {
           message = "Ready to collect.";
           isPlayable = true;
@@ -237,7 +237,7 @@ define(function(require) {
 
     function connectedSensors() {
       var sensors = [],
-          dataset = sensorServerInterface.datasets[0],
+          dataset = sensorConnectorInterface.datasets[0],
           i, unit;
 
       for (i=0; i < dataset.columns.length; i++) {
@@ -311,7 +311,7 @@ define(function(require) {
         enterState: function() {
           message = "Not connected.";
           statusErrors = 0;
-          sensorServerInterface.startPolling("127.0.0.1:11180");
+          sensorConnectorInterface.startPolling("127.0.0.1:11180");
           this.gotoState('connecting');
         }
       },
@@ -319,7 +319,7 @@ define(function(require) {
       connecting: {
         enterState: function() {
           message = "Connecting...";
-          if (sensorServerInterface.isConnected) {
+          if (sensorConnectorInterface.isConnected) {
             this.gotoState('connected');
           }
         },
@@ -338,16 +338,16 @@ define(function(require) {
 
         sessionChanged: function() {
           // start a new session, stay connecting...
-          sensorServerInterface.stopPolling();
-          sensorServerInterface.startPolling();
+          sensorConnectorInterface.stopPolling();
+          sensorConnectorInterface.startPolling();
         }
       },
 
       initialConnectionFailure: {
         enterState: function() {
-          sensorServerInterface.stopPolling();
+          sensorConnectorInterface.stopPolling();
           message = "Connection failed.";
-          simpleAlert("Could not connect to the Sensor Server. Please make sure that the Sensor Server application is running on your computer.", {
+          simpleAlert("Could not connect to the Sensor Connector. Please make sure that the Sensor Connector application is running on your computer.", {
             OK: function() {
               $(this).dialog("close");
               handle('dismiss');
@@ -373,7 +373,7 @@ define(function(require) {
 
           setColumn();
 
-          if (sensorServerInterface.isCollecting) {
+          if (sensorConnectorInterface.isCollecting) {
             this.gotoState('started');
           }
         },
@@ -400,20 +400,20 @@ define(function(require) {
 
         // User requests collection
         start: function() {
-          // NOTE. Due to architecture switch mid-way, the sensorServerInterface layer is turning the
+          // NOTE. Due to architecture switch mid-way, the sensorConnectorInterface layer is turning the
           // start request into a promise, and we're turning it back to events. The lower layer
           // could just ditch promises and emit the corresponding events with no harm. (The state
           // machine prevents almost every practical scenario where we'd see an out-of-date
           // startRequestFailure event while in a state that would respond to it.)
-          sensorServerInterface.requestStart().catch(function() {
+          sensorConnectorInterface.requestStart().catch(function() {
             handle('startRequestFailed');
           });
           this.gotoState('starting');
         },
 
         sessionChanged: function() {
-          sensorServerInterface.stopPolling();
-          sensorServerInterface.startPolling();
+          sensorConnectorInterface.stopPolling();
+          sensorConnectorInterface.startPolling();
           this.gotoState('connecting');
         },
 
@@ -477,7 +477,7 @@ define(function(require) {
 
           // Check, just in case. Specifically, when errorStopping transitions here, collection
           // might have stopped in the meantime.
-          if ( ! sensorServerInterface.isCollecting ) {
+          if ( ! sensorConnectorInterface.isCollecting ) {
             this.gotoState('stopped');
           }
 
@@ -489,7 +489,7 @@ define(function(require) {
         data: handleData,
 
         stop: function() {
-          sensorServerInterface.requestStop().catch(function() {
+          sensorConnectorInterface.requestStop().catch(function() {
             handle('stopRequestFailed');
           });
           this.gotoState('stopping');
@@ -505,8 +505,8 @@ define(function(require) {
         enterState: function() {
           message = "No data is available.";
 
-          sensorServerInterface.requestStop();
-          simpleAlert("The Sensor Server does not appear to be reporting data for the plugged-in device", {
+          sensorConnectorInterface.requestStop();
+          simpleAlert("The Sensor Connector does not appear to be reporting data for the plugged-in device", {
             OK: function() {
               $(this).dialog("close");
             }
@@ -604,7 +604,7 @@ define(function(require) {
       disconnected: {
         enterState: function() {
           message = "Disconnected.";
-          sensorServerInterface.stopPolling();
+          sensorConnectorInterface.stopPolling();
           var self = this;
           setTimeout(function() {
             self.gotoState('notConnected');
@@ -626,7 +626,7 @@ define(function(require) {
           if (eventName === 'connectionTimedOut') {
             stateMachine.gotoState('disconnected');
           } else if (eventName === 'sessionChanged') {
-            sensorServerInterface.stopPolling();
+            sensorConnectorInterface.stopPolling();
             stateMachine.gotoState('disconnected');
           } else if (eventName === 'statusErrored') {
             statusErrors++;
@@ -639,13 +639,13 @@ define(function(require) {
     }
 
     // At least for now, dispatch every interface event to the state machine.
-    sensorServerInterface.on('*', function() {
+    sensorConnectorInterface.on('*', function() {
       var args = Array.prototype.slice.call(arguments, 0);
       handle.apply(null, [this.event].concat(args));
     });
 
     // Also, handle "live values" every time they are received.
-    sensorServerInterface.on('statusReceived', function() {
+    sensorConnectorInterface.on('statusReceived', function() {
       if (dataColumn) {
         model.makeInvalidatingChange(function() {
           liveSensorValue = dataColumn.liveValue;
@@ -733,7 +733,7 @@ define(function(require) {
     });
 
     model.defineOutput('hasMultipleSensors', {
-      label: "Are multiple sensors connected to the Sensor Server?"
+      label: "Are multiple sensors connected to the Sensor Connector?"
     }, function() {
       return hasMultipleSensors;
     });
@@ -753,8 +753,8 @@ define(function(require) {
     // Clean up state before we go
     // TODO
     model.on('willReset.model', function() {
-      sensorServerInterface.stopPolling();
-      sensorServerInterface.requestStop();
+      sensorConnectorInterface.stopPolling();
+      sensorConnectorInterface.requestStop();
     });
 
     model.addObserver('collectionTime', updateDisplayTimeRange);

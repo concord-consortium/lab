@@ -384,7 +384,7 @@ vendor/lab-sensor-applet-interface-dist:
 vendor/sensor-labquest-2-interface/dist/sensor-labquest-2-interface.js:
 	git submodule update --init --recursive
 
-vendor/sensor-server-interface/dist/sensor-server-interface.js:
+vendor/sensor-connector-interface/dist/sensor-connector-interface.js:
 	git submodule update --init --recursive
 
 # ------------------------------------------------

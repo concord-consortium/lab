@@ -58,9 +58,9 @@
 [submodule "vendor/iframe-phone"]
 	path = vendor/iframe-phone
 	url = https://github.com/concord-consortium/iframe-phone.git
-[submodule "vendor/sensor-server-interface"]
-	path = vendor/sensor-server-interface
-	url = https://github.com/concord-consortium/sensor-server-interface.git
+[submodule "vendor/sensor-connector-interface"]
+	path = vendor/sensor-connector-interface
+	url = https://github.com/concord-consortium/sensor-connector-interface.git
 [submodule "vendor/components-jqueryui"]
 	path = vendor/components-jqueryui
 	url = https://github.com/components/jqueryui

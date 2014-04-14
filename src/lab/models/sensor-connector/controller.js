@@ -35,9 +35,9 @@ define(function (require) {
       });
     }
 
-    interactiveController.on('modelLoaded.sensor-server-model-controller', setupModelObservers);
+    interactiveController.on('modelLoaded.sensor-connector-model-controller', setupModelObservers);
 
-    interactiveController.on('modelReset.sensor-server-model-controller', function() {
+    interactiveController.on('modelReset.sensor-connector-model-controller', function() {
       controller.model.set('isNewRunInProgress', false);
     });
 

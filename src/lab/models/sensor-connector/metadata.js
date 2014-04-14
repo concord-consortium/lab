@@ -5,7 +5,7 @@ define(function() {
   return {
     mainProperties: {
       type: {
-        defaultValue: "sensor-server",
+        defaultValue: "sensor-connector",
         immutable: true
       },
       sensorType: {
