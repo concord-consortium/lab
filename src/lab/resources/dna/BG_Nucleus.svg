@@ -4,7 +4,7 @@
 <svg version="1.1" id="Selected_Items" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
 	 y="0px" width="729.45px" height="543.199px" viewBox="0 0 729.45 543.199" enable-background="new 0 0 729.45 543.199"
 	 xml:space="preserve">
-<symbol  id="BG_x5F_nucleus" viewBox="0 -515.05 729.45 540.201">
+<g transform="matrix(1 0 0 -1 0 28.1499)">
 	<g id="Layer_1_2_">
 		<g>
 			<path fill-rule="evenodd" clip-rule="evenodd" fill="#C2CDF8" d="M728.5,0C486.849,19.375,244.232,19.375,0.65,0
@@ -20,6 +20,5 @@
 				v-515.05H0V0H0.65z"/>
 		</g>
 	</g>
-</symbol>
-<use xlink:href="#BG_x5F_nucleus"  width="729.45" height="540.201" y="-515.05" transform="matrix(1 0 0 -1 0 28.1499)" overflow="visible"/>
+</g>
 </svg>
