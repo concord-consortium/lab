@@ -347,7 +347,7 @@ define(function(require) {
         enterState: function() {
           sensorConnectorInterface.stopPolling();
           message = "Connection failed.";
-          simpleAlert("Could not connect to the Sensor Connector. Please make sure that the Sensor Connector application is running on your computer.", {
+          simpleAlert("The Concord Consortium Sensor Connector is not installed or not started. Please <a target='_blank' style='color: #222299;' href='http://sensorconnector.concord.org/'>click here</a> to download an installer of the Sensor Connector, if needed.", {
             OK: function() {
               $(this).dialog("close");
               handle('dismiss');
