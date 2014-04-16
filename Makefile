@@ -199,6 +199,7 @@ public: \
 	public/lab \
 	public/lab/jars/lab-sensor-applet-interface-dist \
 	public/lab/vendor \
+	bundled-licenses \
 	src
 	rm -f public/lab.tar.gz
 	tar czf public/lab.tar.gz -C public lab
@@ -385,6 +386,49 @@ vendor/sensor-labquest-2-interface/dist/sensor-labquest-2-interface.js:
 
 vendor/sensor-connector-interface/dist/sensor-connector-interface.js:
 	git submodule update --init --recursive
+
+#--------
+#
+#  copy bundled licenses
+#
+#--------
+
+public/lab/vendor/bundled-licenses:
+	mkdir -p public/lab/vendor/bundled-licenses
+
+.PHONY: bundled-licenses
+bundled-licenses: \
+	public/lab/vendor/bundled-licenses \
+	public/lab/vendor/bundled-licenses/underscore \
+	public/lab/vendor/bundled-licenses/text \
+	public/lab/vendor/bundled-licenses/seedrandom.js \
+	public/lab/vendor/bundled-licenses/pixi.js \
+	public/lab/vendor/bundled-licenses/lab-grapher \
+	public/lab/vendor/bundled-licenses/iframe-phone \
+	public/lab/vendor/bundled-licenses/fastclick \
+	public/lab/vendor/bundled-licenses/coffee-script \
+	public/lab/vendor/bundled-licenses/canvg-1.3 \
+	public/lab/vendor/bundled-licenses/almond
+
+public/lab/vendor/bundled-licenses/%: vendor/%/LICENSE
+	cp $< $@
+
+public/lab/vendor/bundled-licenses/%: vendor/%/LICENSE.txt
+	cp $< $@
+
+public/lab/vendor/bundled-licenses/%: vendor/%/MIT-LICENSE.txt
+	cp $< $@
+
+# seedrandom doesn't have a separate license file
+public/lab/vendor/bundled-licenses/seedrandom.js: vendor/seedrandom/seedrandom.js
+	cp $< $@
+
+# the following dependencies need licenses
+# lab-sensor-applet-interface-dist
+# require-cs doesn't seem to have license text just a reference to MIT BSD in the readme
+# sensor-server-interface
+# sensor-labquest-2-interface
+# browserified-cheerio
 
 # ------------------------------------------------
 #

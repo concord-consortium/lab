@@ -9,17 +9,22 @@ any of the following licenses:
 
 If you have have received a **distribution archive** of the
 [Concord Consortium Lab project](https://github.com/concord-consortium/lab) the standard
-Concord Consortium Lab copyright applies to all resources **except** the files in the
-`vendor/` and `imports/` directories as well as some of the generated CSS and some of the
-files in the `jnlp/` directory.
+Concord Consortium Lab copyright applies to all resources **except**:
+- the .js and .css files in the `lab/` directory
+- the files in the `lab/jars` directory
+- the files in the `lab/vendor` directory
 
-The files in the `vendor/` directory which are copied to the `vendor/` directory
-when a distribution is created are from third-parties and are distributed under either
+The .js and .css files in the `lab/` directory include bundled libraries. The licenses for
+these libraries can be found in `lab/vendor/bundled-licenses`.
+
+The files in `lab/jars` directory fall under the lab-snesor-applet-interface-dist license
+
+The files in the `lab/vendor` directory are under various licenses, either
 [Simplified BSD](http://www.opensource.org/licenses/BSD-2-Clause),
 [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause),
 [MIT](http://www.opensource.org/licenses/MIT), or
 [Apache 2.0](http://www.opensource.org/licenses/Apache-2.0) licenses. See Details on the specific licenses
-are in the specific folders included in the `vendor/` directory.
+are in the specific folders included in the `lab/vendor/` directory.
 
 Here is a list of projects and resources included in the in the `vendor/` directory and licenses:
 

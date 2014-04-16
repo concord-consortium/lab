@@ -7,23 +7,6 @@ These sites contain many examples of what it can do:
 - **[lab-framework.concord.org](http://lab.concord.org)** _(production)_
 - **[lab-framework.dev.concord.org](http://lab.dev.concord.org)** _(development)_
 
-## Licensing
-
-Lab is Copyright 2012 (c) by the Concord Consortium and is distributed under
-any of the following licenses:
-
-- [Simplified BSD](http://www.opensource.org/licenses/BSD-2-Clause),
-- [MIT](http://www.opensource.org/licenses/MIT), or
-- [Apache 2.0](http://www.opensource.org/licenses/Apache-2.0).
-
-The complete licensing details can be read [here](license.md).
-
-If you have have received a **distribution archive** of the
-[Concord Consortium Lab project](https://github.com/concord-consortium/lab)
-our copyright applies to all resources **except** the files in the
-`vendor/` directory. The files in the `vendor/` directory are from
-third-parties and are distributed under either BSD, MIT, or Apache 2.0 licenses.
-
 ## Setup Development
 
 ### Prerequisites:
