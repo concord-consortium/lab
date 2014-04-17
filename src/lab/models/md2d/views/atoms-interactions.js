@@ -124,7 +124,7 @@ define(function(require) {
     function contextMenuCanvas(e) {
       var p = getClickCoords(e);
 
-      contextMenuAtom = getAtomUnder(p.x, p.y);
+      contextMenuAtom = !dragged && getAtomUnder(p.x, p.y);
 
       modelView.hitTestCallback(!!contextMenuAtom);
       if (contextMenuAtom) {

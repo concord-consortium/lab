@@ -57,6 +57,8 @@ define (require) ->
       animation:
         show: "show"
         hide: "hide"
+      # Left click.
+      trigger: "left"
       # Default callback for every item.
       callback: (key, options) ->
         # Get properties of atom representing amino acid.
