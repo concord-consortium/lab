@@ -42,7 +42,6 @@ define(function (require) {
 
       ModelControllerFor = {
         'md2d':             require('models/md2d/controllers/controller'),
-        'solar-system':     require('models/solar-system/controllers/controller'),
         'signal-generator': require('models/signal-generator/controller'),
         'iframe-model':     require('models/iframe/controller'),
         'sensor':           require('models/sensor/controller'),
