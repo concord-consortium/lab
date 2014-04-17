@@ -123,7 +123,6 @@ group :build do
         destination_dir = destination_path[/(^.*)\//, 1]
         command("mkdir -p #{destination_dir}")
         command("cp -f #{source_path} #{destination_path}")
-        command("ruby src/helpers/process-interactives.rb")
       end
     end
 
