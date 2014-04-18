@@ -36,7 +36,7 @@ Interactives at "http://lab.concord.org"
 **`utmCampaign`** If present a UTM suffix is added to links in the About box.
 Set to a string which identifies the external organization.
 
-**`fontface`** font-family name of the font. This only affects a few bits of text. The font-family for 
+**`fontface`** font-family name of the font. This only affects a few bits of text. The font-family for
 the majority of text is configured using css. The font-family set in this fontface config is monitored
 so lab.js will know when the font is loaded. If it is a web font this loading can happen after the page
 loads, and some dimensions need to be updated after the font loads.
@@ -71,17 +71,9 @@ see the **Build Time Configuration** below.
 
 The default values for these configuration options are located in `src/lab/lab.config.js`. That file gets compiled
 into `lab/lab.js` and `lab/lab.min.js`. So if you have a distribution archive you can change the settings without
-recompiling by editing those built files. 
+recompiling by editing those built files.
 
 ## Build Time Configuration
 
-Build Time Configuration is done by editing the `config/config.yml` file.
-
-### Google Analytics
-
-    :google_analytics:
-      :account_id: <account-id>
-
-If this section is present in config.yml, the standard google analytics script will be added to the 
-`index.html` and `embeddable.html` pages. The script that is embedded on those html pages is located in 
-`script/setup.rb`.
+Build Time Configuration is done by the environment variables. Please see `script/setup.rb` (`CONFIG` hash) to check what variables are supported. You don't have to set these variables, default
+values are always provided. Some of them are set in .travis.yml in a secure way.
