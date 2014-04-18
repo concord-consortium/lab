@@ -408,7 +408,8 @@ bundled-licenses: \
 	public/lab/vendor/bundled-licenses/fastclick \
 	public/lab/vendor/bundled-licenses/coffee-script \
 	public/lab/vendor/bundled-licenses/canvg-1.3 \
-	public/lab/vendor/bundled-licenses/almond
+	public/lab/vendor/bundled-licenses/almond \
+	public/lab/vendor/bundled-licenses/sensor-connector-interface
 
 public/lab/vendor/bundled-licenses/%: vendor/%/LICENSE
 	cp $< $@
@@ -426,7 +427,6 @@ public/lab/vendor/bundled-licenses/seedrandom.js: vendor/seedrandom/seedrandom.j
 # the following dependencies need licenses
 # lab-sensor-applet-interface-dist
 # require-cs doesn't seem to have license text just a reference to MIT BSD in the readme
-# sensor-server-interface
 # sensor-labquest-2-interface
 # browserified-cheerio
 
