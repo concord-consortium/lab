@@ -54,7 +54,7 @@ else
 end
 
 LAB_JS = case CONFIG[:environment]
-when 'production'
+when 'development'
   <<-HEREDOC
 <script src='lab/lab.js'></script>
   HEREDOC
