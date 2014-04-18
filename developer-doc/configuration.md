@@ -3,7 +3,7 @@
 There are 2 forms of configuring the Lab framework.
 
 - **run time configuration** by the page including lab.js or lab.min.js
-- **build time configuration** by modifying the config/config.yml before building
+- **build time configuration** by modifying environment variables before building
 
 ## Run Time Configuration
 

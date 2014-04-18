@@ -4,11 +4,10 @@ The readme contains the following steps for initial setup:
 
 1. Clone the git repository
 2. `cd lab`
-3. `cp config/config.sample.yml config/config.yml`
-4. `make everything`
-5. open another new terminal and run `rackup config.ru`
-6. open http://localhost:9191
-7. (optional) open a new terminal and run `guard`
+3. `make everything`
+4. open another new terminal and run `rackup config.ru`
+5. open http://localhost:9191
+6. (optional) open a new terminal and run `guard`
 
 ### 1. Clone the git repository
 
@@ -37,12 +36,7 @@ If you do end up having to install a new version of Ruby with RVM change out of 
 
     cd ..; cd lab
 
-### 3. `cp config/config.sample.yml config/config.yml`
-
-Copy the sample project configuration file to `config/config.yml`
-You can examine it and edit it if you want: [project configuration documentation](configuration.md)
-
-### 4. `make everything`
+### 3. `make everything`
 
 This will download and install all the dependencies and build the whole project for the first time.
 When `make everything` is run on a freshly cloned repository it performs the following tasks:
@@ -68,7 +62,7 @@ When `make everything` is run on a freshly cloned repository it performs the fol
 You should now be able to open the file: `public/index.html` in a browser however most things won't work correctly.
 This is because of the limitation of the `file` protocol in browsers. Continue on to see about setting up the server.
 
-### 5. open another new terminal and run `rackup config.ru`
+### 4. open another new terminal and run `rackup config.ru`
 
 Startup the Rack-based Lab server for local development. This is simple rack application that mainly just serves
 the files in public. It includes live reload support, so if you are using guard your pages will be reloaded
@@ -76,11 +70,11 @@ after they are updated by guard.
 
 Alternatively you can use `python -m SimpleHTTPServer` to run a python server.
 
-### 6. open http://localhost:9191
+### 5. open http://localhost:9191
 
 Now that the files in public are built and a server is running you can view the Lab site locally.
 
-### 7. (optional) open a new terminal and run `guard`
+### 6. (optional) open a new terminal and run `guard`
 
 Start watching the `src/` and `test/` directories with Guard and when files are
 changed automatically generate the JavaScript Lab modules, the examples, and run the tests.

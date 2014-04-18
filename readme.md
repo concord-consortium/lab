@@ -19,11 +19,10 @@ These sites contain many examples of what it can do:
 
 1. Clone the git repository
 2. `cd lab`
-3. `cp config/config.sample.yml config/config.yml`
-4. `make everything`
-5. open another new terminal and run `rackup`
-6. open http://localhost:9191
-7. (optional) open a new terminal and run `guard`
+3. `make everything`
+4. open another new terminal and run `rackup`
+5. open http://localhost:9191
+6. (optional) open a new terminal and run `guard`
 
 It is recommended that you review the [initial setup details](developer-doc/initial-setup-details.md).
 They describe what each of the steps above does.
@@ -47,7 +46,7 @@ If you think you'd like to contribute to Lab as an external developer:
 
 ## Automated Browser Testing
 
-Lab framework tests are automated using open source support from [BrowserStack](http://www.browserstack.com/) and [SauceLabs](https://saucelabs.com/). 
+Lab framework tests are automated using open source support from [BrowserStack](http://www.browserstack.com/) and [SauceLabs](https://saucelabs.com/).
 
 For more information, please visit [lab-selenium-tests repository](https://github.com/concord-consortium/lab-selenium-tests).
 
