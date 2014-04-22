@@ -23,7 +23,7 @@ define(function(require) {
     },
 
     isDgGameControllerDefined: function() {
-      if (config.dataGamesProxyPrefix) {
+      if (config.codap || config.dataGamesProxyPrefix) {
         return !!(window.parent && window.parent.DG && window.parent.DG.currGameController);
       } else {
         return false;

@@ -12,6 +12,9 @@ define(function (require) {
     "homeEmbeddablePath": "/embeddable.html",
     // Root URL of Lab distribution, used to get Lab resources (e.g. DNA images).
     "rootUrl": "lab",
+    // Set codap to true if Lab is running inside of CODAP
+    "codap": false,
+    // dataGamesProxyPrefix was the old way of configuring CODAP
     "dataGamesProxyPrefix": "",
     "fontface": "Lato",
     "utmCampaign": null,
