@@ -411,7 +411,8 @@ bundled-licenses: \
 	public/lab/vendor/bundled-licenses/almond \
 	public/lab/vendor/bundled-licenses/sensor-connector-interface \
 	public/lab/vendor/bundled-licenses/sensor-labquest-2-interface \
-	public/lab/vendor/bundled-licenses/lab-sensor-applet-interface-dist
+	public/lab/vendor/bundled-licenses/lab-sensor-applet-interface-dist \
+	public/lab/vendor/bundled-licenses/browserified-cheerio
 
 public/lab/vendor/bundled-licenses/%: vendor/%/LICENSE
 	cp $< $@
