@@ -14,10 +14,12 @@ Concord Consortium Lab copyright applies to all resources **except**:
 - the files in the `lab/jars` directory
 - the files in the `lab/vendor` directory
 
-The .js and .css files in the `lab/` directory include bundled libraries. The licenses for
-these libraries can be found in `lab/vendor/bundled-licenses`.
+The .js and .css files in the `lab/` directory include code under the standard Concord
+Consortium lab copyright as well as bundled libraries. The licenses for
+these bundled libraries can be found in `lab/vendor/bundled-licenses`.
 
-The files in `lab/jars` directory fall under the lab-snesor-applet-interface-dist license
+The licenses for the files in `lab/jars` directory are documented in
+`lab/vendor/bundled-licenses/lab-sensor-applet-interface-dist`
 
 The files in the `lab/vendor` directory are under various licenses, either
 [Simplified BSD](http://www.opensource.org/licenses/BSD-2-Clause),
