@@ -411,8 +411,7 @@ bundled-licenses: \
 	public/lab/vendor/bundled-licenses/almond \
 	public/lab/vendor/bundled-licenses/sensor-connector-interface \
 	public/lab/vendor/bundled-licenses/sensor-labquest-2-interface \
-	public/lab/vendor/bundled-licenses/lab-sensor-applet-interface-dist \
-	public/lab/vendor/bundled-licenses/require-cs
+	public/lab/vendor/bundled-licenses/lab-sensor-applet-interface-dist
 
 public/lab/vendor/bundled-licenses/%: vendor/%/LICENSE
 	cp $< $@
@@ -426,9 +425,6 @@ public/lab/vendor/bundled-licenses/%: vendor/%/MIT-LICENSE.txt
 # seedrandom doesn't have a separate license file
 public/lab/vendor/bundled-licenses/seedrandom.js: vendor/seedrandom/seedrandom.js
 	cp $< $@
-
-# the following dependencies need licenses
-# browserified-cheerio
 
 # ------------------------------------------------
 #
