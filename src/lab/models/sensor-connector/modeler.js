@@ -94,7 +94,7 @@ define(function(require) {
             description.unitAbbreviation = dataColumn.units;
           }
           isSensorTareable = sensorDefinition.tareable;
-          sensorName = sensorDefinition.sensorName;
+          sensorName = sensorDefinition.sensorName || (dataColumn.units + " sensor");
         } else {
           description = {
             label: dataColumn.name || "Sensor Reading",

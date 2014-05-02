@@ -101,7 +101,7 @@ define(function(require) {
             description.unitAbbreviation = dataColumn.units;
           }
           isSensorTareable = sensorDefinition.tareable;
-          sensorName = sensorDefinition.sensorName;
+          sensorName = sensorDefinition.sensorName || (dataColumn.units + " sensor");
         } else {
           description = {
             label: dataColumn.name || "Sensor Reading",
@@ -145,7 +145,7 @@ define(function(require) {
             description.unitAbbreviation = dataColumn2.units;
           }
           isSensorTareable = sensorDefinition.tareable;
-          sensorName = sensorDefinition.sensorName;
+          sensorName2 = sensorDefinition.sensorName || (dataColumn.units + " sensor");
         } else {
           description = {
             label: dataColumn2.name || "Sensor Reading",
@@ -155,12 +155,12 @@ define(function(require) {
             max: 10
           };
           isSensorTareable = true;
-          sensorName = dataColumn2.units + " sensor";
+          sensorName2 = dataColumn2.units + " sensor";
         }
       } else {
         description = defaultSensorReadingDescription;
         isSensorTareable = false;
-        sensorName = "(no sensor)";
+        sensorName2 = "(no sensor)";
       }
 
       propertySupport.setPropertyDescription('sensorReading2',
@@ -853,7 +853,7 @@ define(function(require) {
     });
 
     model.defineOutput('sensorName2', {
-      label: "Sensor Name"
+      label: "2nd Sensor Name"
     }, function() {
       return sensorName2;
     });
