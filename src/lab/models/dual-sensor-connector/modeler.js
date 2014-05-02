@@ -144,7 +144,7 @@ define(function(require) {
           } else {
             description.unitAbbreviation = dataColumn2.units;
           }
-          isSensorTareable = sensorDefinition.tareable;
+          isSensorTareable2 = sensorDefinition.tareable;
           sensorName2 = sensorDefinition.sensorName || (dataColumn.units + " sensor");
         } else {
           description = {
@@ -154,12 +154,12 @@ define(function(require) {
             min: 0,
             max: 10
           };
-          isSensorTareable = true;
+          isSensorTareable2 = true;
           sensorName2 = dataColumn2.units + " sensor";
         }
       } else {
         description = defaultSensorReadingDescription;
-        isSensorTareable = false;
+        isSensorTareable2 = false;
         sensorName2 = "(no sensor)";
       }
 
@@ -487,6 +487,7 @@ define(function(require) {
         enterState: function() {
           message = "Connected.";
           canTare = true;
+          canTare2 = true;
           isPlayable = true;
           isStopped = true;
 
@@ -499,6 +500,7 @@ define(function(require) {
 
         leaveState: function() {
           canTare = false;
+          canTare2 = false;
           isPlayable = false;
         },
 
