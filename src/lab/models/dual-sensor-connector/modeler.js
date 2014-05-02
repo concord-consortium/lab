@@ -179,7 +179,7 @@ define(function(require) {
         selectedSensor = { index: 1 };
       }
       if (typeof(selectedSensor2) === "undefined" || selectedSensor2 === null) {
-        selectedSensor2 = { index: 1 };
+        selectedSensor2 = { index: 2 };
       }
       stepCounter = 0;
       time = 0;
@@ -263,7 +263,7 @@ define(function(require) {
 
         // select the column chosen by the user for the second sensor
         sIdx = selectedSensor2.index;
-        if (sIdx >= dataset.columns.length && dataset.columns.length > 1) {
+        if (sIdx >= dataset.columns.length && dataset.columns.length > 2) {
           // we seem to be pointing past the number of columns there are. reset to that last column.
           sIdx = dataset.columns.length - 1;
         }
@@ -278,8 +278,8 @@ define(function(require) {
             newDataColumn2 = dataset.columns[sIdx-1];
           } else {
             // it seems to be none of them. Reset the selected sensor to the first one.
-            newDataColumn2 = dataset.columns[1];
-            selectedSensor2.index = 1;
+            newDataColumn2 = dataset.columns[2];
+            selectedSensor2.index = 2;
           }
         }
       } else {
