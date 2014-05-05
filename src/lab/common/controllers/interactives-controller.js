@@ -724,7 +724,7 @@ define(function (require) {
       } else if (modelDefinition.model) {
         finishWithLoadedModel(modelDefinition.url, modelDefinition.model, retainedProperties, cause);
       } else if (modelDefinition.url) {
-        $.get(labConfig.actualRoot + modelDefinition.url).done(function(modelConfig) {
+        $.get(labConfig.modelsRootUrl + modelDefinition.url).done(function(modelConfig) {
           // Deal with the servers that return the json as text/plain
           modelConfig = typeof modelConfig === 'string' ? JSON.parse(modelConfig) : modelConfig;
           finishWithLoadedModel(modelDefinition.url, modelConfig, retainedProperties, cause);

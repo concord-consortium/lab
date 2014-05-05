@@ -166,9 +166,9 @@ define(function() {
       var basePath;
 
       if (model.properties.imagePath) {
-        basePath = labConfig.actualRoot + model.properties.imagePath;
+        basePath = labConfig.modelsRootUrl + model.properties.imagePath;
       } else if (modelView.url) {
-        basePath = labConfig.actualRoot + modelView.url.slice(0, modelView.url.lastIndexOf("/") + 1);
+        basePath = labConfig.modelsRootUrl + modelView.url.slice(0, modelView.url.lastIndexOf("/") + 1);
       }
 
       return basePath + (imageMapping[imageDescription.imageUri] || imageDescription.imageUri);

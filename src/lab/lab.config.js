@@ -1,5 +1,4 @@
-define(function (require) {
-  var actualRoot = require('common/actual-root');
+define(function () {
   return {
     "sharing": true,
     "logging": false,
@@ -12,6 +11,9 @@ define(function (require) {
     "homeEmbeddablePath": "/embeddable.html",
     // Root URL of Lab distribution, used to get Lab resources (e.g. DNA images).
     "rootUrl": "lab",
+    // Models root URL, appended to all model paths. Leave it empty if model paths are relative
+    // to page that contains Lab interactive.
+    "modelsRootUrl": "",
     // Set codap to true if Lab is running inside of CODAP
     "codap": false,
     // dataGamesProxyPrefix was the old way of configuring CODAP
@@ -25,11 +27,6 @@ define(function (require) {
     // }
     // When Lab receives 'getLearnerUrl' messaga via iframe phone, it will respond providing
     // return value of this function.
-    "versionedHome": null,
-    // Note that actualRoot is calculated dynamically, actually it's not a configuration option!
-    // However it can be used by client code to quickly get actual root, as well as it's used
-    // by Lab itself.
-    // TODO: make it clearer, perhaps pull out actualRoot from config object.
-    "actualRoot": actualRoot
+    "versionedHome": null
   };
 });

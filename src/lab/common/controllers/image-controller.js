@@ -1,4 +1,4 @@
-/*global Lab, define, $ */
+/*global define, $ */
 
 define(function (require) {
 
@@ -6,9 +6,7 @@ define(function (require) {
       inherit              = require('common/inherit'),
       InteractiveComponent = require('common/controllers/interactive-component'),
 
-      externalUrl  = /^https?:\/\//i,
-      // any url starting with "{resources}/..." will be directed to public/resources
-      resourcesUrl = /^{resources}\//i;
+      externalUrl  = /^https?:\/\//i;
 
   /**
    * Image controller.
@@ -20,8 +18,6 @@ define(function (require) {
    * @param {InteractiveController} controller
    */
   function ImageController(component, controller) {
-    var root = typeof Lab !== "undefined" ? Lab.config.actualRoot : "";
-
     // Call super constructor.
     InteractiveComponent.call(this, "image", component, controller);
 
@@ -31,13 +27,10 @@ define(function (require) {
     this._$img = $("<img>");
     /** @private */
     this._externalUrl = externalUrl.test(this.component.src);
-    this._resourcesUrl = resourcesUrl.test(this.component.src);
 
     if (this._externalUrl) {
       // If URL is external, we can setup it just once.
       this._$img.attr("src", this.component.src);
-    } else if (this._resourcesUrl) {
-      this._$img.attr("src", this.component.src.replace(resourcesUrl, root + "/lab/resources/"));
     }
 
     // When a dimension is different from "auto",
@@ -68,7 +61,7 @@ define(function (require) {
       modelUrl = this._controller.modelController.modelUrl;
       // Remove <model-name>.json from url.
       modelUrl = modelUrl.slice(0, modelUrl.lastIndexOf("/") + 1);
-      src = labConfig.actualRoot + modelUrl + src;
+      src = labConfig.modelsRootUrl + modelUrl + src;
       this._$img.attr("src", src);
     }
   };
