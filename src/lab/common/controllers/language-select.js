@@ -5,6 +5,8 @@ define(function (require) {
 
   function languageSelect(selector, interactiveController) {
     var metadata = interactiveController.interactive.i18nMetadata;
+    if (!metadata) return;
+
     var metadataDownloaded = $.get(metadata).done(function(results) {
       if (typeof results === 'string') results = JSON.parse(results);
       setupContextMenu(selector, results, interactiveController.interactive.lang, interactiveController);
