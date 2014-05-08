@@ -1346,6 +1346,8 @@ define(function (require) {
           screenshot: interactive.screenshot,
           aspectRatio: interactive.aspectRatio,
           fontScale: interactive.fontScale,
+          lang: interactive.lang,
+          i18nMetadata: interactive.i18nMetadata,
           helpOnLoad: interactive.helpOnLoad,
           about: arrays.isArray(interactive.about) ? $.extend(true, [], interactive.about) : interactive.about,
           // Node that modelDefinitions section can also contain custom parameters definition. However, their initial values
