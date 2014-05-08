@@ -24,6 +24,17 @@ define(function() {
         defaultValue: "production"
       },
 
+      // Optional path to metadata containing information about available translations.
+      // If present and valid, a new pulldown will be added to interactive UI that lets user
+      // change language and locales.
+      i18nMetadata: {
+        defaultValue: ""
+      },
+
+      lang: {
+        defaultValue: "en_US"
+      },
+
       subtitle: {
         defaultValue: ""
       },
