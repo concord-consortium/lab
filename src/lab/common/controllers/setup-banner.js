@@ -9,8 +9,8 @@ define(function () {
       PlaybackController = require('common/controllers/playback-controller'),
 
       topBarHeight    = 1.5,
-      topBarFontScale = topBarHeight*0.65,
-      topBarVerticalPadding = topBarHeight/10;
+      topBarFontScale = topBarHeight * 0.65,
+      topBarVerticalPadding = topBarHeight / 10;
 
   /**
    * Returns a hash containing:
@@ -121,13 +121,31 @@ define(function () {
         "height": topBarHeight + "em",
         "padding-top": topBarVerticalPadding + "em",
         "padding-bottom": topBarVerticalPadding + "em",
-        // "banner-right" can be undefined, so check it.
         "right": "banner-right.left",
         "padding-right": "1em",
         "align": "right",
         "aboveOthers": true
       });
     }
+
+    createElementInContainer({
+      "type": "div",
+      "id": "lang-icon",
+      "width": "1.8em",
+      "height": "1.35em",
+      "tooltip": "Select language"
+    },
+    {
+      "id": "banner-lang",
+      "top": "0",
+      "height": topBarHeight + "em",
+      "padding-top": topBarVerticalPadding + "em",
+      "padding-bottom": topBarVerticalPadding + "em",
+      "right": labConfig.sharing ? "banner-middle.left" : "banner-right.left",
+      "padding-right": "2em",
+      "align": "right",
+      "aboveOthers": true
+    });
 
     createElementInContainer(
     {

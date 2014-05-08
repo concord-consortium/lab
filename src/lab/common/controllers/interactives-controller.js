@@ -7,8 +7,9 @@ define(function (require) {
       arrays                  = require('arrays'),
       FastClick               = require('fastclick'),
       alert                   = require('common/alert'),
-      metadata                = require('common/controllers/interactive-metadata'),
       validator               = require('common/validator'),
+      metadata                = require('common/controllers/interactive-metadata'),
+      languageSelect          = require('common/controllers/language-select'),
       DataSet                 = require('common/controllers/data-set'),
       BarGraphController      = require('common/controllers/bar-graph-controller'),
       GraphController         = require('common/controllers/graph-controller'),
@@ -579,6 +580,9 @@ define(function (require) {
       // also be sure to get notified when the underlying model changes
       // (this catches reloads)
       modelController.on('modelReset', modelResetHandler);
+
+      // Setup menu that lets users change language of the interactive.
+      languageSelect('#lang-icon', controller);
 
       // Create Scripting API
       scriptingAPI = new ScriptingAPI(controller, null);

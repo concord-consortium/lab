@@ -22,6 +22,26 @@
     // Original jQuery.contextMenu CSS isn't prepared for responsive layout.
     top: 0.35em
 
+  // ### Language selection menu
+  .lang-menu
+    // Top-level menu
+    min-width: 1em
+    background: #fefefe
+    border-radius: 0.25em
+    font-size: 1em
+
+    .context-menu-item
+      padding: 0.1em 0.25em 0.25em 1.8em
+      background-size: 1.8em
+      background-repeat: no-repeat
+      background-position-y: 0.1em
+      border-radius: 0.25em
+      background-color: transparent
+      &:hover
+        background-color: #ebebeb
+      & > span
+        font-size: 0.85em
+
   // ### Mutations menu (visible during DNA animation)
   .mutations-menu
     // Top-level menu
