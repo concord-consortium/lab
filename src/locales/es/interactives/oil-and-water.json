@@ -1,17 +1,15 @@
 {
-  "title": "Olej i Woda",
+  "title": "Agua y aceite",
   "publicationStatus": "sample",
-  "subtitle": "Zobacz jak oddziałują substancje polarne i niepolarne.",
+  "subtitle": "Explore cómo sustancias polares y no polares (apolares) interactúan entre ellas.",
   "about": [
-    "Powszechnie wiadomo, że woda i olej się nie mieszają. Jednak dlaczego? Uruchom symulację",
-    "wody (substancja polarna, niebieskie i czerwone cząsteczki) oraz oleju (substancja",
-    "niepolarna, szare cząsteczki). Obserwuj zachowanie dwóch cieczy.",
-    "",
-    "Następnie kliknij \"Wstrząśnij i wymieszaj olej z wodą\", ponownie uruchom",
-    "symulację i sprawdź co stanie się z cząsteczkami po jakimś czasie."
+    "Probablemente sabe que \"agua y aceite no se mezclan\", pero por qué?",
+    "Este modelo contiene agua (polar, en azul y rojo) y aceite (apolar, en gris).",
+    "Inicie el modelo y observe. Después, agite la mezcla de agua y aceite y vuelva a iniciar el modelo.",
+    "Observe qué pasa con las moléculas al pasar el tiempo."
   ],
   "i18nMetadata": "locales/metadata/oil-and-water.json",
-  "lang": "pl",
+  "lang": "es",
   "models": [
     {
       "type": "md2d",
@@ -21,7 +19,7 @@
         "controlButtons": "play_reset",
         "textBoxes": [
           {
-            "text": "Olej oddzielony od wody",
+            "text": "Agua y aceite separados",
             "x": 1.08,
             "y": 2.0,
             "fontScale": 1.3,
@@ -40,8 +38,8 @@
         "controlButtons": "play_reset",
         "textBoxes": [
           {
-            "text": "Olej wymieszany z wodą",
-            "x": 1.08,
+            "text": "Mezcla de agua y aceite después de ser agitada",
+            "x": 0.45,
             "y": 2.0,
             "fontScale": 1.3,
             "layer": 1,
@@ -56,7 +54,7 @@
     {
       "type": "button",
       "id": "shake",
-      "text": "Wstrząśnij i wymieszaj olej z wodą",
+      "text": "Agite la mezcla de agua y aceite",
       "action": "loadModel('oilAndWaterMix');"
     }
   ],
