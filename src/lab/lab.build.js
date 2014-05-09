@@ -78,6 +78,7 @@
     'rgbcolor': '../../vendor/canvg-1.3/rgbcolor',
     'fastclick': '../../vendor/fastclick/lib/fastclick',
     'seedrandom': '../../vendor/seedrandom/seedrandom',
+    'i18next': '../../vendor/i18next/i18next.amd',
     'backbone': '../../node_modules/backbone/backbone',
     'mustache': '../../node_modules/mustache/mustache',
     'markdown': '../../node_modules/markdown/lib/markdown',

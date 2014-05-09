@@ -29,6 +29,7 @@ define(function () {
     var components = {},
         template = [],
         layout = {},
+        i18n = controller.i18n,
         // About link visible if there is about section or subtitle.
         haveAboutText = interactive.about || interactive.subtitle,
         body, requestFullscreenMethod;
@@ -76,7 +77,7 @@ define(function () {
     createElementInContainer({
       "type": "text",
       "id": "about-link",
-      "text": "About",
+      "text": i18n.t("banner.about"),
       "onClick": function () {
         if (haveAboutText) {
           aboutDialog.open();
@@ -84,7 +85,7 @@ define(function () {
           creditsDialog.open();
         }
       },
-      "tooltip": "Instructions"
+      "tooltip": i18n.t("banner.about_tooltip")
     },
     {
       "id": "banner-right",
@@ -110,9 +111,9 @@ define(function () {
       {
         "type": "text",
         "id": "share-link",
-        "text": "Share",
+        "text": controller.i18n.t("banner.share"),
         "onClick": function () { shareDialog.open(); },
-        "tooltip": "Share using e-mail, IM or embed in website"
+        "tooltip": i18n.t("banner.share_tooltip")
       },
       {
         "id": "banner-middle",
@@ -133,7 +134,7 @@ define(function () {
       "id": "lang-icon",
       "width": "1.8em",
       "height": "1.35em",
-      "tooltip": "Select language"
+      "tooltip": i18n.t("banner.lang_tooltip")
     },
     {
       "id": "banner-lang",
@@ -155,7 +156,7 @@ define(function () {
       "onClick": function () {
         controller.reloadInteractive();
       },
-      "tooltip": "Reload interactive"
+      "tooltip": i18n.t("banner.reload_tooltip")
     },
     {
       "id": "banner-reload",
@@ -183,7 +184,7 @@ define(function () {
             controller.helpSystem.stop();
           }
         },
-        "tooltip": "Show help tips"
+        "tooltip": i18n.t("banner.help_tooltip")
       },
       {
         "id": "banner-help",
@@ -221,7 +222,7 @@ define(function () {
       "height": "2.5em",
       "width": "8.1em",
       "classes": ["credits"],
-      "tooltip": "Learn more about The Concord Consortium",
+      "tooltip": i18n.t("banner.credits_tooltip"),
       "onClick": function () { creditsDialog.open(); }
     },
     {
@@ -271,7 +272,7 @@ define(function () {
         "height": "2.5em",
         "width": "2.5em",
         "classes": ["fullscreen"],
-        "tooltip": "Toggle full-screen",
+        "tooltip": i18n.t("banner.fullscreen_tooltip"),
         "onClick": function () {
           if (!isFullscreen()) {
             requestFullscreenMethod.call(body);

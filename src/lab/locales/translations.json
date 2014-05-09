@@ -1,0 +1,52 @@
+{
+  "en-US": {
+    "translation": {
+      "banner": {
+        "about": "About",
+        "about_tooltip": "Instructions",
+        "share": "Share",
+        "share_tooltip": "Share using e-mail, IM or embed in website",
+        "lang_tooltip": "Select language",
+        "reload_tooltip": "Reload interactive",
+        "help_tooltip": "Show help tips",
+        "credits_tooltip": "Learn more about The Concord Consortium",
+        "fullscreen_tooltip": "Toggle full-screen",
+        "video_play_pause_tooltip": "Start / pause the simulation",
+        "video_reset_tooltip": "Reset the simulation",
+        "video_step_back_tooltip": "Step back",
+        "video_step_forward_tooltip": "Step forward",
+        "text_start": "Start",
+        "text_start_tooltip": "Start the simulation or data collection",
+        "text_stop": "Stop",
+        "text_stop_tooltip": "Stop the simulation or data collection",
+        "text_reset": "Reset",
+        "text_reset_tooltip": "Reset the simulation or data collection"
+      }
+    }
+  },
+  "pl": {
+    "translation": {
+      "banner": {
+        "about": "O symulacji",
+        "about_tooltip": "Instrukcje",
+        "share": "Udostępnij",
+        "share_tooltip": "Udostępnij tę symulację za pomocą e-mail, komunikatora lub umieść na swojej stronie internetowej",
+        "lang_tooltip": "Zmień język",
+        "reload_tooltip": "Załaduj symulację ponownie",
+        "help_tooltip": "Pokaż pomoc",
+        "credits_tooltip": "Dowiedz się więcej o Concord Consortium",
+        "fullscreen_tooltip": "Tryb pełnoekranowy",
+        "video_play_pause_tooltip": "Uruchom lub zatrzymaj symulację",
+        "video_reset_tooltip": "Zresetuj symulację",
+        "video_step_back_tooltip": "Krok wstecz",
+        "video_step_forward_tooltip": "Krok do przodu",
+        "text_start": "Uruchom",
+        "text_start_tooltip": "Uruchom symulację lub pobieranie danych",
+        "text_stop": "Zatrzymaj",
+        "text_stop_tooltip": "Zatrzymaj symulację lub pobieranie danych",
+        "text_reset": "Zresetuj",
+        "text_reset_tooltip": "Zresetuj symulację lub pobieranie danych"
+      }
+    }
+  }
+}

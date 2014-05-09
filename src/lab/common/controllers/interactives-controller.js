@@ -8,6 +8,7 @@ define(function (require) {
       FastClick               = require('fastclick'),
       alert                   = require('common/alert'),
       validator               = require('common/validator'),
+      getI18n                 = require('common/i18n'),
       metadata                = require('common/controllers/interactive-metadata'),
       languageSelect          = require('common/controllers/language-select'),
       DataSet                 = require('common/controllers/data-set'),
@@ -142,6 +143,7 @@ define(function (require) {
         $interactiveContainer,
         $fastClickContainer,
         helpSystem,
+        i18n,
         modelDefinitions = [],
         modelHash = {},
         componentModelLoadedCallbacks,
@@ -575,14 +577,16 @@ define(function (require) {
     function initializeInteractive() {
       cleanupInteractive();
 
+      i18n = getI18n(interactive.lang);
+      // Setup menu that lets users change language of the interactive. Do it ASAP, as it involves
+      // async download of interactive metadata.
+      languageSelect('#lang-icon', controller);
+
       var modelDef = controller.interactive.models[0];
       modelController = createModelController(modelDef.type, modelDef.modelUrl, null);
       // also be sure to get notified when the underlying model changes
       // (this catches reloads)
       modelController.on('modelReset', modelResetHandler);
-
-      // Setup menu that lets users change language of the interactive.
-      languageSelect('#lang-icon', controller);
 
       // Create Scripting API
       scriptingAPI = new ScriptingAPI(controller, null);
@@ -1140,6 +1144,9 @@ define(function (require) {
       },
       get helpSystem() {
         return helpSystem;
+      },
+      get i18n() {
+        return i18n;
       },
       get modelController() {
         return modelController;

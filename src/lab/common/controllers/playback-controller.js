@@ -49,6 +49,7 @@ define(function (require) {
   PlaybackController.prototype._createControlsFor = {
     video: function () {
       var scriptingAPI = this._scriptingAPI;
+      var i18n = this._interactivesController.i18n;
 
       this.$element.removeClass('text').addClass('video');
 
@@ -91,29 +92,30 @@ define(function (require) {
       this._$stepBackward.on("click", scriptingAPI.stepBack);
       this._$stepForward.on("click", scriptingAPI.stepForward);
 
-      this._$playPause.attr("title", "Start / pause the simulation");
-      this._$reset.attr("title", "Reset the simulation");
-      this._$stepBackward.attr("title", "Step back");
-      this._$stepForward.attr("title", "Step forward");
+      this._$playPause.attr("title", i18n.t("banner.video_play_pause_tooltip"));
+      this._$reset.attr("title", i18n.t("banner.video_reset_tooltip"));
+      this._$stepBackward.attr("title", i18n.t("banner.video_step_back_tooltip"));
+      this._$stepForward.attr("title", i18n.t("banner.video_step_forward_tooltip"));
     },
 
     text: function () {
       var scriptingAPI = this._scriptingAPI;
+      var i18n = this._interactivesController.i18n;
 
       this.$element.removeClass('video').addClass('text');
 
-      this._$start = $('<button class="start">Start</button>').appendTo(this.$element);
-      this._$stop = $('<button class="stop">Stop</button>').appendTo(this.$element);
-      this._$reset = $('<button class="reset">Reset</button>').appendTo(this.$element);
+      this._$start = $('<button class="start">').text(i18n.t("banner.text_start")).appendTo(this.$element);
+      this._$stop = $('<button class="stop">').text(i18n.t("banner.text_stop")).appendTo(this.$element);
+      this._$reset = $('<button class="reset">').text(i18n.t("banner.text_reset")).appendTo(this.$element);
 
       // Bind click handlers
       this._$reset.on('click', scriptingAPI.reloadModel);
       this._$start.on('click', scriptingAPI.start);
       this._$stop.on('click', scriptingAPI.stop);
 
-      this._$start.attr("title", "Start the simulation or data collection");
-      this._$stop.attr("title",  "Stop the simulation or data collection");
-      this._$reset.attr("title", "Reset the simulation or data collection");
+      this._$start.attr("title", i18n.t("banner.text_start_tooltip"));
+      this._$stop.attr("title",  i18n.t("banner.text_stop_tooltip"));
+      this._$reset.attr("title", i18n.t("banner.text_reset_tooltip"));
     }
   };
 
