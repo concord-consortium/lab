@@ -32,7 +32,7 @@ define(function() {
       },
 
       lang: {
-        defaultValue: "en_US"
+        defaultValue: "en-US"
       },
 
       subtitle: {

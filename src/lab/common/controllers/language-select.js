@@ -25,8 +25,8 @@ define(function (require) {
   // Private functions used by i18nHelper.
 
   function code2flag(countryCode) {
-    var arr = countryCode.split('_');
-    // Handle special cases like "en_US", "en_GB" etc.
+    var arr = countryCode.split('-');
+    // Handle special cases like "en-US", "en-GB" etc.
     return resourcesUrl('flags/' + arr[arr.length - 1].toLowerCase() + '.png');
   }
 
