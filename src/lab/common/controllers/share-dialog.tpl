@@ -1,16 +1,14 @@
 <div>
   <h2>
-    Paste this
-    <a class='opens-in-new-window' href='{{embeddableSharingUrl}}' target='_blank'>link</a>
-    in email or IM.
+    {{{paste_email_im}}}
   </h2>
   <textarea>{{embeddableSharingUrl}}</textarea>
-  <h2>Paste HTML to embed in website or blog.</h2>
-  <p>Select Size:
+  <h2>{{paste_html}}</h2>
+  <p>{{select_size}}
     <select id='iframe-size'>
-      <option value='smaller'>30% smaller</option>
-      <option selected value='actual'>actual</option>
-      <option value='larger'>50% larger</option>
+      <option value='smaller'>{{size_smaller}}</option>
+      <option selected value='actual'>{{size_actual}}</option>
+      <option value='larger'>{{size_larger}}</option>
     </select>
   </p>
   <textarea id='share-iframe-content'></textarea>

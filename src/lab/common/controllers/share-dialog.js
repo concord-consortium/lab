@@ -20,7 +20,7 @@ define(function (require) {
    *
    * @constructor
    */
-  function ShareDialog(parentSelector, interactiveContainerSelector) {
+  function ShareDialog(parentSelector, interactiveContainerSelector, i18n) {
     var hash           = location.hash,
         origin         = location.href.match(/(.*?\/\/.*?)\//)[1],
         embeddablePath = location.pathname;
@@ -28,7 +28,14 @@ define(function (require) {
     BasicDialog.call(this, {dialogClass: "share-dialog", appendTo: parentSelector});
 
     /** @private */
-    this._view = {};
+    this._view = {
+      paste_html: i18n.t("share_dialog.paste_html"),
+      select_size: i18n.t("share_dialog.select_size"),
+      size_larger: i18n.t("share_dialog.size_larger", {val: 50}),
+      size_actual: i18n.t("share_dialog.size_actual"),
+      size_smaller: i18n.t("share_dialog.size_smaller", {val: 30})
+    };
+    this._i18n = i18n;
 
     if (labConfig.homeForSharing) {
       this._view.embeddableSharingUrl = labConfig.homeForSharing + labConfig.homeEmbeddablePath + hash;
@@ -36,7 +43,11 @@ define(function (require) {
       this._view.embeddableSharingUrl = origin + embeddablePath + hash;
     }
 
-    this.setContent(mustache.render(shareDialogTpl, this._view, {copyright: copyrightTpl}));
+    var link = "<a class='opens-in-new-window' href='" + this._view.embeddableSharingUrl +
+               "' target='_blank'>" + i18n.t("share_dialog.link") + "</a>";
+    this._view.paste_email_im = i18n.t("share_dialog.paste_email_im", {link: link});
+
+    this.setContent(mustache.render(shareDialogTpl, this._view, { copyright: copyrightTpl }));
 
     /** @private */
     this._$interactiveContainer = $(interactiveContainerSelector);
@@ -82,7 +93,7 @@ define(function (require) {
    * @param {Object} interactive Interactive JSON definition.
    */
   ShareDialog.prototype.update = function(interactive) {
-    this.set("title", "Share: " + interactive.title);
+    this.set("title", this._i18n.t("share_dialog.title", {interactive_title: interactive.title}));
   };
 
   return ShareDialog;

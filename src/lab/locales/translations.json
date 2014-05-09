@@ -21,6 +21,23 @@
         "text_stop_tooltip": "Stop the simulation or data collection",
         "text_reset": "Reset",
         "text_reset_tooltip": "Reset the simulation or data collection"
+      },
+      "about_dialog": {
+        "title": "About: __interactive_title__"
+      },
+      "share_dialog": {
+        "title": "Share: __interactive_title__",
+        "link": "link",
+        "paste_email_im": "Paste this __link__ in email or IM.",
+        "paste_html": "Paste HTML to embed in website or blog.",
+        "select_size": "Select Size:",
+        "size_larger": "__val__% larger",
+        "size_actual": "actual",
+        "size_smaller": "__val__% smaller"
+      },
+      "credits_dialog": {
+        "title": "Credits: __interactive_title__",
+        "credits_text": "This interactive was created by the __CC_link__ using our __Next_Gen_MW_link__ software, with funding by a grant from __Google_link__."
       }
     }
   },
@@ -46,6 +63,23 @@
         "text_stop_tooltip": "Zatrzymaj symulację lub pobieranie danych",
         "text_reset": "Zresetuj",
         "text_reset_tooltip": "Zresetuj symulację lub pobieranie danych"
+      },
+      "about_dialog": {
+        "title": "O symulacji: __interactive_title__"
+      },
+      "share_dialog": {
+        "title": "Udostępnij: __interactive_title__",
+        "link": "odnośnik",
+        "paste_email_im": "Wklej ten __link__ do wiadomości e-mail lub wyślij za pomocą komunikatora.",
+        "paste_html": "Aby zamieścić symulację na swojej stronie lub blogu, wklej kod HTML znajdujący się poniżej.",
+        "select_size": "Wybierz rozmiar:",
+        "size_larger": "__val__% większy",
+        "size_actual": "aktualny",
+        "size_smaller": "__val__% mniejszy"
+      },
+      "credits_dialog": {
+        "title": "__interactive_title__",
+        "credits_text": "Ta symulacja została stworzona przez __CC_link__ przy użyciu __Next_Gen_MW_link__. Prace zostały sfinansowana przez grant otrzymany od __Google_link__."
       }
     }
   }

@@ -525,9 +525,6 @@ define(function (require) {
       // effects in some cases (e.g. iframe content is reloaded). Separate container that contains
       // only dialogs ensures that it won't happen.
       $fastClickContainer.append('<div class="lab-dialog-container">');
-      creditsDialog = new CreditsDialog(".lab-dialog-container");
-      aboutDialog = new AboutDialog(".lab-dialog-container");
-      shareDialog = new ShareDialog(".lab-dialog-container", viewSelector);
 
       // Each time we load a new interactive, we assume that it would be an "initial" model load.
       // This flag is used to decide whether parameters should be retained or not.
@@ -581,6 +578,10 @@ define(function (require) {
       // Setup menu that lets users change language of the interactive. Do it ASAP, as it involves
       // async download of interactive metadata.
       languageSelect('#lang-icon', controller);
+
+      creditsDialog = new CreditsDialog(".lab-dialog-container", i18n);
+      aboutDialog = new AboutDialog(".lab-dialog-container", i18n);
+      shareDialog = new ShareDialog(".lab-dialog-container", viewSelector, i18n);
 
       var modelDef = controller.interactive.models[0];
       modelController = createModelController(modelDef.type, modelDef.modelUrl, null);

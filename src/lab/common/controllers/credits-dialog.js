@@ -13,8 +13,9 @@ define(function (require) {
    *
    * @constructor
    */
-  function CreditsDialog(parentSelector) {
+  function CreditsDialog(parentSelector, i18n) {
     BasicDialog.call(this, {dialogClass: "credits-dialog", appendTo: parentSelector});
+    this._i18n = i18n;
   }
   inherit(CreditsDialog, BasicDialog);
 
@@ -24,16 +25,21 @@ define(function (require) {
    * @param {Object} interactive Interactive JSON definition.
    */
   CreditsDialog.prototype.update = function(interactive) {
-    var view = {
-          concordUrl: 'http://concord.org',
-          nextGenUrl: 'http://mw.concord.org/nextgen/'
-        },
-        hash           = document.location.hash,
+    var hash           = document.location.hash,
         origin         = document.location.href.match(/(.*?\/\/.*?)\//)[1],
         embeddablePath = document.location.pathname,
+        i18n           = this._i18n,
         utmString;
 
-    this.set("title", "Credits: " + interactive.title);
+    this.set("title", this._i18n.t("credits_dialog.title", {interactive_title: interactive.title}));
+
+    var view = {
+      credits_text: i18n.t("credits_dialog.credits_text", {
+        CC_link: "<a class='opens-in-new-window' href='http://concord.org' target='_blank'>Concord Consortium</a>",
+        Next_Gen_MW_link: "<a class='opens-in-new-window' href='http://mw.concord.org/nextgen/' target='_blank'>Next-Generation Molecular Workbench</a>",
+        Google_link: "<a class='opens-in-new-window' href='http://www.google.org/' target='_blank'>Google.org</a>"
+      })
+    };
 
     if (labConfig.homeForSharing) {
       view.interactiveCreditsUrl = labConfig.homeForSharing + labConfig.homeEmbeddablePath + hash;

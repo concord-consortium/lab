@@ -10,8 +10,9 @@ define(function (require) {
    *
    * @constructor
    */
-  function AboutDialog(parentSelector) {
+  function AboutDialog(parentSelector, i18n) {
     BasicDialog.call(this, {dialogClass: "about-dialog", appendTo: parentSelector});
+    this._i18n = i18n;
   }
   inherit(AboutDialog, BasicDialog);
 
@@ -23,7 +24,7 @@ define(function (require) {
   AboutDialog.prototype.update = function(interactive) {
     var $aboutContent = $("<div>");
 
-    this.set("title", "About: " + interactive.title);
+    this.set("title", this._i18n.t("about_dialog.title", {interactive_title: interactive.title}));
 
     if (interactive.subtitle) {
       $aboutContent.append(markdownToHTML(interactive.subtitle));
