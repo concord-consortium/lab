@@ -13,6 +13,7 @@ exports.labConfig = {
     'sensor-connector-interface': '../../vendor/sensor-connector-interface/dist/sensor-connector-interface',
     'lab-grapher': '../../vendor/lab-grapher/dist/lab-grapher',
     'iframe-phone': '../../vendor/iframe-phone/dist/iframe-phone',
-    'seedrandom': '../../vendor/seedrandom/seedrandom'
+    'seedrandom': '../../vendor/seedrandom/seedrandom',
+    'i18next': '../../vendor/i18next/i18next.amd'
   }
 };
