@@ -60,6 +60,7 @@ Here is a list of projects and resources included in the in the `vendor/` direct
 19. [fastclick](https://github.com/ftlabs/fastclick): [MIT](http://www.opensource.org/licenses/MIT)
 20. [seedrandom](https://github.com/davidbau/seedrandom): [BSD](http://www.opensource.org/licenses/BSD-2-Clause)
 21. [cheerio](https://github.com/MatthewMueller/cheerio): [MIT](http://www.opensource.org/licenses/MIT)
+22. [i18next](https://github.com/jamuhl/i18next): [MIT](http://www.opensource.org/licenses/MIT)
 23. [lab-grapher](https://github.com/concord-consortium/lab-grapher): triple-licensed the same as the Lab licenses
 24. [lab-sensor-applet-interface-dist](https://github.com/concord-consortium/lab-sensor-applet-interface-dist): triple-licensed the same as Lab, with exceptions for some binary libraries provided by Vernier
 
