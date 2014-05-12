@@ -9,5 +9,5 @@
     <a href="{{concordUrl}}" class="opens-in-new-window" target="_blank">concord.org</a>.
   </p>
   {{/showShareable}}
-  {{> copyright}}
+  {{{copyright}}}
 </div>

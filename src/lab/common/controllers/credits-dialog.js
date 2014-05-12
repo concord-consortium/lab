@@ -5,8 +5,8 @@ define(function (require) {
       mustache         = require('mustache'),
       inherit          = require('common/inherit'),
       BasicDialog      = require('common/controllers/basic-dialog'),
-      creditsDialogTpl = require('text!common/controllers/credits-dialog.tpl'),
-      copyrightTpl     = require('text!common/controllers/copyright.tpl');
+      getCopyright     = require('common/controllers/copyright'),
+      creditsDialogTpl = require('text!common/controllers/credits-dialog.tpl');
 
   /**
    * Credits Dialog. Inherits from Basic Dialog.
@@ -38,7 +38,8 @@ define(function (require) {
         CC_link: "<a class='opens-in-new-window' href='http://concord.org' target='_blank'>Concord Consortium</a>",
         Next_Gen_MW_link: "<a class='opens-in-new-window' href='http://mw.concord.org/nextgen/' target='_blank'>Next-Generation Molecular Workbench</a>",
         Google_link: "<a class='opens-in-new-window' href='http://www.google.org/' target='_blank'>Google.org</a>"
-      })
+      }),
+      copyright: getCopyright(i18n)
     };
 
     if (labConfig.homeForSharing) {
@@ -59,7 +60,7 @@ define(function (require) {
       view.showShareable = true;
     }
 
-    this.setContent(mustache.render(creditsDialogTpl, view, {copyright: copyrightTpl}));
+    this.setContent(mustache.render(creditsDialogTpl, view));
   };
 
   return CreditsDialog;

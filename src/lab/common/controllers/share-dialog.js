@@ -5,8 +5,8 @@ define(function (require) {
       mustache       = require('mustache'),
       inherit        = require('common/inherit'),
       BasicDialog    = require('common/controllers/basic-dialog'),
+      getCopyright   = require('common/controllers/copyright'),
       shareDialogTpl = require('text!common/controllers/share-dialog.tpl'),
-      copyrightTpl   = require('text!common/controllers/copyright.tpl'),
 
       location = document.location,
 
@@ -33,7 +33,8 @@ define(function (require) {
       select_size: i18n.t("share_dialog.select_size"),
       size_larger: i18n.t("share_dialog.size_larger", {val: 50}),
       size_actual: i18n.t("share_dialog.size_actual"),
-      size_smaller: i18n.t("share_dialog.size_smaller", {val: 30})
+      size_smaller: i18n.t("share_dialog.size_smaller", {val: 30}),
+      copyright: getCopyright(i18n)
     };
     this._i18n = i18n;
 
@@ -47,7 +48,7 @@ define(function (require) {
                "' target='_blank'>" + i18n.t("share_dialog.link") + "</a>";
     this._view.paste_email_im = i18n.t("share_dialog.paste_email_im", {link: link});
 
-    this.setContent(mustache.render(shareDialogTpl, this._view, { copyright: copyrightTpl }));
+    this.setContent(mustache.render(shareDialogTpl, this._view));
 
     /** @private */
     this._$interactiveContainer = $(interactiveContainerSelector);

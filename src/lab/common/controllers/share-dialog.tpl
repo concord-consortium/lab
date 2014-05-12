@@ -12,5 +12,5 @@
     </select>
   </p>
   <textarea id='share-iframe-content'></textarea>
-  {{> copyright}}
+  {{{copyright}}}
 </div>
