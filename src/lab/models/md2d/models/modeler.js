@@ -27,7 +27,7 @@ define(function(require) {
 
       md2dModelCount = 0;
 
-  return function Model(initialProperties, initializationOptions) {
+  return function Model(initialProperties, initializationOptions, i18n) {
 
     // all models created with this constructor will be of type: "md2d"
     this.constructor.type = "md2d";

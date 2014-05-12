@@ -46,6 +46,30 @@
         "all_rights_reserved": "All rights reserved.",
         "license": "The software is licensed under __BSD_link__, __MIT_link__ or __Apache_link__ licenses.",
         "attribution": "Please provide attribution to the Concord Consortium and the URL __concord_org_link__."
+      },
+      "aminoacid_menu": {
+        "hydrophobic": "Hydrophobic",
+        "hydrophilic": "Hydrophilic",
+        "glycine": "Glycine",
+        "alanine": "Alanine",
+        "valine": "Valine",
+        "leucine": "Leucine",
+        "isoleucine": "Isoleucine",
+        "phenylalanine": "Phenylalanine",
+        "proline": "Proline",
+        "tryptophan": "Tryptophan",
+        "methionine": "Methionine",
+        "cysteine": "Cysteine",
+        "tyrosine": "Tyrosine",
+        "asparagine": "Asparagine",
+        "glutamine": "Glutamine",
+        "serine": "Serine",
+        "threonine": "Threonine",
+        "asparticacid": "Asparticacid",
+        "glutamicacid": "Glutamicacid",
+        "lysine": "Lysine",
+        "arginine": "Arginine",
+        "histidine": "Histidine"
       }
     }
   },
@@ -96,6 +120,30 @@
         "all_rights_reserved": "Wszystkie prawa zastrzeżone.",
         "license": "To oprogramowanie jest rozpowszechniane na zasadach wolnych licencji __BSD_link__, __MIT_link__ lub __Apache_link__.",
         "attribution": "Proszę umieścić odniesienia do Concord Consortium oraz witryny __concord_org_link__."
+      },
+      "aminoacid_menu": {
+        "hydrophobic": "Hydrofobowe",
+        "hydrophilic": "Hydrofilowe",
+        "glycine": "Glicyna",
+        "alanine": "Alanina",
+        "valine": "Walina",
+        "leucine": "Leucyna",
+        "isoleucine": "Izoleucyna",
+        "phenylalanine": "Fenyloalanina",
+        "proline": "Prolina",
+        "tryptophan": "Tryptofan",
+        "methionine": "Metionina",
+        "cysteine": "Cysteina",
+        "tyrosine": "Tyrozyna",
+        "asparagine": "Asparagina",
+        "glutamine": "Glutamina",
+        "serine": "Seryna",
+        "threonine": "Treonina",
+        "asparticacid": "Kwas asparaginowy",
+        "glutamicacid": "Kwas glutaminowy",
+        "lysine": "Lizyna",
+        "arginine": "Arginina",
+        "histidine": "Histydyna"
       }
     }
   }

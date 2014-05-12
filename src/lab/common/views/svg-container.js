@@ -46,6 +46,8 @@ define(function (require) {
         // Public API object to be returned.
     var api,
 
+        i18n = opt && opt.i18n || null,
+
         // Coordinate system origin. Supported values are 'bottom-left' and 'top-left'.
         origin = opt && opt.origin || 'bottom-left',
 
@@ -600,6 +602,9 @@ define(function (require) {
       },
       get model2canvasInv() {
         return model2canvasInv;
+      },
+      get i18n() {
+        return i18n;
       },
       get setFocus() {
         return setFocus;

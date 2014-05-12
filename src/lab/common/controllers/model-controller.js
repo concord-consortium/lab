@@ -81,7 +81,7 @@ define(function (require) {
       if (modelContainer) {
         modelContainer.bindModel(model, modelUrl);
       } else {
-        modelContainer = new ModelContainer(model, controller.modelUrl);
+        modelContainer = new ModelContainer(model, controller.modelUrl, interactivesController.i18n);
       }
 
       if (!suppressEvents) {

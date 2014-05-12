@@ -42,6 +42,7 @@ define (require) ->
   of the clicked atom.
   ###
   register: (model, view, selector, getClickedAtom) ->
+    i18n = view.i18n
     # Unregister the same menu first.
     $.contextMenu "destroy", selector
     # Register new one.
@@ -152,37 +153,37 @@ define (require) ->
 
       items:
         # Category header.
-        "Hydrophobic": name: "Hydrophobic", className: "#{HYDROPHOBIC_CAT_CLASS}", callback: ->
+        "Hydrophobic": name: i18n.t("aminoacid_menu.hydrophobic"), className: "#{HYDROPHOBIC_CAT_CLASS}", callback: ->
           showCategory "hydrophobic", true
           # Return false to prevent menu from being hidden.
           false
         # Items below use default callback.
-        "Gly": name: "Glycine", className: "#{HYDROPHOBIC_CLASS}"
-        "Ala": name: "Alanine", className: "#{HYDROPHOBIC_CLASS}"
-        "Val": name: "Valine", className: "#{HYDROPHOBIC_CLASS}"
-        "Leu": name: "Leucine", className: "#{HYDROPHOBIC_CLASS}"
-        "Ile": name: "Isoleucine", className: "#{HYDROPHOBIC_CLASS}"
-        "Phe": name: "Phenylalanine", className: "#{HYDROPHOBIC_CLASS}"
-        "Pro": name: "Proline", className: "#{HYDROPHOBIC_CLASS}"
-        "Trp": name: "Tryptophan", className: "#{HYDROPHOBIC_CLASS}"
-        "Met": name: "Methionine", className: "#{HYDROPHOBIC_CLASS}"
-        "Cys": name: "Cysteine", className: "#{HYDROPHOBIC_CLASS}"
-        "Tyr": name: "Tyrosine", className: "#{HYDROPHOBIC_CLASS}"
+        "Gly": name: i18n.t("aminoacid_menu.glycine"), className: "#{HYDROPHOBIC_CLASS}"
+        "Ala": name: i18n.t("aminoacid_menu.alanine"), className: "#{HYDROPHOBIC_CLASS}"
+        "Val": name: i18n.t("aminoacid_menu.valine"), className: "#{HYDROPHOBIC_CLASS}"
+        "Leu": name: i18n.t("aminoacid_menu.leucine"), className: "#{HYDROPHOBIC_CLASS}"
+        "Ile": name: i18n.t("aminoacid_menu.isoleucine"), className: "#{HYDROPHOBIC_CLASS}"
+        "Phe": name: i18n.t("aminoacid_menu.phenylalanine"), className: "#{HYDROPHOBIC_CLASS}"
+        "Pro": name: i18n.t("aminoacid_menu.proline"), className: "#{HYDROPHOBIC_CLASS}"
+        "Trp": name: i18n.t("aminoacid_menu.tryptophan"), className: "#{HYDROPHOBIC_CLASS}"
+        "Met": name: i18n.t("aminoacid_menu.methionine"), className: "#{HYDROPHOBIC_CLASS}"
+        "Cys": name: i18n.t("aminoacid_menu.cysteine"), className: "#{HYDROPHOBIC_CLASS}"
+        "Tyr": name: i18n.t("aminoacid_menu.tyrosine"), className: "#{HYDROPHOBIC_CLASS}"
         # Category header.
-        "Hydrophilic": name: "Hydrophilic", className: "#{HYDROPHILIC_CAT_CLASS}", callback: ->
+        "Hydrophilic": name: i18n.t("aminoacid_menu.hydrophilic"), className: "#{HYDROPHILIC_CAT_CLASS}", callback: ->
           showCategory "hydrophilic", true
           # Return false to prevent menu from being hidden.
           false
         # Items below use default callback.
-        "Asn": name: "Asparagine", className: "#{HYDROPHILIC_CLASS}"
-        "Gln": name: "Glutamine", className: "#{HYDROPHILIC_CLASS}"
-        "Ser": name: "Serine", className: "#{HYDROPHILIC_CLASS}"
-        "Thr": name: "Threonine", className: "#{HYDROPHILIC_CLASS}"
-        "Asp": name: "Asparticacid", className: "#{HYDROPHILIC_CLASS} #{NEG_CHARGE_CLASS}"
-        "Glu": name: "Glutamicacid", className: "#{HYDROPHILIC_CLASS} #{NEG_CHARGE_CLASS}"
-        "Lys": name: "Lysine", className: "#{HYDROPHILIC_CLASS} #{POS_CHARGE_CLASS}"
-        "Arg": name: "Arginine", className: "#{HYDROPHILIC_CLASS} #{POS_CHARGE_CLASS}"
-        "His": name: "Histidine", className: "#{HYDROPHILIC_CLASS} #{POS_CHARGE_CLASS}"
+        "Asn": name: i18n.t("aminoacid_menu.asparagine"), className: "#{HYDROPHILIC_CLASS}"
+        "Gln": name: i18n.t("aminoacid_menu.glutamine"), className: "#{HYDROPHILIC_CLASS}"
+        "Ser": name: i18n.t("aminoacid_menu.serine"), className: "#{HYDROPHILIC_CLASS}"
+        "Thr": name: i18n.t("aminoacid_menu.threonine"), className: "#{HYDROPHILIC_CLASS}"
+        "Asp": name: i18n.t("aminoacid_menu.asparticacid"), className: "#{HYDROPHILIC_CLASS} #{NEG_CHARGE_CLASS}"
+        "Glu": name: i18n.t("aminoacid_menu.glutamicacid"), className: "#{HYDROPHILIC_CLASS} #{NEG_CHARGE_CLASS}"
+        "Lys": name: i18n.t("aminoacid_menu.lysine"), className: "#{HYDROPHILIC_CLASS} #{POS_CHARGE_CLASS}"
+        "Arg": name: i18n.t("aminoacid_menu.arginine"), className: "#{HYDROPHILIC_CLASS} #{POS_CHARGE_CLASS}"
+        "His": name: i18n.t("aminoacid_menu.histidine"), className: "#{HYDROPHILIC_CLASS} #{POS_CHARGE_CLASS}"
 
     # Initially show only one category (longer) to ensure that menu has a real-life height.
     # It can be useful for determining of position.
