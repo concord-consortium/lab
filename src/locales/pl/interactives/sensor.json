@@ -1,8 +1,9 @@
 {
   "title": "Sensor",
   "publicationStatus": "public",
-  "subtitle": "Collect data from Vernier Go and LabQuest Mini interfaces",
+  "subtitle": "Pobierz dane z interfejsów Vernier Go i LabQuest Mini.",
   "about": "",
+  "lang": "pl",
   "i18nMetadata": "locales/metadata/sensor.json",
   "fontscale": 0.9,
   "models": [
@@ -70,8 +71,8 @@
     {
       "type": "graph",
       "id": "propertiesGraph",
-      "title": "Sensor Reading",
-      "xlabel": "Time (s)",
+      "title": "Odczyt sensora",
+      "xlabel": "Czas (s)",
       "ymin": 0,
       "ymax": 6,
       "xmax": 30,
@@ -103,7 +104,7 @@
       ],
       "steps": 29,
       "width": "8.5em",
-      "title": "Duration of Exp. (s)",
+      "title": "Czas trwania eksperymentu (s)",
       "property": "experimentDuration"
     },
     {
@@ -115,7 +116,7 @@
       "type": "button",
       "id": "start-button",
       "text": "Start",
-      "tooltip": "Start the experiment run.",
+      "tooltip": "Rozpocznij eksperyment.",
       "action": [
         "start();",
         "setComponentDisabled('start-button', true);"
@@ -131,8 +132,8 @@
     {
       "type": "button",
       "id": "new-run-button",
-      "text": "New Run",
-      "tooltip": "Set up a new experiment run.",
+      "text": "Nowy eksperyment",
+      "tooltip": "Przygotuj nowy eksperyment.",
       "action": [
         "resetModel({",
         "  propertiesToRetain: ['sensorType','experimentDuration', 'durationEnabled', 'tareValue'],",
@@ -144,8 +145,8 @@
     {
       "type": "button",
       "id": "analyze-data-button",
-      "text": "Analyze Data",
-      "tooltip": "Put data from the experiment run into DataGames.",
+      "text": "Analizuj dane",
+      "tooltip": "Wyślij dane zebrane podczas eksperymentu do DataGames.",
       "action": [
         "exportData();",
         "setComponentDisabled('analyze-data-button', !isUnexportedDataPresent());"
