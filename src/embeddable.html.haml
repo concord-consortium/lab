@@ -20,10 +20,10 @@
     :javascript
       (function() {
         var interactiveUrl,
-            hash = document.location.hash;
+            hash = window.location.hash;
 
         $(window).bind('hashchange', function() {
-          if (document.location.hash !== hash) {
+          if (window.location.hash !== hash) {
             location.reload();
           }
         });
@@ -35,6 +35,9 @@
             controller.on("modelLoaded.application", function() {
               document.title = "Lab Interactive: " + controller.interactive.title;
               Embeddable.sendGAPageview();
+            });
+            controller.on("interactiveRequested.application", function(newUrl) {
+              window.location.hash = newUrl;
             });
           },
           redirect: function(path){

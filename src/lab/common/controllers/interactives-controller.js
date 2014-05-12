@@ -186,7 +186,8 @@ define(function (require) {
         getNextTabIndex,
         randSeed,
 
-        dispatch = new DispatchSupport("modelLoaded", "interactiveRendered", "modelReset", "resize");
+        dispatch = new DispatchSupport("modelLoaded", "interactiveRendered", "modelReset", "resize",
+                                       "interactiveRequested");
 
     // simple tabindex support, also exposed via api.getNextTabIndex()
     getNextTabIndex = function () {
@@ -1202,7 +1203,20 @@ define(function (require) {
 
       getNextTabIndex: getNextTabIndex,
 
+      /**
+       * Loads a new interactive. It accepts an object (hash) representing interactive definition.
+       * @param {object} newInteractive   new interactive definition
+       */
       loadInteractive: loadInteractive,
+
+      /**
+       * Emits "interactiveRequested" event that should be handled by the embedding page.
+       * It provides a new URL at which interactive is available.
+       * @param {string} url              new interactive URL
+       */
+      requestInteractiveAt: function (url) {
+        dispatch.interactiveRequested(url);
+      },
 
       reloadInteractive: function() {
         model.stop();

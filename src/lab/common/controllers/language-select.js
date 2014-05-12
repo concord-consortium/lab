@@ -72,10 +72,7 @@ define(function (require) {
         }).css('display', 'none');
       },
       callback: function(key) {
-        $.get(i18nMetadata[key]).done(function(results) {
-          if (typeof results === 'string') results = JSON.parse(results);
-          interactiveController.loadInteractive(results);
-        });
+        interactiveController.requestInteractiveAt(i18nMetadata[key]);
       },
       items: items
     });
