@@ -37,7 +37,9 @@
       },
       "credits_dialog": {
         "title": "Credits: __interactive_title__",
-        "credits_text": "This interactive was created by the __CC_link__ using our __Next_Gen_MW_link__ software, with funding by a grant from __Google_link__."
+        "credits_text": "This interactive was created by the __CC_link__ using our __Next_Gen_MW_link__ software, with funding by a grant from __Google_link__.",
+        "shareable_ver": "shareable version",
+        "find_shareable": "Find a __shareable_ver_link__ of this interactive along with dozens of other open-source interactives for science, math and engineering at __concord_org_link__."
       },
       "copyright": {
         "copyright": "Copyright",
@@ -85,7 +87,9 @@
       },
       "credits_dialog": {
         "title": "__interactive_title__",
-        "credits_text": "Ta symulacja została stworzona przez __CC_link__ przy użyciu __Next_Gen_MW_link__. Prace zostały sfinansowana przez grant otrzymany od __Google_link__."
+        "credits_text": "Ta symulacja została stworzona przez __CC_link__ przy użyciu __Next_Gen_MW_link__. Prace zostały sfinansowana przez grant otrzymany od __Google_link__.",
+        "shareable_ver": "Wersję tej symulacji, którą możesz udostępnić",
+        "find_shareable": "__shareable_ver_link__, wraz z setkami innych, darmowych symulacji i ćwiczeń znajdziesz na __concord_org_link__."
       },
       "copyright": {
         "copyright": "Copyright",
