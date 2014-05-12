@@ -76,6 +76,17 @@
         "insertion_mutation": "Insertion mutation",
         "deletion_mutation": "Deletion mutation",
         "insert": "Insert"
+      },
+      "sensor": {
+        "select_sensor": "Select Sensor...",
+        "select_sensor_type": "Select type of sensor...",
+        "reading": "Reading:",
+        "zero": "Zero",
+        "zeroing": "Zeroing...",
+        "loading_sensor": "Loading sensor...",
+        "choose_sensor_title": "Choose a sensor:",
+        "connect": "Connect",
+        "address_labquest2": "address of LabQuest2"
       }
     }
   },
@@ -156,6 +167,17 @@
         "insertion_mutation": "Insercja",
         "deletion_mutation": "Delecja",
         "insert": "Wstaw"
+      },
+      "sensor": {
+        "select_sensor": "Wybierz sensor...",
+        "select_sensor_type": "Wybierz rodzaj sensora...",
+        "reading": "Odczyt:",
+        "zero": "Wyzeruj",
+        "zeroing": "Zerowanie...",
+        "loading_sensor": "Ładowanie sensora...",
+        "choose_sensor_title": "Wybierz sensor:",
+        "connect": "Połącz",
+        "address_labquest2": "adres serwera LabQuest2"
       }
     }
   }

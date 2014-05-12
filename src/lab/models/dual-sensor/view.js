@@ -5,13 +5,13 @@ define(function() {
       sensorDefinitions = require('sensor-applet').sensorDefinitions,
       viewState = require('common/views/view-state');
 
-  return function(model, modelUrl) {
+  return function(model, modelUrl, i18n) {
 
     var sensorTypeView = new SelectBoxView({
       id: 'sensor-type-view',
       options: [{
         value: null,
-        text: "Select type of sensor...",
+        text: i18n.t("sensor.select_sensor_type"),
         selected: model.properties.sensorType == null,
         disabled: true
       }].concat(Object.keys(sensorDefinitions).filter(function(key) {
@@ -33,7 +33,7 @@ define(function() {
       id: 'sensor-type2-view',
       options: [{
         value: null,
-        text: "Select type of sensor...",
+        text: i18n.t("sensor.select_sensor_type"),
         selected: model.properties.sensorType2 == null,
         disabled: true
       }].concat(Object.keys(sensorDefinitions).filter(function(key) {
@@ -59,9 +59,9 @@ define(function() {
 
     function setIsTaringState() {
       if (model.properties.isTaring) {
-        view.$zeroButton.find('button').html("Zeroing...");
+        view.$zeroButton.find('button').html(i18n.t("sensor.zeroing"));
       } else {
-        view.$zeroButton.find('button').html("Zero");
+        view.$zeroButton.find('button').html(i18n.t("sensor.zero"));
       }
     }
 
@@ -75,9 +75,9 @@ define(function() {
 
     function setIsTaringState2() {
       if (model.properties.isTaring2) {
-        view.$zeroButton2.find('button').html("Zeroing...");
+        view.$zeroButton2.find('button').html(i18n.t("sensor.zeroing"));
       } else {
-        view.$zeroButton2.find('button').html("Zero");
+        view.$zeroButton2.find('button').html(i18n.t("sensor.zero"));
       }
     }
 
@@ -145,13 +145,13 @@ define(function() {
 
         sensorReadingView = new NumericOutputView({
           id: 'sensor-value-view',
-          label: "Reading: ",
+          label: i18n.t("sensor.reading"),
           units: model.getPropertyDescription('sensorReading').getUnitAbbreviation()
         });
 
         sensorReading2View = new NumericOutputView({
           id: 'sensor-value-2-view',
-          label: "Reading: ",
+          label: i18n.t("sensor.reading"),
           units: model.getPropertyDescription('sensorReading2').getUnitAbbreviation()
         });
 
@@ -159,8 +159,8 @@ define(function() {
             $row2 = $("<div></div>"),
             $selectBox  = sensorTypeView.render(this.$el),
             $selectBox2 = sensorType2View.render(this.$el),
-            $zeroButton = $("<div><button>Zero</button></div>"),
-            $zeroButton2 = $("<div><button>Zero</button></div>"),
+            $zeroButton = $("<div><button>" + i18n.t("sensor.zero") + "</button></div>"),
+            $zeroButton2 = $("<div><button>" + i18n.t("sensor.zero") + "</button></div>"),
             $sensorReading  = sensorReadingView.render(),
             $sensorReading2 = sensorReading2View.render();
 
@@ -209,7 +209,7 @@ define(function() {
           this.$progressbarContainer = $('<div/>')
             .attr('id', 'sensor-progressbar-container')
             .css('bottom', $('body').height() / 2 + 75 + $('.lab-responsive-content').offset().top)
-            .append('<div class="label">Loading sensor...</div>')
+            .append('<div class="label">' + i18n.t('sensor.loading_sensor') + '</div>')
             .append($progressbar)
             .appendTo('.lab-responsive-content');
 

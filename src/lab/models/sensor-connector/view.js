@@ -5,7 +5,7 @@ define(function(require) {
       sensorDefinitions = require('./sensor-definitions'),
       viewState = require('common/views/view-state');
 
-  return function(model, modelUrl) {
+  return function(model, modelUrl, i18n) {
 
     // TODO use the formatter from the property description. Right now, it automatically adds
     // units to the returned string (which we don't want here).
@@ -61,7 +61,7 @@ define(function(require) {
         width: "60%",
         dialogClass: 'interactive-dialog no-close',
         closeOnEscape: false,
-        title: "Choose a sensor:",
+        title: i18n.t("sensor.choose_sensor_title"),
         buttons: {
           OK: function() {
             console.log("OK Clicked");
@@ -127,13 +127,13 @@ define(function(require) {
         // view.$addressInput = $("<div class='address-input'><input type='text' name='address-input' placeholder='address of LabQuest2'></input></div>");
         sensorReadingView = new NumericOutputView({
           id: 'sensor-value-view',
-          label: "Reading: ",
+          label: i18n.t("sensor.reading"),
           units: model.getPropertyDescription('sensorReading').getUnitAbbreviation()
         });
 
         // view.$connectButton = $("<div class='interactive-button'><button>Connect</button></div>");
-        view.$zeroButton = $("<div class='interactive-button'><button>Zero</button></div>");
-        view.$selectSensorButton = $("<div class='interactive-button'><button>Select Sensor...</button></div>");
+        view.$zeroButton = $("<div class='interactive-button'><button>" + i18n.t("sensor.zero") + "</button></div>");
+        view.$selectSensorButton = $("<div class='interactive-button'><button>" + i18n.t("sensor.select_sensor") + "</button></div>");
         view.$message = $("<div class='message'></div>");
         view.$sensorReading = sensorReadingView.render().addClass("horizontal");
 

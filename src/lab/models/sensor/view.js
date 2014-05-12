@@ -5,13 +5,13 @@ define(function() {
       sensorDefinitions = require('sensor-applet').sensorDefinitions,
       viewState = require('common/views/view-state');
 
-  return function(model, modelUrl) {
+  return function(model, modelUrl, i18n) {
 
     var sensorTypeView = new SelectBoxView({
       id: 'sensor-type-view',
       options: [{
         value: null,
-        text: "Select type of sensor...",
+        text: i18n.t("sensor.select_sensor_type"),
         selected: model.properties.sensorType == null,
         disabled: true
       }].concat(Object.keys(sensorDefinitions).map(function(key) {
@@ -35,9 +35,9 @@ define(function() {
 
     function setIsTaringState() {
       if (model.properties.isTaring) {
-        view.$zeroButton.find('button').html("Zeroing...");
+        view.$zeroButton.find('button').html(i18n.t("sensor.zeroing"));
       } else {
-        view.$zeroButton.find('button').html("Zero");
+        view.$zeroButton.find('button').html(i18n.t("sensor.zero"));
       }
     }
 
@@ -90,12 +90,12 @@ define(function() {
 
         sensorReadingView = new NumericOutputView({
           id: 'sensor-value-view',
-          label: "Reading: ",
+          label: i18n.t("sensor.reading"),
           units: model.getPropertyDescription('sensorReading').getUnitAbbreviation()
         });
 
         var $selectBox = sensorTypeView.render(this.$el),
-            $zeroButton = $("<div><button>Zero</button></div>"),
+            $zeroButton = $("<div><button>" + i18n.t("sensor.zero") + "</button></div>"),
             $sensorReading = sensorReadingView.render();
 
         $selectBox.addClass('interactive-pulldown component component-spacing');
@@ -128,7 +128,7 @@ define(function() {
           this.$progressbarContainer = $('<div/>')
             .attr('id', 'sensor-progressbar-container')
             .css('bottom', $('body').height() / 2 + 75 + $('.lab-responsive-content').offset().top)
-            .append('<div class="label">Loading sensor...</div>')
+            .append('<div class="label">' + i18n.t('sensor.loading_sensor') + '</div>')
             .append($progressbar)
             .appendTo('.lab-responsive-content');
 
