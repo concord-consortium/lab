@@ -179,7 +179,8 @@ exports.withIsolatedRequireJSAndViewsMocked = function(continuation) {
             return $("<div>");
           }
         };
-      };
+      },
+      languageSelect = function() {};
 
   // Mock dependencies.
   requirejs.define('lab-grapher', [], function() { return Graph; });
@@ -189,6 +190,7 @@ exports.withIsolatedRequireJSAndViewsMocked = function(continuation) {
   requirejs.define('common/views/svg-container', [], function() { return SVGContainer; });
   requirejs.define('fastclick', [], function() { return FastClick; });
   requirejs.define('common/controllers/playback-controller', [], function() { return PlaybackController; });
+  requirejs.define('common/controllers/language-select', [], function() { return languageSelect; });
   // Speedup semantic layout calculations. We need elements in DOM, but don't care about their
   // positions and real layout.
   requirejs('common/layout/semantic-layout-config').iterationsLimit = 0;
