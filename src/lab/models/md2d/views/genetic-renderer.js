@@ -81,8 +81,8 @@ define(function (require) {
       // Register mutation menus for DNA and DNA complement. Note that
       // jQuery.contextMenu uses event delegation, so it's fully enough to
       // register this menu only once, even before these elements exists.
-      mutationsContextMenu.register('[class~="dna"] [class~="clickable-nucleo"]', model, false);
-      mutationsContextMenu.register('[class~="dna-comp"] [class~="clickable-nucleo"]', model, true);
+      mutationsContextMenu.register('[class~="dna"] [class~="clickable-nucleo"]', model, false, modelView.i18n);
+      mutationsContextMenu.register('[class~="dna-comp"] [class~="clickable-nucleo"]', model, true, modelView.i18n);
     }
 
     /**

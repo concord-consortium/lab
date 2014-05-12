@@ -9,7 +9,7 @@
 .lab-responsive-content
   .context-menu-list
     min-width: 5em
-    max-width: 20em
+    max-width: 50em
     font-size: 0.9em
     font-family: inherit
     border: none
@@ -53,7 +53,7 @@
   // ### Mutations menu (visible during DNA animation)
   .mutations-menu
     // Top-level menu
-    min-width: 11em
+    min-width: 3em
     border-radius: 0.7em
 
     .context-menu-list
@@ -109,15 +109,15 @@
 
     .insertion-submenu
       .context-menu-item
-        padding: 0.6em 0.8em
+        padding: 0.6em 2.5em 0.6em 0.8em
       .A
-        @include icon-bg("#{$directory}resources/dna/A.svg", 88%, 85%)
+        @include icon-bg("#{$directory}resources/dna/A.svg", right 0.5em top 50%, 85%)
       .T
-        @include icon-bg("#{$directory}resources/dna/T.svg", 88%, 85%)
+        @include icon-bg("#{$directory}resources/dna/T.svg", right 0.5em top 50%, 85%)
       .G
-        @include icon-bg("#{$directory}resources/dna/G.svg", 86%, 85%)
+        @include icon-bg("#{$directory}resources/dna/G.svg", right 0.5em top 50%, 85%)
       .C
-        @include icon-bg("#{$directory}resources/dna/C.svg", 86%, 85%)
+        @include icon-bg("#{$directory}resources/dna/C.svg", right 0.5em top 50%, 85%)
 
   // ### Amino-acids menu (used to change type of the amino acid)
   .aminoacids-menu

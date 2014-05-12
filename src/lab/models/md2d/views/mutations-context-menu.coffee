@@ -15,7 +15,7 @@ define (require) ->
   @DNAComplement indicates whether this menu is registered for
   DNA or DNA complementary strand.
   ###
-  register: (selector, model, DNAComplement) ->
+  register: (selector, model, DNAComplement, i18n) ->
     # Define handler for menu show and hide events. They setup classes of
     # substitution sub-menu items. One  item is hidden (X-to-X - as such
     # mutation is useless), other items receive correct classes dynamically
@@ -76,7 +76,7 @@ define (require) ->
 
       items:
         "Substitution":
-          name: "Substitution mutation"
+          name: i18n.t("mutations_menu.substitution_mutation")
           className: "substitution-submenu"
           items:
             "substitute:A": name: ""
@@ -84,13 +84,13 @@ define (require) ->
             "substitute:G": name: ""
             "substitute:C": name: ""
         "Insertion":
-          name: "Insertion mutation"
+          name: i18n.t("mutations_menu.insertion_mutation")
           className: "insertion-submenu"
           items:
-            "insert:A": name: "Insert", className: "A"
-            "insert:T": name: "Insert", className: "T"
-            "insert:G": name: "Insert", className: "G"
-            "insert:C": name: "Insert", className: "C"
-        "delete": name: "Deletion mutation"
+            "insert:A": name: i18n.t("mutations_menu.insert"), className: "A"
+            "insert:T": name: i18n.t("mutations_menu.insert"), className: "T"
+            "insert:G": name: i18n.t("mutations_menu.insert"), className: "G"
+            "insert:C": name: i18n.t("mutations_menu.insert"), className: "C"
+        "delete": name: i18n.t("mutations_menu.deletion_mutation")
     # Don't return anything.
     return

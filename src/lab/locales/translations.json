@@ -70,6 +70,12 @@
         "lysine": "Lysine",
         "arginine": "Arginine",
         "histidine": "Histidine"
+      },
+      "mutations_menu": {
+        "substitution_mutation": "Substitution mutation",
+        "insertion_mutation": "Insertion mutation",
+        "deletion_mutation": "Deletion mutation",
+        "insert": "Insert"
       }
     }
   },
@@ -144,6 +150,12 @@
         "lysine": "Lizyna",
         "arginine": "Arginina",
         "histidine": "Histydyna"
+      },
+      "mutations_menu": {
+        "substitution_mutation": "Substytucja",
+        "insertion_mutation": "Insercja",
+        "deletion_mutation": "Delecja",
+        "insert": "Wstaw"
       }
     }
   }
