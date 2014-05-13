@@ -47,7 +47,8 @@ define(function (require) {
     // ------------------------------------------------------------
     function setupModel() {
       model = new Model(modelOptions, {
-        waitForSetup: true
+        waitForSetup: true,
+        i18n: interactivesController.i18n
       });
       model.on('tickStart.modelController', tickStartHandler);
       model.on('tick.modelController', tickHandler);

@@ -8,9 +8,8 @@ define(function(require) {
       StateMachine          = require('common/state-machine'),
       sensorConnectorInterface = require('sensor-connector-interface'),
       unitsDefinition       = require('./units-definition'),
-      sensorDefinitions     = require('./sensor-definitions'),
-      BasicDialog           = require('common/controllers/basic-dialog'),
-      _ = require('underscore');
+      getSensorDefinitions  = require('./sensor-definitions'),
+      BasicDialog           = require('common/controllers/basic-dialog');
 
   // TODO move to view
   function simpleAlert(message, buttons) {
@@ -23,16 +22,10 @@ define(function(require) {
     dialog.open();
   }
 
-  var defaultSensorReadingDescription = {
-      label: "Sensor Reading",
-      unitAbbreviation: "-",
-      format: '.2f',
-      min: 0,
-      max: 10
-    };
+  return function Model(initialProperties, opt) {
+    var i18n = opt.i18n,
 
-  return function Model(initialProperties) {
-    var labModelerMixin,
+        labModelerMixin,
         propertySupport,
         dispatch,
         stateMachine,
@@ -60,6 +53,15 @@ define(function(require) {
         message,
         statusErrors,
         model;
+
+    var defaultSensorReadingDescription = {
+          label: i18n.t("sensor.measurements.sensor_reading"),
+          unitAbbreviation: "-",
+          format: '.2f',
+          min: 0,
+          max: 10
+        };
+    var sensorDefinitions = getSensorDefinitions(i18n);
 
     function updatePropertyRange(property, min, max) {
       var descriptionHash;
@@ -104,7 +106,7 @@ define(function(require) {
           sensorName = sensorDefinition.sensorName || (dataColumn.units + " sensor");
         } else {
           description = {
-            label: dataColumn.name || "Sensor Reading",
+            label: dataColumn.name || i18n.t("sensor.measurements.sensor_reading"),
             unitAbbreviation: dataColumn.units,
             format: '.2f',
             min: 0,
@@ -148,7 +150,7 @@ define(function(require) {
           sensorName2 = sensorDefinition.sensorName || (dataColumn.units + " sensor");
         } else {
           description = {
-            label: dataColumn2.name || "Sensor Reading",
+            label: dataColumn2.name || i18n.t("sensor.measurements.sensor_reading"),
             unitAbbreviation: dataColumn2.units,
             format: '.2f',
             min: 0,
@@ -213,7 +215,7 @@ define(function(require) {
       if (dataset.columns.length < 2) {
         return false;
       }
-      if (dataset.columns.length == 2 && !dataset.columns[1].name && !dataset.columns[1].units) {
+      if (dataset.columns.length === 2 && !dataset.columns[1].name && !dataset.columns[1].units) {
         return false;
       }
       return true;
@@ -221,7 +223,7 @@ define(function(require) {
 
     function setColumn() {
       var dataset = sensorConnectorInterface.datasets[0];
-      var newDataColumn,newDataColumn2,sIdx,colCandidate;
+      var newDataColumn, newDataColumn2, sIdx;
 
       hasMultipleSensors = dataset.columns.length > 2;
 
@@ -229,10 +231,10 @@ define(function(require) {
       timeColumn = dataset.columns[0];
       if (sensorConnectorInterface.hasAttachedInterface) {
         if (hasCollectableSensors(dataset) && hasMultipleSensors) {
-          message = "Ready to collect.";
+          message = i18n.t("sensor.messages.ready");
           isPlayable = true;
         } else {
-          message = "No sensors found."
+          message = i18n.t("sensor.messages.no_sensors");
           isPlayable = false;
         }
 
@@ -281,7 +283,7 @@ define(function(require) {
           }
         }
       } else {
-        message = "No devices plugged in.";
+        message = i18n.t("sensor.messages.no_devices");
         isPlayable = false;
       }
 
@@ -428,7 +430,7 @@ define(function(require) {
 
       notConnected: {
         enterState: function() {
-          message = "Not connected.";
+          message = i18n.t("sensor.messages.not_connected");
           statusErrors = 0;
           sensorConnectorInterface.startPolling("127.0.0.1:11180");
           this.gotoState('connecting');
@@ -437,7 +439,7 @@ define(function(require) {
 
       connecting: {
         enterState: function() {
-          message = "Connecting...";
+          message = i18n.t("sensor.messages.connecting");
           if (sensorConnectorInterface.isConnected) {
             this.gotoState('connected');
           }
@@ -465,8 +467,11 @@ define(function(require) {
       initialConnectionFailure: {
         enterState: function() {
           sensorConnectorInterface.stopPolling();
-          message = "Connection failed.";
-          simpleAlert("The Concord Consortium Sensor Connector is not installed or not started. Please <a target='_blank' style='color: #222299;' href='http://sensorconnector.concord.org/'>click here</a> to download an installer of the Sensor Connector, if needed.", {
+          message = i18n.t("sensor.messages.connection_failed");
+          simpleAlert(i18n.t("sensor.messages.connection_failed_alert", {
+                                click_here_link: "<a target='_blank' style='color: #222299;' href='http://sensorconnector.concord.org/'>" +
+                                                 i18n.t("sensor.messages.click_here") + "</a>"}),
+          {
             OK: function() {
               $(this).dialog("close");
               handle('dismiss');
@@ -485,7 +490,7 @@ define(function(require) {
 
       connected: {
         enterState: function() {
-          message = "Connected.";
+          message = i18n.t("sensor.messages.connected");
           canTare = true;
           canTare2 = true;
           isPlayable = true;
@@ -552,7 +557,7 @@ define(function(require) {
 
       starting: {
         enterState: function() {
-          message = "Starting data collection...";
+          message = i18n.t("sensor.messages.starting_data_collection");
           isStopped = false;
           var self = this;
           this._startTimerId = setTimeout(5000, function() {
@@ -575,10 +580,10 @@ define(function(require) {
 
       errorStarting: {
         enterState: function() {
-          message = "Error starting data collection.";
+          message = i18n.t("sensor.messages.error_starting_data_collection");
           isStopped = true;
 
-          simpleAlert("Could not start data collection. Make sure that (remote starting) is enabled", {
+          simpleAlert(i18n.t("sensor.messages.error_starting_data_collection_alert"), {
             OK: function() {
               $(this).dialog("close");
               handle('dismissErrorStarting');
@@ -600,7 +605,7 @@ define(function(require) {
           isStopped = false;
           setColumn();
           isPlayable = false;
-          message = "Collecting data.";
+          message = i18n.t("sensor.messages.collecting_data");
 
           // Check, just in case. Specifically, when errorStopping transitions here, collection
           // might have stopped in the meantime.
@@ -630,10 +635,10 @@ define(function(require) {
       // This can happen.
       startedWithNoDataColumn: {
         enterState: function() {
-          message = "No data is available.";
+          message = i18n.t("sensor.messages.no_data");
 
           sensorConnectorInterface.requestStop();
-          simpleAlert("The Sensor Connector does not appear to be reporting data for the plugged-in device", {
+          simpleAlert(i18n.t("sensor.messages.no_data_alert"), {
             OK: function() {
               $(this).dialog("close");
             }
@@ -661,7 +666,7 @@ define(function(require) {
 
       stopping: {
         enterState: function() {
-          message = "Stopping data collection...";
+          message = i18n.t("sensor.messages.stopping_data_collection");
         },
 
         data: handleData,
@@ -677,8 +682,8 @@ define(function(require) {
 
       errorStopping: {
         enterState: function() {
-          message = "Error stopping data collection.";
-          simpleAlert("Could not stop data collection. Make sure that (remote starting) is enabled", {
+          message = i18n.t("sensor.messages.error_stopping_data_collection");
+          simpleAlert(i18n.t("sensor.messages.error_stopping_data_collection_alert"), {
             OK: function() {
               $(this).dialog("close");
               handle('dismissErrorStopping');
@@ -700,7 +705,7 @@ define(function(require) {
       // The device reports the stop of data collection before all data can be received.
       collectionStopped: {
         enterState: function() {
-          message = "Data collection stopped.";
+          message = i18n.t("sensor.messages.data_collection_stopped");
           if (isAllDataReceived()) {
             this.gotoState('collectionComplete');
           }
@@ -716,7 +721,7 @@ define(function(require) {
 
       collectionComplete: {
         enterState: function() {
-          message = "Data collection complete.";
+          message = i18n.t("sensor.messages.data_collection_complete");
           isStopped = true;
         },
 
@@ -731,7 +736,7 @@ define(function(require) {
 
       disconnected: {
         enterState: function() {
-          message = "Disconnected.";
+          message = i18n.t("sensor.messages.disconnected");
           sensorConnectorInterface.stopPolling();
           var self = this;
           setTimeout(function() {
@@ -802,7 +807,7 @@ define(function(require) {
     initializeStateVariables();
 
     model.defineOutput('time', {
-      label: "Time",
+      label: i18n.t("sensor.measurements.time"),
       unitType: 'time',
       format: '.2f'
     }, function() {
@@ -810,7 +815,7 @@ define(function(require) {
     });
 
     model.defineOutput('displayTime', {
-      label: "Time",
+      label: i18n.t("sensor.measurements.time"),
       unitType: 'time',
       format: '.2f'
     }, function() {
