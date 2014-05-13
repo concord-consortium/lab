@@ -8,7 +8,7 @@ define(function(require) {
       StateMachine         = require('common/state-machine'),
       labquest2Interface   = require('labquest2-interface'),
       unitsDefinition      = require('./units-definition'),
-      sensorDefinitions    = require('./sensor-definitions'),
+      getSensorDefinitions = require('./sensor-definitions'),
       BasicDialog          = require('common/controllers/basic-dialog'),
       _ = require('underscore');
 
@@ -23,16 +23,10 @@ define(function(require) {
     dialog.open();
   }
 
-  var defaultSensorReadingDescription = {
-      label: "Sensor Reading",
-      unitAbbreviation: "-",
-      format: '.2f',
-      min: 0,
-      max: 10
-    };
+  return function Model(initialProperties, opt) {
+    var i18n = opt.i18n,
 
-  return function Model(initialProperties) {
-    var labModelerMixin,
+        labModelerMixin,
         propertySupport,
         dispatch,
         stateMachine,
@@ -58,6 +52,15 @@ define(function(require) {
         message,
         model;
 
+    var defaultSensorReadingDescription = {
+      label: i18n.t("sensor.measurements.sensor_reading"),
+      unitAbbreviation: "-",
+      format: '.2f',
+      min: 0,
+      max: 10
+    };
+    var sensorDefinitions = getSensorDefinitions(i18n);
+
     function setSensorReadingDescription() {
       var sensorDefinition;
       var description;
@@ -81,7 +84,7 @@ define(function(require) {
           sensorName = sensorDefinition.sensorName;
         } else {
           description = {
-            label: "Sensor Reading",
+            label: i18n.t("sensor.measurements.sensor_reading"),
             unitAbbreviation: dataColumn.units,
             format: '.2f',
             min: 0,
@@ -277,7 +280,7 @@ define(function(require) {
       connectedSensors: connectedSensors,
       getSelectedSensor: function() { return selectedSensor.index; },
       setSelectedSensor: function(sensorIndex) {
-        if (selectedSensor.index != sensorIndex) {
+        if (selectedSensor.index !== sensorIndex) {
           selectedSensor.index = sensorIndex;
           selectedSensor.units = null;
           model.properties.tareValue = 0; // Also reset our tare value
@@ -293,7 +296,7 @@ define(function(require) {
 
       notConnected: {
         enterState: function() {
-          message = "Not connected.";
+          message = i18n.t("sensor.messages.not_connected");
           canConnect = true;
         },
 
@@ -309,7 +312,7 @@ define(function(require) {
 
       connecting: {
         enterState: function() {
-          message = "Connecting...";
+          message = i18n.t("sensor.messages.connecting");
           if (labquest2Interface.isConnected) {
             this.gotoState('connected');
           }
@@ -337,8 +340,8 @@ define(function(require) {
       initialConnectionFailure: {
         enterState: function() {
           labquest2Interface.stopPolling();
-          message = "Connection failed.";
-          simpleAlert("Could not connect to the LabQuest2. Please make sure the address is correct and that the LabQuest2 can be reached from this computer", {
+          message = i18n.t("sensor.messages.connection_failed");
+          simpleAlert(i18n.t("sensor.messages.connection_failed_labquest2_alert"), {
             OK: function() {
               $(this).dialog("close");
               handle('dismiss');
@@ -353,7 +356,7 @@ define(function(require) {
 
       connected: {
         enterState: function() {
-          message = "Connected.";
+          message = i18n.t("sensor.messages.connected");
           canTare = true;
           isPlayable = true;
           isStopped = true;
@@ -389,7 +392,7 @@ define(function(require) {
             } else {
               canTare = false;
               // Display a message that we need to be in liveMode before we can tare
-              simpleAlert("The LabQuest2 needs to be collecting live data in order to zero. Either set up a new run on the LabQuest2, or click the meter icon in the upper left.", {
+              simpleAlert(i18n.t("sensor.messages.tare_labquest2_alert"), {
                 OK: function() {
                   $(this).dialog("close");
                   canTare = true;
@@ -413,11 +416,11 @@ define(function(require) {
         },
 
         controlEnabled: function() {
-          message = "Connected.";
+          message = i18n.t("sensor.messages.connected");
         },
 
         controlDisabled: function() {
-          message = "Connected. Press start on your LabQuest2 to begin.";
+          message = i18n.t("sensor.messages.connected_start_labquest2");
         },
 
         sessionChanged: function() {
@@ -434,7 +437,7 @@ define(function(require) {
 
       starting: {
         enterState: function() {
-          message = "Starting data collection...";
+          message = i18n.t("sensor.messages.starting_data_collection");
           isStopped = false;
           var self = this;
           this._startTimerId = setTimeout(3000, function() {
@@ -461,10 +464,10 @@ define(function(require) {
 
       errorStarting: {
         enterState: function() {
-          message = "Error starting data collection.";
+          message = i18n.t("sensor.messages.error_starting_data_collection");
           isStopped = true;
 
-          simpleAlert("Could not start data collection. Make sure that (remote starting) is enabled", {
+          simpleAlert(i18n.t("sensor.messages.error_starting_data_collection_alert"), {
             OK: function() {
               $(this).dialog("close");
               handle('dismissErrorStarting');
@@ -484,9 +487,9 @@ define(function(require) {
       started: {
         enterState: function() {
           if (canControl) {
-            message = "Collecting data.";
+            message = i18n.t("sensor.messages.collecting_data");
           } else {
-            message = "Collecting data. Press stop on your LabQuest2 to end.";
+            message = i18n.t("sensor.messages.collecting_data_stop_labquest2");
           }
           isStopped = false;
           setColumn();
@@ -505,11 +508,11 @@ define(function(require) {
         data: handleData,
 
         controlEnabled: function() {
-          message = "Collecting data.";
+          message = i18n.t("sensor.messages.collecting_data");
         },
 
         controlDisabled: function() {
-          message = "Collecting data. Press stop on your LabQuest2 to end.";
+          message = i18n.t("sensor.messages.collecting_data_stop_labquest2");
         },
 
         stop: function() {
@@ -527,10 +530,10 @@ define(function(require) {
       // This can happen.
       startedWithNoDataColumn: {
         enterState: function() {
-          message = "No data is available.";
+          message = i18n.t("sensor.messages.no_data");
 
           labquest2Interface.requestStop();
-          simpleAlert("The LabQuest does not appear to be reporting data for the plugged-in device", {
+          simpleAlert(i18n.t("sensor.messages.no_data_labquest2_alert"), {
             OK: function() {
               $(this).dialog("close");
             }
@@ -558,7 +561,7 @@ define(function(require) {
 
       canceling: {
         enterState: function() {
-          message = "Canceling data collection...";
+          message = i18n.t("sensor.messages.canceling_data_collection");
           isStopped = true;
         },
 
@@ -581,8 +584,8 @@ define(function(require) {
 
       errorCanceling: {
         enterState: function() {
-          message = "Error canceling data collection.";
-          simpleAlert("Could not cancel data collection. Make sure that (remote starting) is enabled", {
+          message = i18n.t("sensor.messages.error_canceling_data_collection");
+          simpleAlert(i18n.t("sensor.messages.error_canceling_data_collection_alert"), {
             OK: function() {
               $(this).dialog("close");
               handle('dismissErrorStopping');
@@ -603,7 +606,7 @@ define(function(require) {
 
       stopping: {
         enterState: function() {
-          message = "Stopping data collection...";
+          message = i18n.t("sensor.messages.stopping_data_collection");
         },
 
         data: handleData,
@@ -619,8 +622,8 @@ define(function(require) {
 
       errorStopping: {
         enterState: function() {
-          message = "Error stopping data collection.";
-          simpleAlert("Could not stop data collection. Make sure that (remote starting) is enabled", {
+          message = i18n.t("sensor.messages.error_stopping_data_collection");
+          simpleAlert(i18n.t("sensor.messages.error_stopping_data_collection_alert"), {
             OK: function() {
               $(this).dialog("close");
               handle('dismissErrorStopping');
@@ -642,7 +645,7 @@ define(function(require) {
       // The device reports the stop of data collection before all data can be received.
       collectionStopped: {
         enterState: function() {
-          message = "Data collection stopped.";
+          message = i18n.t("sensor.messages.data_collection_stopped");
           if (isAllDataReceived()) {
             this.gotoState('collectionComplete');
           }
@@ -658,7 +661,7 @@ define(function(require) {
 
       collectionComplete: {
         enterState: function() {
-          message = "Data collection complete.";
+          message = i18n.t("sensor.messages.data_collection_complete");
           isStopped = true;
         },
 
@@ -672,7 +675,7 @@ define(function(require) {
 
       disconnected: {
         enterState: function() {
-          message = "Disconnected.";
+          message = i18n.t("sensor.messages.disconnected");
           canConnect = true;
           labquest2Interface.stopPolling();
         },
@@ -759,7 +762,7 @@ define(function(require) {
     initializeStateVariables();
 
     model.defineOutput('time', {
-      label: "Time",
+      label: i18n.t("sensor.measurements.time"),
       unitType: 'time',
       format: '.2f'
     }, function() {
@@ -767,7 +770,7 @@ define(function(require) {
     });
 
     model.defineOutput('displayTime', {
-      label: "Time",
+      label: i18n.t("sensor.measurements.time"),
       unitType: 'time',
       format: '.2f'
     }, function() {
