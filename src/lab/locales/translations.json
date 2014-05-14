@@ -116,15 +116,24 @@
             "error_stopping_data_collection_alert": "Could not stop data collection. Make sure that (remote starting) is enabled",
             "data_collection_stopped": "Data collection stopped.",
             "data_collection_complete": "Data collection complete.",
-            "disconnected": "Disconnected."
+            "disconnected": "Disconnected.",
+            "java_applet_error": "It appears that Java applets cannot run in your browser. If you are able to fix this, reload the page to use the sensor",
+            "java_applet_not_loading": "The sensor applet appears not to be loading. If you are able to fix this, reload the page to use the sensor",
+            "unexpected_error": "There was an unexpected error when connecting to the sensor.",
+            "sensor_not_attached": "The __sensor_name__ does not appear to be attached. Try re-attaching it, and then click \"$t(sensor.messages.try_again)\".",
+            "sensor_or_device_unplugged": "The __sensor_or_device_name__ was unplugged. Try plugging it back in, and then click \"$t(sensor.messages.try_again)\".",
+            "try_again": "Try Again",
+            "cancel": "Cancel"
         },
         "measurements": {
             "sensor_reading": "Sensor Reading",
             "time": "Time",
+            "distance": "Distance",
             "acceleration": "Acceleration",
             "altitude": "Altitude",
             "angle": "Angle",
             "CO2": "CO2",
+            "CO2_concentration": "CO₂ Concentration",
             "charge": "Charge",
             "conductivity": "Conductivity",
             "current": "Current",
@@ -135,6 +144,7 @@
             "force": "Force",
             "intensity": "Intensity",
             "light_level": "Light Level",
+            "light_intensity": "Light Intensity",
             "magnetic_field": "Magnetic Field",
             "position": "Position",
             "potential": "Potential",
@@ -148,7 +158,9 @@
             "UV_intensity": "UV Intensity",
             "velocity": "Velocity",
             "volume": "Volume",
-            "pH": "pH"
+            "pH": "pH",
+            "acidity": "Acidity",
+            "O2_concentration": "O₂ Concentration"
         }
       }
     }
@@ -270,15 +282,24 @@
             "error_stopping_data_collection_alert": "Nie udało się zatrzymać pobierania danych. Upewnij się, że (remote starting) jest włączony",
             "data_collection_stopped": "Pobieranie danych zatrzymane.",
             "data_collection_complete": "Pobieranie danych zakończone.",
-            "disconnected": "Rozłączono."
+            "disconnected": "Rozłączono.",
+            "java_applet_error": "Aplety Java prawodpodobnie nie mogą być uruchomione w twojej przeglądarce. Jeżeli jesteś w stanie to naprawić to potem odśwież stronę, żeby użyć sensora.",
+            "java_applet_not_loading": "Sensor Aplet nie ładuje się. Jeżeli jesteś w stanie to naprawić to potem odśwież stronę, żeby użyć sensora.",
+            "unexpected_error": "Wystąpił nieoczekiwany błąd podczas próby połączenia z sensorem.",
+            "sensor_not_attached": "__sensor_name__ wydaje się być niedpołączony. Spróbuj podłączyć go ponownie i potem kliknij \"$t(sensor.messages.try_again)\".",
+            "sensor_or_device_unplugged": "__sensor_or_device_name__ został odłączony. Spróbuj podłączyć go ponownie i potem kliknij \"$t(sensor.messages.try_again)\".",
+            "try_again": "Spróbuj ponownie",
+            "cancel": "Anuluj"
         },
         "measurements": {
             "sensor_reading": "Odczyt sensora",
             "time": "Czas",
+            "distance": "Odległość",
             "acceleration": "Przyspieszenie",
             "altitude": "Wysokość",
             "angle": "Kąt",
             "CO2": "CO2",
+            "CO2_concentration": "Stężenie CO₂",
             "charge": "Ładunek",
             "conductivity": "Przewodność właściwa",
             "current": "Natężenie prądu",
@@ -289,6 +310,7 @@
             "force": "Siła",
             "intensity": "Natężenie",
             "light_level": "Natężenie światła",
+            "light_intensity": "Intensywność światła",
             "magnetic_field": "Pole magnetyczne",
             "position": "Pozycja",
             "potential": "Potencjał",
@@ -302,7 +324,9 @@
             "UV_intensity": "Natężenie UV",
             "velocity": "Prędkość",
             "volume": "Objętość",
-            "pH": "pH"
+            "pH": "pH",
+            "acidity": "Kwasowość",
+            "O2_concentration": "Stężenie O₂"
         }
       }
     }

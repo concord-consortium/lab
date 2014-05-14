@@ -2,13 +2,13 @@
 
 define(function(require) {
 
-  var LabModelerMixin      = require('common/lab-modeler-mixin'),
+  var labConfig            = require('lab.config'),
+      LabModelerMixin      = require('common/lab-modeler-mixin'),
       PropertyDescription  = require('common/property-description'),
       metadata             = require('./metadata'),
       sensorApplet         = require('sensor-applet'),
       unitsDefinition      = sensorApplet.unitsDefinition,
-      sensorDefinitions    = sensorApplet.sensorDefinitions,
-      labConfig            = require('lab.config'),
+      getSensorDefinitions = require('models/sensor-common/i18n-sensor-definitions'),
       BasicDialog          = require('common/controllers/basic-dialog'),
       ExportController     = require('common/controllers/export-controller');
 
@@ -26,16 +26,10 @@ define(function(require) {
     dialog.open();
   }
 
-  var defaultSensorReadingDescriptionHash = {
-      label: "Sensor Reading",
-      unitAbbreviation: "-",
-      format: '.2f',
-      min: 0,
-      max: 1
-    };
+  return function Model(initialProperties, opt) {
+    var i18n = opt.i18n,
 
-  return function Model(initialProperties) {
-    var labModelerMixin,
+        labModelerMixin,
         propertySupport,
         dispatch,
         isStopped = true,
@@ -56,6 +50,15 @@ define(function(require) {
         isSensorTareable,
         initialTareValue,
         model;
+
+    var defaultSensorReadingDescriptionHash = {
+      label: i18n.t("sensor.measurements.sensor_reading"),
+      unitAbbreviation: "-",
+      format: '.2f',
+      min: 0,
+      max: 1
+    };
+    var sensorDefinitions = getSensorDefinitions(i18n);
 
     function updatePropertyRange(property, min, max) {
       var descriptionHash;
@@ -110,13 +113,13 @@ define(function(require) {
 
           if (error) {
             if (error instanceof sensorApplet.JavaLoadError) {
-              handleLoadingFailure("It appears that Java applets cannot run in your browser. If you are able to fix this, reload the page to use the sensor");
+              handleLoadingFailure(i18n.t("sensor.messages.java_applet_error"));
             } else if (error instanceof sensorApplet.AppletInitializationError) {
-              handleLoadingFailure("The sensor applet appears not to be loading. If you are able to fix this, reload the page to use the sensor");
+              handleLoadingFailure(i18n.t("sensor.messages.java_applet_not_loading"));
             } else if (error instanceof sensorApplet.SensorConnectionError) {
               handleSensorConnectionError();
             } else {
-              handleLoadingFailure("There was an unexpected error when connecting to the sensor.");
+              handleLoadingFailure(i18n.t("sensor.messages.unexpected_error"));
             }
             model.makeInvalidatingChange(function() {
               isSensorInitializing = false;
@@ -134,18 +137,18 @@ define(function(require) {
 
     function handleSensorConnectionError() {
       removeApplet();
-      simpleAlert("The " + model.properties.sensorName + " does not appear to be attached. Try re-attaching it, and then click \"Try Again\".", {
-        "Try Again" : function() {
-          $(this).dialog("close");
-          // This is a workaround: currently, the applet itself does not appear to respond to its
-          // initialization methods if the sensor was not connected when the applet started up.
-          appendApplet();
-        },
-        Cancel: function() {
-          $(this).remove();
-          model.reload();
-        }
-      });
+      var buttons = {};
+      buttons[i18n.t("sensor.messages.try_again")] = function() {
+        $(this).dialog("close");
+        // This is a workaround: currently, the applet itself does not appear to respond to its
+        // initialization methods if the sensor was not connected when the applet started up.
+        appendApplet();
+      };
+      buttons[i18n.t("sensor.messages.cancel")] = function() {
+        $(this).remove();
+        model.reload();
+      };
+      simpleAlert(i18n.t("sensor.messages.sensor_not_attached", {sensor_name: model.properties.sensorName}), buttons);
     }
 
     function handleLoadingFailure(message) {
@@ -162,15 +165,15 @@ define(function(require) {
       removeApplet();
       model.stop();
       ExportController.logAction("User unplugged the " + what + " (" + model.properties[what+'Name'] + ").");
-      simpleAlert("The " + model.properties[what+'Name'] + " was unplugged. Try plugging it back in, and then click \"Try Again\".", {
-        "Try Again": function() {
-          $(this).dialog("close");
-          appendApplet();
-        },
-        Cancel: function() {
-          $(this).dialog("close");
-        }
-      });
+      var buttons = {};
+      buttons[i18n.t("sensor.messages.try_again")] = function() {
+        $(this).dialog("close");
+        appendApplet();
+      };
+      buttons[i18n.t("sensor.messages.cancel")] = function() {
+        $(this).dialog("close");
+      };
+      simpleAlert(i18n.t("sensor.messages.sensor_or_device_unplugged", {sensor_or_device_name: model.properties[what+'Name']}), buttons);
     }
 
     function startPollingSensor() {
@@ -410,7 +413,7 @@ define(function(require) {
     initialTareValue = model.properties.tareValue;
 
     model.defineOutput('time', {
-      label: "Time",
+      label: i18n.t("sensor.measurements.time"),
       unitType: 'time',
       format: '.2f'
     }, function() {
@@ -418,7 +421,7 @@ define(function(require) {
     });
 
     model.defineOutput('displayTime', {
-      label: "Time",
+      label: i18n.t("sensor.measurements.time"),
       unitType: 'time',
       format: '.2f'
     }, function() {
