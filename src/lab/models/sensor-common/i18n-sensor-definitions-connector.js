@@ -3,7 +3,7 @@ define(function() {
   return function(i18n) {
     return {
       "lux": {
-        "sensorName": "Light",
+        "sensorName": i18n.t("sensor.names.light"),
         "measurementName": i18n.t("sensor.measurements.light_level"),
         "measurementType": "light level",
         "tareable": true,
@@ -11,7 +11,7 @@ define(function() {
         "maxReading": 2000.0
       },
       "m": {
-        "sensorName": "Motion",
+        "sensorName": i18n.t("sensor.names.motion"),
         "measurementName": i18n.t("sensor.measurements.position"),
         "measurementType": "position",
         "tareable": true,
@@ -19,7 +19,7 @@ define(function() {
         "maxReading": 2.0
       },
       "m/s²": {
-        "sensorName": "Accelerometer",
+        "sensorName": i18n.t("sensor.names.accelerometer"),
         "measurementName": i18n.t("sensor.measurements.acceleration"),
         "measurementType": "acceleration",
         "tareable": true,
@@ -27,7 +27,7 @@ define(function() {
         "maxReading": 50.0
       },
       "m/s^2": {
-        "sensorName": "Accelerometer",
+        "sensorName": i18n.t("sensor.names.accelerometer"),
         "measurementName": i18n.t("sensor.measurements.acceleration"),
         "measurementType": "acceleration",
         "tareable": true,
@@ -35,7 +35,7 @@ define(function() {
         "maxReading": 50.0
       },
       "g": {
-        "sensorName": "Accelerometer",
+        "sensorName": i18n.t("sensor.names.accelerometer"),
         "measurementName": i18n.t("sensor.measurements.acceleration"),
         "measurementType": "acceleration",
         "tareable": true,
@@ -43,7 +43,7 @@ define(function() {
         "maxReading": 5.0
       },
       "N/kg": {
-        "sensorName": "Accelerometer",
+        "sensorName": i18n.t("sensor.names.accelerometer"),
         "measurementName": i18n.t("sensor.measurements.acceleration"),
         "measurementType": "acceleration",
         "tareable": true,
@@ -51,7 +51,7 @@ define(function() {
         "maxReading": 25.0
       },
       "mg/L": {
-        "sensorName": "Dissolved Oxygen",
+        "sensorName": i18n.t("sensor.names.dissolved_oxygen"),
         "measurementName": i18n.t("sensor.measurements.dissolved_oxygen"),
         "measurementType": "do",
         "tareable": true,
@@ -59,7 +59,7 @@ define(function() {
         "maxReading": 12.0
       },
       "kPa": {
-        "sensorName": "Pressure",
+        "sensorName": i18n.t("sensor.names.pressure"),
         "measurementName": i18n.t("sensor.measurements.pressure"),
         "measurementType": "pressure",
         "tareable": true,
@@ -67,7 +67,7 @@ define(function() {
         "maxReading": 220.0
       },
       "mm Hg": {
-        "sensorName": "Pressure",
+        "sensorName": i18n.t("sensor.names.pressure"),
         "measurementName": i18n.t("sensor.measurements.pressure"),
         "measurementType": "pressure",
         "tareable": true,
@@ -75,7 +75,7 @@ define(function() {
         "maxReading": 2000.0
       },
       "in Hg": {
-        "sensorName": "Pressure",
+        "sensorName": i18n.t("sensor.names.pressure"),
         "measurementName": i18n.t("sensor.measurements.pressure"),
         "measurementType": "pressure",
         "tareable": true,
@@ -83,7 +83,7 @@ define(function() {
         "maxReading": 80.0
       },
       "mbar": {
-        "sensorName": "Pressure",
+        "sensorName": i18n.t("sensor.names.pressure"),
         "measurementName": i18n.t("sensor.measurements.pressure"),
         "measurementType": "pressure",
         "tareable": true,
@@ -91,7 +91,7 @@ define(function() {
         "maxReading": 2200.0
       },
       "psi": {
-        "sensorName": "Pressure",
+        "sensorName": i18n.t("sensor.names.pressure"),
         "measurementName": i18n.t("sensor.measurements.pressure"),
         "measurementType": "pressure",
         "tareable": true,
@@ -99,7 +99,7 @@ define(function() {
         "maxReading": 40.0
       },
       "atm": {
-        "sensorName": "Pressure",
+        "sensorName": i18n.t("sensor.names.pressure"),
         "measurementName": i18n.t("sensor.measurements.pressure"),
         "measurementType": "pressure",
         "tareable": true,
@@ -107,7 +107,7 @@ define(function() {
         "maxReading": 2.5
       },
       "torr": {
-        "sensorName": "Pressure",
+        "sensorName": i18n.t("sensor.names.pressure"),
         "measurementName": i18n.t("sensor.measurements.pressure"),
         "measurementType": "pressure",
         "tareable": true,
@@ -115,7 +115,7 @@ define(function() {
         "maxReading": 2000.0
       },
       "nC": {
-        "sensorName": "Charge Sensor",
+        "sensorName": i18n.t("sensor.names.charge_sensor"),
         "measurementName": i18n.t("sensor.measurements.charge"),
         "measurementType": "charge",
         "tareable": false,
@@ -123,7 +123,7 @@ define(function() {
         "maxReading": 20.0
       },
       "V": {
-        "sensorName": "Voltage",
+        "sensorName": i18n.t("sensor.names.voltage"),
         "measurementName": i18n.t("sensor.measurements.potential"),
         "measurementType": "potential",
         "tareable": true,
@@ -131,7 +131,7 @@ define(function() {
         "maxReading": 30.0
       },
       "pH": {
-        "sensorName": "pH",
+        "sensorName": i18n.t("sensor.names.pH"),
         "measurementName": i18n.t("sensor.measurements.pH"),
         "measurementType": "ph",
         "tareable": false,
@@ -139,7 +139,7 @@ define(function() {
         "maxReading": 14.0
       },
       "ppm": {
-        "sensorName": "CO2 Gas",
+        "sensorName": i18n.t("sensor.names.CO2_gas"),
         "measurementName": i18n.t("sensor.measurements.CO2"),
         "measurementType": "co2",
         "tareable": false,
@@ -147,7 +147,7 @@ define(function() {
         "maxReading": 5000.0
       },
       "ppt": {
-        "sensorName": "CO2 Gas",
+        "sensorName": i18n.t("sensor.names.CO2_gas"),
         "measurementName": i18n.t("sensor.measurements.CO2"),
         "measurementType": "co2",
         "tareable": false,
@@ -155,7 +155,7 @@ define(function() {
         "maxReading": 5.0
       },
       "%": {
-        "sensorName": "CO2 Gas",
+        "sensorName": i18n.t("sensor.names.CO2_gas"),
         "measurementName": i18n.t("sensor.measurements.CO2"),
         "measurementType": "co2",
         "tareable": false,
@@ -163,7 +163,7 @@ define(function() {
         "maxReading": 0.5
       },
       "%T": {
-        "sensorName": "Colorimeter",
+        "sensorName": i18n.t("sensor.names.colorimeter"),
         "measurementName": i18n.t("sensor.measurements.transmittance"),
         "measurementType": "transmittance",
         "tareable": false,
@@ -171,7 +171,7 @@ define(function() {
         "maxReading": 100.0
       },
       "µS/cm": {
-        "sensorName": "Conductivity",
+        "sensorName": i18n.t("sensor.names.conductivity"),
         "measurementName": i18n.t("sensor.measurements.conductivity"),
         "measurementType": "conductivity",
         "tareable": true,
@@ -179,7 +179,7 @@ define(function() {
         "maxReading": 2000.0
       },
       "dS/m": {
-        "sensorName": "Conductivity",
+        "sensorName": i18n.t("sensor.names.conductivity"),
         "measurementName": i18n.t("sensor.measurements.conductivity"),
         "measurementType": "conductivity",
         "tareable": true,
@@ -187,7 +187,7 @@ define(function() {
         "maxReading": 2.0
       },
       "A": {
-        "sensorName": "Current",
+        "sensorName": i18n.t("sensor.names.current"),
         "measurementName": i18n.t("sensor.measurements.current"),
         "measurementType": "current",
         "tareable": true,
@@ -195,7 +195,7 @@ define(function() {
         "maxReading": 1.2
       },
       "mA": {
-        "sensorName": "Current",
+        "sensorName": i18n.t("sensor.names.current"),
         "measurementName": i18n.t("sensor.measurements.current"),
         "measurementType": "current",
         "tareable": true,
@@ -203,7 +203,7 @@ define(function() {
         "maxReading": 500.0
       },
       "°C": {
-        "sensorName": "Temperature",
+        "sensorName": i18n.t("sensor.names.temperature"),
         "measurementName": i18n.t("sensor.measurements.temperature"),
         "measurementType": "temperature",
         "tareable": false,
@@ -211,7 +211,7 @@ define(function() {
         "maxReading": 40.0
       },
       "degC": {
-        "sensorName": "Temperature",
+        "sensorName": i18n.t("sensor.names.temperature"),
         "measurementName": i18n.t("sensor.measurements.temperature"),
         "measurementType": "temperature",
         "tareable": false,
@@ -219,7 +219,7 @@ define(function() {
         "maxReading": 40.0
       },
       "°F": {
-        "sensorName": "Temperature",
+        "sensorName": i18n.t("sensor.names.temperature"),
         "measurementName": i18n.t("sensor.measurements.temperature"),
         "measurementType": "temperature",
         "tareable": false,
@@ -227,7 +227,7 @@ define(function() {
         "maxReading": 100.0
       },
       "degF": {
-        "sensorName": "Temperature",
+        "sensorName": i18n.t("sensor.names.temperature"),
         "measurementName": i18n.t("sensor.measurements.temperature"),
         "measurementType": "temperature",
         "tareable": false,
@@ -235,7 +235,7 @@ define(function() {
         "maxReading": 100.0
       },
       "K": {
-        "sensorName": "Temperature",
+        "sensorName": i18n.t("sensor.names.temperature"),
         "measurementName": i18n.t("sensor.measurements.temperature"),
         "measurementType": "temperature",
         "tareable": false,
@@ -243,7 +243,7 @@ define(function() {
         "maxReading": 400.0
       },
       "N": {
-        "sensorName": "Force",
+        "sensorName": i18n.t("sensor.names.force"),
         "measurementName": i18n.t("sensor.measurements.force"),
         "measurementType": "force",
         "tareable": true,
@@ -251,7 +251,7 @@ define(function() {
         "maxReading": 50.0
       },
       "lb": {
-        "sensorName": "Force",
+        "sensorName": i18n.t("sensor.names.force"),
         "measurementName": i18n.t("sensor.measurements.force"),
         "measurementType": "force",
         "tareable": true,
@@ -267,7 +267,7 @@ define(function() {
         "maxReading": 1100.0
       },
       "m/s": {
-        "sensorName": "Motion",
+        "sensorName": i18n.t("sensor.names.motion"),
         "measurementName": i18n.t("sensor.measurements.velocity"),
         "measurementType": "velocity",
         "tareable": true,
@@ -275,7 +275,7 @@ define(function() {
         "maxReading": 5.0
       },
       "ft/s": {
-        "sensorName": "Anemometer",
+        "sensorName": i18n.t("sensor.names.anemometer"),
         "measurementName": i18n.t("sensor.measurements.speed"),
         "measurementType": "speed",
         "tareable": true,
@@ -283,7 +283,7 @@ define(function() {
         "maxReading": 100.0
       },
       "ft": {
-        "sensorName": "Motion",
+        "sensorName": i18n.t("sensor.names.motion"),
         "measurementName": i18n.t("sensor.measurements.position"),
         "measurementType": "position",
         "tareable": true,
@@ -291,7 +291,7 @@ define(function() {
         "maxReading": 6.0
       },
       "kg": {
-        "sensorName": "Hand Dynamometer",
+        "sensorName": i18n.t("sensor.names.hand_dynamometer"),
         "measurementName": i18n.t("sensor.measurements.force"),
         "measurementType": "force",
         "tareable": true,
@@ -299,7 +299,7 @@ define(function() {
         "maxReading": 50.0
       },
       "v": {
-        "sensorName": "Heart Rate",
+        "sensorName": i18n.t("sensor.names.heart_rate"),
         "measurementName": i18n.t("sensor.measurements.signal"),
         "measurementType": "signal",
         "tareable": false,
@@ -307,7 +307,7 @@ define(function() {
         "maxReading": 3.0
       },
       "mT": {
-        "sensorName": "Magnetic Field",
+        "sensorName": i18n.t("sensor.names.magnetic_field"),
         "measurementName": i18n.t("sensor.measurements.magnetic_field"),
         "measurementType": "magnetic field",
         "tareable": true,
@@ -315,7 +315,7 @@ define(function() {
         "maxReading": 8.0
       },
       "G": {
-        "sensorName": "Magnetic Field",
+        "sensorName": i18n.t("sensor.names.magnetic_field"),
         "measurementName": i18n.t("sensor.measurements.magnetic_field"),
         "measurementType": "magnetic field",
         "tareable": true,
@@ -323,7 +323,7 @@ define(function() {
         "maxReading": 80.0
       },
       "rad": {
-        "sensorName": "Rotary Motion",
+        "sensorName": i18n.t("sensor.names.rotary_motion"),
         "measurementName": i18n.t("sensor.measurements.angle"),
         "measurementType": "angle",
         "tareable": true,
@@ -331,7 +331,7 @@ define(function() {
         "maxReading": 15.0
       },
       "°": {
-        "sensorName": "Rotary Motion",
+        "sensorName": i18n.t("sensor.names.rotary_motion"),
         "measurementName": i18n.t("sensor.measurements.angle"),
         "measurementType": "angle",
         "tareable": true,
@@ -339,7 +339,7 @@ define(function() {
         "maxReading": 1000.0
       },
       "cm": {
-        "sensorName": "Linear Position Sensor",
+        "sensorName": i18n.t("sensor.names.linear_position_sensor"),
         "measurementName": i18n.t("sensor.measurements.position"),
         "measurementType": "position",
         "tareable": true,
@@ -347,7 +347,7 @@ define(function() {
         "maxReading": 15.0
       },
       "dB": {
-        "sensorName": "Sound Level",
+        "sensorName": i18n.t("sensor.names.sound_level"),
         "measurementName": i18n.t("sensor.measurements.sound_level"),
         "measurementType": "sound level",
         "tareable": true,
@@ -355,7 +355,7 @@ define(function() {
         "maxReading": 110.0
       },
       "dbA": {
-        "sensorName": "Sound Level",
+        "sensorName": i18n.t("sensor.names.sound_level"),
         "measurementName": i18n.t("sensor.measurements.sound_level"),
         "measurementType": "sound level",
         "tareable": true,
@@ -363,7 +363,7 @@ define(function() {
         "maxReading": 110.0
       },
       "rel": {
-        "sensorName": "Spectrophotometer",
+        "sensorName": i18n.t("sensor.names.spectrophotometer"),
         "measurementName": i18n.t("sensor.measurements.intensity"),
         "measurementType": "intensity",
         "tareable": false,
@@ -371,7 +371,7 @@ define(function() {
         "maxReading": 1.0
       },
       "Rel": {
-        "sensorName": "Spectrophotometer",
+        "sensorName": i18n.t("sensor.names.spectrophotometer"),
         "measurementName": i18n.t("sensor.measurements.fluorescence_405_nm"),
         "measurementType": "fluorescence 405 nm",
         "tareable": false,
@@ -379,7 +379,7 @@ define(function() {
         "maxReading": 1.0
       },
       "Rel.": {
-        "sensorName": "Spectrophotometer",
+        "sensorName": i18n.t("sensor.names.spectrophotometer"),
         "measurementName": i18n.t("sensor.measurements.fluorescence_500_nm"),
         "measurementType": "fluorescence 500 nm",
         "tareable": false,
@@ -387,7 +387,7 @@ define(function() {
         "maxReading": 1.0
       },
       "L/s": {
-        "sensorName": "Spirometer",
+        "sensorName": i18n.t("sensor.names.spirometer"),
         "measurementName": i18n.t("sensor.measurements.flow_rate"),
         "measurementType": "flow rate",
         "tareable": true,
@@ -395,7 +395,7 @@ define(function() {
         "maxReading": 4.0
       },
       "mL/s": {
-        "sensorName": "Spirometer",
+        "sensorName": i18n.t("sensor.names.spirometer"),
         "measurementName": i18n.t("sensor.measurements.flow_rate"),
         "measurementType": "flow rate",
         "tareable": true,
@@ -403,7 +403,7 @@ define(function() {
         "maxReading": 4000.0
       },
       "NTU": {
-        "sensorName": "Turbidity",
+        "sensorName": i18n.t("sensor.names.turbidity"),
         "measurementName": i18n.t("sensor.measurements.turbidity"),
         "measurementType": "turbidity",
         "tareable": true,
@@ -411,7 +411,7 @@ define(function() {
         "maxReading": 50.0
       },
       "mW/m²": {
-        "sensorName": "UV Sensor",
+        "sensorName": i18n.t("sensor.names.UV_sensor"),
         "measurementName": i18n.t("sensor.measurements.UV_intensity"),
         "measurementType": "uv intensity",
         "tareable": true,
@@ -419,7 +419,7 @@ define(function() {
         "maxReading": 20000.0
       },
       "mL": {
-        "sensorName": "Drop Counter",
+        "sensorName": i18n.t("sensor.names.drop_counter"),
         "measurementName": i18n.t("sensor.measurements.volume"),
         "measurementType": "volume",
         "tareable": false,
@@ -427,7 +427,7 @@ define(function() {
         "maxReading": 3.0
       },
       "f": {
-        "sensorName": "Altitude",
+        "sensorName": i18n.t("sensor.names.altitude"),
         "measurementName": i18n.t("sensor.measurements.altitude"),
         "measurementType": "altitude",
         "tareable": true,
@@ -435,7 +435,7 @@ define(function() {
         "maxReading": 300.0
       },
       "mph": {
-        "sensorName": "Anemometer",
+        "sensorName": i18n.t("sensor.names.anemometer"),
         "measurementName": i18n.t("sensor.measurements.speed"),
         "measurementType": "speed",
         "tareable": true,
@@ -443,7 +443,7 @@ define(function() {
         "maxReading": 10.0
       },
       "km/h": {
-        "sensorName": "Anemometer",
+        "sensorName": i18n.t("sensor.names.anemometer"),
         "measurementName": i18n.t("sensor.measurements.speed"),
         "measurementType": "speed",
         "tareable": true,
@@ -451,7 +451,7 @@ define(function() {
         "maxReading": 20.0
       },
       "knots": {
-        "sensorName": "Anemometer",
+        "sensorName": i18n.t("sensor.names.anemometer"),
         "measurementName": i18n.t("sensor.measurements.speed"),
         "measurementType": "speed",
         "tareable": true,

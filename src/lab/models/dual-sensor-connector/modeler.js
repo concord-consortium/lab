@@ -8,7 +8,7 @@ define(function(require) {
       StateMachine          = require('common/state-machine'),
       sensorConnectorInterface = require('sensor-connector-interface'),
       unitsDefinition       = require('./units-definition'),
-      getSensorDefinitions  = require('./sensor-definitions'),
+      getSensorDefinitions  = require('models/sensor-common/i18n-sensor-definitions-connector'),
       BasicDialog           = require('common/controllers/basic-dialog');
 
   // TODO move to view
@@ -103,7 +103,7 @@ define(function(require) {
             description.unitAbbreviation = dataColumn.units;
           }
           isSensorTareable = sensorDefinition.tareable;
-          sensorName = sensorDefinition.sensorName || (dataColumn.units + " sensor");
+          sensorName = sensorDefinition.sensorName || (dataColumn.units + " " + i18n.t("sensor.names.sensor"));
         } else {
           description = {
             label: dataColumn.name || i18n.t("sensor.measurements.sensor_reading"),
@@ -113,12 +113,12 @@ define(function(require) {
             max: 10
           };
           isSensorTareable = true;
-          sensorName = dataColumn.units + " sensor";
+          sensorName = dataColumn.units + " " + i18n.t("sensor.names.sensor");
         }
       } else {
         description = defaultSensorReadingDescription;
         isSensorTareable = false;
-        sensorName = "(no sensor)";
+        sensorName = i18n.t("sensor.names.no_sensor");
       }
 
       propertySupport.setPropertyDescription('sensorReading',
@@ -147,7 +147,7 @@ define(function(require) {
             description.unitAbbreviation = dataColumn2.units;
           }
           isSensorTareable2 = sensorDefinition.tareable;
-          sensorName2 = sensorDefinition.sensorName || (dataColumn.units + " sensor");
+          sensorName2 = sensorDefinition.sensorName || (dataColumn.units + " " + i18n.t("sensor.names.sensor"));
         } else {
           description = {
             label: dataColumn2.name || i18n.t("sensor.measurements.sensor_reading"),
@@ -157,12 +157,12 @@ define(function(require) {
             max: 10
           };
           isSensorTareable2 = true;
-          sensorName2 = dataColumn2.units + " sensor";
+          sensorName2 = dataColumn2.units + " " + i18n.t("sensor.names.sensor");
         }
       } else {
         description = defaultSensorReadingDescription;
         isSensorTareable2 = false;
-        sensorName2 = "(no sensor)";
+        sensorName2 = i18n.t("sensor.names.no_sensor");
       }
 
       propertySupport.setPropertyDescription('sensorReading2',
@@ -343,7 +343,7 @@ define(function(require) {
     function connectedSensors() {
       var sensors = [],
           dataset = sensorConnectorInterface.datasets[0],
-          i, unit;
+          i;
 
       for (i=0; i < dataset.columns.length; i++) {
         sensors.push({units: dataset.columns[i].units, name: dataset.columns[i].name});
@@ -406,7 +406,7 @@ define(function(require) {
       getSelectedSensor: function() { return selectedSensor.index; },
       getSelectedSensor2: function() { return selectedSensor2.index; },
       setSelectedSensor: function(sensorIndex) {
-        if (selectedSensor.index != sensorIndex) {
+        if (selectedSensor.index !== sensorIndex) {
           selectedSensor.index = sensorIndex;
           selectedSensor.units = null;
           model.properties.tareValue = 0; // Also reset our tare value
@@ -414,7 +414,7 @@ define(function(require) {
         }
       },
       setSelectedSensor2: function(sensorIndex) {
-        if (selectedSensor2.index != sensorIndex) {
+        if (selectedSensor2.index !== sensorIndex) {
           selectedSensor2.index = sensorIndex;
           selectedSensor2.units = null;
           model.properties.tareValue2 = 0; // Also reset our tare value

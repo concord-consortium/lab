@@ -8,7 +8,7 @@ define(function(require) {
       StateMachine         = require('common/state-machine'),
       labquest2Interface   = require('labquest2-interface'),
       unitsDefinition      = require('./units-definition'),
-      getSensorDefinitions = require('./sensor-definitions'),
+      getSensorDefinitions = require('models/sensor-common/i18n-sensor-definitions-connector'),
       BasicDialog          = require('common/controllers/basic-dialog'),
       _ = require('underscore');
 

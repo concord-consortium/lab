@@ -1,8 +1,8 @@
 define(function(require) {
 
-  var NumericOutputView = require('common/views/numeric-output-view'),
-      BasicDialog       = require('common/controllers/basic-dialog'),
-      sensorDefinitions = require('./sensor-definitions'),
+  var NumericOutputView    = require('common/views/numeric-output-view'),
+      BasicDialog          = require('common/controllers/basic-dialog'),
+      getSensorDefinitions = require('models/sensor-common/i18n-sensor-definitions-connector'),
       viewState = require('common/views/view-state');
 
   return function(model, modelUrl, i18n) {
@@ -13,6 +13,8 @@ define(function(require) {
     var sensorReadingView;
     var sensorReadingView2;
     var view;
+
+    var sensorDefinitions = getSensorDefinitions(i18n);
 
     function setCanTareState() {
       if (model.properties.canTare) {
