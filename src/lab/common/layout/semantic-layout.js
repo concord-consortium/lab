@@ -10,13 +10,16 @@ define(function (require) {
   var layoutConfig = require('common/layout/semantic-layout-config'),
       arrays       = require('arrays'),
       console      = require('common/console'),
-      alert        = require('common/alert');
+      alert        = require('common/alert'),
+
+      // Amount to inset the model and components from the boundaries.
+      PADDING = 10;
 
   return function SemanticLayout() {
         // Public API.
     var layout,
 
-        // Manin container of the interactive. Font scaling will be applied to it.
+        // Main container of the interactive. Font scaling will be applied to it.
         $mainContainer,
         // Parent of all containers, it should equal to $mainContainer or one of its children.
         $containersParent,
@@ -42,7 +45,6 @@ define(function (require) {
         availableWidth,
         availableHeight,
 
-        // Amount to inset the model and components from the top left
         padding = 10,
 
         // To optimize getHeightForWidth for model containers that care about the font size, kee
@@ -55,7 +57,7 @@ define(function (require) {
         modelTop,
         modelLeft,
         topBoundary,
-        leftBoundary,
+        horizontalBoundary,
         bottomBarWidth;
 
     function reset() {
@@ -63,7 +65,7 @@ define(function (require) {
       modelTop = 0;
       modelLeft = 0;
       topBoundary = 0;
-      leftBoundary = 0;
+      horizontalBoundary = 0;
       bottomBarWidth = 0;
     }
 
@@ -94,7 +96,7 @@ define(function (require) {
       containerScale = Math.min($mainContainer.width() / canonicalWidth,
                                 $mainContainer.height() / canonicalHeight);
 
-      padding = containerScale * 10;
+      padding = containerScale * PADDING;
 
       font = layoutConfig.canonicalFontSize * fontScale * containerScale;
 
@@ -307,7 +309,7 @@ define(function (require) {
         }
       }
 
-      leftBoundary = padding;
+      horizontalBoundary = padding;
 
       // Shift typical containers (aboveOther == false) according to the top boundary.
       for (id in $containerByID) {
@@ -318,7 +320,7 @@ define(function (require) {
         top = getDimensionOfContainer($container, "top");
         $container.css("top", top + topBoundary);
         left = getDimensionOfContainer($container, "left");
-        $container.css("left", left + leftBoundary);
+        $container.css("left", left + horizontalBoundary);
       }
     }
 
@@ -358,7 +360,7 @@ define(function (require) {
       // Stop condition. We assume that layout is good enough when it fits the container +/- 2px.
       if ((maxX <= availableWidth + 2 && maxY <= (availableHeight-bottomBarWidth + 2)) &&
           (Math.abs(availableWidth - maxX) < 2 || Math.abs((availableHeight-bottomBarWidth) - maxY) < 2) &&
-          (Math.abs(minX - leftBoundary) < 2 && Math.abs(minY - topBoundary) < 2)) {
+          (Math.abs(minX - horizontalBoundary) < 2 && Math.abs(minY - topBoundary) < 2)) {
         return true;
       }
 
@@ -370,7 +372,7 @@ define(function (require) {
         modelWidth = layoutConfig.minModelWidth;
       }
 
-      modelLeft -= minX - leftBoundary;
+      modelLeft -= minX - horizontalBoundary;
       modelTop -= minY - topBoundary;
 
       return false;
@@ -405,17 +407,22 @@ define(function (require) {
     // Parses a container's dimension, such as "model.height".
     function getDimension(dim) {
       switch(dim) {
+        case "container.left":
+        case "container.top":
+          return 0;
         case "container.width":
+        case "container.right":
           return availableWidth;
         case "container.height":
+        case "container.bottom":
           return availableHeight;
         case "interactive.left":
-          return leftBoundary;
+          return horizontalBoundary;
         case "interactive.top":
           return topBoundary;
         case "interactive.width":
         case "interactive.right":
-          return availableWidth - leftBoundary;
+          return availableWidth - horizontalBoundary;
         case "interactive.height":
         case "interactive.bottom":
           return availableHeight - topBoundary - bottomBarWidth;
