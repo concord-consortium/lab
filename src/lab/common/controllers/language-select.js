@@ -59,6 +59,7 @@ define(function (require) {
       appendTo: '.lab-responsive-content',
       className: 'lang-menu',
       trigger: 'none', // !
+      zIndex: 1000, // avoid conflict with layout containers
       determinePosition: function($menu) {
         // position to the lower left of the trigger element
         // .position() is provided as a jQuery UI utility
