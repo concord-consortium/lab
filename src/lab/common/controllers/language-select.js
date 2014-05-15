@@ -65,8 +65,8 @@ define(function (require) {
         // .position() is provided as a jQuery UI utility
         // (...and it won't work on hidden elements)
         $menu.css('display', 'block').position({
-            my: "left top",
-            at: "left bottom",
+            my: "right top",
+            at: "right bottom",
             of: this,
             offset: "0 5",
             collision: "fit"

@@ -72,6 +72,27 @@ define(function () {
       layout[container.id] = [element.id];
     }
 
+    if (interactive.i18nMetadata) {
+      createElementInContainer({
+        "type": "div",
+        "id": "lang-icon",
+        "width": "1.8em",
+        "height": "1.35em",
+        "tooltip": i18n.t("banner.lang_tooltip")
+      },
+      {
+        "id": "banner-lang",
+        "top": "0",
+        "height": topBarHeight + "em",
+        "right": "container.right",
+        "padding-top": topBarVerticalPadding + "em",
+        "padding-bottom": topBarVerticalPadding + "em",
+        "padding-left": "0.75em",
+        "padding-right": "0.25em",
+        "aboveOthers": true
+      });
+    }
+
     // Define about link only if "about" or "subtitle" section is available.
     aboutDialog.update(interactive);
     createElementInContainer({
@@ -94,7 +115,7 @@ define(function () {
       "height": topBarHeight + "em",
       "padding-top": topBarVerticalPadding + "em",
       "padding-bottom": topBarVerticalPadding + "em",
-      "right": "interactive.width",
+      "right": interactive.i18nMetadata ? "banner-lang.left" : "interactive.right",
       "padding-left": "1em",
       "padding-right": "0.75em",
       "align": "right",
@@ -128,25 +149,6 @@ define(function () {
         "aboveOthers": true
       });
     }
-
-    createElementInContainer({
-      "type": "div",
-      "id": "lang-icon",
-      "width": "1.8em",
-      "height": "1.35em",
-      "tooltip": i18n.t("banner.lang_tooltip")
-    },
-    {
-      "id": "banner-lang",
-      "top": "0",
-      "height": topBarHeight + "em",
-      "padding-top": topBarVerticalPadding + "em",
-      "padding-bottom": topBarVerticalPadding + "em",
-      "right": labConfig.sharing ? "banner-middle.left" : "banner-right.left",
-      "padding-right": "2em",
-      "align": "right",
-      "aboveOthers": true
-    });
 
     createElementInContainer(
     {
