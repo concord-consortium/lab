@@ -76,7 +76,7 @@ define (require) ->
 
       items:
         "Substitution":
-          name: i18n.t("mutations_menu.substitution_mutation")
+          name: i18n.t("md2d.mutations_menu.substitution_mutation")
           className: "substitution-submenu"
           items:
             "substitute:A": name: ""
@@ -84,13 +84,13 @@ define (require) ->
             "substitute:G": name: ""
             "substitute:C": name: ""
         "Insertion":
-          name: i18n.t("mutations_menu.insertion_mutation")
+          name: i18n.t("md2d.mutations_menu.insertion_mutation")
           className: "insertion-submenu"
           items:
-            "insert:A": name: i18n.t("mutations_menu.insert"), className: "A"
-            "insert:T": name: i18n.t("mutations_menu.insert"), className: "T"
-            "insert:G": name: i18n.t("mutations_menu.insert"), className: "G"
-            "insert:C": name: i18n.t("mutations_menu.insert"), className: "C"
-        "delete": name: i18n.t("mutations_menu.deletion_mutation")
+            "insert:A": name: i18n.t("md2d.mutations_menu.insert"), className: "A"
+            "insert:T": name: i18n.t("md2d.mutations_menu.insert"), className: "T"
+            "insert:G": name: i18n.t("md2d.mutations_menu.insert"), className: "G"
+            "insert:C": name: i18n.t("md2d.mutations_menu.insert"), className: "C"
+        "delete": name: i18n.t("md2d.mutations_menu.deletion_mutation")
     # Don't return anything.
     return
