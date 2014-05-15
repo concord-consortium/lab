@@ -25,7 +25,7 @@ define(function (require) {
         origin         = location.href.match(/(.*?\/\/.*?)\//)[1],
         embeddablePath = location.pathname;
 
-    BasicDialog.call(this, {dialogClass: "share-dialog", appendTo: parentSelector});
+    BasicDialog.call(this, {dialogClass: "share-dialog", appendTo: parentSelector}, i18n);
 
     /** @private */
     this._view = {

@@ -22,6 +22,9 @@
         "text_reset": "Reset",
         "text_reset_tooltip": "Reset the simulation or data collection"
       },
+      "dialog": {
+        "close_tooltip": "Close"
+      },
       "about_dialog": {
         "title": "About: __interactive_title__"
       },
@@ -233,6 +236,9 @@
         "text_stop_tooltip": "Zatrzymaj symulację lub pobieranie danych",
         "text_reset": "Zresetuj",
         "text_reset_tooltip": "Zresetuj symulację lub pobieranie danych"
+      },
+      "dialog": {
+        "close_tooltip": "Zamknij"
       },
       "about_dialog": {
         "title": "O symulacji: __interactive_title__"

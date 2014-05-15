@@ -11,7 +11,7 @@ define(function (require) {
    * @constructor
    */
   function AboutDialog(parentSelector, i18n) {
-    BasicDialog.call(this, {dialogClass: "about-dialog", appendTo: parentSelector});
+    BasicDialog.call(this, {dialogClass: "about-dialog", appendTo: parentSelector}, i18n);
     this._i18n = i18n;
   }
   inherit(AboutDialog, BasicDialog);

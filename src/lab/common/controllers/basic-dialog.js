@@ -15,14 +15,14 @@ define(function () {
    * @constructor
    * @param {Object} options jQuery UI Dialog options.
    */
-  function BasicDialog(options) {
+  function BasicDialog(options, i18n) {
     /**
      * Basic dialog elements.
      * @type {jQuery}
      */
     this.$element = $('<div>');
     // Create jQuery UI Dialog.
-    this.$element.dialog($.extend({}, defOptions, options));
+    this.$element.dialog($.extend({closeText: i18n.t("dialog.close_tooltip")}, defOptions, options));
   }
 
   /**
