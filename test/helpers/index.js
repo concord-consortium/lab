@@ -183,7 +183,7 @@ exports.withIsolatedRequireJSAndViewsMocked = function(continuation) {
       languageSelect = function() {};
 
   // Mock dependencies.
-  requirejs.define('lab-grapher', [], function() { return Graph; });
+  requirejs.define('lab-grapher', [], function() { Graph.i18n = {}; return Graph; });
   requirejs.define('grapher/bar-graph/bar-graph-view', [], function() { return BarGraphView; });
   requirejs.define('common/views/numeric-output-view', [], function() { return NumericOutputView; });
   requirejs.define('models/md2d/views/renderer', [], function() { return Renderer; });
