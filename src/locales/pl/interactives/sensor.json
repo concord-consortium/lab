@@ -115,7 +115,7 @@
     {
       "type": "button",
       "id": "start-button",
-      "text": "Start",
+      "text": "Rozpocznij",
       "tooltip": "Rozpocznij eksperyment.",
       "action": [
         "start();",
@@ -125,8 +125,8 @@
     {
       "type": "button",
       "id": "stop-button",
-      "text": "Stop",
-      "tooltip": "Stop the experiment run.",
+      "text": "Zatrzymaj",
+      "tooltip": "Zatrzymaj eksperyment.",
       "action": "stop();"
     },
     {
