@@ -26,6 +26,8 @@ define(function(require) {
     // Public API object to be returned.
     var api = {},
 
+      i18n = modelView.i18n,
+
       // Allows us to defer running actual renderer setup until layout system has determined oursize.
       isSetup = false,
 
@@ -281,7 +283,7 @@ define(function(require) {
             "class": "opaque-on-hover"
           })
           .append("title")
-          .text("Heatbath active");
+          .text(i18n.t("md2d.heatbath_icon_tooltip"));
       }
       if (iconContainer.select("#ke-gradient").empty()) {
         // Kinetic Energy Shading gradient image.
@@ -297,7 +299,7 @@ define(function(require) {
             "class": "opaque-on-hover"
           })
           .append("title")
-          .text("Kinetic energy gradient");
+          .text(i18n.t("md2d.ke_icon_tooltip"));
       }
     }
 
