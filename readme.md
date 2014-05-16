@@ -59,6 +59,7 @@ IE 9+, FF, Chrome, Safari, iOS Safari, Chrome for Android all support SVG
 - [Repository Structure](developer-doc/repository-structure.md)
 - [Javascript Dependency Management and Build Process](developer-doc/js-dependency-management.md)
 - [Testing](developer-doc/testing.md)
+- [Localization](developer-doc/localization.md)
 - [Physical Constants and Units](developer-doc/physical-constants-and-units.md)
 - [Deployment](developer-doc/deployment.md)
 - [References](developer-doc/references.md)
