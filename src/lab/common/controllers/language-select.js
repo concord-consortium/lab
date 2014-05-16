@@ -9,7 +9,8 @@ define(function (require) {
 
     var metadataDownloaded = $.get(metadata).done(function(results) {
       if (typeof results === 'string') results = JSON.parse(results);
-      setupContextMenu(selector, results, interactiveController.interactive.lang, interactiveController);
+      setupContextMenu(selector, results, interactiveController.interactive.lang,
+                       interactiveController);
     });
 
     var interactiveRendered = new $.Deferred();
@@ -45,11 +46,10 @@ define(function (require) {
         className: 'lang-' + key
       };
     });
-
-    // If set 'trigger': 'none' during its initialization and then open it manually using
-    // .contextMenu() call, it will cause that menu will be opened without using mouse pointer
-    // coordinates. So it's the simplest workaround to force a menu to show below the flag,
-    // instead of below the mouse pointer.
+    if (Object.keys(items).length === 0) return;
+    // When 'trigger' is set to 'none' and menu is opened manually using .contextMenu() call,
+    // it causes that menu positioning doesn't use mouse pointer coordinates. It's the simplest way
+    // to force a menu to always show below the flag.
     $(selector).on('click', function () {
       $(selector).contextMenu(); // ! open manu manually
     });
@@ -77,7 +77,6 @@ define(function (require) {
       },
       items: items
     });
-
     Object.keys(items).forEach(function (key) {
       $('.context-menu-item.lang-' + key).css('background-image', 'url("' + code2flag(key) + '")');
     });
