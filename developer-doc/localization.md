@@ -76,7 +76,7 @@ all translated copies should specify two additional properties:
    interactive.
 - `lang` - language code, default is *en-US*. It should match one of the languages specified in
    related `i18nMetadata`. Also, to enable Lab Framework strings localization, it should match
-   one of the available Lab translations specified in [translations.json](https://github.com/concord-consortium/lab/blob/master/src/lab/locales/translations.json) (see [the previous section](#fab-framework-strings-localization)).
+   one of the available Lab translations specified in [translations.json](https://github.com/concord-consortium/lab/blob/master/src/lab/locales/translations.json) (see [the previous section](#lab-framework-strings-localization)).
 
 Using [Oil and Water](http://lab-framework.concord.org/embeddable.html#interactives/oil-and-water.json) as an example:
 
@@ -101,4 +101,4 @@ will show up in the Interactive (the flag icon in the upper-right corner).
 Note that when you open [Oil and Water](http://lab-framework.concord.org/embeddable.html#interactives/oil-and-water.json) and switch to Polish language, all the strings in
 surrounding frame will be translated as well (e.g. *About* and *Share*). However if you switch
 to Spanish translation, the same strings will remain English. This is because Lab Framework has
-included Polish translation, but Spanish is not available at the moment. See [the previous section](#fab-framework-strings-localization) to read how to add Lab Framework translation.
+included Polish translation, but Spanish is not available at the moment. See [the previous section](#lab-framework-strings-localization) to read how to add Lab Framework translation.
