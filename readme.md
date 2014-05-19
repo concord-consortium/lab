@@ -4,8 +4,8 @@ HTML5-based open source scientific models, visualizations, graphing, and probewa
 [Concord Consortium](http://www.concord.org). This framework is deployed in the following places.
 These sites contain many examples of what it can do:
 
-- **[lab-framework.concord.org](http://lab.concord.org)** _(production)_
-- **[lab-framework.dev.concord.org](http://lab.dev.concord.org)** _(development)_
+- **[lab-framework.concord.org](http://lab-framework.concord.org)** _(production)_
+- **[lab-framework.concord.org/branch/master/](http://lab-framework.concord.org/branch/master/)** _(development)_
 
 ## Setup Development
 
