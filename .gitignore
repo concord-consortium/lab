@@ -20,19 +20,3 @@ Thumbs.db
 *.sublime-workspace
 .project
 /*.log
-
-/java
-/sensor-projects
-/config/deploy
-src/experiments/inquiry-space-importer/reference/Importer.js
-config/littlechef
-
-# Java keystore files, except the sample one included with lab
-/config/*.jks
-!/config/lab-sample-keystore.jks
-
-# resources generated and archived during a release
-version
-tarballs
-
-# gnore
