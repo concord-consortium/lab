@@ -35,15 +35,17 @@ define(function(require) {
               <stop stop-color="{{ medCol }}" offset="100%"></stop> \
             </radialGradient> \
          </defs> \
-         {{#excited}} \
-          <circle fill="#ffe600" cx="16" cy="16" r="12" fill-opacity="{{ opacity }}"/> \
-          <circle fill="url(#grad)" cx="16" cy="16" r="8" fill-opacity="{{ opacity }}"/> \
-         {{/excited}} \
-         {{^excited}} \
-          <circle fill="url(#grad)" cx="16" cy="16" r="16" fill-opacity="{{ opacity }}"/> \
-         {{/excited}} \
-         <text class="shadow" text-anchor="middle" x="16" y="16" dy="0.31em">{{ label }}</text> \
-         <text text-anchor="middle" x="16" y="16" dy="0.31em">{{ label }}</text> \
+         <g opacity="{{ opacity }}"> \
+           {{#excited}} \
+            <circle fill="#ffe600" cx="16" cy="16" r="12"/> \
+            <circle fill="url(#grad)" cx="16" cy="16" r="8"/> \
+           {{/excited}} \
+           {{^excited}} \
+            <circle fill="url(#grad)" cx="16" cy="16" r="16"/> \
+           {{/excited}} \
+           <text class="shadow" text-anchor="middle" x="16" y="16" dy="0.31em">{{ label }}</text> \
+           <text text-anchor="middle" x="16" y="16" dy="0.31em">{{ label }}</text> \
+         </g> \
        </svg>',
 
       KE_SHADING_MIN_COLORS = ["#FFFFFF", "#F2F2F2", "#A4A4A4"],
