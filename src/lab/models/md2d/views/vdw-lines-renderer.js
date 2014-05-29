@@ -138,6 +138,13 @@ define(function(require) {
         dx = x2 - x1;
         dy = y2 - y1;
 
+	// calculate the difference in charges of the atoms and use it to determine
+	// the width of the stroke 
+	var chargeDifference = Math.abs(atom1.charge - atom2.charge);
+	container.removeChild(sprites[i]);
+	sprites[i] = new PIXI.Sprite(getLineTexture(strokeWidth*chargeDifference));
+	container.addChild(sprites[i]);
+  
         sprites[i].visible = true;
         // stretches/shrinks the sprite to the desired length; appears to be just fine visually.
         sprites[i].scale.x = Math.ceil(Math.sqrt(dx * dx + dy * dy)) / texLength;
