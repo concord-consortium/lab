@@ -141,7 +141,8 @@ define(function() {
           var index    = imageDescription.imageHostIndex;
           var atoms;
           var obstacles;
-          var x, y;
+          var radialBond;
+          var x, y, rotation;
 
           if (hostType === 'Atom') {
             atoms = model.getAtoms();
@@ -151,11 +152,18 @@ define(function() {
             obstacles = model.get_obstacles();
             x = obstacles.x[index] + obstacles.width[index] / 2;
             y = obstacles.y[index] + obstacles.height[index] / 2;
+          } else if(hostType === 'RadialBond'){
+            radialBond = model.getRadialBonds()[index];
+            x = (radialBond.x1 + radialBond.x2) / 2;
+            y = (radialBond.y1 + radialBond.y2) / 2;
+            rotation = 180 * Math.atan2(radialBond.y1 - radialBond.y2, radialBond.x1 - radialBond.x2) / Math.PI;
           }
-
           if (x !== undefined) {
             datum.x = modelView.model2px(x);
             datum.y = modelView.model2pxInv(y);
+          }
+          if (rotation !== undefined){
+            datum.rotation = rotation;
           }
         });
       });
