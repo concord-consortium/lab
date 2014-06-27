@@ -135,7 +135,9 @@ define(function(require) {
         graphics.lineTo(x2 + xs, y2 + ys);
         graphics.moveTo(xMid - xs, yMid - ys);
         graphics.lineTo(x2 - xs, y2 - ys);
-      } else { // STANDARD_STICK and other types that are not yet supported.
+      } else if (d.type !== RADIAL_BOND_TYPES.GHOST) {
+        // STANDARD_STICK and other types that are not yet supported.
+        // However, GHOST bonds will not be drawn.
         graphics.lineStyle(bondWidth, getBondColor(d, 1));
         graphics.moveTo(x1, y1);
         graphics.lineTo(xMid, yMid);
