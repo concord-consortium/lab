@@ -133,42 +133,42 @@ define(function() {
       var result, temp;
       result = new String(word);
       if (word.search(/(^|[^a-zA-Z])li?n?e?a?r?($|[^a-zA-Z])/) != -1) {
-        result.linear = true;
+        result.isLinear = true;
       }
       if (word.search(/(^|[^a-zA-Z])ra?d?i?a?l?($|[^a-zA-Z])/) != -1) {
-        result.radial = true;
+        result.isRadial = true;
       }
       if (word.search(/(^|[^a-zA-Z])gr?a?d?i?e?n?t?($|[^a-zA-Z])/) != -1) {
-        result.gradient = true;
+        result.isGradient = true;
       }
       if (word.search(/(\(|\))/) != -1) {
-        result.parens = true;
+        result.isParens = true;
         return result;
       }
       temp = parseFloat(word);
       if (!isNaN(temp)) {
-        result.number = temp;
+        result.asNumber = temp;
       }
       if (word.search(/(^|[^a-zA-Z])de?g?r?e?e?s?($|[^a-zA-Z])/) != -1) {
-        result.degrees = true;
+        result.isDegrees = true;
       }
       if (word.search(/(^|[^a-zA-Z])ri?g?h?t?($|[^a-zA-Z])/) != -1) {
-        result.right = true;
+        result.isRight = true;
       }
       if (word.search(/(^|[^a-zA-Z])le?f?t?($|[^a-zA-Z])/) != -1) {
-        result.left = true;
+        result.isLeft = true;
       }
       if (word.search(/(^|[^a-zA-Z])(t|u)o?p?($|[^a-zA-Z])/) != -1) {
-        result.top = true;
+        result.isTop = true;
       }
       if (word.search(/(^|[^a-zA-Z])bo?t?t?o?m?($|[^a-zA-Z])/) != -1) {
-        result.bottom = true;
+        result.isBottom = true;
       }
       if (word.search(/(^|[^a-zA-Z])re?pe?a?t?($|[^a-zA-Z])/) != -1) {
-        result.repeat = true;
+        result.isRepeat = true;
       }
       if (word.search(/(^|[^a-zA-Z])re?fl?e?c?t?($|[^a-zA-Z])/) != -1) {
-        result.reflect = true;
+        result.isReflect = true;
       }
       return result;
     },
@@ -238,13 +238,13 @@ define(function() {
       var stops, words, direction, linear, radial, i, gradient, remove, x_direction, y_direction, repeat;
 
       //String preprocessing
-      string = string.replace(/[\n\r:;]/g, ' ').replace(/\/\*.*\*\/$/, '').replace(/\{\[/, "(").replace(/\}\]/, ")").replace(/[^a-zA-Z0-9%#\-\(\)\., ]*/g, "").replace(/\s*-\s+/g, "-").replace(/\s*\(/g, "(").replace(/\s+/g, " ");
+      string = string.replace(/[\n\r:;]/g, " ").replace(/\/\*.*\*\/$/, "").replace(/\{\[/, "(").replace(/\}\]/, ")").replace(/[^a-zA-Z0-9%#\-\(\)\., ]*/g, "").replace(/\s*-\s+/g, "-").replace(/\s*\(/g, "(").replace(/\s+/g, " ");
       words = this.smartSplit(string, false);
       gradient = {};
 
       //Remove any irrelevant parentheses
       for (i = 0; i < words.length; i++) {
-        if ("parens" in words[i] && ("gradient" in words[i] || "linear" in words[i] || "radial" in words[i])) {
+        if (words[i].isParens === true && (words[i].isGradient === true || words[i].isLinear === true || words[i].isRadial === true)) {
           words.splice.apply(words, [i, 1].concat(this.smartSplit(words[i], true)))
         }
       }
@@ -258,44 +258,44 @@ define(function() {
       y_direction = 0;
       for (i = 0; i < words.length; i++) {
         remove = false
-        if ("left" in words[i]) {
+        if (words[i].isLeft === true) {
           x_direction -= 1;
           remove = true;
-        } else if ("right" in words[i]) {
+        } else if (words[i].isRight === true) {
           x_direction += 1;
           remove = true;
         }
-        if ("top" in words[i]) {
+        if (words[i].isTop === true) {
           y_direction += 1;
           remove = true;
-        } else if ("bottom" in words[i]) {
+        } else if (words[i].isBottom === true) {
           y_direction -= 1;
           remove = true;
         }
-        if ("radial" in words[i] && !("right" in words[i])) {
+        if (words[i].isRadial === true && !(words[i].isRight === true)) {
           radial = true;
           remove = true;
         }
-        if ("linear" in words[i] && !("left" in words[i])) {
+        if (words[i].isLinear === true && !(words[i].isLeft === true)) {
           linear = true;
           remove = true;
         }
-        if ("number" in words[i]) {
-          if ("degrees" in words[i] || i + 1 < words.length && "degrees" in words[i + 1]) {
+        if ("asNumber" in words[i]) {
+          if (words[i].isDegrees === true || i + 1 < words.length && words[i + 1].isDegrees === true) {
             if (direction === false) {
-              direction = words[i].number;
+              direction = words[i].asNumber;
             }
             remove = true;
           }
         }
-        if ("repeat" in words[i]) {
+        if (words[i].isRepeat === true) {
           repeat = "repeat";
           remove = true;
-        } else if ("reflect" in words[i]) {
+        } else if (words[i].isReflect === true) {
           repeat = "reflect";
           remove = true;
         }
-        if (remove || "degrees" in words[i] || "gradient" in words[i]) {
+        if (remove || words[i].isDegrees === true || words[i].isGradient === true) {
           words.splice(i, 1);
           i--;
         }
@@ -307,11 +307,11 @@ define(function() {
       //Parse the stops
       stops = [];
       for (i = 0; i < words.length; i++) {
-        if (!("number" in words[i])) {
-          if (i + 1 < words.length && ("number" in words[i + 1])) {
+        if (!("asNumber" in words[i])) {
+          if (i + 1 < words.length && ("asNumber" in words[i + 1])) {
             stops.push({
               color: words[i],
-              offset: words[i + 1].number
+              offset: words[i + 1].asNumber
             })
             words.splice(i, 2)
           } else {
@@ -337,9 +337,9 @@ define(function() {
 
       //Parse leftover words
       for (i = 0; i < words.length; i++) {
-        if ("number" in words[i]) {
+        if (words[i].isNumber === true) {
           if (direction === false) {
-            direction = words[i].number;
+            direction = words[i].asNumber;
           }
         }
       }
@@ -387,7 +387,7 @@ define(function() {
         };
       }
       var stops, direction, gradient, type, s, offset, restandardize;
-      stops = string.split(' ');
+      stops = string.split(" ");
       gradient = {}
       type = stops.shift()
       if (type == "linear" || type == "radial") {
@@ -490,16 +490,16 @@ define(function() {
       var gradientUrl, defs, gradient, id, c, x0, y0, xt, yt, args, stop;
       defs = container.select("defs");
       if (defs.empty()) {
-        // Store gradients in 'defs' element.
+        // Store gradients in "defs" element.
         defs = container.append("defs");
       }
 
-      id = color.standard.replace(/[^a-z0-9]/g, '');
+      id = color.standard.replace(/[^a-z0-9]/g, "");
       gradient = defs.select("#" + id);
 
       if (gradient.empty()) {
         // Create a new gradient.
-        if (color.gradient == 'linear') {
+        if (color.gradient == "linear") {
           xt = -Math.cos(Math.PI * color.direction / 180);
           yt = -Math.sin(Math.PI * color.direction / 180);
           if (Math.abs(yt) > Math.abs(xt)) {
