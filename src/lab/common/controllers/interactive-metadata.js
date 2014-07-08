@@ -942,6 +942,13 @@ define(function() {
       },
       tooltip: {
         defaultValue: ""
+      },
+      dataColors: {
+        defaultValue: [
+          [160, 0, 0],
+          [44, 160, 0],
+          [44, 0, 160]
+        ]
       }
     },
 
