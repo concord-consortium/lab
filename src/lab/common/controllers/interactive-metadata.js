@@ -952,6 +952,9 @@ define(function() {
       },
       legendLabels: {
         defaultValue: []
+      },
+      legendVisible: {
+        defaultValue: false
       }
     },
 

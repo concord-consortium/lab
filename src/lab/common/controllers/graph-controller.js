@@ -39,7 +39,8 @@ define(function (require) {
         lines: 'lines',
         bars: 'bars',
         dataColors: 'dataColors',
-        legendLabels: 'legendLabels'
+        legendLabels: 'legendLabels',
+        legendVisible: 'legendVisible'
       },
 
       graphControllerCount = 0,
