@@ -38,7 +38,8 @@ define(function (require) {
         yFormatter: 'yFormatter',
         lines: 'lines',
         bars: 'bars',
-        dataColors: 'dataColors'
+        dataColors: 'dataColors',
+        legendLabels: 'legendLabels'
       },
 
       graphControllerCount = 0,

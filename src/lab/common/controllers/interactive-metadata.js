@@ -949,6 +949,9 @@ define(function() {
           [44, 160, 0],
           [44, 0, 160]
         ]
+      },
+      legendLabels: {
+        defaultValue: []
       }
     },
 
