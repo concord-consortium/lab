@@ -36,7 +36,8 @@ define(function (require) {
         xFormatter: 'xFormatter',
         yFormatter: 'yFormatter',
         lines: 'lines',
-        bars: 'bars'
+        bars: 'bars',
+        dataColors: 'dataColors'
       },
 
       graphControllerCount = 0,
