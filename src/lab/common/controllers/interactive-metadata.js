@@ -945,9 +945,9 @@ define(function() {
       },
       dataColors: {
         defaultValue: [
-          [160, 0, 0],
-          [44, 160, 0],
-          [44, 0, 160]
+          "#a00000",
+          "#2ca000",
+          "#2c00a0"
         ]
       },
       legendLabels: {
