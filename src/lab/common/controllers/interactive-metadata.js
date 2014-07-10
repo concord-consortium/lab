@@ -868,6 +868,9 @@ define(function() {
       clearSelectionOnLeavingSelectMode: {
         defaultValue: false
       },
+      enableDrawButton: {
+        defaultValue: false
+      },
       markAllDataPoints: {
         defaultValue: false
       },

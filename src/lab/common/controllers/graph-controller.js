@@ -18,6 +18,7 @@ define(function (require) {
         autoScaleY: 'autoScaleY',
         enableSelectionButton: 'enableSelectionButton',
         clearSelectionOnLeavingSelectMode: 'clearSelectionOnLeavingSelectMode',
+        enableDrawButton: 'enableDrawButton',
         dataPoints: 'dataPoints',
         markAllDataPoints: 'markAllDataPoints',
         showRulersOnSelection: 'showRulersOnSelection',
