@@ -208,17 +208,17 @@ define(function (require) {
       clearGrapher(extra.data);
     }
     function _labelsChangedHandler(labels) {
-      // Set label provided by dataset only if graph component description doesn't specify ylabel.
-      var yProp = properties[Y_LABEL_PROP_IDX];
-      var xProp = xProperties[X_LABEL_PROP_IDX];
-
-      // If the change is triggered via listener, the values will be wrapped in the 'data' property...
-      var yLabel = labels[yProp] || labels.data[yProp];
-      var xLabel = labels[xProp] || labels.data[xProp];
       if (!isLabelExplicit(component.ylabel)) {
+        // Set label provided by dataset only if graph component description doesn't specify ylabel.
+        var yProp = properties[Y_LABEL_PROP_IDX];
+
+        // If the change is triggered via listener, the values will be wrapped in the 'data' property...
+        var yLabel = labels[yProp] || labels.data[yProp];
         grapher.yLabel(yLabel);
       }
       if (!isLabelExplicit(component.xlabel)) {
+        var xProp = xProperties[X_LABEL_PROP_IDX];
+        var xLabel = labels[xProp] || labels.data[xProp];
         grapher.xLabel(xLabel);
       }
     }
