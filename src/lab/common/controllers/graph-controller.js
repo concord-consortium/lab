@@ -37,7 +37,10 @@ define(function (require) {
         xFormatter: 'xFormatter',
         yFormatter: 'yFormatter',
         lines: 'lines',
-        bars: 'bars'
+        bars: 'bars',
+        dataColors: 'dataColors',
+        legendLabels: 'legendLabels',
+        legendVisible: 'legendVisible'
       },
 
       graphControllerCount = 0,

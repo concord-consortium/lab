@@ -942,6 +942,19 @@ define(function() {
       },
       tooltip: {
         defaultValue: ""
+      },
+      dataColors: {
+        defaultValue: [
+          "#a00000",
+          "#2ca000",
+          "#2c00a0"
+        ]
+      },
+      legendLabels: {
+        defaultValue: []
+      },
+      legendVisible: {
+        defaultValue: false
       }
     },
 
