@@ -51,6 +51,7 @@ define(function () {
   DataSet.Events = {
     SAMPLE_ADDED:      "sampleAdded",
     SAMPLE_CHANGED:    "sampleChanged",
+    SAMPLE_REMOVED:    "sampleRemoved",
 
     DATA_TRUNCATED:    "dataTruncated",
     DATA_RESET:        "dataReset",
@@ -203,6 +204,27 @@ define(function () {
     });
 
     this._trigger(DataSet.Events.SAMPLE_ADDED, dataPoint);
+  };
+
+  DataSet.prototype.removeDataPoint = function (props, values) {
+    if (!props) {
+      props = this._modelProperties;
+    }
+    var dataPoint = {},
+        context = this,
+        idx = -1;
+    // TODO Don't use the first prop, assuming it's the x property
+    props.slice(0,1).forEach(function (prop) {
+      var val = values && values[prop] !== undefined ? values[prop] : context._getModelProperty(prop);
+      if (val === undefined) return;
+      idx = context._data[prop].indexOf(val);
+      // Set the value to null
+      context._data[prop][idx] = null;
+    });
+
+    if (idx != -1) {
+      this._trigger(DataSet.Events.SAMPLE_REMOVED, {props: props, index: idx});
+    }
   };
 
 

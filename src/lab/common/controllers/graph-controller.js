@@ -62,6 +62,7 @@ define(function (require) {
         dataPointsArrays = [],
         staticSeries,
         listeningPool,
+        ignoreDataSetEvents = false,
         namespace = "graphController" + (++graphControllerCount);
 
     function getModel () {
@@ -96,6 +97,7 @@ define(function (require) {
       listeningPool.listen(dataSet, DataSet.Events.DATA_RESET,        _dataResetHandler);
       listeningPool.listen(dataSet, DataSet.Events.SAMPLE_ADDED,      _sampleAddedHandler);
       listeningPool.listen(dataSet, DataSet.Events.SAMPLE_CHANGED,    _sampleChangedHandler);
+      listeningPool.listen(dataSet, DataSet.Events.SAMPLE_REMOVED,    _sampleRemovedHandler);
       listeningPool.listen(dataSet, DataSet.Events.SELECTION_CHANGED, _selectionChangeHandler);
       listeningPool.listen(dataSet, DataSet.Events.DATA_TRUNCATED,    _invalidationHandler);
       listeningPool.listen(dataSet, DataSet.Events.LABELS_CHANGED,    _labelsChangedHandler);
@@ -157,6 +159,7 @@ define(function (require) {
       grapher.updateOrRescale(step);
     }
     function _selectionChangeHandler(evt) {
+      if (ignoreDataSetEvents) return;
       redrawCurrentStepPointer(evt.data);
     }
 
@@ -202,12 +205,15 @@ define(function (require) {
     }
 
     function _dataResetHandler(extra) {
+      if (ignoreDataSetEvents) return;
       clearGrapher(extra.data);
     }
     function _invalidationHandler(extra) {
+      if (ignoreDataSetEvents) return;
       clearGrapher(extra.data);
     }
     function _labelsChangedHandler(labels) {
+      if (ignoreDataSetEvents) return;
       if (!isLabelExplicit(component.ylabel)) {
         // Set label provided by dataset only if graph component description doesn't specify ylabel.
         var yProp = properties[Y_LABEL_PROP_IDX];
@@ -243,6 +249,7 @@ define(function (require) {
 
     function _sampleAddedHandler(evt) {
       if (!grapher) return;
+      if (ignoreDataSetEvents) return;
       // Convert data received from data set to data expected by grapher (nested arrays).
       var valid = true;
       var dataPoint = evt.data;
@@ -258,6 +265,7 @@ define(function (require) {
 
     function _sampleChangedHandler(evt) {
       if (!grapher) return;
+      if (ignoreDataSetEvents) return;
       var dataPoint = evt.data.dataPoint;
       var index = evt.data.index;
       var gPoints = [];
@@ -270,6 +278,18 @@ define(function (require) {
       grapher.replacePoints(gPoints, index);
     }
 
+    function _sampleRemovedHandler(evt) {
+      if (!grapher) return;
+      if (ignoreDataSetEvents) return;
+      var index = evt.data.index,
+          props = evt.data.props;
+      properties.forEach(function (prop, propIdx) {
+        if (props.indexOf(prop) != -1) {
+          grapher.deletePoint(index, propIdx);
+        }
+      });
+    }
+
     function registerModelListeners() {
       var model = getModel();
       // We reset the graph view after model reset.
@@ -280,8 +300,24 @@ define(function (require) {
       _labelsChangedHandler(dataSet.getLabels());
     }
 
+    function graphChangedDataPoint(evt) {
+      ignoreDataSetEvents = true;
+      var xPro = xProp(properties.length-1);
+          yPro = properties[properties.length-1],
+          data = {};
+      data[xPro] = evt.point[0];
+      data[yPro] = evt.point[1];
+      if (evt.action == "added") {
+        dataSet.appendDataPoint([xPro, yPro], data);
+      } else if (evt.action == "removed") {
+        dataSet.removeDataPoint([xPro, yPro], data);
+      }
+      ignoreDataSetEvents = false;
+    }
+
     function initGrapher() {
       grapher = new Graph($container[0], getOptions(), undefined, interactivesController.getNextTabIndex());
+      grapher.addPointListener(graphChangedDataPoint);
     }
 
     controller = {
