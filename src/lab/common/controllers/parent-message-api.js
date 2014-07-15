@@ -20,6 +20,13 @@ define(function(require) {
       });
     }
 
+    function sendDataset(datasetName) {
+      iframeEndpoint.post('dataset', {
+        name: datasetName,
+        value: controller.getDataSet(datasetName).serialize()
+      });
+    }
+
     // on message 'setFocus' call view.setFocus
     iframeEndpoint.addListener('setFocus', function() {
       var view = controller.modelController.modelContainer;
@@ -102,6 +109,11 @@ define(function(require) {
     // Remove an existing Listener for events in the model
     iframeEndpoint.addListener('removeListenerForDispatchEvent', function(content) {
       model.on(content, null);
+    });
+
+    // on message 'getDataset' datasetName: return a 'dataset' message
+    iframeEndpoint.addListener('getDataset', function(content) {
+      sendDataset(content);
     });
 
     // on message 'get' propertyName: return a 'propertyValue' message
