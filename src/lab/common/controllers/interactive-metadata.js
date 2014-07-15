@@ -871,6 +871,9 @@ define(function() {
       enableDrawButton: {
         defaultValue: false
       },
+      drawProperty: {
+        defaultValue: null
+      },
       markAllDataPoints: {
         defaultValue: false
       },

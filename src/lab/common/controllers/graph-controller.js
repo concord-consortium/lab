@@ -19,6 +19,7 @@ define(function (require) {
         enableSelectionButton: 'enableSelectionButton',
         clearSelectionOnLeavingSelectMode: 'clearSelectionOnLeavingSelectMode',
         enableDrawButton: 'enableDrawButton',
+        drawIndex: 'drawIndex',
         dataPoints: 'dataPoints',
         markAllDataPoints: 'markAllDataPoints',
         showRulersOnSelection: 'showRulersOnSelection',
@@ -128,6 +129,14 @@ define(function (require) {
       }
 
       staticSeries = [];
+
+      if (component.drawProperty) {
+        component.drawIndex = properties.indexOf(component.drawProperty);
+        if (component.drawIndex == -1) {
+          component.drawProperty = properties[0];
+          componet.drawIndex = 0;
+        }
+      }
 
       // Initial setup of the data.
       dataSet.resetData();
@@ -302,8 +311,8 @@ define(function (require) {
 
     function graphChangedDataPoint(evt) {
       ignoreDataSetEvents = true;
-      var xPro = xProp(properties.length-1);
-          yPro = properties[properties.length-1],
+      var yPro = component.drawProperty || properties[0];
+          xPro = xProp(yPro),
           data = {};
       data[xPro] = evt.point[0];
       data[yPro] = evt.point[1];
