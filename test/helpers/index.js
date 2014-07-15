@@ -134,6 +134,7 @@ exports.withIsolatedRequireJSAndViewsMocked = function(continuation) {
         return {
           new_data: function() {},
           addPoints: function() {},
+          addPointListener: function() {},
           updateOrRescale: function() {},
           showMarker: function() {},
           reset: function() {},

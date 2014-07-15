@@ -9,6 +9,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
   mock =
     Graph: ->
       addPoints:       sinon.spy()
+      addPointListener: sinon.spy()
       resetPoints:     sinon.spy()
       updateOrRescale: sinon.spy()
       reset:           sinon.spy()
