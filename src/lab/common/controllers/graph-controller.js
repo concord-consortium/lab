@@ -134,7 +134,7 @@ define(function (require) {
         component.drawIndex = properties.indexOf(component.drawProperty);
         if (component.drawIndex == -1) {
           component.drawProperty = properties[0];
-          componet.drawIndex = 0;
+          component.drawIndex = 0;
         }
       }
 
