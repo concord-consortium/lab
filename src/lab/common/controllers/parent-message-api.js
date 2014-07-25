@@ -106,6 +106,7 @@ define(function(require) {
       });
     });
 
+    var sendDatasetEvents = true;
     // Listen for events in a dataset, and notify using message.post
     // in content object when triggering in parent Frame
     iframeEndpoint.addListener('listenForDatasetEvent', function(content) {
@@ -117,7 +118,9 @@ define(function(require) {
       console.log("registering listener on " + datasetName + ": " + eventName);
 
       dataset.on(eventName, function(evt) {
-        iframeEndpoint.post(datasetName + "-" + eventName, evt);
+        if (sendDatasetEvents) {
+          iframeEndpoint.post(datasetName + "-" + eventName, evt);
+        }
       });
     });
 
@@ -129,7 +132,9 @@ define(function(require) {
 
       if (!dataset) { return; }
 
-      dataset._trigger(eventName, data);
+      sendDatasetEvents = false;
+      dataset.handleExternalEvent(eventName, data);
+      sendDatasetEvents = true;
     });
 
     // Remove an existing Listener for events in the model
