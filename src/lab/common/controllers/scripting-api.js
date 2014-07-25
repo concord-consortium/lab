@@ -361,7 +361,7 @@ define(function (require) {
             Resets data sat to its initial data. When initial data is not provided, clears data
             set (in such case this function behaves exactly like .clearDataSet()).
            */
-          resetDataSet: function clearDataSet(name) {
+          resetDataSet: function resetDataSet(name) {
             interactivesController.getDataSet(name).resetData();
           },
 
