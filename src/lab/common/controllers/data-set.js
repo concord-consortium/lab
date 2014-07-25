@@ -152,6 +152,13 @@ define(function () {
     return description.getLabel() + " (" + description.getUnitAbbreviation() + ")";
   };
 
+  DataSet.prototype._resetProperty = function(prop, values) {
+    var newValue = [];
+    if (values && values[prop])
+    var newValue = values[prop] || this.initialData[prop] || [];
+    this._data[prop] = newValue.slice(0); // always use a copy
+  };
+
 
   /******************************************************************
     "Public" methods, should have associated unit tests.
@@ -338,14 +345,22 @@ define(function () {
         break;
 
       case DataSet.Events.DATA_TRUNCATED:
+        // TODO
         break;
       case DataSet.Events.DATA_RESET:
+        var context = this;
+        Object.keys(data).forEach(function(prop) {
+          context._resetProperty(prop, data[prop]);
+        });
+        this._trigger(DataSet.Events.DATA_RESET, this._data);
         break;
 
       case DataSet.Events.SELECTION_CHANGED:
+        // TODO
         break;
 
       case DataSet.Events.LABELS_CHANGED:
+        // TODO
         break;
     }
   };
