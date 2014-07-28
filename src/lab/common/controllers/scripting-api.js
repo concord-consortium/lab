@@ -365,6 +365,10 @@ define(function (require) {
             interactivesController.getDataSet(name).resetData();
           },
 
+          resetDataSetProperties: function resetDataSetProperties(name, props) {
+            interactivesController.getDataSet(name).resetProperties(props);
+          },
+
           /**
             Used when manually adding points to a graph or a table.
             Normally the graph or table property streamDataFromModel should be false

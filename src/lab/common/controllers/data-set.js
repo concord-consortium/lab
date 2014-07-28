@@ -200,6 +200,14 @@ define(function () {
     this._trigger(DataSet.Events.DATA_RESET, this._data);
   };
 
+  DataSet.prototype.resetProperties = function (props) {
+    var i;
+    for (i = 0; i < props.length; i++) {
+      this._resetProperty(props[i]);
+    }
+    this._trigger(DataSet.Events.DATA_RESET, this._data);
+  };
+
   DataSet.prototype.appendDataPoint = function (props, values) {
     if (!props) {
       props = this._modelProperties;
