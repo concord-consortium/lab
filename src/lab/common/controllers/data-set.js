@@ -154,8 +154,11 @@ define(function () {
 
   DataSet.prototype._resetProperty = function(prop, values) {
     var newValue = [];
-    if (values && values[prop])
-    var newValue = values[prop] || this.initialData[prop] || [];
+    if (values && values[prop]) {
+      newValue = values[prop];
+    } else if (this.initialData[prop]) {
+      newValue = this.initialData[prop];
+    }
     this._data[prop] = newValue.slice(0); // always use a copy
   };
 
