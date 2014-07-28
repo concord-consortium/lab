@@ -353,7 +353,7 @@ define(function () {
       case DataSet.Events.DATA_RESET:
         var context = this;
         Object.keys(data).forEach(function(prop) {
-          context._resetProperty(prop, data[prop]);
+          context._resetProperty(prop, data);
         });
         this._trigger(DataSet.Events.DATA_RESET, this._data);
         break;
