@@ -11,22 +11,8 @@ define(function(require) {
       unitsDefinition      = sensorApplet.unitsDefinition,
       getSensorDefinitions = require('models/sensor-common/i18n-sensor-definitions'),
       labConfig            = require('lab.config'),
-      BasicDialog          = require('common/controllers/basic-dialog'),
+      Notifier             = require('models/sensor-common/notifier'),
       ExportController     = require('common/controllers/export-controller');
-
-  // TODO. Obviously, this amounts to view-layer code in the model layer. Ultimately, we'd like to
-  // have the interactives controller (or the controller layer)  manage requests to send messages to
-  // the user, and additionally put the actual wording of the messages in a separate module, rather
-  // than bury the message text in the model code.
-  function simpleAlert(message, buttons) {
-    var dialog = new BasicDialog({
-          width: "60%",
-          buttons: buttons
-        });
-
-    dialog.setContent(message);
-    dialog.open();
-  }
 
   return function Model(initialProperties, opt) {
     var propertySupport = new PropertySupport({
@@ -34,6 +20,7 @@ define(function(require) {
         }),
 
         i18n = opt.i18n,
+        notifier = new Notifier(i18n),
 
         viewOptions,
         mainProperties,
@@ -237,12 +224,12 @@ define(function(require) {
         $(this).remove();
         model.reload();
       };
-      simpleAlert(i18n.t("sensor.messages.sensor_not_attached", {sensor_name: model.properties.sensorName}), buttons);
+      notifier.alert(i18n.t("sensor.messages.sensor_not_attached", {sensor_name: model.properties.sensorName}), buttons);
     }
 
     function handleLoadingFailure(message) {
       removeApplet();
-      simpleAlert(message, {
+      notifier.alert(message, {
         OK: function() {
           $(this).remove();
           model.reload();
@@ -262,7 +249,7 @@ define(function(require) {
       buttons[i18n.t("sensor.messages.cancel")] = function() {
         $(this).dialog("close");
       };
-      simpleAlert(i18n.t("sensor.messages.sensor_or_device_unplugged", {sensor_or_device_name: model.properties[what+'Name']}), buttons);
+      notifier.alert(i18n.t("sensor.messages.sensor_or_device_unplugged", {sensor_or_device_name: model.properties[what+'Name']}), buttons);
     }
 
     function startPollingSensor() {

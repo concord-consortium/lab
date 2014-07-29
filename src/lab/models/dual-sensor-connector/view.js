@@ -102,7 +102,7 @@ define(function(require) {
             $(this).dialog("close");
           }
         }
-      });
+      }, i18n);
       var content = "",
           label = "",
           sensors = model.connectedSensors(),

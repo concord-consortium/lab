@@ -77,7 +77,7 @@ define(function(require) {
             // TODO Make sure the model continues using the previously selected sensor
           }
         }
-      });
+      }, i18n);
       var content = "",
           label = "",
           sensors = model.connectedSensors(),
