@@ -31,6 +31,7 @@ define(function(require) {
         stepCounter,
         isPlayable,
         canTare,
+        canControl,
         hasMultipleSensors,
         isSensorTareable,
         message,
@@ -112,6 +113,7 @@ define(function(require) {
 
     function initializeStateVariables() {
       isStopped = true;
+      canControl = sensorConnectorInterface.canControl;
       hasMultipleSensors = false;
       // Set selectedSensor if it hasn't been set yet
       if (typeof(selectedSensor) === "undefined" || selectedSensor === null) {
@@ -155,7 +157,11 @@ define(function(require) {
       timeColumn = dataset.columns[0];
       if (sensorConnectorInterface.hasAttachedInterface) {
         if (hasCollectableSensors(dataset)) {
-          message = i18n.t("sensor.messages.ready");
+          if (canControl) {
+            message = i18n.t("sensor.messages.ready");
+          } else {
+            message = i18n.t("sensor.messages.ready_nocontrol");
+          }
           isPlayable = true;
         } else {
           message = i18n.t("sensor.messages.no_sensors");
@@ -367,6 +373,12 @@ define(function(require) {
 
           setColumn();
 
+          if (canControl) {
+            this.controlEnabled();
+          } else {
+            this.controlDisabled();
+          }
+
           if (sensorConnectorInterface.isCollecting) {
             this.gotoState('started');
           }
@@ -403,6 +415,16 @@ define(function(require) {
             handle('startRequestFailed');
           });
           this.gotoState('starting');
+        },
+
+        controlEnabled: function() {
+          console.log("Control was enabled - connected");
+          message = i18n.t("sensor.messages.connected");
+        },
+
+        controlDisabled: function() {
+          console.log("Control was disabled - connected");
+          message = i18n.t("sensor.messages.connected_start_sensorconnector");
         },
 
         sessionChanged: function() {
@@ -467,7 +489,11 @@ define(function(require) {
           isStopped = false;
           setColumn();
           isPlayable = false;
-          message = i18n.t("sensor.messages.collecting_data");
+          if (canControl) {
+            message = i18n.t("sensor.messages.collecting_data");
+          } else {
+            message = i18n.t("sensor.messages.collecting_data_stop_sensorconnector");
+          }
 
           // Check, just in case. Specifically, when errorStopping transitions here, collection
           // might have stopped in the meantime.
@@ -481,6 +507,14 @@ define(function(require) {
         },
 
         data: handleData,
+
+        controlEnabled: function() {
+          message = i18n.t("sensor.messages.collecting_data");
+        },
+
+        controlDisabled: function() {
+          message = i18n.t("sensor.messages.collecting_data_stop_sensorconnector");
+        },
 
         stop: function() {
           sensorConnectorInterface.requestStop().catch(function() {
@@ -647,6 +681,14 @@ define(function(require) {
       }
     });
 
+    sensorConnectorInterface.on('controlEnabled',  function() {
+      canControl = true;
+    });
+
+    sensorConnectorInterface.on('controlDisabled', function() {
+      canControl = false;
+    });
+
     labModelerMixin = new LabModelerMixin({
       metadata: metadata,
       setters: {},
@@ -728,6 +770,12 @@ define(function(require) {
       label: "Can set a tare value?"
     }, function() {
       return canTare && isSensorTareable;
+    });
+
+    model.defineOutput('canControl', {
+      label: "Can remotely start/stop the Sensor Connector?"
+    }, function() {
+      return canControl;
     });
 
     model.defineOutput('hasMultipleSensors', {
