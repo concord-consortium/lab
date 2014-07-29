@@ -9,21 +9,11 @@ define(function(require) {
       sensorConnectorInterface = require('sensor-connector-interface'),
       unitsDefinition       = require('./units-definition'),
       getSensorDefinitions  = require('models/sensor-common/i18n-sensor-definitions-connector'),
-      BasicDialog           = require('common/controllers/basic-dialog');
-
-  // TODO move to view
-  function simpleAlert(message, buttons) {
-    var dialog = new BasicDialog({
-          width: "60%",
-          buttons: buttons
-        });
-
-    dialog.setContent(message);
-    dialog.open();
-  }
+      Notifier             = require('models/sensor-common/notifier');
 
   return function Model(initialProperties, opt) {
     var i18n = opt.i18n,
+        notifier = new Notifier(i18n),
 
         labModelerMixin,
         propertySupport,
@@ -468,7 +458,7 @@ define(function(require) {
         enterState: function() {
           sensorConnectorInterface.stopPolling();
           message = i18n.t("sensor.messages.connection_failed");
-          simpleAlert(i18n.t("sensor.messages.connection_failed_alert", {
+          notifier.alert(i18n.t("sensor.messages.connection_failed_alert", {
                                 click_here_link: "<a target='_blank' style='color: #222299;' href='http://sensorconnector.concord.org/'>" +
                                                  i18n.t("sensor.messages.click_here") + "</a>"}),
           {
@@ -583,7 +573,7 @@ define(function(require) {
           message = i18n.t("sensor.messages.error_starting_data_collection");
           isStopped = true;
 
-          simpleAlert(i18n.t("sensor.messages.error_starting_data_collection_alert"), {
+          notifier.alert(i18n.t("sensor.messages.error_starting_data_collection_alert"), {
             OK: function() {
               $(this).dialog("close");
               handle('dismissErrorStarting');
@@ -638,7 +628,7 @@ define(function(require) {
           message = i18n.t("sensor.messages.no_data");
 
           sensorConnectorInterface.requestStop();
-          simpleAlert(i18n.t("sensor.messages.no_data_alert"), {
+          notifier.alert(i18n.t("sensor.messages.no_data_alert"), {
             OK: function() {
               $(this).dialog("close");
             }
@@ -683,7 +673,7 @@ define(function(require) {
       errorStopping: {
         enterState: function() {
           message = i18n.t("sensor.messages.error_stopping_data_collection");
-          simpleAlert(i18n.t("sensor.messages.error_stopping_data_collection_alert"), {
+          notifier.alert(i18n.t("sensor.messages.error_stopping_data_collection_alert"), {
             OK: function() {
               $(this).dialog("close");
               handle('dismissErrorStopping');

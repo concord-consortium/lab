@@ -9,22 +9,12 @@ define(function(require) {
       labquest2Interface   = require('labquest2-interface'),
       unitsDefinition      = require('./units-definition'),
       getSensorDefinitions = require('models/sensor-common/i18n-sensor-definitions-connector'),
-      BasicDialog          = require('common/controllers/basic-dialog'),
+      Notifier             = require('models/sensor-common/notifier'),
       _ = require('underscore');
-
-  // TODO move to view
-  function simpleAlert(message, buttons) {
-    var dialog = new BasicDialog({
-          width: "60%",
-          buttons: buttons
-        });
-
-    dialog.setContent(message);
-    dialog.open();
-  }
 
   return function Model(initialProperties, opt) {
     var i18n = opt.i18n,
+        notifier = new Notifier(i18n),
 
         labModelerMixin,
         propertySupport,
@@ -341,7 +331,7 @@ define(function(require) {
         enterState: function() {
           labquest2Interface.stopPolling();
           message = i18n.t("sensor.messages.connection_failed");
-          simpleAlert(i18n.t("sensor.messages.connection_failed_labquest2_alert"), {
+          notifier.alert(i18n.t("sensor.messages.connection_failed_labquest2_alert"), {
             OK: function() {
               $(this).dialog("close");
               handle('dismiss');
@@ -392,7 +382,7 @@ define(function(require) {
             } else {
               canTare = false;
               // Display a message that we need to be in liveMode before we can tare
-              simpleAlert(i18n.t("sensor.messages.tare_labquest2_alert"), {
+              notifier.alert(i18n.t("sensor.messages.tare_labquest2_alert"), {
                 OK: function() {
                   $(this).dialog("close");
                   canTare = true;
@@ -467,7 +457,7 @@ define(function(require) {
           message = i18n.t("sensor.messages.error_starting_data_collection");
           isStopped = true;
 
-          simpleAlert(i18n.t("sensor.messages.error_starting_data_collection_alert"), {
+          notifier.alert(i18n.t("sensor.messages.error_starting_data_collection_alert"), {
             OK: function() {
               $(this).dialog("close");
               handle('dismissErrorStarting');
@@ -533,7 +523,7 @@ define(function(require) {
           message = i18n.t("sensor.messages.no_data");
 
           labquest2Interface.requestStop();
-          simpleAlert(i18n.t("sensor.messages.no_data_labquest2_alert"), {
+          notifier.alert(i18n.t("sensor.messages.no_data_labquest2_alert"), {
             OK: function() {
               $(this).dialog("close");
             }
@@ -585,7 +575,7 @@ define(function(require) {
       errorCanceling: {
         enterState: function() {
           message = i18n.t("sensor.messages.error_canceling_data_collection");
-          simpleAlert(i18n.t("sensor.messages.error_canceling_data_collection_alert"), {
+          notifier.alert(i18n.t("sensor.messages.error_canceling_data_collection_alert"), {
             OK: function() {
               $(this).dialog("close");
               handle('dismissErrorStopping');
@@ -623,7 +613,7 @@ define(function(require) {
       errorStopping: {
         enterState: function() {
           message = i18n.t("sensor.messages.error_stopping_data_collection");
-          simpleAlert(i18n.t("sensor.messages.error_stopping_data_collection_alert"), {
+          notifier.alert(i18n.t("sensor.messages.error_stopping_data_collection_alert"), {
             OK: function() {
               $(this).dialog("close");
               handle('dismissErrorStopping');

@@ -7,12 +7,12 @@ define(function (require) {
   var BasicDialog = require('common/controllers/basic-dialog');
   var _ = require('underscore');
 
-  function modalAlert(message, buttons) {
+  function modalAlert(message, buttons, i18n) {
     var dialog = new BasicDialog({
       width: "60%",
       modal: true,
       buttons: buttons
-    });
+    }, i18n);
 
     dialog.setContent(message);
     dialog.open();
@@ -114,7 +114,7 @@ define(function (require) {
           $(this).remove();
           resetRequest.cancel();
         }
-      });
+      }, interactivesController.i18n);
     }
 
     // Called when exporting data; detects changes to per-run parameters since the model's initial
