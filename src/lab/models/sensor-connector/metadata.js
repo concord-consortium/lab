@@ -16,6 +16,12 @@ define(function() {
       },
       tareValue: {
         defaultValue: 0
+      },
+      clientId: {
+        defaultValue: null
+      },
+      useRandomClientId: {
+        defaultValue: false
       }
     },
     viewOptions: {
