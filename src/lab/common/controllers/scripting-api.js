@@ -559,11 +559,36 @@ define(function (require) {
           // Rudimentary debugging functionality. Use Lab alert helper function.
           alert: alert,
 
-          // Prevent sandbox from overwriting various global functions.
-          setTimeout:    function setTimeout()    { return window.setTimeout.apply(window, arguments);    },
-          setInterval:   function setInterval()   { return window.setInterval.apply(window, arguments);   },
-          clearTimeout:  function clearTimeout()  { return window.clearTimeout.apply(window, arguments);  },
-          clearInterval: function clearInterval() { return window.clearInterval.apply(window, arguments); },
+          // safe versions of setTimeout and setInterval
+          setTimeout: function setTimeout(handler) {
+
+            // Ensure that we don't leak "window" to handler function.
+            if ( ! handler || handler.constructor !== Function ) {
+              throw new TypeError("Must pass a Function instance to Lab's setTimeout.");
+            }
+
+            var args = Array.prototype.slice.apply(arguments);
+            // By the spec, setTimeout explicitly sets the thisValue of the handler to global object
+            // http://www.whatwg.org/specs/web-apps/current-work/multipage/webappapis.html#timers
+            // (work through the "timer initialization steps" algorithm)
+            // Ensure that the thisValue is undefined/null:
+            args[0] = handler.bind(undefined);
+            return window.setTimeout.apply(window, args);
+          },
+
+          setInterval: function setInterval(handler) {
+            if ( ! handler || handler.constructor !== Function ) {
+              throw new TypeError("Must pass a Function instance to Lab's setInterval.");
+            }
+
+            var args = Array.prototype.slice.apply(arguments);
+            args[0] = handler.bind(undefined);
+            return window.setInterval.apply(window, args);
+          },
+
+          clearTimeout:  window.clearTimeout,
+
+          clearInterval: window.clearInterval,
 
           console: window.console !== null ? window.console : {
             log: function() {},
