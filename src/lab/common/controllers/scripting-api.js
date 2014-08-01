@@ -559,6 +559,12 @@ define(function (require) {
           // Rudimentary debugging functionality. Use Lab alert helper function.
           alert: alert,
 
+          // Prevent sandbox from overwriting various global functions.
+          setTimeout:    function setTimeout()    { return window.setTimeout.apply(window, arguments);    },
+          setInterval:   function setInterval()   { return window.setInterval.apply(window, arguments);   },
+          clearTimeout:  function clearTimeout()  { return window.clearTimeout.apply(window, arguments);  },
+          clearInterval: function clearInterval() { return window.clearInterval.apply(window, arguments); },
+
           console: window.console !== null ? window.console : {
             log: function() {},
             error: function() {},
