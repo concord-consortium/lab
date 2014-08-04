@@ -428,7 +428,7 @@ define(function(require) {
         enterState: function() {
           message = i18n.t("sensor.messages.not_connected");
           statusErrors = 0;
-          sensorConnectorInterface.startPolling("127.0.0.1:11180", model.properties.clientId);
+          sensorConnectorInterface.startPolling("127.0.0.1:11180", model.properties.clientId, model.properties.clientName);
           this.gotoState('connecting');
         }
       },
@@ -839,6 +839,10 @@ define(function(require) {
     if (model.properties.useRandomClientId) {
       model.properties.clientId = Math.floor((1 + Math.random()) * 0x100000000).toString(16); // a 9-digit hex string that always starts with 1
     }
+
+    model.addObserver('clientName', function() {
+      sensorConnectorInterface.clientName = model.properties.clientName;
+    });
 
     model.defineOutput('time', {
       label: i18n.t("sensor.measurements.time"),

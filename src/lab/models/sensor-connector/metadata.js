@@ -20,6 +20,9 @@ define(function() {
       clientId: {
         defaultValue: null
       },
+      clientName: {
+        defaultValue: null
+      },
       useRandomClientId: {
         defaultValue: false
       }
