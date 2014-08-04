@@ -348,7 +348,7 @@ define(function(require) {
           notifier.alert(i18n.t("sensor.messages.connection_failed_alert", {
                                 click_here_link: "<a target='_blank' style='color: #222299;' href='http://sensorconnector.concord.org/'>" +
                                                  i18n.t("sensor.messages.click_here") + "</a>"}), {
-            OK: function() {
+            "Try again": function() {
               $(this).dialog("close");
               handle('dismiss');
             }
