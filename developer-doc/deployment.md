@@ -24,6 +24,11 @@ done with the following CORS configuration that can be added through the AWS GUI
 </CORSConfiguration>
 ```
 
+If you are using CloudFront infront of the S3 bucket you will also need to setup the CloudFront
+distribution to handle CORS correctly. This
+[AWS documentation section](http://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/header-caching.html#header-caching-web-cors) provides details. Basically you need to edit the default `behavior` or create a new one. Then
+select `whitelist` for the `forward headers` option. And then add the `Origin` header to the whitelist.
+
 ## Deploying static content to a Github gh-pages branch
 
 Github's [github:pages](http://pages.github.com/) feature supports sharing any content in
