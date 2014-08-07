@@ -11,8 +11,6 @@ define(function(require) {
     // iframeEndpoint is a singleton (iframe can't have multiple parents).
     var iframeEndpoint = iframePhone.getIFrameEndpoint();
 
-    iframeEndpoint.removeAllListeners();
-
     function sendPropertyValue(propertyName) {
       iframeEndpoint.post('propertyValue', {
         name: propertyName,
