@@ -225,8 +225,10 @@ define(function(require) {
         if (hasCollectableSensors(dataset) && hasMultipleSensors) {
           if (canControl) {
             message = i18n.t("sensor.messages.ready");
+          } else if (sensorConnectorInterface.inControl.clientName) {
+            message = i18n.t("sensor.messages.ready_nocontrol", { controlling_client: sensorConnectorInterface.inControl.clientName });
           } else {
-            message = i18n.t("sensor.messages.ready_nocontrol");
+            message = i18n.t("sensor.messages.ready_nocontrol_noname");
           }
           isPlayable = true;
         } else {
@@ -550,7 +552,11 @@ define(function(require) {
         },
 
         controlDisabled: function() {
-          message = i18n.t("sensor.messages.connected_start_sensorconnector");
+          if (sensorConnectorInterface.inControl.clientName) {
+            message = i18n.t("sensor.messages.connected_start_sensorconnector", { controlling_client: sensorConnectorInterface.inControl.clientName });
+          } else {
+            message = i18n.t("sensor.messages.connected_start_sensorconnector_noname");
+          }
         },
 
         sessionChanged: function() {
