@@ -3,10 +3,11 @@
 
 define(function(require) {
 
-  var console = require('common/console'),
-      config  = require('lab.config');
+  var config  = require('lab.config'),
+      iframePhone = require('iframe-phone');
 
-  return {
+  var dgExporter = {
+
     gameName: 'Next Gen MW',
     parentCollectionName: 'Summary of Run',
     childCollectionName: 'Time Series of Run',
@@ -14,43 +15,63 @@ define(function(require) {
     perRunColumnLabelCount: 0,
     perRunColumnLabelPositions: {},
 
-    mockDGController: {
-      doCommand: function(obj) {
-        console.log("action: ", obj.action);
-        console.log("args: ", obj.args);
-        return { caseID: 0 };
-      }
+    isCodapPresent: false,
+
+    init: function() {
+      this.codapPhone = new iframePhone.IframePhoneRpcEndpoint(
+        this.codapCallbackHandler.bind(this),
+        "codap-game",
+        window.parent
+      );
     },
 
-    isDgGameControllerDefined: function() {
+    canCallDGDirect: function() {
       if (config.codap || config.dataGamesProxyPrefix) {
-        return !!(window.parent && window.parent.DG && window.parent.DG.currGameController);
-      } else {
-        return false;
+        try {
+          if (window.parent.DG.doCommand) {
+            return true;
+          }
+        } catch (e) {
+          // could be a security exception if window.parent is not same-origin, or a ReferenceError
+          // if the game controller isn't defined; in either case, fall through.
+        }
       }
+      return false;
     },
 
-    // Synonym...
     canExportData: function() {
-      return this.isDgGameControllerDefined();
+      return this.isCodapPresent || this.canCallDGDirect();
     },
 
-    getDGGameController: function() {
-      if (!this.isDgGameControllerDefined()) {
-        return this.mockDGController;
+    // Messages from CODAP sent via iframePhone. Must reply by calling callback.
+    codapCallbackHandler: function(message, callback) {
+      if (message && message.message === 'codap-present') {
+        this.isCodapPresent = true;
       }
-      return window.parent.DG.currGameController;
+      callback();
     },
 
-    doCommand: function(name, args) {
-      var controller = this.getDGGameController();
-
-      return controller.doCommand({
+    doCommand: function(name, args, callback) {
+      var cmd = {
         action: name,
         args: args
-      });
-    },
+      };
 
+      // Ensure the "direct" path follows an async execution pattern, because the iframePhone path
+      // is unavoidably async. APIs that call back synchronously sometimes, async other times
+      // release Zalgo: http://blog.izs.me/post/59142742143/designing-apis-for-asynchrony
+
+      if (this.canCallDGDirect()) {
+        setTimeout(function() {
+          var result = window.parent.DG.doCommand(cmd);
+          setTimeout(function() {
+            callback(result);
+          }, 1);
+        }, 1);
+      } else if (this.isCodapPresent) {
+        this.codapPhone.call(cmd, callback);
+      }
+    },
 
     /**
       Exports the summary data about a run and timeseries data from the run to DataGames as 2
@@ -84,7 +105,6 @@ define(function(require) {
           perRunColumnLabels = [],
           perRunColumnValues = [],
           timeSeriesColumnLabels = [],
-          parentCase,
           parentCollectionValues,
           i;
 
@@ -147,25 +167,26 @@ define(function(require) {
 
       // Step 4. Open a row in the parent table. This will contain the individual time series
       // readings as children.
-      parentCase = this.doCommand('openCase', {
+      this.doCommand('openCase', {
         collection: this.parentCollectionName,
         values: perRunColumnValues
-      });
+      }, function(parentCase) {
 
-      // Step 5. Create rows in the child table for each data point. Using 'createCases' we can
-      // do this inline, so we don't need to call openCase, closeCase for each row.
-      this.doCommand('createCases', {
-        collection: this.childCollectionName,
-        values: timeSeriesData,
-        parent: parentCase.caseID
-      });
+        // Step 5. Create rows in the child table for each data point. Using 'createCases' we can
+        // do this inline, so we don't need to call openCase, closeCase for each row.
+        this.doCommand('createCases', {
+          collection: this.childCollectionName,
+          values: timeSeriesData,
+          parent: parentCase.caseID
+        });
 
-      // Step 6. Close the case.
-      this.doCommand('closeCase', {
-        collection: this.parentCollectionName,
-        values: parentCollectionValues,
-        caseID: parentCase.caseID
-      });
+        // Step 6. Close the case.
+        this.doCommand('closeCase', {
+          collection: this.parentCollectionName,
+          values: parentCollectionValues,
+          caseID: parentCase.caseID
+        });
+      }.bind(this));
     },
 
     /**
@@ -188,4 +209,8 @@ define(function(require) {
       });
     }
   };
+
+  dgExporter.init();
+
+  return dgExporter;
 });

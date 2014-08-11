@@ -34,7 +34,8 @@
   // Additional modules.
   paths: {
     'underscore': '../../vendor/underscore/underscore',
-    'backbone': '../../vendor/backbone/backbone'
+    'backbone': '../../vendor/backbone/backbone',
+    'iframe-phone': '../../vendor/iframe-phone/dist/iframe-phone'
   },
 
   // Protect global namespace and call export of API.
