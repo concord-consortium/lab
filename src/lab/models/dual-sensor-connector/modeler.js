@@ -430,7 +430,11 @@ define(function(require) {
         enterState: function() {
           message = i18n.t("sensor.messages.not_connected");
           statusErrors = 0;
-          sensorConnectorInterface.startPolling("127.0.0.1:11180", model.properties.clientId, model.properties.clientName);
+          if (location.protocol === 'https:') {
+            sensorConnectorInterface.startPolling("https://localhost.ungerdesign.com:11181", model.properties.clientId, model.properties.clientName);
+          } else {
+            sensorConnectorInterface.startPolling("http://127.0.0.1:11180", model.properties.clientId, model.properties.clientName);
+          }
           this.gotoState('connecting');
         }
       },
