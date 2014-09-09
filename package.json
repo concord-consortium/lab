@@ -43,7 +43,7 @@
     "markdown": ">=0.5.0"
   },
   "devDependencies": {
-    "jsdom": ">=0.8.9",
+    "jsdom": ">=0.8.9 < 1.0",
     "sizzle": ">=1.1.0",
     "vows": "0.7.0",
     "node-inspector": "0.3.4",
