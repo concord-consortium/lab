@@ -33,6 +33,8 @@ define(function(require) {
       usePlaybackSupport: false
     });
 
+    var context = this;
+
     labModelerMixin.mixInto(this);
     // Use custom .set() instead of one provided by property support module.
     // Custom version is also a bit looser, it lets you define properties dynamically.
@@ -44,12 +46,39 @@ define(function(require) {
     this._initialProperties = initialProperties;
     this._propertySupport = labModelerMixin.propertySupport;
     this._dispatch = labModelerMixin.dispatchSupport;
+    this._stepCounter = 0;
+
+    // custom properties defined by the model in the iframe; values are passed every tick.
+    this._modelProperties = Object.create(null);
 
     // The default model controller asumes 'tick' is a defined event
     // the playback controller assumes 'play' and 'stop' are defined even if the viewOptions
     // disable these buttons
     // the outer iframe in the interactives browser expects a 'reset', 'stepForward', 'stepBack' event type
     this._dispatch.addEventTypes('tick', 'tickStart', 'tickEnd', 'play', 'stop', 'reset', 'stepForward', 'stepBack');
+
+    // Output properties have to be known about at model setup time (in order for model setup to
+    // work) so they are defined in the model definition
+
+    if (initialProperties.outputs) {
+      Object.getOwnPropertyNames(initialProperties.outputs).forEach(function (propertyName) {
+        var propertyDefinition = initialProperties.outputs[propertyName];
+
+        context._modelProperties[propertyName] = null;
+
+        context.defineOutput(propertyName, {
+          label:            propertyDefinition.label,
+          unitName:         propertyDefinition.unitName,
+          unitPluralName:   propertyDefinition.unitPluralName,
+          unitAbbreviation: propertyDefinition.unitAbbreviation,
+          format:           propertyDefinition.format,
+          min:              propertyDefinition.min,
+          max:              propertyDefinition.max,
+        }, function() {
+          return context._modelProperties[propertyName];
+        });
+      });
+    }
 
     // HACK to play with properties
     this.defineParameter('pressure', {
@@ -145,6 +174,10 @@ define(function(require) {
     }
   });
 
+  IFrameModel.prototype.stepCounter = function() {
+    return this._stepCounter;
+  };
+
   /**************** private methods ****************/
 
   IFrameModel.prototype._addListeners = function () {
@@ -158,6 +191,28 @@ define(function(require) {
       context._stopped = true;
       // notify that we are stopped
       context._dispatch.stop();
+    });
+
+    this._phone.addListener('defineOutputs', function(content) {
+      if ( ! content.properties ) {
+        return;
+      }
+
+
+    });
+
+    this._phone.addListener('tick', function (content) {
+      context._stepCounter++;
+
+      if (content.properties) {
+        for (var propertyName in context._modelProperties) {
+          // _modelProperties has null prototype, letting us skip hasOwnProperty check
+          context._modelProperties[propertyName] = content.properties[propertyName];
+        }
+        context.updateAllOutputProperties();
+      }
+
+      context._dispatch.tick();
     });
 
     // HACK to play with properties
