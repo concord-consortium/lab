@@ -116,11 +116,6 @@ define(function() {
         required: false
       },
 
-      hideExportDataControl: {
-        required: false,
-        defaultValue: false
-      },
-
       components: {
         // List of the interactive components. Their definitions are below ('button', 'checkbox' etc.).
         defaultValue: []

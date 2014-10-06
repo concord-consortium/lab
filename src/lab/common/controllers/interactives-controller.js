@@ -613,17 +613,6 @@ define(function (require) {
         // setup export controller so you can debug exports by typing script.exportData() in the
         // console.
         exportController = new ExportController(interactive.exports, controller);
-
-        // If there is an enclosing container we can export data to (e.g., we're iframed into
-        // DataGames) then add an "Analyze Data" button the bottom position of the interactive
-        if (ExportController.canExportData() && !interactive.hideExportDataControl) {
-          createComponent({
-            "type": "button",
-            "text": "Analyze Data",
-            "id": "-lab-analyze-data",
-            "action": "exportData();"
-          });
-        }
       }
 
       // Setup help system if help tips are defined.
@@ -1426,9 +1415,6 @@ define(function (require) {
           result.importedFrom = interactive.importedFrom;
         }
 
-        if (interactive.hideExportDataControl !== undefined) {
-          result.hideExportDataControl = interactive.hideExportDataControl;
-        }
         if (interactive.exports !== undefined) {
           result.exports = $.extend(true, {}, interactive.exports);
         }
