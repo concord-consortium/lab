@@ -18,10 +18,9 @@ define(function (require) {
     dialog.open();
   }
 
-  var ExportController = function exportController(spec, interactivesController) {
+  function ExportController(spec, interactivesController) {
     var perRun  = (spec.perRun || []).slice(),
         perTick = ['displayTime'].concat(spec.perTick.slice()),
-        runNumber = 1,
         selectionComponents = (spec.selectionComponents || []).slice(),
         perTickValues,
         controller,
@@ -269,7 +268,7 @@ define(function (require) {
           component = interactivesController.getComponent(selectionComponents[i]);
           if (component && component.selectionDomain) {
             domain = component.selectionDomain();
-            if (domain !== null && domain.length == 2) {
+            if (domain !== null && domain.length === 2) {
               if (min > domain[0]) {
                 min = domain[0];
               }
@@ -330,10 +329,9 @@ define(function (require) {
         isUnexportedDataPresent = false;
       }
     };
-  };
+  }
 
   // "Class method" (want to be able to call this before instantiating)
-  // Do we have a
   ExportController.canExportData = function() {
     return dgExporter.canExportData();
   };
