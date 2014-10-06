@@ -5,6 +5,7 @@ define(function (require) {
 
   var dgExporter = require('import-export/dg-exporter');
   var BasicDialog = require('common/controllers/basic-dialog');
+  var DispatchSupport = require('common/dispatch-support');
   var _ = require('underscore');
 
   function modalAlert(message, buttons, i18n) {
@@ -22,6 +23,8 @@ define(function (require) {
     var perRun  = (spec.perRun || []).slice(),
         perTick = ['displayTime'].concat(spec.perTick.slice()),
         selectionComponents = (spec.selectionComponents || []).slice(),
+        dispatch = new DispatchSupport(),
+        exportWasAvailable,
         perTickValues,
         controller,
         model,
@@ -249,7 +252,23 @@ define(function (require) {
       return ret;
     }
 
+    function possiblyDispatchExportAvailable() {
+      if ( ! exportWasAvailable && ExportController.canExportData() ) {
+        dispatch.exportAvailable();
+        exportWasAvailable = true;
+      }
+    }
+
+    // Setup
     registerInteractiveListeners();
+
+    // Issue an 'exportAvailable' event when canExportData() flips from false to true.
+    dispatch.addEventTypes('exportAvailable');
+    exportWasAvailable = false;
+    possiblyDispatchExportAvailable();
+    dgExporter.codapDidConnect = function() {
+      possiblyDispatchExportAvailable();
+    };
 
     return controller = {
 

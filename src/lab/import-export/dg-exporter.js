@@ -3,8 +3,30 @@
 
 define(function(require) {
 
-  var config  = require('lab.config'),
-      iframePhone = require('iframe-phone');
+  var config  = require('lab.config');
+  var iframePhone = require('iframe-phone');
+
+  /*
+    Private method. Listener for messages sent from CODAP via the iframePhone RPC endpoint.
+
+    Currently, the only message from CODAP that we listen for is the 'codap-present' message
+    indicating that we are embedded in an iframePhone-capable CODAP instance. When this message is
+    received, `this.codapDidConnect` (a method to be added by client code) is invoked, if present.
+
+    message:   message sent by iframePhone
+    callback:  callback passed by iframePhone; must be called to acknowledge receipt of message
+  */
+  function codapCallbackHandler(message, callback) {
+    if (message && message.message === 'codap-present') {
+
+      // Some simple (but very limited) zero-configuration event listening:
+      if ( ! this.isCodapPresent && typeof this.codapDidConnect === 'function' ) {
+        this.codapDidConnect();
+      }
+      this.isCodapPresent = true;
+    }
+    callback();
+  }
 
   var dgExporter = {
 
@@ -19,7 +41,7 @@ define(function(require) {
 
     init: function() {
       this.codapPhone = new iframePhone.IframePhoneRpcEndpoint(
-        this.codapCallbackHandler.bind(this),
+        codapCallbackHandler.bind(this),
         "codap-game",
         window.parent
       );
@@ -41,14 +63,6 @@ define(function(require) {
 
     canExportData: function() {
       return this.isCodapPresent || this.canCallDGDirect();
-    },
-
-    // Messages from CODAP sent via iframePhone. Must reply by calling callback.
-    codapCallbackHandler: function(message, callback) {
-      if (message && message.message === 'codap-present') {
-        this.isCodapPresent = true;
-      }
-      callback();
     },
 
     doCommand: function(name, args, callback) {
