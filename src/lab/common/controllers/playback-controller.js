@@ -40,116 +40,198 @@ define(function (require) {
 
     detectFontChange({
       font: FONT_SPEC,
-      onchange: $.proxy(this._showClockChanged, this)
+      onchange: $.proxy(this._updateClockVisibility, this)
     });
   }
   inherit(PlaybackController, InteractiveComponent);
 
-  // TODO: make 2 delegate classes instead of using this pattern!
-  PlaybackController.prototype._createControlsFor = {
-    video: function () {
-      var scriptingAPI = this._scriptingAPI;
-      var i18n = this._interactivesController.i18n;
+  // These method implementations depend on the controlButtonStyle
+  var controlButtonMethods = {
+    video: {
+      createControls: function() {
+        var scriptingAPI = this._scriptingAPI;
+        var i18n = this._interactivesController.i18n;
 
-      this.$element.removeClass('text').addClass('video');
+        this.$element.removeClass('text').addClass('video');
 
-      /** @private */
-      this._$reset = $('<button class="reset"><i class="icon-step-backward"></i></button>').appendTo(this.$element);
-      /** @private */
-      this._$playPause = $('<button class="play-pause"><i class="icon-play"></i><i class="icon-pause"></i></button>').appendTo(this.$element);
-      /** @private */
-      this._$timeDisplay = $('<span class="time-display">').appendTo(this._$playPause);
+        /** @private */
+        this._$reset = $('<button class="reset"><i class="icon-step-backward"></i></button>').appendTo(this.$element);
+        /** @private */
+        this._$playPause = $('<button class="play-pause"><i class="icon-play"></i><i class="icon-pause"></i></button>').appendTo(this.$element);
+        /** @private */
+        this._$timeDisplay = $('<span class="time-display">').appendTo(this._$playPause);
 
-      // Canvas is much faster that native HTML text, especially on mobile devices. See:
-      // https://www.pivotaltracker.com/story/show/58879086
-      /** @private */
-      this._$timeCanvas = $('<canvas>').appendTo(this._$timeDisplay);
-      /** @private */
-      this._timeCtx = this._$timeCanvas[0].getContext("2d");
+        // Canvas is much faster that native HTML text, especially on mobile devices. See:
+        // https://www.pivotaltracker.com/story/show/58879086
+        /** @private */
+        this._$timeCanvas = $('<canvas>').appendTo(this._$timeDisplay);
+        /** @private */
+        this._timeCtx = this._$timeCanvas[0].getContext("2d");
 
-      /** @private */
-      this._$stepBackward = $('<button class="step"><i class="icon-backward"></i></button>').insertBefore(this._$playPause);
-      /** @private */
-      this._$stepForward = $('<button class="step"><i class="icon-forward"></i></button>').insertAfter(this._$playPause);
+        /** @private */
+        this._$stepBackward = $('<button class="step"><i class="icon-backward"></i></button>').insertBefore(this._$playPause);
+        /** @private */
+        this._$stepForward = $('<button class="step"><i class="icon-forward"></i></button>').insertAfter(this._$playPause);
 
-      this._$reset.after('<div class="spacer reset">');
-      this._$stepBackward.after('<div class="spacer step">');
-      this._$stepForward.before('<div class="spacer step">');
+        this._$reset.after('<div class="spacer reset">');
+        this._$stepBackward.after('<div class="spacer step">');
+        this._$stepForward.before('<div class="spacer step">');
 
-      // Bind click handlers.
-      this._$reset.on("click", scriptingAPI.reloadModel);
+        // Bind click handlers.
+        this._$reset.on("click", scriptingAPI.reloadModel);
 
-      this._$playPause.on("click", $.proxy(function () {
-        if (this._modelStopped) {
-          if (this._modelPlayable) {
-            scriptingAPI.start();
+        this._$playPause.on("click", $.proxy(function () {
+          if (this._modelStopped) {
+            if (this._modelPlayable) {
+              scriptingAPI.start();
+            }
+          } else {
+            scriptingAPI.stop();
           }
+        }, this));
+
+        this._$stepBackward.on("click", scriptingAPI.stepBack);
+        this._$stepForward.on("click", scriptingAPI.stepForward);
+
+        this._$playPause.attr("title", i18n.t("banner.video_play_pause_tooltip"));
+        this._$reset.attr("title", i18n.t("banner.video_reset_tooltip"));
+        this._$stepBackward.attr("title", i18n.t("banner.video_step_back_tooltip"));
+        this._$stepForward.attr("title", i18n.t("banner.video_step_forward_tooltip"));
+      },
+
+      updateButtonStates: function() {
+        var playing = !this._modelStopped;
+        var playable = this._modelPlayable;
+
+        if (playing) {
+          this._$playPause.addClass("playing");
         } else {
-          scriptingAPI.stop();
+          this._$playPause.removeClass("playing");
         }
-      }, this));
 
-      this._$stepBackward.on("click", scriptingAPI.stepBack);
-      this._$stepForward.on("click", scriptingAPI.stepForward);
+        if (!playable && !playing) {
+          this._$playPause.addClass("disabled");
+        } else {
+          this._$playPause.removeClass("disabled");
+        }
+      },
 
-      this._$playPause.attr("title", i18n.t("banner.video_play_pause_tooltip"));
-      this._$reset.attr("title", i18n.t("banner.video_reset_tooltip"));
-      this._$stepBackward.attr("title", i18n.t("banner.video_step_back_tooltip"));
-      this._$stepForward.attr("title", i18n.t("banner.video_step_forward_tooltip"));
+      updateControlButtonChoices: function(mode) {
+        var $buttons;
+
+        if (!mode) { // mode === "" || mode === null || mode === false
+          this.$element.find(".step, .reset, .play-pause").addClass("hidden");
+        } else if (mode === "play") {
+          this.$element.find(".play-pause").removeClass("hidden");
+          this.$element.find(".spacer, .step, .reset").addClass("hidden");
+        } else if (mode === "reset") {
+          this.$element.find(".reset").removeClass("hidden");
+          this.$element.find(".spacer, .play-pause, .step").addClass("hidden");
+        } else if (mode === "play_reset") {
+          this.$element.find(".spacer, .play-pause, .reset").removeClass("hidden");
+          this.$element.find(".step").addClass("hidden");
+        } else if (mode === "play_reset_step") {
+          this.$element.find(".spacer, .step, .reset, .play-pause").removeClass("hidden");
+        }
+        $buttons = this.$element.find("button");
+        $buttons.removeClass("first");
+        $buttons.removeClass("last");
+        $buttons = $buttons.not(".hidden");
+        $buttons.first().addClass("first");
+        $buttons.last().addClass("last");
+      },
+
+      updateClockVisibility: function() {
+        this._showClock = this._model.get("showClock");
+        if (this._showClock) {
+          this._$playPause.addClass("with-clock");
+          // Update 'displayTime' description (used for formatting).
+          this._timeDesc =  this._model.getPropertyDescription("displayTime");
+          // Update clock immediately.
+          this._timeChanged();
+        } else {
+          this._$playPause.removeClass("with-clock");
+        }
+      }
     },
 
-    text: function () {
-      var scriptingAPI = this._scriptingAPI;
-      var i18n = this._interactivesController.i18n;
+    text: {
+      createControls: function() {
+        var scriptingAPI = this._scriptingAPI;
+        var i18n = this._interactivesController.i18n;
 
-      this.$element.removeClass('video').addClass('text');
+        this.$element.removeClass('video').addClass('text');
 
-      this._$start = $('<button class="start">').text(i18n.t("banner.text_start")).appendTo(this.$element);
-      this._$stop = $('<button class="stop">').text(i18n.t("banner.text_stop")).appendTo(this.$element);
-      this._$reset = $('<button class="reset">').text(i18n.t("banner.text_reset")).appendTo(this.$element);
+        this._$start = $('<button class="start">').text(i18n.t("banner.text_start")).appendTo(this.$element);
+        this._$stop = $('<button class="stop">').text(i18n.t("banner.text_stop")).appendTo(this.$element);
+        this._$reset = $('<button class="reset">').text(i18n.t("banner.text_reset")).appendTo(this.$element);
 
-      // Bind click handlers
-      this._$reset.on('click', scriptingAPI.reloadModel);
-      this._$start.on('click', scriptingAPI.start);
-      this._$stop.on('click', scriptingAPI.stop);
+        // Bind click handlers
+        this._$reset.on('click', scriptingAPI.reloadModel);
+        this._$start.on('click', scriptingAPI.start);
+        this._$stop.on('click', scriptingAPI.stop);
 
-      this._$start.attr("title", i18n.t("banner.text_start_tooltip"));
-      this._$stop.attr("title",  i18n.t("banner.text_stop_tooltip"));
-      this._$reset.attr("title", i18n.t("banner.text_reset_tooltip"));
+        this._$start.attr("title", i18n.t("banner.text_start_tooltip"));
+        this._$stop.attr("title",  i18n.t("banner.text_stop_tooltip"));
+        this._$reset.attr("title", i18n.t("banner.text_reset_tooltip"));
+      },
+
+      updateButtonStates: function() {
+        if (this._modelStopped) {
+          this._$stop.addClass("disabled");
+        } else {
+          this._$stop.removeClass("disabled");
+        }
+
+        if (this._modelPlayable) {
+          this._$start.removeClass("disabled");
+        } else {
+          this._$start.addClass("disabled");
+        }
+      },
+
+      updateControlButtonChoices: function(mode) {
+        if (!mode) { // mode === "" || mode === null || mode === false
+          this.$element.find(".reset, .start, .stop").addClass("hidden");
+        } else if (mode === "play") {
+          this.$element.find(".start, .stop").removeClass("hidden");
+          this.$element.find(".reset").addClass("hidden");
+        } else if (mode === "reset") {
+          this.$element.find(".reset").removeClass("hidden");
+          this.$element.find(".start, .stop").addClass("hidden");
+        } else if (mode === "play_reset") {
+          this.$element.find(".start, .stop, .reset").removeClass("hidden");
+        } else {
+          // no play_reset_step support for text style buttons, yet.
+          throw new Error("controlButtons option \"" + mode +
+            "\" is not understood or is not compatible with controlButtonStyle \"text\"");
+        }
+      },
+
+      updateClockVisibility: function() {
+        // noop
+      }
     }
   };
 
-  PlaybackController.prototype._updateButtonStatesFor = {
-    video: function () {
-      var playing = !this._modelStopped;
-      var playable = this._modelPlayable;
+  PlaybackController.prototype._createControls = function() {
+    this._controlButtonMethods.createControls.apply(this, arguments);
+  };
 
-      if (playing) {
-        this._$playPause.addClass("playing");
-      } else {
-        this._$playPause.removeClass("playing");
-      }
+  PlaybackController.prototype._updateButtonStates = function() {
+    this._controlButtonMethods.updateButtonStates.apply(this, arguments);
+  };
 
-      if (!playable && !playing) {
-        this._$playPause.addClass("disabled");
-      } else {
-        this._$playPause.removeClass("disabled");
-      }
-    },
+  PlaybackController.prototype._updateControlButtonChoices = function() {
+    this._controlButtonMethods.updateControlButtonChoices.apply(this, arguments);
+  };
 
-    text: function () {
-      if (this._modelStopped) {
-        this._$stop.addClass("disabled");
-      } else {
-        this._$stop.removeClass("disabled");
-      }
-
-      if (this._modelPlayable) {
-        this._$start.removeClass("disabled");
-      } else {
-        this._$start.addClass("disabled");
-      }
-    }
+  /**
+   * Enables or disables time display.
+   * @private
+   */
+  PlaybackController.prototype._updateClockVisibility = function () {
+    this._controlButtonMethods.updateClockVisibility.apply(this, arguments);
   };
 
   /**
@@ -170,30 +252,11 @@ define(function (require) {
     if (modelStopped !== this._modelStopped || modelPlayable !== this._modelPlayable) {
       this._modelStopped = modelStopped;
       this._modelPlayable = modelPlayable;
-      this._updateButtonStatesFor[this.controlButtonStyle].call(this);
+      this._updateButtonStates();
     }
   };
 
-  /**
-   * Enables or disables time display.
-   * @private
-   */
-  PlaybackController.prototype._showClockChanged = function () {
-    if (this.controlButtonStyle !== 'video') {
-      return;
-    }
 
-    this._showClock = this._model.get("showClock");
-    if (this._showClock) {
-      this._$playPause.addClass("with-clock");
-      // Update 'displayTime' description (used for formatting).
-      this._timeDesc =  this._model.getPropertyDescription("displayTime");
-      // Update clock immediately.
-      this._timeChanged();
-    } else {
-      this._$playPause.removeClass("with-clock");
-    }
-  };
 
   /**
    * Updates time display.
@@ -211,58 +274,12 @@ define(function (require) {
   };
 
 
-  PlaybackController.prototype._updateControlButtonChoicesFor = {
-    video: function (mode) {
-      var $buttons;
-
-      if (!mode) { // mode === "" || mode === null || mode === false
-        this.$element.find(".step, .reset, .play-pause").addClass("hidden");
-      } else if (mode === "play") {
-        this.$element.find(".play-pause").removeClass("hidden");
-        this.$element.find(".spacer, .step, .reset").addClass("hidden");
-      } else if (mode === "reset") {
-        this.$element.find(".reset").removeClass("hidden");
-        this.$element.find(".spacer, .play-pause, .step").addClass("hidden");
-      } else if (mode === "play_reset") {
-        this.$element.find(".spacer, .play-pause, .reset").removeClass("hidden");
-        this.$element.find(".step").addClass("hidden");
-      } else if (mode === "play_reset_step") {
-        this.$element.find(".spacer, .step, .reset, .play-pause").removeClass("hidden");
-      }
-      $buttons = this.$element.find("button");
-      $buttons.removeClass("first");
-      $buttons.removeClass("last");
-      $buttons = $buttons.not(".hidden");
-      $buttons.first().addClass("first");
-      $buttons.last().addClass("last");
-    },
-
-    text: function (mode) {
-      if (!mode) { // mode === "" || mode === null || mode === false
-        this.$element.find(".reset, .start, .stop").addClass("hidden");
-      } else if (mode === "play") {
-        this.$element.find(".start, .stop").removeClass("hidden");
-        this.$element.find(".reset").addClass("hidden");
-      } else if (mode === "reset") {
-        this.$element.find(".reset").removeClass("hidden");
-        this.$element.find(".start, .stop").addClass("hidden");
-      } else if (mode === "play_reset") {
-        this.$element.find(".start, .stop, .reset").removeClass("hidden");
-      } else {
-        // no play_reset_step support for text style buttons, yet.
-        throw new Error("controlButtons option \"" + mode +
-          "\" is not understood or is not compatible with controlButtonStyle \"text\"");
-      }
-    }
-  };
-
   /**
    * Updates playback controller mode (none, "play", "play_reset" or "play_reset_step").
    * @private
    */
   PlaybackController.prototype._controlButtonChoicesChanged = function () {
-    var mode = this._model.properties.controlButtons;
-    this._updateControlButtonChoicesFor[this.controlButtonStyle].call(this, mode);
+    this._updateControlButtonChoices(this._model.properties.controlButtons);
   };
 
   /**
@@ -278,10 +295,12 @@ define(function (require) {
     this.controlButtonStyle = style;
     this.$element.empty();
 
-    if (!this._createControlsFor[style]) {
+    if (!controlButtonMethods[style]) {
       throw new Error("Unknown controlButtonStyle \"" + style + "\"");
     }
-    this._createControlsFor[style].call(this);
+
+    this._controlButtonMethods = controlButtonMethods[style];
+    this._createControls();
   };
 
   /**
@@ -298,7 +317,7 @@ define(function (require) {
     this._model.on('stop.' + this.component.id, $.proxy(this._simulationStateChanged, this));
     this._model.addObserver('isPlayable', $.proxy(this._simulationStateChanged, this));
 
-    this._model.addObserver('showClock', $.proxy(this._showClockChanged, this));
+    this._model.addObserver('showClock', $.proxy(this._updateClockVisibility, this));
     this._model.addObserver('displayTime', $.proxy(this._timeChanged, this));
 
     // Update display mode (=> buttons are hidden or visible).
@@ -308,7 +327,7 @@ define(function (require) {
     this._controlButtonStyleChanged();
     this._controlButtonChoicesChanged();
     this._simulationStateChanged();
-    this._showClockChanged();
+    this._updateClockVisibility();
   };
 
   /**
@@ -330,7 +349,7 @@ define(function (require) {
     this._timeCtx.fillStyle = "#939598";
     this._timeCtx.textAlign = "right";
 
-    this._showClockChanged();
+    this._updateClockVisibility();
   };
 
   return PlaybackController;
