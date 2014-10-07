@@ -607,14 +607,6 @@ define(function (require) {
         new DataSet(dataSetDefinition, controller);
       });
 
-      // Setup exporter, if any...
-      if (interactive.exports) {
-        // Regardless of whether or not we are able to export data to an enclosing container,
-        // setup export controller so you can debug exports by typing script.exportData() in the
-        // console.
-        exportController = new ExportController(interactive.exports, controller);
-      }
-
       // Setup help system if help tips are defined.
       if (interactive.helpTips.length > 0) {
         helpSystem = new HelpSystem(interactive.helpTips, $fastClickContainer);
@@ -871,6 +863,20 @@ define(function (require) {
 
         if (experimentController) {
           experimentController.setOnLoadScript(onLoadScript);
+        }
+
+        // Setup exporter, if any. Has to happen before modelLoaded. Time-based dependencies FTW.
+        if (interactive.exports) {
+          exportController = new ExportController(interactive.exports, controller);
+
+           possiblySetButtonStyle = function() {
+            if (exportController.canExportData()) {
+              modelController.model.properties.controlButtonStyle = 'codap';
+            }
+          };
+
+          possiblySetButtonStyle();
+          exportController.on('canExportData.interactivesController', possiblySetButtonStyle);
         }
 
         dispatch.modelLoaded(cause || "initialLoad");

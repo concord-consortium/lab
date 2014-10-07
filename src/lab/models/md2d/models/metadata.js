@@ -252,6 +252,7 @@ define(function() {
       },
       controlButtonStyle: {
         defaultValue: "video",
+        propertyChangeInvalidates: false,
         // expectation is that this will be set by the interactive
         serialize: false
       },

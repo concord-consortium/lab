@@ -24,7 +24,7 @@ define(function (require) {
         perTick = ['displayTime'].concat(spec.perTick.slice()),
         selectionComponents = (spec.selectionComponents || []).slice(),
         dispatch = new DispatchSupport(),
-        exportWasAvailable,
+        couldExportData,
         perTickValues,
         controller,
         model,
@@ -252,25 +252,7 @@ define(function (require) {
       return ret;
     }
 
-    function possiblyDispatchExportAvailable() {
-      if ( ! exportWasAvailable && ExportController.canExportData() ) {
-        dispatch.exportAvailable();
-        exportWasAvailable = true;
-      }
-    }
-
-    // Setup
-    registerInteractiveListeners();
-
-    // Issue an 'exportAvailable' event when canExportData() flips from false to true.
-    dispatch.addEventTypes('exportAvailable');
-    exportWasAvailable = false;
-    possiblyDispatchExportAvailable();
-    dgExporter.codapDidConnect = function() {
-      possiblyDispatchExportAvailable();
-    };
-
-    return controller = {
+    controller = {
 
       canExportData: function() {
         return ExportController.canExportData();
@@ -348,6 +330,26 @@ define(function (require) {
         isUnexportedDataPresent = false;
       }
     };
+
+    // Setup
+
+    // Issue an 'canExportData' event when canExportData() flips from false to true.
+    dispatch.mixInto(controller);
+    dispatch.addEventTypes('canExportData');
+
+    couldExportData = false;
+
+    function possiblyDispatchEvent() {
+      if ( ! couldExportData && ExportController.canExportData() ) {
+        dispatch.canExportData();
+        couldExportData = true;
+      }
+    }
+    possiblyDispatchEvent();
+    dgExporter.codapDidConnect = possiblyDispatchEvent;
+    registerInteractiveListeners();
+
+    return controller;
   }
 
   // "Class method" (want to be able to call this before instantiating)
