@@ -28,8 +28,6 @@ define(function (require) {
     /** @private */
     this._modelPlayable = true;
     /** @private */
-    this._showClock = true;
-    /** @private */
     this._timeDesc = null;
     /** @private */
     this._model = null;
@@ -99,10 +97,7 @@ define(function (require) {
         this._$stepForward.attr("title", i18n.t("banner.video_step_forward_tooltip"));
       },
 
-      updateButtonStates: function() {
-        var playing = !this._modelStopped;
-        var playable = this._modelPlayable;
-
+      updateButtonStates: function(playing, playable) {
         if (playing) {
           this._$playPause.addClass("playing");
         } else {
@@ -141,9 +136,8 @@ define(function (require) {
         $buttons.last().addClass("last");
       },
 
-      updateClockVisibility: function() {
-        this._showClock = this._model.get("showClock");
-        if (this._showClock) {
+      setClockVisibility: function(showClock) {
+        if (showClock) {
           this._$playPause.addClass("with-clock");
           // Update 'displayTime' description (used for formatting).
           this._timeDesc =  this._model.getPropertyDescription("displayTime");
@@ -152,6 +146,14 @@ define(function (require) {
         } else {
           this._$playPause.removeClass("with-clock");
         }
+      },
+
+      setClockValue: function(value) {
+        // Canvas is much faster that native HTML text, especially on mobile devices. See:
+        // https://www.pivotaltracker.com/story/show/58879086
+        this._timeCtx.clearRect(0, 0, this._canvWidth, this._canvHeigth);
+        this._timeCtx.fillText(
+          this._timeDesc.format(value), this._canvWidth, this._canvHeigth * 0.85);
       }
     },
 
@@ -176,14 +178,14 @@ define(function (require) {
         this._$reset.attr("title", i18n.t("banner.text_reset_tooltip"));
       },
 
-      updateButtonStates: function() {
-        if (this._modelStopped) {
-          this._$stop.addClass("disabled");
-        } else {
+      updateButtonStates: function(playing, playable) {
+        if (playing) {
           this._$stop.removeClass("disabled");
+        } else {
+          this._$stop.addClass("disabled");
         }
 
-        if (this._modelPlayable) {
+        if (playable) {
           this._$start.removeClass("disabled");
         } else {
           this._$start.addClass("disabled");
@@ -208,7 +210,11 @@ define(function (require) {
         }
       },
 
-      updateClockVisibility: function() {
+      setClockVisibility: function() {
+        // noop
+      },
+
+      setClockValue: function() {
         // noop
       }
     }
@@ -226,12 +232,12 @@ define(function (require) {
     this._controlButtonMethods.updateControlButtonChoices.apply(this, arguments);
   };
 
-  /**
-   * Enables or disables time display.
-   * @private
-   */
-  PlaybackController.prototype._updateClockVisibility = function () {
-    this._controlButtonMethods.updateClockVisibility.apply(this, arguments);
+  PlaybackController.prototype._setClockVisibility = function() {
+    this._controlButtonMethods.setClockVisibility.apply(this, arguments);
+  };
+
+  PlaybackController.prototype._setClockValue = function() {
+    this._controlButtonMethods.setClockValue.apply(this, arguments);
   };
 
   /**
@@ -252,25 +258,18 @@ define(function (require) {
     if (modelStopped !== this._modelStopped || modelPlayable !== this._modelPlayable) {
       this._modelStopped = modelStopped;
       this._modelPlayable = modelPlayable;
-      this._updateButtonStates();
+      this._updateButtonStates( ! this._modelStopped, this._modelPlayable );
     }
   };
-
-
 
   /**
    * Updates time display.
    * @private
    */
   PlaybackController.prototype._timeChanged = function () {
-    if (!this._showClock || this.controlButtonStyle !== 'video') {
-      return;
+    if (this._model.properties.showClock) {
+      this._setClockValue(this._model.properties.displayTime);
     }
-    // Canvas is much faster that native HTML text, especially on mobile devices. See:
-    // https://www.pivotaltracker.com/story/show/58879086
-    this._timeCtx.clearRect(0, 0, this._canvWidth, this._canvHeigth);
-    this._timeCtx.fillText(this._timeDesc.format(this._model.get("displayTime")),
-                           this._canvWidth, this._canvHeigth * 0.85);
   };
 
 
@@ -303,6 +302,10 @@ define(function (require) {
     this._createControls();
   };
 
+  PlaybackController.prototype._updateClockVisibility = function() {
+    this._setClockVisibility(this._model.properties.showClock);
+  };
+
   /**
    * Implements optional callback supported by Interactive Controller.
    */
@@ -316,7 +319,6 @@ define(function (require) {
     this._model.on('play.' + this.component.id, $.proxy(this._simulationStateChanged, this));
     this._model.on('stop.' + this.component.id, $.proxy(this._simulationStateChanged, this));
     this._model.addObserver('isPlayable', $.proxy(this._simulationStateChanged, this));
-
     this._model.addObserver('showClock', $.proxy(this._updateClockVisibility, this));
     this._model.addObserver('displayTime', $.proxy(this._timeChanged, this));
 
@@ -332,6 +334,7 @@ define(function (require) {
 
   /**
    * Implements optional callback supported by Interactive Controller.
+     (*Could* be dispatched to controlButtonMethods, but is that really necessary?)
    */
   PlaybackController.prototype.resize = function () {
 
