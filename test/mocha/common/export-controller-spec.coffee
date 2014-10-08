@@ -9,10 +9,13 @@ exportsSpec =
 
 helpers.withIsolatedRequireJS (requirejs) ->
 
+  canExportData = false
+
   dgExporter =
     exportData: sinon.spy()
     openTable:  sinon.spy()
     logAction: sinon.spy()
+    canExportData: -> canExportData
 
   requirejs.define 'import-export/dg-exporter', [], -> dgExporter
 
@@ -77,6 +80,23 @@ helpers.withIsolatedRequireJS (requirejs) ->
       perTickParam: 20
 
     model
+
+
+  describe "Export controller events", ->
+    it "should emit canExportData if dgExporter connects to CODAP after initialization", ->
+      canExportDataHandler = sinon.spy()
+
+      # the value to be returned by dgExporter.canExportData():
+      canExportData = false
+      interactivesController = new MockInteractivesController()
+      exportController = new ExportController(exportsSpec, interactivesController)
+      exportController.on 'canExportData', canExportDataHandler
+
+      # now, test it
+      canExportData = true
+      dgExporter.codapDidConnect()
+
+      canExportDataHandler.called.should.equal true
 
 
   describe "Export controller", ->
