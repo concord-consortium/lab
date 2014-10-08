@@ -20,7 +20,11 @@
         "text_stop": "Stop",
         "text_stop_tooltip": "Stop the simulation or data collection",
         "text_reset": "Reset",
-        "text_reset_tooltip": "Reset the simulation or data collection"
+        "text_reset_tooltip": "Reset the simulation or data collection",
+        "text_new_run": "New Run",
+        "text_new_run_tooltip": "Set up a new experiment run",
+        "text_analyze_data": "Analyze Data",
+        "text_analyze_data_tooltip": "Send data from the experiment to CODAP"
       },
       "dialog": {
         "close_tooltip": "Close"

@@ -17,6 +17,7 @@
   text-align: center
   text-shadow: 0 1px 0 #eee
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3)
+  position: relative
 
   &:hover
     @include linear-gradient(#fff, #e6e6e6, $fallback: #e6e6e6)
@@ -415,9 +416,14 @@
     font-size: 0.8em
     line-height: 1.6em
     margin: 0.5em 0.8em
+    padding-right: 0.5em
+    padding-left: 0.5em
 
     &.disabled
       @include linear-gradient(#fff, #e6e6e6, $fallback: #e6e6e6)
+
+  &.text.wide > button
+    width: 8em
 
   &.video
     border-bottom-left-radius: 0.7em

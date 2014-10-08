@@ -9,6 +9,14 @@ define(function (require) {
       // Font used by time display
       FONT_SPEC = "bold 2em " + labConfig.fontface;
 
+  function disable($el) {
+    $el.attr('disabled', true).addClass('disabled').css('cursor', 'default');
+  }
+
+  function enable($el) {
+    $el.attr('disabled', false).removeClass('disabled').css('cursor', 'pointer');
+  }
+
   /**
    * Playback controller.
    *
@@ -28,6 +36,9 @@ define(function (require) {
     /** @private */
     this._modelPlayable = true;
     /** @private */
+    this._modelHasPlayed = false;
+    /** @private */
+    this._isUnexportedDataPresent = false;
     this._timeDesc = null;
     /** @private */
     this._model = null;
@@ -51,6 +62,8 @@ define(function (require) {
         var i18n = this._interactivesController.i18n;
 
         this.$element.removeClass('text').addClass('video');
+        // make sure clicks on disabling overlay do nothing
+        this.$element.on('click', '.lab-disabled-overlay', false);
 
         /** @private */
         this._$reset = $('<button class="reset"><i class="icon-step-backward"></i></button>').appendTo(this.$element);
@@ -97,17 +110,17 @@ define(function (require) {
         this._$stepForward.attr("title", i18n.t("banner.video_step_forward_tooltip"));
       },
 
-      updateButtonStates: function(playing, playable) {
-        if (playing) {
-          this._$playPause.addClass("playing");
-        } else {
+      updateButtonStates: function(stopped, playable) {
+        if (stopped) {
           this._$playPause.removeClass("playing");
+        } else {
+          this._$playPause.addClass("playing");
         }
 
-        if (!playable && !playing) {
-          this._$playPause.addClass("disabled");
+        if (stopped && ! playable) {
+          disable(this._$playPause);
         } else {
-          this._$playPause.removeClass("disabled");
+          enable(this._$playPause);
         }
       },
 
@@ -178,17 +191,17 @@ define(function (require) {
         this._$reset.attr("title", i18n.t("banner.text_reset_tooltip"));
       },
 
-      updateButtonStates: function(playing, playable) {
-        if (playing) {
-          this._$stop.removeClass("disabled");
+      updateButtonStates: function(stopped, playable) {
+        if (stopped) {
+          disable(this._$stop);
         } else {
-          this._$stop.addClass("disabled");
+          enable(this._$stop);
         }
 
         if (playable) {
-          this._$start.removeClass("disabled");
+          enable(this._$start);
         } else {
-          this._$start.addClass("disabled");
+          disable(this._$start);
         }
       },
 
@@ -207,6 +220,95 @@ define(function (require) {
           // no play_reset_step support for text style buttons, yet.
           throw new Error("controlButtons option \"" + mode +
             "\" is not understood or is not compatible with controlButtonStyle \"text\"");
+        }
+      },
+
+      setClockVisibility: function() {
+        // noop
+      },
+
+      setClockValue: function() {
+        // noop
+      }
+    },
+
+    codap: {
+      createControls: function() {
+        var scriptingAPI = this._scriptingAPI;
+        var i18n = this._interactivesController.i18n;
+
+        this.$element.removeClass('video').addClass('text wide');
+
+        this._$start = $('<button class="start">').
+          text(i18n.t('banner.text_start')).
+          attr("title", i18n.t('banner.text_start_tooltip')).
+          appendTo(this.$element);
+
+        this._$stop = $('<button class="stop">').
+          text(i18n.t('banner.text_stop')).
+          attr('title', i18n.t('banner.text_start_tooltip')).
+          appendTo(this.$element);
+
+        this._$analyzeData = $('<button class="analyze-data">').
+          text(i18n.t('banner.text_analyze_data')).
+          attr('title', i18n.t('banner.text_analyze_data_tooltip')).
+          appendTo(this.$element);
+
+        this._$newRun = $('<button class="new-run">').
+          text(i18n.t('banner.text_new_run')).
+          attr('title', i18n.t('banner.text_new_run_tooltip')).
+          appendTo(this.$element);
+
+        // Bind click handlers
+        this._$start.on('click', scriptingAPI.start);
+        this._$stop.on('click', scriptingAPI.stop);
+        this._$analyzeData.on('click', function() {
+          scriptingAPI.exportData();
+          disable($(this));
+        });
+
+        this._$newRun.on('click', function() {
+          scriptingAPI.reloadModel({ cause: 'new-run' });
+        });
+      },
+
+      updateButtonStates: function(stopped, playable, hasPlayed, isUnexportedDataPresent) {
+        // Why, yes, a setEnabled function with a boolean parameter *would* be better
+        if (hasPlayed) {
+          disable(this._$start);
+          enable(this._$newRun);
+        } else {
+          enable(this._$start);
+          disable(this._$newRun);
+        }
+
+        if (stopped) {
+          disable(this._$stop);
+        } else {
+          enable(this._$stop);
+        }
+
+        if (hasPlayed && stopped && isUnexportedDataPresent) {
+          enable(this._$analyzeData);
+        } else {
+          disable(this._$analyzeData);
+        }
+      },
+
+      updateControlButtonChoices: function(mode) {
+        // mode is one of: null, 'play', 'reset', 'play_reset', 'play_reset_step'
+        if (mode && mode.indexOf('play') >= 0) {
+          this._$start.show();
+          this._$stop.show();
+        } else {
+          this._$start.hide();
+          this._$stop.hide();
+        }
+
+        if (mode && mode.indexOf('reset') >= 0) {
+          this._$newRun.show();
+        } else {
+          this._$newRun.hide();
         }
       },
 
@@ -248,6 +350,8 @@ define(function (require) {
     var modelStopped = this._model.isStopped();
     // Coerce undefined to *true* for models that don't have isPlayable property
     var modelPlayable = this._model.properties.isPlayable === false ? false : true;
+    var modelHasPlayed = this._model.properties.hasPlayed;
+    var isUnexportedDataPresent = this._scriptingAPI.isUnexportedDataPresent();
 
     // Update button states only if modelStopped/modelPlayable actually changed. (Since they're
     // model properties, we are called every tick, unfortunately -- the optimization assumption
@@ -255,10 +359,14 @@ define(function (require) {
     // almost certain to change every tick, so it doesn't check to see if they really changed.)
     // update-button-states adds and removes classes, which at the very least adds a distracting
     // entry to Dev Tools timeline view every tick.
-    if (modelStopped !== this._modelStopped || modelPlayable !== this._modelPlayable) {
+    if (modelStopped !== this._modelStopped ||
+        modelPlayable !== this._modelPlayable ||
+        modelHasPlayed !== this._modelHasPlayed ||
+        isUnexportedDataPresent !== this._isUnexportedDataPresent) {
       this._modelStopped = modelStopped;
       this._modelPlayable = modelPlayable;
-      this._updateButtonStates( ! this._modelStopped, this._modelPlayable );
+      this._modelHasPlayed = modelHasPlayed;
+      this._updateButtonStates( modelStopped, modelPlayable, modelHasPlayed, isUnexportedDataPresent );
     }
   };
 
@@ -300,6 +408,7 @@ define(function (require) {
 
     this._controlButtonMethods = controlButtonMethods[style];
     this._createControls();
+    this._controlButtonChoicesChanged();
   };
 
   PlaybackController.prototype._updateClockVisibility = function() {
