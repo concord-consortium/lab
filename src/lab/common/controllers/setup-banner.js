@@ -301,8 +301,8 @@ define(function () {
       {
         "id": "interactive-playback-container",
         "bottom": "container.height",
-        "left": "container.width/2 - interactive-playback-container.width/2",
         "height": "banner-bottom-left.height",
+        "width": "container.width",
         "belowOthers": true
       });
 
