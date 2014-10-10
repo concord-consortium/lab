@@ -78,9 +78,11 @@ define(function(require) {
       if (this.canCallDGDirect()) {
         setTimeout(function() {
           var result = window.parent.DG.doCommand(cmd);
-          setTimeout(function() {
-            callback(result);
-          }, 1);
+          if (callback) {
+            setTimeout(function() {
+                callback(result);
+            }, 1);
+          }
         }, 1);
       } else if (this.isCodapPresent) {
         this.codapPhone.call(cmd, callback);
