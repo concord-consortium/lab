@@ -333,6 +333,8 @@ define(function (require) {
 
     // Setup
 
+    dgExporter.init();
+
     // Issue an 'canExportData' event when canExportData() flips from false to true.
     dispatch.mixInto(controller);
     dispatch.addEventTypes('canExportData');

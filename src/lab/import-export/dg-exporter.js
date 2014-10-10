@@ -226,7 +226,5 @@ define(function(require) {
     }
   };
 
-  dgExporter.init();
-
   return dgExporter;
 });
