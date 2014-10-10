@@ -24,7 +24,6 @@ define(function (require) {
         perTick = ['displayTime'].concat(spec.perTick.slice()),
         selectionComponents = (spec.selectionComponents || []).slice(),
         dispatch = new DispatchSupport(),
-        couldExportData,
         perTickValues,
         controller,
         model,
@@ -339,16 +338,13 @@ define(function (require) {
     dispatch.mixInto(controller);
     dispatch.addEventTypes('canExportData');
 
-    couldExportData = false;
-
-    function possiblyDispatchEvent() {
-      if ( ! couldExportData && ExportController.canExportData() ) {
+    // Make sure we emit event if canExportData becomes true. Assume codap connects only once.
+    dgExporter.codapDidConnect = function() {
+      if ( ExportController.canExportData() ) {
         dispatch.canExportData();
-        couldExportData = true;
       }
-    }
-    possiblyDispatchEvent();
-    dgExporter.codapDidConnect = possiblyDispatchEvent;
+    };
+
     registerInteractiveListeners();
 
     return controller;
