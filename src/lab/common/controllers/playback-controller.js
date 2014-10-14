@@ -297,17 +297,21 @@ define(function (require) {
 
       updateControlButtonChoices: function(mode) {
         // mode is one of: null, 'play', 'reset', 'play_reset', 'play_reset_step'
+        // only show start/stop buttons in 'play', 'play_reset', 'play_reset_step'
+        // only show new-run button if reset button is requested AND play button is requested:
+        // (i.e., in play_reset and play_reset_step)
+
         if (mode && mode.indexOf('play') >= 0) {
           this._$start.show();
           this._$stop.show();
+          if (mode.indexOf('reset') >= 0) {
+            this._$newRun.show();
+          } else {
+            this._$newRun.hide();
+          }
         } else {
           this._$start.hide();
           this._$stop.hide();
-        }
-
-        if (mode && mode.indexOf('reset') >= 0) {
-          this._$newRun.show();
-        } else {
           this._$newRun.hide();
         }
       },
