@@ -16,6 +16,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
     openTable:  sinon.spy()
     logAction: sinon.spy()
     canExportData: -> canExportData
+    init: ->
 
   requirejs.define 'import-export/dg-exporter', [], -> dgExporter
 
