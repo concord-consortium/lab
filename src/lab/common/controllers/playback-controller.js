@@ -61,9 +61,8 @@ define(function (require) {
         var scriptingAPI = this._scriptingAPI;
         var i18n = this._interactivesController.i18n;
 
+        this.$element.empty();
         this.$element.removeClass('text').addClass('video');
-        // make sure clicks on disabling overlay do nothing
-        this.$element.on('click', '.lab-disabled-overlay', false);
 
         /** @private */
         this._$reset = $('<button class="reset"><i class="icon-step-backward"></i></button>').appendTo(this.$element);
@@ -175,6 +174,7 @@ define(function (require) {
         var scriptingAPI = this._scriptingAPI;
         var i18n = this._interactivesController.i18n;
 
+        this.$element.empty();
         this.$element.removeClass('video').addClass('text');
 
         this._$start = $('<button class="start">').text(i18n.t("banner.text_start")).appendTo(this.$element);
@@ -238,6 +238,7 @@ define(function (require) {
         var i18n = this._interactivesController.i18n;
 
         this.$element.removeClass('video').addClass('text wide');
+        this.$element.empty();
 
         this._$start = $('<button class="start">').
           text(i18n.t('banner.text_start')).
