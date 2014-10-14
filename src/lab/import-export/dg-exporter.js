@@ -17,13 +17,16 @@ define(function(require) {
     callback:  callback passed by iframePhone; must be called to acknowledge receipt of message
   */
   function codapCallbackHandler(message, callback) {
+    var wasConnected;
     if (message && message.message === 'codap-present') {
+      wasConnected = this.isCodapPresent;
+
+      this.isCodapPresent = true;
 
       // Some simple (but very limited) zero-configuration event listening:
-      if ( ! this.isCodapPresent && typeof this.codapDidConnect === 'function' ) {
+      if ( ! wasConnected  && typeof this.codapDidConnect === 'function' ) {
         this.codapDidConnect();
       }
-      this.isCodapPresent = true;
     }
     callback();
   }

@@ -818,6 +818,7 @@ define(function (require) {
         initialModelConfig = $.extend(true, {}, modelConfig);
 
         var modelOptions = processOptions(modelConfig, interactiveModelOptions, interactiveViewOptions);
+        var possiblySetButtonStyle;
 
         if (modelController) {
           modelController.reload(modelUrl, modelOptions, true);
