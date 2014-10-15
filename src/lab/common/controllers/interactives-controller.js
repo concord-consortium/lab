@@ -644,6 +644,17 @@ define(function (require) {
         createComponent(componentJsons[i]);
       }
 
+      // Setup messaging with CODAP (or other data manager) if present
+
+      // WARNING: due to deficiencies in iframePhone (as of iframePhone 1.1), this must take
+      // place in the same event loop as the creation of parentMessageAPI (otherwise, the
+      // codap-present message may be swallowed by parentMessageAPI's iframePhone instance, with the
+      // result that exportController.canExportData never becomes true)
+
+      if (interactive.exports) {
+        exportController = new ExportController(interactive.exports, controller);
+      }
+
       // Setup experimentController, if defined.
       if (interactive.experiment) {
         experimentController = new ExperimentController(interactive.experiment, controller);
@@ -867,10 +878,8 @@ define(function (require) {
         }
 
         // Setup exporter, if any. Has to happen before modelLoaded. Time-based dependencies FTW.
-        if (interactive.exports) {
-          exportController = new ExportController(interactive.exports, controller);
-
-           possiblySetButtonStyle = function() {
+        if (exportController) {
+          possiblySetButtonStyle = function() {
             if (exportController.canExportData()) {
               modelController.model.properties.controlButtonStyle = 'codap';
             }
