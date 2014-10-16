@@ -329,10 +329,12 @@ define(function (require) {
 
   PlaybackController.prototype._createControls = function() {
     this._controlButtonMethods.createControls.apply(this, arguments);
+    this._updateButtonStates();
   };
 
   PlaybackController.prototype._updateButtonStates = function() {
-    this._controlButtonMethods.updateButtonStates.apply(this, arguments);
+    this._controlButtonMethods.updateButtonStates.call(this,
+       this._modelStopped, this._modelPlayable, this._modelHasPlayed, this._isUnexportedDataPresent );
   };
 
   PlaybackController.prototype._updateControlButtonChoices = function() {
@@ -371,7 +373,9 @@ define(function (require) {
       this._modelStopped = modelStopped;
       this._modelPlayable = modelPlayable;
       this._modelHasPlayed = modelHasPlayed;
-      this._updateButtonStates( modelStopped, modelPlayable, modelHasPlayed, isUnexportedDataPresent );
+      this._isUnexportedDataPresent = isUnexportedDataPresent;
+
+      this._updateButtonStates();
     }
   };
 
