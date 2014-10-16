@@ -97,23 +97,15 @@ define(function (require) {
 
       // Yuck, but here we go.
       modalAlert(
-        "<p>You're setting up a new run without saving your data. Please indicate why:</p>" +
-        "<form id='export-alert-form'>" +
-        "  <p><input type='radio' name='reason' value='trying-things-out'>Just trying things out.</input></p>" +
-        "  <p><input type='radio' name='reason' value='experiment-worked-not-satisfied'>Experiment worked, but not satisfied with the data.</input></p>" +
-        "  <p><input type='radio' name='reason' value='something-went-wrong'>Something went wrong during the experiment.</input></p>" +
-        "  <p><input type='radio' name='reason' value='other'>Other.</input></p>" +
-        "</form>", {
-        OK: function() {
-          logAction('discarded data', getCurrentPerRunData(), {
-            reasonCode: $(this).find('input[name=reason]:checked').val()
-          });
-          $(this).remove();
-          resetRequest.proceed();
-        },
-        Cancel: function() {
+        "<p>Are you sure you want to set up a new run without saving your data?</p>", {
+        "Cancel": function() {
           $(this).remove();
           resetRequest.cancel();
+        },
+        "Reset without saving": function() {
+          logAction('discarded data', getCurrentPerRunData());
+          $(this).remove();
+          resetRequest.proceed();
         }
       }, interactivesController.i18n);
     }
