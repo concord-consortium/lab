@@ -10,11 +10,11 @@ define(function (require) {
       FONT_SPEC = "bold 2em " + labConfig.fontface;
 
   function disable($el) {
-    $el.attr('disabled', true).addClass('disabled').css('cursor', 'default');
+    $el.attr('disabled', true).addClass('lab-disabled').css('cursor', 'default');
   }
 
   function enable($el) {
-    $el.attr('disabled', false).removeClass('disabled').css('cursor', 'pointer');
+    $el.attr('disabled', false).removeClass('lab-disabled').css('cursor', 'pointer');
   }
 
   /**
