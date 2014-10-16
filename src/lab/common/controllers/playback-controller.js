@@ -277,16 +277,20 @@ define(function (require) {
         // Why, yes, a setEnabled function with a boolean parameter *would* be better
         if (hasPlayed) {
           disable(this._$start);
-          enable(this._$newRun);
         } else {
           enable(this._$start);
-          disable(this._$newRun);
         }
 
         if (stopped) {
           disable(this._$stop);
         } else {
           enable(this._$stop);
+        }
+
+        if (hasPlayed && stopped) {
+          enable(this._$newRun);
+        } else {
+          disable(this._$newRun);
         }
 
         if (hasPlayed && stopped && isUnexportedDataPresent) {
