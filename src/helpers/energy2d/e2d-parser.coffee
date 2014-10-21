@@ -131,6 +131,10 @@ exports.parse = (xmlString) ->
     read $p, p, 'texture'
     # simplify texture definition
     if p.texture?
+      bg_color = $p.find('texture texture_bg').text()
+      if bg_color
+        # Replace color property with texture background color.
+        p.color = (parseInt(bg_color, 16) + Math.pow(2, 24)).toString(16)
       p.texture = true
 
     p = validator.validateCompleteness metadata.part, p
