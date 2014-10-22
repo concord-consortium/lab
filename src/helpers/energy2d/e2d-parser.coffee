@@ -161,7 +161,7 @@ exports.parse = (xmlString) ->
       p.angle = (p.angle * 180 / Math.PI).toFixed 2
     if p.type == 'thermometer'
       # Java E2D measures temperature in a different point of the sensor.
-      p.y += 0.2
+      p.y += json.model_height / 50
     p = validator.validateCompleteness metadata.sensor, p
     sensors.push p
 
