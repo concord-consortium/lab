@@ -20,7 +20,10 @@ define(function () {
      * Basic dialog elements.
      * @type {jQuery}
      */
-    this.$element = $('<div>');
+    var title = options.title || '';
+    var id = options.id || '';
+
+    this.$element = $('<div id="'+id+'" title="'+title+'">');
     // Create jQuery UI Dialog.
     this.$element.dialog($.extend({closeText: i18n.t("dialog.close_tooltip")}, defOptions, options));
   }
