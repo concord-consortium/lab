@@ -8,10 +8,12 @@ define(function (require) {
   var DispatchSupport = require('common/dispatch-support');
   var _ = require('underscore');
 
-  function modalAlert(message, buttons, i18n) {
+  function modalAlert(title, message, buttons, i18n) {
     var dialog = new BasicDialog({
       width: "60%",
       modal: true,
+      id: 'exporter-modal-alert',
+      title: title,
       buttons: buttons
     }, i18n);
 
@@ -37,7 +39,12 @@ define(function (require) {
         initialPerRunData,
 
         // Has exportData been called for this model since the last load or reset event?
-        isUnexportedDataPresent = false;
+        isUnexportedDataPresent = false,
+
+        // Whether user needs to confirm (ok/cancel) if discarding data. Set by "don't ask again"
+        // checkbox when discarding data the first time
+        askAboutDataDiscard = true;
+
 
     function getDataPoint() {
       var ret = [], i, len;
@@ -95,19 +102,45 @@ define(function (require) {
     // environment.
     function handleDataDiscard(resetRequest) {
 
-      // Yuck, but here we go.
-      modalAlert(
-        "<p>Are you sure you want to set up a new run without saving your data?</p>", {
-        "Cancel": function() {
-          $(this).remove();
-          resetRequest.cancel();
-        },
-        "Reset without saving": function() {
-          logAction('discarded data', getCurrentPerRunData());
-          $(this).remove();
-          resetRequest.proceed();
-        }
-      }, interactivesController.i18n);
+      if (askAboutDataDiscard) {
+
+        // Yuck (UI in the controller layer), but here we go.
+        modalAlert(
+          "Reset without saving your data?",
+          "<p>Are you sure you want to set up a new run without saving your data?</p>" +
+            "<input type='checkbox' id='always-reset' name='always-reset'></input>"+
+            "<label for='always-reset'>Always reset without saving</label>" , [
+            {
+              id: 'button-cancel',
+              text: "Cancel",
+              click: function() {
+                $(this).remove();
+                resetRequest.cancel();
+              }
+            },
+            {
+              id: 'button-reset',
+              text: "Reset without saving",
+              click: function() {
+                logAction('discarded data', getCurrentPerRunData());
+                askAboutDataDiscard = ! $('#always-reset').is(':checked');
+                $(this).remove();
+                resetRequest.proceed();
+              }
+            }
+          ],
+          interactivesController.i18n
+        );
+
+        // Selecting "always reset" should imply that you have to reset without saving this time
+        // to, so when "always reset" checkbox is selected, disable the cancel button
+        $('#always-reset').change(function() {
+          $('#button-cancel').button({ disabled: $('#always-reset').is(':checked') });
+        });
+
+      } else {
+        resetRequest.proceed();
+      }
     }
 
     // Called when exporting data; detects changes to per-run parameters since the model's initial
