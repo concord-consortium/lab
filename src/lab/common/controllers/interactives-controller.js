@@ -6,6 +6,7 @@ define(function (require) {
   var labConfig               = require('lab.config'),
       arrays                  = require('arrays'),
       FastClick               = require('fastclick'),
+      _                       = require('underscore'),
       alert                   = require('common/alert'),
       validator               = require('common/validator'),
       getI18n                 = require('common/i18n'),
@@ -651,9 +652,7 @@ define(function (require) {
       // codap-present message may be swallowed by parentMessageAPI's iframePhone instance, with the
       // result that exportController.canExportData never becomes true)
 
-      if (interactive.exports) {
-        exportController = new ExportController(controller);
-      }
+      exportController = new ExportController(controller);
 
       // Setup experimentController, if defined.
       if (interactive.experiment) {
@@ -877,19 +876,17 @@ define(function (require) {
           experimentController.setOnLoadScript(onLoadScript);
         }
 
-        // Setup exporter, if any. Has to happen before modelLoaded. Time-based dependencies FTW.
-        if (exportController) {
-          exportController.init(interactive.exports);
+        // Setup exporter. Has to happen before modelLoaded. Time-based dependencies FTW.
+        exportController.init(interactive.exports || getDefaultExports());
 
-          possiblySetButtonStyle = function() {
-            if (exportController.canExportData()) {
-              modelController.model.properties.controlButtonStyle = 'codap';
-            }
-          };
+        possiblySetButtonStyle = function() {
+          if (exportController.canExportData()) {
+            modelController.model.properties.controlButtonStyle = 'codap';
+          }
+        };
 
-          possiblySetButtonStyle();
-          exportController.on('canExportData.interactivesController', possiblySetButtonStyle);
-        }
+        possiblySetButtonStyle();
+        exportController.on('canExportData.interactivesController', possiblySetButtonStyle);
 
         dispatch.modelLoaded(cause || "initialLoad");
 
@@ -1137,6 +1134,46 @@ define(function (require) {
       return properties;
     }
 
+    function getBoundProperties() {
+      var componentProperties = _.pluck(interactive.components, 'property');
+      var graphProperties = _.pluck(_.where(interactive.components, { type: 'graph' }), 'properties');
+
+      return _.without(_.uniq(_.flatten([componentProperties, graphProperties])), undefined);
+    }
+
+    function isPropertyWritable(name) {
+      return !!model && !!model.isPropertyWritable && model.isPropertyWritable(name);
+    }
+
+    function getDefaultExports() {
+      // start with a list of all properties bound to components
+      var boundProperties = getBoundProperties();
+      var additionalPerTickProperties = [];
+
+      // assume that writable properties are experimental parameters; log them once per run
+      var perRunProperties = boundProperties.filter(isPropertyWritable);
+
+      // assume that read-only properties change due to model physics; log them at every tick
+      var perTickProperties = _.difference(boundProperties, perRunProperties);
+
+      // As a special case, MD2D models should log kinetic and potential energy (and if we are in
+      // the molecular size scale, also temperature)
+
+      if (model && model.properties.type === 'md2d') {
+        additionalPerTickProperties =
+          model.properties.unitsScheme === 'md2d' ?
+            ['kineticEnergy', 'potentialEnergy', 'temperature'] :
+            ['kineticEnergy', 'potentialEnergy'];
+      }
+
+      perTickProperties = _.uniq(perTickProperties.concat(additionalPerTickProperties));
+
+      return {
+        perRun: perRunProperties,
+        perTick: perTickProperties
+      };
+    }
+
     //
     // Public API.
     //
@@ -1165,6 +1202,9 @@ define(function (require) {
       },
       get exportController() {
         return exportController;
+      },
+      get defaultExports() {
+        return getDefaultExports();
       },
 
       /**
