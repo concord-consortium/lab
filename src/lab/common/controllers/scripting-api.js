@@ -529,17 +529,17 @@ define(function (require) {
           },
 
           canExportData: function canExportData() {
-            var exportController = interactivesController.getDGExportController();
+            var exportController = interactivesController.exportController;
             return exportController && exportController.canExportData() || false;
           },
 
           isUnexportedDataPresent: function isUnexportedDataPresent() {
-            var exportController = interactivesController.getDGExportController();
+            var exportController = interactivesController.exportController;
             return exportController && exportController.isUnexportedDataPresent() || false;
           },
 
           exportData: function exportData() {
-            var exportController = interactivesController.getDGExportController();
+            var exportController = interactivesController.exportController;
             if (!exportController || !exportController.canExportData()) {
               throw new Error("No exports have been specified.");
             }

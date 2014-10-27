@@ -1163,7 +1163,7 @@ define(function (require) {
       get randomSeed() {
         return randSeed;
       },
-      getDGExportController: function () {
+      get exportController() {
         return exportController;
       },
 
