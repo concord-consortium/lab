@@ -21,11 +21,11 @@ define(function (require) {
     dialog.open();
   }
 
-  function ExportController(spec, interactivesController) {
-    var perRun  = (spec.perRun || []).slice(),
-        perTick = ['displayTime'].concat(spec.perTick.slice()),
-        selectionComponents = (spec.selectionComponents || []).slice(),
-        dispatch = new DispatchSupport(),
+  function ExportController(interactivesController) {
+    var dispatch = new DispatchSupport(),
+        perRun,
+        perTick,
+        selectionComponents,
         perTickValues,
         controller,
         model,
@@ -43,8 +43,11 @@ define(function (require) {
 
         // Whether user needs to confirm (ok/cancel) if discarding data. Set by "don't ask again"
         // checkbox when discarding data the first time
-        askAboutDataDiscard = true;
+        askAboutDataDiscard = true,
 
+        deferredModelLoadedHandler,
+
+        isInitialized = false;
 
     function getDataPoint() {
       var ret = [], i, len;
@@ -208,6 +211,7 @@ define(function (require) {
       interactivesController.on('modelLoaded.exportController', function(cause) {
         handleModelInitialization('modelLoaded', cause);
       });
+
       interactivesController.on('modelReset.exportController', function(cause) {
         handleModelInitialization('modelReset', cause);
       });
@@ -218,29 +222,41 @@ define(function (require) {
     }
 
     function handleModelInitialization(eventName, cause) {
-      model = interactivesController.getModel();
-      resetData();
-      registerModelListeners();
 
-      if (eventName === 'modelLoaded') {
-        if (cause === 'reload') {
-          logAction("reloaded the model", savedPerRunData);
-        } else if (cause === 'new-run') {
-          logAction("set up a new run", savedPerRunData);
-        } else {
-          logAction("loaded a model");
+      function handleModelLoaded() {
+        model = interactivesController.getModel();
+        resetData();
+        registerModelListeners();
+
+        if (eventName === 'modelLoaded') {
+          if (cause === 'reload') {
+            logAction("reloaded the model", savedPerRunData);
+          } else if (cause === 'new-run') {
+            logAction("set up a new run", savedPerRunData);
+          } else {
+            logAction("loaded a model");
+          }
+        } else if (eventName === 'modelReset') {
+          if (cause === 'new-run') {
+            logAction("set up a new run", savedPerRunData);
+          } else {
+            logAction("reset the model", savedPerRunData);
+          }
         }
-      } else if (eventName === 'modelReset') {
-        if (cause === 'new-run') {
-          logAction("set up a new run", savedPerRunData);
-        } else {
-          logAction("reset the model", savedPerRunData);
-        }
+
+        initialPerRunData = null;
+        savedPerRunData = null;
+        isUnexportedDataPresent = false;
       }
 
-      initialPerRunData = null;
-      savedPerRunData = null;
-      isUnexportedDataPresent = false;
+      // Don't accumulate data or logs until we know we know there is somewhere to send the data.
+      // (Note that CODAP, if present, will announce itself before the model can be started by the
+      // user, so there should not be data loss.)
+      if (controller.canExportData()) {
+        handleModelLoaded();
+      } else {
+        controller.on('canExportData.export-controller', handleModelLoaded);
+      }
     }
 
     function getCurrentPerRunData() {
@@ -286,8 +302,20 @@ define(function (require) {
         return isUnexportedDataPresent;
       },
 
+      init: function(spec) {
+        perRun  = (spec.perRun || []).slice();
+        perTick = ['displayTime'].concat(spec.perTick.slice());
+        selectionComponents = (spec.selectionComponents || []).slice();
+
+        isInitialized = true;
+      },
+
       selectedData: function() {
         var i, component, domain, min = Infinity, max = -Infinity, outputData = [];
+
+        if ( ! isInitialized ) {
+          throw new Error("ExportController: selectData() was called before controller was initialized.");
+        }
 
         for (i = 0; i < selectionComponents.length; i++) {
           component = interactivesController.getComponent(selectionComponents[i]);
@@ -321,6 +349,10 @@ define(function (require) {
             perTickLabels = [],
             changedParameters,
             i;
+
+        if ( ! isInitialized ) {
+          throw new Error("ExportController: exportData() was called before controller was initialized.");
+        }
 
         changedParameters = getChangedParameterValues();
 

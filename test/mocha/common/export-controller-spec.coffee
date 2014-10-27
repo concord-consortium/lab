@@ -90,7 +90,8 @@ helpers.withIsolatedRequireJS (requirejs) ->
       # the value to be returned by dgExporter.canExportData():
       canExportData = false
       interactivesController = new MockInteractivesController()
-      exportController = new ExportController(exportsSpec, interactivesController)
+      exportController = new ExportController interactivesController
+      exportController.init exportsSpec
       exportController.on 'canExportData', canExportDataHandler
 
       # now, test it
@@ -109,7 +110,8 @@ helpers.withIsolatedRequireJS (requirejs) ->
       dgExporter.exportData.reset()
       dgExporter.openTable.reset()
       interactivesController = new MockInteractivesController()
-      exportController = new ExportController(exportsSpec, interactivesController)
+      exportController = new ExportController interactivesController
+      exportController.init exportsSpec
 
       interactivesController.loadModel()
       model = interactivesController.model

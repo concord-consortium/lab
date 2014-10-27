@@ -652,7 +652,7 @@ define(function (require) {
       // result that exportController.canExportData never becomes true)
 
       if (interactive.exports) {
-        exportController = new ExportController(interactive.exports, controller);
+        exportController = new ExportController(controller);
       }
 
       // Setup experimentController, if defined.
@@ -879,6 +879,8 @@ define(function (require) {
 
         // Setup exporter, if any. Has to happen before modelLoaded. Time-based dependencies FTW.
         if (exportController) {
+          exportController.init(interactive.exports);
+
           possiblySetButtonStyle = function() {
             if (exportController.canExportData()) {
               modelController.model.properties.controlButtonStyle = 'codap';
