@@ -1108,27 +1108,28 @@ define(function (require) {
     }
 
     function getRetainedProperties(additionalProps) {
-      function concatWithoutDuplicates() {
-        var arr, set = {};
-        for (var i = 0, ii = arguments.length; i < ii; i++) {
-          arr = arguments[i];
-          for (var j = 0, jj = arr.length; j < jj; j++) {
-            set[arr[j]] = true;
-          }
-        }
-        return Object.keys(set);
+      var propertiesToRetain;
+
+      if ( interactive.propertiesToRetain ) {
+        // interactive specifies properties to retain; use them
+        propertiesToRetain = interactive.propertiesToRetain;
+      } else if (exportController.canExportData()) {
+        // We're in CODAP (or something similar) and interactive is not explicit about which
+        // properties to retain; start with a default list of properties
+        propertiesToRetain = getDefaultPropertiesToRetain();
       }
 
-      var propertyKeys = concatWithoutDuplicates(interactive.propertiesToRetain,
-                                                 propertiesRetainedByComponents,
-                                                 additionalProps || []);
+      // Also retain properties bound to components that specify retainProperty: true, and any
+      // properties in additionalProps (which come from the optional parameter to resetModel and
+      // loadModel in the interactive scripting API)
+      var propertyKeys = _.uniq(_.flatten([
+        propertiesToRetain, propertiesRetainedByComponents, additionalProps || []
+      ])).filter(isPropertyWritable);
+
       var properties = {};
 
       propertyKeys.forEach(function(key) {
-        // Save only writable properties. We won't be able to restore non-writable properties anyway.
-        if (model.isPropertyWritable(key)) {
-          properties[key] = model.properties[key];
-        }
+        properties[key] = model.properties[key];
       });
 
       return properties;
@@ -1174,6 +1175,13 @@ define(function (require) {
       };
     }
 
+    function getDefaultPropertiesToRetain() {
+      var boundProperties = getBoundProperties();
+      var writableProperties = boundProperties.filter(isPropertyWritable);
+
+      return writableProperties;
+    }
+
     //
     // Public API.
     //
@@ -1205,6 +1213,9 @@ define(function (require) {
       },
       get defaultExports() {
         return getDefaultExports();
+      },
+      get propertiesToRetain() {
+        return getRetainedProperties();
       },
 
       /**
