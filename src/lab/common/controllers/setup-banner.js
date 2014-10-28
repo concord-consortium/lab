@@ -302,7 +302,10 @@ define(function () {
         "id": "interactive-playback-container",
         "bottom": "container.height",
         "height": "banner-bottom-left.height",
-        "width": "container.width",
+        "left": "banner-bottom-left.right",
+        // note that banner-bottom-right may not be defined
+        "right": template.map(function(o) { return o.id; }).indexOf('banner-bottom-right') >= 0 ?
+          "banner-bottom-right.left" : "container.right",
         "belowOthers": true
       });
 
