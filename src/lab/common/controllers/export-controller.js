@@ -98,52 +98,42 @@ define(function (require) {
 
     function shouldHandleDataDiscard() {
       // If there's no unexported data, or we're not in the DG environment, never mind.
-      return ExportController.canExportData() && isUnexportedDataPresent;
+      return ExportController.canExportData() && askAboutDataDiscard && isUnexportedDataPresent;
     }
 
-    // Called when a model is about to be reset or reloaded, and there is unexported data in a DG
-    // environment.
+    // Called when a model is about to be reset or reloaded, there is unexported data, and the user
+    // has not asked to ignore data discard
     function handleDataDiscard(resetRequest) {
 
-      if (askAboutDataDiscard) {
-
-        // Yuck (UI in the controller layer), but here we go.
-        modalAlert(
-          "Reset without saving your data?",
-          "<p>Are you sure you want to set up a new run without saving your data?</p>" +
-            "<input type='checkbox' id='always-reset' name='always-reset'></input>"+
-            "<label for='always-reset'>Always reset without saving</label>" , [
-            {
-              id: 'button-cancel',
-              text: "Cancel",
-              click: function() {
-                $(this).remove();
-                resetRequest.cancel();
-              }
-            },
-            {
-              id: 'button-reset',
-              text: "Reset without saving",
-              click: function() {
-                logAction('discarded data', getCurrentPerRunData());
-                askAboutDataDiscard = ! $('#always-reset').is(':checked');
-                $(this).remove();
-                resetRequest.proceed();
-              }
+      // Yuck (UI in the controller layer), but here we go.
+      modalAlert(
+        "Discard data?",
+        "<p>Pressing New Run without pressing Analyze Data will discard the current data. " +
+        "Set up a new run without saving the data first?</p>" +
+          "<input type='checkbox' id='dont-ask' name='dont-ask'></input>"+
+          "<label for='dont-ask'>Don't show this message again</label>" , [
+          {
+            id: 'button-cancel',
+            text: "Go back",
+            click: function() {
+              askAboutDataDiscard = ! $('#dont-ask').is(':checked');
+              $(this).remove();
+              resetRequest.cancel();
             }
-          ],
-          interactivesController.i18n
-        );
-
-        // Selecting "always reset" should imply that you have to reset without saving this time
-        // to, so when "always reset" checkbox is selected, disable the cancel button
-        $('#always-reset').change(function() {
-          $('#button-cancel').button({ disabled: $('#always-reset').is(':checked') });
-        });
-
-      } else {
-        resetRequest.proceed();
-      }
+          },
+          {
+            id: 'button-reset',
+            text: "Discard the data",
+            click: function() {
+              logAction('discarded data', getCurrentPerRunData());
+              askAboutDataDiscard = ! $('#dont-ask').is(':checked');
+              $(this).remove();
+              resetRequest.proceed();
+            }
+          }
+        ],
+        interactivesController.i18n
+      );
     }
 
     // Called when exporting data; detects changes to per-run parameters since the model's initial
