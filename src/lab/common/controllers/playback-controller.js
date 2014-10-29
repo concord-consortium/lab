@@ -6,6 +6,7 @@ define(function (require) {
       detectFontChange     = require('common/layout/detect-font-change'),
       InteractiveComponent = require('common/controllers/interactive-component'),
       labConfig            = require('lab.config'),
+      _                    = require('underscore'),
       // Font used by time display
       FONT_SPEC = "bold 2em " + labConfig.fontface;
 
@@ -309,6 +310,7 @@ define(function (require) {
   PlaybackController.prototype._createControls = function() {
     this._controlButtonMethods.createControls.apply(this, arguments);
     this._updateButtonStates();
+    this._fitButtons();
   };
 
   PlaybackController.prototype._updateButtonStates = function() {
@@ -318,6 +320,7 @@ define(function (require) {
 
   PlaybackController.prototype._updateControlButtonChoices = function() {
     this._controlButtonMethods.updateControlButtonChoices.apply(this, arguments);
+    this._fitButtons();
   };
 
   PlaybackController.prototype._setClockVisibility = function() {
@@ -368,7 +371,6 @@ define(function (require) {
     }
   };
 
-
   /**
    * Updates playback controller mode (none, "play", "play_reset" or "play_reset_step").
    * @private
@@ -403,6 +405,72 @@ define(function (require) {
     this._setClockVisibility(this._model.properties.showClock);
   };
 
+  /*
+    Adjusts the font-size of the playback buttons so that they fit within the available
+    width. The default font-size (set by the interactive's layout engine) is honored by default,
+    but if using this size would cause the buttons to overflow our containing element, the
+    relative font-size of the button container is adjusted so that they just fit. (The button
+    widths are specified in ems.)
+
+    A minimum font-size of 10px is used; when this might cause the buttons to overflow, the buttons
+    are srunched together (by use of the 'scrunched-buttons' CSS class).
+
+    This is a relatively "heavy" operation involving DOM manipulation and relayout, so
+    it should not be called during a window resize. Instead, call _fitButtonsOnResize, which
+    uses a debounced version of this method which delays until the end of the first 200ms
+    window that passes without a resize event.
+  */
+  PlaybackController.prototype._fitButtons = function() {
+    // Get the width of the element we need to fit into
+    var parentWidth = this.$element.parent().width();
+    var MIN_FONT_SIZE = 10; // px
+    var relativeFontSize;
+    var absoluteFontSize;
+    var fontSizeStyle;
+
+    // Get the width the buttons would have in the absence of the font-sizing and
+    // margin adjustments that may have been previously applied by this method.
+    var elementWidth = this.$element.measure(function() {
+      this.removeClass('scrunched-buttons');
+      this.css('fontSize', '');
+      return this.width();
+    }, null, $('#bottom-bar'));
+
+    if (elementWidth < parentWidth) {
+      this.$element.removeClass('scrunched-buttons');
+      this.$element.css('fontSize', '');
+    } else {
+      relativeFontSize = parentWidth / elementWidth;
+      absoluteFontSize = parseInt(this.$element.parent().css('font-size'), 10) * relativeFontSize;
+      fontSizeStyle = absoluteFontSize < MIN_FONT_SIZE ? (MIN_FONT_SIZE + 'px') : (relativeFontSize + 'em');
+      this.$element.css('fontSize', fontSizeStyle);
+
+      // Remove scrunched-buttons before testing width...
+      this.$element.removeClass('scrunched-buttons');
+
+      // and then add it back if needed to make the buttons (more likely to) fit.
+      // (The magic 10 is a guesstimate of the allowable slop/margin on the buttons; a
+      // more precise value could be derived from button's calculated margin, but that
+      // seems like overkill.)
+      if (this.$element.width() - 10 >= parentWidth) {
+        this.$element.addClass('scrunched-buttons');
+      }
+    }
+  };
+
+  PlaybackController.prototype._fitButtonsOnResize = function() {
+    if ( ! this._debouncedFitButtons ) {
+      this._debouncedFitButtons = _.debounce(this._fitButtons.bind(this), 200);
+    }
+
+    // Prevent visual chaos by "locking" the playback control's fontsize to its current px
+    // value while the interactive font-size changes during the resize operation.
+    this.$element.css('fontSize', this.$element.css('fontSize'));
+
+    // After 500ms of no resize events, set the playback controls' font-size so they fit
+    this._debouncedFitButtons();
+  };
+
   /**
    * Implements optional callback supported by Interactive Controller.
    */
@@ -434,6 +502,8 @@ define(function (require) {
      (*Could* be dispatched to controlButtonMethods, but is that really necessary?)
    */
   PlaybackController.prototype.resize = function () {
+
+    this._fitButtonsOnResize();
 
     if ( !this._$timeCanvas ) {
       return;

@@ -405,8 +405,8 @@
   text-align: center
 
 .interactive-playback
-  font-size: 1em
   height: 2em
+  white-space: nowrap
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0)
 
   &.text > button
@@ -423,7 +423,11 @@
       @include linear-gradient(#fff, #e6e6e6, $fallback: #e6e6e6)
 
   &.text.wide > button
-    width: 8em
+    width: 7em
+
+  &.text.scrunched-buttons > button
+    margin-left: 0.25em
+    margin-right: 0.25em
 
   &.video
     border-bottom-left-radius: 0.7em
