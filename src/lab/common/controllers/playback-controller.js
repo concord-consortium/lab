@@ -17,6 +17,18 @@ define(function (require) {
     $el.attr('disabled', false).removeClass('lab-disabled').css('cursor', 'pointer');
   }
 
+  function enableWhen(condition, $el) {
+    if (condition) {
+      enable($el);
+    } else {
+      disable($el);
+    }
+  }
+
+  function disableWhen(condition, $el) {
+    enableWhen(!condition, $el);
+  }
+
   /**
    * Playback controller.
    *
@@ -110,17 +122,9 @@ define(function (require) {
       },
 
       updateButtonStates: function(stopped, playable) {
-        if (stopped) {
-          this._$playPause.removeClass("playing");
-        } else {
-          this._$playPause.addClass("playing");
-        }
-
-        if (stopped && ! playable) {
-          disable(this._$playPause);
-        } else {
-          enable(this._$playPause);
-        }
+        var playing = ! stopped;
+        this._$playPause.toggleClass('playing', playing);
+        disableWhen(stopped && ! playable, this._$playPause);
       },
 
       updateControlButtonChoices: function(mode) {
@@ -192,17 +196,8 @@ define(function (require) {
       },
 
       updateButtonStates: function(stopped, playable) {
-        if (stopped) {
-          disable(this._$stop);
-        } else {
-          enable(this._$stop);
-        }
-
-        if (playable) {
-          enable(this._$start);
-        } else {
-          disable(this._$start);
-        }
+        disableWhen(stopped, this._$stop);
+        enableWhen(playable, this._$start);
       },
 
       updateControlButtonChoices: function(mode) {
@@ -274,30 +269,10 @@ define(function (require) {
       },
 
       updateButtonStates: function(stopped, playable, hasPlayed, isUnexportedDataPresent) {
-        // Why, yes, a setEnabled function with a boolean parameter *would* be better
-        if (hasPlayed) {
-          disable(this._$start);
-        } else {
-          enable(this._$start);
-        }
-
-        if (stopped) {
-          disable(this._$stop);
-        } else {
-          enable(this._$stop);
-        }
-
-        if (hasPlayed && stopped) {
-          enable(this._$newRun);
-        } else {
-          disable(this._$newRun);
-        }
-
-        if (hasPlayed && stopped && isUnexportedDataPresent) {
-          enable(this._$analyzeData);
-        } else {
-          disable(this._$analyzeData);
-        }
+        disableWhen(hasPlayed, this._$start);
+        disableWhen(stopped, this._$stop);
+        enableWhen(hasPlayed && stopped, this._$newRun);
+        enableWhen(hasPlayed && stopped && isUnexportedDataPresent, this._$analyzeData);
       },
 
       updateControlButtonChoices: function(mode) {
