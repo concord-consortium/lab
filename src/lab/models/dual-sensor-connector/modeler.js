@@ -455,6 +455,10 @@ define(function(require) {
           this.gotoState('initialConnectionFailure');
         },
 
+        launchTimedOut: function() {
+          this.gotoState('initialConnectionFailure');
+        },
+
         statusReceived: function() {
           this.gotoState('connected');
         },
@@ -470,7 +474,11 @@ define(function(require) {
         enterState: function() {
           sensorConnectorInterface.stopPolling();
           message = i18n.t("sensor.messages.connection_failed");
-          notifier.alert(i18n.t("sensor.messages.connection_failed_alert", {
+          var dialog_msg = "sensor.messages.connection_failed_alert";
+          if (sensorConnectorInterface.launchTimedOut) {
+            dialog_msg = "sensor.messages.connection_failed_launch_failed_alert";
+          }
+          notifier.alert(i18n.t(dialog_msg, {
                                 click_here_link: "<a target='_blank' style='color: #222299;' href='http://sensorconnector.concord.org/'>" +
                                                  i18n.t("sensor.messages.click_here") + "</a>"}),
           {
@@ -484,6 +492,7 @@ define(function(require) {
         // Ignore these in this state
         statusErrored: function() {},
         connectionTimedOut: function() {},
+        launchTimedOut: function() {},
 
         dismiss: function() {
           this.gotoState('notConnected');
