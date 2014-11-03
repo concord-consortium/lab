@@ -821,7 +821,9 @@ define(function(require) {
     // TODO
     model.on('willReset.model', function() {
       sensorConnectorInterface.stopPolling();
-      sensorConnectorInterface.requestStop();
+      if (sensorConnectorInterface.isCollecting) {
+        sensorConnectorInterface.requestStop();
+      }
     });
 
     model.addObserver('collectionTime', updateDisplayTimeRange);
