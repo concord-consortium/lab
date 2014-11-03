@@ -134,6 +134,22 @@ define(function() {
       },
       useChemicalReactions: {
         defaultValue: false
+      },
+      useDuration: {
+        defaultValue: 'codap',
+        storeInTickHistory: false,
+        propertyChangeInvalidates: false,
+        validate: function(value) {
+          if (value === true || value === false || value === 'codap') {
+            return value;
+          }
+          throw new Error("Invalid 'useDuration' value: " + value);
+        },
+      },
+      requestedDuration: {
+        defaultValue: false,
+        storeInTickHistory: false,
+        propertyChangeInvalidates: false
       }
     },
 

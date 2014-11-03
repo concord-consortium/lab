@@ -2,7 +2,8 @@
 
 define(function (require) {
   var console     = require('common/console'),
-      performance = require('common/performance');
+      performance = require('common/performance'),
+      ExportController = require('common/controllers/export-controller');
 
   return function PlaybackSupport(args) {
         // DispatchSupport instance or compatible module.
@@ -64,6 +65,34 @@ define(function (require) {
     return {
       mixInto: function(target) {
 
+        if (propertySupport && target.defineOutput) {
+          target.defineOutput('actualDuration', {}, function() {
+            var useDuration = propertySupport.properties.useDuration;
+            var requestedDuration = propertySupport.properties.requestedDuration;
+            var DEFAULT_N_TICKS = 100;
+
+            if ( ! useDuration || (useDuration === 'codap' && ! ExportController.canExportData())) {
+              return Infinity;
+            }
+
+            // useDuration is truthy (=== true or 'codap'). Furthermore, if it is 'codap',
+            // we can also export.
+
+            if (requestedDuration !== false) {
+              return requestedDuration;
+            }
+
+            // use a default number of ticks
+            if (propertySupport.properties.timePerTick) {
+              return DEFAULT_N_TICKS * propertySupport.properties.timePerTick;
+            }
+
+            // useDuration specified, but no requestedDuration, and no good default.
+            // Throw up our hands.
+            return Infinity;
+          });
+        }
+
         if (typeof target.tick !== "function") {
           target.tick = function () {
             console.warn("[PlaybackSupport] .tick() method should be overwritten by target!");
@@ -97,6 +126,11 @@ define(function (require) {
               setTimeout(target.start, 0);
               stopped = true;
               return true;
+            }
+
+            if (propertySupport && propertySupport.properties.time >= propertySupport.properties.actualDuration) {
+              target.stop();
+              return false;
             }
 
             performance.enterScope("tick");
