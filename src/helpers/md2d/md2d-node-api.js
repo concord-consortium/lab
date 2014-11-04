@@ -14,7 +14,8 @@ requirejs.config({
   nodeRequire: require,
   paths: {
     'browserified-cheerio': '../../vendor/browserified-cheerio/browserified-cheerio',
-    'cs' :'../../vendor/require-cs/cs'
+    'cs' :'../../vendor/require-cs/cs',
+    'iframe-phone': '../../vendor/iframe-phone/dist/iframe-phone'
   }
 });
 
