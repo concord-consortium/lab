@@ -266,5 +266,7 @@
       2.55,
       2.55
     ]
-  }
+  },
+  "useDuration": "codap",
+  "requestedDuration": false
 }

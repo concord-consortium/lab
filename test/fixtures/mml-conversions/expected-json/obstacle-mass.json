@@ -164,5 +164,7 @@
     "visible": [
       true
     ]
-  }
+  },
+  "useDuration": "codap",
+  "requestedDuration": false
 }

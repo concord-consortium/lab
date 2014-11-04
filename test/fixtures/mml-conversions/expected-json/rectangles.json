@@ -1325,5 +1325,7 @@
     ],
     "photons": {},
     "radiationlessEmissionProbability": 1
-  }
+  },
+  "useDuration": "codap",
+  "requestedDuration": false
 }

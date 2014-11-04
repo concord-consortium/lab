@@ -317,5 +317,7 @@
       50,
       50
     ]
-  }
+  },
+  "useDuration": "codap",
+  "requestedDuration": false
 }

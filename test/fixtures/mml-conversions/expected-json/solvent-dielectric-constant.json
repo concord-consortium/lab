@@ -135,5 +135,7 @@
       0,
       0
     ]
-  }
+  },
+  "useDuration": "codap",
+  "requestedDuration": false
 }

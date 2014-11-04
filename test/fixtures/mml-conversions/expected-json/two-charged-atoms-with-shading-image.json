@@ -233,5 +233,7 @@
       106,
       106
     ]
-  }
+  },
+  "useDuration": "codap",
+  "requestedDuration": false
 }

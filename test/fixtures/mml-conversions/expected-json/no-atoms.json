@@ -111,5 +111,7 @@
     "friction": [],
     "element": [],
     "pinned": []
-  }
+  },
+  "useDuration": "codap",
+  "requestedDuration": false
 }

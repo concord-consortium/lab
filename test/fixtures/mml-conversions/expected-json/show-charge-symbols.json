@@ -182,5 +182,7 @@
     "strength": [
       5
     ]
-  }
+  },
+  "useDuration": "codap",
+  "requestedDuration": false
 }

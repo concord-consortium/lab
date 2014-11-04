@@ -414,5 +414,7 @@
       1,
       1
     ]
-  }
+  },
+  "useDuration": "codap",
+  "requestedDuration": false
 }

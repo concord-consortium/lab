@@ -4328,5 +4328,7 @@
     "visible": [
       false
     ]
-  }
+  },
+  "useDuration": "codap",
+  "requestedDuration": false
 }

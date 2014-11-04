@@ -215,5 +215,7 @@
       true,
       true
     ]
-  }
+  },
+  "useDuration": "codap",
+  "requestedDuration": false
 }

@@ -1102,5 +1102,7 @@
       "numberOfBeams": 5,
       "angleOfIncidence": -2.6179938
     }
-  }
+  },
+  "useDuration": "codap",
+  "requestedDuration": false
 }

@@ -173,5 +173,7 @@
       101,
       101
     ]
-  }
+  },
+  "useDuration": "codap",
+  "requestedDuration": false
 }

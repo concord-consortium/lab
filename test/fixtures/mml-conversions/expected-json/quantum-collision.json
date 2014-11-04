@@ -183,5 +183,7 @@
       "frequency": 3.3000002,
       "radiationPeriod": 250
     }
-  }
+  },
+  "useDuration": "codap",
+  "requestedDuration": false
 }
