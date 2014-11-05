@@ -62,7 +62,7 @@ define(function (require) {
 
     detectFontChange({
       font: FONT_SPEC,
-      onchange: $.proxy(this._updateClockVisibility, this)
+      onchange: this._updateClockVisibility.bind(this)
     });
   }
   inherit(PlaybackController, InteractiveComponent);
@@ -103,7 +103,7 @@ define(function (require) {
         // Bind click handlers.
         this._$reset.on("click", scriptingAPI.reloadModel);
 
-        this._$playPause.on("click", $.proxy(function () {
+        this._$playPause.on("click", function() {
           if (this._modelStopped) {
             if (this._modelPlayable) {
               scriptingAPI.start();
@@ -111,7 +111,7 @@ define(function (require) {
           } else {
             scriptingAPI.stop();
           }
-        }, this));
+        }.bind(this));
 
         this._$stepBackward.on("click", scriptingAPI.stepBack);
         this._$stepForward.on("click", scriptingAPI.stepForward);
@@ -479,17 +479,19 @@ define(function (require) {
     this._model = this._interactivesController.getModel();
     this._scriptingAPI = this._interactivesController.getScriptingAPI().api;
 
+    var simulationStateChanged = this._simulationStateChanged.bind(this);
+
     // Update play / pause button.
     // Use event namespace to let multiple playbacks work fine with one model.
-    this._model.on('play.' + this.component.id, $.proxy(this._simulationStateChanged, this));
-    this._model.on('stop.' + this.component.id, $.proxy(this._simulationStateChanged, this));
-    this._model.addObserver('isPlayable', $.proxy(this._simulationStateChanged, this));
-    this._model.addObserver('showClock', $.proxy(this._updateClockVisibility, this));
-    this._model.addObserver('displayTime', $.proxy(this._timeChanged, this));
+    this._model.on('play.' + this.component.id, simulationStateChanged);
+    this._model.on('stop.' + this.component.id, simulationStateChanged);
+    this._model.addObserver('isPlayable', simulationStateChanged);
+    this._model.addObserver('showClock', this._updateClockVisibility.bind(this));
+    this._model.addObserver('displayTime', this._timeChanged.bind(this));
 
     // Update display mode (=> buttons are hidden or visible).
-    this._model.addObserver('controlButtons', $.proxy(this._controlButtonChoicesChanged, this));
-    this._model.addObserver('controlButtonStyle', $.proxy(this._controlButtonStyleChanged, this));
+    this._model.addObserver('controlButtons', this._controlButtonChoicesChanged.bind(this));
+    this._model.addObserver('controlButtonStyle', this._controlButtonStyleChanged.bind(this));
 
     this._controlButtonStyleChanged();
     this._controlButtonChoicesChanged();
