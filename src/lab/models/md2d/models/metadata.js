@@ -138,7 +138,6 @@ define(function() {
       useDuration: {
         defaultValue: 'codap',
         storeInTickHistory: false,
-        propertyChangeInvalidates: false,
         validate: function(value) {
           if (value === true || value === false || value === 'codap') {
             return value;
@@ -147,9 +146,8 @@ define(function() {
         },
       },
       requestedDuration: {
-        defaultValue: false,
-        storeInTickHistory: false,
-        propertyChangeInvalidates: false
+        defaultValue: null,
+        storeInTickHistory: false
       }
     },
 

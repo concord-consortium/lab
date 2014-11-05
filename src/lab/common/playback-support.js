@@ -78,7 +78,7 @@ define(function (require) {
             // useDuration is truthy (=== true or 'codap'). Furthermore, if it is 'codap',
             // we can also export.
 
-            if (requestedDuration !== false) {
+            if (requestedDuration != null) {
               return requestedDuration;
             }
 
