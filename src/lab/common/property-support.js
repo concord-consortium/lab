@@ -761,9 +761,11 @@ define(function() {
           The 'makeInvalidatingChange' method mixed into 'target' lets client code perform an action
           that will invalidate all computed properties.
          */
-        target.makeInvalidatingChange = function (closure) {
+        target.makeInvalidatingChange = function(closure) {
           api.invalidatingChangePreHook();
-          closure();
+          if (closure) {
+            closure();
+          }
           api.invalidatingChangePostHook();
         };
 
