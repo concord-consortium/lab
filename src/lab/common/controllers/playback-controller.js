@@ -441,7 +441,7 @@ define(function (require) {
       this.$element.css('fontSize', '');
     } else {
       relativeFontSize = parentWidth / elementWidth;
-      absoluteFontSize = parseInt(this.$element.parent().css('font-size'), 10) * relativeFontSize;
+      absoluteFontSize = parseFloat(this.$element.parent().css('font-size')) * relativeFontSize;
       fontSizeStyle = absoluteFontSize < MIN_FONT_SIZE ? (MIN_FONT_SIZE + 'px') : (relativeFontSize + 'em');
       this.$element.css('fontSize', fontSizeStyle);
 
