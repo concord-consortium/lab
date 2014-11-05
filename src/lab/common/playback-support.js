@@ -64,32 +64,58 @@ define(function (require) {
 
     return {
       mixInto: function(target) {
-
         if (propertySupport && target.defineOutput) {
-          target.defineOutput('actualDuration', {}, function() {
-            var useDuration = propertySupport.properties.useDuration;
-            var requestedDuration = propertySupport.properties.requestedDuration;
-            var DEFAULT_N_TICKS = 100;
 
-            if ( ! useDuration || (useDuration === 'codap' && ! ExportController.canExportData())) {
+          // Define duration-related properties, indicating the time, if any, past which
+          // the model should not play.
+
+          // values to show, e.g., as a menu of reasonable choices for requestedDuration
+          target.defineOutput('durationOptions', {}, function() {
+            // Result is an array of times (in "user-facing" units, such as s in mks models or fs
+            // in md2d models), derived from a number of ticks.
+            // For mks models having 1/60 seconds per tick, this is 0.5s, 1s, 2s, 5s, 10s, 30s, 60s:
+            var TICKS = [30, 60, 120, 300, 600, 1800, 6000];
+            var timePerTick = propertySupport.properties.timePerTick;
+
+            if (timePerTick != null) {
+              return TICKS.map(function (ticks) { return ticks * timePerTick; });
+            }
+            return [];
+          });
+
+          // changing requestedDuration will have an effect iff actualUseDuration == true
+          target.defineOutput('actualUseDuration', {}, function() {
+            var useDuration = propertySupport.properties.useDuration;
+            return useDuration === true ||
+              useDuration === 'codap' && ExportController.canExportData();
+          });
+
+          target.defineOutput('actualDuration', {
+            label: "Experiment duration",
+            unitType: 'time',
+            format: 'f'
+          }, function() {
+            var actualUseDuration = propertySupport.properties.actualUseDuration;
+            var requestedDuration = propertySupport.properties.requestedDuration;
+            var durationOptions;
+
+            if ( ! actualUseDuration ) {
               return Infinity;
             }
-
-            // useDuration is truthy (=== true or 'codap'). Furthermore, if it is 'codap',
-            // we can also export.
 
             if (requestedDuration != null) {
               return requestedDuration;
             }
 
-            // use a default number of ticks
-            if (propertySupport.properties.timePerTick) {
-              return DEFAULT_N_TICKS * propertySupport.properties.timePerTick;
-            }
+            // need to use a default
+            durationOptions = propertySupport.properties.durationOptions;
 
-            // useDuration specified, but no requestedDuration, and no good default.
-            // Throw up our hands.
-            return Infinity;
+            if (durationOptions.length > 0) {
+              return durationOptions[Math.floor(durationOptions.length / 2)];
+            } else {
+              // No good default; punt. Leave actualUseDuration = true, but don't actually stop.
+              return Infinity;
+            }
           });
         }
 
