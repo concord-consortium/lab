@@ -35,7 +35,7 @@ define(function(require) {
           if (arrays.isArray(prop)) {
             result[propName] = arrays.copy(prop, [], count);
           }
-          else if (typeof prop === 'object') {
+          else if (typeof prop === 'object' && prop !== null) {
             result[propName] = $.extend(true, {}, prop);
           }
           else {
