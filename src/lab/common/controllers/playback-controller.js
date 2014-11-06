@@ -531,7 +531,7 @@ define(function (require) {
     // Finally, make room for the duration control. Need to make sure left margin of leftmost button
     // doesn't bump into it, however.
     if ($durationControl) {
-      var $b = this.$element.find('button').first();
+      var $b = this.$element.find('button:visible').first();
 
       if ($b.length > 0) {
         var right = $b.offset().left - parseFloat($b.css('padding-left')) - parseFloat($b.css('margin-left'));
