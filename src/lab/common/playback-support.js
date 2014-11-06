@@ -78,7 +78,7 @@ define(function (require) {
             // Result is an array of times (in "user-facing" units, such as s in mks models or fs
             // in md2d models), derived from a number of ticks.
             // For mks models having 1/60 seconds per tick, this is 0.5s, 1s, 2s, 5s, 10s, 30s, 60s:
-            var TICKS = [30, 60, 120, 300, 600, 1800, 6000];
+            var TICKS = [30, 60, 120, 300, 600, 1800, 3600];
             var timePerTick = propertySupport.properties.timePerTick;
 
             if (timePerTick != null) {
