@@ -1120,6 +1120,12 @@ define(function (require) {
         propertiesToRetain = getDefaultPropertiesToRetain();
       }
 
+      // retain duration-related properties if they are defined
+      var durationProps = ['useDuration', 'requestedDuration'].filter(function(key) {
+        return model.properties[key] !== undefined;
+      });
+      additionalProps = (additionalProps || []).concat(durationProps);
+
       // Also retain properties bound to components that specify retainProperty: true, and any
       // properties in additionalProps (which come from the optional parameter to resetModel and
       // loadModel in the interactive scripting API)
