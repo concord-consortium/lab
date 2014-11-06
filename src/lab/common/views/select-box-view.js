@@ -75,6 +75,7 @@ define(function() {
 
         // Must call selectBoxIt after appending to wrapper
         $select.selectBoxIt();
+        this.$element = $select;
 
         $wrapper.find(".selectboxit").css("width", "auto");
 
@@ -116,6 +117,20 @@ define(function() {
         });
 
         return $wrapper;
+      },
+
+      get $element() {
+        return $wrapper;
+      },
+
+      refresh: function() {
+        // grab the SelectBoxIt instance and call into it
+        $select.data('selectBox-selectBoxIt').refresh();
+      },
+
+      destroy: function() {
+        $select.data('selectBox-selectBoxIt').destroy();
+        $wrapper.remove();
       }
     };
   };
