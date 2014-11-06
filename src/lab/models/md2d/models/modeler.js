@@ -13,6 +13,7 @@ define(function(require) {
       units                = require('models/md2d/models/engine/constants/units'),
       unitDefinitions      = require('models/md2d/models/unit-definitions/index'),
       UnitsTranslation     = require('models/md2d/models/units-translation'),
+      PropertyDescription  = require('common/property-description'),
       Solvent              = require('cs!models/md2d/models/solvent'),
       aminoacids           = require('models/md2d/models/aminoacids-props'),
       aminoacidsHelper     = require('cs!models/md2d/models/aminoacids-helper'),
@@ -2187,6 +2188,7 @@ define(function(require) {
 
     (function() {
       var displayTimeUnits;
+      var displayTimePropertyDescription;
 
       // Allow units definition to declare a "Display time"; specifically, let MD2D units definition
       // define a "displayValue" section in the time unit that returns ps instead of fs.
@@ -2197,6 +2199,13 @@ define(function(require) {
         displayTimeUnits = _.extend({}, unitsDefinition.units.time);
         displayTimeUnits.unitsPerBaseUnit = 1;
       }
+
+      displayTimePropertyDescription = new PropertyDescription(displayTimeUnits, {
+        unitName:         displayTimeUnits.name,
+        unitPluralName:   displayTimeUnits.pluralName,
+        unitAbbreviation: displayTimeUnits.symbol,
+        format: '.1f'
+      });
 
       model.defineOutput('displayTime', {
         label: "Time",
@@ -2217,6 +2226,10 @@ define(function(require) {
       }, function() {
         return model.get('timePerTick') * displayTimeUnits.unitsPerBaseUnit;
       });
+
+      model.formatTime = function(time) {
+        return  displayTimePropertyDescription.format(time * displayTimeUnits.unitsPerBaseUnit);
+      };
     }());
 
     model.defineOutput('tickCounter', {

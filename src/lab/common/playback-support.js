@@ -3,7 +3,8 @@
 define(function (require) {
   var console     = require('common/console'),
       performance = require('common/performance'),
-      ExportController = require('common/controllers/export-controller');
+      PropertyDescription = require('common/property-description'),
+      ExportController    = require('common/controllers/export-controller');
 
   return function PlaybackSupport(args) {
         // DispatchSupport instance or compatible module.
@@ -11,6 +12,7 @@ define(function (require) {
         // Properties object - it can be used to define 'modelSampleRate'.
         // Instance of PropertiesSupport class is expected.
         propertySupport = args && args.propertySupport || null,
+        unitsDefinition = args && args.unitsDefinition || null,
 
         eventsSupported = (function() {
           // Events support is optional. It should be provided by the
@@ -64,6 +66,8 @@ define(function (require) {
 
     return {
       mixInto: function(target) {
+        var timePropertyDescription;
+
         if (propertySupport && target.defineOutput) {
 
           // Define duration-related properties, indicating the time, if any, past which
@@ -117,6 +121,23 @@ define(function (require) {
               return Infinity;
             }
           });
+        }
+
+        // All playable (time-based) models should have a method to return time values formatted
+        // user consumption. Specific models can override this method; for example md2d internally
+        // uses time values in fs but we want to display them as ps.
+
+        if ( ! target.formatTime && unitsDefinition ) {
+          timePropertyDescription = new PropertyDescription(unitsDefinition, {
+            unitType: 'time',
+            // might want to provide a way for models to override this default format without
+            // having to override the formatTime method?
+            format: '.1f'
+          });
+
+          target.formatTime = function(time) {
+            return timePropertyDescription.format(time);
+          };
         }
 
         if (typeof target.tick !== "function") {

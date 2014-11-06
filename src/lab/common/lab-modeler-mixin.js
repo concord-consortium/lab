@@ -44,7 +44,8 @@ define(function (require) {
         if (usePlaybackSupport) {
           playbackSupport = new PlaybackSupport({
             dispatch: dispatchSupport,
-            propertySupport: propertySupport
+            propertySupport: propertySupport,
+            unitsDefinition: unitsDefinition
           });
         }
 
