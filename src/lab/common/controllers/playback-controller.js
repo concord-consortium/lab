@@ -5,6 +5,7 @@ define(function (require) {
   var inherit              = require('common/inherit'),
       detectFontChange     = require('common/layout/detect-font-change'),
       InteractiveComponent = require('common/controllers/interactive-component'),
+      SelectBoxView        = require('common/views/select-box-view'),
       labConfig            = require('lab.config'),
       _                    = require('underscore'),
       // Font used by time display
@@ -74,7 +75,7 @@ define(function (require) {
         var scriptingAPI = this._scriptingAPI;
         var i18n = this._interactivesController.i18n;
 
-        this.$element.empty();
+        this.$element.find('button').remove();
         this.$element.removeClass('text').addClass('video');
 
         /** @private */
@@ -179,7 +180,7 @@ define(function (require) {
         var scriptingAPI = this._scriptingAPI;
         var i18n = this._interactivesController.i18n;
 
-        this.$element.empty();
+        this.$element.find('button').remove();
         this.$element.removeClass('video').addClass('text');
 
         this._$start = $('<button class="start">').text(i18n.t("banner.text_start")).appendTo(this.$element);
@@ -234,7 +235,7 @@ define(function (require) {
         var i18n = this._interactivesController.i18n;
 
         this.$element.removeClass('video').addClass('text wide');
-        this.$element.empty();
+        this.$element.find('button').remove();
 
         this._$start = $('<button class="start">').
           text(i18n.t('banner.text_start')).
@@ -371,6 +372,66 @@ define(function (require) {
     }
   };
 
+  PlaybackController.prototype._useDurationChanged = function() {
+    // Reminder. Output properties are notified every tick (due to obsolete assumption that they
+    // are necessarily physical properties.)
+    // Thus, dirty check before doing anything.
+
+    if (this._useDuration !== this._model.properties.actualUseDuration) {
+      this._useDuration = this._model.properties.actualUseDuration;
+      this._updateDurationControl();
+    }
+  };
+
+  PlaybackController.prototype._updateDurationControl = function() {
+    var model = this._model;
+    var useDuration = this._useDuration;
+    var durationOptions = model.properties.durationOptions;
+    var actualDuration = model.properties.actualDuration;
+    var selectOptions = [];
+
+    if (this._$durationControl) {
+      this._$durationControl.remove();
+      this.durationControl = null;
+    }
+
+    if (useDuration && durationOptions.length > 0) {
+
+      durationOptions.forEach(function(duration) {
+        // Sneak actualDuration in before 'duration', if that's where it belongs in the sorted list
+        // and it was not previously added.
+        if (actualDuration < duration &&
+            (selectOptions.length === 0 || actualDuration > selectOptions[selectOptions.length-1].value) ) {
+
+          selectOptions.push({
+            value: actualDuration,
+            text: model.formatTime(actualDuration),
+            selected: true
+          });
+        }
+
+        selectOptions.push({
+          value: duration,
+          text: model.formatTime(duration),
+          selected: duration === actualDuration
+        });
+      });
+
+      this.durationControl = new SelectBoxView({
+        id: 'duration-control',
+        options: selectOptions,
+        onChange: function(option) {
+          // use this._model here, not the possibly-stale closure value 'model'!
+          this._model.properties.requestedDuration = option.value;
+        }.bind(this)
+      });
+
+      this._$durationControl = this.durationControl.render(this.$element.parent());
+      this._$durationControl.addClass('duration-control interactive-pulldown component component-spacing');
+      this.$element.parent().append(this._$durationControl);
+    }
+  };
+
   /**
    * Updates playback controller mode (none, "play", "play_reset" or "play_reset_step").
    * @private
@@ -390,7 +451,7 @@ define(function (require) {
       return;
     }
     this.controlButtonStyle = style;
-    this.$element.empty();
+    this.$element.find('button').remove();
 
     if (!controlButtonMethods[style]) {
       throw new Error("Unknown controlButtonStyle \"" + style + "\"");
@@ -489,10 +550,13 @@ define(function (require) {
     this._model.addObserver('showClock', this._updateClockVisibility.bind(this));
     this._model.addObserver('displayTime', this._timeChanged.bind(this));
 
-    // Update display mode (=> buttons are hidden or visible).
+    // Update which controls/style to display
+    this._model.addObserver('actualUseDuration', this._useDurationChanged.bind(this));
     this._model.addObserver('controlButtons', this._controlButtonChoicesChanged.bind(this));
     this._model.addObserver('controlButtonStyle', this._controlButtonStyleChanged.bind(this));
 
+    this._useDuration = null;
+    this._useDurationChanged();
     this._controlButtonStyleChanged();
     this._controlButtonChoicesChanged();
     this._simulationStateChanged();
