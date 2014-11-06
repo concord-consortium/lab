@@ -532,12 +532,15 @@ define(function (require) {
     // doesn't bump into it, however.
     if ($durationControl) {
       var $b = this.$element.find('button').first();
-      var right = $b.offset().left - parseFloat($b.css('padding-left')) - parseFloat($b.css('margin-left'));
-      var left = $durationControl.offset().left + $durationControl.outerWidth(true);
 
-      this.$element.css('left', right < left ? (left - right + 'px') : '');
-    } else {
-      this.$element.css('left', '');
+      if ($b.length > 0) {
+        var right = $b.offset().left - parseFloat($b.css('padding-left')) - parseFloat($b.css('margin-left'));
+        var left = $durationControl.offset().left + $durationControl.outerWidth(true);
+
+        if (right < left) {
+          this.$element.css('left', left - right + 'px');
+        }
+      }
     }
   };
 
