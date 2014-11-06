@@ -75,7 +75,7 @@ define(function (require) {
         var scriptingAPI = this._scriptingAPI;
         var i18n = this._interactivesController.i18n;
 
-        this.$element.find('button').remove();
+        this.$element.empty();
         this.$element.removeClass('text').addClass('video');
 
         /** @private */
@@ -180,7 +180,7 @@ define(function (require) {
         var scriptingAPI = this._scriptingAPI;
         var i18n = this._interactivesController.i18n;
 
-        this.$element.find('button').remove();
+        this.$element.empty();
         this.$element.removeClass('video').addClass('text');
 
         this._$start = $('<button class="start">').text(i18n.t("banner.text_start")).appendTo(this.$element);
@@ -235,7 +235,7 @@ define(function (require) {
         var i18n = this._interactivesController.i18n;
 
         this.$element.removeClass('video').addClass('text wide');
-        this.$element.find('button').remove();
+        this.$element.empty();
 
         this._$start = $('<button class="start">').
           text(i18n.t('banner.text_start')).
@@ -390,8 +390,8 @@ define(function (require) {
     var actualDuration = model.properties.actualDuration;
     var selectOptions = [];
 
-    if (this._$durationControl) {
-      this._$durationControl.remove();
+    if (this.durationControl) {
+      this.durationControl.destroy();
       this.durationControl = null;
     }
 
@@ -426,10 +426,12 @@ define(function (require) {
         }.bind(this)
       });
 
-      this._$durationControl = this.durationControl.render(this.$element.parent());
-      this._$durationControl.addClass('duration-control interactive-pulldown component component-spacing');
-      this.$element.parent().append(this._$durationControl);
+      this.durationControl.render(this.$element.parent());
+      this.durationControl.$element.addClass('duration-control interactive-pulldown component component-spacing');
+      this.$element.parent().append(this.durationControl.$element);
     }
+
+    this._fitButtons();
   };
 
   /**
@@ -451,7 +453,7 @@ define(function (require) {
       return;
     }
     this.controlButtonStyle = style;
-    this.$element.find('button').remove();
+    this.$element.empty();
 
     if (!controlButtonMethods[style]) {
       throw new Error("Unknown controlButtonStyle \"" + style + "\"");
@@ -489,22 +491,30 @@ define(function (require) {
     var absoluteFontSize;
     var fontSizeStyle;
 
+    var $durationControl = this.durationControl && this.durationControl.$element;
+
+    // Temporarily undo any positioning that prevents overlap of buttons & duration control
+    this.$element.css('left', '');
+
     // Get the width the buttons would have in the absence of the font-sizing and
     // margin adjustments that may have been previously applied by this method.
     var elementWidth = this.$element.measure(function() {
+      // account for the width of the duration dropdown
+      if ($durationControl) {
+        this.prepend($durationControl.clone());
+      }
       this.removeClass('scrunched-buttons');
-      this.css('fontSize', '');
       return this.width();
     }, null, $('#bottom-bar'));
 
     if (elementWidth < parentWidth) {
       this.$element.removeClass('scrunched-buttons');
-      this.$element.css('fontSize', '');
+      this.$element.parent().css('fontSize', '');
     } else {
       relativeFontSize = parentWidth / elementWidth;
       absoluteFontSize = parseFloat(this.$element.parent().css('font-size')) * relativeFontSize;
       fontSizeStyle = absoluteFontSize < MIN_FONT_SIZE ? (MIN_FONT_SIZE + 'px') : (relativeFontSize + 'em');
-      this.$element.css('fontSize', fontSizeStyle);
+      this.$element.parent().css('fontSize', fontSizeStyle);
 
       // Remove scrunched-buttons before testing width...
       this.$element.removeClass('scrunched-buttons');
@@ -517,6 +527,18 @@ define(function (require) {
         this.$element.addClass('scrunched-buttons');
       }
     }
+
+    // Finally, make room for the duration control. Need to make sure left margin of leftmost button
+    // doesn't bump into it, however.
+    if ($durationControl) {
+      var $b = this.$element.find('button').first();
+      var right = $b.offset().left - parseFloat($b.css('padding-left')) - parseFloat($b.css('margin-left'));
+      var left = $durationControl.offset().left + $durationControl.outerWidth(true);
+
+      this.$element.css('left', right < left ? (left - right + 'px') : '');
+    } else {
+      this.$element.css('left', '');
+    }
   };
 
   PlaybackController.prototype._fitButtonsOnResize = function() {
@@ -526,7 +548,7 @@ define(function (require) {
 
     // Prevent visual chaos by "locking" the playback control's fontsize to its current px
     // value while the interactive font-size changes during the resize operation.
-    this.$element.css('fontSize', this.$element.css('fontSize'));
+    this.$element.parent().css('fontSize', this.$element.parent().css('fontSize'));
 
     // After 500ms of no resize events, set the playback controls' font-size so they fit
     this._debouncedFitButtons();
