@@ -507,9 +507,10 @@ define(function (require) {
       return this.width();
     }, null, $('#bottom-bar'));
 
+    this.$element.parent().css('fontSize', '');
+
     if (elementWidth < parentWidth) {
       this.$element.removeClass('scrunched-buttons');
-      this.$element.parent().css('fontSize', '');
     } else {
       relativeFontSize = parentWidth / elementWidth;
       absoluteFontSize = parseFloat(this.$element.parent().css('font-size')) * relativeFontSize;
