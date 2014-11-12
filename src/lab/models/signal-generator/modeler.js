@@ -94,9 +94,10 @@ define(function(require) {
 
     };
 
-    labModelerMixin.mixInto(model);
     dispatch.addEventTypes("tick");
     dispatch.addEventTypes('reset');
+
+    labModelerMixin.mixInto(model);
 
     model.defineOutput('time', {
       label: "Time",
