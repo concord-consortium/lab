@@ -99,6 +99,29 @@ define(function(require) {
 
     labModelerMixin.mixInto(model);
 
+    model.on('play.model', model.makeInvalidatingChange);
+    model.on('stop.model', model.makeInvalidatingChange);
+
+    model.defineOutput('isPlayable', {
+      label: "Playable"
+    }, function() {
+      return model.isReady && model.isStopped();
+    });
+
+    model.defineOutput('hasPlayed', {
+      label: "has Played"
+    }, function() {
+      return model.hasPlayed;
+    });
+
+    model.defineOutput('timePerTick', {
+      label: "Model time per tick",
+      unitType: 'time',
+      format: '.2f'
+    }, function() {
+      return 1 / model.properties.modelSampleRate * model.properties.timeScale;
+    });
+
     model.defineOutput('time', {
       label: "Time",
       unitType: 'time',
