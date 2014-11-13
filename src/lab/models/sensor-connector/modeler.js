@@ -627,6 +627,7 @@ define(function(require) {
         enterState: function() {
           message = i18n.t("sensor.messages.data_collection_complete");
           isStopped = true;
+          dispatch.stop();
         },
 
         reset: function() {
@@ -705,10 +706,11 @@ define(function(require) {
       usePlaybackSupport: false
     });
 
-    labModelerMixin.mixInto(model);
     propertySupport = labModelerMixin.propertySupport;
     dispatch = labModelerMixin.dispatchSupport;
     dispatch.addEventTypes("tick", "play", "stop", "tickStart", "tickEnd");
+
+    labModelerMixin.mixInto(model);
 
     initializeStateVariables();
 
