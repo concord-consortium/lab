@@ -134,6 +134,9 @@ define(function() {
       },
       useChemicalReactions: {
         defaultValue: false
+      },
+      skipPECheckOnAddAtom: {
+        defaultValue: false
       }
     },
 

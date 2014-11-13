@@ -955,7 +955,7 @@ define(function(require) {
       if (props.y > (maxY - radius)) props.y = maxY - radius;
 
       // check the potential energy change caused by adding an *uncharged* atom at (x,y)
-      if (!options.suppressCheck && !engine.canPlaceAtom(props.element, props.x, props.y)) {
+      if (!options.suppressCheck && !engine.canPlaceAtom(props.element, props.x, props.y, null, model.get('skipPECheckOnAddAtom'))) {
         // return false on failure
         return false;
       }
@@ -1192,7 +1192,7 @@ define(function(require) {
         molecule (if x and y are being changed), and check the location of all
         the bonded atoms together.
       */
-    model.setAtomProperties = function(i, props, checkLocation, moveMolecule) {
+    model.setAtomProperties = function(i, props, checkLocation, moveMolecule, skipPECheck) {
       var atoms = modelState.atoms,
           moleculeAtoms,
           dx, dy,
@@ -1222,7 +1222,7 @@ define(function(require) {
             y  = typeof props.y === "number" ? props.y : atoms.y[i],
             el = typeof props.element === "number" ? props.y : atoms.element[i];
 
-        if (!engine.canPlaceAtom(el, x, y, i)) {
+        if (!engine.canPlaceAtom(el, x, y, i, skipPECheck)) {
           return false;
         }
       }

@@ -23,6 +23,7 @@
   "DNAMutations": true,
   "useQuantumDynamics": true,
   "useChemicalReactions": false,
+  "skipPECheckOnAddAtom": false,
   "viewOptions": {
     "viewPortWidth": 3.5,
     "viewPortHeight": 2.2,
