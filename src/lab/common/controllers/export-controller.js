@@ -23,6 +23,7 @@ define(function (require) {
 
   function ExportController(interactivesController) {
     var dispatch = new DispatchSupport(),
+        spec,
         perRun,
         perTick,
         selectionComponents,
@@ -215,8 +216,19 @@ define(function (require) {
 
       function handleModelLoaded() {
         model = interactivesController.getModel();
+
+        function propertyExists(p) {
+          // (Don't write 'model.properties.hasOwnProperty' because we should eventually *remove*
+          // hasOwnProperty and other Object.prototype methods from model.properties' prototype
+          // chain -- as it stands there appears to be a model property called 'hasOwnPropety'.)
+          return Object.prototype.hasOwnProperty.call(model.properties, p);
+        }
+
+        perRun  = (spec.perRun || []).filter(propertyExists);
+        perTick = ['displayTime'].concat(spec.perTick.filter(propertyExists));
+
         resetData();
-        registerModelListeners();
+        registerModelListeners()
 
         if (eventName === 'modelLoaded') {
           if (cause === 'reload') {
@@ -292,9 +304,8 @@ define(function (require) {
         return isUnexportedDataPresent;
       },
 
-      init: function(spec) {
-        perRun  = (spec.perRun || []).slice();
-        perTick = ['displayTime'].concat(spec.perTick.slice());
+      init: function(_spec) {
+        spec = _spec;
         selectionComponents = (spec.selectionComponents || []).slice();
 
         isInitialized = true;
