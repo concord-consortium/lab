@@ -815,7 +815,8 @@ define(function(require) {
             },
             "has-host": function(d) {
               return !!d.hostType;
-            }
+            },
+            "pointer-events": function(d) { return !d.hostType ? 'auto' : 'none'; },
           })
           .call(d3.behavior.drag()
             .on("drag", textDrag)
