@@ -727,7 +727,7 @@ define(function() {
           the property named 'key' is writable.
          */
         target.isPropertyWritable = function(key) {
-          return propertyInformation[key].descriptor.writable;
+          return !!propertyInformation[key] && propertyInformation[key].descriptor.writable;
         };
 
         /**
