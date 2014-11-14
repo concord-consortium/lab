@@ -25,6 +25,20 @@ define(function() {
       },
       useRandomClientId: {
         defaultValue: false
+      },
+      useDuration: {
+        defaultValue: 'codap',
+        storeInTickHistory: false,
+        validate: function(value) {
+          if (value === true || value === false || value === 'codap') {
+            return value;
+          }
+          throw new Error("Invalid 'useDuration' value: " + value);
+        },
+      },
+      requestedDuration: {
+        defaultValue: 10,
+        storeInTickHistory: false
       }
     },
     viewOptions: {

@@ -9,7 +9,9 @@ define(function(require) {
       sensorConnectorInterface = require('sensor-connector-interface'),
       unitsDefinition       = require('./units-definition'),
       getSensorDefinitions  = require('models/sensor-common/i18n-sensor-definitions-connector'),
-      Notifier             = require('models/sensor-common/notifier');
+      Notifier             = require('models/sensor-common/notifier'),
+      // somewhat unfortunate to have an "upwards" dependency on the controller layer...
+      ExportController    = require('common/controllers/export-controller');
 
   return function Model(initialProperties, opt) {
     var i18n = opt.i18n,
@@ -36,6 +38,7 @@ define(function(require) {
         isSensorTareable,
         message,
         statusErrors,
+        displayTimePropertyDescription,
         model;
 
     var defaultSensorReadingDescription = {
@@ -221,6 +224,12 @@ define(function(require) {
       var numberOfValues = Math.min(timeColumn.data.length, dataColumn.data.length);
       for (; stepCounter < numberOfValues; stepCounter++) {
         time = timeColumn.data[stepCounter];
+
+        if (time > model.properties.actualDuration) {
+          // Stop, but continue to process any data received (if for no other reason than that
+          // subsequent steps aren't happy until data up to the latest timestamp was received)
+          model.stop();
+        }
         rawSensorValue = dataColumn.data[stepCounter];
         model.updateAllOutputProperties();
         dispatch.tick();
@@ -733,16 +742,66 @@ define(function(require) {
     model.defineOutput('displayTime', {
       label: i18n.t("sensor.measurements.time"),
       unitType: 'time',
-      format: '.2f'
+      format: '.1f'
     }, function() {
       return time;
     });
+
+    displayTimePropertyDescription = model.getPropertyDescription('displayTime');
 
     model.defineOutput('sensorReading', defaultSensorReadingDescription, function() {
       if (rawSensorValue == null) {
         return rawSensorValue;
       }
       return rawSensorValue - model.properties.tareValue;
+    });
+
+    /* Need custom implementation of duration options, because we don't use playbackSupport
+      (and playbackSupport's implementation is designed for simulation models that have a
+      fixed time per tick */
+
+    model.defineOutput('durationOptions', {}, function() {
+      return [1, 5, 10, 15, 20, 30, 45, 60];
+    });
+
+    model.formatTime = function(time) {
+      return  displayTimePropertyDescription.format(time);
+    };
+
+    // TODO: actualDuration, actualUseDuration are copy/pasted from playbackSupport. Perhaps
+    // the implementation (third arg) could be defined on LabModelerMixin
+    model.defineOutput('actualUseDuration', {}, function() {
+      var useDuration = model.properties.useDuration;
+      return useDuration === true ||
+        useDuration === 'codap' && ExportController.canExportData();
+    });
+
+    model.defineOutput('actualDuration', {
+      label: "Experiment duration",
+      unitType: 'time',
+      format: 'f'
+    }, function() {
+      var actualUseDuration = propertySupport.properties.actualUseDuration;
+      var requestedDuration = propertySupport.properties.requestedDuration;
+      var durationOptions;
+
+      if ( ! actualUseDuration ) {
+        return Infinity;
+      }
+
+      if (requestedDuration != null) {
+        return requestedDuration;
+      }
+
+      // need to use a default
+      durationOptions = propertySupport.properties.durationOptions;
+
+      if (durationOptions.length > 0) {
+        return durationOptions[Math.floor(durationOptions.length / 2)];
+      } else {
+        // No good default; punt. Leave actualUseDuration = true, but don't actually stop.
+        return Infinity;
+      }
     });
 
     // Because sensorReading updates are batched and delivered much later than the live sensor value
