@@ -54,6 +54,7 @@ define(function (require) {
 
     interactiveController.on('willResetModel', function() {
       controller.model.set('isNewRunInProgress', true);
+      controller.model.willReset();
     });
 
     return controller;
