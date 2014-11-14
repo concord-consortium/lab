@@ -9,9 +9,7 @@ define(function(require) {
       sensorConnectorInterface = require('sensor-connector-interface'),
       unitsDefinition       = require('./units-definition'),
       getSensorDefinitions  = require('models/sensor-common/i18n-sensor-definitions-connector'),
-      Notifier             = require('models/sensor-common/notifier'),
-      // somewhat unfortunate to have an "upwards" dependency on the controller layer...
-      ExportController    = require('common/controllers/export-controller');
+      Notifier             = require('models/sensor-common/notifier');
 
   return function Model(initialProperties, opt) {
     var i18n = opt.i18n,
@@ -768,41 +766,13 @@ define(function(require) {
       return  displayTimePropertyDescription.format(time);
     };
 
-    // TODO: actualDuration, actualUseDuration are copy/pasted from playbackSupport. Perhaps
-    // the implementation (third arg) could be defined on LabModelerMixin
-    model.defineOutput('actualUseDuration', {}, function() {
-      var useDuration = model.properties.useDuration;
-      return useDuration === true ||
-        useDuration === 'codap' && ExportController.canExportData();
-    });
+    model.defineOutput('actualUseDuration', {}, labModelerMixin.computeActualUseDuration);
 
     model.defineOutput('actualDuration', {
       label: "Experiment duration",
       unitType: 'time',
       format: 'f'
-    }, function() {
-      var actualUseDuration = propertySupport.properties.actualUseDuration;
-      var requestedDuration = propertySupport.properties.requestedDuration;
-      var durationOptions;
-
-      if ( ! actualUseDuration ) {
-        return Infinity;
-      }
-
-      if (requestedDuration != null) {
-        return requestedDuration;
-      }
-
-      // need to use a default
-      durationOptions = propertySupport.properties.durationOptions;
-
-      if (durationOptions.length > 0) {
-        return durationOptions[Math.floor(durationOptions.length / 2)];
-      } else {
-        // No good default; punt. Leave actualUseDuration = true, but don't actually stop.
-        return Infinity;
-      }
-    });
+    }, labModelerMixin.computeActualDuration);
 
     // Because sensorReading updates are batched and delivered much later than the live sensor value
     // from the sensor status response, we define a separate liveSensorReading output that can be

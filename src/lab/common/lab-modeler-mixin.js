@@ -7,7 +7,9 @@ define(function (require) {
       OutputSupport           = require('common/output-support'),
       DispatchSupport         = require('common/dispatch-support'),
       PlaybackSupport         = require('common/playback-support'),
-      defineBuiltinProperties = require('common/define-builtin-properties');
+      defineBuiltinProperties = require('common/define-builtin-properties'),
+      // it's somewhat unfortunate to have an "upwards" dependency on the controller layer
+      ExportController    = require('common/controllers/export-controller');
 
   return function LabModelerMixin(args) {
 
@@ -41,11 +43,48 @@ define(function (require) {
         dispatchSupport = new DispatchSupport(),
         playbackSupport;
 
+        // Make these functions available to any model that chooses to implement duration
+        // related properties. PlaybackSupport mixes the duration-related property definitions
+        // into models that use it, but other model types, such as sensor models, have to use
+        // alternate definitions. The functions below implement some of the logic the different
+        // implementations have in common.
+        function computeActualDuration() {
+          // changing requestedDuration will have an effect iff actualUseDuration == true
+          var actualUseDuration = propertySupport.properties.actualUseDuration;
+          var requestedDuration = propertySupport.properties.requestedDuration;
+          var durationOptions;
+
+          if ( ! actualUseDuration ) {
+            return Infinity;
+          }
+
+          if (requestedDuration != null) {
+            return requestedDuration;
+          }
+
+          // need to use a default
+          durationOptions = propertySupport.properties.durationOptions;
+
+          if (durationOptions.length > 0) {
+            return durationOptions[Math.floor(durationOptions.length / 2)];
+          } else {
+            // No good default; punt. Leave actualUseDuration = true, but don't actually stop.
+            return Infinity;
+          }
+        }
+
+        function computeActualUseDuration() {
+          var useDuration = propertySupport.properties.useDuration;
+          return useDuration === true || useDuration === 'codap' && ExportController.canExportData();
+        }
+
         if (usePlaybackSupport) {
           playbackSupport = new PlaybackSupport({
             dispatch: dispatchSupport,
             propertySupport: propertySupport,
-            unitsDefinition: unitsDefinition
+            unitsDefinition: unitsDefinition,
+            computeActualDuration: computeActualDuration,
+            computeActualUseDuration: computeActualUseDuration
           });
         }
 
@@ -144,6 +183,14 @@ define(function (require) {
 
       get playbackSupport() {
         return playbackSupport;
+      },
+
+      get computeActualDuration() {
+        return computeActualDuration;
+      },
+
+      get computeActualUseDuration() {
+        return computeActualUseDuration;
       }
     };
 

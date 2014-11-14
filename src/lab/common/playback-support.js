@@ -3,8 +3,7 @@
 define(function (require) {
   var console     = require('common/console'),
       performance = require('common/performance'),
-      PropertyDescription = require('common/property-description'),
-      ExportController    = require('common/controllers/export-controller');
+      PropertyDescription = require('common/property-description');
 
   return function PlaybackSupport(args) {
         // DispatchSupport instance or compatible module.
@@ -13,6 +12,8 @@ define(function (require) {
         // Instance of PropertiesSupport class is expected.
         propertySupport = args && args.propertySupport || null,
         unitsDefinition = args && args.unitsDefinition || null,
+        computeActualUseDuration = args.computeActualUseDuration,
+        computeActualDuration    = args.computeActualDuration,
 
         eventsSupported = (function() {
           // Events support is optional. It should be provided by the
@@ -87,40 +88,13 @@ define(function (require) {
             return [];
           });
 
-          // changing requestedDuration will have an effect iff actualUseDuration == true
-          target.defineOutput('actualUseDuration', {}, function() {
-            var useDuration = propertySupport.properties.useDuration;
-            return useDuration === true ||
-              useDuration === 'codap' && ExportController.canExportData();
-          });
+          target.defineOutput('actualUseDuration', {}, computeActualUseDuration);
 
           target.defineOutput('actualDuration', {
             label: "Experiment duration",
             unitType: 'time',
             format: 'f'
-          }, function() {
-            var actualUseDuration = propertySupport.properties.actualUseDuration;
-            var requestedDuration = propertySupport.properties.requestedDuration;
-            var durationOptions;
-
-            if ( ! actualUseDuration ) {
-              return Infinity;
-            }
-
-            if (requestedDuration != null) {
-              return requestedDuration;
-            }
-
-            // need to use a default
-            durationOptions = propertySupport.properties.durationOptions;
-
-            if (durationOptions.length > 0) {
-              return durationOptions[Math.floor(durationOptions.length / 2)];
-            } else {
-              // No good default; punt. Leave actualUseDuration = true, but don't actually stop.
-              return Infinity;
-            }
-          });
+          }, computeActualDuration);
         }
 
         // All playable (time-based) models should have a method to return time values formatted
