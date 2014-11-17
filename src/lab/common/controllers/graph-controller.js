@@ -483,6 +483,18 @@ define(function (require) {
         return null;
       },
 
+      addAnnotation: function(props) {
+        if (grapher) {
+          grapher.addAnnotation(props);
+        }
+      },
+
+      resetAnnotations: function(){
+        if (grapher) {
+          grapher.resetAnnotations();
+        }
+      },
+
       /**
         Returns serialized component definition.
       */
