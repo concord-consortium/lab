@@ -451,7 +451,7 @@ define(function(require) {
             computeVelocityComponents();
             updateVelocities(energyReleased);
           } else {
-            emitPhotonFromAtom(i, energyReleased);
+            emitPhotonFromAtom(i, -energyReleased);
           }
         },
 
