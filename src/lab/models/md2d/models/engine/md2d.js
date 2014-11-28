@@ -408,11 +408,11 @@ define(function (require, exports) {
         T,
 
         // cutoff for force calculations, as a factor of sigma
-        cutoff = 2,
+        cutoff = 4,
         cutoffDistance_LJ_sq = [],
 
         // cutoff for neighbor list calculations, as a factor of sigma
-        cutoffList = 2.5,
+        cutoffList = 4.1,
         cutoffNeighborListSquared = [],
 
         // Each object at ljCalculator[i,j] can calculate the magnitude of the Lennard-Jones force and
