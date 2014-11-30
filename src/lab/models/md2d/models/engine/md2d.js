@@ -197,6 +197,7 @@ define(function (require, exports) {
         radialBondLength,
         radialBondStrength,
         radialBondType,
+        radialBondCreationPotential,
 
         // An object that contains references to the above radial-bond-property arrays.
         // Left undefined if there are no radial bonds.
@@ -594,6 +595,7 @@ define(function (require, exports) {
             radialBondLength      = radialBonds.length;
             radialBondStrength    = radialBonds.strength;
             radialBondType        = radialBonds.type;
+            radialBondCreationPotential = radialBonds.creationPotential;
           },
 
           restraints: function() {
@@ -749,6 +751,7 @@ define(function (require, exports) {
           radialBonds.length   = arrays.create(num, 0, arrayTypes.floatType);
           radialBonds.strength = arrays.create(num, 0, arrayTypes.floatType);
           radialBonds.type     = arrays.create(num, 0, arrayTypes.uint8Type);
+          radialBonds.creationPotential = arrays.create(num, 0, arrayTypes.floatType);
 
           assignShortcutReferences.radialBonds();
         },

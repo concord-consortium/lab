@@ -317,6 +317,7 @@ define(function(require) {
     function destroyBonds(forcedCleanup) {
       var i, a1, a2, el1, el2, dpot,
           xij, yij, ijsq, bondLen, bondType, chemEnergy,
+          ljAdjustment,
           bondRemoved;
 
       i = 0;
@@ -332,7 +333,6 @@ define(function(require) {
         ijsq = xij * xij + yij * yij;
 
         dpot = Math.sqrt(ijsq) - bondLen;
-
         if (dpot > 0 || forcedCleanup) {
           // Bond is longer than its basic length, there is potential energy.
           dpot = 0.5 * radialBonds.strength[i] * dpot * dpot;
@@ -340,12 +340,18 @@ define(function(require) {
           el1 = atoms.element[a1];
           el2 = atoms.element[a2];
           bondType = getBondType(i);
+
+          // increase in LJ potential energy caused by moving from (spot where bond formed)
+          // to (spot where bond broken)
+          ljAdjustment = -radialBonds.creationPotential[i] - engine.ljCalculator[el1][el2].potentialFromSquaredDistance(ijsq);
           chemEnergy = getBondEnergy(el1, el2, bondType);
-          if (dpot > chemEnergy || forcedCleanup) {
+
+          if (dpot - ljAdjustment > chemEnergy || forcedCleanup) {
             // Potential energy is larger than chemical energy, destroy bond.
             dpot -= chemEnergy;
             // LJ potential will now be calculated, take it into account.
-            dpot += engine.ljCalculator[el1][el2].potentialFromSquaredDistance(ijsq);
+            dpot -= ljAdjustment;
+
             if (engine.addKEToAtoms(dpot, a1, a2)) {
               removeRadialBond(i, a1, a2, bondType);
               bondRemoved = true;
@@ -442,7 +448,7 @@ define(function(require) {
           el2 = atoms.element[a2],
           bondType = getPossibleBondType(a1, a2),
           en  = getBondEnergy(el1, el2, bondType),
-          length, strength, dpot;
+          length, strength, dpot, creationPotential;
 
       if (en <= 0) return; // Fast path when bond energy is less than 0.
 
@@ -455,14 +461,23 @@ define(function(require) {
       dpot = -0.5 * strength * dpot * dpot;
       // 2. Bond chemical energy.
       dpot += en;
-      // 3. LJ potential between particles (it will disappear as engine doesn't calculate LJ
-      //    interaction between bonded particles) .
-      dpot -= engine.ljCalculator[el1][el2].potentialFromSquaredDistance(ijsq);
+
+      // Account for LJ potential "removed" from the system by bond creation (because the engine
+      // doesn't compute LJ force between bonded pairs)
+      creationPotential = -engine.ljCalculator[el1][el2].potentialFromSquaredDistance(ijsq);
+
+      if (creationPotential > 0) {
+        // If creationPotential is > 0, a1 and a2 are impinging on the "LJ core". If we create
+        // the bond, then when the bond breaks that potential will be released all at once via
+        // addKEToAtoms and this eventually leads to model divergence.
+        return;
+      }
 
       if (engine.addKEToAtoms(dpot, a1, a2)) {
         addRadialBond({
           length: length,
-          strength: strength
+          strength: strength,
+          creationPotential: creationPotential
         }, a1, a2, bondType);
       }
     }
@@ -497,7 +512,8 @@ define(function(require) {
                             { from: unit.MW_ENERGY_UNIT, to: unit.EV }),
 
           newLength, newStrength, oldLength, oldStrength,
-          lenDiff, dpot;
+          lenDiff, dpot,
+          ljAdjustment, creationPotential;
 
       // Use reduced mass to compute head-on kinetic energy.
       if (collisionEnergy > minCollisionEnergy) {
@@ -515,9 +531,12 @@ define(function(require) {
         dpot = -0.5 * newStrength * lenDiff * lenDiff;
         // 2. Bond chemical energy.
         dpot += getBondEnergy(el1, el2, newType);
-        // 3. LJ potential between particles (it will disappear as engine doesn't calculate LJ
-        //    interaction between bonded particles) .
-        dpot -= engine.ljCalculator[el1][el2].potentialFromSquaredDistance(ijsq);
+        creationPotential = -engine.ljCalculator[el1][el2].potentialFromSquaredDistance(ijsq);
+
+        if (creationPotential > 0) {
+          // as noted in makeBond, allowing the bond to be created now would cause trouble later
+          return;
+        }
 
         // Old bond configuration.
         xij = atoms.x[a1Old] - atoms.x[a2Old];
@@ -525,17 +544,21 @@ define(function(require) {
         ijsq = xij * xij + yij * yij;
         // 1. Radial bond potential energy.
         lenDiff = Math.sqrt(ijsq) - oldLength;
-        dpot -= -0.5 * oldStrength * lenDiff * lenDiff;
+        dpot += 0.5 * oldStrength * lenDiff * lenDiff;
         // 2. Bond chemical energy.
         dpot -= getBondEnergy(el1Old, el2Old, oldType);
-        // 3. LJ potential between particles.
-        dpot += engine.ljCalculator[el1Old][el2Old].potentialFromSquaredDistance(ijsq);
+
+        // Account for difference in LJ potential between creation and release of old bond
+        // (remember LJ force is not calculated between bonded pair)
+        ljAdjustment = -radialBonds.creationPotential[bondIdx] - engine.ljCalculator[el1Old][el2Old].potentialFromSquaredDistance(ijsq);
+        dpot -= ljAdjustment;
 
         if (engine.addKEToAtoms(dpot, a1, a2, a3)) {
           // Update bond, change it from a2-d3 to a1-a2.
           transferRadialBond(bondIdx, {
             length: newLength,
-            strength: newStrength
+            strength: newStrength,
+            creationPotential: creationPotential
           }, a1, a2, a3, newType, oldType);
         }
       }
@@ -739,9 +762,10 @@ define(function(require) {
           i, len;
 
       for (i = 0, len = engine.getNumberOfRadialBonds(); i < len; ++i) {
-        PE -= getBondEnergy(atoms.element[radialBonds.atom1[i]],
+        PE -= (getBondEnergy(atoms.element[radialBonds.atom1[i]],
                             atoms.element[radialBonds.atom2[i]],
-                            getBondType(i));
+                            getBondType(i))
+              - radialBonds.creationPotential[i]);
       }
 
       return PE;
