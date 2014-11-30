@@ -352,7 +352,7 @@ define(function(require) {
             // LJ potential will now be calculated, take it into account.
             dpot -= ljAdjustment;
 
-            if (engine.addKEToAtoms(dpot, a1, a2)) {
+            if (engine.addKEToAtomPairAndConserveMomentum(dpot, a1, a2)) {
               removeRadialBond(i, a1, a2, bondType);
               bondRemoved = true;
             } else if (forcedCleanup) {
@@ -473,7 +473,7 @@ define(function(require) {
         return;
       }
 
-      if (engine.addKEToAtoms(dpot, a1, a2)) {
+      if (engine.addKEToAtomPairAndConserveMomentum(dpot, a1, a2)) {
         addRadialBond({
           length: length,
           strength: strength,

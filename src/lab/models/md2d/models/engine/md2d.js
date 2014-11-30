@@ -4033,6 +4033,60 @@ define(function (require, exports) {
         return true;
       },
 
+      addKEToAtomPairAndConserveMomentum: function(deltaKE, atom1, atom2) {
+
+        // rotate into x-axis to simplify the quadratic equation below and to avoid numerical
+        // problems when dx is small
+
+        var dx = x[atom2] - x[atom1];
+        var dy = y[atom2] - y[atom1];
+        var theta = -Math.atan2(dy, dx);
+        var cosTheta = Math.cos(theta);
+        var sinTheta = Math.sin(theta);
+
+        var v1x = cosTheta * vx[atom1] - sinTheta * vy[atom1];
+        var v2x = cosTheta * vx[atom2] - sinTheta * vy[atom2];
+        var v1y = sinTheta * vx[atom1] + cosTheta * vy[atom1];
+        var v2y = sinTheta * vx[atom2] + cosTheta * vy[atom2];
+
+        var m1 = mass[atom1];
+        var m2 = mass[atom2];
+
+        // use MW units here
+        var oldKE = 0.5*m1*(v1x*v1x + v1y*v1y) + 0.5*m2*(v2x*v2x + v2y*v2y);
+        var newKE = oldKE + constants.convert(deltaKE, { from: unit.EV, to: unit.MW_ENERGY_UNIT });
+
+        if (newKE < 0) {
+            return false;
+        }
+
+        // We require m1 * dv1x = -m2 * dv2x (momentum conservation)
+        // and m1 * ((v1x + dv1)^2 + v1y^2) + m2 * ((v2x + dv2x)^2 + v2y^2) = 2 * newKE
+        // This results in a quadratic equation in dv1x; solve it:
+        var a = m1 + m1*m1/m2;
+        var b = 2 * m1 * (v1x - v2x);
+        var c = 2 * (oldKE - newKE);
+        var dv1x = (-b + Math.sqrt(b*b - 4*a*c)) / (2*a);
+
+        v1x += dv1x;
+        v2x += (-m1/m2 * dv1x);
+
+        // reverse sign of rotation
+        sinTheta *= -1;
+
+        vx[atom1] = v1x * cosTheta - v1y * sinTheta;
+        px[atom1] = m1 * vx[atom1];
+        vy[atom1] = v1x * sinTheta + v1y * cosTheta;
+        py[atom1] = m1 * vy[atom1];
+
+        vx[atom2] = v2x * cosTheta - v2y * sinTheta;
+        px[atom2] = m2 * vx[atom2];
+        vy[atom2] = v2x * sinTheta + v2y * cosTheta;
+        py[atom2] = m2 * vy[atom2];
+
+        return true;
+      },
+
       /**
         Starting at (x,y), try to find a position which minimizes the potential energy change caused
         by adding at atom of element el.
