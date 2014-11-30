@@ -34,9 +34,6 @@ define(function(require) {
         return result;
       }()),
 
-      // Chemical reaction calculations will be performed every <INTERVAL> fs.
-      INTERAVAL = 10, // fs
-
       ANGULAR_BOND_STRENGTH = 50; // follows Classic MW default value.
 
   // Dot product of [x1, y1] and [x2, y2] vectors.
@@ -65,6 +62,7 @@ define(function(require) {
     var api,
 
         properties         = validator.validateCompleteness(metadata.chemicalReactions, _properties),
+        updateInterval     = properties.updateInterval,
         createAngularBonds = properties.createAngularBonds,
         noLoops            = properties.noLoops,
         valenceElectrons   = properties.valenceElectrons,
@@ -761,13 +759,13 @@ define(function(require) {
 
       performActionWithinIntegrationLoop: function (neighborList, dt, time) {
         // Below there is a stateless way to check if we should perform calculations or not.
-        // Calculations should be performed every <INTERVAL> femtoseconds. In theory we could just
+        // Calculations should be performed every <update_interval> femtoseconds. In theory we could just
         // remember the last time we did calculations and then check if the current time is larger
-        // (or equal) than the last + INTERVAL. However, due to tick history seeking, we can't make
+        // (or equal) than the last + <interval>. However, due to tick history seeking, we can't make
         // an assumption that time value will be always bigger than during the previous function
         // execution.
-        var mod = time % INTERAVAL;
-        if (mod === 0 || (mod < dt && Math.floor(time / INTERAVAL) === Math.round(time / INTERAVAL))) {
+        var mod = time % updateInterval;
+        if (mod === 0 || (mod < dt && Math.floor(time / updateInterval) === Math.round(time / updateInterval))) {
           cleanupModifiedAtomsAndFlags();
           validateSharedElectronsCount();
           destroyBonds();
