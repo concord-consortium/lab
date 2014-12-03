@@ -124,7 +124,6 @@ define(function(require) {
           perRunColumnLabels = [],
           perRunColumnValues = [],
           timeSeriesColumnLabels = [],
-          parentCollectionValues,
           i;
 
       // Extract metadata in the forms needed for export, ie values need to be an array of values,
@@ -202,7 +201,6 @@ define(function(require) {
         // Step 6. Close the case.
         this.doCommand('closeCase', {
           collection: this.parentCollectionName,
-          values: parentCollectionValues,
           caseID: parentCase.caseID
         });
       }.bind(this));
