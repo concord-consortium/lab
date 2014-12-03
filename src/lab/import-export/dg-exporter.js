@@ -93,19 +93,22 @@ define(function(require) {
     },
 
     /**
-      Exports the summary data about a run and timeseries data from the run to DataGames as 2
-      linked tables.
+      Exports the summary data about a run as 1 CODAP table and exports timeseries data, if any, as
+      a second, linked table.
 
       perRunLabels: list of column labels for the "left" table which contains a summary of the run
         (this can contain parameters that define the run, as well as )
 
       perRunData: list containing 1 row of data to be added to the left table
 
-      timeSeriesLabels: list of column labels for the "right" table which contains a set of time
-        points that will be linked to the single row which is added to the "left", run-summary table
+      timeSeriesLabels (optional): List of column labels for the "right" table which contains a
+        set of time points that will be linked to the single row which is added to the "left", run-
+        summary table
 
-      timeSeriesData: a list of lists, each of which contains 1 row of data to be added to the
-        right table.
+        If no timeSeriesLabels are provided, the linked "time series" table will not be created.
+
+      timeSeriesData (optional): A list of lists, each of which contains 1 row of data to be added
+      to the right table.
 
       This method automatically adds, as the first column of the run-summary table, a column
       labeled "Number of Time Points", which contains the number of time points in the timeseries
@@ -118,6 +121,8 @@ define(function(require) {
       time series labels.
     */
     exportData: function(perRunLabels, perRunData, timeSeriesLabels, timeSeriesData) {
+      timeSeriesLabels = timeSeriesLabels || [];
+
       var label,
           value,
           position,
@@ -178,10 +183,12 @@ define(function(require) {
       // Step 3. Create a table to be the child of the parent table; each row of the child
       // has a single time series reading (time, property1, property2...)
       // (Again, it seems to be ok to call this for the same table multiple times per DG session)
-      this.doCommand('createCollection', {
-        name: this.childCollectionName,
-        attrs: timeSeriesColumnLabels
-      });
+      if (timeSeriesColumnLabels.length > 0) {
+        this.doCommand('createCollection', {
+          name: this.childCollectionName,
+          attrs: timeSeriesColumnLabels
+        });
+      }
 
       // Step 4. Open a row in the parent table. This will contain the individual time series
       // readings as children.
@@ -192,11 +199,13 @@ define(function(require) {
 
         // Step 5. Create rows in the child table for each data point. Using 'createCases' we can
         // do this inline, so we don't need to call openCase, closeCase for each row.
-        this.doCommand('createCases', {
-          collection: this.childCollectionName,
-          values: timeSeriesData,
-          parent: parentCase.caseID
-        });
+        if (timeSeriesColumnLabels.length > 0) {
+          this.doCommand('createCases', {
+            collection: this.childCollectionName,
+            values: timeSeriesData,
+            parent: parentCase.caseID
+          });
+        }
 
         // Step 6. Close the case.
         this.doCommand('closeCase', {
