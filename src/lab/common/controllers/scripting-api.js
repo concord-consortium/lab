@@ -538,6 +538,11 @@ define(function (require) {
             return exportController && exportController.isUnexportedDataPresent() || false;
           },
 
+          dataAreAvailableForExport: function dataAreAvailableForExport() {
+            var exportController = interactivesController.exportController;
+            return exportController && exportController.dataAreAvailableForExport() || false;
+          },
+
           exportData: function exportData() {
             var exportController = interactivesController.exportController;
             if (!exportController || !exportController.canExportData()) {

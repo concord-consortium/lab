@@ -52,7 +52,7 @@ define(function (require) {
     /** @private */
     this._modelHasPlayed = false;
     /** @private */
-    this._isUnexportedDataPresent = false;
+    this._dataAreAvailableForExport = false;
     this._timeDesc = null;
     /** @private */
     this._model = null;
@@ -262,7 +262,12 @@ define(function (require) {
         this._$stop.on('click', scriptingAPI.stop);
         this._$analyzeData.on('click', function() {
           scriptingAPI.exportData();
-          disable($(this));
+          // Export controller may or may not want us to wait for a new run before re-enabling the
+          // analyze data button:
+          this._dataAreAvailableForExport = scriptingAPI.dataAreAvailableForExport();
+          if ( ! this._dataAreAvailableForExport ) {
+            disable($(this));
+          }
         });
 
         this._$newRun.on('click', function() {
@@ -270,11 +275,11 @@ define(function (require) {
         });
       },
 
-      updateButtonStates: function(stopped, playable, hasPlayed, isUnexportedDataPresent) {
+      updateButtonStates: function(stopped, playable, hasPlayed, dataAreAvailableForExport) {
         disableWhen(hasPlayed, this._$start);
         disableWhen(stopped, this._$stop);
         enableWhen(hasPlayed && stopped, this._$newRun);
-        enableWhen(hasPlayed && stopped && isUnexportedDataPresent, this._$analyzeData);
+        enableWhen(dataAreAvailableForExport, this._$analyzeData);
       },
 
       updateControlButtonChoices: function(mode) {
@@ -316,7 +321,7 @@ define(function (require) {
 
   PlaybackController.prototype._updateButtonStates = function() {
     this._controlButtonMethods.updateButtonStates.call(this,
-       this._modelStopped, this._modelPlayable, this._modelHasPlayed, this._isUnexportedDataPresent );
+       this._modelStopped, this._modelPlayable, this._modelHasPlayed, this._dataAreAvailableForExport );
   };
 
   PlaybackController.prototype._updateControlButtonChoices = function() {
@@ -341,7 +346,7 @@ define(function (require) {
     // Coerce undefined to *true* for models that don't have isPlayable property
     var modelPlayable = this._model.properties.isPlayable === false ? false : true;
     var modelHasPlayed = this._model.properties.hasPlayed;
-    var isUnexportedDataPresent = this._scriptingAPI.isUnexportedDataPresent();
+    var dataAreAvailableForExport = this._scriptingAPI.dataAreAvailableForExport();
 
     // Update button states only if modelStopped/modelPlayable actually changed. (Since they're
     // model properties, we are called every tick, unfortunately -- the optimization assumption
@@ -352,11 +357,11 @@ define(function (require) {
     if (modelStopped !== this._modelStopped ||
         modelPlayable !== this._modelPlayable ||
         modelHasPlayed !== this._modelHasPlayed ||
-        isUnexportedDataPresent !== this._isUnexportedDataPresent) {
+        dataAreAvailableForExport !== this._dataAreAvailableForExport) {
       this._modelStopped = modelStopped;
       this._modelPlayable = modelPlayable;
       this._modelHasPlayed = modelHasPlayed;
-      this._isUnexportedDataPresent = isUnexportedDataPresent;
+      this._dataAreAvailableForExport = dataAreAvailableForExport;
 
       this._updateButtonStates();
     }

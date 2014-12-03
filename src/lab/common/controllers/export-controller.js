@@ -39,14 +39,15 @@ define(function (require) {
         // used to compare initial parameters to parameters at export
         initialPerRunData,
 
+        // Are we waiting for timeseries data, or just sending "parent level" data to one table?
+        shouldExportTimeSeries = false,
+
         // Has exportData been called for this model since the last load or reset event?
         isUnexportedDataPresent = false,
 
         // Whether user needs to confirm (ok/cancel) if discarding data. Set by "don't ask again"
-        // checkbox when discarding data the first time
+        // checkbox when discarding data the first time`
         askAboutDataDiscard = true,
-
-        deferredModelLoadedHandler,
 
         isInitialized = false;
 
@@ -99,7 +100,10 @@ define(function (require) {
 
     function shouldHandleDataDiscard() {
       // If there's no unexported data, or we're not in the DG environment, never mind.
-      return ExportController.canExportData() && askAboutDataDiscard && isUnexportedDataPresent;
+      return ExportController.canExportData() &&
+        askAboutDataDiscard &&
+        shouldExportTimeSeries &&
+        isUnexportedDataPresent;
     }
 
     // Called when a model is about to be reset or reloaded, there is unexported data, and the user
@@ -225,10 +229,16 @@ define(function (require) {
         }
 
         perRun  = (spec.perRun || []).filter(propertyExists);
-        perTick = ['displayTime'].concat(spec.perTick.filter(propertyExists));
+        if (spec.perTick == null || spec.perTick.length === 0) {
+          shouldExportTimeSeries = false;
+          perTick = [];
+        } else {
+          shouldExportTimeSeries = true;
+          perTick = ['displayTime'].concat(spec.perTick.filter(propertyExists));
+        }
 
         resetData();
-        registerModelListeners()
+        registerModelListeners();
 
         if (eventName === 'modelLoaded') {
           if (cause === 'reload') {
@@ -296,8 +306,20 @@ define(function (require) {
 
     controller = {
 
+      // This just indicates the presence or absence of a technical means to export data (i.e.,
+      // whether or not there is CODAP or some other data sink is present and listening for data)
       canExportData: function() {
         return ExportController.canExportData();
+      },
+
+      // This indicates whether the default UI should allow data export. (This is advisory; custom
+      // scripts can choose to call exportData() while ignoring this value)
+      // Currently,
+      //   * if the interactive's exports spec omits timeseries data, data can always be exported
+      //   * if the interactive's exports spec includes timeseries data, the model must have been
+      //     run, and it must now be stopped.
+      dataAreAvailableForExport: function() {
+        return ! shouldExportTimeSeries || (model.hasPlayed && model.isStopped() && isUnexportedDataPresent);
       },
 
       isUnexportedDataPresent: function() {
