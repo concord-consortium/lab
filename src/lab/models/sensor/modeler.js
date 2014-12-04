@@ -151,7 +151,7 @@ define(function(require) {
     function handleUnplugged(what) {
       removeApplet();
       model.stop();
-      ExportController.logAction("User unplugged the " + what + " (" + model.properties[what+'Name'] + ").");
+      ExportController.logAction("Unplugged" + model.properties[what+'Name']);
       var buttons = {};
       buttons[i18n.t("sensor.messages.try_again")] = function() {
         $(this).dialog("close");

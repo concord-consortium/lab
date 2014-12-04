@@ -75,24 +75,18 @@ define(function (require) {
       perTickValues.length = model.stepCounter() + 1;
     }
 
-    function logAction(action, state, additionalData) {
-      var logString = "User " + action + ".";
+    function logAction(action, state) {
+      var logString = action;
       var data;
+      var i;
 
       if (state) {
-        data = {
-          fields: state.perRunPropertyLabels,
-          values: state.perRunPropertyValues
-        };
-      }
+        data = {};
 
-      if (additionalData) {
-        data = _.extend(data || {}, additionalData);
-      }
-
-      if (data) {
-        logString += " Per-run Settings and Data: ";
-        logString += JSON.stringify(data);
+        for (i = 0; i < state.labels.length; i++) {
+          data[state.labels[i]] = state.values[i];
+        }
+        logString = logString + ": " + JSON.stringify(data);
       }
 
       ExportController.logAction(logString);
@@ -130,7 +124,7 @@ define(function (require) {
             id: 'button-reset',
             text: "Discard the data",
             click: function() {
-              logAction('discarded data', getCurrentPerRunData());
+              logAction('DiscardedData', getCurrentPerRunData());
               askAboutDataDiscard = ! $('#dont-ask').is(':checked');
               $(this).remove();
               resetRequest.proceed();
@@ -145,24 +139,30 @@ define(function (require) {
     // 'play' event and returns in a changelist form ready to be exported to the DG log.
     function getChangedParameterValues() {
       if (!initialPerRunData) {
-        return [];
+        return false;
       }
 
       var currentPerRunData = getCurrentPerRunData();
-      var changed = [];
+      var changesList = { values: [], labels: [] };
+      var anyChanged = false;
 
-      currentPerRunData.perRunPropertyValues.forEach(function(currentValue, i) {
-        var initialValue = initialPerRunData.perRunPropertyValues[i];
-        if (currentValue !== initialValue) {
-          changed.push({
-            field:         initialPerRunData.perRunPropertyLabels[i],
-            valueAtStart:  initialValue,
-            valueExported: currentValue
-          });
-        }
+      currentPerRunData.values.forEach(function(currentValue, i) {
+        var initialValue = initialPerRunData.values[i];
+        var parameter = currentPerRunData.labels[i];
+        var changed = initialValue !== currentValue
+
+        changesList.labels.push(parameter + ' changed?');
+        changesList.values.push(changed);
+        anyChanged = anyChanged || changed;
+
+        changesList.labels.push(parameter + ' (start of run)');
+        changesList.values.push(initialValue);
+
+        changesList.labels.push(parameter + ' (sent to CODAP)');
+        changesList.values.push(currentValue);
       });
 
-      return changed;
+      return anyChanged ? changesList : false;
     }
 
     function registerModelListeners() {
@@ -171,7 +171,7 @@ define(function (require) {
       model.on('reset.exportController', resetData);
       model.on('play.exportController', function() {
         removeDataAfterStepPointer();
-        logAction("started the model", getCurrentPerRunData());
+        logAction("StartedModel", getCurrentPerRunData());
         // Save the per-run parameters we see now -- we'll log if a user changes any parameters
         // before exporting the data
         if (!initialPerRunData) {
@@ -242,17 +242,17 @@ define(function (require) {
 
         if (eventName === 'modelLoaded') {
           if (cause === 'reload') {
-            logAction("reloaded the model", savedPerRunData);
+            logAction("ReloadedModel", savedPerRunData);
           } else if (cause === 'new-run') {
-            logAction("set up a new run", savedPerRunData);
+            logAction("SetUpNewRun");
           } else {
-            logAction("loaded a model");
+            logAction("LoadedModel");
           }
         } else if (eventName === 'modelReset') {
           if (cause === 'new-run') {
-            logAction("set up a new run", savedPerRunData);
+            logAction("SetUpNewRun");
           } else {
-            logAction("reset the model", savedPerRunData);
+            logAction("ResetModel", savedPerRunData);
           }
         }
 
@@ -274,12 +274,12 @@ define(function (require) {
     function getCurrentPerRunData() {
       var state = {};
 
-      state.perRunPropertyLabels = [];
-      state.perRunPropertyValues = [];
+      state.labels = [];
+      state.values = [];
 
       for (var i = 0; i < perRun.length; i++) {
-        state.perRunPropertyLabels[i] = getLabelForProperty(perRun[i]);
-        state.perRunPropertyValues[i] = model.get(perRun[i]);
+        state.labels[i] = getLabelForProperty(perRun[i]);
+        state.values[i] = model.get(perRun[i]);
       }
       return state;
     }
@@ -377,17 +377,13 @@ define(function (require) {
           throw new Error("ExportController: exportData() was called before controller was initialized.");
         }
 
+        logAction("ExportedModel", getCurrentPerRunData());
+
         changedParameters = getChangedParameterValues();
 
-        logAction("exported the model", getCurrentPerRunData(), {
-          changedParameters: changedParameters
-        });
-
         // Create a separate log event for the act of having changed parameters
-        if (changedParameters.length > 0) {
-          logAction("changed parameters between start and export", null, {
-            changedParameters: changedParameters
-          });
+        if (changedParameters) {
+          logAction("ParameterChangeBetweenStartAndExport", changedParameters);
         }
 
         perRunPropertyLabels[0] = "Row";
