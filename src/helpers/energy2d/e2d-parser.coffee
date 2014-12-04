@@ -131,6 +131,10 @@ exports.parse = (xmlString) ->
     read $p, p, 'texture'
     # simplify texture definition
     if p.texture?
+      bg_color = $p.find('texture texture_bg').text()
+      if bg_color
+        # Replace color property with texture background color.
+        p.color = (parseInt(bg_color, 16) + Math.pow(2, 24)).toString(16)
       p.texture = true
 
     p = validator.validateCompleteness metadata.part, p
@@ -155,6 +159,9 @@ exports.parse = (xmlString) ->
     readAttr $p, p, 'angle'
     if p.angle
       p.angle = (p.angle * 180 / Math.PI).toFixed 2
+    if p.type == 'thermometer'
+      # Java E2D measures temperature in a different point of the sensor.
+      p.y += json.model_height / 50
     p = validator.validateCompleteness metadata.sensor, p
     sensors.push p
 

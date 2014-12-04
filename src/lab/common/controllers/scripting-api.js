@@ -437,6 +437,32 @@ define(function (require) {
             component.selectionEnabled(false);
           },
 
+          addAnnotation: function addAnnotation(componentID, annotation) {
+            var component = interactivesController.getComponent(componentID);
+
+            if (!component) {
+              throw new Error("Component " + componentID + " not found.");
+            }
+            if (!component.addAnnotation) {
+              throw new Error("Component " + componentID + " does not support addAnnotation.");
+            }
+
+            component.addAnnotation(annotation);
+          },
+
+          resetAnnotations: function resetAnnotations(componentID) {
+            var component = interactivesController.getComponent(componentID);
+
+            if (!component) {
+              throw new Error("Component " + componentID + " not found.");
+            }
+            if (!component.resetAnnotations) {
+              throw new Error("Component " + componentID + " does not support resetAnnotations.");
+            }
+
+            component.resetAnnotations();
+          },
+
           start: function start() {
             model.start();
             trackEvent('Interactive', "Start", "Starting interactive: " + interactivesController.get('title') );

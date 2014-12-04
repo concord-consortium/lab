@@ -1,0 +1,23 @@
+#!/usr/bin/env node
+
+require('coffee-script/register');
+var parser = require('../src/helpers/energy2d/e2d-parser');
+var fs = require('fs');
+
+var input = process.argv[2];
+var output = process.argv[3];
+
+if (!input) {
+  console.error('Please provide input .e2d file.');
+  return 1;
+}
+
+var xml = fs.readFileSync(input).toString();
+var parsedModel = parser.parse(xml);
+var json = JSON.stringify(parsedModel, null, 2);
+
+if (output) {
+  fs.writeFileSync(output, json, null, 2);
+} else {
+  process.stdout.write(json);
+}

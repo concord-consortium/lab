@@ -288,7 +288,7 @@ define(function(require) {
         if (model.isStopped()) {
           // Important: set position to (atom.x, atom.y), not (x, y)! Note that custom drag handler
           // could be executed and it could change actual position!
-          if (!setAtomPosition(i, atom.x, atom.y, true, true)) {
+          if (!setAtomPosition(i, atom.x, atom.y, true, true, model.get('skipPECheckOnAddAtom'))) {
             alert("You can't drop the object there.");
             setAtomPosition(i, originX, originY, false, true);
             modelView.update();
@@ -299,11 +299,11 @@ define(function(require) {
       });
     }
 
-    function setAtomPosition(i, xpos, ypos, checkPosition, moveMolecule) {
+    function setAtomPosition(i, xpos, ypos, checkPosition, moveMolecule, skipPECheck) {
       return model.setAtomProperties(i, {
         x: xpos,
         y: ypos
-      }, checkPosition, moveMolecule);
+      }, checkPosition, moveMolecule, skipPECheck);
     }
 
     api = {

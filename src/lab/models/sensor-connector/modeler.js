@@ -343,6 +343,14 @@ define(function(require) {
           this.gotoState('initialConnectionFailure');
         },
 
+        launchTimedOut: function() {
+          this.gotoState('initialConnectionFailureLaunchTimeout');
+        },
+
+        pluginInaccessible: function() {
+          this.gotoState('initialConnectionFailurePluginInaccessible');
+        },
+
         statusReceived: function() {
           this.gotoState('connected');
         },
@@ -358,7 +366,8 @@ define(function(require) {
         enterState: function() {
           sensorConnectorInterface.stopPolling();
           message = i18n.t("sensor.messages.connection_failed");
-          notifier.alert(i18n.t("sensor.messages.connection_failed_alert", {
+          var dialog_msg = "sensor.messages.connection_failed_alert";
+          notifier.alert(i18n.t(dialog_msg, {
                                 click_here_link: "<a target='_blank' style='color: #222299;' href='http://sensorconnector.concord.org/'>" +
                                                  i18n.t("sensor.messages.click_here") + "</a>"}), {
             "Try again": function() {
@@ -371,6 +380,59 @@ define(function(require) {
         // Ignore these in this state
         statusErrored: function() {},
         connectionTimedOut: function() {},
+        launchTimedOut: function() {},
+        pluginInaccessible: function() {},
+
+        dismiss: function() {
+          this.gotoState('notConnected');
+        }
+      },
+
+      initialConnectionFailureLaunchTimeout: {
+        enterState: function() {
+          sensorConnectorInterface.stopPolling();
+          message = i18n.t("sensor.messages.connection_failed");
+          var dialog_msg = "sensor.messages.connection_failed_launch_failed_alert";
+          notifier.alert(i18n.t(dialog_msg), {
+            "Try again": function() {
+              $(this).dialog("close");
+              handle('dismiss');
+            }
+          });
+        },
+
+        // Ignore these in this state
+        statusErrored: function() {},
+        connectionTimedOut: function() {},
+        launchTimedOut: function() {},
+        pluginInaccessible: function() {},
+
+        dismiss: function() {
+          this.gotoState('notConnected');
+        }
+      },
+
+      initialConnectionFailurePluginInaccessible: {
+        enterState: function() {
+          sensorConnectorInterface.stopPolling();
+          message = i18n.t("sensor.messages.connection_failed");
+          var dialog_msg = "sensor.messages.connection_failed_plugin_inacessible_alert";
+          notifier.alert(i18n.t(dialog_msg), {
+            "Reload": function() {
+              window.location.reload();
+            },
+            "Try again": function() {
+              $(this).dialog("close");
+              handle('dismiss');
+            }
+          });
+        },
+
+        // Ignore these in this state
+        statusErrored: function() {},
+        connectionTimedOut: function() {},
+        launchTimedOut: function() {},
+        pluginInaccessible: function() {},
 
         dismiss: function() {
           this.gotoState('notConnected');
@@ -843,7 +905,9 @@ define(function(require) {
     // TODO
     model.on('willReset.model', function() {
       sensorConnectorInterface.stopPolling();
-      sensorConnectorInterface.requestStop();
+      if (sensorConnectorInterface.isCollecting) {
+        sensorConnectorInterface.requestStop();
+      }
     });
 
     model.addObserver('collectionTime', updateDisplayTimeRange);

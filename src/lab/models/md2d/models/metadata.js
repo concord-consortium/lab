@@ -148,6 +148,9 @@ define(function() {
       requestedDuration: {
         defaultValue: null,
         storeInTickHistory: false
+      },
+      skipPECheckOnAddAtom: {
+        defaultValue: false
       }
     },
 

@@ -3286,7 +3286,7 @@ define(function (require, exports) {
         Optionally, an atom index i can be included which will tell the function
         to ignore the existance of atom i. (Used when moving i around.)
       */
-      canPlaceAtom: function(element, _x, _y, i) {
+      canPlaceAtom: function(element, _x, _y, i, skipPECheck) {
         var orig_x,
             orig_y,
             PEAtLocation,
@@ -3308,6 +3308,10 @@ define(function (require, exports) {
               (_y > testY && _y < testYMax)) {
             return false;
           }
+        }
+
+        if (skipPECheck) {
+          return true;
         }
 
         // then check PE at location
