@@ -7,7 +7,7 @@ define(function () {
     var Apache_link = '<a class="opens-in-new-window" href="http://opensource.org/licenses/Apache-2.0" target="_blank">Apache 2.0</a>';
     var concord_org_link = '<a class="opens-in-new-window" href="http://concord.org/" target="_blank">http://concord.org</a>';
     return '<div class="copyright-section">' +
-           '<strong>' + i18n.t('copyright.copyright') + ' © 2013</strong> ' + CC_link + '. ' +
+           '<strong>' + i18n.t('copyright.copyright') + ' © 2015</strong> ' + CC_link + '. ' +
            i18n.t('copyright.all_rights_reserved') + ' ' +
            i18n.t('copyright.license', {
              BSD_link: BSD_link,
