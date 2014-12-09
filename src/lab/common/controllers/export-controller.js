@@ -319,7 +319,7 @@ define(function (require) {
       //   * if the interactive's exports spec includes timeseries data, the model must have been
       //     run, and it must now be stopped.
       dataAreAvailableForExport: function() {
-        return ! shouldExportTimeSeries || (model.hasPlayed && model.isStopped() && isUnexportedDataPresent);
+        return ! shouldExportTimeSeries || (model.properties.hasPlayed && model.isStopped() && isUnexportedDataPresent);
       },
 
       isUnexportedDataPresent: function() {
