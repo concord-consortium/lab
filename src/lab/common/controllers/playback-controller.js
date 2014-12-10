@@ -337,11 +337,7 @@ define(function (require) {
     this._controlButtonMethods.setClockValue.apply(this, arguments);
   };
 
-  /**
-   * Updates play / pause button.
-   * @private
-   */
-  PlaybackController.prototype._simulationStateChanged = function () {
+  PlaybackController.prototype._updateCachedSimulationState = function() {
     var modelStopped = this._model.isStopped();
     // Coerce undefined to *true* for models that don't have isPlayable property
     var modelPlayable = this._model.properties.isPlayable === false ? false : true;
@@ -363,6 +359,17 @@ define(function (require) {
       this._modelHasPlayed = modelHasPlayed;
       this._dataAreAvailableForExport = dataAreAvailableForExport;
 
+      return true;
+    }
+    return false;
+  };
+
+  /**
+   * Updates play / pause button.
+   * @private
+   */
+  PlaybackController.prototype._simulationStateChanged = function () {
+    if (this._updateCachedSimulationState()) {
       this._updateButtonStates();
     }
   };
@@ -465,6 +472,7 @@ define(function (require) {
     }
 
     this._controlButtonMethods = controlButtonMethods[style];
+    this._updateCachedSimulationState();
     this._createControls();
     this._controlButtonChoicesChanged();
   };

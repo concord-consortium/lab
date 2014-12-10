@@ -879,13 +879,16 @@ define(function (require) {
         // Setup exporter. Has to happen before modelLoaded. Time-based dependencies FTW.
         exportController.init(interactive.exports || getDefaultExports());
 
-        if (exportController.canExportData()) {
-          modelController.model.properties.controlButtonStyle = 'codap';
-        }
-
         exportController.on('canExportData.interactivesController', function() {
           // hacky, but this updates the 'actualUseDuration' output which depends on canExportData
           modelController.model.makeInvalidatingChange();
+        });
+
+        if (exportController.modelCanExportData()) {
+          modelController.model.properties.controlButtonStyle = 'codap';
+        }
+
+        exportController.on('modelCanExportData.interactivesController', function() {
           modelController.model.properties.controlButtonStyle = 'codap';
         });
 

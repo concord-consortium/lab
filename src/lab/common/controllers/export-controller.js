@@ -42,6 +42,13 @@ define(function (require) {
         // Are we waiting for timeseries data, or just sending "parent level" data to one table?
         shouldExportTimeSeries = false,
 
+        // Is the exporter set up and ready to allow the model to export data? The difference
+        // between this and canExportData is that canExportData merely exposes the fact that we
+        // are embedded in CODAP or some other target for our exported data. However
+        // modelCanExportData indicates that the export controller has been initialized and is
+        // attached to the current model.
+        modelCanExportData = false,
+
         // Has exportData been called for this model since the last load or reset event?
         isUnexportedDataPresent = false,
 
@@ -259,7 +266,12 @@ define(function (require) {
         initialPerRunData = null;
         savedPerRunData = null;
         isUnexportedDataPresent = false;
+        modelCanExportData = true;
+        dispatch.modelCanExportData();
+
       }
+
+      modelCanExportData = false;
 
       // Don't accumulate data or logs until we know we know there is somewhere to send the data.
       // (Note that CODAP, if present, will announce itself before the model can be started by the
@@ -310,6 +322,10 @@ define(function (require) {
       // whether or not there is CODAP or some other data sink is present and listening for data)
       canExportData: function() {
         return ExportController.canExportData();
+      },
+
+      modelCanExportData: function() {
+        return modelCanExportData;
       },
 
       // This indicates whether the default UI should allow data export. (This is advisory; custom
@@ -411,8 +427,9 @@ define(function (require) {
     dgExporter.init();
 
     // Issue an 'canExportData' event when canExportData() flips from false to true.
+    // Issue 'modelCanExportData' when modelCanExportData() flips
     dispatch.mixInto(controller);
-    dispatch.addEventTypes('canExportData');
+    dispatch.addEventTypes('canExportData', 'modelCanExportData');
 
     // Make sure we emit event if canExportData becomes true. Assume codap connects only once.
     dgExporter.codapDidConnect = function() {
