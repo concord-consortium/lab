@@ -89,8 +89,12 @@ define(function(require) {
 
     function updateAtomsTable() {
       var length = atoms.x.length;
-
       atoms.sharedElectrons = arrays.create(length, 0, arrayTypes.int8Type);
+    }
+
+    function updateRadialBondsTable() {
+      var length = radialBonds.atom1.length;
+      radialBonds.creationPotential = arrays.create(length, 0, arrayTypes.floatType);
     }
 
     function isRadical(i) {
@@ -779,6 +783,7 @@ define(function(require) {
         radialBonds  = dataTables.radialBonds;
         angularBonds = dataTables.angularBonds;
         updateAtomsTable();
+        updateRadialBondsTable();
       },
 
       performActionWithinIntegrationLoop: function (neighborList, dt, time) {
