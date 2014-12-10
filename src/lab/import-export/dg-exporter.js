@@ -34,8 +34,8 @@ define(function(require) {
   var dgExporter = {
 
     gameName: 'Next Gen MW',
-    parentCollectionName: 'parameter sets',
-    parentCollectionCaseName: 'parameter set',
+    parentCollectionName: 'runs',
+    parentCollectionCaseName: 'run',
     childCollectionName: 'measurements',
     childCollectionCaseName: 'measurement',
 
