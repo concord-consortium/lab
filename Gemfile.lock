@@ -9,7 +9,7 @@ GEM
       sass (>= 3.2.0)
       thor
     charlock_holmes (0.6.9.4)
-    coderay (1.0.9)
+    coderay (1.1.0)
     coffee-script (2.2.0)
       coffee-script-source
       execjs
@@ -77,9 +77,9 @@ GEM
     nokogiri (1.6.1)
       mini_portile (~> 0.5.0)
     posix-spawn (0.3.6)
-    pry (0.9.12.2)
-      coderay (~> 1.0.5)
-      method_source (~> 0.8)
+    pry (0.10.1)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
       slop (~> 3.4)
     rack (1.5.2)
     rack-cors (0.2.9)
@@ -105,7 +105,7 @@ GEM
     sass (3.2.9)
     simple-cloudfront-invalidator (1.0.1)
       colored (= 1.2)
-    slop (3.4.6)
+    slop (3.6.0)
     thor (0.18.1)
     tilt (1.4.1)
     travis-lint (1.7.0)
