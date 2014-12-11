@@ -254,6 +254,10 @@ define(function () {
     var newLength = this._model.stepCounter();
     var context = this;
 
+    if (newLength < 0) {
+      newLength = 0;
+    }
+
     this._modelProperties.forEach(function (prop) {
       if (context._data[prop].length > newLength) {
         context._data[prop].length = newLength;
