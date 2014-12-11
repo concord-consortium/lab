@@ -43,6 +43,7 @@ define(function(require) {
         isSensorTareable2,
         message,
         statusErrors,
+        displayTimePropertyDescription,
         model;
 
     var defaultSensorReadingDescription = {
@@ -323,6 +324,12 @@ define(function(require) {
       var numberOfValues = Math.min(Math.min(timeColumn.data.length, dataColumn.data.length), dataColumn2.data.length);
       for (; stepCounter < numberOfValues; stepCounter++) {
         time = timeColumn.data[stepCounter];
+
+        if (time > model.properties.actualDuration) {
+          // Stop, but continue to process any data received (if for no other reason than that
+          // subsequent steps aren't happy until data up to the latest timestamp was received)
+          model.stop();
+        }
         rawSensorValue = dataColumn.data[stepCounter];
         rawSensorValue2 = dataColumn2.data[stepCounter];
         model.updateAllOutputProperties();
@@ -764,6 +771,7 @@ define(function(require) {
         enterState: function() {
           message = i18n.t("sensor.messages.data_collection_complete");
           isStopped = true;
+          dispatch.stop();
         },
 
         reset: function() {
@@ -848,10 +856,11 @@ define(function(require) {
       usePlaybackSupport: false
     });
 
-    labModelerMixin.mixInto(model);
     propertySupport = labModelerMixin.propertySupport;
     dispatch = labModelerMixin.dispatchSupport;
     dispatch.addEventTypes("tick", "play", "stop", "tickStart", "tickEnd");
+
+    labModelerMixin.mixInto(model);
 
     initializeStateVariables();
 
@@ -879,6 +888,8 @@ define(function(require) {
       return time;
     });
 
+    displayTimePropertyDescription = model.getPropertyDescription('displayTime');
+
     model.defineOutput('sensorReading', defaultSensorReadingDescription, function() {
       if (rawSensorValue == null) {
         return rawSensorValue;
@@ -892,6 +903,26 @@ define(function(require) {
       }
       return rawSensorValue2 - model.properties.tareValue2;
     });
+
+    /* Need custom implementation of duration options, because we don't use playbackSupport
+      (and playbackSupport's implementation is designed for simulation models that have a
+      fixed time per tick */
+
+    model.defineOutput('durationOptions', {}, function() {
+      return [1, 5, 10, 15, 20, 30, 45, 60];
+    });
+
+    model.formatTime = function(time) {
+      return  displayTimePropertyDescription.format(time);
+    };
+
+    model.defineOutput('actualUseDuration', {}, labModelerMixin.computeActualUseDuration);
+
+    model.defineOutput('actualDuration', {
+      label: "Experiment duration",
+      unitType: 'time',
+      format: 'f'
+    }, labModelerMixin.computeActualDuration);
 
     // Because sensorReading updates are batched and delivered much later than the live sensor value
     // from the sensor status response, we define a separate liveSensorReading output that can be
