@@ -4054,7 +4054,7 @@ define(function (require, exports) {
         var newKE = oldKE + constants.convert(deltaKE, { from: unit.EV, to: unit.MW_ENERGY_UNIT });
 
         if (newKE < 0) {
-            return false;
+          return false;
         }
 
         // We require m1 * dv1x = -m2 * dv2x (momentum conservation)
@@ -4063,10 +4063,16 @@ define(function (require, exports) {
         var a = m1 + m1*m1/m2;
         var b = 2 * m1 * (v1x - v2x);
         var c = 2 * (oldKE - newKE);
-        var disc = Math.sqrt(b*b - 4*a*c);
+        var disc = b*b - 4*a*c;
+
+        if (disc < 0) {
+          // Momentum can't be conserved.
+          return false;
+        }
 
         // Of the two roots, choose the solution that minimizes the changes to the individual
         // momenta (which are equal and opposite, so we only need to check v1x)
+        disc = Math.sqrt(disc);
         var dv1xPlus = (-b + disc) / (2*a);
         var dv1xMinus = (-b - disc) / (2*a);
         var dv1x = Math.abs(dv1xPlus) < Math.abs(dv1xMinus) ? dv1xPlus : dv1xMinus;
