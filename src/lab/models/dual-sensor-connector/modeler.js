@@ -67,12 +67,12 @@ define(function(require) {
       propertySupport.setPropertyDescription(property, description);
     }
 
-    // Updates min, max of displayTime to be [0..collectionTime]
+    // Updates min, max of displayTime to be [0..actualDuration]
     function updateDisplayTimeRange() {
-      if (model.properties.collectionTime == null) {
+      if (model.properties.actualDuration == null || model.properties.actualDuration == Infinity) {
         return;
       }
-      updatePropertyRange('displayTime', 0, model.properties.collectionTime);
+      updatePropertyRange('displayTime', 0, model.properties.actualDuration);
     }
 
     function setSensorReadingDescription() {
@@ -1017,7 +1017,7 @@ define(function(require) {
       }
     });
 
-    model.addObserver('collectionTime', updateDisplayTimeRange);
+    model.addObserver('actualDuration', updateDisplayTimeRange);
     updateDisplayTimeRange();
 
     model.updateAllOutputProperties();

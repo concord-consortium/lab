@@ -8,9 +8,6 @@ define(function() {
         defaultValue: "dual-sensor-connector",
         immutable: true
       },
-      collectionTime: {
-        defaultValue: null
-      },
       tareValue: {
         defaultValue: 0
       },
