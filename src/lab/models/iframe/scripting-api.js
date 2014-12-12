@@ -35,6 +35,17 @@ define(function () {
        */
       post: function resetModel(type, content) {
         parent.model.iframePhone.post(type, content);
+      },
+
+      /**
+       * Returns value of an output defined by iframe model.
+       * Note that iframe model decides how often output is updated.
+       * This function doesn't ask iframe about current value, but just immediately returns
+       * the last value which is stored.
+       * @param {string} name   output name
+       */
+      iframeOutput: function iframeOutput(name) {
+        return parent.model.iframeOutput(name);
       }
     };
   };

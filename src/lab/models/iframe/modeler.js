@@ -48,37 +48,15 @@ define(function(require) {
     this._dispatch = labModelerMixin.dispatchSupport;
     this._stepCounter = 0;
 
-    // custom properties defined by the model in the iframe; values are passed every tick.
-    this._modelProperties = Object.create(null);
+    // Custom properties defined by the model in the iframe; values are passed using 'outputs'
+    // or 'tick' messages.
+    this._iframeOutputs = {};
 
     // The default model controller asumes 'tick' is a defined event
     // the playback controller assumes 'play' and 'stop' are defined even if the viewOptions
     // disable these buttons
     // the outer iframe in the interactives browser expects a 'reset', 'stepForward', 'stepBack' event type
     this._dispatch.addEventTypes('tick', 'tickStart', 'tickEnd', 'play', 'stop', 'reset', 'stepForward', 'stepBack');
-
-    // Output properties have to be known about at model setup time (in order for model setup to
-    // work) so they are defined in the model definition
-
-    if (initialProperties.outputs) {
-      Object.getOwnPropertyNames(initialProperties.outputs).forEach(function (propertyName) {
-        var propertyDefinition = initialProperties.outputs[propertyName];
-
-        context._modelProperties[propertyName] = null;
-
-        context.defineOutput(propertyName, {
-          label:            propertyDefinition.label,
-          unitName:         propertyDefinition.unitName,
-          unitPluralName:   propertyDefinition.unitPluralName,
-          unitAbbreviation: propertyDefinition.unitAbbreviation,
-          format:           propertyDefinition.format,
-          min:              propertyDefinition.min,
-          max:              propertyDefinition.max,
-        }, function() {
-          return context._modelProperties[propertyName];
-        });
-      });
-    }
 
     // HACK to play with properties
     this.defineParameter('pressure', {
@@ -174,11 +152,25 @@ define(function(require) {
     }
   });
 
-  IFrameModel.prototype.stepCounter = function() {
+  IFrameModel.prototype.stepCounter = function () {
     return this._stepCounter;
   };
 
+  IFrameModel.prototype.iframeOutput = function (name) {
+    // Why null instead of undefined? d3.format converts null to 0, but undefined to NaN...
+    return this._iframeOutputs[name] || null;
+  };
+
   /**************** private methods ****************/
+
+  IFrameModel.prototype._updateOutputs = function (outputs) {
+    var context = this;
+    this.makeInvalidatingChange(function () {
+      Object.keys(outputs).forEach(function (key) {
+        context._iframeOutputs[key] = outputs[key];
+      });
+    });
+  };
 
   IFrameModel.prototype._addListeners = function () {
     var context = this;
@@ -193,25 +185,17 @@ define(function(require) {
       context._dispatch.stop();
     });
 
-    this._phone.addListener('defineOutputs', function(content) {
-      if ( ! content.properties ) {
-        return;
-      }
-
-
+    this._phone.addListener('outputs', function(content) {
+      context._updateOutputs(content);
     });
 
     this._phone.addListener('tick', function (content) {
       context._stepCounter++;
-
-      if (content.properties) {
-        for (var propertyName in context._modelProperties) {
-          // _modelProperties has null prototype, letting us skip hasOwnProperty check
-          context._modelProperties[propertyName] = content.properties[propertyName];
-        }
-        context.updateAllOutputProperties();
+      // Support outputs update within 'tick' message, as it's quite popular scenario.
+      // We can avoid additional post message due to that.
+      if (content.outputs) {
+        context._updateOutputs(content.outputs);
       }
-
       context._dispatch.tick();
     });
 
