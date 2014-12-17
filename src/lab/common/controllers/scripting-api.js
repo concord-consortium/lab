@@ -383,12 +383,20 @@ define(function (require) {
 
           /**
             Change attributes of an existing component.
+
+            WARNING: the current implementation of this function is very limited. Despite its
+                     generic name, it only lets you change graph's attributes or button's label.
           */
-          setComponentAttributes: function setComponentAttributes(compID, opts) {
-            var comp = interactivesController.getComponent(compID);
-            if (comp !== undefined) {
-              comp.setAttributes(opts);
+          setComponentAttributes: function setComponentAttributes(componentID, opts) {
+            var comp = interactivesController.getComponent(componentID);
+
+            if (!comp) {
+              throw new Error("Component " + componentID + " not found.");
             }
+            if (typeof(comp.setAttributes) !== "function") {
+              throw new Error("Component " + componentID + " does not support dynamic attributes change.");
+            }
+            comp.setAttributes(opts);
           },
 
           /**
