@@ -2050,7 +2050,7 @@ define(function (require, exports) {
 
           for (i = 0; i < N; i++) {
             if (pinned[i]) {
-              vx[i] = vy[i] = ax[i] = ay[i] = 0;
+              vx[i] = vy[i] = 0;
             }
           }
         },
@@ -3544,6 +3544,9 @@ define(function (require, exports) {
           // Calculate v(t + 0.5 * dt) using v(t) and a(t).
           halfUpdateVelocity();
 
+          // Clear the velocity for pinned atoms before moving them.
+          pinAtoms();
+
           // Update r(t + dt) using v(t + 0.5 * dt).
           updateParticlesPosition();
 
@@ -3551,12 +3554,11 @@ define(function (require, exports) {
           // and forces connected with atoms.
           updateParticlesAccelerations();
 
-          // Clearing the acceleration here from pinned atoms will cause the acceleration
-          // to be zero for both halfUpdateVelocity methods and updateParticlesPosition, freezing the atom.
-          pinAtoms();
-
           // Calculate v(t + dt) using v(t + 0.5 * dt) and a(t + dt).
           halfUpdateVelocity();
+
+          // Clear the velocity for pinned atoms before moving them.
+          pinAtoms();
 
           // Now that we have velocity v(t + dt), update speed.
           updateParticlesSpeed();
