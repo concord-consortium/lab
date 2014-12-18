@@ -3538,11 +3538,12 @@ define(function (require, exports) {
         // each integration step.
         zeroPressureValues();
 
+        // Clear the acceleration and velocity for pinned atoms, as we may have updated
+        // acceleration prior to entering integrate() (e.g. in readModelState).
+        pinAtoms();
+
         for (iloop = 1; iloop <= steps; iloop++) {
           time = tStart + iloop * dt;
-
-          // Clear the acceleration and velocity for pinned atoms before moving them.
-          pinAtoms();
 
           // Calculate v(t + 0.5 * dt) using v(t) and a(t).
           halfUpdateVelocity();
@@ -3553,6 +3554,9 @@ define(function (require, exports) {
           // Accumulate accelerations into a(t + dt) from all possible interactions, fields
           // and forces connected with atoms.
           updateParticlesAccelerations();
+
+          // Clear the acceleration and velocity for pinned atoms before moving them.
+          pinAtoms();
 
           // Calculate v(t + dt) using v(t + 0.5 * dt) and a(t + dt).
           halfUpdateVelocity();
