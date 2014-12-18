@@ -34,10 +34,30 @@ define(function(require) {
   var dgExporter = {
 
     gameName: 'Next Gen MW',
-    parentCollectionName: 'runs',
-    parentCollectionCaseName: 'run',
-    childCollectionName: 'measurements',
-    childCollectionCaseName: 'measurement',
+
+    parentTableLabels: {
+      singleCase: "run",
+      pluralCase: "runs",
+      singleCaseWithArticle: "a run",
+      setOfCases: "set",
+      setOfCasesWithArticle: "a set"
+    },
+
+    childTableLabels: {
+      singleCase: "measurement",
+      pluralCase: "measurements",
+      singleCaseWithArticle: "a measurement",
+      setOfCases: "time series",
+      setOfCasesWithArticle: "a time series"
+    },
+
+    singleTableLabels: {
+      singleCase: "measurement",
+      pluralCase: "measurements",
+      singleCaseWithArticle: "a measurement",
+      setOfCases: "set",
+      setOfCasesWithArticle: "a set"
+    },
 
     perRunColumnLabelCount: 0,
     perRunColumnLabelPositions: {},
@@ -132,8 +152,6 @@ define(function(require) {
           perRunColumnValues = [],
           timeSeriesColumnLabels = [],
           shouldExportTimeSeries,
-          parentCollectionName,
-          parentCollectionCaseName,
           i;
 
       // Extract metadata in the forms needed for export, ie values need to be an array of values,
@@ -167,13 +185,6 @@ define(function(require) {
       }
 
       shouldExportTimeSeries = timeSeriesLabels.length > 0;
-      if (shouldExportTimeSeries) {
-        parentCollectionName = this.parentCollectionName;
-        parentCollectionCaseName = this.parentCollectionCaseName;
-      } else {
-        parentCollectionName = this.childCollectionName;
-        parentCollectionCaseName = this.childCollectionCaseName;
-      }
 
       // Export.
 
@@ -188,10 +199,10 @@ define(function(require) {
       // (It seems to be ok to call this multiple times with the same collection name, e.g., for
       // multiple exports during a single DG session.)
       this.doCommand('createCollection', {
+        name: 'parent',
         attrs: perRunColumnLabels,
-        name: parentCollectionName,
-        caseName: parentCollectionCaseName,
-        childAttrName: 'contents',
+        childAttrName: 'runs',
+        labels: shouldExportTimeSeries ? this.parentTableLabels : this.singleTableLabels,
         collapseChildren: true
       });
 
@@ -200,16 +211,16 @@ define(function(require) {
       // (Again, it seems to be ok to call this for the same table multiple times per DG session)
       if (shouldExportTimeSeries) {
         this.doCommand('createCollection', {
-          name: this.childCollectionName,
-          caseName: this.childCollectionCaseName,
-          attrs: timeSeriesColumnLabels
+          name: 'child',
+          attrs: timeSeriesColumnLabels,
+          labels: this.singleTableLabels
         });
       }
 
       // Step 4. Open a row in the parent table. This will contain the individual time series
       // readings as children.
       this.doCommand('openCase', {
-        collection: parentCollectionName,
+        collection: 'parent',
         values: perRunColumnValues
       }, function(parentCase) {
 
@@ -217,7 +228,7 @@ define(function(require) {
         // do this inline, so we don't need to call openCase, closeCase for each row.
         if (shouldExportTimeSeries) {
           this.doCommand('createCases', {
-            collection: this.childCollectionName,
+            collection: 'child',
             values: timeSeriesData,
             parent: parentCase.caseID
           });
@@ -225,7 +236,7 @@ define(function(require) {
 
         // Step 6. Close the case.
         this.doCommand('closeCase', {
-          collection: parentCollectionName,
+          collection: 'parent',
           caseID: parentCase.caseID
         });
       }.bind(this));
