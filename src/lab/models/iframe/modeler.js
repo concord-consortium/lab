@@ -157,8 +157,7 @@ define(function(require) {
   };
 
   IFrameModel.prototype.iframeOutput = function (name) {
-    // Why null instead of undefined? d3.format converts null to 0, but undefined to NaN...
-    return this._iframeOutputs[name] || null;
+    return this._iframeOutputs[name];
   };
 
   /**************** private methods ****************/
