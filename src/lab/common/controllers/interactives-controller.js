@@ -543,6 +543,10 @@ define(function (require) {
       // Ensure that interactive initialization is always the same if it's desired
       // ("randomSeed" paramenter is provided).
       generateRandomSeed();
+      // Set theme (which is just a CSS class of the main interactive container).
+      var theme = interactive.theme;
+      $interactiveContainer.alterClass('lab-theme-*', theme ? 'lab-theme-' + theme : '');
+
       // Set up the list of possible modelDefinitions.
       modelDefinitions = interactive.models;
       for (var i = 0, len = modelDefinitions.length; i < len; i++) {

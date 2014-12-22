@@ -35,6 +35,10 @@ define(function() {
         defaultValue: "en-US"
       },
 
+      theme: {
+        defaultValue: ""
+      },
+
       subtitle: {
         defaultValue: ""
       },
