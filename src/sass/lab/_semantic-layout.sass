@@ -3,12 +3,16 @@
 
 .lab-interactive-container
   @include fill-parent
+  font-family: Lato, Verdana, Geneva, sans-serif
+  font-size: 1em
+  color: #3f3f3f
   height: 100%
   position: relative
   border-radius: 0.5em
   overflow: hidden
   &:focus
     outline: none
+  border: 1px lightgrey solid
   // Old browsers
   background-color: lighten($interactive-container-background-gradient-destination, 5%)
   $experimental-support-for-svg: true
@@ -24,19 +28,9 @@
 
 #top-bar
   background-color: white
-  border-top: 1px lightgrey solid
-  border-left: 1px lightgrey solid
-  border-right: 1px lightgrey solid
-  border-top-left-radius: 0.5em
-  border-top-right-radius: 0.5em
 
 #bottom-bar
   background-color: white
-  border-bottom: 1px lightgrey solid
-  border-left: 1px lightgrey solid
-  border-right: 1px lightgrey solid
-  border-bottom-left-radius: 0.5em
-  border-bottom-right-radius: 0.5em
 
 #credits-link
   padding: 0.2em 0 0.2em 0.8em
