@@ -1,7 +1,10 @@
 define(function() {
+  // Size of the font we test, it doesn't really matter.
+  var FONT_SIZE = 15; // px
 
   // how long to poll
   var DEFAULTS = {
+    weight: 'normal',
     timeout: 3000,
     interval: 250,
     onchange: null
@@ -11,17 +14,15 @@ define(function() {
   var loading = {};
 
   function getBitmap(font) {
-    var dim = Math.ceil(1.5 * parseFloat(font.match(/[\d\.]+px/), 10));
     var canvas = document.createElement('canvas');
     var ctx = canvas.getContext('2d');
-
-    if (isNaN(dim)) dim = 20;
+    var dim = FONT_SIZE * 1.5;
 
     canvas.width = dim;
     canvas.height = dim;
 
     ctx.font = font;
-    ctx.fillText("A", 0, dim);
+    ctx.fillText('A', 0, dim);
     return canvas.toDataURL();
   }
 
@@ -52,10 +53,15 @@ define(function() {
   /**
     Detects changes to how a given font renders in a Canvas context, using the assumption that the
     first such change indicates that the font has loaded and should no longer be checked.
+    If you provide multiple fonts (e.g. Lato, 'Open Sans', Arial), onchange handler can be called
+    multiple times.
 
     options:
-      font: a font name in the format used by the CSS font property. The font size should be in px.
-            See https://developer.mozilla.org/en-US/docs/Web/CSS/font
+      font:   a font family name in the format used by the CSS font-family property.
+              See https://developer.mozilla.org/en-US/docs/Web/CSS/font-family
+
+      weight: a font weight in the format used by the CSS font-weight property.
+              See https://developer.mozilla.org/en/docs/Web/CSS/font-weight
 
       interval: Length in milliseconds of the interval to use for checking a font for changes.
 
@@ -88,15 +94,28 @@ define(function() {
             return true
   */
   return function detectFontChange(_options) {
-
     var options = {};
-    var font;
 
     // option processing
     Object.keys(_options).concat(Object.keys(DEFAULTS)).forEach(function(key) {
       options[key] = _options[key] != null ? _options[key] : DEFAULTS[key];
     });
-    font = options.font;
+
+    var multipleFonts = options.font.split(',');
+    if (multipleFonts.length > 1) {
+      var result = false;
+      multipleFonts.forEach(function(fontName) {
+        options.font = fontName.trim();
+        if (detectFontChange(options)) {
+          // Return true if at least one font is not already loaded.
+          result = true;
+        }
+      });
+      return result;
+    }
+
+    // Construct compact form that is expected by canvas.
+    var font = options.weight + ' ' + FONT_SIZE + 'px ' + options.font;
 
     if (fontLoaded[font]) {
       // Font already loaded.
