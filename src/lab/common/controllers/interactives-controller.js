@@ -1231,6 +1231,9 @@ define(function (require) {
       get propertiesToRetain() {
         return getRetainedProperties();
       },
+      get fontFamily() {
+        return $interactiveContainer.css('font-family');
+      },
 
       /**
         Return the model object. Note this is provided behind a method because we eventually

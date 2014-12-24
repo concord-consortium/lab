@@ -6,10 +6,7 @@ define(function (require) {
       detectFontChange     = require('common/layout/detect-font-change'),
       InteractiveComponent = require('common/controllers/interactive-component'),
       SelectBoxView        = require('common/views/select-box-view'),
-      labConfig            = require('lab.config'),
-      _                    = require('underscore'),
-      // Font used by time display
-      FONT_SPEC = "bold 2em " + labConfig.fontface;
+      _                    = require('underscore');
 
   function disable($el) {
     $el.attr('disabled', true).addClass('lab-disabled').css('cursor', 'default');
@@ -45,24 +42,19 @@ define(function (require) {
 
     this.$element.addClass("interactive-playback");
 
-    /** @private */
     this._modelStopped = true;
-    /** @private */
     this._modelPlayable = true;
-    /** @private */
     this._modelHasPlayed = false;
-    /** @private */
     this._dataAreAvailableForExport = false;
     this._timeDesc = null;
-    /** @private */
     this._model = null;
-    /** @private */
     this._scriptingAPI = null;
-    /** @private */
     this._interactivesController = interactivesController;
+    // Font used by time display
+    this._fontSpec = "bold 2em " + interactivesController.fontFamily;
 
     detectFontChange({
-      font: FONT_SPEC,
+      font: interactivesController.fontFamily,
       onchange: this._updateClockVisibility.bind(this)
     });
   }
@@ -620,7 +612,7 @@ define(function (require) {
     this._$timeCanvas.attr("width", this._canvWidth);
     this._$timeCanvas.attr("height", this._canvHeigth);
 
-    this._timeCtx.font = FONT_SPEC;
+    this._timeCtx.font = this._fontSpec;
     this._timeCtx.fillStyle = "#939598";
     this._timeCtx.textAlign = "right";
 
