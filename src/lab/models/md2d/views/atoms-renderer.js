@@ -10,13 +10,14 @@ define(function(require) {
       detectFontChange  = require('common/layout/detect-font-change'),
 
       FONT_WEIGHT  = 'bold',
+      // font-family needs to be unescaped to support fonts wrapped in '' (e.g. 'Comic Sans MS').
       ATOM_SVG_TPL =
       '<svg x="0px" y="0px" width="{{ width }}px" height="{{ height }}px" \
        viewBox="0 0 32 32" xml:space="preserve"> \
         <style type="text/css"> \
         <![CDATA[ \
           text { \
-            font-family: {{ fontFamily }}; \
+            font-family: {{{ fontFamily }}}; \
             font-size: {{ fontSize }}px; \
             font-weight: ' + FONT_WEIGHT + '; \
             fill: #222; \
