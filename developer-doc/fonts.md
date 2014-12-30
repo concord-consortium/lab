@@ -1,16 +1,24 @@
 # Fonts
 
-The web font Lato is used by default. We have tried to consolidate references to Lato so it would be easy to change. 
-However there are some cases where it can't be consolidated.
+The web font Lato is used by default. It's specified in `lab.css`.
 
-- in svg images that are included in models or interactives: these do not inherit the font-family from the document.
-  Additionally these are not dynamically generated, so currently they need to have the font-family referenced
-  directly. For example see `src/models/sun-on-ground/photonKey.svg`
+If you want to use a different font, you can simply overwrite font-family for `.lab-interactive-container` selector.
+
+You can also specify separate font for elements that are rendered inside model container - just provide font-family for `#model-container` selector.
+
+The only exception are svg images that are included in models or interactives: these do not inherit the font-family
+from the document. Additionally these are not dynamically generated, so currently they need to have the font-family referenced directly. For example see `src/models/sun-on-ground/photonKey.svg`.
 
 ## Javascript usage
 
-In some cases the font-family is needed in javascript. In those cases it is taken from the configuration
-property fontface. You can set this before initializing Lab with `Lab.config.fontface="something";`
+In some cases the font-family is needed in javascript. In those cases it is obtained dynamically
+either from the interactive container or from the model container - depending on what makes more
+sense for a given element. For example: 
+
+- time display in playback controls uses font specified for interactive container.
+- atom labels use font specified for model container. 
+
+That gives us more flexibility when it comes to theming.
 
 ## Loading the font
 
