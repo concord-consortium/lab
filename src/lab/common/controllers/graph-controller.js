@@ -171,15 +171,20 @@ define(function (require) {
       return options;
     }
 
-    function setupAxisSync(axis, destGraph, options) {
+    function setupAxisSync(axis, syncedGraphs, options) {
       var callbackName = 'on'  + axis.toUpperCase() + 'DomainChange'; // e.g. onXDomainChange
       var setterName   = 'set' + axis.toUpperCase() + 'Domain';       // e.g. setXDomain
+      if (typeof(syncedGraphs) === 'string') {
+        syncedGraphs = [syncedGraphs];
+      }
       options[callbackName] = function(min, max) {
         if (suppressDomainSync) return;
-        var syncedGraph = interactivesController.getComponent(destGraph);
-        // Third argument (true) ensures that synchronization will be suppressed in target graph.
-        // It prevents us from creating infinite loop when we have two-way synchronization.
-        syncedGraph[setterName](min, max, true);
+        syncedGraphs.forEach(function(syncedGraphID) {
+          var syncedGraph = interactivesController.getComponent(syncedGraphID);
+          // Third argument (true) ensures that synchronization will be suppressed in target graph.
+          // It prevents us from creating infinite loop when we have two-way synchronization.
+          syncedGraph[setterName](min, max, true);
+        });
       }
     }
 
