@@ -957,6 +957,12 @@ define(function() {
       },
       legendVisible: {
         defaultValue: false
+      },
+      syncXAxis: {
+        defaultValue: false
+      },
+      syncYAxis: {
+        defaultValue: false
       }
     },
 

@@ -64,6 +64,7 @@ define(function (require) {
         staticSeries,
         listeningPool,
         ignoreDataSetEvents = false,
+        suppressDomainSync = false,
         namespace = "graphController" + (++graphControllerCount);
 
     function getModel () {
@@ -157,7 +158,29 @@ define(function (require) {
           options[gOption] = component[cProp];
         }
       }
+
+      // These options are specific for Lab and require some more work that just copying
+      // values.
+      if (component.syncXAxis) {
+        setupAxisSync('x', component.syncXAxis, options);
+      }
+      if (component.syncYAxis) {
+        setupAxisSync('y', component.syncYAxis, options);
+      }
+
       return options;
+    }
+
+    function setupAxisSync(axis, destGraph, options) {
+      var callbackName = 'on'  + axis.toUpperCase() + 'DomainChange'; // e.g. onXDomainChange
+      var setterName   = 'set' + axis.toUpperCase() + 'Domain';       // e.g. setXDomain
+      options[callbackName] = function(min, max) {
+        if (suppressDomainSync) return;
+        var syncedGraph = interactivesController.getComponent(destGraph);
+        // Third argument (true) ensures that synchronization will be suppressed in target graph.
+        // It prevents us from creating infinite loop when we have two-way synchronization.
+        syncedGraph[setterName](min, max, true);
+      }
     }
 
     /**
@@ -383,6 +406,28 @@ define(function (require) {
           // We may have set or unset the explicit 'ylabel' / 'xlabel' options; update the graph's
           // labels as appropriate.
           updateLabels();
+        }
+      },
+
+      /**
+        Sets X domain of the graph without clearing the data.
+      */
+      setXDomain: function(min, max, suppressSync) {
+        if (grapher) {
+          suppressDomainSync = suppressSync;
+          grapher.xDomain([min, max]);
+          suppressDomainSync = false;
+        }
+      },
+
+      /**
+        Sets Y domain of the graph without clearing the data.
+      */
+      setYDomain: function(min, max, suppressSync) {
+        if (grapher) {
+          suppressDomainSync = suppressSync;
+          grapher.yDomain([min, max]);
+          suppressDomainSync = false;
         }
       },
 
