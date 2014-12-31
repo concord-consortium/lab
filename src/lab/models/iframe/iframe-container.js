@@ -8,12 +8,23 @@ define(function(require) {
 
     function addIFrame(model) {
         $el.find('#iframe-model').remove();
-        $el.append(
-          "<iframe id='iframe-model' " +
-                 "style='width:100%;height:100%' src='" + model.get('url') + "'>" +
-          "</iframe>");
-        // TODO try cleaning up any old iframephone for the old model
-        model.iframePhone = new iframePhone.ParentEndpoint($el.find('#iframe-model')[0]);
+        var $iframe = $("<iframe id='iframe-model' " +
+                        "style='width:100%;height:100%' src='" + model.get('url') + "'>" +
+                        "</iframe>");
+        $el.append($iframe);
+
+        var phone = new iframePhone.ParentEndpoint($el.find('#iframe-model')[0]);
+        // Simply assume that when iframe is removed from DOM (e.g. due to model reload or
+        // interactive reload), we should also disconnect iframe phone.
+        // If we leave it connected, handler will be still trying to process all incoming messages
+        // and it would fail, as its iframe wouldn't be attached to DOM anymore (so its
+        // .contentWindow will be equal to null).
+        // Note that 'destroyed' is a custom event specified in jquery-plugins.js!
+        $iframe.on('destroyed', function () {
+          phone.disconnect();
+        });
+
+        model.iframePhone = phone;
     }
 
     addIFrame(model);
@@ -37,7 +48,6 @@ define(function(require) {
       // This can make the reset be slow, so in the reset case it would be better to optimize
       // this to send some reset event to the iframe instead.
       bindModel: function(newModel) {
-        $el.find('#iframe-model').remove();
         addIFrame(newModel);
         _model = newModel;
       },

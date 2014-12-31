@@ -111,4 +111,16 @@ define(function () {
 
     return !additions ? self : self.addClass( additions );
   };
+
+  /**
+    * jQuery special event triggered when element is removed from DOM.
+    * e.g. $('#element-id').on('destroyed', function () { console.log('destroyed!'); })
+    */
+  $.event.special.destroyed = {
+    remove: function(o) {
+      if (o.handler) {
+        o.handler()
+      }
+    }
+  };
 });
