@@ -1,11 +1,7 @@
 ## Lab: License
 
 The [Concord Consortium Lab project](https://github.com/concord-consortium/lab)
-is Copyright 2012 (c) by the Concord Consortium and is distributed under
-any of the following licenses:
-[Simplified BSD](http://www.opensource.org/licenses/BSD-2-Clause),
-[MIT](http://www.opensource.org/licenses/MIT), or
-[Apache 2.0](http://www.opensource.org/licenses/Apache-2.0).
+is Copyright 2012 (c) by the Concord Consortium and is distributed under the [MIT](http://www.opensource.org/licenses/MIT) license.
 
 If you have have received a **distribution archive** of the
 [Concord Consortium Lab project](https://github.com/concord-consortium/lab) the standard
@@ -82,22 +78,8 @@ of the CSS used in the Lab project and are distributed under the MIT license.
 All other files distributed in the complete source code repository other than the ones specifically mentioned above
 are distributed under the Concord Consortium Lab project software license.
 
-All three licenses for the [Concord Consortium Lab project](https://github.com/concord-consortium/lab)
-are listed below:
-
-1. [Simplified BSD](http://www.opensource.org/licenses/BSD-2-Clause)
-
-    Concord Consortium Lab Copyright (c) 2012, Concord Consortium
-    All rights reserved.
-
-    Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
-
-    Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-    Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
-
-    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-2. [MIT](http://www.opensource.org/licenses/MIT)
+[MIT](http://www.opensource.org/licenses/MIT) license for the [Concord Consortium Lab project](https://github.com/concord-consortium/lab)
+is listed below:
 
     Concord Consortium Lab Copyright (c) 2012, Concord Consortium
 
@@ -107,25 +89,6 @@ are listed below:
 
     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-3. [Apache 2.0](http://www.opensource.org/licenses/Apache-2.0)
-
-    Concord Consortium Lab Copyright (c) 2012, Concord Consortium
-
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-    [http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-
-    Apache License
-    Version 2.0, January 2004
-    http://www.apache.org/licenses/
 
     TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
 
