@@ -33,6 +33,8 @@ define(function(require) {
       usePlaybackSupport: false
     });
 
+    var context = this;
+
     labModelerMixin.mixInto(this);
     // Use custom .set() instead of one provided by property support module.
     // Custom version is also a bit looser, it lets you define properties dynamically.
@@ -44,6 +46,11 @@ define(function(require) {
     this._initialProperties = initialProperties;
     this._propertySupport = labModelerMixin.propertySupport;
     this._dispatch = labModelerMixin.dispatchSupport;
+    this._stepCounter = 0;
+
+    // Custom properties defined by the model in the iframe; values are passed using 'outputs'
+    // or 'tick' messages.
+    this._iframeOutputs = {};
 
     // The default model controller asumes 'tick' is a defined event
     // the playback controller assumes 'play' and 'stop' are defined even if the viewOptions
@@ -145,7 +152,24 @@ define(function(require) {
     }
   });
 
+  IFrameModel.prototype.stepCounter = function () {
+    return this._stepCounter;
+  };
+
+  IFrameModel.prototype.iframeOutput = function (name) {
+    return this._iframeOutputs[name];
+  };
+
   /**************** private methods ****************/
+
+  IFrameModel.prototype._updateOutputs = function (outputs) {
+    var context = this;
+    this.makeInvalidatingChange(function () {
+      Object.keys(outputs).forEach(function (key) {
+        context._iframeOutputs[key] = outputs[key];
+      });
+    });
+  };
 
   IFrameModel.prototype._addListeners = function () {
     var context = this;
@@ -158,6 +182,20 @@ define(function(require) {
       context._stopped = true;
       // notify that we are stopped
       context._dispatch.stop();
+    });
+
+    this._phone.addListener('outputs', function(content) {
+      context._updateOutputs(content);
+    });
+
+    this._phone.addListener('tick', function (content) {
+      context._stepCounter++;
+      // Support outputs update within 'tick' message, as it's quite popular scenario.
+      // We can avoid additional post message due to that.
+      if (content.outputs) {
+        context._updateOutputs(content.outputs);
+      }
+      context._dispatch.tick();
     });
 
     // HACK to play with properties

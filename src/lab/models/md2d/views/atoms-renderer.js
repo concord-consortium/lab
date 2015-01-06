@@ -4,21 +4,22 @@
 define(function(require) {
   // Dependencies.
   var PIXI      = require('pixi'),
-      labConfig = require('lab.config'),
       canvg     = require('canvg'),
       mustache  = require('mustache'),
       AtomsInteractions = require('models/md2d/views/atoms-interactions'),
       detectFontChange  = require('common/layout/detect-font-change'),
 
-      atomSVG =
+      FONT_WEIGHT  = 'bold',
+      // font-family needs to be unescaped to support fonts wrapped in '' (e.g. 'Comic Sans MS').
+      ATOM_SVG_TPL =
       '<svg x="0px" y="0px" width="{{ width }}px" height="{{ height }}px" \
        viewBox="0 0 32 32" xml:space="preserve"> \
         <style type="text/css"> \
         <![CDATA[ \
           text { \
-            font-family: "' + labConfig.fontface + '", helvetica, sans-serif; \
+            font-family: {{{ fontFamily }}}; \
             font-size: {{ fontSize }}px; \
-            font-weight: bold; \
+            font-weight: ' + FONT_WEIGHT + '; \
             fill: #222; \
           } \
           .shadow { \
@@ -191,10 +192,7 @@ define(function(require) {
         var canv = document.createElement("canvas"),
             tplData;
 
-        // Would be nice to use same text below as in atomSVG. However, detection doesn't appear to
-        // work if we supply multiple font-families to detectFontChange, so we need to watch changes
-        // to each font family separately.
-        watchFont("bold " + label.fontSize + 'px "' + labConfig.fontface + '"');
+        watchFont(modelView.fontFamily);
 
         tplData = {
           width: excitation ? 4 * radius : 2 * radius,
@@ -205,10 +203,11 @@ define(function(require) {
           opacity: Number(visible),
           label: label.text,
           fontSize: label.fontSize,
+          fontFamily: modelView.fontFamily,
           excited: excitation
         };
 
-        canvg(canv, mustache.render(atomSVG, tplData));
+        canvg(canv, mustache.render(ATOM_SVG_TPL, tplData));
 
         // WebGL complains if the texture size is < 2px x 2px
         if (canv.width < 2) canv.width = 2;
@@ -224,7 +223,6 @@ define(function(require) {
     // TODO rename?
     function clearTextureCacheAndRedraw() {
       elementTex = {};
-
       viewAtoms.forEach(function(atom, i) {
         atom.setTexture(getAtomTexture(i));
       });
@@ -234,6 +232,7 @@ define(function(require) {
     function watchFont(font) {
       detectFontChange({
         font: font,
+        weight: FONT_WEIGHT, // so it matches weight used in ATOM_SVG_TPL
         onchange: clearTextureCacheAndRedraw
       });
     }

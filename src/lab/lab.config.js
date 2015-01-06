@@ -18,7 +18,6 @@ define(function () {
     "codap": false,
     // dataGamesProxyPrefix was the old way of configuring CODAP
     "dataGamesProxyPrefix": "",
-    "fontface": "Lato",
     "utmCampaign": null,
     // You can set versioned home to function that accepts major version of Lab and returns
     // URL of embeddable page that uses particular version of Lab, e.g.:

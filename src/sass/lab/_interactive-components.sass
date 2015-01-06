@@ -298,6 +298,7 @@
     top: 0.5em
     border-color: #999
   .ui-slider-handle
+    text-decoration: none
     top: -1em
     // This is default height of slider handle, when slider height is set to "auto".
     // Otherwise, it will be overwritten by dynamically calculated value.
@@ -339,7 +340,7 @@
     margin-bottom: 1em
     // follow width of the most outer container
     width: 100%
-    background-color: transparentize(desaturate($interactive-container-background-gradient-destination,20%),0.55)
+    background-color: rgba(0, 0, 0, 0.085)
     border-radius: 0.4em
     .label
       position: absolute

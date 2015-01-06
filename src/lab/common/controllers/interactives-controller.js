@@ -543,6 +543,10 @@ define(function (require) {
       // Ensure that interactive initialization is always the same if it's desired
       // ("randomSeed" paramenter is provided).
       generateRandomSeed();
+      // Set theme (which is just a CSS class of the main interactive container).
+      var theme = interactive.theme;
+      $interactiveContainer.alterClass('lab-theme-*', theme ? 'lab-theme-' + theme : '');
+
       // Set up the list of possible modelDefinitions.
       modelDefinitions = interactive.models;
       for (var i = 0, len = modelDefinitions.length; i < len; i++) {
@@ -1227,6 +1231,9 @@ define(function (require) {
       get propertiesToRetain() {
         return getRetainedProperties();
       },
+      get fontFamily() {
+        return $interactiveContainer.css('font-family');
+      },
 
       /**
         Return the model object. Note this is provided behind a method because we eventually
@@ -1440,6 +1447,7 @@ define(function (require) {
           i18nMetadata: interactive.i18nMetadata,
           helpOnLoad: interactive.helpOnLoad,
           about: arrays.isArray(interactive.about) ? $.extend(true, [], interactive.about) : interactive.about,
+          theme: interactive.theme,
           // Node that modelDefinitions section can also contain custom parameters definition. However, their initial values
           // should be already updated (take a look at the beginning of this function), so we can just serialize whole array.
           models: $.extend(true, [], interactive.models),

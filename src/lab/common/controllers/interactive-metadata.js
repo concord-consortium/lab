@@ -35,6 +35,10 @@ define(function() {
         defaultValue: "en-US"
       },
 
+      theme: {
+        defaultValue: ""
+      },
+
       subtitle: {
         defaultValue: ""
       },
@@ -952,6 +956,12 @@ define(function() {
         defaultValue: []
       },
       legendVisible: {
+        defaultValue: false
+      },
+      syncXAxis: {
+        defaultValue: false
+      },
+      syncYAxis: {
         defaultValue: false
       }
     },

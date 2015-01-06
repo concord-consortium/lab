@@ -609,6 +609,12 @@ define(function (require) {
       get setFocus() {
         return setFocus;
       },
+      get fontFamily() {
+        // Note that we intentionally return font-family of the model container instead of
+        // the interactive container. Custom theme may apply some font to interactive container,
+        // but it may want to keep fonts inside model unchanged.
+        return this.$el.css('font-family');
+      },
       get getFontSizeInPixels() {
         return getFontSizeInPixels;
       },
