@@ -395,6 +395,9 @@ define(function() {
       },
       tooltip: {
         defaultValue: ""
+      },
+      helpIcon: {
+        defaultValue: false
       }
     },
 
@@ -421,6 +424,9 @@ define(function() {
       },
       tooltip: {
         defaultValue: ""
+      },
+      helpIcon: {
+        defaultValue: false
       }
     },
 
@@ -448,6 +454,9 @@ define(function() {
       },
       tooltip: {
         defaultValue: ""
+      },
+      helpIcon: {
+        defaultValue: false
       }
     },
 
@@ -475,6 +484,9 @@ define(function() {
       },
       tooltip: {
         defaultValue: ""
+      },
+      helpIcon: {
+        defaultValue: false
       }
     },
 
@@ -519,6 +531,9 @@ define(function() {
       },
       tooltip: {
         defaultValue: ""
+      },
+      helpIcon: {
+        defaultValue: false
       }
     },
 
@@ -580,6 +595,9 @@ define(function() {
       },
       tooltip: {
         defaultValue: ""
+      },
+      helpIcon: {
+        defaultValue: false
       }
     },
 
@@ -614,6 +632,9 @@ define(function() {
       },
       tooltip: {
         defaultValue: ""
+      },
+      helpIcon: {
+        defaultValue: false
       }
     },
 
@@ -672,6 +693,9 @@ define(function() {
       },
       tooltip: {
         defaultValue: ""
+      },
+      helpIcon: {
+        defaultValue: false
       }
     },
 
@@ -724,6 +748,9 @@ define(function() {
       displayValue: {},
       tooltip: {
         defaultValue: ""
+      },
+      helpIcon: {
+        defaultValue: false
       }
     },
 
@@ -822,6 +849,9 @@ define(function() {
       },
       tooltip: {
         defaultValue: ""
+      },
+      helpIcon: {
+        defaultValue: false
       }
     },
 
@@ -963,6 +993,9 @@ define(function() {
       },
       syncYAxis: {
         defaultValue: false
+      },
+      helpIcon: {
+        defaultValue: false
       }
     },
 
@@ -1065,6 +1098,9 @@ define(function() {
       },
       tooltip: {
         defaultValue: ""
+      },
+      helpIcon: {
+        defaultValue: false
       }
     },
 

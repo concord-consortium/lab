@@ -2,9 +2,10 @@
 
 define(function (require) {
 
-  var metadata   = require('common/controllers/interactive-metadata'),
-      validator  = require('common/validator'),
-      disablable = require('common/controllers/disablable');
+  var metadata        = require('common/controllers/interactive-metadata'),
+      validator       = require('common/validator'),
+      disablable      = require('common/controllers/disablable'),
+      helpIconSupport = require('common/controllers/help-icon-support');
 
   /**
    * Basic class for all interactive components.
@@ -56,6 +57,9 @@ define(function (require) {
     if (this.component.tooltip) {
       this.$element.attr("title", this.component.tooltip);
     }
+
+    // optionally add help icon
+    helpIconSupport(this, this.component, this._interactivesController.helpSystem);
   }
 
   /**

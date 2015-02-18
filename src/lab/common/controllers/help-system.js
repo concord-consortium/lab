@@ -32,6 +32,7 @@ define(function (require) {
           $component,
           overlayHeight,
           offset;
+      if (!def) return;
       // Make sure that focus is active so keyboard handlers work fine.
       $tip.focus();
       // Update content.
@@ -99,34 +100,54 @@ define(function (require) {
     }
 
     api = {
-      start: function () {
+      start: function (startIdx, single) {
+        if (isActive) {
+          api.stop();
+          return;
+        }
         for (var i = 0; i < 4; i++) {
           overlays.push($('<div class="lab-help-overlay lab-help-next"></div>').appendTo($container));
         }
-        $instructions = $('<div class="lab-help-instructions">' +
-                          '<span class="lab-help-prev btn"><</span>' +
-                          '<span class="lab-help-next">Click overlay to see next help tip</span>' +
-                          '<span class="lab-help-next btn">></span>' +
-                          '</div>').appendTo($container);
-        $container.on("click.lab-help-next", ".lab-help-next", api.next);
-        $container.on("click.lab-help-prev", ".lab-help-prev", api.prev);
         $tip = $('<div class="lab-help-tip lab-help-next" tabindex="-1"></div>').appendTo($container);
-        $tip.on('keydown.lab-help', function(event) {
-          switch(event.keycode || event.which) {
-          case 37: // left-arrow
-            api.prev();
-            break;
-          case 39: // right-arrow
-            api.next();
-            break;
-          }
-          event.preventDefault();
-          event.stopPropagation();
-        });
-        tipIdx = -1;
+        if (single) {
+          $instructions = $('<div class="lab-help-instructions">' +
+                            '<span class="lab-help-next">Click overlay to hide help tip</span>' +
+                            '</div>').appendTo($container);
+          $container.on("click.lab-help-next", ".lab-help-next", api.stop);
+        } else {
+          $instructions = $('<div class="lab-help-instructions">' +
+                            '<span class="lab-help-prev btn"><</span>' +
+                            '<span class="lab-help-next">Click overlay to see next help tip</span>' +
+                            '<span class="lab-help-next btn">></span>' +
+                            '</div>').appendTo($container);
+          $container.on("click.lab-help-next", ".lab-help-next", api.next);
+          $container.on("click.lab-help-prev", ".lab-help-prev", api.prev);
+          $tip.on('keydown.lab-help', function(event) {
+            switch(event.keycode || event.which) {
+              case 37: // left-arrow
+                api.prev();
+                break;
+              case 39: // right-arrow
+                api.next();
+                break;
+            }
+            event.preventDefault();
+            event.stopPropagation();
+          });
+        }
         isActive = true;
-        api.next();
+        tipIdx = startIdx != null ? startIdx : 0;
+        showTip();
         dispatch.start();
+      },
+
+      showSingle: function (componentName) {
+        for(var i = 0; i < helpTips.length; i++) {
+          if (helpTips[i].component === componentName) {
+            api.start(i, true);
+            return;
+          }
+        }
       },
 
       stop: function () {

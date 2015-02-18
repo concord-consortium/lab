@@ -2,9 +2,10 @@
 
 define(function () {
 
-  var metadata   = require('common/controllers/interactive-metadata'),
-      validator  = require('common/validator'),
-      disablable = require('common/controllers/disablable');
+  var metadata        = require('common/controllers/interactive-metadata'),
+      validator       = require('common/validator'),
+      disablable      = require('common/controllers/disablable'),
+      helpIconSupport = require('common/controllers/help-icon-support');
 
   return function SliderController(component, interactivesController) {
     var min, max, steps, propertyName,
@@ -130,6 +131,7 @@ define(function () {
       }
 
       disablable(controller, component);
+      helpIconSupport(controller, component, interactivesController.helpSystem);
 
       // Prevent keyboard control of slider from stepping the model backwards and forwards
       $sliderHandle.on('keydown.slider-handle', function(event) {

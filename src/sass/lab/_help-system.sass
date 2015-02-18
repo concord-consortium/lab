@@ -1,0 +1,110 @@
+// Help system
+#banner-help
+  z-index: 101
+
+.lab-help-icon
+  color: #000
+  opacity: 0.5
+  &.active
+    color: #fff
+  &:hover
+    opacity: 0.9
+  z-index: 99
+
+.lab-help-next, .lab-help-prev
+  cursor: pointer
+  &.btn
+    font-size: 2em
+    line-height: 0.5em
+    margin: 0 0.4em
+
+.lab-help-overlay
+  position: absolute
+  top: 0
+  left: 0
+  width: 200%
+  height: 200%
+  background: rgba(60, 60, 60, 0.3)
+  z-index: 100
+
+.lab-help-instructions
+  position: absolute
+  top: -0.15em
+  width: 100%
+  text-align: center
+  font-size: 1.2em
+  color: #fff
+  text-shadow: 1px 1px 1px #444
+  z-index: 100
+  & > span
+    vertical-align: middle
+
+.lab-help-tip
+  display: inline-block
+  max-width: 30em
+  font-size: 1em
+  padding: 0.4em 1em
+  margin: 0.5em
+  z-index: 101
+  border-radius: 0.7em
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3)
+  text-shadow: 1px 1px 2px #fff
+  @include linear-gradient(#fff, #e6e6e6, $fallback: #e6e6e6)
+  cursor: pointer
+  &:focus
+    outline: none
+
+.lab-help-arrow
+  &.top:after
+    background: #fff
+  &.bottom:after
+    background: #e6e6e6
+
+.lab-help-arrow
+  width: 2.5em
+  height: 1em
+  overflow: hidden
+  position: absolute
+  margin-left: -1.25em
+  // "left" value is adjusted by JS during tip positioning.
+  left: 2em
+  bottom: -1em
+  &.top
+    top: -1em
+    bottom: auto
+
+.lab-help-arrow:after
+  content: ""
+  position: absolute
+  top: -1em
+  left: 0.4em
+  width: 1.6em
+  height: 1.6em
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3)
+  -webkit-transform: rotate(45deg)
+  -moz-transform: rotate(45deg)
+  -ms-transform: rotate(45deg)
+  -o-transform: rotate(45deg)
+  transform: rotate(45deg)
+
+.lab-help-arrow.top:after
+  bottom: -1em
+  top: auto
+
+// Position help icon for specific components.
+.lab-component-help-icon
+  position: absolute
+  top: -0.65em
+  right: -0.65em
+
+  .graph.component &
+    top: 0.3em
+    right: 0.3em
+
+  .interactive-slider &
+    top: 0.2em
+    right: 0.2em
+
+  .interactive-checkbox &, .interactive-radio &, .interactive-text &
+    top: -0.45em
+

@@ -177,8 +177,8 @@ define(function () {
       createElementInContainer(
       {
         "type": "div",
-        "id": "help-icon",
-        "content": '<i class="icon-question-sign"></i>',
+        "id": "main-help-icon",
+        "content": '<i class="icon-question-sign lab-help-icon"></i>',
         "onClick": function () {
           if (!controller.helpSystem.isActive()) {
             controller.helpSystem.start();
@@ -204,12 +204,12 @@ define(function () {
 
       // Note that help system has to be initialized before we setup banner!
       controller.helpSystem.on("start.icon", function () {
-        var $icon = $("#help-icon > i");
+        var $icon = $("#main-help-icon .lab-help-icon");
         $icon.addClass("icon-remove-sign active");
         $icon.removeClass("icon-question-sign");
       });
       controller.helpSystem.on("stop.icon", function () {
-        var $icon = $("#help-icon > i");
+        var $icon = $("#main-help-icon .lab-help-icon");
         $icon.addClass("icon-question-sign");
         $icon.removeClass("icon-remove-sign active");
       });

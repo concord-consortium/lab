@@ -2,8 +2,9 @@
 
 define(function () {
 
-  var metadata  = require('common/controllers/interactive-metadata'),
-      validator = require('common/validator'),
+  var metadata          = require('common/controllers/interactive-metadata'),
+      validator         = require('common/validator'),
+      helpIconSupport   = require('common/controllers/help-icon-support'),
       NumericOutputView = require('common/views/numeric-output-view');
 
   return function NumericOutputController(component, interactivesController) {
@@ -107,6 +108,10 @@ define(function () {
         return $.extend(true, {}, component);
       }
     };
+
+    // Support optional help icon.
+    helpIconSupport(controller, component, interactivesController.helpSystem);
+
     // Return Public API object.
     return controller;
   };

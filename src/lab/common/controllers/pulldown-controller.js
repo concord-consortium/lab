@@ -2,10 +2,11 @@
 
 define(function () {
 
-  var metadata      = require('common/controllers/interactive-metadata'),
-      validator     = require('common/validator'),
-      disablable    = require('common/controllers/disablable'),
-      SelectBoxView = require('common/views/select-box-view');
+  var metadata        = require('common/controllers/interactive-metadata'),
+      validator       = require('common/validator'),
+      disablable      = require('common/controllers/disablable'),
+      helpIconSupport = require('common/controllers/help-icon-support'),
+      SelectBoxView   = require('common/views/select-box-view');
 
       require('common/jquery-plugins');
 
@@ -70,6 +71,7 @@ define(function () {
       }
 
       disablable(controller, component);
+      helpIconSupport(controller, component, interactivesController.helpSystem);
     }
 
     // Public API.

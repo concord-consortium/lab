@@ -4,10 +4,11 @@
 // It provides specific interface used in MD2D environment
 // (by interactives-controller and layout module).
 define(function (require) {
-  var BarGraphModel = require('grapher/bar-graph/bar-graph-model'),
-      BarGraphView  = require('grapher/bar-graph/bar-graph-view'),
-      metadata      = require('common/controllers/interactive-metadata'),
-      validator     = require('common/validator'),
+  var BarGraphModel   = require('grapher/bar-graph/bar-graph-model'),
+      BarGraphView    = require('grapher/bar-graph/bar-graph-view'),
+      metadata        = require('common/controllers/interactive-metadata'),
+      helpIconSupport = require('common/controllers/help-icon-support'),
+      validator       = require('common/validator'),
 
       // Note: We always explicitly copy properties from component spec to bar graph options hash,
       // in order to avoid tighly coupling an externally-exposed API (the component spec) to an
@@ -108,6 +109,8 @@ define(function (require) {
       if (component.tooltip) {
         barGraphView.$el.attr("title", component.tooltip);
       }
+
+      helpIconSupport(controller, component, interactivesController.helpSystem);
     }
 
     controller = {

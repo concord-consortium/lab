@@ -1,11 +1,12 @@
 /*global define, $*/
 
 define(function (require) {
-  var metadata    = require('common/controllers/interactive-metadata'),
-      validator     = require('common/validator'),
-      TableView     = require('common/views/table-view'),
-      ListeningPool = require('common/listening-pool'),
-      DataSet       = require('common/controllers/data-set'),
+  var metadata        = require('common/controllers/interactive-metadata'),
+      validator       = require('common/validator'),
+      TableView       = require('common/views/table-view'),
+      ListeningPool   = require('common/listening-pool'),
+      DataSet         = require('common/controllers/data-set'),
+      helpIconSupport = require('common/controllers/help-icon-support'),
       tableControllerCount = 0;
 
   return function TableController(component, interactivesController) {
@@ -24,9 +25,6 @@ define(function (require) {
         namespace = "tableController" + (++tableControllerCount);
 
     function initialize() {
-      var parent = interactivesController.interactiveContainer,
-          i;
-
       model = interactivesController.getModel();
 
       // Validate component definition, use validated copy of the properties.
@@ -34,7 +32,7 @@ define(function (require) {
 
       properties = component.propertyColumns.slice();
       // dataTable has object-based properties, which dataSet doesn't support yet
-      for (i = 0; i < properties.length; i++) {
+      for (var i = 0; i < properties.length; i++) {
         if (properties[i].name) {
           properties[i] = properties[i].name;
         }
@@ -60,7 +58,9 @@ define(function (require) {
         klasses: [ "interactive-table", "component" ]
       }, controller);
 
-      $element = view.render(parent);
+      $element = view.render();
+
+      helpIconSupport(controller, component, interactivesController.helpSystem);
 
       // This will load serialized data (passed as "initialData") into the data set if available.
       // Otherwise data set will be just cleared. It will also call dataResetHandler(), so view

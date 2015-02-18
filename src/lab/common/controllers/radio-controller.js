@@ -3,9 +3,10 @@
 
 define(function () {
 
-  var metadata   = require('common/controllers/interactive-metadata'),
-      validator  = require('common/validator'),
-      disablable = require('common/controllers/disablable');
+  var metadata        = require('common/controllers/interactive-metadata'),
+      validator       = require('common/validator'),
+      disablable      = require('common/controllers/disablable'),
+      helpIconSupport = require('common/controllers/help-icon-support');
 
   return function RadioController(component, interactivesController) {
         // Public API.
@@ -161,6 +162,7 @@ define(function () {
       }
 
       disablable(controller, component);
+      helpIconSupport(controller, component, interactivesController.helpSystem);
     }
 
     // Public API.

@@ -1,11 +1,12 @@
 /*global define, $*/
 
 define(function (require) {
-  var Graph         = require('lab-grapher'),
-      metadata      = require('common/controllers/interactive-metadata'),
-      validator     = require('common/validator'),
-      ListeningPool = require('common/listening-pool'),
-      DataSet       = require('common/controllers/data-set'),
+  var Graph           = require('lab-grapher'),
+      metadata        = require('common/controllers/interactive-metadata'),
+      validator       = require('common/validator'),
+      ListeningPool   = require('common/listening-pool'),
+      DataSet         = require('common/controllers/data-set'),
+      helpIconSupport = require('common/controllers/help-icon-support'),
 
       // Note: We always explicitly copy properties from component spec to grapher options hash,
       // in order to avoid tighly coupling an externally-exposed API (the component spec) to an
@@ -128,6 +129,8 @@ define(function (require) {
       if (component.tooltip) {
         $container.attr("title", component.tooltip);
       }
+      // Support optional add help icon.
+      helpIconSupport(controller, component, interactivesController.helpSystem);
 
       staticSeries = [];
 

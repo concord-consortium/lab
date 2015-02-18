@@ -2,9 +2,10 @@
 
 define(function () {
 
-  var metadata   = require('common/controllers/interactive-metadata'),
-      disablable = require('common/controllers/disablable'),
-      validator  = require('common/validator');
+  var metadata        = require('common/controllers/interactive-metadata'),
+      disablable      = require('common/controllers/disablable'),
+      helpIconSupport = require('common/controllers/help-icon-support'),
+      validator       = require('common/validator');
 
   return function CheckboxController(component, interactivesController) {
     var propertyName,
@@ -181,6 +182,7 @@ define(function () {
     };
 
     disablable(controller, component);
+    helpIconSupport(controller, component, interactivesController.helpSystem);
 
     // Return Public API object.
     return controller;
