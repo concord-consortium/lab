@@ -165,6 +165,10 @@ define(function (require) {
 
       next: function () {
         tipIdx++;
+        // Skip help tips that have showcase property set to false.
+        while(tipIdx < helpTips.length && !helpTips[tipIdx].showcase) {
+          tipIdx++;
+        }
         if (tipIdx >= helpTips.length) {
           api.stop();
           return;
@@ -174,6 +178,10 @@ define(function (require) {
 
       prev: function () {
         tipIdx--;
+        // Skip help tips that have showcase property set to false.
+        while(!tipIdx >= 0 && helpTips[tipIdx].showcase) {
+          tipIdx--;
+        }
         if (tipIdx < 0) {
           api.stop();
           return;

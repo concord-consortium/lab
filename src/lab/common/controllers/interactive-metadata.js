@@ -1110,6 +1110,9 @@ define(function() {
       },
       text: {
         defaultValue: ""
+      },
+      showcase: {
+        defaultValue: true
       }
     }
   };
