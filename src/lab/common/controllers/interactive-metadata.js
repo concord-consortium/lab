@@ -1106,12 +1106,16 @@ define(function() {
 
     helpTip: {
       component: {
+        // Single component or array of components (bounding box of components will be used).
+        // "" - help tip will be positioned in the center.
         defaultValue: ""
       },
       text: {
         defaultValue: ""
       },
       showcase: {
+        // If false, help tip is not displayed when user enters showcase mode by clicking top-left "?" icon.
+        // It can be displayed only by "?" icon provided by component.
         defaultValue: true
       }
     }

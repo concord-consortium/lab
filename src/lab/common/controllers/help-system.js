@@ -16,7 +16,9 @@ define(function (require) {
         "right+5 center",
         "center bottom+5",
         "left-5 center"
-      ];
+      ],
+
+      IS_BOUNDING_BOX = "lab-is-bounding-box";
 
   return function HelpSystem(helpTips, $container) {
     var api,
@@ -30,8 +32,10 @@ define(function (require) {
     function showTip() {
       var def = helpTips[tipIdx],
           $component,
+          boundingBox = false,
           overlayHeight,
           offset;
+
       if (!def) return;
       // Make sure that focus is active so keyboard handlers work fine.
       $tip.focus();
@@ -39,8 +43,7 @@ define(function (require) {
       $tip.html(markdownToHTML(def.text));
       // Position.
       if (def.component) {
-        $component = def.component === "model" ?
-                     $("#model-container") : $("#" + def.component).closest(".component");
+        $component = getComponent(def.component);
         overlayHeight = $component.outerHeight() + 10; // + 5+ 5 => take a loot at OVERLAY_AT values.
         offset = parseFloat($tip.css("font-size"));
         $tip.position({
@@ -78,6 +81,10 @@ define(function (require) {
             at: OVERLAY_AT[idx]
           });
         });
+        if ($component.data(IS_BOUNDING_BOX)) {
+          // Cleanup.
+          $component.remove();
+        }
       } else {
         $tip.position({
           of: $container,
@@ -97,6 +104,55 @@ define(function (require) {
           });
         });
       }
+    }
+
+    function getComponent(compDef) {
+      var $component;
+      if (compDef === "model") {
+        $component = $("#model-container");
+      } else if (typeof compDef === "string") {
+        $component = $("#" + compDef).closest(".component");
+      } else { // array
+        $component = $(compDef.map(function (id) { return "#" + id; }).join(", ")).closest(".component");
+        $component = getBoundingBox($component);
+      }
+      return $component;
+    }
+
+    function getBoundingBox($elements) {
+      var left = [],
+          right = [],
+          top = [],
+          bottom = [],
+          minLeft, maxRight, minTop, maxBottom, $bb;
+
+      $elements.each(function () {
+        $el = $(this);
+        pos = $el.offset();
+        contPos = $container.offset();
+        left.push(pos.left - contPos.left);
+        right.push(pos.left - contPos.left + $el.width());
+        top.push(pos.top - contPos.top);
+        bottom.push(pos.top - contPos.top + $el.height());
+      });
+
+      minLeft = Math.min.apply(null, left);
+      maxRight = Math.max.apply(null, right);
+      minTop = Math.min.apply(null, top);
+      maxBottom = Math.max.apply(null, bottom);
+
+      $bb = $('<div>')
+        .data(IS_BOUNDING_BOX, true) // very important, this element needs to be removed later
+        .css({
+          position: 'absolute',
+          left: minLeft,
+          top: minTop,
+          width: maxRight - minLeft,
+          height: maxBottom - minTop
+        })
+        .appendTo($container);
+
+      return $bb;
     }
 
     api = {
@@ -143,7 +199,9 @@ define(function (require) {
 
       showSingle: function (componentName) {
         for(var i = 0; i < helpTips.length; i++) {
-          if (helpTips[i].component === componentName) {
+          var comp = helpTips[i].component;
+          // Note that comp can be a string or array.
+          if (typeof comp === "string" && comp === componentName || comp.indexOf(componentName) !== -1) {
             api.start(i, true);
             return;
           }
