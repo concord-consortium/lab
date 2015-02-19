@@ -173,7 +173,7 @@ define(function () {
       "aboveOthers": true
     });
 
-    if (controller.helpSystem.hasShowcase()) {
+    if (controller.helpSystem && controller.helpSystem.hasShowcase()) {
       createElementInContainer(
       {
         "type": "div",
