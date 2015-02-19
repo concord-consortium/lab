@@ -32,7 +32,6 @@ define(function (require) {
     function showTip() {
       var def = helpTips[tipIdx],
           $component,
-          boundingBox = false,
           overlayHeight,
           offset;
 
@@ -193,7 +192,13 @@ define(function (require) {
         }
         isActive = true;
         tipIdx = startIdx != null ? startIdx : 0;
-        showTip();
+        if (single) {
+          showTip();
+        } else {
+          // .next() implements logic related to showcase mode.
+          tipIdx--;
+          api.next();
+        }
         dispatch.start();
       },
 
@@ -249,6 +254,10 @@ define(function (require) {
 
       isActive: function () {
         return isActive;
+      },
+
+      hasShowcase: function () {
+        return helpTips.filter(function(h) { return h.showcase }).length > 0;
       }
     };
 

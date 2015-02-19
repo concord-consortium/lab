@@ -173,7 +173,7 @@ define(function () {
       "aboveOthers": true
     });
 
-    if (interactive.helpTips.length > 0) {
+    if (controller.helpSystem.hasShowcase()) {
       createElementInContainer(
       {
         "type": "div",
