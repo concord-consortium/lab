@@ -1,7 +1,7 @@
 # See the README for installation instructions.
 
 # Utilities
-JS_COMPILER = ./node_modules/uglify-js/bin/uglifyjs -c warnings=false -m -
+JS_COMPILER = ./node_modules/uglify-js/bin/uglifyjs - -c warnings=false -m
 MARKDOWN_COMPILER = kramdown
 
 # Turns out that just pointing Vows at a directory doesn't work, and its test matcher matches on
