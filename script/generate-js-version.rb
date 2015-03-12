@@ -40,6 +40,12 @@ else
   branch_name = commit.name
 end
 
+if ENV['TRAVIS_COMMIT']
+  commit_sha = ENV['TRAVIS_COMMIT']
+else
+  commit_sha = commit.sha
+end
+
 short_message = ERB::Util.html_escape(commit.message.lines.first.strip)
 message = ERB::Util.html_escape(commit.message.gsub("\n", "\\n"))
 
@@ -50,9 +56,9 @@ define(function (require) {
     "repo": {
       "branch": "#{branch_name}",
       "commit": {
-        "sha":           "#{commit.sha}",
-        "short_sha":     "#{commit.sha[0..7]}",
-        "url":           "https://github.com/concord-consortium/lab/commit/#{commit.sha[0..7]}",
+        "sha":           "#{commit_sha}",
+        "short_sha":     "#{commit_sha[0..7]}",
+        "url":           "https://github.com/concord-consortium/lab/commit/#{commit_sha[0..7]}",
         "author":        "#{commit.author.name}",
         "email":         "#{commit.author.email}",
         "date":          "#{commit.date}",
