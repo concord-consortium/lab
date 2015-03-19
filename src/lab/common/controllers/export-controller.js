@@ -6,7 +6,12 @@ define(function (require) {
   var dgExporter = require('import-export/dg-exporter');
   var BasicDialog = require('common/controllers/basic-dialog');
   var DispatchSupport = require('common/dispatch-support');
+  var iframePhone = require('iframe-phone');
   var _ = require('underscore');
+
+  var canLogData = false;
+  var laraLoggerPresent = false;
+  var laraPhone;
 
   function modalAlert(title, message, buttons, i18n) {
     var dialog = new BasicDialog({
@@ -266,8 +271,10 @@ define(function (require) {
         initialPerRunData = null;
         savedPerRunData = null;
         isUnexportedDataPresent = false;
-        modelCanExportData = true;
-        dispatch.modelCanExportData();
+        if (controller.canExportData()) {
+          modelCanExportData = true;
+          dispatch.modelCanExportData();
+        }
 
       }
 
@@ -276,10 +283,17 @@ define(function (require) {
       // Don't accumulate data or logs until we know we know there is somewhere to send the data.
       // (Note that CODAP, if present, will announce itself before the model can be started by the
       // user, so there should not be data loss.)
-      if (controller.canExportData()) {
+      if (controller.canExportData() || controller.canLogData()) {
         handleModelLoaded();
       } else {
         controller.on('canExportData.export-controller', handleModelLoaded);
+        controller.on('canLogData.export-controller', function() {
+          // canExport implies canLog, so only call handleModelLoaded here if we can log but not
+          // export. Otherwise, we would call it twice every time canExportData is emitted.
+          if ( ! controller.canExportData() ) {
+            handleModelLoaded();
+          }
+        });
       }
     }
 
@@ -322,6 +336,10 @@ define(function (require) {
       // whether or not there is CODAP or some other data sink is present and listening for data)
       canExportData: function() {
         return ExportController.canExportData();
+      },
+
+      canLogData: function() {
+        return ExportController.canLogData();
       },
 
       modelCanExportData: function() {
@@ -429,16 +447,32 @@ define(function (require) {
     // Issue an 'canExportData' event when canExportData() flips from false to true.
     // Issue 'modelCanExportData' when modelCanExportData() flips
     dispatch.mixInto(controller);
-    dispatch.addEventTypes('canExportData', 'modelCanExportData');
+    dispatch.addEventTypes('canExportData', 'modelCanExportData', 'canLogData');
 
     // Make sure we emit event if canExportData becomes true. Assume codap connects only once.
     dgExporter.codapDidConnect = function() {
       if ( ExportController.canExportData() ) {
         dispatch.canExportData();
+        dispatch.canLogData();
       }
     };
 
     registerInteractiveListeners();
+
+    // Listen for new
+    // Will automatically reuse existing iframePhone because we're in a child window
+    laraPhone = new iframePhone.IframePhoneRpcEndpoint(
+      function (message, callback) {
+          if ( ! canLogData && message && message.message === 'lara-logging-present' ) {
+            canLogData = true;
+            laraLoggerPresent = true;
+            dispatch.canLogData();
+          }
+          callback();
+        },
+        'lara-logging',
+        window.parent
+      );
 
     return controller;
   }
@@ -448,8 +482,21 @@ define(function (require) {
     return dgExporter.canExportData();
   };
 
-  ExportController.logAction = function() {
+  ExportController.canLogData = function() {
+    return canLogData || ExportController.canExportData();
+  };
+
+  ExportController.logAction = function(logString) {
     dgExporter.logAction.apply(dgExporter, arguments);
+    if (laraLoggerPresent) {
+      // Legacy of CODAP
+      laraPhone.call({
+        action: 'logAction',
+        args: {
+          formatStr: logString
+        }
+      });
+    }
   };
 
   return ExportController;
