@@ -1,11 +1,10 @@
 <div>
   
   <h2>
-    Share this:
   </h2>
   <link rel="canonical" class="gplusbutton" />
   <div class="fb-share-button" data-layout="button"></div>
-  <a class="twitter-share-button" data-count="none" href="https://twitter.com/share">Tweet</a>
+  <a class="twitter-share-button" data-count="none" href="https://twitter.com/share"></a>
   <div class="g-plusone" data-action="share" data-annotation="none"></div>
   <div id="fb-root"></div>
   <script src="https://apis.google.com/js/platform.js" async defer></script>
