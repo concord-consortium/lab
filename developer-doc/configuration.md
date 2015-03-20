@@ -50,7 +50,7 @@ to embed the Interactive into a blog or web page.
 If you are hosting this content on an external server where supporting
 sharing is impractical in some manner you can disable the display of the Interactive **Share** link by setting
 
-    Lab.config.share = false;
+    Lab.config.sharing = false;
 
 The additional values for `homeForSharing` and `homeEmbeddablePath` can be used to construct a custom link for sharing an interactive.
 
