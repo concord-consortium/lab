@@ -1,13 +1,14 @@
 <div>
   
-  <h2>
-  </h2>
-  <link rel="canonical" class="gplusbutton" />
+ 
   <div class="fb-share-button" data-layout="button"></div>
   <a class="twitter-share-button" data-count="none" href="https://twitter.com/share"></a>
+  <link rel="canonical" class="gplusbutton" />
   <div class="g-plusone" data-action="share" data-annotation="none"></div>
   <div id="fb-root"></div>
+
   <script src="https://apis.google.com/js/platform.js" async defer></script>
+  
   <h2>
     {{{paste_email_im}}}
   </h2>
