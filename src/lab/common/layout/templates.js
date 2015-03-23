@@ -1,6 +1,7 @@
 /*global define*/
 define(function () {
   return {
+    "model-only": [],
     "simple": [
       {
         "id": "top",

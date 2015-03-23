@@ -10,10 +10,7 @@ define(function (require) {
   var layoutConfig = require('common/layout/semantic-layout-config'),
       arrays       = require('arrays'),
       console      = require('common/console'),
-      alert        = require('common/alert'),
-
-      // Amount to inset the model and components from the boundaries.
-      PADDING = 10;
+      alert        = require('common/alert');
 
   return function SemanticLayout() {
         // Public API.
@@ -33,6 +30,12 @@ define(function (require) {
         modelController,
         aspectRatio,
         fontScale,
+        // Top, bottom and left padding, but NOT right...
+        // It's been implemented like this and at the moment it's impossible to change as it would break many
+        // existing interactives.
+        padding,
+        // Padding multiplied by container scale.
+        scaledPadding,
 
         // Container specifications by ID.
         containerSpecByID,
@@ -45,8 +48,6 @@ define(function (require) {
         availableWidth,
         availableHeight,
 
-        padding = 10,
-
         // To optimize getHeightForWidth for model containers that care about the font size, kee
         // track of changes
         fontSizeChanged = false,
@@ -56,17 +57,15 @@ define(function (require) {
         modelWidth,
         modelTop,
         modelLeft,
-        topBoundary,
-        horizontalBoundary,
-        bottomBarWidth;
+        paddingTop,
+        paddingLeft,
+        paddingBottom;
 
     function reset() {
       modelWidth = layoutConfig.minModelWidth;
       modelTop = 0;
       modelLeft = 0;
-      bottomBarWidth = 0;
-      topBoundary = padding;
-      horizontalBoundary = padding;
+      paddingBottom = 0;
     }
 
     function getDimensionOfContainer($container, dim) {
@@ -96,7 +95,11 @@ define(function (require) {
       containerScale = Math.min($mainContainer.width() / canonicalWidth,
                                 $mainContainer.height() / canonicalHeight);
 
-      padding = containerScale * PADDING;
+      scaledPadding = containerScale * padding;
+
+      paddingTop = scaledPadding;
+      paddingLeft = scaledPadding;
+      paddingBottom = scaledPadding;
 
       font = layoutConfig.canonicalFontSize * fontScale * containerScale;
 
@@ -211,15 +214,17 @@ define(function (require) {
 
       // Add any remaining components to "bottom" or last container.
       lastContainer = containerSpecByID.bottom || containerSpecList[containerSpecList.length-1];
-      $rows = $containerByID[lastContainer.id].children();
-      $row = $rows.last();
-      if (!$row.length) {
-        $row = $('<div class="interactive-row"/>');
-        $containerByID[lastContainer.id].append($row);
-      }
-      for (id in comps) {
-        if (!comps.hasOwnProperty(id)) continue;
-        $row.append(comps[id].getViewContainer());
+      if (lastContainer) {
+        $rows = $containerByID[lastContainer.id].children();
+        $row = $rows.last();
+        if (!$row.length) {
+          $row = $('<div class="interactive-row"/>');
+          $containerByID[lastContainer.id].append($row);
+        }
+        for (id in comps) {
+          if (!comps.hasOwnProperty(id)) continue;
+          $row.append(comps[id].getViewContainer());
+        }
       }
 
       // When there are multiple components in a container, ensure that there
@@ -293,32 +298,32 @@ define(function (require) {
 
         // Containers with "aboveOthers" property should be treated in a special
         // way. It's a group of absolutely positioned containers, which is always
-        // placed above other containers. So, in fact they define topBoundary
+        // placed above other containers. So, in fact they define paddingTop
         // for other components.
         if (container.aboveOthers) {
-          bottom = getDimensionOfContainer($container, "bottom") + padding;
-          if (bottom > topBoundary) {
-            topBoundary = bottom;
+          bottom = getDimensionOfContainer($container, "bottom") + scaledPadding;
+          if (bottom > paddingTop) {
+            paddingTop = bottom;
           }
         }
         if (container.belowOthers) {
-          height = getDimensionOfContainer($container, "height") + padding;
-          if (height > bottomBarWidth) {
-            bottomBarWidth = height;
+          height = getDimensionOfContainer($container, "height") + scaledPadding;
+          if (height > paddingBottom) {
+            paddingBottom = height;
           }
         }
       }
 
-      // Shift typical containers (aboveOther == false) according to the top boundary.
+      // Shift regular containers (aboveOther == false) according to the top boundary.
       for (id in $containerByID) {
         if (!$containerByID.hasOwnProperty(id)) continue;
         if (containerSpecByID[id] && containerSpecByID[id].aboveOthers) continue;
         if (containerSpecByID[id] && containerSpecByID[id].belowOthers) continue;
         $container = $containerByID[id];
         top = getDimensionOfContainer($container, "top");
-        $container.css("top", top + topBoundary);
+        $container.css("top", top + paddingTop);
         left = getDimensionOfContainer($container, "left");
-        $container.css("left", left + horizontalBoundary);
+        $container.css("left", left + paddingLeft);
       }
     }
 
@@ -356,13 +361,13 @@ define(function (require) {
       }
 
       // Stop condition. We assume that layout is good enough when it fits the container +/- 2px.
-      if ((maxX <= availableWidth + 2 && maxY <= (availableHeight-bottomBarWidth + 2)) &&
-          (Math.abs(availableWidth - maxX) < 2 || Math.abs((availableHeight-bottomBarWidth) - maxY) < 2) &&
-          (Math.abs(minX - horizontalBoundary) < 2 && Math.abs(minY - topBoundary) < 2)) {
+      if ((maxX <= availableWidth + 2 && maxY <= (availableHeight-paddingBottom + 2)) &&
+          (Math.abs(availableWidth - maxX) < 2 || Math.abs((availableHeight-paddingBottom) - maxY) < 2) &&
+          (Math.abs(minX - paddingLeft) < 2 && Math.abs(minY - paddingTop) < 2)) {
         return true;
       }
 
-      ratio = Math.min(availableWidth / maxX, (availableHeight-bottomBarWidth) / maxY);
+      ratio = Math.min(availableWidth / maxX, (availableHeight-paddingBottom) / maxY);
       if (!isNaN(ratio)) {
         modelWidth = modelWidth * ratio;
       }
@@ -370,8 +375,8 @@ define(function (require) {
         modelWidth = layoutConfig.minModelWidth;
       }
 
-      modelLeft -= minX - horizontalBoundary;
-      modelTop -= minY - topBoundary;
+      modelLeft -= minX - paddingLeft;
+      modelTop -= minY - paddingTop;
 
       return false;
     }
@@ -415,15 +420,15 @@ define(function (require) {
         case "container.bottom":
           return availableHeight;
         case "interactive.left":
-          return horizontalBoundary;
+          return paddingLeft;
         case "interactive.top":
-          return topBoundary;
+          return paddingTop;
         case "interactive.width":
         case "interactive.right":
-          return availableWidth - horizontalBoundary;
+          return availableWidth - paddingLeft;
         case "interactive.height":
         case "interactive.bottom":
-          return availableHeight - topBoundary - bottomBarWidth;
+          return availableHeight - paddingTop - paddingBottom;
         default:
           dim = dim.split(".");
           return getDimensionOfContainer($containerByID[dim[0]], dim[1]);
@@ -440,26 +445,30 @@ define(function (require) {
        *  - component locations,
        *  - components,
        *  - model controller,
-       *  - font scale.
+       *  - font scale,
+       *  - padding.
        *
-       * @param {jQuery} $newMainContainer Top-most container, font scalling will be applied to it.
-       * @param {jQuery} $newContainersParent Element that will be a parent for containers
-       *                 (can be equal to main container or one of its children).
-       * @param {array} newContainers List of layout containers.
-       * @param {Object} newContainersContent Hash of components locations, e.g. {"bottom": ["button", "textLabel"]}.
-       * @param {Object} newComponents Hash of components controllers. Keys are IDs of the components.
-       * @param {number} newFontScale Aspect ratio, floating point number, typically around 1.3.
-       * @param {number} newFontScale Font scale, floating point number, typically between 0.5 and 1.5.
+       * @param {hash} options:
+       *   - {jQuery} $mainContainer Top-most container, font scalling will be applied to it.
+       *   - {jQuery} $containersParent Element that will be a parent for containers
+       *                                (can be equal to main container or one of its children).
+       *   - {array}  containers List of layout containers.
+       *   - {Object} layout Hash of components locations, e.g. {"bottom": ["button", "textLabel"]}.
+       *   - {Object} components Hash of components controllers. Keys are IDs of the components.
+       *   - {number} fontScale Aspect ratio, floating point number, typically around 1.3.
+       *   - {number} fontScale Font scale, floating point number, typically between 0.5 and 1.5.
+       *   - {number} padding Interactive padding, floating point number, defined in px for canonical interactive size.
        */
-      initialize: function($newMainContainer, $newContainersParent, newContainers, newContainersContent, newComponents, newAspectRatio, newFontScale) {
-        $mainContainer = $newMainContainer;
-        $containersParent = $newContainersParent;
+      initialize: function (options) {
+        $mainContainer = options.$mainContainer;
+        $containersParent = options.$containersParent;
 
-        containerSpecList = newContainers;
-        containersContent = newContainersContent;
-        componentByID = newComponents;
-        aspectRatio = newAspectRatio;
-        fontScale = newFontScale;
+        containerSpecList = options.containers;
+        containersContent = options.layout;
+        componentByID = options.components;
+        aspectRatio = options.aspectRatio;
+        fontScale = options.fontScale;
+        padding = options.padding;
 
         createContainers();
         placeComponentsInContainers();

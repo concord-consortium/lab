@@ -49,6 +49,13 @@ define(function() {
         defaultValue: true
       },
 
+      padding: {
+        // Top, bottom and left interactive padding, but NOT right...
+        // This option was defined that way long time ago and now it has been exposed to authors.
+        // We couldn't support right padding at the moment, as we would break backward compatibility.
+        defaultValue: 10
+      },
+
       subtitle: {
         defaultValue: ""
       },

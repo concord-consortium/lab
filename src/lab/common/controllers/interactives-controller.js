@@ -320,8 +320,16 @@ define(function (require) {
 
       // Setup layout using both author components and components
       // created automatically in this controller.
-      semanticLayout.initialize($interactiveContainer, $fastClickContainer, template, layout, components,
-                                interactive.aspectRatio, interactive.fontScale);
+      semanticLayout.initialize({
+        $mainContainer: $interactiveContainer,
+        $containersParent: $fastClickContainer,
+        containers: template,
+        layout: layout,
+        components: components,
+        aspectRatio: interactive.aspectRatio,
+        fontScale: interactive.fontScale,
+        padding: interactive.padding
+      });
 
       // We are rendering in embeddable mode if only element on page
       // so resize when window resizes.
@@ -1450,6 +1458,7 @@ define(function (require) {
           theme: interactive.theme,
           showTopBar: interactive.showTopBar,
           showBottomBar: interactive.showBottomBar,
+          padding: interactive.padding,
           // Node that modelDefinitions section can also contain custom parameters definition. However, their initial values
           // should be already updated (take a look at the beginning of this function), so we can just serialize whole array.
           models: $.extend(true, [], interactive.models),
