@@ -64,9 +64,9 @@ define(function (require) {
       modelWidth = layoutConfig.minModelWidth;
       modelTop = 0;
       modelLeft = 0;
-      topBoundary = 0;
-      horizontalBoundary = 0;
       bottomBarWidth = 0;
+      topBoundary = padding;
+      horizontalBoundary = padding;
     }
 
     function getDimensionOfContainer($container, dim) {
@@ -308,8 +308,6 @@ define(function (require) {
           }
         }
       }
-
-      horizontalBoundary = padding;
 
       // Shift typical containers (aboveOther == false) according to the top boundary.
       for (id in $containerByID) {

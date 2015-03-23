@@ -39,6 +39,16 @@ define(function() {
         defaultValue: ""
       },
 
+      showTopBar: {
+        // Reload, share, about and language.
+        defaultValue: true
+      },
+
+      showBottomBar: {
+        // CC Logo and full-screen mode.
+        defaultValue: true
+      },
+
       subtitle: {
         defaultValue: ""
       },

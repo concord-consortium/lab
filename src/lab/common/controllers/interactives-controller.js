@@ -1448,6 +1448,8 @@ define(function (require) {
           helpOnLoad: interactive.helpOnLoad,
           about: arrays.isArray(interactive.about) ? $.extend(true, [], interactive.about) : interactive.about,
           theme: interactive.theme,
+          showTopBar: interactive.showTopBar,
+          showBottomBar: interactive.showBottomBar,
           // Node that modelDefinitions section can also contain custom parameters definition. However, their initial values
           // should be already updated (take a look at the beginning of this function), so we can just serialize whole array.
           models: $.extend(true, [], interactive.models),
