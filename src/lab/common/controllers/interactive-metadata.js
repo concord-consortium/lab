@@ -698,6 +698,44 @@ define(function() {
         defaultValue: false
       }
     },
+    spinner: {
+      id: {
+        required: true
+      },
+      type: {
+        required: true
+      },
+      property: {
+
+      },
+      label: {
+        defaultValue: ""
+      },
+      units: {
+        defaultValue: ""
+      },
+      tooltip: {
+        defaultValue: ""
+      },
+      helpIcon: {
+        defaultValue: false
+      },
+      width: {
+        defaultValue: "auto"
+      },
+      height: {
+        defaultValue: "auto"
+      },
+      initialValue: {
+        required: true
+      },
+      stepSize: {
+        required: true 
+      },
+      numberFormat: {
+        required: true
+      }
+    },
 
     radioOption: {
       text: {
