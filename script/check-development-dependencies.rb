@@ -54,38 +54,12 @@ def nodejs_check
       }
     end
   rescue Errno::ENOENT
-    @notifications["nodejs"] = {
+    @errors["nodejs"] = {
       "requirement" => requirement,
       "details" => <<-HEREDOC
   ==> nodejs not installed ...
       HEREDOC
     }
-  end
-end
-
-def couchdb_check
-  # Check for couchdb
-  requirement = ">= #{@minimum_couchdb_version}"
-  response = `curl http://localhost:5984 2> /dev/null`
-  # => {"couchdb":"Welcome","version":"1.2.0"}
-  if response.empty?
-    @warnings["Couchdb"] = {
-      "requirement" => requirement,
-      "details" => <<-HEREDOC
-  ==> couchdb not installed or not running, web server persistence won't work ...
-      HEREDOC
-    }
-  else
-    couch = JSON.parse(response)
-    couch_version = couch["version"]
-    if couch_version < @minimum_couchdb_version
-      @warnings["Couchdb"] = {
-        "requirement" => requirement,
-        "details" => <<-HEREDOC
-  ==> couchdb #{couch_version} installed, web server persistence might not work
-        HEREDOC
-      }
-    end
   end
 end
 
@@ -105,28 +79,12 @@ def xcode_check
   end
 end
 
-@warnings = {}
 @errors = {}
 @recommendations = {}
 
 ruby_check
 nodejs_check
 xcode_check if macosx
-
-unless @warnings.empty?
-  puts <<-HEREDOC
-
-*** Warning: missing optional development dependencies:
-
-  HEREDOC
-  @warnings.each { |k, v|
-    puts <<-HEREDOC
-#{k} #{v["requirement"]}
-
-#{v["details"]}
-    HEREDOC
-  }
-end
 
 unless @errors.empty?
   puts <<-HEREDOC
