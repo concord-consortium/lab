@@ -36,7 +36,7 @@ the **`public/lab`** directory.
 #### src/lab/models/md2d
 
 The [md2d](https://github.com/concord-consortium/lab/tree/master/src/lab/models/md2d) model-type contains a basic
-**Next Generation Molecular Workbench** application. It built using a hybrid of a MVC design pattern
+**Next Generation Molecular Workbench** application. It was built using a hybrid of a MVC design pattern
 with a dataflow architecture necessary for performance.
 
 The source code of the core molecular dynamics engine is currently located in the
