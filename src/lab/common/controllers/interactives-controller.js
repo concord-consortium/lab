@@ -501,6 +501,22 @@ define(function (require) {
     }
 
     /**
+      Setup theme (which is just a CSS class of the main interactive container).
+     */
+    function setupTheme() {
+      var theme = interactive.theme;
+      if (arrays.isArray(theme)) {
+        // ["a", "b"] => "lab-theme-a lab-theme-b"
+        theme = theme.map(function (el) { return 'lab-theme-'+el; }).join(' ');
+      } else if (theme) {
+        theme = 'lab-theme-' + theme;
+      } else {
+        theme = '';
+      }
+      $interactiveContainer.alterClass('lab-theme-*', theme);
+    }
+
+    /**
       The main method called when this controller is created.
 
       Populates the element pointed to by viewSelector with divs to contain the
@@ -551,10 +567,8 @@ define(function (require) {
       // Ensure that interactive initialization is always the same if it's desired
       // ("randomSeed" paramenter is provided).
       generateRandomSeed();
-      // Set theme (which is just a CSS class of the main interactive container).
-      var theme = interactive.theme;
-      $interactiveContainer.alterClass('lab-theme-*', theme ? 'lab-theme-' + theme : '');
-
+      // Setup CSS class of the main container.
+      setupTheme();
       // Set up the list of possible modelDefinitions.
       modelDefinitions = interactive.models;
       for (var i = 0, len = modelDefinitions.length; i < len; i++) {

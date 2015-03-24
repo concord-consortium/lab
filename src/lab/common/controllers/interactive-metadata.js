@@ -36,6 +36,9 @@ define(function() {
       },
 
       theme: {
+        // Theme name or array of theme names. Multiple themes can be applied at the same time.
+        // Note that theme is just a CSS class added to the interactive container, for example
+        // ["foo", "bar"] will add following classes: .lab-theme-foo, .lab-theme-bar
         defaultValue: ""
       },
 
