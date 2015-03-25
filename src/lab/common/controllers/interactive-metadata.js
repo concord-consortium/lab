@@ -601,6 +601,9 @@ define(function() {
         // property should be retained during model reload / reset or not.
         defaultValue: true
       },
+      orientation:{
+      defaultValue: "horizontal"
+      }
       action: {
         conflictsWith: ["property"]
       },
