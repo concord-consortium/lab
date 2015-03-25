@@ -36,7 +36,27 @@ define(function() {
       },
 
       theme: {
+        // Theme name or array of theme names. Multiple themes can be applied at the same time.
+        // Note that theme is just a CSS class added to the interactive container, for example
+        // ["foo", "bar"] will add following classes: .lab-theme-foo, .lab-theme-bar
         defaultValue: ""
+      },
+
+      showTopBar: {
+        // Reload, share, about and language.
+        defaultValue: true
+      },
+
+      showBottomBar: {
+        // CC Logo and full-screen mode.
+        defaultValue: true
+      },
+
+      padding: {
+        // Top, bottom and left interactive padding, but NOT right...
+        // This option was defined that way long time ago and now it has been exposed to authors.
+        // We couldn't support right padding at the moment, as we would break backward compatibility.
+        defaultValue: 10
       },
 
       subtitle: {
@@ -581,6 +601,9 @@ define(function() {
         // property should be retained during model reload / reset or not.
         defaultValue: true
       },
+      orientation:{
+      defaultValue: "horizontal"
+      }
       action: {
         conflictsWith: ["property"]
       },

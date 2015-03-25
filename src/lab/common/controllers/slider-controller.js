@@ -87,7 +87,7 @@ define(function () {
       title = component.title;
       labels = component.labels;
       displayValue = component.displayValue;
-
+      orientation=component.orientation;
       model = interactivesController.getModel();
 
       // Setup view.
@@ -144,13 +144,22 @@ define(function () {
       // We have to do it that way to ensure that labels refer correct dimensions.
       $elem.css({
         "width": component.width,
-        "height": component.height
+        "height": component.height,
       });
       if (component.width === "auto") {
         // Ensure that min width is 12em, when width is set to "auto".
         // Prevent from situation when all sliders with short labels have
         // different widths, what looks distracting.
         $elem.css("min-width", "12em");
+      }
+
+      if(component.orientation=="horizontal"){
+
+       $elem.css({ 8px;
+    height: 175px;
+    padding: 0 5px;
+    )}
+
       }
       // Call resize function to support complex resizing when height is different from "auto".
       controller.resize();
