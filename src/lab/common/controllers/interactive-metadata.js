@@ -735,11 +735,11 @@ define(function() {
       numberFormat: {
         required: true
       },
-      maxValue: {
-        required: true
+      max: {
+        required: false
       },
-      minValue: {
-        required: true
+      min: {
+        required: false
       }
     },
 
