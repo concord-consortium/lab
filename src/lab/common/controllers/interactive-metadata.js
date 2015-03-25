@@ -706,7 +706,7 @@ define(function() {
         required: true
       },
       property: {
-
+        //different properties can be added here
       },
       label: {
         defaultValue: ""
@@ -733,6 +733,12 @@ define(function() {
         required: true 
       },
       numberFormat: {
+        required: true
+      },
+      maxValue: {
+        required: true
+      },
+      minValue: {
         required: true
       }
     },
