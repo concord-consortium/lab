@@ -570,6 +570,9 @@ define(function() {
       max: {
         required: true
       },
+      orientation: {
+        defaultValue: "horizontal"
+      },
       steps: {
         required: true
       },

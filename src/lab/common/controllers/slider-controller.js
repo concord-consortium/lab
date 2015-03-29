@@ -9,7 +9,7 @@ define(function () {
 
   return function SliderController(component, interactivesController) {
     var min, max, steps, propertyName,
-        actionFunc, initialValue,
+        actionFunc, initialValue, sliderOrientation,
         title, labels, displayValue, displayFunc,
         i, label,
         // View elements.
@@ -82,6 +82,7 @@ define(function () {
       min = component.min;
       max = component.max;
       steps = component.steps;
+      sliderOrientation = component.orientation;
       propertyName = component.property;
       initialValue = component.initialValue;
       title = component.title;
@@ -102,6 +103,7 @@ define(function () {
       $slider.appendTo($container);
 
       $slider.slider({
+        orientation: sliderOrientation,
         min: min,
         max: max,
         step: (max - min) / steps
@@ -116,11 +118,21 @@ define(function () {
                 .append($container);
       // Each interactive component has to have class "component".
       $elem.addClass("component");
+      // Add class defining component orientation - "horizontal" or "vertical".
+      $container.addClass(sliderOrientation);
+      $elem.addClass(sliderOrientation);
+      $slider.addClass(sliderOrientation);
+      $sliderHandle.addClass(sliderOrientation);
 
       for (i = 0; i < labels.length; i++) {
         label = labels[i];
         $label = $('<p class="label">' + label.label + '</p>');
-        $label.css('left', (label.value-min) / (max-min) * 100 + '%');
+        $label.addClass(sliderOrientation);
+        if (sliderOrientation === "vertical") {
+          $label.css('bottom', (label.value-min) / (max-min) * 80 + '%');
+        } else {
+          $label.css('left', (label.value-min) / (max-min) * 100 + '%');
+        }
         $container.append($label);
       }
 
@@ -146,11 +158,18 @@ define(function () {
         "width": component.width,
         "height": component.height
       });
-      if (component.width === "auto") {
+      if (component.width === "auto" && sliderOrientation === "horizontal") {
         // Ensure that min width is 12em, when width is set to "auto".
         // Prevent from situation when all sliders with short labels have
         // different widths, what looks distracting.
         $elem.css("min-width", "12em");
+      }
+      if (component.height === "auto" && sliderOrientation === "vertical") {
+        // Ensure that min width is 12em, when width is set to "auto".
+        // Prevent from situation when all sliders with short labels have
+        // different widths, what looks distracting.
+        $elem.css("height", "6em");
+        $elem.css("min-height", "6em");
       }
       // Call resize function to support complex resizing when height is different from "auto".
       controller.resize();
@@ -192,8 +211,8 @@ define(function () {
       },
 
       resize: function () {
-        var remainingHeight, emSize;
-        if (component.height !== "auto") {
+        var remainingHeight, emSize, remainingWidthn, containerWidth, sliderWidth;
+        if (component.height !== "auto" && sliderOrientation === "horizontal") {
           // Height calculation is more complex when height is different from
           // "auto". Calculate dynamically available height for slider itself.
           // Note that component.height refers to the height of the *whole*
@@ -208,6 +227,19 @@ define(function () {
           emSize = parseFloat($sliderHandle.css("font-size"));
           $sliderHandle.css("height", remainingHeight + emSize * 0.4);
           $sliderHandle.css("top", -0.5 * remainingHeight - emSize * 0.4);
+        } else if (component.width !== "auto" && sliderOrientation === "vertical") {
+          if ($label !== undefined) {
+            remainingWidth = $elem.width() - $label.outerWidth(true);
+          } else {
+            remainingWidth = $elem.width();
+          }
+          $container.css("width", remainingWidth);
+          $sliderHandle.css("width", remainingWidth * 1.2);
+        }
+        if(sliderOrientation === "vertical") {
+          //make sure that the handle is centered in slider
+          sliderWidth = parseFloat($sliderHandle.css("width"));
+          $sliderHandle.css("left", -((sliderWidth) * .5))
         }
       },
 
