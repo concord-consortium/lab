@@ -24,6 +24,7 @@ define(function (require) {
         markAllDataPoints: 'markAllDataPoints',
         showRulersOnSelection: 'showRulersOnSelection',
         fontScaleRelativeToParent: 'fontScaleRelativeToParent',
+        hideAxisValues: 'hideAxisValues',
         xlabel: 'xlabel',
         xmin: 'xmin',
         xmax: 'xmax',
