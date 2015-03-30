@@ -129,7 +129,14 @@ define(function () {
         $label = $('<p class="label">' + label.label + '</p>');
         $label.addClass(sliderOrientation);
         if (sliderOrientation === "vertical") {
-          $label.css('bottom', (label.value-min) / (max-min) * 80 + '%');
+          // top and bottom labels will be exact, others slightly off
+          // title.outerHeight() and elem.height() not known at this point,
+          // so exact calculation can't be made for bottom position.
+          if (label.value == max) {
+            $label.css('top', "0%");
+          } else {
+            $label.css('bottom', (label.value-min) / (max-min) * 80 + '%');
+          }
         } else {
           $label.css('left', (label.value-min) / (max-min) * 100 + '%');
         }
