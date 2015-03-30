@@ -882,6 +882,9 @@ define(function() {
       fontScaleRelativeToParent: {
         defaultValue: true
       },
+      hideAxisValues: {
+        defaultValue: false
+      },
       properties: {
         defaultValue: []
       },
