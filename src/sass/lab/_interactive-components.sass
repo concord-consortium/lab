@@ -298,9 +298,9 @@
       left: 3%
       top: 0.5em
     &.vertical
-      height: 85%
+      height: 91%
       width: 0
-      top: 0.7em
+      top: 5%
       left: 47.5%
     border-color: #999
   .ui-slider-handle
@@ -352,14 +352,9 @@
     // bottom margin has to account for size of labels, which are taken out of flow
     &.horizontal
       margin-bottom: 1em
-    &.vertical
-      margin-left: 2em
     // follow width of the most outer container
     &.horizontal
       width: 100%
-    &.vertical
-      height: 80%
-      left: 0%
     background-color: rgba(0, 0, 0, 0.085)
     border-radius: 0.4em
     .label
@@ -369,21 +364,17 @@
         top: 100%
       // "width: 2x; margin-left: -x; left: y%" places the center of the .label at exactly y%
       // of the width of the parent
-      &.horizontal
-        width: 6em
-      &.vertical
-        width: 1em
+      width: 6em
       &.horizontal
         margin: 0.2em 0 0 -3em
       &.vertical
-        margin: -0.1em 0 0 -2em
+        margin: 0 0 0 0
       // Now, make the text itself centered in the .label element
       &.horizontal
         text-align: center
-      // Not wanted when in vertical
+      // Make text left aligned when in vertical
       &.vertical
-        text-align: right
-        direction: rtl
+        text-align: left
       // And finally, make the position labels a bit smaller than the title and other text
       font-size: 0.8em
 
