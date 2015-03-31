@@ -133,8 +133,7 @@ define(function () {
           // we want percentage of container height (element minus title height)
           // 6em is the min height of the vertical slider
           // 1em is the height of the title
-          // there are 16 pixels in one em.
-          var remainingHeight = (Math.max(6, parseInt(component.height)) - 1);
+          var remainingHeight = (Math.max(5, parseInt(component.height)) - 1);
           $label.css('bottom', (label.value-min) / (max-min) * remainingHeight + 'em');
         } else {
           $label.css('left', (label.value-min) / (max-min) * 100 + '%');
