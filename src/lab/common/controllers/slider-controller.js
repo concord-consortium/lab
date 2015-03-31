@@ -129,7 +129,13 @@ define(function () {
         $label = $('<p class="label">' + label.label + '</p>');
         $label.addClass(sliderOrientation);
         if (sliderOrientation === "vertical") {
-          $label.css('bottom', (label.value-min) / (max-min) * 80 + '%');
+          // vertical calculation more complicated.
+          // we want percentage of container height (element minus title height)
+          // 6em is the min height of the vertical slider
+          // 1em is the height of the title
+          // there are 16 pixels in one em.
+          var remainingHeight = (Math.max(6, parseInt(component.height)) - 1);
+          $label.css('bottom', (label.value-min) / (max-min) * remainingHeight + 'em');
         } else {
           $label.css('left', (label.value-min) / (max-min) * 100 + '%');
         }
@@ -229,7 +235,8 @@ define(function () {
           $sliderHandle.css("top", -0.5 * remainingHeight - emSize * 0.4);
         } else if (component.width !== "auto" && sliderOrientation === "vertical") {
           if ($label !== undefined) {
-            remainingWidth = $elem.width() - $label.outerWidth(true);
+            //16 is 1 em in pixels
+            remainingWidth = $elem.width() - 16;
           } else {
             remainingWidth = $elem.width();
           }
