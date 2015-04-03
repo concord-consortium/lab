@@ -148,7 +148,7 @@ define(function () {
             componentHeight = parseFloat(component.height);
           }
           var remainingHeight = componentHeight - 1.3;
-          $label.css('top', (label.value-max) / (min-max) * ((remainingHeight - 1) / 0.8) + 'em');
+          $label.css('top', (label.value-max) / (min-max) * ((remainingHeight - 1.2) / 0.8) + 'em');
         } else {
           $label.css('left', (label.value-min) / (max-min) * 100 + '%');
         }
@@ -268,11 +268,10 @@ define(function () {
           //make the container height fill the element, minus the title height
           remainingHeight = $elem.height() - $title.outerHeight(true);
           $container.css("height", remainingHeight);
-          //make sure labels not covered by slider or slider handle
-          //set to max value first, to get the max width of slider
+
+          // position container to the left, labels to the right.
           $labelContainer.css("position", "absolute");
           $labelContainer.css("top", 0);
-          //make the container move left past the labels
           containerWidth = parseFloat($container.css("width"));
           if ($label !== undefined) {
             var containerLeft;
