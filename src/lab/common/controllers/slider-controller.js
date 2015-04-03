@@ -63,6 +63,9 @@ define(function () {
           if (model) model.set(obj);
           if (displayValue) {
             $sliderHandle.text(displayFunc(ui.value));
+            if (component.orientation == "vertical") {
+              $sliderHandle.css("left", -((parseFloat($sliderHandle.css("width"))) * .5))
+            }
           }
         });
       }
@@ -145,7 +148,7 @@ define(function () {
             componentHeight = parseFloat(component.height);
           }
           var remainingHeight = componentHeight - 1.3;
-          $label.css('top', (label.value-max) / (min-max) * ((remainingHeight - 0.8) / 0.8) + 'em');
+          $label.css('top', (label.value-max) / (min-max) * ((remainingHeight - 1) / 0.8) + 'em');
         } else {
           $label.css('left', (label.value-min) / (max-min) * 100 + '%');
         }
@@ -247,31 +250,21 @@ define(function () {
           remainingWidth = $elem.width();
           // all labels have the same width, so the last one is just fine.
           // (more text in label gets pushed to another line)
-          if ($label !== undefined) {
-            remainingHeight -= $label.outerWidth(true);
-          }
           $container.css("width", remainingWidth);
           emSize = parseFloat($sliderHandle.css("font-size"));
           $sliderHandle.css("width", remainingWidth + emSize * 0.4);
         }
         if(sliderOrientation === "vertical") {
-          //get information about how slider width changes, but make sure we don't
-          //actually change the value
-          var sliderWidthMax, sliderWidthMin;
+          // make sure slider handle is (initially) centered
+          sliderWidth = parseFloat($sliderHandle.css("width"));
+          $sliderHandle.css("left", -((sliderWidth) * .5));
+          // find out what max slider width will be, wihtout messing it up
           var tmp = parseFloat($sliderHandle.text());
           if (!isNaN(tmp)) {
             $sliderHandle.text(displayFunc(max));
-            sliderWidthMax = parseFloat($sliderHandle.css("width"));
-            $sliderHandle.text(displayFunc(min));
-            sliderWidthMin = parseFloat($sliderHandle.css("width"));
-            $sliderHandle.text(displayFunc(tmp));
-            sliderWidth = (sliderWidthMax + sliderWidthMin) / 2
-          } else {
             sliderWidth = parseFloat($sliderHandle.css("width"));
-            sliderWidthMax = sliderWidth;
+            $sliderHandle.text(displayFunc(tmp));
           }
-          // make sure the handle is centered in the slider
-          $sliderHandle.css("left", -((sliderWidth) * .5))
           //make the container height fill the element, minus the title height
           remainingHeight = $elem.height() - $title.outerHeight(true);
           $container.css("height", remainingHeight);
@@ -279,7 +272,15 @@ define(function () {
           //set to max value first, to get the max width of slider
           $labelContainer.css("position", "absolute");
           $labelContainer.css("top", 0);
-          $labelContainer.css("left", sliderWidthMax);
+          //make the container move left past the labels
+          containerWidth = parseFloat($container.css("width"));
+          if ($label !== undefined) {
+            var containerLeft;
+            containerLeft = $label.outerWidth(true) + (sliderWidth - containerWidth) / 2;
+            $container.css("left", containerLeft);
+            //add a few pixels so it's not right next to the handle
+            $labelContainer.css("left", -containerLeft - 5);
+          }
 
         }
       },
