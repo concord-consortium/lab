@@ -28,7 +28,6 @@ define(function(){
         scriptingAPI,
         component;
 
-
     // Binding the appropriate events to elements
     function bindTargets(){
 
@@ -39,7 +38,6 @@ define(function(){
 
       scriptingAPI = interactivesController.getScriptingAPI();
       model = interactivesController.getModel();
-
       /**
       * Validate the components' JSON  for completeness
       */
@@ -73,9 +71,7 @@ define(function(){
       // As each interactive component should have class component
       $container.addClass('component');
 
-      // Space left for adding a tooltip and helpicon if needed later
-
-
+      // Add tooltip and helpicon if needed later
       //Applying the height and width to the spinner
       $container.css({
         width: component.width,
