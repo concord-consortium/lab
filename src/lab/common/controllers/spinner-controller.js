@@ -18,12 +18,15 @@ define(function(){
 	return function SpinnerController(componenet, interactivesController){
 		var min, max, id, type, title, units,
 			stepSize, initialValue, displayValue,
-			propertyName,
+			propertyName, numberFormat,
 			$container,
 			$title,
 			$spinnerBox,
 			$spinnnerValue,
-			$spinnerButtons;
+			$spinnerButtons,
+			model,
+			scriptingAPI,
+			component;
 
 
 		// Binding the appropriate events to elements
@@ -49,10 +52,11 @@ define(function(){
 			initialValue = component.initialValue;
 			displayValue = component.displayValue;
 			propertyName = component.property;
+			numberFormat = component.numberFormat;
 			title = component.title;
 			units = component.units;
 
-			if(steps === undefined) steps = 1;
+			if(stepSize === undefined) stepSize = 1;
 
 			// Initializing the view components
 			$container = $('<div class="spinner-container">');
@@ -85,7 +89,7 @@ define(function(){
 				step: stepSize,
 				min : min,
 				max : max,
-				numberFormat : 'f'
+				numberFormat : numberFormat
 			});
 
 			bindTargets();

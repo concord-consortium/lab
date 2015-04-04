@@ -708,8 +708,11 @@ define(function() {
       property: {
         //different properties can be added here
       },
-      displayValue: {
+      numberFormat: {
         //for the format in which value will be displayed
+        defaultValue: "f"
+      }
+      displayValue: {
         defaultValue: ""
       },
       units: {
