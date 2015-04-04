@@ -708,7 +708,8 @@ define(function() {
       property: {
         //different properties can be added here
       },
-      label: {
+      displayValue: {
+        //for the format in which value will be displayed
         defaultValue: ""
       },
       units: {
@@ -731,9 +732,6 @@ define(function() {
       },
       stepSize: {
         required: true 
-      },
-      numberFormat: {
-        required: true
       },
       max: {
         required: false
