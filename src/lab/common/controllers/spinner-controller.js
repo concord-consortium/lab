@@ -27,7 +27,15 @@ define(function(){
         model,
         scriptingAPI,
         component;
-
+    
+    updateSpinner = function(){
+      var value = interactivesController.getModel().get(propertyName);
+      $spinnerBox.spinner('value',value);
+    },
+    updateSpinnerDisabledState = function(){
+      var description = model.getPropertyDescription(propertyName);
+      controller.setDisabled(description.getFrozen());
+    };
     // Binding the appropriate events to elements
     function bindTargets(){
 
@@ -54,6 +62,8 @@ define(function(){
       title = component.title;
       units = component.units;
 
+      if(min === undefined) min=0;
+      if(max === undefined) max=100;
       if(stepSize === undefined) stepSize = 1;
 
       // Initializing the view components
@@ -90,10 +100,13 @@ define(function(){
 
       bindTargets();
 
+      disablable(controller,component);
+      
       $spinnerButtons.on('keydown.ui-spinner-button', function(event){
         event.stopPropagation();
       });
 
+      controller.resize();
       //Set the initial values to the spinner if it is defined
       if(initialValue !== undefined && initialValue !== null) $spinnerBox.spinner('value',initialValue);
     }
@@ -103,7 +116,22 @@ define(function(){
 
       //This is triggered when model is loaded
       modelLoadedCallback: function(){
+        if (model && propertyName) {
+          model.removeObserver(propertyName, updateSpinner);
+          model.removePropertyDescriptionObserver(propertyName, updateSpinnerDisabledState);
+        }
+        scriptingAPI = interactivesController.getScriptingAPI();
+        model = interactivesController.getModel();
+        if (propertyName) {
+          model.addPropertiesListener([propertyName], updateSpinner);
+          model.addPropertyDescriptionObserver(propertyName, updateSpinnerDisabledState);
+        }
 
+        bindTargets();
+
+        if (propertyName) {
+          updateSpinner();
+        }
       },
 
       //get the HTML container of the spinner 
@@ -118,7 +146,12 @@ define(function(){
 
       //Returns serialized component definition
       serialize: function(){
-
+        var result = $.extend(true,{},component);
+        
+        if(!propertyName){
+          result.initialValue = $spinnerBox.spinner('value');
+        }
+        return result;
       }
     };
 
