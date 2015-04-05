@@ -711,7 +711,7 @@ define(function() {
       numberFormat: {
         //for the format in which value will be displayed
         defaultValue: "f"
-      }
+      },
       displayValue: {
         defaultValue: ""
       },
