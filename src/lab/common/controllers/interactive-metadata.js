@@ -731,7 +731,7 @@ define(function() {
         defaultValue: "auto"
       },
       initialValue: {
-        required: true
+        required: false
       },
       stepSize: {
         required: true 
