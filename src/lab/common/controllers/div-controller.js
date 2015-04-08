@@ -16,7 +16,11 @@ define(function (require) {
   function DivController(component, scriptingAPI, controller) {
     // Call super constructor.
     InteractiveComponent.call(this, "div", component, scriptingAPI, controller);
-    this.$element.append(component.content);
+    var content = component.content;
+    if (content && content.join) {
+      content = content.join("\n");
+    }
+    this.$element.append(content);
   }
   inherit(DivController, InteractiveComponent);
 
