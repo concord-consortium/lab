@@ -880,6 +880,41 @@ define(function() {
       }
     },
 
+    colorIndicator: {
+      id: {
+        required: true
+      },
+      type: {
+        required: true
+      },
+      title: {
+        defaultValue: ""
+      },
+      colorValue: {
+        required: true
+      },
+      width: {
+        defaultValue: "auto"
+      },
+      height: {
+        defaultValue: "auto"
+      },
+      property: {
+        required: true
+      },
+      retainProperty: {
+        // This flag decides whether
+        // property should be retained during model reload / reset or not.
+        defaultValue: true
+      },
+      tooltip: {
+        defaultValue: ""
+      },
+      helpIcon: {
+        defaultValue: false
+      }
+    },
+
     table: {
       id: {
         required: true
