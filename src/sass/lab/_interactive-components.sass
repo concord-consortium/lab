@@ -355,6 +355,51 @@
       // And finally, make the position labels a bit smaller than the title and other text
       font-size: 0.8em
 
+.interactive-joystick
+  .title
+    width: 100%
+    text-align: center
+  .container
+    position: relative
+  .base
+    position: absolute
+    background-color: lightgray
+    padding: 0px
+    -moz-box-shadow:    inset 2px 2px 3px #888888
+    -webkit-box-shadow: inset 2px 2px 3px #888888
+    box-shadow:         inset 2px 2px 3px #888888
+
+    .handle
+      position: relative
+      background-color: red
+      margin: 0px
+      padding: 0px
+      -moz-box-shadow:    3px 3px 3px #888888
+      -webkit-box-shadow: 3px 3px 3px #888888
+      box-shadow:         3px 3px 3px #888888
+      cursor: pointer
+  .label
+    position: absolute
+    &.e
+      top: 50%
+      margin-top: -0.5em
+    &.w
+      top: 50%
+      margin-top: -0.5em
+    &.s
+      bottom: 0
+      left: 0
+      text-align: center
+      width: 100%
+    &.n
+      top: 0
+      left: 0
+      text-align: center
+      width: 100%
+  .value
+    position: relative
+    text-align: center
+
 .textBoxBody
   font-family: inherit
   background-color: rgba(0, 0, 0, 0)

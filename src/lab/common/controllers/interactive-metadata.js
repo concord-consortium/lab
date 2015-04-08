@@ -818,6 +818,68 @@ define(function() {
       }
     },
 
+    joystick: {
+      id: {
+        required: true
+      },
+      type: {
+        required: true
+      },
+      title: {
+        defaultValue: ""
+      },
+      // Labels is specified by the following object:
+      // {
+      //   n: 'North'
+      //   w: 'West'
+      //   s: 'South'
+      //   e: 'East'
+      // }
+      labels: {
+        // Label is specified by the following object:
+        // {
+        //   "value": [value, e.g. 100],
+        //   "label": [label, e.g. "High"]
+        // }
+        defaultValue: {n: 'N', e: 'E', s: 'S', w: 'W'}
+      },
+      scale: {
+        defaultValue: 1
+      },
+      width: {
+        defaultValue: "auto"
+      },
+      height: {
+        defaultValue: "auto"
+      },
+      displayValue: {},
+      // Use "property" OR "action" + "initialValue".
+      property: {
+        // If you use property binding, do not mix it with action scripts and initial values.
+        conflictsWith: ["initialValue", "action"]
+      },
+      retainProperty: {
+        // If property binding is used (so 'property' is defined), this flag decides whether
+        // property should be retained during model reload / reset or not.
+        defaultValue: true
+      },
+      action: {
+        conflictsWith: ["property"]
+      },
+      initialValue: {
+        conflictsWith: ["property"]
+      },
+      disabled: {
+        defaultValue: false
+      },
+      tooltip: {
+        defaultValue: ""
+      },
+      helpIcon: {
+        defaultValue: false
+      }
+    },
+
     table: {
       id: {
         required: true
