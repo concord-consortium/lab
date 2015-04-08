@@ -705,15 +705,41 @@ define(function() {
       type: {
         required: true
       },
+      min: {
+        required: false
+      },
+      max: {
+        required: false
+      },
+      steps: {
+        required: true 
+      },
+      title: {
+        defaultValue: ""
+      },
+      width: {
+        defaultValue: "auto"
+      },
+      height: {
+        defaultValue: "auto"
+      },
+      displayValue: {},
       property: {
         //different properties can be added here
+        conflictsWith: ["initialValue","action"]
+      },
+      action: {
+        conflictsWith: ["property"]
+      },
+      retainProperty: {
+        defaultValue: true
+      },
+      initialValue: {
+        conflictsWith: ["property"]
       },
       numberFormat: {
         //for the format in which value will be displayed
         defaultValue: "f"
-      },
-      displayValue: {
-        defaultValue: ""
       },
       units: {
         defaultValue: ""
@@ -723,24 +749,6 @@ define(function() {
       },
       helpIcon: {
         defaultValue: false
-      },
-      width: {
-        defaultValue: "auto"
-      },
-      height: {
-        defaultValue: "auto"
-      },
-      initialValue: {
-        required: false
-      },
-      stepSize: {
-        required: true 
-      },
-      max: {
-        required: false
-      },
-      min: {
-        required: false
       }
     },
 
