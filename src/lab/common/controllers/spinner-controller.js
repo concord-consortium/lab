@@ -35,7 +35,7 @@ define(function(){
           var value = interactivesController.getModel().get(propertyName);
           $spinnerBox.spinner('value',value);
           if(displayValue){
-            $spinnerBox.text(displayFunc(value));
+            $spinnerBox.val(displayFunc(value));
           }
 
         },
@@ -125,7 +125,7 @@ define(function(){
       if(initialValue !== undefined && initialValue !== null){
        $spinnerBox.spinner('value',initialValue);
        if(displayValue){
-         $spinnerBox.text(displayFunc(value));
+         $spinnerBox.val(displayFunc(value));
        }
     }
 
