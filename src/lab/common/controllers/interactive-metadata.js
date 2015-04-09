@@ -576,6 +576,9 @@ define(function() {
       title: {
         defaultValue: ""
       },
+      titlePosition: {
+        defaultValue: "top" // valid options: top, bottom, left, right
+      },
       labels: {
         // Label is specified by the following object:
         // {

@@ -328,8 +328,15 @@
     display: inline-block
     font-size: 1em
     white-space: nowrap
-    margin: 0 0 0.3em 0
     vertical-align: top
+    &.top
+      margin: 0 0 0.3em 0
+    &.bottom
+      margin: 0.3em 0 0 0
+    &.left
+      margin: 0 0.3em 0 0
+    &.right
+      margin: 0 0 0 0.3em
   .container
     // This is default height of slider, when its height is set to "auto".
     // Otherwise, it will be overwritten by dynamically calculated value.

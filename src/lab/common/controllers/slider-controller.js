@@ -95,7 +95,7 @@ define(function () {
       if (max === undefined) max = 10;
       if (steps === undefined) steps = 10;
 
-      $title = $('<p class="title">' + title + '</p>');
+      $title = $('<div class="title ' + component.titlePosition + '">' + title + '</div>');
       // we pick up the SVG slider component CSS if we use the generic class name 'slider'
       $container = $('<div class="container">');
       $slider = $('<div class="html-slider">').attr('id', component.id);
@@ -111,9 +111,19 @@ define(function () {
 
       $sliderHandle.attr('tabindex', interactivesController.getNextTabIndex());
 
-      $elem = $('<div class="interactive-slider">')
-                .append($title)
-                .append($container);
+      $elem = $('<div class="interactive-slider">');
+      if (component.titlePosition === "right" || component.titlePosition === "bottom") {
+        $elem.append($container)
+             .append($title);
+      } else {
+        $elem.append($title)
+             .append($container);
+      }
+
+      if (component.titlePosition === "left" || component.titlePosition === "right") {
+        $container.css({ display: 'inline-block' });
+      }
+
       // Each interactive component has to have class "component".
       $elem.addClass("component");
 
@@ -192,22 +202,29 @@ define(function () {
       },
 
       resize: function () {
-        var remainingHeight, emSize;
+        var remainingHeight,
+            emSize = parseFloat($sliderHandle.css("font-size"));
         if (component.height !== "auto") {
           // Height calculation is more complex when height is different from
           // "auto". Calculate dynamically available height for slider itself.
           // Note that component.height refers to the height of the *whole*
           // component!
-          remainingHeight = $elem.height() - $title.outerHeight(true);
+          remainingHeight = $elem.height();
+          if (component.titlePosition === "top" || component.titlePosition === "bottom") {
+            remainingHeight -= $title.outerHeight(true);
+          }
           if ($label !== undefined) {
             remainingHeight -= $label.outerHeight(true);
           }
           $container.css("height", remainingHeight);
           $slider.css("top", 0.5 * remainingHeight);
           // Handle also requires dynamic styling.
-          emSize = parseFloat($sliderHandle.css("font-size"));
           $sliderHandle.css("height", remainingHeight + emSize * 0.4);
           $sliderHandle.css("top", -0.5 * remainingHeight - emSize * 0.4);
+        }
+
+        if (component.titlePosition === "left" || component.titlePosition === "right") {
+          $container.css({ width: $elem.width() - $title.outerWidth(true) - 0.5*emSize });
         }
       },
 
