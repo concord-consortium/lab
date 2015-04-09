@@ -301,15 +301,34 @@ define(function () {
         var width = $elem[0].clientWidth,
             height = $elem[0].clientHeight,
             emSize = parseFloat($elem.css('font-size')),
-            centerX = width/2,
-            containerSize = height - 2*emSize,   // subtract for title and value text
-            baseSize = containerSize - 2.2*emSize, // subtract for N-label, S-label and 0.1em padding on both top and bottom
-            handleSize = baseSize * 0.3;
+            baseHeight = height - 4.2*emSize, // subtract for title, value text, N-label, S-label and 0.1em padding on both top and bottom\
+            labelsWidth = $labelE.outerWidth(true) + $labelW.outerWidth(true),
+            baseWidth = width - labelsWidth,
+            labelsOverflow = 0;
 
-        $container.css({ width: containerSize, height: containerSize });
+        if (baseWidth < 2*emSize) {
+          labelsOverflow = Math.abs(2*emSize - baseWidth);
+          baseWidth = 2*emSize;
+        }
+
+        var baseSize = baseWidth < baseHeight ? baseWidth : baseHeight,
+            handleSize = baseSize * 0.3,
+            containerHeight = baseSize + 2.2*emSize,
+            centerX;
+
+        if (labelsOverflow > 0) {
+          var adjPct = (labelsWidth - labelsOverflow - 0.1*emSize) / labelsWidth;
+          centerX = $labelW.outerWidth(true) * adjPct + 0.1*emSize + baseSize/2;
+        } else {
+          centerX = $labelW.outerWidth(true) + 0.1*emSize + baseSize/2;
+        }
+
+        $container.css({ width: width, height: containerHeight });
 
         $labelE.css({ left: centerX + baseSize/2 + 0.1*emSize });
         $labelW.css({ left: centerX - baseSize/2 - 0.1*emSize - $labelW[0].clientWidth });
+        $labelN.css({ left: centerX - $labelN.outerWidth(true)/2 });
+        $labelS.css({ left: centerX - $labelS.outerWidth(true)/2 });
 
         $joystickBase.css({ height: baseSize, width: baseSize, left: centerX - baseSize/2, top: 1.1*emSize, borderRadius: baseSize });
         $joystickHandle.css({ height: handleSize, width: handleSize, borderRadius: baseSize, left: baseSize/2 - handleSize/2, top: baseSize/2 - handleSize/2 });
