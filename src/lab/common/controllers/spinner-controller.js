@@ -19,7 +19,7 @@ define(function(){
   return function SpinnerController(component, interactivesController){
     var min, max, id, type, title, units,
         steps, initialValue, displayValue,
-        propertyName, numberFormat,
+        propertyName, numberFormat, displayFunc,
         //View Elements
         $container,
         $title,
@@ -34,14 +34,21 @@ define(function(){
         updateSpinner = function(){
           var value = interactivesController.getModel().get(propertyName);
           $spinnerBox.spinner('value',value);
+          if(displayValue){
+            $spinnerBox.text(displayFunc(value));
+          }
+
         },
         updateSpinnerDisabledState = function(){
           var description = model.getPropertyDescription(propertyName);
           controller.setDisabled(description.getFrozen());
         };
+          }
     // Binding the appropriate events to elements
     function bindTargets(){
-
+      if(displayValue){
+        displayFunc = scriptingAPI.makeFunctionInScriptContext();
+      }
     }
 
     // Initializing the values and structure of the component
@@ -115,7 +122,11 @@ define(function(){
 
       controller.resize();
       //Set the initial values to the spinner if it is defined
-      if(initialValue !== undefined && initialValue !== null) $spinnerBox.spinner('value',initialValue);
+      if(initialValue !== undefined && initialValue !== null){
+       $spinnerBox.spinner('value',initialValue);
+       if(displayValue){
+         $spinnerBox.text(displayFunc(value));
+       }
     }
 
     // Public API
