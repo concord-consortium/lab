@@ -156,16 +156,37 @@
     margin: 0 0.4em 0 0
     padding: 0
     background: #E6E7E8
+    border: 1px solid #D6D7D8
     &.right
       margin: 0 0 0 0.4em
-    &.checked:before
-      content: ""
-      background: #58595b
+    &.checked:after
+      -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"
+      filter: alpha(opacity=100)
+      opacity: 1
+    &:after
+      -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"
+      filter: alpha(opacity=0)
+      opacity: 0
+      content: ''
       position: absolute
-      top: 0.22197em
-      left: 0.22197em
-      right: 0.22197em
-      bottom: 0.22197em
+      width: 0.6em
+      height: 0.3em
+      background: transparent
+      top: 0.1em
+      left: 0.1em
+      border: 0.21em solid rgb(97, 96, 96)
+      border-top: none
+      border-right: none
+
+      -webkit-transform: rotate(-45deg)
+      -moz-transform: rotate(-45deg)
+      -o-transform: rotate(-45deg)
+      -ms-transform: rotate(-45deg)
+      transform: rotate(-45deg)
+    &:hover:after
+      -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)"
+      filter: alpha(opacity=30)
+      opacity: 0.3
 
 .interactive-table
   div.title
