@@ -75,7 +75,7 @@ define(function(){
       if(steps === undefined) steps = 1;
 
       // Initializing the view components
-      $container = $('<div class="spinner-container">');
+      $container = $('<div class="interactive-spinner">');
       $spinnerBox = $('<input class="html5-spinner">').attr(id, component.id);
       $title = $('<p class="title">' + title + '</p>');
       $title.appendTo($container);
