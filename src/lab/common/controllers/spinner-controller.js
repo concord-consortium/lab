@@ -1,5 +1,5 @@
 /** 
- *Controller for the spinnner funcionality that can be used in place of other input methods
+ *Controller for the spinnner functionality that can be used in place of other input methods
 */
 
 /**
@@ -20,7 +20,7 @@ define(function(){
     var min, max, id, type, title, units,
         steps, initialValue, displayValue,
         propertyName, numberFormat, displayFunc,
-        //View Elements
+        //View Elements.
         $container,
         $title,
         $spinnerBox,
@@ -28,7 +28,6 @@ define(function(){
         $spinnerButtons,
         model,
         scriptingAPI,
-        component,
         controller,
     
         updateSpinner = function(){
@@ -37,17 +36,16 @@ define(function(){
           if(displayValue){
             $spinnerBox.val(displayFunc(value));
           }
-
         },
         updateSpinnerDisabledState = function(){
           var description = model.getPropertyDescription(propertyName);
           controller.setDisabled(description.getFrozen());
         };
-          }
+        
     // Binding the appropriate events to elements
     function bindTargets(){
       if(displayValue){
-        displayFunc = scriptingAPI.makeFunctionInScriptContext();
+        displayFunc = scriptingAPI.makeFunctionInScriptContext('value',displayValue);
       }
     }
 
@@ -82,22 +80,18 @@ define(function(){
       $title = $('<p class="title">' + title + '</p>');
       $title.appendTo($container);
       $spinnerBox.appendTo($container);
-
-      $spinnerButtons = $container.find(".ui-spinner-button");
-
       //Assign the tabIndex to every anchor or input component
-      $spinnerButtons.attr('tabindex', interactivesController.getNextTabindex());
 
       // As each interactive component should have class component
       $container.addClass('component');
-
+      
       //Applying the height and width to the spinner
       $container.css({
         "width": component.width,
         "height": component.height
       });
 
-      if(component.width === "auto") $container.css({"min-width":"14em"});
+      if(component.width === "auto") $container.css({"min-width":"12em"});
 
       // Initialize spinner with given values, the spinner comes in spinnerBox
       $spinnerBox.spinner({
@@ -108,7 +102,6 @@ define(function(){
       });
 
       bindTargets();
-
       if (component.tooltip) {
         $container.attr("title", component.tooltip);
       }
@@ -116,17 +109,14 @@ define(function(){
       disablable(controller, component);
       helpIconSupport(controller, component, interactivesController.helpSystem);
       
-      $spinnerButtons.on('keydown.ui-spinner-button', function(event){
-        event.stopPropagation();
-      });
-
       controller.resize();
       //Set the initial values to the spinner if it is defined
       if(initialValue !== undefined && initialValue !== null){
        $spinnerBox.spinner('value',initialValue);
        if(displayValue){
          $spinnerBox.val(displayFunc(value));
-       }
+        }
+      }
     }
 
     // Public API
@@ -172,7 +162,6 @@ define(function(){
         return result;
       }
     };
-
     initialize();
 
     return controller;
