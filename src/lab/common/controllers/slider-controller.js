@@ -12,6 +12,7 @@ define(function () {
         actionFunc, initialValue,
         title, labels, displayValue, displayFunc,
         i, label,
+        fillColor, fillToValue, fillToPct, defaultBackgroundColor = null,
         // View elements.
         $elem,
         $title,
@@ -31,6 +32,7 @@ define(function () {
         updateSlider = function () {
           var value = interactivesController.getModel().get(propertyName);
           $slider.slider('value', value);
+          redoSliderFill(value);
           if (displayValue) {
             $sliderHandle.text(displayFunc(value));
           }
@@ -71,6 +73,66 @@ define(function () {
       }
     }
 
+    function redoSliderFill(value) {
+      // linear-gradient isn't supported on IE 9, but IE 9 doesn't seem to support multi-stop gradients anyway.
+      // It falls back to the same behavior as not having the fill color defined.
+      if (fillColor) {
+        var valuePct = Math.round(100 * (value - min) / (max - min)),
+            gradientStr = '',
+            webkitGradientStr = '',
+            stops = [];
+
+        if (defaultBackgroundColor === null) {
+          $container.css('background', '');
+          defaultBackgroundColor = $container.css('background-color');
+        }
+
+        // Figure out our gradient string
+        if (value === fillToValue) {
+          // remove the gradient entirely when we're on top of the value we're filling to
+          $container.css('background', '');
+        } else {
+          // min stop
+          gradientStr += defaultBackgroundColor + ' 0%, ';
+          webkitGradientStr += 'color-stop(0%,' + defaultBackgroundColor + '), ';
+
+          // next the value and fillToValue stops
+          if (fillToValue <= value) {
+            stops.push(fillToPct);
+            stops.push(valuePct);
+          } else {
+            stops.push(valuePct);
+            stops.push(fillToPct);
+          }
+
+          // we're the default color to the left of the first stop, and the fillColor to the right
+          gradientStr += defaultBackgroundColor + ' ' + stops[0] + '%, ';
+          webkitGradientStr += 'color-stop(' + stops[0] + '%,' + defaultBackgroundColor + '), ';
+
+          gradientStr += fillColor + ' ' + stops[0] + '%, ';
+          webkitGradientStr += 'color-stop(' + stops[0] + '%,' + fillColor + '), ';
+
+          // All the way up to the next stop, then we revert back to the default color
+          gradientStr += fillColor + ' ' + stops[1] + '%, ';
+          webkitGradientStr += 'color-stop(' + stops[1] + '%,' + fillColor + '), ';
+
+          gradientStr += defaultBackgroundColor + ' ' + stops[1] + '%, ';
+          webkitGradientStr += 'color-stop(' + stops[1] + '%,' + defaultBackgroundColor + '), ';
+
+          // And then we're the default color up to the max
+          gradientStr += defaultBackgroundColor + ' 100%';
+          webkitGradientStr += 'color-stop(100%,' + defaultBackgroundColor + ')';
+
+          $container.css('background', '-webkit-gradient(linear, left top, right top, ' + webkitGradientStr + ')');
+          $container.css('background', '-webkit-linear-gradient(left, ' + gradientStr + ')');
+          $container.css('background', '-moz-linear-gradient(left, ' + gradientStr + ')');
+          $container.css('background', '-o-linear-gradient(left, ' + gradientStr + ')');
+          $container.css('background', 'linear-gradient(to right, ' + gradientStr + ')');
+          console.log("Setting gradient: linear-gradient(to right, " + gradientStr + ")");
+        }
+      }
+    }
+
     function initialize() {
       //
       // Initialize.
@@ -87,6 +149,8 @@ define(function () {
       title = component.title;
       labels = component.labels;
       displayValue = component.displayValue;
+      fillColor = component.fillColor;
+      fillToValue = component.fillToValue;
 
       model = interactivesController.getModel();
 
@@ -94,6 +158,9 @@ define(function () {
       if (min === undefined) min = 0;
       if (max === undefined) max = 10;
       if (steps === undefined) steps = 10;
+      if (fillToValue === undefined) fillToValue = min;
+
+      fillToPct = Math.round(100 * (fillToValue - min) / (max - min));
 
       $title = $('<div class="title ' + component.titlePosition + '">' + title + '</div>');
       // we pick up the SVG slider component CSS if we use the generic class name 'slider'
@@ -106,6 +173,12 @@ define(function () {
         max: max,
         step: (max - min) / steps
       });
+
+      if (fillColor) {
+        $slider.on('slide', function(evt, ui) {
+          redoSliderFill(ui.value);
+        });
+      }
 
       $sliderHandle = $slider.find(".ui-slider-handle");
 
@@ -168,6 +241,7 @@ define(function () {
       // Finally set the initial value if it's provided.
       if (initialValue !== undefined && initialValue !== null) {
         $slider.slider('value', initialValue);
+        redoSliderFill(initialValue);
         if (displayValue) {
           $sliderHandle.text(displayFunc(initialValue));
         }

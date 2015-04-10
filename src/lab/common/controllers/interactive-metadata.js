@@ -579,6 +579,8 @@ define(function() {
       titlePosition: {
         defaultValue: "top" // valid options: top, bottom, left, right
       },
+      fillColor: {},
+      fillToValue: {},
       labels: {
         // Label is specified by the following object:
         // {
