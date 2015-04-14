@@ -1012,7 +1012,7 @@
           "collecting_data_stop_sensorconnector": "Coletando dados.",
           "no_data": "Não há dados disponíveis.",
           "no_data_alert": "O Conector de Sensores parece não estar reportando dados ao dispositivo plugado",
-          "no_data_labquest2_alert": "The LabQuest parece não estar reportando dados ao dispositivo plugado"",
+          "no_data_labquest2_alert": "The LabQuest parece não estar reportando dados ao dispositivo plugado",
           "canceling_data_collection": "Cancelando coleta de dados...",
           "error_canceling_data_collection": "Erro ao cancelar a coleta de dados.",
           "error_canceling_data_collection_alert": "Não foi possível cancelar a coleta de dados. Verifique se (remote starting) está habilitado",
