@@ -343,15 +343,17 @@ define(function (require) {
 
     function graphChangedDataPoint(evt) {
       ignoreDataSetEvents = true;
-      var yPro = component.drawProperty || properties[0];
-          xPro = xProp(yPro),
+      var yPro = component.drawProperty || properties[0],
+          xPro = xProp(properties.indexOf(yPro)),
           data = {};
       data[xPro] = evt.point[0];
       data[yPro] = evt.point[1];
-      if (evt.action == "added") {
+      if (evt.action === "added") {
         dataSet.appendDataPoint([xPro, yPro], data);
-      } else if (evt.action == "removed") {
-        dataSet.removeDataPoint([xPro, yPro], data);
+      } else if (evt.action === "removed") {
+        // Note that we have to find point that has exactly the same X and Y values. Unfortunately there is no
+        // guarantee that X values are unique - grapher is sometimes adding the same point twice...
+        dataSet.removeDataPoint([xPro, yPro], dataSet.dataPointIndex(data));
       }
       ignoreDataSetEvents = false;
     }

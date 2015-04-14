@@ -180,6 +180,50 @@ define(function () {
     return maxLength;
   };
 
+  DataSet.prototype.minLength = function(props) {
+    var minLength = Infinity;
+    var context = this;
+    props.forEach(function (prop) {
+      if (minLength > context._data[prop].length) minLength = context._data[prop].length;
+    });
+    return minLength;
+  };
+
+  /**
+    Returns index of a data point if all provided values are matching.
+    For example if data set has following properties and values:
+      {
+        x: [0, 1, 2, 3],
+        y: [0, 10, 20, 30]
+      }
+    then:
+      dataset.dataPointIndex({x: 2, y: 20}); // returns: 2
+      dataset.dataPointIndex({x: 2});        // returns: 2
+      dataset.dataPointIndex({x: 2, y: 99}); // returns: -1 (not found)
+   */
+  DataSet.prototype.dataPointIndex = function (values) {
+    var props = Object.keys(values);
+    var valuesLength = this.minLength(props);
+    var propsLength = props.length;
+    var allValuesMatching;
+    var prop;
+
+    for (var index = 0; index < valuesLength; index++) {
+      allValuesMatching = true;
+      for (var j = 0; j < propsLength; j++) {
+        prop = props[j];
+        if (this._data[prop][index] !== values[prop]) {
+          allValuesMatching = false;
+          break;
+        }
+      }
+      if (allValuesMatching) {
+        return index;
+      }
+    }
+    return -1;
+  };
+
   /**
     Resets data sat to its initial data. When initial data is not provided, clears data
     set (in such case this function behaves exactly like .clearData()).
@@ -224,27 +268,14 @@ define(function () {
     this._trigger(DataSet.Events.SAMPLE_ADDED, dataPoint);
   };
 
-  DataSet.prototype.removeDataPoint = function (props, values) {
-    if (!props) {
-      props = this._modelProperties;
-    }
-    var dataPoint = {},
-        context = this,
-        idx = -1;
-    // TODO Don't use the first prop, assuming it's the x property
-    props.slice(0,1).forEach(function (prop) {
-      var val = values && values[prop] !== undefined ? values[prop] : context._getModelProperty(prop);
-      if (val === undefined) return;
-      idx = context._data[prop].indexOf(val);
-      // Set the value to null
-      context._data[prop][idx] = null;
+  DataSet.prototype.removeDataPoint = function (props, index) {
+    var context = this;
+    props.forEach(function (prop) {
+      context._data[prop].splice(index, 1);
     });
 
-    if (idx != -1) {
-      this._trigger(DataSet.Events.SAMPLE_REMOVED, {props: props, values: values, index: idx});
-    }
+    this._trigger(DataSet.Events.SAMPLE_REMOVED, {props: props, index: index});
   };
-
 
   /**
     Removes all data that correspond to steps following the current step pointer. This is used when
@@ -356,7 +387,7 @@ define(function () {
         this.editDataPoint(data['index'], data['property'], data['newValue']);
         break;
       case DataSet.Events.SAMPLE_REMOVED:
-        this.removeDataPoint(data['props'], data['values']);
+        this.removeDataPoint(data['props'], data['index']);
         break;
 
       case DataSet.Events.DATA_TRUNCATED:
