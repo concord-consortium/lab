@@ -268,17 +268,12 @@ define(function () {
     this._trigger(DataSet.Events.SAMPLE_ADDED, dataPoint);
   };
 
-  DataSet.prototype.removeDataPoint = function (values) {
+  DataSet.prototype.removeDataPoint = function (props, index) {
     var context = this;
-    var props = Object.keys(values);
-    var idx = this.dataPointIndex(values);
-
-    if (idx !== -1) {
-      props.forEach(function (prop) {
-        context._data[prop][idx] = null;
-      });
-      this._trigger(DataSet.Events.SAMPLE_REMOVED, {props: props, values: values, index: idx});
-    }
+    props.forEach(function (prop) {
+      context._data[prop][index] = null;
+    });
+    this._trigger(DataSet.Events.SAMPLE_REMOVED, {props: props, index: index});
   };
 
 
@@ -392,7 +387,7 @@ define(function () {
         this.editDataPoint(data['index'], data['property'], data['newValue']);
         break;
       case DataSet.Events.SAMPLE_REMOVED:
-        this.removeDataPoint(data['values']);
+        this.removeDataPoint(data['props'], data['index']);
         break;
 
       case DataSet.Events.DATA_TRUNCATED:

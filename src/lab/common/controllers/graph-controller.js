@@ -351,9 +351,11 @@ define(function (require) {
       if (evt.action === "added") {
         dataSet.appendDataPoint([xPro, yPro], data);
       } else if (evt.action === "removed") {
-        // Make sure that data has both X and Y values, so the point can be identified.
+        // Make sure that data has both X and Y values, so the point can be clearly identified.
         // X values don't have to be unique - grapher sometimes adds the same point twice...
-        dataSet.removeDataPoint(data);
+        var idx = dataSet.dataPointIndex(data);
+        // Remove only Y property value, X property can be shared.
+        dataSet.removeDataPoint([yPro], idx);
       }
       ignoreDataSetEvents = false;
     }
