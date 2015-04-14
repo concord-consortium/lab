@@ -325,7 +325,7 @@ define(function (require) {
       var index = evt.data.index,
           props = evt.data.props;
       properties.forEach(function (prop, propIdx) {
-        if (props.indexOf(prop) != -1) {
+        if (props.indexOf(prop) !== -1) {
           grapher.deletePoint(index, propIdx);
         }
       });
@@ -343,15 +343,17 @@ define(function (require) {
 
     function graphChangedDataPoint(evt) {
       ignoreDataSetEvents = true;
-      var yPro = component.drawProperty || properties[0];
-          xPro = xProp(yPro),
+      var yPro = component.drawProperty || properties[0],
+          xPro = xProp(properties.indexOf(yPro)),
           data = {};
       data[xPro] = evt.point[0];
       data[yPro] = evt.point[1];
-      if (evt.action == "added") {
+      if (evt.action === "added") {
         dataSet.appendDataPoint([xPro, yPro], data);
-      } else if (evt.action == "removed") {
-        dataSet.removeDataPoint([xPro, yPro], data);
+      } else if (evt.action === "removed") {
+        // Make sure that data has both X and Y values, so the point can be identified.
+        // X values don't have to be unique - grapher sometimes adds the same point twice...
+        dataSet.removeDataPoint(data);
       }
       ignoreDataSetEvents = false;
     }
