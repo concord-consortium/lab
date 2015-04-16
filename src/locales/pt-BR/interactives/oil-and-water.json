@@ -1,0 +1,66 @@
+{
+  "title": "Água e óleo",
+  "publicationStatus": "sample",
+  "subtitle": "Explore como substâncias polares e não polares (apolares) interagem entre si.",
+  "about": [
+    "Provavelmente você sabe que \"água e óleo não se misturam\", mas por quê?",
+    "Este modelo contém água (polar, em azul e vermelho) e óleo (apolar, en cinza).",
+    "Inicie o modelo e observe. Depois, agite a mistura de água e óleo e reinicie o modelo.",
+    "Observe o que acontece com as moléculas com o passar do tempo."
+  ],
+  "i18nMetadata": "locales/metadata/oil-and-water.json",
+  "lang": "pt-BR",
+  "models": [
+    {
+      "type": "md2d",
+      "id": "page3$1",
+      "url": "models/oil-and-water/oil-and-water.json",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "textBoxes": [
+          {
+            "text": "Água e óleo separados",
+            "x": 1.08,
+            "y": 2.0,
+            "fontScale": 1.3,
+            "layer": 1,
+            "frame": "rounded rectangle",
+            "backgroundColor": "rgb(245,245,245)"
+          }
+        ]
+      }
+    },
+    {
+      "type": "md2d",
+      "id": "oilAndWaterMix",
+      "url": "models/oil-and-water/oil-and-water-mix.json",
+      "viewOptions": {
+        "controlButtons": "play_reset",
+        "textBoxes": [
+          {
+            "text": "Mistura de água e óleo depois de ser agitada",
+            "x": 0.45,
+            "y": 2.0,
+            "fontScale": 1.3,
+            "layer": 1,
+            "frame": "rounded rectangle",
+            "backgroundColor": "rgb(245,245,245)"
+          }
+        ]
+      }
+    }
+  ],
+  "components": [
+    {
+      "type": "button",
+      "id": "shake",
+      "text": "Agite a mistura de água e óleo",
+      "action": "loadModel('oilAndWaterMix');"
+    }
+  ],
+  "layout": {
+    "bottom": [
+      "shake"
+    ]
+  }
+}
