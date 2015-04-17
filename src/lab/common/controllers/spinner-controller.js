@@ -19,7 +19,7 @@ define(function () {
   return function SpinnerController(component, interactivesController) {
     var min, max, id, type, title, units,
         steps, initialValue, displayValue,
-        propertyName, numberFormat, displayFunc,
+        propertyName, displayFunc,
         //View Elements.
         $container,
         $title,
@@ -63,12 +63,10 @@ define(function () {
       min = component.min;
       max = component.max;
       steps  = component.steps;
-      title = component.title;
-      units = component.units;
+      title = component.title + ' (' + component.units + ')';
       initialValue = component.initialValue;
       displayValue = component.displayValue;
       propertyName = component.property;
-      numberFormat = component.numberFormat;
 
       if (min === undefined) min=0;
       if (max === undefined) max=100;
@@ -86,10 +84,8 @@ define(function () {
       $container.addClass('component');
       
       //Applying the height and width to the spinner
-      $container.css({
-        "width": component.width,
-        "height": component.height
-      });
+      $spinnerBox.width(component.width);
+      $spinnerBox.height(component.height);
 
       if (component.width === "auto") $container.css({"min-width":"12em"});
 
@@ -97,8 +93,7 @@ define(function () {
       $spinnerBox.spinner({
         step: (max - min) / steps,
         min : min,
-        max : max,
-        numberFormat : numberFormat
+        max : max
       });
 
       bindTargets();
