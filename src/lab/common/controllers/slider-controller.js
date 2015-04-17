@@ -128,7 +128,6 @@ define(function () {
           $container.css('background', '-moz-linear-gradient(left, ' + gradientStr + ')');
           $container.css('background', '-o-linear-gradient(left, ' + gradientStr + ')');
           $container.css('background', 'linear-gradient(to right, ' + gradientStr + ')');
-          console.log("Setting gradient: linear-gradient(to right, " + gradientStr + ")");
         }
       }
     }

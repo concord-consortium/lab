@@ -833,18 +833,13 @@ define(function() {
       title: {
         defaultValue: ""
       },
-      // Labels is specified by the following object:
-      // {
-      //   n: 'North'
-      //   w: 'West'
-      //   s: 'South'
-      //   e: 'East'
-      // }
       labels: {
-        // Label is specified by the following object:
+        // Labels is specified by the following object:
         // {
-        //   "value": [value, e.g. 100],
-        //   "label": [label, e.g. "High"]
+        //   n: 'North'
+        //   w: 'West'
+        //   s: 'South'
+        //   e: 'East'
         // }
         defaultValue: {n: 'N', e: 'E', s: 'S', w: 'W'}
       },
@@ -857,8 +852,15 @@ define(function() {
       height: {
         defaultValue: "auto"
       },
-      displayValue: {},
+      displayValue: {
+        // Javascript which returns a string which will be displayed below the joystick.
+        // The 'value' variable is available with the current value of the joystick,
+        // which will be an object: { magnitude: 1, direction: 0 }.
+        // ex: "return 'Aiming toward ' + value.direction + ' with speed ' + value.magnitude;"
+      },
       // Use "property" OR "action" + "initialValue".
+      // The joystick value is an object with 2 properties: magnitude and direction -- { magnitude: 1, direction: 0 }
+      // Magnitude is always normalized to 0 to 1, and direction is in radians, 0 to 2*PI.
       property: {
         // If you use property binding, do not mix it with action scripts and initial values.
         conflictsWith: ["initialValue", "action"]
@@ -896,6 +898,9 @@ define(function() {
         defaultValue: ""
       },
       colorValue: {
+        // Javascript which returns a valid css color -- #aa9933, rgb(), hsl(), etc.
+        // The 'value' variable is available with the current value of the watched property.
+        // ex: "return 'hsl('+value+',100%,50%)';"
         required: true
       },
       width: {

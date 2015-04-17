@@ -198,6 +198,8 @@ define(function () {
 
       model = interactivesController.getModel();
 
+      if (propertyName === undefined && initialValue === undefined) initialValue = { magnitude: 0, direction: 0 };
+
       // Setup view.
       // <div id="interactive-joystick">
       //   <p class="title">Wind</p>

@@ -98,38 +98,11 @@ define(function () {
       },
 
       resize: function () {
-        // var remainingHeight, emSize;
-        // if (component.height !== "auto") {
-          // Height calculation is more complex when height is different from
-          // "auto". Calculate dynamically available height for joystick itself.
-          // Note that component.height refers to the height of the *whole*
-          // component!
-          // remainingHeight = $elem.height() - $title.outerHeight(true);
-          // if ($label !== undefined) {
-          //   remainingHeight -= $label.outerHeight(true);
-          // }
-          // FIXME
-          // $container.css("height", remainingHeight);
-          // $slider.css("top", 0.5 * remainingHeight);
-          // // Handle also requires dynamic styling.
-          // emSize = parseFloat($sliderHandle.css("font-size"));
-          // $sliderHandle.css("height", remainingHeight + emSize * 0.4);
-          // $sliderHandle.css("top", -0.5 * remainingHeight - emSize * 0.4);
-        // }
       },
 
       // Returns serialized component definition.
       serialize: function () {
-        var result = $.extend(true, {}, component);
-
-        if (!propertyName) {
-          // No property binding. Just action script.
-          // Update "initialValue" to represent current
-          // value of the slider.
-          result.initialValue = 0;
-        }
-
-        return result;
+        return $.extend(true, {}, component);
       }
     };
 
