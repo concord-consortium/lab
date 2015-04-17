@@ -9,14 +9,14 @@
  * modelLoadedCallback(model)
  * resize()
 */
-define(function(){
+define(function () {
 
   var metadata        = require('common/controllers/interactive-metadata'),
       validator       = require('common/validator'), 
       disablable      = require('common/controllers/disablable'),
       helpIconSupport = require('common/controllers/help-icon-support');
 
-  return function SpinnerController(component, interactivesController){
+  return function SpinnerController(component, interactivesController) {
     var min, max, id, type, title, units,
         steps, initialValue, displayValue,
         propertyName, numberFormat, displayFunc,
@@ -30,27 +30,27 @@ define(function(){
         scriptingAPI,
         controller,
     
-        updateSpinner = function(){
+        updateSpinner = function () {
           var value = interactivesController.getModel().get(propertyName);
-          $spinnerBox.spinner('value',value);
-          if(displayValue){
+          $spinnerBox.spinner('value', value);
+          if (displayValue) {
             $spinnerBox.val(displayFunc(value));
           }
         },
-        updateSpinnerDisabledState = function(){
+        updateSpinnerDisabledState = function () {
           var description = model.getPropertyDescription(propertyName);
           controller.setDisabled(description.getFrozen());
         };
         
     // Binding the appropriate events to elements
-    function bindTargets(){
-      if(displayValue){
-        displayFunc = scriptingAPI.makeFunctionInScriptContext('value',displayValue);
+    function bindTargets() {
+      if (displayValue) {
+        displayFunc = scriptingAPI.makeFunctionInScriptContext('value', displayValue);
       }
     }
 
     // Initializing the values and structure of the component
-    function initialize(){
+    function initialize() {
 
       scriptingAPI = interactivesController.getScriptingAPI();
       model = interactivesController.getModel();
@@ -70,9 +70,9 @@ define(function(){
       propertyName = component.property;
       numberFormat = component.numberFormat;
 
-      if(min === undefined) min=0;
-      if(max === undefined) max=100;
-      if(steps === undefined) steps = 1;
+      if (min === undefined) min=0;
+      if (max === undefined) max=100;
+      if (steps === undefined) steps = 1;
 
       // Initializing the view components
       $container = $('<div class="interactive-spinner">');
@@ -91,7 +91,7 @@ define(function(){
         "height": component.height
       });
 
-      if(component.width === "auto") $container.css({"min-width":"12em"});
+      if (component.width === "auto") $container.css({"min-width":"12em"});
 
       // Initialize spinner with given values, the spinner comes in spinnerBox
       $spinnerBox.spinner({
@@ -111,9 +111,9 @@ define(function(){
       
       controller.resize();
       //Set the initial values to the spinner if it is defined
-      if(initialValue !== undefined && initialValue !== null){
-       $spinnerBox.spinner('value',initialValue);
-       if(displayValue){
+      if (initialValue !== undefined && initialValue !== null) {
+       $spinnerBox.spinner('value', initialValue);
+       if (displayValue) {
          $spinnerBox.val(displayFunc(value));
         }
       }
@@ -123,7 +123,7 @@ define(function(){
     controller = {
 
       //This is triggered when model is loaded
-      modelLoadedCallback: function(){
+      modelLoadedCallback: function () {
         if (model && propertyName) {
           model.removeObserver(propertyName, updateSpinner);
           model.removePropertyDescriptionObserver(propertyName, updateSpinnerDisabledState);
@@ -143,18 +143,18 @@ define(function(){
       },
 
       //get the HTML container of the spinner 
-      getViewContainer: function(){
+      getViewContainer: function () {
         return $container;
       },
 
       //when the browser window resizes
-      resize: function(){
+      resize: function () {
 
       },
 
       //Returns serialized component definition
-      serialize: function(){
-        var result = $.extend(true,{},component);
+      serialize: function () {
+        var result = $.extend(true, {}, component);
         
         if(!propertyName){
           result.initialValue = $spinnerBox.spinner('value');
