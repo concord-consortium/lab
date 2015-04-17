@@ -172,7 +172,7 @@ define(function(require) {
         position = this.perRunColumnLabelPositions[label];
 
         if (i === 0) {
-          perRunColumnLabels[position] = { name: label, formula: "caseIndex" };
+          perRunColumnLabels[position] = { name: label, formula: "caseIndex" , type:"nominal"};
           perRunColumnValues[position] = null;
         } else {
           perRunColumnLabels[position] = { name: label };
