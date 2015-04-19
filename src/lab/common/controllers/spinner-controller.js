@@ -17,20 +17,20 @@ define(function () {
       helpIconSupport = require('common/controllers/help-icon-support');
 
   return function SpinnerController(component, interactivesController) {
-    var min, max, id, type, title, units,
-        steps, initialValue, displayValue,
+    var min, max, id, title, steps,
+        actionFunc, initialValue, displayValue,
         propertyName, displayFunc,
         //View Elements.
         $container,
         $title,
         $spinnerBox,
-        $spinnnerValue,
         $spinnerButtonUp,
         $spinnerButtonDown,
         model,
         scriptingAPI,
         controller,
-    
+        
+        //Updates spinner using model property. used in modelLoadedCallBack.
         updateSpinner = function () {
           var value = interactivesController.getModel().get(propertyName);
           $spinnerBox.spinner('value', value);
@@ -45,19 +45,20 @@ define(function () {
         
     // Binding the appropriate events to elements
     function bindTargets() {
-      
+      //bind action to the buttons
+      //uses $spinnerButtonUp and $spinnerButtonDown for easy separation of concerns in the future
       if (component.action) {
         actionFunc = scriptingAPI.makeFunctionInScriptContext('value');
-        $spinnerButtonUp.bind('click', function(event){
-          value = $spinnerBox.spinner('value');
+        $spinnerButtonUp.bind('click', function(){
+          var value = $spinnerBox.spinner('value');
           actionFunc(value);
           if (displayValue) {
             $spinnerBox.val(displayFunc(value));
           }
         });
 
-        $spinnerButtonDown.bind('click', function(event){
-          value = $spinnerBox.spinner('value');
+        $spinnerButtonDown.bind('click', function(){
+          var value = $spinnerBox.spinner('value');
           actionFunc(value);
           if (displayValue) {
             $spinnerBox.val(displayFunc(value));
@@ -65,20 +66,21 @@ define(function () {
         });
       }
 
+      //binding the property values
       if (propertyName) {
-        $spinnerButtonUp.bind('click', function(event) {
+        $spinnerButtonUp.bind('click', function() {
           var obj = {};
-          value = $spinnerBox.spinner('value')
+          var value = $spinnerBox.spinner('value');
           obj[propertyName] = value;
           if (model) model.set(obj);
           if (displayValue) {
             $spinnerBox.val(displayFunc(value));
           }
         });
-        
-        $spinnerButtonDown.bind('click', function(event) {
+
+        $spinnerButtonDown.bind('click', function() {
           var obj = {};
-          value = $spinnerBox.spinner('value')
+          var value = $spinnerBox.spinner('value');
           obj[propertyName] = value;
           if (model) model.set(obj);
           if (displayValue) {
@@ -155,7 +157,7 @@ define(function () {
       if (initialValue !== undefined && initialValue !== null) {
        $spinnerBox.spinner('value', initialValue);
        if (displayValue) {
-         $spinnerBox.val(displayFunc(value));
+         $spinnerBox.val(displayFunc(initialValue));
         }
       }
     }
