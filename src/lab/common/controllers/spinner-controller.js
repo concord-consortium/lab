@@ -25,7 +25,8 @@ define(function () {
         $title,
         $spinnerBox,
         $spinnnerValue,
-        $spinnerButtons,
+        $spinnerButtonUp,
+        $spinnerButtonDown,
         model,
         scriptingAPI,
         controller,
@@ -44,6 +45,28 @@ define(function () {
         
     // Binding the appropriate events to elements
     function bindTargets() {
+
+      if (propertyName) {
+        $spinnerButtonUp.bind('click', function(event) {
+          var obj = {};
+          value = $spinnerBox.spinner('value')
+          obj[propertyName] = value;
+          if (model) model.set(obj);
+          if (displayValue) {
+            $spinnerBox.val(displayFunc(value));
+          }
+        });
+        $spinnerButtonDown.bind('click', function(event) {
+          var obj = {};
+          value = $spinnerBox.spinner('value')
+          obj[propertyName] = value;
+          if (model) model.set(obj);
+          if (displayValue) {
+            $spinnerBox.val(displayFunc(value));
+          }
+        });
+      }
+
       if (displayValue) {
         displayFunc = scriptingAPI.makeFunctionInScriptContext('value', displayValue);
       }
@@ -95,6 +118,9 @@ define(function () {
         min : min,
         max : max
       });
+
+      $spinnerButtonUp = $container.find(".ui-spinner-up");
+      $spinnerButtonDown = $container.find(".ui-spinner-down");
 
       bindTargets();
       if (component.tooltip) {
