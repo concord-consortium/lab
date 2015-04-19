@@ -737,10 +737,6 @@ define(function() {
       initialValue: {
         conflictsWith: ["property"]
       },
-      numberFormat: {
-        //for the format in which value will be displayed
-        defaultValue: "f"
-      },
       units: {
         defaultValue: ""
       },

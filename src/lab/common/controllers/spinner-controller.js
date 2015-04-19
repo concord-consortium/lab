@@ -45,6 +45,25 @@ define(function () {
         
     // Binding the appropriate events to elements
     function bindTargets() {
+      
+      if (component.action) {
+        actionFunc = scriptingAPI.makeFunctionInScriptContext('value');
+        $spinnerButtonUp.bind('click', function(event){
+          value = $spinnerBox.spinner('value');
+          actionFunc(value);
+          if (displayValue) {
+            $spinnerBox.val(displayFunc(value));
+          }
+        });
+
+        $spinnerButtonDown.bind('click', function(event){
+          value = $spinnerBox.spinner('value');
+          actionFunc(value);
+          if (displayValue) {
+            $spinnerBox.val(displayFunc(value));
+          }
+        });
+      }
 
       if (propertyName) {
         $spinnerButtonUp.bind('click', function(event) {
@@ -56,6 +75,7 @@ define(function () {
             $spinnerBox.val(displayFunc(value));
           }
         });
+        
         $spinnerButtonDown.bind('click', function(event) {
           var obj = {};
           value = $spinnerBox.spinner('value')
