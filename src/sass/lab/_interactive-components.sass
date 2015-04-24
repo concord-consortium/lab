@@ -292,14 +292,21 @@
   // Style jQuery UI classes.
   .ui-slider
     // make inner line not as wide as container
-    width: 94%
-    height: 0
-    left: 3%
-    top: 0.5em
+    &.horizontal
+      width: 94%
+      height: 0
+      left: 3%
+      top: 0.5em
+    &.vertical
+      height: 94%
+      width: 0
+      top: 3%
+      left: 47.5%
     border-color: #999
   .ui-slider-handle
     text-decoration: none
-    top: -1em
+    &.horizontal
+      top: -1em
     // This is default height of slider handle, when slider height is set to "auto".
     // Otherwise, it will be overwritten by dynamically calculated value.
     height: 1.75em
@@ -311,7 +318,11 @@
     min-width: 2em
     min-height: 2em
     // center circle over left edge
-    margin-left: -1em
+    &.vertical
+      position: absolute
+      margin-bottom: -1em
+    &.horizontal
+      margin-left: -1em
     border-radius: 4em
     padding: 0.35em 0.5em 0em 0.5em
     // make more 3d
@@ -333,25 +344,38 @@
   .container
     // This is default height of slider, when its height is set to "auto".
     // Otherwise, it will be overwritten by dynamically calculated value.
-    height: 1.1em
+    &.horizontal
+      height: 1.1em
+    &.vertical
+      width: 1.1em
     // make this a positioned element so the .label can be positioned absolute
     position: relative
     // bottom margin has to account for size of labels, which are taken out of flow
-    margin-bottom: 1em
+    &.horizontal
+      margin-bottom: 1em
     // follow width of the most outer container
-    width: 100%
+    &.horizontal
+      width: 100%
     background-color: rgba(0, 0, 0, 0.085)
     border-radius: 0.4em
     .label
       position: absolute
       display: inline-block
-      top: 100%
+      &.horizontal
+        top: 100%
       // "width: 2x; margin-left: -x; left: y%" places the center of the .label at exactly y%
       // of the width of the parent
       width: 6em
-      margin: 0.2em 0 0 -3em
+      &.horizontal
+        margin: 0.2em 0 0 -3em
+      &.vertical
+        margin: 0 0 0 0
       // Now, make the text itself centered in the .label element
-      text-align: center
+      &.horizontal
+        text-align: center
+      // Make text left aligned when in vertical
+      &.vertical
+        text-align: right
       // And finally, make the position labels a bit smaller than the title and other text
       font-size: 0.8em
 

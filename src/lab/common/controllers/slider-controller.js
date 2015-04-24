@@ -9,13 +9,14 @@ define(function () {
 
   return function SliderController(component, interactivesController) {
     var min, max, steps, propertyName,
-        actionFunc, initialValue,
+        actionFunc, initialValue, sliderOrientation,
         title, labels, displayValue, displayFunc,
         i, label,
         // View elements.
         $elem,
         $title,
         $label,
+        $labelContainer,
         $slider,
         $sliderHandle,
         $container,
@@ -62,6 +63,9 @@ define(function () {
           if (model) model.set(obj);
           if (displayValue) {
             $sliderHandle.text(displayFunc(ui.value));
+            if (component.orientation == "vertical") {
+              $sliderHandle.css("left", -((parseFloat($sliderHandle.css("width"))) * .5))
+            }
           }
         });
       }
@@ -82,6 +86,7 @@ define(function () {
       min = component.min;
       max = component.max;
       steps = component.steps;
+      sliderOrientation = component.orientation;
       propertyName = component.property;
       initialValue = component.initialValue;
       title = component.title;
@@ -102,6 +107,7 @@ define(function () {
       $slider.appendTo($container);
 
       $slider.slider({
+        orientation: sliderOrientation,
         min: min,
         max: max,
         step: (max - min) / steps
@@ -116,12 +122,37 @@ define(function () {
                 .append($container);
       // Each interactive component has to have class "component".
       $elem.addClass("component");
+      // Add class defining component orientation - "horizontal" or "vertical".
+      $container.addClass(sliderOrientation);
+      $elem.addClass(sliderOrientation);
+      $slider.addClass(sliderOrientation);
+      $sliderHandle.addClass(sliderOrientation);
 
+      $labelContainer = $('<div></div>');
+      $labelContainer.addClass(sliderOrientation);
+      $container.append($labelContainer);
       for (i = 0; i < labels.length; i++) {
         label = labels[i];
         $label = $('<p class="label">' + label.label + '</p>');
-        $label.css('left', (label.value-min) / (max-min) * 100 + '%');
-        $container.append($label);
+        $label.addClass(sliderOrientation);
+        if (sliderOrientation === "vertical") {
+          // vertical calculation more complicated.
+          // we want percentage of container height (element minus title height)
+          // 12em is the min height of the vertical slider
+          // 1em is the height of the title, .3em is the bottom margin of title
+          // since the font-size of labels is 0.8em, we need to scale up
+          var componentHeight;
+          if(component.height == "auto") {
+            componentHeight = 12;
+          } else {
+            componentHeight = parseFloat(component.height);
+          }
+          var remainingHeight = componentHeight - 1.3;
+          $label.css('top', (label.value-max) / (min-max) * ((remainingHeight - 1.2) / 0.8) + 'em');
+        } else {
+          $label.css('left', (label.value-min) / (max-min) * 100 + '%');
+        }
+        $labelContainer.append($label);
       }
 
       bindTargets();
@@ -146,11 +177,18 @@ define(function () {
         "width": component.width,
         "height": component.height
       });
-      if (component.width === "auto") {
+      if (component.width === "auto" && sliderOrientation === "horizontal") {
         // Ensure that min width is 12em, when width is set to "auto".
         // Prevent from situation when all sliders with short labels have
         // different widths, what looks distracting.
         $elem.css("min-width", "12em");
+      }
+      if (component.height === "auto" && sliderOrientation === "vertical") {
+        // Ensure that min height is 12em, when height is set to "auto".
+        // Prevent from situation when all sliders with short labels have
+        // different widths, what looks distracting.
+        $elem.css("height", "12em");
+        $elem.css("min-height", "12em");
       }
       // Call resize function to support complex resizing when height is different from "auto".
       controller.resize();
@@ -192,8 +230,8 @@ define(function () {
       },
 
       resize: function () {
-        var remainingHeight, emSize;
-        if (component.height !== "auto") {
+        var remainingHeight, emSize, remainingWidth, containerWidth, sliderWidth;
+        if (component.height !== "auto" && sliderOrientation === "horizontal") {
           // Height calculation is more complex when height is different from
           // "auto". Calculate dynamically available height for slider itself.
           // Note that component.height refers to the height of the *whole*
@@ -208,6 +246,41 @@ define(function () {
           emSize = parseFloat($sliderHandle.css("font-size"));
           $sliderHandle.css("height", remainingHeight + emSize * 0.4);
           $sliderHandle.css("top", -0.5 * remainingHeight - emSize * 0.4);
+        } else if (component.width !== "auto" && sliderOrientation === "vertical") {
+          remainingWidth = $elem.width();
+          // all labels have the same width, so the last one is just fine.
+          // (more text in label gets pushed to another line)
+          $container.css("width", remainingWidth);
+          emSize = parseFloat($sliderHandle.css("font-size"));
+          $sliderHandle.css("width", remainingWidth + emSize * 0.4);
+        }
+        if(sliderOrientation === "vertical") {
+          // make sure slider handle is (initially) centered
+          sliderWidth = parseFloat($sliderHandle.css("width"));
+          $sliderHandle.css("left", -((sliderWidth) * .5));
+          // find out what max slider width will be, wihtout messing it up
+          var tmp = parseFloat($sliderHandle.text());
+          if (!isNaN(tmp)) {
+            $sliderHandle.text(displayFunc(max));
+            sliderWidth = parseFloat($sliderHandle.css("width"));
+            $sliderHandle.text(displayFunc(tmp));
+          }
+          //make the container height fill the element, minus the title height
+          remainingHeight = $elem.height() - $title.outerHeight(true);
+          $container.css("height", remainingHeight);
+
+          // position container to the left, labels to the right.
+          $labelContainer.css("position", "absolute");
+          $labelContainer.css("top", 0);
+          containerWidth = parseFloat($container.css("width"));
+          if ($label !== undefined) {
+            var containerLeft;
+            containerLeft = $label.outerWidth(true) + (sliderWidth - containerWidth) / 2;
+            $container.css("left", containerLeft);
+            //add a few pixels so it's not right next to the handle
+            $labelContainer.css("left", -containerLeft - 5);
+          }
+
         }
       },
 
