@@ -737,9 +737,6 @@ define(function() {
       initialValue: {
         conflictsWith: ["property"]
       },
-      units: {
-        defaultValue: ""
-      },
       tooltip: {
         defaultValue: ""
       },

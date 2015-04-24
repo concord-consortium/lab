@@ -48,7 +48,7 @@ define(function () {
       //bind action to the buttons
       //uses $spinnerButtonUp and $spinnerButtonDown for easy separation of concerns in the future
       if (component.action) {
-        actionFunc = scriptingAPI.makeFunctionInScriptContext('value');
+        actionFunc = scriptingAPI.makeFunctionInScriptContext('value', component.action);
         $spinnerButtonUp.bind('click', function(){
           var value = $spinnerBox.spinner('value');
           actionFunc(value);
@@ -108,7 +108,7 @@ define(function () {
       min = component.min;
       max = component.max;
       steps  = component.steps;
-      title = component.title + ' (' + component.units + ')';
+      title = component.title;
       initialValue = component.initialValue;
       displayValue = component.displayValue;
       propertyName = component.property;
@@ -199,7 +199,7 @@ define(function () {
       serialize: function () {
         var result = $.extend(true, {}, component);
         
-        if(!propertyName){
+        if (!propertyName) {
           result.initialValue = $spinnerBox.spinner('value');
         }
         return result;
