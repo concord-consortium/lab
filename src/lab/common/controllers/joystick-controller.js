@@ -60,10 +60,7 @@ define(function () {
 
       if (propertyName) {
         valueChanged = function(value) {
-          // Just ignore move events that occur before the model is loaded.
-          var obj = {};
-          obj[propertyName] = value;
-          if (model) model.set(obj);
+          if (model) model.properties[propertyName] = value;
           if (displayValue) {
             $valueText.text(displayFunc(value));
           }
