@@ -240,8 +240,6 @@ define(function () {
       $valueText = $('<div class="value"></div>');
       $elem.append($valueText);
 
-      bindTargets();
-
       if (component.tooltip) {
         $elem.attr("title", component.tooltip);
       }
