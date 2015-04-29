@@ -156,16 +156,37 @@
     margin: 0 0.4em 0 0
     padding: 0
     background: #E6E7E8
+    border: 1px solid #D6D7D8
     &.right
       margin: 0 0 0 0.4em
-    &.checked:before
-      content: ""
-      background: #58595b
+    &.checked:after
+      -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"
+      filter: alpha(opacity=100)
+      opacity: 1
+    &:after
+      -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"
+      filter: alpha(opacity=0)
+      opacity: 0
+      content: ''
       position: absolute
-      top: 0.22197em
-      left: 0.22197em
-      right: 0.22197em
-      bottom: 0.22197em
+      width: 0.6em
+      height: 0.3em
+      background: transparent
+      top: 0.1em
+      left: 0.1em
+      border: 0.21em solid rgb(97, 96, 96)
+      border-top: none
+      border-right: none
+
+      -webkit-transform: rotate(-45deg)
+      -moz-transform: rotate(-45deg)
+      -o-transform: rotate(-45deg)
+      -ms-transform: rotate(-45deg)
+      transform: rotate(-45deg)
+    &:hover:after
+      -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)"
+      filter: alpha(opacity=30)
+      opacity: 0.3
 
 .interactive-table
   div.title
@@ -328,8 +349,15 @@
     display: inline-block
     font-size: 1em
     white-space: nowrap
-    margin: 0 0 0.3em 0
     vertical-align: top
+    &.top
+      margin: 0 0 0.3em 0
+    &.bottom
+      margin: 0.3em 0 0 0
+    &.left
+      margin: 0 0.3em 0 0
+    &.right
+      margin: 0 0 0 0.3em
   .container
     // This is default height of slider, when its height is set to "auto".
     // Otherwise, it will be overwritten by dynamically calculated value.
@@ -354,6 +382,53 @@
       text-align: center
       // And finally, make the position labels a bit smaller than the title and other text
       font-size: 0.8em
+
+.interactive-joystick
+  .title
+    width: 100%
+    text-align: left
+  .container
+    position: relative
+  .base
+    position: absolute
+    background-color: lightgray
+    padding: 0px
+    -moz-box-shadow:    inset 2px 2px 3px #888888
+    -webkit-box-shadow: inset 2px 2px 3px #888888
+    box-shadow:         inset 2px 2px 3px #888888
+
+    .handle
+      position: relative
+      background-color: red
+      margin: 0px
+      padding: 0px
+      -moz-box-shadow:    3px 3px 3px #888888
+      -webkit-box-shadow: 3px 3px 3px #888888
+      box-shadow:         3px 3px 3px #888888
+      cursor: pointer
+  .label
+    position: absolute
+    &.e
+      top: 50%
+      margin-top: -0.5em
+    &.w
+      top: 50%
+      margin-top: -0.5em
+    &.s
+      bottom: 0
+      left: 0
+    &.n
+      top: 0
+      left: 0
+  .value
+    position: relative
+    text-align: center
+
+.interactive-color-indicator
+  .swatch
+    height: 1.5em
+    width: 2.5em
+    border: 1px solid black
 
 .textBoxBody
   font-family: inherit

@@ -576,6 +576,11 @@ define(function() {
       title: {
         defaultValue: ""
       },
+      titlePosition: {
+        defaultValue: "top" // valid options: top, bottom, left, right
+      },
+      fillColor: {},
+      fillToValue: {},
       labels: {
         // Label is specified by the following object:
         // {
@@ -815,6 +820,108 @@ define(function() {
         //   "label": [label, e.g. "High"]
         // }
         defaultValue: []
+      }
+    },
+
+    joystick: {
+      id: {
+        required: true
+      },
+      type: {
+        required: true
+      },
+      title: {
+        defaultValue: ""
+      },
+      labels: {
+        // Labels is specified by the following object:
+        // {
+        //   n: 'North'
+        //   w: 'West'
+        //   s: 'South'
+        //   e: 'East'
+        // }
+        defaultValue: {n: 'N', e: 'E', s: 'S', w: 'W'}
+      },
+      scale: {
+        defaultValue: 1
+      },
+      width: {
+        defaultValue: "auto"
+      },
+      height: {
+        defaultValue: "auto"
+      },
+      displayValue: {
+        // Javascript which returns a string which will be displayed below the joystick.
+        // The 'value' variable is available with the current value of the joystick,
+        // which will be an object: { magnitude: 1, direction: 0 }.
+        // ex: "return 'Aiming toward ' + value.direction + ' with speed ' + value.magnitude;"
+      },
+      // Use "property" OR "action" + "initialValue".
+      // The joystick value is an object with 2 properties: magnitude and direction -- { magnitude: 1, direction: 0 }
+      // Magnitude is always normalized to 0 to 1, and direction is in radians, 0 to 2*PI.
+      property: {
+        // If you use property binding, do not mix it with action scripts and initial values.
+        conflictsWith: ["initialValue", "action"]
+      },
+      retainProperty: {
+        // If property binding is used (so 'property' is defined), this flag decides whether
+        // property should be retained during model reload / reset or not.
+        defaultValue: true
+      },
+      action: {
+        conflictsWith: ["property"]
+      },
+      initialValue: {
+        conflictsWith: ["property"]
+      },
+      disabled: {
+        defaultValue: false
+      },
+      tooltip: {
+        defaultValue: ""
+      },
+      helpIcon: {
+        defaultValue: false
+      }
+    },
+
+    colorIndicator: {
+      id: {
+        required: true
+      },
+      type: {
+        required: true
+      },
+      title: {
+        defaultValue: ""
+      },
+      colorValue: {
+        // Javascript which returns a valid css color -- #aa9933, rgb(), hsl(), etc.
+        // The 'value' variable is available with the current value of the watched property.
+        // ex: "return 'hsl('+value+',100%,50%)';"
+        required: true
+      },
+      width: {
+        defaultValue: "auto"
+      },
+      height: {
+        defaultValue: "auto"
+      },
+      property: {
+        required: true
+      },
+      retainProperty: {
+        // This flag decides whether
+        // property should be retained during model reload / reset or not.
+        defaultValue: true
+      },
+      tooltip: {
+        defaultValue: ""
+      },
+      helpIcon: {
+        defaultValue: false
       }
     },
 
