@@ -68,25 +68,6 @@ define(function () {
       }
 
       if (displayValue) {
-        scriptingAPI.api.getCardinalDirection = function(angle, inverse) {
-          var direction = ["", ""];
-          if (angle > Math.PI/8 && angle < Math.PI*7/8)
-            direction[0] = inverse ? "S" : "N";
-          else if (angle > Math.PI*9/8 && angle < Math.PI*15/8)
-            direction[0] = inverse ? "N" : "S";
-          if (angle < Math.PI*3/8 || angle > Math.PI*13/8) {
-            direction[1] = inverse ? "W" : "E";
-          } else if (angle > Math.PI*5/8 && angle < Math.PI*11/8) {
-            direction[1] = inverse ? "E" : "W";
-          }
-          return direction.join("");
-        };
-
-        scriptingAPI.api.getCompassDirection = function(angle, inverse) {
-          angle = (angle + Math.PI*3/2) % (2*Math.PI);
-          var deg = 360 - angle * 180 / Math.PI;
-          return inverse ? (180 + deg) % 360 : deg;
-        };
         displayFunc = scriptingAPI.makeFunctionInScriptContext('value', displayValue);
       }
     }
