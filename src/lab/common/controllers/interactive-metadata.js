@@ -430,8 +430,14 @@ define(function() {
       },
       src: {
         // Absolute path should start with http(s)://
-        // Relative path is relative to model URL.
+        // Relative path is relative to model URL, unless specified
+        // by urlRelativeTo.
         defaultValue: ""
+      },
+      urlRelativeTo: {
+        // Specifies the url with which relative urls in src are resolved.
+        // Possible values: model, page
+        defaultValue: "model"
       },
       width: {
         defaultValue: "auto"

@@ -49,7 +49,7 @@ define(function (require) {
    * Implements optional callback supported by Interactive Controller.
    */
   ImageController.prototype.modelLoadedCallback = function() {
-    var src, modelUrl;
+    var src, modelUrl, urlRelativeTo;
     // It's necessary to update path only if its relative (as it's relative to
     // model file).
     if (!this._externalUrl) {
@@ -58,7 +58,18 @@ define(function (require) {
       // follow pattern used for images inside model container.
       // TODO: not sure if it makes sense for the Interactive images. When web
       // application is ready, probably it will be changed anyway.
-      modelUrl = this._controller.modelController.modelUrl;
+      urlRelativeTo = this.component.urlRelativeTo;
+
+      switch(urlRelativeTo) {
+        case 'page':
+          modelUrl = '';
+          break;
+        case 'model':
+        default:
+          modelUrl = this._controller.modelController.modelUrl || '';
+          break;
+      }
+
       // Remove <model-name>.json from url.
       modelUrl = modelUrl.slice(0, modelUrl.lastIndexOf("/") + 1);
       src = labConfig.modelsRootUrl + modelUrl + src;
