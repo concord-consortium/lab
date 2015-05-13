@@ -20,6 +20,53 @@ Embeddable.sendGAPageview = function (){
 };
 
 Embeddable.load = function(interactiveUrl, containerSelector, callbacks) {
+  // Fix mouse dragging when the mouse goes into an iframe child, or leaves the iframe we're in
+  (function() {
+    var blocker = null,
+        protectAllIframes = function() {
+          $('iframe').each(function() {
+            var iframe = $(this),
+                offset = iframe.offset();
+            blocker = $('<div class="drag-blocker"></div>');
+            blocker.css({position: 'absolute', top: offset.top, left: offset.left, width: iframe.width(), height: iframe.height(), zIndex: 1000 });
+            $(document.body).append(blocker);
+          });
+        },
+        mouseMove = function() {
+          $(window).off("mousemove", mouseMove);
+          $('.drag-blocker').remove();
+          protectAllIframes();
+        },
+        mouseLeave = function() {
+          // If we don't trigger immediately, it's possible that the user could release
+          // the mouse outside of our frame and return back into our frame within our timeout
+          // period, and we'd miss the mouseup and have the same old problem we're trying
+          // to fix.
+
+          var stillGone = true,
+              cameBack = function() { stillGone = false; };
+          setTimeout(function() {
+            $(window).off('mousemove', cameBack);
+            // Trigger if the mouse never came back (we'll assume we're still dragging)
+            if (stillGone) {
+              $(document).trigger('mouseup');
+            }
+          }, 500);
+          $(window).on('mousemove', cameBack);
+        },
+        mouseDown = function() {
+          $(window).on('mousemove', mouseMove);
+          $(document).on('mouseleave', mouseLeave);
+        },
+        mouseUp = function() {
+          $(window).off("mousemove", mouseMove);
+          $(document).off("mouseleave", mouseLeave);
+          $('.drag-blocker').remove();
+        };
+
+    $(document).on('mousedown', mouseDown).on('mouseup', mouseUp);
+  })();
+
   callbacks = callbacks || {};
 
   function loadLabInteractive(interactiveJSON) {
