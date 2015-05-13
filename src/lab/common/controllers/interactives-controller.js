@@ -531,6 +531,10 @@ define(function (require) {
         hash representing the interactive specification
     */
     function loadInteractive(newInteractive) {
+      if (!newInteractive.url && controller.interactive.url) {
+        // Transfer the old url to this new interactive, assuming it's being loaded via the editor.
+        newInteractive.url = controller.interactive.url;
+      }
       // Cleanup container!
       $interactiveContainer.empty();
 

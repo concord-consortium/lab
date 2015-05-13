@@ -7,6 +7,7 @@ define(function() {
       Interactive top-level properties:
     */
     interactive: {
+      url: {},  // Set automatically by embeddable.js
       title: {
         required: true
       },
@@ -436,7 +437,7 @@ define(function() {
       },
       urlRelativeTo: {
         // Specifies the url with which relative urls in src are resolved.
-        // Possible values: model, page
+        // Possible values: model, interactive, page
         defaultValue: "model"
       },
       width: {

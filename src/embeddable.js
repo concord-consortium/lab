@@ -70,6 +70,7 @@ Embeddable.load = function(interactiveUrl, containerSelector, callbacks) {
   callbacks = callbacks || {};
 
   function loadLabInteractive(interactiveJSON) {
+    interactiveJSON.url = interactiveUrl;
     Embeddable.controller = new Lab.InteractivesController(interactiveJSON, containerSelector);
     if (callbacks.controllerReady) callbacks.controllerReady(Embeddable.controller);
   }

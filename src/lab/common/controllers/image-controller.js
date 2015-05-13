@@ -61,6 +61,9 @@ define(function (require) {
       urlRelativeTo = this.component.urlRelativeTo;
 
       switch(urlRelativeTo) {
+        case 'interactive':
+          modelUrl = this._controller.interactive.url || '';
+          break;
         case 'page':
           modelUrl = '';
           break;
