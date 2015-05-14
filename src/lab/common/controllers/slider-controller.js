@@ -174,6 +174,7 @@ define(function () {
       });
 
       if (fillColor) {
+        $slider.addClass('has-fill');
         $slider.on('slide', function(evt, ui) {
           redoSliderFill(ui.value);
         });
