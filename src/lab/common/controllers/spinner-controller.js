@@ -132,8 +132,6 @@ define(function () {
       $spinnerBox.width(component.width);
       $spinnerBox.height(component.height);
 
-      if (component.width === "auto") $container.css({"min-width":"12em"});
-
       // Initialize spinner with given values, the spinner comes in spinnerBox
       $spinnerBox.spinner({
         step: (max - min) / steps,
