@@ -24,8 +24,6 @@ define(function () {
         $container,
         $title,
         $spinnerBox,
-        $spinnerButtonUp,
-        $spinnerButtonDown,
         model,
         scriptingAPI,
         controller,
@@ -46,45 +44,25 @@ define(function () {
     // Binding the appropriate events to elements
     function bindTargets() {
       //bind action to the buttons
-      //uses $spinnerButtonUp and $spinnerButtonDown for easy separation of concerns in the future
+      
       if (component.action) {
         actionFunc = scriptingAPI.makeFunctionInScriptContext('value', component.action);
-        $spinnerButtonUp.bind('click', function(){
-          var value = $spinnerBox.spinner('value');
-          actionFunc(value);
+        $spinnerBox.bind('spin', function(event, ui){
+          actionFunc(ui.value);
           if (displayValue) {
-            $spinnerBox.val(displayFunc(value));
-          }
-        });
-
-        $spinnerButtonDown.bind('click', function(){
-          var value = $spinnerBox.spinner('value');
-          actionFunc(value);
-          if (displayValue) {
-            $spinnerBox.val(displayFunc(value));
+            $spinnerBox.val(displayFunc(ui.value));
           }
         });
       }
 
       //binding the property values
       if (propertyName) {
-        $spinnerButtonUp.bind('click', function() {
+        $spinnerBox.bind('spin', function(event, ui) {
           var obj = {};
-          var value = $spinnerBox.spinner('value');
-          obj[propertyName] = value;
+          obj[propertyName] = ui.value;
           if (model) model.set(obj);
           if (displayValue) {
-            $spinnerBox.val(displayFunc(value));
-          }
-        });
-
-        $spinnerButtonDown.bind('click', function() {
-          var obj = {};
-          var value = $spinnerBox.spinner('value');
-          obj[propertyName] = value;
-          if (model) model.set(obj);
-          if (displayValue) {
-            $spinnerBox.val(displayFunc(value));
+            $spinnerBox.val(displayFunc(ui.value));
           }
         });
       }
@@ -138,9 +116,6 @@ define(function () {
         min : min,
         max : max
       });
-
-      $spinnerButtonUp = $container.find(".ui-spinner-up");
-      $spinnerButtonDown = $container.find(".ui-spinner-down");
 
       bindTargets();
       if (component.tooltip) {
