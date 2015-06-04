@@ -466,6 +466,9 @@ define(function() {
       content: {
         defaultValue: ""
       },
+      src: {
+        defaultValue: ""
+      },
       width: {
         defaultValue: "auto"
       },

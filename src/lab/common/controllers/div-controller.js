@@ -17,10 +17,21 @@ define(function (require) {
     // Call super constructor.
     InteractiveComponent.call(this, "div", component, scriptingAPI, controller);
     var content = component.content;
-    if (content && content.join) {
-      content = content.join("\n");
+    var divController = this;
+    if (component.src) {
+
+      $.ajax(component.src, {
+        dataType: "html",
+        complete: function (data){
+          divController.$element.append(data.responseText);
+        }
+      });
+    } else {
+      if (content && content.join) {
+        content = content.join("\n");
+      }
+      this.$element.append(content);
     }
-    this.$element.append(content);
   }
   inherit(DivController, InteractiveComponent);
 
