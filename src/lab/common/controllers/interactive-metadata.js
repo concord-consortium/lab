@@ -464,10 +464,10 @@ define(function() {
         required: true
       },
       content: {
-        defaultValue: ""
+        conflictsWith: ["src"]
       },
       src: {
-        defaultValue: ""
+        conflictsWith: ["content"]
       },
       width: {
         defaultValue: "auto"
