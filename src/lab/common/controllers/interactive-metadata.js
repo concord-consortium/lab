@@ -590,9 +590,11 @@ define(function() {
       labels: {
         // Label is specified by the following object:
         // {
-        //   "value": [value, e.g. 100],
+        //   "value": [number or "left" or "right"],
         //   "label": [label, e.g. "High"]
         // }
+        // Note that a label with "value": "left" (or "right") will be displayed to the left (or right) of the slider,
+        // instead of underneath.
         defaultValue: []
       },
       width: {

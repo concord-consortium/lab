@@ -200,12 +200,49 @@ define(function () {
       // Each interactive component has to have class "component".
       $elem.addClass("component");
 
+      // Apply custom width and height settings.
+      // Also not that we set dimensions of the most outer container, not slider.
+      // Slider itself will always follow dimensions of container DIV.
+      // We have to do it that way to ensure that labels refer correct dimensions.
+      $elem.css({
+        "width": component.width,
+        "height": component.height
+      });
+      if (component.width === "auto") {
+        // Ensure that min width is 12em, when width is set to "auto".
+        // Prevent from situation when all sliders with short labels have
+        // different widths, what looks distracting.
+        $elem.css("min-width", "12em");
+      }
+
+      var leftLabelWidth = null;
+      var rightLabelWidth = null;
+      var getLabelWidth = function($label) {
+        return $label.measure(function() {
+          // Calculate width in ems (!).
+          return (this.width() / parseFloat(this.css('font-size')));
+        }, null, interactivesController.interactiveContainer);
+      };
       for (i = 0; i < labels.length; i++) {
         label = labels[i];
         $label = $('<p class="label">' + label.label + '</p>');
-        $label.css('left', (label.value-min) / (max-min) * 100 + '%');
+        if (label.value === 'right') {
+          // Special kind of label which is on the right side of the slider.
+          rightLabelWidth = getLabelWidth($label);
+          $label.addClass('side');
+          $label.css('left', '101%');
+        } else if (label.value === 'left') {
+          // Special kind of label which is on the left side of the slider.
+          leftLabelWidth = getLabelWidth($label);
+          $label.addClass('side');
+          $label.css('left', (-leftLabelWidth) + 'em');
+        } else {
+          $label.css('left', (label.value - min) / (max - min) * 100 + '%');
+        }
         $container.append($label);
       }
+      if (leftLabelWidth) $elem.css('margin-left', leftLabelWidth + 'em');
+      if (rightLabelWidth) $elem.css('margin-right', rightLabelWidth + 'em');
 
       bindTargets();
 
@@ -221,20 +258,6 @@ define(function () {
           event.stopPropagation();
       });
 
-      // Apply custom width and height settings.
-      // Also not that we set dimensions of the most outer container, not slider.
-      // Slider itself will always follow dimensions of container DIV.
-      // We have to do it that way to ensure that labels refer correct dimensions.
-      $elem.css({
-        "width": component.width,
-        "height": component.height
-      });
-      if (component.width === "auto") {
-        // Ensure that min width is 12em, when width is set to "auto".
-        // Prevent from situation when all sliders with short labels have
-        // different widths, what looks distracting.
-        $elem.css("min-width", "12em");
-      }
       // Call resize function to support complex resizing when height is different from "auto".
       controller.resize();
 
