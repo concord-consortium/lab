@@ -46,21 +46,21 @@ Embeddable.load = function(interactiveUrl, containerSelector, callbacks) {
           var stillGone = true,
               cameBack = function() { stillGone = false; };
           setTimeout(function() {
-            $(window).off('mousemove', cameBack);
+            $('#interactive-container').off('mousemove', cameBack);
             // Trigger if the mouse never came back (we'll assume we're still dragging)
             if (stillGone) {
               $(document).trigger('mouseup');
             }
           }, 500);
-          $(window).on('mousemove', cameBack);
+          $('#interactive-container').on('mousemove', cameBack);
         },
         mouseDown = function() {
-          $(window).on('mousemove', mouseMove);
-          $(document).on('mouseleave', mouseLeave);
+          $('#interactive-container').on('mousemove', mouseMove);
+          $('#interactive-container').on('mouseleave', mouseLeave);
         },
         mouseUp = function() {
-          $(window).off("mousemove", mouseMove);
-          $(document).off("mouseleave", mouseLeave);
+          $('#interactive-container').off("mousemove", mouseMove);
+          $('#interactive-container').off("mouseleave", mouseLeave);
           $('.drag-blocker').remove();
         };
 
