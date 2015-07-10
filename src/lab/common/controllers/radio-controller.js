@@ -128,8 +128,6 @@ define(function () {
           $('<div class="fakeCheckable">').appendTo($span);
         }
 
-        // $span.append(option.text);
-
         $('<label>')
           .attr("for", component.id + '-' + i)
           .text(option.text)
