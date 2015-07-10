@@ -96,6 +96,12 @@
 
 .interactive-radio
   font-size: 1em
+  .option
+    display: inline-block
+    &:hover:not(.lab-disabled)
+      cursor: pointer
+      label
+        cursor: pointer
   &.horizontal
     // Horizontal alignment of options.
     .option + .option
@@ -105,6 +111,32 @@
     // Vertical alignment of options.
     .option
       display: block
+  &.toggle
+    .option
+      @include lab-button
+      line-height: 2em
+      border-radius: 0
+      &.checked
+        @include linear-gradient(#e6e6e6, #fff, $fallback: #fff)
+  &.horizontal.toggle
+    .option + .option
+      margin-left: 0
+      border-left: none
+    .option:first-child
+      border-top-left-radius: 0.7em
+      border-bottom-left-radius: 0.7em
+    .option:last-child
+      border-top-right-radius: 0.7em
+      border-bottom-right-radius: 0.7em
+  &.vertical.toggle
+    .option + .option
+      border-top: none
+    .option:first-child
+      border-top-left-radius: 0.7em
+      border-top-right-radius: 0.7em
+    .option:last-child
+      border-bottom-left-radius: 0.7em
+      border-bottom-right-radius: 0.7em
   .label
     // Main label, for whole radio buttons group.
     vertical-align: middle
@@ -126,8 +158,9 @@
     width: 1.1em
     height: 1.1em
     @include icon-bg("#{$directory}resources/upstatement/unchecked.svg", center, 100%)
-    &.checked
-      @include icon-bg("#{$directory}resources/upstatement/checked.svg", center, 100%)
+  .checked .fakeCheckable
+    @include icon-bg("#{$directory}resources/upstatement/checked.svg", center, 100%)
+
 
 .interactive-pulldown
   font-size: 1em

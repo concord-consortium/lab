@@ -699,6 +699,10 @@ define(function() {
       type: {
         required: true
       },
+      style: {
+        // "radio" (classic radio button) or "toggle" (looks like group of regular buttons).
+        defaultValue: "radio"
+      },
       orientation: {
         defaultValue: "vertical"
       },

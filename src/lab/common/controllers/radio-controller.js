@@ -12,13 +12,13 @@ define(function () {
         // Public API.
     var controller,
         // DOM elements.
-        $div, $span,
+        $div,
         // Options definitions from component JSON definition.
         options,
         // List of jQuery objects wrapping <input type="radio"> elements.
+        $inputs = [],
+        // List of jQuery objects wrapping option <div>.
         $options = [],
-        // List of jQuery objects wrapping <div> used for radio styling.
-        $fakeCheckables = [],
         model,
         scriptingAPI;
 
@@ -31,11 +31,11 @@ define(function () {
         var value = model.get(component.property);
         for (var i = 0, len = options.length; i < len; i++) {
           if (options[i].value === value) {
-            $options[i].attr("checked", true);
-            $fakeCheckables[i].addClass('checked');
+            $inputs[i].attr("checked", true);
+            $options[i].addClass('checked');
           } else {
-            $options[i].removeAttr("checked");
-            $fakeCheckables[i].removeClass('checked');
+            $inputs[i].removeAttr("checked");
+            $options[i].removeClass('checked');
           }
         }
       }
@@ -48,9 +48,8 @@ define(function () {
 
 
     function customClickEvent (e) {
-      var $clickedParent = $(this).closest('span'),
-          $input = $clickedParent.find('input'),
-          $fakeCheckable = $clickedParent.find('.fakeCheckable'),
+      var $span = $(this),
+          $input = $span.find('input'),
           i, len;
 
       e.preventDefault();
@@ -60,17 +59,17 @@ define(function () {
         return;
       }
 
-      for (i = 0, len = $options.length; i < len; i++) {
-        $options[i].removeAttr('checked');
-        $fakeCheckables[i].removeClass('checked');
+      for (i = 0, len = $inputs.length; i < len; i++) {
+        $inputs[i].removeAttr('checked');
+        $options[i].removeClass('checked');
       }
 
       if ($input.attr('checked') !== undefined) {
         $input.removeAttr('checked');
-        $fakeCheckable.removeClass('checked');
+        $span.removeClass('checked');
       } else {
         $input.attr('checked', 'checked');
-        $fakeCheckable.addClass('checked');
+        $span.addClass('checked');
       }
 
       // Trigger change event!
@@ -78,7 +77,7 @@ define(function () {
     }
 
     function initialize() {
-      var $option, $fakeCheckable, $label,
+      var $input, $span, $label,
           option, i, len;
 
       model = interactivesController.getModel();
@@ -99,6 +98,8 @@ define(function () {
       $div.addClass("component");
       // Add class defining component orientation - "horizontal" or "vertical".
       $div.addClass(component.orientation);
+      // "radio" or "toggle".
+      $div.addClass(component.style);
 
       if (component.label) {
         $label = $("<span>").text(component.label);
@@ -110,43 +111,42 @@ define(function () {
       // Create options (<input type="radio">)
       for (i = 0, len = options.length; i < len; i++) {
         option = options[i];
-        $option = $('<input>')
+        $input = $('<input>')
           .attr('type', "radio")
           .attr('name', component.id)
           .attr('tabindex', interactivesController.getNextTabIndex())
           .attr('id', component.id + '-' + i);
-        $options.push($option);
-
-        $label = $('<label>')
-          .attr("for", component.id + '-' + i)
-          .text(option.text);
-
-        $fakeCheckable = $('<div class="fakeCheckable">');
-        $fakeCheckables.push($fakeCheckable);
+        $inputs.push($input);
 
         $span = $('<span>')
           .addClass('option')
-          .append($option)
-          .append($fakeCheckable)
-          .append($label);
+          .append($input);
+        $options.push($span);
         $div.append($span);
 
+        if (component.style === 'radio') {
+          $('<div class="fakeCheckable">').appendTo($span);
+        }
+
+        // $span.append(option.text);
+
+        $('<label>')
+          .attr("for", component.id + '-' + i)
+          .text(option.text)
+          .appendTo($span);
+
         if (option.disabled) {
-          $option.attr("disabled", option.disabled);
+          $input.attr("disabled", option.disabled);
           $span.addClass('lab-disabled');
         }
         if (option.selected) {
-          $option.attr("checked", option.selected);
-          $fakeCheckable.addClass("checked");
+          $input.attr("checked", option.selected);
+          $span.addClass("checked");
         }
 
-        // Ensure that custom div (used for styling) is clickable.
-        $fakeCheckable.on('touchstart click', customClickEvent);
-        // Label also requires custom event handler to ensure that click updates
-        // fake clickable element too.
-        $label.on('touchstart click', customClickEvent);
+        $span.on('touchstart click', customClickEvent);
 
-        $option.change((function(option) {
+        $input.change((function(option) {
           return function() {
             if (option.action){
               scriptingAPI.makeFunctionInScriptContext(option.action)();
@@ -196,7 +196,7 @@ define(function () {
           // When property binding is not defined, we need to keep track
           // which option is currently selected.
           for (i = 0, len = options.length; i < len; i++) {
-            if ($options[i].attr("checked")) {
+            if ($inputs[i].attr("checked")) {
               options[i].selected = true;
             } else {
               delete options[i].selected;
