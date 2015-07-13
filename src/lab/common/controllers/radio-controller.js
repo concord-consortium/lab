@@ -102,7 +102,7 @@ define(function () {
       $div.addClass(component.style);
 
       if (component.label) {
-        $label = $("<span>").text(component.label);
+        $label = $("<span>").html(component.label);
         $label.addClass("label");
         $label.addClass(component.labelOn === "top" ? "on-top" : "on-left");
         $div.append($label);
@@ -130,7 +130,7 @@ define(function () {
 
         $('<label>')
           .attr("for", component.id + '-' + i)
-          .text(option.text)
+          .html(option.text)
           .appendTo($span);
 
         if (option.disabled) {
