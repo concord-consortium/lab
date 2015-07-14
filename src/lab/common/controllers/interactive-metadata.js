@@ -464,7 +464,10 @@ define(function() {
         required: true
       },
       content: {
-        defaultValue: ""
+        conflictsWith: ["url"]
+      },
+      url: {
+        conflictsWith: ["content"]
       },
       width: {
         defaultValue: "auto"
