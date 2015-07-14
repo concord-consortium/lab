@@ -464,9 +464,9 @@ define(function() {
         required: true
       },
       content: {
-        conflictsWith: ["src"]
+        conflictsWith: ["url"]
       },
-      src: {
+      url: {
         conflictsWith: ["content"]
       },
       width: {
