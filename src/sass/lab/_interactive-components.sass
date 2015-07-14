@@ -118,7 +118,7 @@
       border-radius: 0
       &.checked
         @include linear-gradient(#e6e6e6, #fff, $fallback: #fff)
-  &.horizontal.toggle
+  &.horizontal.toggle .options
     .option + .option
       margin-left: 0
       border-left: none
@@ -128,7 +128,7 @@
     .option:last-child
       border-top-right-radius: 0.7em
       border-bottom-right-radius: 0.7em
-  &.vertical.toggle
+  &.vertical.toggle .options
     .option + .option
       border-top: none
     .option:first-child

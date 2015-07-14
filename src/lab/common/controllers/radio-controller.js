@@ -77,7 +77,7 @@ define(function () {
     }
 
     function initialize() {
-      var $input, $span, $label,
+      var $input, $span, $label, $optionsContainer,
           option, i, len;
 
       model = interactivesController.getModel();
@@ -108,6 +108,8 @@ define(function () {
         $div.append($label);
       }
 
+      $optionsContainer = $("<span>").addClass("options").appendTo($div);
+
       // Create options (<input type="radio">)
       for (i = 0, len = options.length; i < len; i++) {
         option = options[i];
@@ -122,7 +124,7 @@ define(function () {
           .addClass('option')
           .append($input);
         $options.push($span);
-        $div.append($span);
+        $optionsContainer.append($span);
 
         if (component.style === 'radio') {
           $('<div class="fakeCheckable">').appendTo($span);
