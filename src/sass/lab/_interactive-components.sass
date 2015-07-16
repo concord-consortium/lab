@@ -116,8 +116,10 @@
       @include lab-button
       line-height: 2em
       border-radius: 0
-      &.checked
+      &.checked, &:active:hover
         @include linear-gradient(#e6e6e6, #fff, $fallback: #fff)
+      &.checked:hover
+        @include linear-gradient(#efefef, #fff, $fallback: #fff)
   &.horizontal.toggle .options
     .option + .option
       margin-left: 0
