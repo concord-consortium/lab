@@ -39,8 +39,10 @@ define(function (require) {
 
         // Container specifications by ID.
         containerSpecByID,
-        // Container jQuery objects by ID.
+        // Container jQuery objects by ID. Main container is used to position widgets.
         $containerByID,
+        // Inner container is used to set margin and padding.
+        $innerContainerByID,
         // Model container jQuery object.
         $modelContainer,
 
@@ -117,6 +119,7 @@ define(function (require) {
       var container, id, prop, i, ii;
 
       $containerByID = {};
+      $innerContainerByID = {};
       containerSpecByID = {};
 
       for (i = 0, ii = containerSpecList.length; i < ii; i++) {
@@ -128,6 +131,8 @@ define(function (require) {
           "display": "inline-block",
           "position": "absolute"
         });
+        $innerContainerByID[id] = $('<div class="inner-container">');
+        $innerContainerByID[id].appendTo($containerByID[id]);
 
         if (container.width === undefined) {
           // Disable wrapping of elements in a container, which
@@ -136,13 +141,12 @@ define(function (require) {
           $containerByID[id].css("white-space", "nowrap");
         }
 
+
         for (prop in container) {
           if (!container.hasOwnProperty(prop)) continue;
-          // Add any padding-* properties directly to the container's style.
-          if (/^padding-/.test(prop)) {
+          if (/^padding/.test(prop)) {
             $containerByID[id].css(prop, container[prop]);
           }
-          // Support also "align" property.
           else if (prop === "align") {
             $containerByID[id].css("text-align", container[prop]);
           }
@@ -151,6 +155,16 @@ define(function (require) {
           }
           else if (prop === "fontScale") {
             $containerByID[id].css("font-size", container[prop] + "em");
+          }
+          else if (prop === "border") {
+            $innerContainerByID[id].css("border", container[prop]);
+          }
+          else if (/^inner-padding/.test(prop)) {
+            // Note that this is special kind of padding which is applied to the inner container.
+            // It's useful when you use borders. Probably we should have called the original
+            // "padding" property "margin" instead, but this change is not worth breaking the backwards
+            // compatibility.
+            $innerContainerByID[id].css(prop.substr(6), container[prop]); // remove 'inner-' substring
           }
         }
       }
@@ -198,7 +212,7 @@ define(function (require) {
           if (jj === 1) {
             $row.css("height", "100%");
           }
-          $containerByID[containerID].append($row);
+          $innerContainerByID[containerID].append($row);
           for (k = 0, kk = items.length; k < kk; k++) {
             id = items[k];
             if (comps[id] === undefined) {
@@ -215,11 +229,11 @@ define(function (require) {
       // Add any remaining components to "bottom" or last container.
       lastContainer = containerSpecByID.bottom || containerSpecList[containerSpecList.length-1];
       if (lastContainer) {
-        $rows = $containerByID[lastContainer.id].children();
+        $rows = $innerContainerByID[lastContainer.id].children();
         $row = $rows.last();
         if (!$row.length) {
           $row = $('<div class="interactive-row"/>');
-          $containerByID[lastContainer.id].append($row);
+          $innerContainerByID[lastContainer.id].append($row);
         }
         for (id in comps) {
           if (!comps.hasOwnProperty(id)) continue;
@@ -232,7 +246,7 @@ define(function (require) {
       // See src/sass/lab/_semantic-layout.sass for .component-spacing class definition.
       for (i = 0, ii = containerSpecList.length; i < ii; i++) {
         // First children() call returns rows, second one components.
-        $containerComponents = $containerByID[containerSpecList[i].id].children().children();
+        $containerComponents = $innerContainerByID[containerSpecList[i].id].children().children();
         if ($containerComponents.length > 1) {
           $containerComponents.addClass("component-spacing");
         }
