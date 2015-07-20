@@ -144,8 +144,13 @@ define(function (require) {
 
         for (prop in container) {
           if (!container.hasOwnProperty(prop)) continue;
-          if (/^padding/.test(prop)) {
-            $containerByID[id].css(prop, container[prop]);
+          if (/^margin/.test(prop)) {
+            // Margin is in fact padding of the outer container.
+            $containerByID[id].css(prop.replace("margin", "padding"), container[prop]);
+          }
+          else if (/^padding/.test(prop)) {
+            // Padding is simply padding of the inner container.
+            $innerContainerByID[id].css(prop, container[prop]);
           }
           else if (prop === "align") {
             $containerByID[id].css("text-align", container[prop]);
@@ -158,13 +163,6 @@ define(function (require) {
           }
           else if (prop === "border") {
             $innerContainerByID[id].css("border", container[prop]);
-          }
-          else if (/^inner-padding/.test(prop)) {
-            // Note that this is special kind of padding which is applied to the inner container.
-            // It's useful when you use borders. Probably we should have called the original
-            // "padding" property "margin" instead, but this change is not worth breaking the backwards
-            // compatibility.
-            $innerContainerByID[id].css(prop.substr(6), container[prop]); // remove 'inner-' substring
           }
         }
       }
