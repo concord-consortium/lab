@@ -6,7 +6,7 @@ define(function(require) {
       PropertyDescription   = require('common/property-description'),
       metadata              = require('./metadata'),
       StateMachine          = require('common/state-machine'),
-      sensorConnectorInterface = require('sensor-connector-interface'),
+      SensorConnectorInterface = require('sensor-connector-interface'),
       unitsDefinition       = require('./units-definition'),
       getSensorDefinitions  = require('models/sensor-common/i18n-sensor-definitions-connector'),
       Notifier             = require('models/sensor-common/notifier');
@@ -19,6 +19,7 @@ define(function(require) {
         propertySupport,
         dispatch,
         stateMachine,
+        sensorConnectorInterface,
         timeColumn,
         dataColumn,
         selectedSensor,
@@ -62,7 +63,7 @@ define(function(require) {
 
     // Updates min, max of displayTime to be [0..actualDuration]
     function updateDisplayTimeRange() {
-      if (model.properties.actualDuration == null || model.properties.actualDuration == Infinity) {
+      if (model.properties.actualDuration === null || model.properties.actualDuration === Infinity) {
         return;
       }
       updatePropertyRange('displayTime', 0, model.properties.actualDuration);
@@ -319,7 +320,7 @@ define(function(require) {
           message = i18n.t("sensor.messages.not_connected");
           statusErrors = 0;
           if (location.protocol === 'https:') {
-            sensorConnectorInterface.startPolling("https://localhost.ungerdesign.com:11181", model.properties.clientId, model.properties.clientName);
+            sensorConnectorInterface.startPolling(["https://localhost:11181","https://127.0.0.1:11181","https://localhost.ungerdesign.com:11181"], model.properties.clientId, model.properties.clientName);
           } else {
             sensorConnectorInterface.startPolling("http://127.0.0.1:11180", model.properties.clientId, model.properties.clientName);
           }
@@ -345,10 +346,6 @@ define(function(require) {
 
         launchTimedOut: function() {
           this.gotoState('initialConnectionFailureLaunchTimeout');
-        },
-
-        pluginInaccessible: function() {
-          this.gotoState('initialConnectionFailurePluginInaccessible');
         },
 
         statusReceived: function() {
@@ -381,7 +378,6 @@ define(function(require) {
         statusErrored: function() {},
         connectionTimedOut: function() {},
         launchTimedOut: function() {},
-        pluginInaccessible: function() {},
 
         dismiss: function() {
           this.gotoState('notConnected');
@@ -393,7 +389,9 @@ define(function(require) {
           sensorConnectorInterface.stopPolling();
           message = i18n.t("sensor.messages.connection_failed");
           var dialog_msg = "sensor.messages.connection_failed_launch_failed_alert";
-          notifier.alert(i18n.t(dialog_msg), {
+          notifier.alert(i18n.t(dialog_msg, {
+                                click_here_link: "<a target='_blank' style='color: #222299;' href='http://sensorconnector.concord.org/'>" +
+                                                 i18n.t("sensor.messages.click_here") + "</a>"}), {
             "Try again": function() {
               $(this).dialog("close");
               handle('dismiss');
@@ -405,34 +403,6 @@ define(function(require) {
         statusErrored: function() {},
         connectionTimedOut: function() {},
         launchTimedOut: function() {},
-        pluginInaccessible: function() {},
-
-        dismiss: function() {
-          this.gotoState('notConnected');
-        }
-      },
-
-      initialConnectionFailurePluginInaccessible: {
-        enterState: function() {
-          sensorConnectorInterface.stopPolling();
-          message = i18n.t("sensor.messages.connection_failed");
-          var dialog_msg = "sensor.messages.connection_failed_plugin_inacessible_alert";
-          notifier.alert(i18n.t(dialog_msg), {
-            "Reload": function() {
-              window.location.reload();
-            },
-            "Try again": function() {
-              $(this).dialog("close");
-              handle('dismiss');
-            }
-          });
-        },
-
-        // Ignore these in this state
-        statusErrored: function() {},
-        connectionTimedOut: function() {},
-        launchTimedOut: function() {},
-        pluginInaccessible: function() {},
 
         dismiss: function() {
           this.gotoState('notConnected');
@@ -735,14 +705,13 @@ define(function(require) {
             sensorConnectorInterface.stopPolling();
             stateMachine.gotoState('disconnected');
           } else if (eventName === 'statusErrored') {
-            statusErrors++;
-            if (statusErrors > 4) {
-              stateMachine.gotoState('disconnected');
-            }
+            stateMachine.gotoState('disconnected');
           }
         }
       });
     }
+
+    sensorConnectorInterface = new SensorConnectorInterface();
 
     // At least for now, dispatch every interface event to the state machine.
     sensorConnectorInterface.on('*', function() {

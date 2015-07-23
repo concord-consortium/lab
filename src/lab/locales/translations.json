@@ -89,7 +89,7 @@
         }
       },
       "sensor": {
-        "select_sensor": "Select Sensor...",
+        "select_sensor": "Select Sensor",
         "select_sensor_type": "Select type of sensor...",
         "reading": "Reading:",
         "zero": "Zero",
@@ -108,8 +108,7 @@
           "connecting": "Connecting...",
           "connection_failed": "Connection failed.",
           "connection_failed_alert": "The Concord Consortium Sensor Connector is not installed. Please __click_here_link__ to download an installer of the Sensor Connector.",
-          "connection_failed_launch_failed_alert": "The Concord Consortium Sensor Connector is installed, but could not be started automatically. Please accept the launch dialog, or launch the Sensor Connector manually.",
-          "connection_failed_plugin_inacessible_alert": "The Concord Consortium Sensor Connector is installed, but could not be started automatically. Please always allow plugins for this page, and then reload the page.",
+          "connection_failed_launch_failed_alert": "The Concord Consortium Sensor Connector is not installed or is not running. Please __click_here_link__ for instructions on using the Sensor Connector.",
           "connection_failed_labquest2_alert": "Could not connect to the LabQuest2. Please make sure the address is correct and that the LabQuest2 can be reached from this computer",
           "tare_labquest2_alert": "The LabQuest2 needs to be collecting live data in order to zero. Either set up a new run on the LabQuest2, or click the meter icon in the upper left.",
           "click_here": "click here",
@@ -976,7 +975,7 @@
         }
       },
       "sensor": {
-        "select_sensor": "Selecione o sensor...",
+        "select_sensor": "Selecione o sensor",
         "select_sensor_type": "Selecione o tipo de sensor...",
         "reading": "Leitura:",
         "zero": "Zero",
@@ -996,7 +995,6 @@
           "connection_failed": "Conexão falhou.",
           "connection_failed_alert": "O Conector de Sensores do Concord Consortium não está instalado. Por favor __click_here_link__ para baixar instalador do Conector de Sensores.",
           "connection_failed_launch_failed_alert": "O Conector de Sensores do Concord Consortium está instalado, mas não foi possível iniciá-lo automaticamente. Por favor aceite iniciá-lo, ou inicie manualmente o Concector de Sensores.",
-          "connection_failed_plugin_inacessible_alert": "O Conector de Sensores do Concord Consortium está instalado, mas não foi possível iniciá-lo automaticamente. Por favor sempre permita plugins para esta página, e então recarregue a página.",
           "connection_failed_labquest2_alert": "Não foi possível conectar ao LabQuest2. Por favor verifique se o endereço está certo e se o LabQuest2 pode ser alcançado deste computador",
           "tare_labquest2_alert": "O LabQuest2 precisa conectar dados ao vivo para zerar. Inicie uma nova corrida no LabQuest2 ou clique no ícone do medidor no alto à esquerda.",
           "click_here": "clique aqui",
