@@ -52,6 +52,14 @@ define(function () {
       layout[container.id] = [element.id];
     }
 
+    // Checks if there is a "playback" component in interactive JSON component section.
+    function isPlaybackDefinedByAuthor() {
+      for (var i = 0; i < interactive.components.length; i++) {
+        if (interactive.components[i].type === "playback") return true;
+      }
+      return false;
+    }
+
     function setupTopBar() {
       template.push({
         "id": "top-bar",
@@ -291,20 +299,23 @@ define(function () {
         });
       }
 
-      createElementInContainer({
-        "type": "playback",
-        "id": "playback"
-      },
-      {
-        "id": "interactive-playback-container",
-        "bottom": "container.height",
-        "height": "banner-bottom-left.height",
-        "left": "banner-bottom-left.right",
-        // note that banner-bottom-right may not be defined
-        "right": template.map(function (o) { return o.id; }).indexOf('banner-bottom-right') >= 0 ?
-          "banner-bottom-right.left" : "container.right",
-        "belowOthers": true
-      });
+      if (!isPlaybackDefinedByAuthor()) {
+        // Define playback component automatically only if it hasn't been done by interactive author.
+        createElementInContainer({
+          "type": "playback",
+          "id": "playback"
+        },
+        {
+          "id": "interactive-playback-container",
+          "bottom": "container.height",
+          "height": "banner-bottom-left.height",
+          "left": "banner-bottom-left.right",
+          // note that banner-bottom-right may not be defined
+          "right": template.map(function (o) { return o.id; }).indexOf('banner-bottom-right') >= 0 ?
+            "banner-bottom-right.left" : "container.right",
+          "belowOthers": true
+        });
+      }
     }
 
     if (interactive.showTopBar) {
