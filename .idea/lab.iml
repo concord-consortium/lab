@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="RUBY_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/node_modules" />
+      <excludeFolder url="file://$MODULE_DIR$/public" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor" />
+    </content>
+    <orderEntry type="jdk" jdkName="RVM: ruby-2.0.0-p247 [lab]" jdkType="RUBY_SDK" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" scope="PROVIDED" name="activesupport (v3.0.0, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="aws-sdk (v1.39.0, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="bourbon (v3.1.8, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="bundler (v1.3.5, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="coderay (v1.1.0, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="coffee-script (v2.2.0, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="coffee-script-source (v1.6.3, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="colored (v1.2, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="configure-s3-website (v1.5.5, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="deep_merge (v1.0.0, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="em-websocket (v0.5.0, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="erubis (v2.7.0, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="eventmachine (v1.0.3, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="execjs (v1.4.0, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="ffi (v1.9.0, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="filey-diff (v2.0.0, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="formatador (v0.2.4, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="git (v1.2.9.1, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="guard (v1.8.2, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="guard-coffeescript (v1.3.2, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="guard-haml (v0.5, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="guard-livereload (v1.4.0, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="guard-sass (v1.3.2, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="guard-shell (v0.5.1, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="haml (v4.0.3, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="hashr (v0.0.22, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="http_parser.rb (v0.5.3, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="i18n (v0.6.4, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="json (v1.8.1, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="kramdown (v1.3.0, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="listen (v1.3.1, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="lumberjack (v1.0.4, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="method_source (v0.8.2, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="mime-types (v1.23, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="mini_portile (v0.5.2, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="multi_json (v1.7.7, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="neat (v1.2.1, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="nokogiri (v1.6.1, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="pry (v0.10.1, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="rack (v1.5.2, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="rack-cors (v0.2.9, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="rack-livereload (v0.3.15, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="rack-nocache (v0.1.0, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="rake (v10.1.0, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="rb-fsevent (v0.9.3, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="rb-inotify (v0.9.1, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="rb-kqueue (v0.2.0, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="ruby_gntp (v0.3.4, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="s3_website (v1.7.6, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="sass (v3.2.9, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="simple-cloudfront-invalidator (v1.0.1, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="slop (v3.6.0, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="thor (v0.18.1, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="tilt (v1.4.1, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="travis-lint (v1.7.0, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="wdm (v0.1.0, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="zopfli (v0.0.3, RVM: ruby-2.0.0-p247 [lab]) [gem]" level="application" />
+  </component>
+</module>

@@ -15,6 +15,7 @@ define(function (require) {
         title: 'title',
         enableAutoScaleButton: 'enableAutoScaleButton',
         enableAxisScaling: 'enableAxisScaling',
+        enableZooming: 'enableZooming',
         autoScaleX: 'autoScaleX',
         autoScaleY: 'autoScaleY',
         enableSelectionButton: 'enableSelectionButton',

@@ -1027,6 +1027,9 @@ define(function() {
       enableAxisScaling: {
         defaultValue: true
       },
+      enableZooming: {
+        defaultValue: true
+      },
       autoScaleX: {
         defaultValue: true
       },
