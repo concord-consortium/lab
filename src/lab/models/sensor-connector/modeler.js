@@ -362,7 +362,6 @@ define(function(require) {
       initialConnectionFailure: {
         enterState: function() {
           sensorConnectorInterface.stopPolling();
-          message = i18n.t("sensor.messages.connection_failed");
           var dialog_msg = "sensor.messages.connection_failed_alert";
           notifier.alert(i18n.t(dialog_msg, {
                                 click_here_link: "<a target='_blank' style='color: #222299;' href='http://sensorconnector.concord.org/'>" +
@@ -387,7 +386,6 @@ define(function(require) {
       initialConnectionFailureLaunchTimeout: {
         enterState: function() {
           sensorConnectorInterface.stopPolling();
-          message = i18n.t("sensor.messages.connection_failed");
           var dialog_msg = "sensor.messages.connection_failed_launch_failed_alert";
           notifier.alert(i18n.t(dialog_msg, {
                                 click_here_link: "<a target='_blank' style='color: #222299;' href='http://sensorconnector.concord.org/'>" +
