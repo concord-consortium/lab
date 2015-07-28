@@ -36,6 +36,7 @@ define(function(require) {
         hasMultipleSensors,
         isSensorTareable,
         message,
+        statusDialog,
         statusErrors,
         displayTimePropertyDescription,
         model;
@@ -333,6 +334,15 @@ define(function(require) {
           message = i18n.t("sensor.messages.connecting");
           if (sensorConnectorInterface.isConnected) {
             this.gotoState('connected');
+          } else {
+            statusDialog = notifier.status(i18n.t("sensor.messages.connection_in_progress"));
+          }
+        },
+
+        leaveState: function() {
+          if (statusDialog) {
+            statusDialog.close();
+            statusDialog = null;
           }
         },
 
@@ -362,6 +372,7 @@ define(function(require) {
       initialConnectionFailure: {
         enterState: function() {
           sensorConnectorInterface.stopPolling();
+          message = i18n.t("sensor.messages.connection_failed");
           var dialog_msg = "sensor.messages.connection_failed_alert";
           notifier.alert(i18n.t(dialog_msg, {
                                 click_here_link: "<a target='_blank' style='color: #222299;' href='http://sensorconnector.concord.org/'>" +
@@ -386,6 +397,7 @@ define(function(require) {
       initialConnectionFailureLaunchTimeout: {
         enterState: function() {
           sensorConnectorInterface.stopPolling();
+          message = i18n.t("sensor.messages.connection_failed");
           var dialog_msg = "sensor.messages.connection_failed_launch_failed_alert";
           notifier.alert(i18n.t(dialog_msg, {
                                 click_here_link: "<a target='_blank' style='color: #222299;' href='http://sensorconnector.concord.org/'>" +

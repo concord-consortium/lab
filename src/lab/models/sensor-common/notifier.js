@@ -16,5 +16,15 @@ define(function (require) {
       dialog.open();
   };
 
+  Notifier.prototype.status = function(message) {
+      var dialog = new BasicDialog({
+            width: "60%"
+          }, this._i18n);
+
+      dialog.setContent(message);
+      dialog.open();
+      return dialog;
+  };
+
   return Notifier;
 });
