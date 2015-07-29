@@ -30,8 +30,6 @@ define(function () {
         template = [],
         layout = {},
         i18n = controller.i18n,
-        // About link visible if there is about section or subtitle.
-        haveAboutText = interactive.about || interactive.subtitle,
         body, requestFullscreenMethod;
 
     function createElementInContainer(element, container) {
@@ -93,17 +91,12 @@ define(function () {
         });
       }
 
-      aboutDialog.update(interactive);
       createElementInContainer({
         "type": "text",
         "id": "about-link",
         "text": i18n.t("banner.about"),
         "onClick": function () {
-          if (haveAboutText) {
-            aboutDialog.open();
-          } else {
-            creditsDialog.open();
-          }
+          aboutDialog.open();
         },
         "tooltip": i18n.t("banner.about_tooltip")
       },
@@ -126,7 +119,6 @@ define(function () {
       // has to be defined *after* banner-right container which is used
       // in its specification!
       if (labConfig.sharing) {
-        shareDialog.update(interactive);
         createElementInContainer({
           "type": "text",
           "id": "share-link",
@@ -222,7 +214,6 @@ define(function () {
         "belowOthers": true
       });
 
-      creditsDialog.update(interactive);
       createElementInContainer({
         "type": "div",
         "id": "credits-link",

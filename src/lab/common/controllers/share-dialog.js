@@ -20,7 +20,7 @@ define(function (require) {
    *
    * @constructor
    */
-  function ShareDialog(parentSelector, interactiveContainerSelector, i18n) {
+  function ShareDialog(parentSelector, interactiveContainerSelector, i18n, interactive) {
     var hash           = location.hash,
         origin         = location.href.match(/(.*?\/\/.*?)\//)[1],
         embeddablePath = location.pathname;
@@ -59,6 +59,10 @@ define(function (require) {
 
     this._$iframeSize.on('change', $.proxy(this.updateIframeSize, this));
     this.updateIframeSize();
+
+    if (interactive) {
+      this.update(interactive)
+    }
   }
   inherit(ShareDialog, BasicDialog);
 

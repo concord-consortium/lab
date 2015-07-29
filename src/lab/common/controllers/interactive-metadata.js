@@ -102,6 +102,11 @@ define(function() {
         defaultValue: false
       },
 
+      aboutOnLoad: {
+        // If true, the About dialog will be automatically shown on interactive load.
+        defaultValue: false
+      },
+
       models: {
         // List of model definitions. Its definition is below ('model').
         required: true

@@ -611,9 +611,14 @@ define(function (require) {
       // async download of interactive metadata.
       languageSelect('#lang-icon', controller);
 
-      creditsDialog = new CreditsDialog(".lab-dialog-container", i18n);
-      aboutDialog = new AboutDialog(".lab-dialog-container", i18n);
-      shareDialog = new ShareDialog(".lab-dialog-container", viewSelector, i18n);
+      creditsDialog = new CreditsDialog(".lab-dialog-container", i18n, interactive);
+      shareDialog = new ShareDialog(".lab-dialog-container", viewSelector, i18n, interactive);
+      if (interactive.about || interactive.subtitle) {
+        aboutDialog = new AboutDialog(".lab-dialog-container", i18n, interactive);
+      } else {
+        // Display credits if author hasn't provided any specific information.
+        aboutDialog = creditsDialog;
+      }
 
       var modelDef = controller.interactive.models[0];
       modelController = createModelController(modelDef.type, modelDef.modelUrl, null);
@@ -641,9 +646,12 @@ define(function (require) {
       // Setup help system if help tips are defined.
       if (interactive.helpTips.length > 0) {
         helpSystem = new HelpSystem(interactive.helpTips, $fastClickContainer);
-        controller.on("interactiveRendered.helpSystem", function () {
+      }
+
+      if (interactive.helpOnLoad || interactive.aboutOnLoad) {
+        controller.on("interactiveRendered.helpOnLoad", function () {
           // Make sure that this callback is executed only once.
-          controller.on("interactiveRendered.helpSystem", null);
+          controller.on("interactiveRendered.helpOnLoad", null);
 
           function hashCode(string) {
             var hash = 0, len = string.length, i, c;
@@ -656,11 +664,16 @@ define(function (require) {
             return hash;
           }
           var hash = hashCode(JSON.stringify(interactive));
-          // When displayOnLoad is set to true, the help mode will be automatically shown,
+          // When `helpOnLoad` is set to true, the help mode will be automatically shown,
           // but only when user opens interactive for the first time.
-          if (interactive.helpOnLoad && !cookies.hasItem("lab-help-" + hash)) {
+          if (helpSystem && interactive.helpOnLoad && !cookies.hasItem("lab-help-" + hash)) {
             helpSystem.start();
             cookies.setItem("lab-help-" + hash, true);
+          }
+          // `aboutOnLoad` follows the same pattern.
+          if (interactive.aboutOnLoad && !cookies.hasItem("lab-about-" + hash)) {
+            aboutDialog.open();
+            cookies.setItem("lab-about-" + hash, true);
           }
         });
       }
@@ -1472,6 +1485,7 @@ define(function (require) {
           lang: interactive.lang,
           i18nMetadata: interactive.i18nMetadata,
           helpOnLoad: interactive.helpOnLoad,
+          aboutOnLoad: interactive.aboutOnLoad,
           about: arrays.isArray(interactive.about) ? $.extend(true, [], interactive.about) : interactive.about,
           theme: interactive.theme,
           showTopBar: interactive.showTopBar,
