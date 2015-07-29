@@ -314,7 +314,7 @@
         }
       },
       "sensor": {
-        "select_sensor": "Wybierz sensor...",
+        "select_sensor": "Wybierz sensor",
         "select_sensor_type": "Wybierz rodzaj sensora...",
         "reading": "Odczyt:",
         "zero": "Wyzeruj",
@@ -533,7 +533,7 @@
         }
       },
       "sensor": {
-        "select_sensor": "Velg sensor...",
+        "select_sensor": "Velg sensor",
         "select_sensor_type": "Velg sensortype...",
         "reading": "Avlesning:",
         "zero": "Null",
@@ -752,7 +752,7 @@
         }
       },
       "sensor": {
-        "select_sensor": "Vel sensor...",
+        "select_sensor": "Vel sensor",
         "select_sensor_type": "Vel sensortype...",
         "reading": "Avlesing:",
         "zero": "Null",
