@@ -95,7 +95,7 @@
         "zero": "Zero",
         "zeroing": "Zeroing...",
         "loading_sensor": "Loading sensor...",
-        "choose_sensor_title": "Choose a sensor:",
+        "choose_sensor_title": "Select a sensor:",
         "connect": "Connect",
         "address_labquest2": "address of LabQuest2",
         "messages": {
@@ -981,7 +981,7 @@
         "zero": "Zero",
         "zeroing": "Zerando...",
         "loading_sensor": "Carregando sensor...",
-        "choose_sensor_title": "Escolha um sensor:",
+        "choose_sensor_title": "Selecione o sensor:",
         "connect": "Conectar",
         "address_labquest2": "endereço do LabQuest2",
         "messages": {
