@@ -32,6 +32,8 @@ define(function () {
    * Opens the dialog.
    */
   BasicDialog.prototype.open = function() {
+    // Limit height of the content to 50% window height.
+    this.$content.css("max-height", ($(window).height() * 0.5) + "px");
     this.$element.dialog("open");
   };
 
@@ -50,13 +52,15 @@ define(function () {
    *
    * @param {jQuery|DOM|string} $content Any value that can be accepted by the jQuery constructor.
    */
-  BasicDialog.prototype.setContent = function ($content) {
+  BasicDialog.prototype.setContent = function (content) {
+    var $content = $(content);
     this.$element.empty();
     // Not very pretty, but probably the simplest and most reliable way to
     // disable autofocus in jQuery UI dialogs. See:
     // http://jqueryui.com/upgrade-guide/1.10/#added-ability-to-specify-which-element-to-focus-on-open
     this.$element.append('<input type="hidden" autofocus="autofocus" />');
     this.$element.append($content);
+    this.$content = $content;
   };
 
   return BasicDialog;
