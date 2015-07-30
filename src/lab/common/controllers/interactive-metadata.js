@@ -1074,6 +1074,10 @@ define(function() {
       title: {
         defaultValue: "Graph"
       },
+      titlePosition: {
+        // "center" or "left"
+        defaultValue: "center"
+      },
       lineWidth: {
         defaultValue: 2.0
       },
