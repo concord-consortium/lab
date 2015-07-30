@@ -164,6 +164,9 @@ define(function (require) {
           else if (prop === "border") {
             $innerContainerByID[id].css("border", container[prop]);
           }
+          else if (prop === "background") {
+            $innerContainerByID[id].css("background", container[prop]);
+          }
         }
       }
     }
