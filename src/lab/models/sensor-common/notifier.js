@@ -12,7 +12,7 @@ define(function (require) {
             buttons: buttons
           }, this._i18n);
 
-      dialog.setContent(message);
+      dialog.setContent("<div>" + message + "</div>");
       dialog.open();
   };
 
@@ -21,7 +21,7 @@ define(function (require) {
             width: "60%"
           }, this._i18n);
 
-      dialog.setContent(message);
+      dialog.setContent("<div>" + message + "</div>");
       dialog.open();
       return dialog;
   };
