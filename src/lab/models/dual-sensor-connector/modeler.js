@@ -454,7 +454,7 @@ define(function(require) {
           if (sensorConnectorInterface.isConnected) {
             this.gotoState('connected');
           } else {
-            statusDialog = notifier.status(i18n.t("sensor.messages.connection_in_progress"));
+            statusDialog = notifier.status(i18n.t("sensor.messages.connection_in_progress"), {dialogClass: 'interactive-dialog no-close'});
           }
         },
 
