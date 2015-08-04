@@ -372,10 +372,7 @@ define(function(require) {
       initialConnectionFailure: {
         enterState: function() {
           sensorConnectorInterface.stopPolling();
-          message = i18n.t("sensor.messages.connection_failed",
-            {
-              retry_link: "<a href='javascript:void(0);' class='retry-link'>" + i18n.t("sensor.messages.connection_failed_retry_link_text") + "</a>"
-            });
+          message = i18n.t("sensor.messages.connection_failed", { retry_link: "" });
           var dialog_msg = "sensor.messages.connection_failed_alert";
           notifier.alert(i18n.t(dialog_msg, {
                                 click_here_link: "<a target='_blank' style='color: #222299;' href='http://sensorconnector.concord.org/'>" +
@@ -384,10 +381,27 @@ define(function(require) {
               $(this).dialog("close");
               handle('dismiss');
             }
+          },
+          {
+            close: function() {
+              handle('closed');
+            }
           });
+        },
+
+        // Ignore these in this state
+        statusErrored: function() {},
+        connectionTimedOut: function() {},
+        launchTimedOut: function() {},
+
+        closed: function() {
+          message = i18n.t("sensor.messages.connection_failed",
+                {
+                  retry_link: "<a href='javascript:void(0);' class='retry-link'>" + i18n.t("sensor.messages.connection_failed_retry_link_text") + "</a>"
+                });
           // AU: This is kind of ugly and obnoxious, but I was having trouble getting the right context when embedding code directly into the href itself.
           var tryAttachingHandler = function() {
-            var links = window.jQuery('a.retry-link');
+            var links = $('a.retry-link');
             if (links[0]) {
               links.click(function() {
                 handle('dismiss');
@@ -398,11 +412,6 @@ define(function(require) {
           };
           tryAttachingHandler();
         },
-
-        // Ignore these in this state
-        statusErrored: function() {},
-        connectionTimedOut: function() {},
-        launchTimedOut: function() {},
 
         dismiss: function() {
           this.gotoState('notConnected');
