@@ -6,24 +6,21 @@ define(function (require) {
     this._i18n = i18n;
   }
 
-  Notifier.prototype.alert = function(message, buttons) {
-      var dialog = new BasicDialog({
-            width: "60%",
-            buttons: buttons
-          }, this._i18n);
+  Notifier.prototype.alert = function(message, buttons, options) {
+    var opts = $.extend({width: "60%", buttons: buttons, closeOnEscape: false}, options);
+    var dialog = new BasicDialog(opts, this._i18n);
 
-      dialog.setContent("<div>" + message + "</div>");
-      dialog.open();
+    dialog.setContent("<div>" + message + "</div>");
+    dialog.open();
   };
 
-  Notifier.prototype.status = function(message) {
-      var dialog = new BasicDialog({
-            width: "60%"
-          }, this._i18n);
+  Notifier.prototype.status = function(message, options) {
+    var opts = $.extend({width: "60%", closeOnEscape: false, modal: true}, options);
+    var dialog = new BasicDialog(opts, this._i18n);
 
-      dialog.setContent("<div>" + message + "</div>");
-      dialog.open();
-      return dialog;
+    dialog.setContent("<div>" + message + "</div>");
+    dialog.open();
+    return dialog;
   };
 
   return Notifier;
