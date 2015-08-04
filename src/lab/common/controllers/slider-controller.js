@@ -217,30 +217,43 @@ define(function () {
 
       var leftLabelWidth = null;
       var rightLabelWidth = null;
-      var getLabelWidth = function($label) {
-        return $label.measure(function() {
-          // Calculate width in ems (!).
-          return (this.width() / parseFloat(this.css('font-size')));
-        }, null, interactivesController.interactiveContainer);
+      var getLabelWidth = function(labelSelector) {
+        // This is quite tricky - we need to calculate label width only when we add the whole
+        // slider element to the interactive container. It ensures that styles are applied correctly
+        // and font sizes are final.
+        return $elem.measure(function() {
+          // Use font size of the container, not label itself!
+          // Note that this refers to the label (take a look at $.measure function).
+          return (this.width() / parseFloat(this.parent().css('font-size')));
+        }, labelSelector, interactivesController.interactiveContainer);
       };
       for (i = 0; i < labels.length; i++) {
         label = labels[i];
         $label = $('<p class="label">' + label.label + '</p>');
+        $container.append($label);
         if (label.value === 'right') {
           // Special kind of label which is on the right side of the slider.
-          rightLabelWidth = getLabelWidth($label);
-          $label.addClass('side');
-          $label.css('left', '101%');
+          $label.addClass('side right');
+          rightLabelWidth = getLabelWidth('.label.side.right');
+          $label.css({
+            'left': '100%',
+            'margin-left': '0.6em'
+          });
         } else if (label.value === 'left') {
           // Special kind of label which is on the left side of the slider.
-          leftLabelWidth = getLabelWidth($label);
-          $label.addClass('side');
-          $label.css('left', (-leftLabelWidth) + 'em');
+          $label.addClass('side left');
+          leftLabelWidth = getLabelWidth('.label.side.left');
+          $label.css({
+            'left': (-leftLabelWidth) + 'em',
+            'margin-left': '-0.8em'
+          });
         } else {
           $label.css('left', (label.value - min) / (max - min) * 100 + '%');
         }
-        $container.append($label);
       }
+      // Theoretically we should also include left margins (0.6em + 0.8em),
+      // but slider always has small padding to handle regular labels,
+      // so it's not necessary in practice.
       if (leftLabelWidth) $elem.css('margin-left', leftLabelWidth + 'em');
       if (rightLabelWidth) $elem.css('margin-right', rightLabelWidth + 'em');
 
