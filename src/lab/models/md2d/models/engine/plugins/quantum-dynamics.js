@@ -40,6 +40,9 @@ define(function(require) {
       LIFETIME = 200,
       EMISSION_PROBABILITY_PER_FS = 1/LIFETIME,
 
+      INFRARED = 2.5,
+      ULTRAVIOLET = 14.5,
+
       // dispatch events from handlePhotonAtomCollision
       PHOTON_ABSORBED = 1,
       PHOTON_EMITTED = 2;
@@ -72,6 +75,10 @@ define(function(require) {
         photons,
 
         nextPhotonId = 0,
+
+        getRandomFrequency = function() {
+          return INFRARED + ((ULTRAVIOLET - INFRARED) * Math.random());
+        },
 
         updateAtomsTable = function() {
           var length = atoms.x.length;
@@ -177,7 +184,6 @@ define(function(require) {
           } else if (tryToAbsorbPhoton(photonIndex, atomIndex)) {
             return PHOTON_ABSORBED;
           }
-
           // TODO. Scatter photon (or not) depending on the model's "scatter probability".
         },
 
@@ -567,7 +573,7 @@ define(function(require) {
           if (t < 0 || t > TWO_PI)
             return Math.abs((TWO_PI) - Math.abs(t));
           return t;
-        }
+        },
 
         // Temporary implementation with hard-wired parameters.
         emitLightSourcePhotons = function() {
@@ -577,65 +583,68 @@ define(function(require) {
               h = dimensions[3] - y,
 
               angle  = normalizeAngle(lightSource.angleOfIncidence),
-              energy = lightSource.frequency * PLANCK_CONSTANT,
               nBeams = lightSource.numberOfBeams,
               spacing,
-              s, c, length, dx, dy, m, n, i;
+              s, c, length, dx, dy, m, n, i,
+
+              getEnergy = function () {
+                return (lightSource.monochromatic ? lightSource.frequency : getRandomFrequency()) * PLANCK_CONSTANT;
+              };
 
           if (angle == 0) {
             spacing = h / (nBeams + 1);
             for (i = 1; i <= nBeams; i++) {
-              emitPhoton(x, y + spacing * i, angle, energy);
+              emitPhoton(x, y + spacing * i, angle, getEnergy());
             }
           } else if (angle.toFixed(4) == (Math.PI/2).toFixed(4)) {
             spacing = w / (nBeams + 1);
             for (i = 1; i <= nBeams; i++) {
-              emitPhoton(x + spacing * i, y, angle, energy);
+              emitPhoton(x + spacing * i, y, angle, getEnergy());
             }
           } else if (angle.toFixed(4) == (Math.PI).toFixed(4)) {
             spacing = h / (nBeams + 1);
             for (i = 1; i <= nBeams; i++) {
-              emitPhoton(x + w, y + spacing * i, angle, energy);
+              emitPhoton(x + w, y + spacing * i, angle, getEnergy());
             }
           } else if (angle.toFixed(4) == (Math.PI*3/2).toFixed(4)) {
             spacing = w / (nBeams + 1);
             for (i = 1; i <= nBeams; i++) {
-              emitPhoton(x + spacing * i, y + h, angle, energy)
+              emitPhoton(x + spacing * i, y + h, angle, getEnergy());
             }
           } else {
             // Lifted from AtomicModel.shootPhotons()
             // https://github.com/concord-consortium/mw/blob/d3f621ba87825888737257a6cb9ac9e4e4f63f77/src/org/concord/mw2d/models/AtomicModel.java#L2534
-            s = Math.abs(Math.sin(angle)),
-            c = Math.abs(Math.cos(angle)),
-            length = s * h < c * w ? h / c : w / s,
-            spacing = length / nBeams,
-            dx = spacing / s,
-            dy = spacing / c,
-            m = Math.floor(w / dx),
+            s = Math.abs(Math.sin(angle));
+            c = Math.abs(Math.cos(angle));
+            length = s * h < c * w ? h / c : w / s;
+            spacing = length / nBeams;
+            dx = spacing / s;
+            dy = spacing / c;
+            m = Math.floor(w / dx);
             n = Math.floor(h / dy);
 
             // Lifted from AtomicModel.shootAtAngle()
             // https://github.com/concord-consortium/mw/blob/d3f621ba87825888737257a6cb9ac9e4e4f63f77/src/org/concord/mw2d/models/AtomicModel.java#L2471
             if (angle >= 0 && angle < 0.5 * Math.PI) {
               for (i = 1; i <= m; i++)
-                emitPhoton(x + dx * i, y, angle, energy);
+                emitPhoton(x + dx * i, y, angle, getEnergy());
               for (i = 0; i <= n; i++)
-                emitPhoton(x, y + h - dy * i, angle, energy);
+                emitPhoton(x, y + h - dy * i, angle, getEnergy());
             } else if (angle >= Math.PI*3/2) {
               for (i = 1; i <= m; i++)
-                emitPhoton(x + dx * i, y + h, angle, energy);
+                emitPhoton(x + dx * i, y + h, angle, getEnergy());
               for (i = 0; i <= n; i++)
-                emitPhoton(x, y + dy * i, angle, energy);
+                emitPhoton(x, y + dy * i, angle, getEnergy());
             } else if (angle < Math.PI && angle >= 0.5 * Math.PI) {
               for (i = 0; i <= m; i++)
-                emitPhoton(x + w - dx * i, y, angle, energy);
+                emitPhoton(x + w - dx * i, y, angle, getEnergy());
               for (i = 1; i <= n; i++)
-                emitPhoton(x + w, y + h - dy * i, angle, energy);
+                emitPhoton(x + w, y + h - dy * i, angle, getEnergy());
             } else if (angle >= Math.PI && angle < Math.PI*3/2) {
               for (i = 0; i <= m; i++)
-                emitPhoton(x + w - dx * i, y + h, angle, energy);
+                emitPhoton(x + w - dx * i, y + h, angle, getEnergy());
               for (i = 1; i <= n; i++)
-                emitPhoton(x + w, y + dy * i, angle, energy);
+                emitPhoton(x + w, y + dy * i, angle, getEnergy());
             }
           }
         };
