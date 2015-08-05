@@ -143,7 +143,7 @@ define(function() {
             return value;
           }
           throw new Error("Invalid 'useDuration' value: " + value);
-        },
+        }
       },
       requestedDuration: {
         defaultValue: null,
@@ -877,6 +877,14 @@ define(function() {
         defaultValue: 1
       },
       lightSource: {
+        defaultValue: {
+          on: false,
+          monochromatic: true,
+          frequency: 1,
+          radiationPeriod: 1000,
+          numberOfBeams: 10,
+          angleOfIncidence: 0
+        }
       }
     },
 

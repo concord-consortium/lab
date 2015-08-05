@@ -1101,7 +1101,8 @@
       "frequency": 13.92,
       "radiationPeriod": 784,
       "numberOfBeams": 5,
-      "angleOfIncidence": -2.6179938
+      "angleOfIncidence": -2.6179938,
+      "monochromatic": true
     }
   },
   "useDuration": "codap",
