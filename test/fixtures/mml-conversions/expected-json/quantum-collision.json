@@ -182,7 +182,10 @@
     "lightSource": {
       "on": false,
       "frequency": 3.3000002,
-      "radiationPeriod": 250
+      "radiationPeriod": 250,
+      "monochromatic": true,
+      "numberOfBeams": 10,
+      "angleOfIncidence": 0
     }
   },
   "useDuration": "codap",

@@ -1325,7 +1325,15 @@
       ]
     ],
     "photons": {},
-    "radiationlessEmissionProbability": 1
+    "radiationlessEmissionProbability": 1,
+    "lightSource": {
+      "on": false,
+      "frequency": 1,
+      "radiationPeriod": 1000,
+      "monochromatic": true,
+      "numberOfBeams": 10,
+      "angleOfIncidence": 0
+    }
   },
   "useDuration": "codap",
   "requestedDuration": null
