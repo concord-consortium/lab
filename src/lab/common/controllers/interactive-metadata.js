@@ -945,6 +945,39 @@ define(function() {
       }
     },
 
+    spectrometer: {
+      id: {
+        required: true
+      },
+      type: {
+        required: true
+      },
+      upperBound: {
+        // Upper bound of frequency in eV.
+        defaultValue: 15
+      },
+      lowerBound: {
+        // Lower bound of frequency in eV.
+        defaultValue: 2
+      },
+      clearOnModelLoad: {
+        // Should spectrometer clear its output on model reload or when a new model is loaded?
+        defaultValue: true
+      },
+      width: {
+        defaultValue: "12em"
+      },
+      height: {
+        defaultValue: "3em"
+      },
+      tooltip: {
+        defaultValue: ""
+      },
+      helpIcon: {
+        defaultValue: false
+      }
+    },
+
     table: {
       id: {
         required: true

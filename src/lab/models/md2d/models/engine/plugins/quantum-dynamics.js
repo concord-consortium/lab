@@ -21,8 +21,13 @@ define(function(require) {
 
   // static variables
   var CloneRestoreWrapper = require('common/models/engines/clone-restore-wrapper'),
+      DispatchSupport     = require('common/dispatch-support'),
       constants           = require('../constants/index'),
       utils               = require('../utils'),
+      arrays              = require('arrays'),
+      arrayTypes          = require('common/array-types'),
+      metadata            = require('models/md2d/models/metadata'),
+      validator           = require('common/validator'),
 
       // in reality, 6.626E-34 m^2kg/s. Classic MW uses 0.2 in its units (eV * fs)
       PLANCK_CONSTANT = constants.convert(0.2, { from: constants.unit.EV, to: constants.unit.MW_ENERGY_UNIT }),
@@ -49,14 +54,10 @@ define(function(require) {
 
   return function QuantumDynamics(engine, _properties) {
 
-    var arrays               = require('arrays'),
-        arrayTypes           = require('common/array-types'),
-        metadata             = require('models/md2d/models/metadata'),
-        validator            = require('common/validator'),
-
-        properties           = validator.validateCompleteness(metadata.quantumDynamics, _properties),
+    var properties           = validator.validateCompleteness(metadata.quantumDynamics, _properties),
 
         api,
+        dispatch             = new DispatchSupport("photonAbsorbed"),
 
         elementEnergyLevels  = properties.elementEnergyLevels,
         pRadiationless       = properties.radiationlessEmissionProbability,
@@ -178,10 +179,12 @@ define(function(require) {
         },
 
         handlePhotonAtomCollision = function(photonIndex, atomIndex) {
+          var photonFrequency = photons.angularFrequency[photonIndex];
           if (Math.random() < pStimulatedEmission) {
             // TODO. Stimulated emission.
             return PHOTON_EMITTED;
           } else if (tryToAbsorbPhoton(photonIndex, atomIndex)) {
+            dispatch.photonAbsorbed(photonFrequency);
             return PHOTON_ABSORBED;
           }
           // TODO. Scatter photon (or not) depending on the model's "scatter probability".
@@ -798,6 +801,8 @@ define(function(require) {
         ];
       }
     };
+
+    dispatch.mixInto(api);
 
     return api;
   };

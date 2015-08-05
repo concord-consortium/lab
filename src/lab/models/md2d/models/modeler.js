@@ -1653,6 +1653,12 @@ define(function(require) {
       engine.callPluginAccessor('setValenceElectrons', [element, value]);
     };
 
+    var _photonAbsorbedHandlersCount = 0;
+    model.onPhotonAbsorbed = function(handler) {
+      // Lab's DispatchSupport requires unique namespace for each different handler.
+      engine.callPluginAccessor('on', ['photonAbsorbed.external-handler-' + _photonAbsorbedHandlersCount, handler]);
+    };
+
     /**
       Returns the total number of atoms, or else the number of atoms matching some criterion.
 
