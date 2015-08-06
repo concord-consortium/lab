@@ -331,7 +331,7 @@
           "not_connected": "Brak połączenia.",
           "connecting": "Łączenie...",
           "connection_failed": "Połączenie nieudane.",
-          "connection_failed_alert": "Concord Consortium Sensor Connector nie jest zainstalowany lub nie działa. Proszę __click_here_link__ instrukcje dotyczące korzystania Sensor Connector.",
+          "connection_failed_alert": "Concord Consortium Sensor Connector nie jest zainstalowany lub nie działa. Proszę __click_here_link__ żeby otworzyć instrukcję dotyczącą korzystania z Sensor Connector.",
           "connection_failed_labquest2_alert": "Nie udało się połączyć z LabQuest2. Upewnij się, że adres jest poprawny i LabQuest2 jest osiągalny z tego komputera.",
           "tare_labquest2_alert": "LabQuest2 musi pobierać rzeczywiste dane aby się wyzerować. Ustaw nowy eksperyment na LabQuest2 lub kliknij ikonę licznika na górze po lewej stronie.",
           "click_here": "kliknąć tutaj",
