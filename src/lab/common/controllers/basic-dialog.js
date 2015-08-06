@@ -50,17 +50,17 @@ define(function () {
   /**
    * Sets content of the dialog.
    *
-   * @param {jQuery|DOM|string} $content Any value that can be accepted by the jQuery constructor.
+   * @param {jQuery|DOM|string} content Any value that can be accepted by the jQuery.append.
    */
   BasicDialog.prototype.setContent = function (content) {
-    var $content = $(content);
+    // Wrap `content` in <div> so we can support raw HTML passed as a string.
+    this.$content = $('<div>').append(content);
     this.$element.empty();
     // Not very pretty, but probably the simplest and most reliable way to
     // disable autofocus in jQuery UI dialogs. See:
     // http://jqueryui.com/upgrade-guide/1.10/#added-ability-to-specify-which-element-to-focus-on-open
     this.$element.append('<input type="hidden" autofocus="autofocus" />');
-    this.$element.append($content);
-    this.$content = $content;
+    this.$element.append(this.$content);
   };
 
   return BasicDialog;
