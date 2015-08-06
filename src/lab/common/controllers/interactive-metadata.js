@@ -960,6 +960,9 @@ define(function() {
         // Lower bound of frequency in eV.
         defaultValue: 2
       },
+      ticks: {
+        defaultValue: 10
+      },
       clearOnModelLoad: {
         // Should spectrometer clear its output on model reload or when a new model is loaded?
         defaultValue: true
@@ -969,6 +972,10 @@ define(function() {
       },
       height: {
         defaultValue: "3em"
+      },
+      border: {
+        // CSS border specification is accepted.
+        defaultValue: "none"
       },
       tooltip: {
         defaultValue: ""
