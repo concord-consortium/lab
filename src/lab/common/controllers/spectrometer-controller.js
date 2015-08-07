@@ -4,12 +4,14 @@ define(function () {
   var inherit              = require('common/inherit'),
       InteractiveComponent = require('common/controllers/interactive-component'),
 
+      QuantumDynamics      = require('models/md2d/models/engine/plugins/quantum-dynamics'),
+      INFRARED             = QuantumDynamics.INFRARED,
+      ULTRAVIOLET          = QuantumDynamics.ULTRAVIOLET,
+
       // Performance optimization - photon mark is not rendered if there is already another
       // photon mark at the same position. Positions are rounded to the PHOTON_MARKS_PRECISION.
       PHOTON_MARKS_PRECISION = 2,
 
-      INFRARED = 2.5,
-      ULTRAVIOLET = 14.5,
       // Visible light spectrum image (297px x 1px). Covers area from INFRARED to ULTRAVIOLET.
       // It's based on the Classic MW spectrometer.
       VISIBLE_LIGHT_IMG_DATA = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASkAAAABCAYAAACCEVhtAAAAmUlEQVQ4T8WUw' +

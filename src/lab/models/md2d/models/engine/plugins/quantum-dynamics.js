@@ -52,7 +52,7 @@ define(function(require) {
       PHOTON_ABSORBED = 1,
       PHOTON_EMITTED = 2;
 
-  return function QuantumDynamics(engine, _properties) {
+  function QuantumDynamics(engine, _properties) {
 
     var properties           = validator.validateCompleteness(metadata.quantumDynamics, _properties),
 
@@ -805,6 +805,12 @@ define(function(require) {
     dispatch.mixInto(api);
 
     return api;
-  };
+  }
+
+  // Export constants.
+  QuantumDynamics.INFRARED = INFRARED;
+  QuantumDynamics.ULTRAVIOLET = ULTRAVIOLET;
+
+  return QuantumDynamics;
 
 });
