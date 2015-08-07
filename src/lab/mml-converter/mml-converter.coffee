@@ -1394,6 +1394,7 @@ define (require) ->
           lightSource = {}
           lightSource.on               = getBooleanProperty( $lightSource, "on"  ) || false
           lightSource.frequency        = getFloatProperty    $lightSource, "frequency"
+          lightSource.monochromatic    = getBooleanProperty  $lightSource, "monochromatic"
           lightSource.radiationPeriod  = getIntProperty      $lightSource, "radiationPeriod"
           lightSource.numberOfBeams    = getIntProperty      $lightSource, "numberOfBeams"
           lightSource.angleOfIncidence = getFloatProperty    $lightSource, "angleOfIncidence"
