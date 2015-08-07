@@ -465,9 +465,7 @@ define(function (require) {
         var model = getModel();
         var xDescription = model.getPropertyDescription(xProperties[X_LABEL_PROP_IDX]);
         var yDescriptions = properties.map(function(property) {
-          try {
-            return model.getPropertyDescription(property);
-          } catch(e) { return null; }
+          return model.getPropertyDescription(property);
         });
         var ymin;
         var ymax;
