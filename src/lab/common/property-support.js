@@ -736,7 +736,10 @@ define(function() {
           property named 'key' was defined.
         */
         target.getPropertyDescription = function(key) {
-          return propertyInformation[key].descriptor.description;
+          if (propertyInformation[key] && propertyInformation[key].descriptor) {
+            return propertyInformation[key].descriptor.description;
+          }
+          return null;
         };
 
         /**
@@ -745,7 +748,10 @@ define(function() {
           named 'key' was defined.
         */
         target.getPropertyType = function(key) {
-          return propertyInformation[key].descriptor.type;
+          if (propertyInformation[key] && propertyInformation[key].descriptor) {
+            return propertyInformation[key].descriptor.type;
+          }
+          return null;
         };
 
         /**
@@ -754,7 +760,10 @@ define(function() {
           property named 'key' was defined.
         */
         target.getPropertyValidateFunc = function(key) {
-          return propertyInformation[key].descriptor.validate;
+          if (propertyInformation[key] && propertyInformation[key].descriptor) {
+            return propertyInformation[key].descriptor.validate;
+          }
+          return null;
         };
 
         /**

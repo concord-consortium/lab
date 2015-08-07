@@ -38,6 +38,13 @@ define(function () {
   };
 
   /**
+   * Closes the dialog.
+   */
+  BasicDialog.prototype.close = function() {
+    this.$element.dialog("close");
+  };
+
+  /**
    * Sets jQuery UI Dialog option.
    *
    * @param {string} key

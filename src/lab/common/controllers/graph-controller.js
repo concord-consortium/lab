@@ -257,6 +257,7 @@ define(function (require) {
     }
     function _labelsChangedHandler(labels) {
       if (ignoreDataSetEvents) return;
+      var labelWasChanged = false;
       if (!isLabelExplicit(component.ylabel)) {
         // Set label provided by dataset only if graph component description doesn't specify ylabel.
         var yProp = properties[Y_LABEL_PROP_IDX];
@@ -264,11 +265,16 @@ define(function (require) {
         // If the change is triggered via listener, the values will be wrapped in the 'data' property...
         var yLabel = labels[yProp] || labels.data[yProp];
         grapher.yLabel(yLabel);
+        labelWasChanged = true;
       }
       if (!isLabelExplicit(component.xlabel)) {
         var xProp = xProperties[X_LABEL_PROP_IDX];
         var xLabel = labels[xProp] || labels.data[xProp];
         grapher.xLabel(xLabel);
+        labelWasChanged = true;
+      }
+      if (labelWasChanged) {
+        controller.syncAxisRangesToPropertyRanges();
       }
     }
 

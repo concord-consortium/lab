@@ -51,7 +51,7 @@ define(function(require) {
     }
 
     function setMessageText() {
-      view.$message.text(model.properties.message);
+      view.$message.html(model.properties.message);
     }
 
     function setupModelObservers() {

@@ -84,6 +84,7 @@
     'markdown': '../../node_modules/markdown/lib/markdown',
     'sensor-applet': '../../vendor/lab-sensor-applet-interface-dist/sensor-applet-interface',
     'sensor-connector-interface': '../../vendor/sensor-connector-interface/dist/sensor-connector-interface',
+    'lodash': 'empty:',
     'labquest2-interface': '../../vendor/sensor-labquest-2-interface/dist/sensor-labquest-2-interface'
   },
 
