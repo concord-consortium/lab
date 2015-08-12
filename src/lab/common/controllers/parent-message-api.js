@@ -177,6 +177,14 @@ define(function(require) {
       model.stop();
     });
 
+    iframeEndpoint.addListener('reloadModel', function() {
+      controller.reloadModel();
+    });
+
+    iframeEndpoint.addListener('reloadInteractive', function() {
+      controller.reloadInteractive();
+    });
+
     iframeEndpoint.initialize();
 
     controller.on('modelLoaded.parentMessageAPI', function() {
