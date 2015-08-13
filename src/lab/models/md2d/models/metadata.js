@@ -194,6 +194,16 @@ define(function() {
         defaultValue: false,
         storeInTickHistory: true
       },
+      keShadingMinEnergy: {
+        // Kinetic energy of an atom which is lower boundary for KE shading (white shading).
+        defaultValue: 0,
+        storeInTickHistory: true
+      },
+      keShadingMaxEnergy: {
+        // Kinetic energy of an atom which is upper boundary for KE shading (red shading).
+        defaultValue: 0.2,
+        storeInTickHistory: true
+      },
       chargeShading: {
         defaultValue: false,
         storeInTickHistory: true
