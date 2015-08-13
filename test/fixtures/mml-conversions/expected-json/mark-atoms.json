@@ -35,6 +35,8 @@
     "showClock": true,
     "markColor": "#ff0033",
     "keShading": false,
+    "keShadingMinEnergy": 0,
+    "keShadingMaxEnergy": 0.2,
     "chargeShading": false,
     "useThreeLetterCode": true,
     "aminoAcidColorScheme": "hydrophobicity",
