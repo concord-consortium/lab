@@ -1118,6 +1118,14 @@ define(function() {
         // "center" or "left"
         defaultValue: "center"
       },
+      buttonsStyle: {
+        // "icons" or "text"
+        defaultValue: "icons"
+      },
+      buttonsLayout: {
+        // "vertical" or "horizontal"
+        defaultValue: "vertical"
+      },
       lineWidth: {
         defaultValue: 2.0
       },

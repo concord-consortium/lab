@@ -14,6 +14,8 @@ define(function (require) {
       grapherOptionForComponentSpecProperty = {
         title: 'title',
         titlePosition: 'titlePosition',
+        buttonsStyle: 'buttonsStyle',
+        buttonsLayout: 'buttonsLayout',
         enableAutoScaleButton: 'enableAutoScaleButton',
         enableAxisScaling: 'enableAxisScaling',
         enableZooming: 'enableZooming',
