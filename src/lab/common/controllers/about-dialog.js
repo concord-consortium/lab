@@ -30,7 +30,8 @@ define(function (require) {
     this.set("title", this._i18n.t("about_dialog.title", {interactive_title: interactive.title}));
 
     if (interactive.subtitle) {
-      $aboutContent.append(markdownToHTML(interactive.subtitle));
+      // Bold the subtitle using markdown (**).
+      $aboutContent.append(markdownToHTML("**" + interactive.subtitle + "**"));
     }
     $aboutContent.append(markdownToHTML(interactive.about));
 
