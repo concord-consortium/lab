@@ -313,7 +313,7 @@ define(function(require) {
       },
 
       update: function () {
-        var i, len, viewAtom, modelAtom, x, y;
+        var i, len, viewAtom, modelAtom, x, y, minKE, maxKE;
 
         for (i = 0, len = viewAtoms.length; i < len; ++i) {
           viewAtom = viewAtoms[i];
@@ -331,7 +331,9 @@ define(function(require) {
           }
 
           if (renderMode.keShading) {
-            viewAtom.keSprite.alpha = Math.min(5 * model.getAtomKineticEnergy(i), 1);
+            minKE = model.get('keShadingMinEnergy');
+            maxKE = model.get('keShadingMaxEnergy');
+            viewAtom.keSprite.alpha = Math.min((model.getAtomKineticEnergy(i) - minKE) / (maxKE - minKE), 1);
             viewAtom.keSprite.position.x = x;
             viewAtom.keSprite.position.y = y;
           }
