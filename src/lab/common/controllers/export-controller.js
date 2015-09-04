@@ -312,11 +312,11 @@ define(function (require) {
 
     function getLabelForProperty(property) {
       var desc  = model.getPropertyDescription(property),
-          label = desc.getLabel(),
-          units = desc.getUnitAbbreviation(),
+          label = desc && desc.getLabel(),
+          units = desc && desc.getUnitAbbreviation(),
           ret   = "";
 
-      if (label.length > 0) {
+      if (label && label.length > 0) {
         ret += label;
       } else {
         ret += property;
