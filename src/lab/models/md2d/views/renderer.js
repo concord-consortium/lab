@@ -20,7 +20,14 @@ define(function(require) {
     wrapSVGText         = require('cs!common/layout/wrap-svg-text'),
     gradients           = require('common/views/gradients'),
     contrastingColor    = require('common/views/color').contrastingColor,
-    ImagesRenderer      = require('./images-renderer');
+    ImagesRenderer      = require('./images-renderer'),
+
+    // Constants used by photon renderer:
+    // Reference implementation:
+    // https://github.com/concord-consortium/mw/blob/3c54e37cbfe98b8d3c6f9e5397eda4308dfafecb/src/org/concord/mw2d/models/Photon.java#L32-L35
+    MIN_VISIBLE_FREQ = 5,
+    MAX_VISIBLE_FREQ = 12,
+    PHOTON_COLORS = [[255, 0, 0], [255, 200, 0], [255, 255, 0], [0, 255, 0], [0, 255, 255], [0, 0, 255], [139, 0, 255]];
 
   return function MD2DView(modelView, model) {
     // Public API object to be returned.
@@ -1135,7 +1142,8 @@ define(function(require) {
         t = d.angularFrequency * 2 * Math.PI / nPoints,
         i;
 
-      // Reference implementation: https://github.com/concord-consortium/mw/blob/6e2f2d4630323b8e993fcfb531a3e7cb06644fef/src/org/concord/mw2d/models/Photon.java#L74-L79
+      // Reference implementation:
+      // https://github.com/concord-consortium/mw/blob/6e2f2d4630323b8e993fcfb531a3e7cb06644fef/src/org/concord/mw2d/models/Photon.java#L74-L79
       for (i = 0; i < nPoints; i++) {
         lineData.push({
           x: i - nPoints / 2,
@@ -1144,6 +1152,42 @@ define(function(require) {
       }
 
       return line(lineData);
+    }
+
+    function photonColor(data) {
+      // Reference implementation:
+      // https://github.com/concord-consortium/mw/blob/6e2f2d4630323b8e993fcfb531a3e7cb06644fef/src/org/concord/mw2d/models/Photon.java#L185-L205
+      var freq = data.angularFrequency;
+      if (freq <= MIN_VISIBLE_FREQ || freq >= MAX_VISIBLE_FREQ) {
+        return "rgba(0,0,0,0.8)"
+      } else {
+        var d = (MAX_VISIBLE_FREQ - MIN_VISIBLE_FREQ) / 7.0;
+        var i = Math.floor((freq - MIN_VISIBLE_FREQ) / d);
+        if (i === 6) {
+          return "rgb(" + PHOTON_COLORS[i].join(',') + ")";
+        }
+        else {
+          var remainder = (freq - MIN_VISIBLE_FREQ - i * d) / d;
+          var r1 = PHOTON_COLORS[i][0];     // red
+          var r2 = PHOTON_COLORS[i + 1][0];
+          var g1 = PHOTON_COLORS[i][1];     // green
+          var g2 = PHOTON_COLORS[i + 1][1];
+          var b1 = PHOTON_COLORS[i][2];     // blue
+          var b2 = PHOTON_COLORS[i + 1][2];
+          return "rgb(" + Math.floor(r1 + remainder * (r2 - r1)) + "," + Math.floor(g1 + remainder * (g2 - g1)) + ","
+                        + Math.floor(b1 + remainder * (b2 - b1)) + ")";
+        }
+      }
+    }
+
+    function photonDashArray(data) {
+      var freq = data.angularFrequency;
+      if (freq <= MIN_VISIBLE_FREQ || freq >= MAX_VISIBLE_FREQ) {
+        // SVG "stroke-dasharray" property value.
+        return "4,2"
+      } else {
+        return null;
+      }
     }
 
     function enterAndUpdatePhotons() {
@@ -1157,8 +1201,9 @@ define(function(require) {
         .attr({
           "class": "photon",
           "d": photonPath,
+          "stroke": photonColor,
+          "stroke-dasharray": photonDashArray,
           "stroke-width": 0.5,
-          "stroke": "rgba(0,0,0,0.8)",
           "fill-opacity": 0
         });
 
