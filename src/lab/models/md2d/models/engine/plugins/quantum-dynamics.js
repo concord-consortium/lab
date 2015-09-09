@@ -179,19 +179,25 @@ define(function(require) {
         },
 
         handlePhotonAtomCollision = function(photonIndex, atomIndex) {
-          var photonFrequency = photons.angularFrequency[photonIndex];
           if (Math.random() < pStimulatedEmission) {
             // TODO. Stimulated emission.
             return PHOTON_EMITTED;
-          } else if (tryToAbsorbPhoton(photonIndex, atomIndex)) {
-            dispatch.photonAbsorbed(photonFrequency);
-            return PHOTON_ABSORBED;
+          } else {
+            var preciseEnergy = tryToAbsorbPhoton(photonIndex, atomIndex);
+            if (preciseEnergy !== false && preciseEnergy > 0) {
+              removePhoton(photonIndex);
+              // For some reason Classic MW doesn't show initial frequency of the photon on the spectrometer.
+              // It's updated first using "preciseEnergy". Do the same to be consistent.
+              var newFreq = preciseEnergy / PLANCK_CONSTANT;
+              dispatch.photonAbsorbed(newFreq);
+              return PHOTON_ABSORBED;
+            }
           }
           // TODO. Scatter photon (or not) depending on the model's "scatter probability".
         },
 
         // If the photon can be absorbed by exciting the atom's electron to a higher energy level,
-        // then remove the photon, excite the electron, and return true. Otherwise, return false.
+        // then remove the photon, excite the electron, and return the precise energy. Otherwise, return false.
         tryToAbsorbPhoton = function(photonIndex, atomIndex) {
           if (!elementEnergyLevels) return;
 
@@ -206,8 +212,7 @@ define(function(require) {
             if (Math.abs(energyLevels[i] - electronEnergy - photonEnergy) < ENERGY_GAP_TOLERANCE) {
               atoms.excitation[atomIndex] = i;
               excitationTime[atomIndex] = modelTime;
-              removePhoton(photonIndex);
-              return true;
+              return energyLevels[i] - electronEnergy;
             }
           }
           return false;
