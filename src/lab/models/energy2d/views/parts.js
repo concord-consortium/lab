@@ -4,7 +4,7 @@ define(function () {
 
   // Classic version of Energy2D was rendering rectangles with small shift.
   // If we do the same then converted models look better.
-  var E2D_XY_SHIFT = -1,
+  var E2D_XY_SHIFT = 1,
       E2D_DIM_SHIFT = 2;
 
   return function PartsView(SVGContainer, g) {

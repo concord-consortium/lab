@@ -154,8 +154,8 @@ define(function (require, exports, module) {
     var
       nx1 = nx - 1,
       ny1 = ny - 1,
-      dx = nx1 / lx,
-      dy = ny1 / ly,
+      dx = nx / lx,
+      dy = ny / ly,
 
       rectangleIndices = function (rect) {
         var i, j, i0, j0, i_max, j_max, idx, indices = [];
