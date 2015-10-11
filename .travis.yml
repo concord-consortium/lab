@@ -36,3 +36,4 @@ env:
   - secure: "A430lxRQcBORvdmn7a5EHW6ffPt+iO+KC5ZqvR/sCuh/SRJDrPvGgY5+D4T6xAAybwNLDddUdbxZ3ACUT7oUVFbRNEJzfLSo6ugkMeK+BnABckG4Bh9BEAI4xhqiune09qBDoxwpAKQBCXGKS5q06snabbkfLjx2H+yPqGHCsSE="
   - secure: "rnqygpeAbtFM1U82XMQgDMvXs+0ZiBLFNX38JXjPlXMDLNtoYzdb9uFnlEVIEuE7jj/SUt9DJCNgUdZG94nb8joQQ0LyvuFmDQphZ++ioTNcodk5lA3d4NyZ3mUtZURwwEnfJeZTJPPCw/8yz+zF/OIN1cknn61crj8N0Yp7cTo="
 after_success: "time script/s3-deploy.sh"
+sudo: false
