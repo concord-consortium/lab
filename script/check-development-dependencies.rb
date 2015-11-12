@@ -40,7 +40,7 @@ def nodejs_check
   # Check for nodejs
   requirement = ">= #{@minimum_node_version}"
   begin
-    node_version = `node --version`.strip
+    node_version = `node --version`.strip[1..-1] # rm 'v' character, e.g. "v0.10.1" -> "0.10.1"
     # Convert version strings to array of integers.
     node_version_arr = node_version.split('.').map { |e| e.to_i }
     minimum_node_version_arr = @minimum_node_version.split('.').map { |e| e.to_i }
