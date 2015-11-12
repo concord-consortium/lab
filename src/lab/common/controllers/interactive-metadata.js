@@ -145,6 +145,10 @@ define(function() {
         required: false
       },
 
+      logging: {
+        required: false
+      },
+
       components: {
         // List of the interactive components. Their definitions are below ('button', 'checkbox' etc.).
         defaultValue: []
@@ -286,6 +290,26 @@ define(function() {
       },
       perTick: {
         required: true
+      }
+    },
+
+    logging: {
+      onStart: {
+        defaultValue: true
+      },
+      onStop: {
+        defaultValue: true
+      },
+      onReload: {
+        defaultValue: true
+      },
+      properties: {
+        // Properties that are logged on start, stop and reload events.
+        defaultValue: []
+      },
+      components: {
+        // Names of components which should log user interaction.
+        defaultValue: []
       }
     },
 
