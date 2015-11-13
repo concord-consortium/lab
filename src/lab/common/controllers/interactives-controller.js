@@ -302,7 +302,7 @@ define(function (require) {
       // The authored definition of which components go in which container.
       layout = interactive.layout;
 
-      // Banner hash containing components, layout containers and layout deinition
+      // Banner hash containing components, layout containers and layout definition
       // (components location). Keep it in a separate structure, because we do not
       // expect these objects to be serialized!
       banner = setupBanner(controller, interactive, creditsDialog, aboutDialog, shareDialog);

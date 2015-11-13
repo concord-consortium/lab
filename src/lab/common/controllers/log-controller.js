@@ -49,8 +49,13 @@ define(function (require) {
   };
 
   LogController.prototype._setupComponents = function (componentByID) {
+    var components = this._config.components;
+    if (components === 'none' || components === []) return;
+    if (components === 'all') {
+      components = Object.keys(componentByID);
+    }
     var logFunction = this.logAction.bind(this);
-    this._config.components.forEach(function (compID) {
+    components.forEach(function (compID) {
       var comp = componentByID[compID];
       // Enable logging and provide function that component can use to log its own events.
       if (comp.enableLogging) {

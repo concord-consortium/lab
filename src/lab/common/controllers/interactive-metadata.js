@@ -305,8 +305,9 @@ define(function() {
         defaultValue: []
       },
       components: {
-        // Names of components which should log user interaction.
-        defaultValue: []
+        // List of components which should log user interaction.
+        // "all" and "none" are special values for authors' convenience.
+        defaultValue: "all"
       }
     },
 
