@@ -493,12 +493,14 @@ define(function (require) {
         }
       }
 
-      try {
-        interactive.logging = validator.validateCompleteness(metadata.logging, interactive.logging || {});
-      } catch (e) {
-        errMsg = "Incorrect logging definition:\n" + e.message;
-        alert(errMsg);
-        throw new Error(errMsg);
+      if (interactive.logging) {
+        try {
+          interactive.logging = validator.validateCompleteness(metadata.logging, interactive.logging || {});
+        } catch (e) {
+          errMsg = "Incorrect logging definition:\n" + e.message;
+          alert(errMsg);
+          throw new Error(errMsg);
+        }
       }
 
       return interactive;
@@ -711,7 +713,9 @@ define(function (require) {
 
       exportController = new ExportController(controller);
 
-      logController = new LogController(interactive.logging, controller);
+      if (interactive.logging) {
+        logController = new LogController(interactive.logging, controller);
+      }
 
       // Setup experimentController, if defined.
       if (interactive.experiment) {
