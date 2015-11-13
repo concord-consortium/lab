@@ -1569,6 +1569,10 @@ define(function (require) {
           result.exports = $.extend(true, {}, interactive.exports);
         }
 
+        if (interactive.logging !== undefined) {
+          result.logging = $.extend(true, {}, interactive.logging);
+        }
+
         if (interactive.experiment !== undefined) {
           result.experiment = $.extend(true, {}, interactive.experiment);
         }
