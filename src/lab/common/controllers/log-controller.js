@@ -55,6 +55,8 @@ define(function (require) {
       // Enable logging and provide function that component can use to log its own events.
       if (comp.enableLogging) {
         comp.enableLogging(logFunction);
+      } else {
+        alert('Warning: component ' + compID + ' does not support logging!');
       }
     });
   };

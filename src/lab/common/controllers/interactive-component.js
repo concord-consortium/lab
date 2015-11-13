@@ -72,8 +72,6 @@ define(function (require) {
   };
 
   InteractiveComponent.prototype._updateClickHandler = function (script) {
-    // always discard attached click handler
-    this.$element.off("click."+this._nameSpace);
     // Create a new handler function from action or onClick in string form
     if (typeof script !== "function") {
       this._actionClickFunction = this._scriptingAPI.makeFunctionInScriptContext(script);
@@ -81,7 +79,7 @@ define(function (require) {
       this._actionClickFunction = script;
     }
     var that = this;
-    this.$element.on("click."+this._nameSpace, this._clickTargetSelector || null, function() {
+    this._onClick(this._nameSpace, function() {
       that._actionClickFunction();
     });
     // Also add a special class indicating that this text node is a clickable.
@@ -115,6 +113,18 @@ define(function (require) {
     }
   };
 
+  InteractiveComponent.prototype.enableLogging = function (logFunc) {
+    var comp = this.component;
+    if (comp.onClick === undefined && comp.action === undefined) return; // nothing to log
+    var eventName = comp.type[0].toUpperCase() + comp.type.slice(1) + "Clicked";
+    var data = {id: comp.id};
+    var label = comp.label || comp.text || comp.title;
+    if (label) data.label = label;
+    this._onClick(this._nameSpace + "logging", function () {
+      logFunc(eventName, data);
+    });
+  };
+
   /**
    * @return {jQuery} The most outer element.
    */
@@ -127,6 +137,11 @@ define(function (require) {
    */
   InteractiveComponent.prototype.serialize = function() {
     return this.component;
+  };
+
+  InteractiveComponent.prototype._onClick = function(namespace, handler) {
+    this.$element.off("click." + namespace);
+    this.$element.on("click." + namespace, this._clickTargetSelector || null, handler);
   };
 
   // It will add .setDisabled() method to the prototype.
