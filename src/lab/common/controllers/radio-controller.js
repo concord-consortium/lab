@@ -64,13 +64,8 @@ define(function () {
         $options[i].removeClass('checked');
       }
 
-      if ($input.attr('checked') !== undefined) {
-        $input.removeAttr('checked');
-        $span.removeClass('checked');
-      } else {
-        $input.attr('checked', 'checked');
-        $span.addClass('checked');
-      }
+      $input.attr('checked', 'checked');
+      $span.addClass('checked');
 
       // Trigger change event!
       $input.trigger('change');
@@ -182,6 +177,22 @@ define(function () {
         }
         // Perform initial radio setup.
         updateRadio();
+      },
+
+      enableLogging: function (logFunc) {
+        $inputs.forEach(function ($input, idx) {
+          var optionSpec = options[idx];
+          $input.off('.logging');
+          $input.on('change.logging', function () {
+            var data = {id: component.id, selected: optionSpec.text};
+            if (component.label) data.label = component.label;
+            if (component.property) {
+              data.property = component.property;
+              data.value = optionSpec.value;
+            }
+            logFunc('RadioChanged', data);
+          });
+        });
       },
 
       // Returns view container.

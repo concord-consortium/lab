@@ -161,6 +161,15 @@ define(function () {
         }
       },
 
+      enableLogging: function (logFunc) {
+        $checkbox.off('change.logging');
+        $checkbox.on('change.logging', function () {
+          var data = {id: component.id, label: component.text, value: $(this).is(':checked')};
+          if (propertyName) data.property = propertyName;
+          logFunc('CheckboxChanged', data);
+        });
+      },
+
       // Returns view container. Label tag, as it contains checkbox anyway.
       getViewContainer: function () {
         return $element;
