@@ -1427,6 +1427,19 @@ define(function (require) {
         });
       },
 
+      /**
+       * Logs custom event specified by author. Note that logging needs to be enabled in interactive JSON!
+       * It means 'logging' hash needs to be specified, it can be even empty.
+       * Log message will be sent to parent window, so parent window needs to handle it.
+       * Currently, only LARA does it and sends logs to CC Log Manager App.
+       *
+       * @param {string} actionName
+       * @param {object} data Hash of key-values that should be logged.
+       */
+      logAction: function(actionName, data) {
+        logController && logController.logAction(actionName, data);
+      },
+
       updateModelView: function() {
         modelController.updateView();
       },
