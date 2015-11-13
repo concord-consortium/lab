@@ -21,13 +21,14 @@ define(function (require) {
     return _phone;
   }
 
-  function LogController(config, interactivesController) {
+  function LogController(config, interactivesController, componentByID) {
     this._config = config;
     this._interactivesController = interactivesController;
     this._model = null;
     this._phone = getPhone();
 
     this._interactivesController.on('modelLoaded.logController', this._modelLoadedHandler.bind(this));
+    this._setupComponents(componentByID);
   }
 
   LogController.prototype.logAction = function (action, data) {
@@ -43,6 +44,17 @@ define(function (require) {
       action: 'logAction',
       args: {
         formatStr: logString
+      }
+    });
+  };
+
+  LogController.prototype._setupComponents = function (componentByID) {
+    var logFunction = this.logAction.bind(this);
+    this._config.components.forEach(function (compID) {
+      var comp = componentByID[compID];
+      // Enable logging and provide function that component can use to log its own events.
+      if (comp.enableLogging) {
+        comp.enableLogging(logFunction);
       }
     });
   };

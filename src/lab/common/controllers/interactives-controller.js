@@ -714,7 +714,7 @@ define(function (require) {
       exportController = new ExportController(controller);
 
       if (interactive.logging) {
-        logController = new LogController(interactive.logging, controller);
+        logController = new LogController(interactive.logging, controller, componentByID);
       }
 
       // Setup experimentController, if defined.
