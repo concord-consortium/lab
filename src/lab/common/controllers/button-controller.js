@@ -34,7 +34,7 @@ define(function () {
     var comp = this.component;
     this.$element.off("click." + this._nameSpace + "logging");
     this.$element.on("click." + this._nameSpace + "logging", this._clickTargetSelector, function () {
-      logFunc('ButtonClicked', {id: comp.id, text: comp.text});
+      logFunc('ButtonClicked', {id: comp.id, label: comp.text});
     });
   };
 
