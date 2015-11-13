@@ -35,7 +35,7 @@ define(function (require) {
     // Phone might not be initialized yet. In theory we can miss some interaction, but in practice it's
     // not possible that user interacts with Lab before communication between Lab and parent is initialized.
     // Also, even if it was possible, we couldn't do much about it.
-    if (!parentLoggerReady) return;
+    if (!parentLoggerReady || !this._config.enabled) return;
 
     var logString = action;
     // Weird format, CODAP legacy. But it works.

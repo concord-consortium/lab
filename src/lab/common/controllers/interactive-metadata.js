@@ -294,13 +294,10 @@ define(function() {
     },
 
     logging: {
-      onStart: {
-        defaultValue: true
-      },
-      onStop: {
-        defaultValue: true
-      },
-      onReload: {
+      enabled: {
+        // Global logging switch. Model start, stop and reload are be logged by default
+        // (and probably some other events in the future). Also, #logAction scripting API function
+        // works only if it's set to true.
         defaultValue: true
       },
       properties: {

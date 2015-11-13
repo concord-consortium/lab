@@ -1429,7 +1429,7 @@ define(function (require) {
 
       /**
        * Logs custom event specified by author. Note that logging needs to be enabled in interactive JSON!
-       * It means 'logging' hash needs to be specified, it can be even empty.
+       * It means "logging": {"enabled": true} needs to be specified.
        * Log message will be sent to parent window, so parent window needs to handle it.
        * Currently, only LARA does it and sends logs to CC Log Manager App.
        *
