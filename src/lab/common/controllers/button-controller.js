@@ -19,6 +19,7 @@ define(function () {
     this.setAttributes = function(attrs) {
       // only support text changes right now
       if (attrs.text && typeof(attrs.text) !== "undefined") {
+        this.component.text = attrs.text;
         this.button.html(attrs.text);
       }
     };

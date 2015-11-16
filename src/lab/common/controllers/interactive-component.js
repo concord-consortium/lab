@@ -118,9 +118,8 @@ define(function (require) {
     if (comp.onClick === undefined && comp.action === undefined) return; // nothing to log
     var eventName = comp.type[0].toUpperCase() + comp.type.slice(1) + "Clicked";
     var data = {id: comp.id};
-    var label = comp.label || comp.text || comp.title;
-    if (label) data.label = label;
     this._onClick(this._nameSpace + "logging", function () {
+      data.label = comp.label || comp.text || comp.title;
       logFunc(eventName, data);
     });
   };
