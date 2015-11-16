@@ -22,6 +22,7 @@ define(function (require) {
     return _phone;
   }
 
+  // Handles logging of events to LARA or CODAP.
   function LogController(config, interactivesController, componentByID, propertiesBoundToComponents) {
     this._config = config;
     this._interactivesController = interactivesController;
@@ -94,13 +95,13 @@ define(function (require) {
       this.logAction('StoppedModel', this._getProperties());
     }.bind(this));
 
-    var savedParameters = null;
+    var savedProperties = null;
     this._model.on('willReset.logController', function() {
-      savedParameters = this._getProperties();
+      savedProperties = this._getProperties();
     }.bind(this));
 
     if (cause === 'reload') {
-      this.logAction('ReloadedModel', savedParameters);
+      this.logAction('ReloadedModel', savedProperties);
     }
   };
 

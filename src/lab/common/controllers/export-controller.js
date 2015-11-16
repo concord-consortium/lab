@@ -21,6 +21,8 @@ define(function (require) {
     dialog.open();
   }
 
+  // Handles CODAP data export. Also, defines a few new log events which are sent to parent when export is possible.
+  // In such case it's using generic logAction method, but in practice LogController will talk to CODAP too.
   function ExportController(interactivesController) {
     var dispatch = new DispatchSupport(),
         spec,
@@ -30,11 +32,6 @@ define(function (require) {
         perTickValues,
         controller,
         model,
-
-        // Data that is saved just before an about-to-be-reset model is reset. This data is what
-        // will be logged, so that we don't lose information about the state the user put the model
-        // into before resetting.
-        savedPerRunData,
 
         // used to compare initial parameters to parameters at export
         initialPerRunData,
@@ -83,20 +80,15 @@ define(function (require) {
     }
 
     function logAction(action, state) {
-      var logString = action;
       var data;
-      var i;
-
       if (state) {
+        // Convert list of labels and values into plain JS object.
         data = {};
-
-        for (i = 0; i < state.labels.length; i++) {
+        for (var i = 0; i < state.labels.length; i++) {
           data[state.labels[i]] = state.values[i];
         }
-        logString = logString + ": " + JSON.stringify(data);
       }
-
-      ExportController.logAction(logString);
+      interactivesController.logAction(action, data);
     }
 
     function shouldHandleDataDiscard() {
@@ -156,7 +148,7 @@ define(function (require) {
       currentPerRunData.values.forEach(function(currentValue, i) {
         var initialValue = initialPerRunData.values[i];
         var parameter = currentPerRunData.labels[i];
-        var changed = initialValue !== currentValue
+        var changed = initialValue !== currentValue;
 
         changesList.labels.push(parameter + ' changed?');
         changesList.values.push(changed);
@@ -185,10 +177,6 @@ define(function (require) {
         }
       });
       model.on('invalidation.exportController', removeDataAfterStepPointer);
-
-      model.on('willReset.exportController', function() {
-        savedPerRunData = getCurrentPerRunData();
-      });
     }
 
     function willResetModelHandler(modelToBeReset, resetRequest) {
@@ -246,22 +234,11 @@ define(function (require) {
         resetData();
         registerModelListeners();
 
-        if (eventName === 'modelLoaded') {
-          if (cause === 'new-run') {
-            logAction("SetUpNewRun");
-          } else {
-            logAction("LoadedModel");
-          }
-        } else if (eventName === 'modelReset') {
-          if (cause === 'new-run') {
-            logAction("SetUpNewRun");
-          } else {
-            logAction("ResetModel", savedPerRunData);
-          }
+        if (cause === 'new-run') {
+          logAction("SetUpNewRun");
         }
 
         initialPerRunData = null;
-        savedPerRunData = null;
         isUnexportedDataPresent = false;
         if (controller.canExportData()) {
           modelCanExportData = true;
@@ -444,10 +421,6 @@ define(function (require) {
   // "Class method" (want to be able to call this before instantiating)
   ExportController.canExportData = function() {
     return dgExporter.canExportData();
-  };
-
-  ExportController.logAction = function(logString) {
-    dgExporter.logAction.apply(dgExporter, arguments);
   };
 
   return ExportController;
