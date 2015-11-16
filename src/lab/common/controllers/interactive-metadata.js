@@ -146,6 +146,9 @@ define(function() {
       },
 
       logging: {
+        // Note that logging is enabled by default, even if configuration is not provided. Take a look at
+        // logging section below to see the default configuration. To disable logging, you need to explicitly
+        // provide config with "enabled" property set to false.
         required: false
       },
 
@@ -302,7 +305,8 @@ define(function() {
       },
       properties: {
         // Properties that are logged on start, stop and reload events.
-        defaultValue: []
+        // "boundToComponents" is a special value for authors' convenience.
+        defaultValue: "boundToComponents"
       },
       components: {
         // List of components which should log user interaction.

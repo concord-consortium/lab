@@ -21,9 +21,11 @@ define(function (require) {
     return _phone;
   }
 
-  function LogController(config, interactivesController, componentByID) {
+  function LogController(config, interactivesController, componentByID, propertiesBoundToComponents) {
     this._config = config;
     this._interactivesController = interactivesController;
+    // Use either provided list of properties bound to components (widgets) or list specified explicitly in config.
+    this._properties = config.properties === 'boundToComponents' ? propertiesBoundToComponents : config.properties;
     this._model = null;
     this._phone = getPhone();
 
@@ -107,7 +109,7 @@ define(function (require) {
       return ret;
     }
 
-    this._config.properties.forEach(function (prop) {
+    this._properties.forEach(function (prop) {
       propData[getLabelForProperty(prop)] = model.get(prop)
     });
     return propData;

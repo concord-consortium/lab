@@ -495,7 +495,7 @@ define(function (require) {
 
       if (interactive.logging) {
         try {
-          interactive.logging = validator.validateCompleteness(metadata.logging, interactive.logging || {});
+          interactive.logging = validator.validateCompleteness(metadata.logging, interactive.logging);
         } catch (e) {
           errMsg = "Incorrect logging definition:\n" + e.message;
           alert(errMsg);
@@ -713,9 +713,9 @@ define(function (require) {
 
       exportController = new ExportController(controller);
 
-      if (interactive.logging) {
-        logController = new LogController(interactive.logging, controller, componentByID);
-      }
+      // Use logging config if provided or use default one (validation will fill an empty hash with default values).
+      var loggingConfig = interactive.logging || validator.validateCompleteness(metadata.logging, {});
+      logController = new LogController(loggingConfig, controller, componentByID, getBoundProperties());
 
       // Setup experimentController, if defined.
       if (interactive.experiment) {
