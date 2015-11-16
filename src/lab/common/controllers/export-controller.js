@@ -178,7 +178,6 @@ define(function (require) {
       model.on('reset.exportController', resetData);
       model.on('play.exportController', function() {
         removeDataAfterStepPointer();
-        logAction("StartedModel", getCurrentPerRunData());
         // Save the per-run parameters we see now -- we'll log if a user changes any parameters
         // before exporting the data
         if (!initialPerRunData) {
@@ -248,9 +247,7 @@ define(function (require) {
         registerModelListeners();
 
         if (eventName === 'modelLoaded') {
-          if (cause === 'reload') {
-            logAction("ReloadedModel", savedPerRunData);
-          } else if (cause === 'new-run') {
+          if (cause === 'new-run') {
             logAction("SetUpNewRun");
           } else {
             logAction("LoadedModel");
@@ -270,7 +267,6 @@ define(function (require) {
           modelCanExportData = true;
           dispatch.modelCanExportData();
         }
-
       }
 
       modelCanExportData = false;

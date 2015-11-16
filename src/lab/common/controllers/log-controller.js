@@ -3,17 +3,18 @@
 
 define(function (require) {
   var iframePhone = require('iframe-phone');
+  var dgExporter = require('import-export/dg-exporter');
 
-  // Keep iframe phone and parentLoggerReady global. We need to reuse a single iframe phone.
+  // Keep iframe phone and laraLoggerReady global. We need to reuse a single iframe phone.
   // Parent logger doesn't care whether interactive or model has been reloaded, it just expects messages.
   // Also, it sends 'lara-logging-present' message just once.
   var _phone = null;
-  var parentLoggerReady = false;
-  function getPhone() {
+  var laraLoggerReady = false;
+  function getLARAPhone() {
     if (!_phone) {
       _phone = new iframePhone.IframePhoneRpcEndpoint(function (message, callback) {
         if (message && message.message === 'lara-logging-present') {
-          parentLoggerReady = true;
+          laraLoggerReady = true;
         }
         callback();
       }, 'lara-logging', window.parent);
@@ -27,27 +28,41 @@ define(function (require) {
     // Use either provided list of properties bound to components (widgets) or list specified explicitly in config.
     this._properties = config.properties === 'boundToComponents' ? propertiesBoundToComponents : config.properties;
     this._model = null;
-    this._phone = getPhone();
-
+    
+    // Two possible parents that listen to our logs - LARA or CODAP.
+    this._laraPhone = getLARAPhone();
+    dgExporter.init();
+    
     this._interactivesController.on('modelLoaded.logController', this._modelLoadedHandler.bind(this));
     this._setupComponents(componentByID);
   }
 
   LogController.prototype.logAction = function (action, data) {
-    // Phone might not be initialized yet. In theory we can miss some interaction, but in practice it's
-    // not possible that user interacts with Lab before communication between Lab and parent is initialized.
-    // Also, even if it was possible, we couldn't do much about it.
-    if (!parentLoggerReady || !this._config.enabled) return;
+    // Iframe phones might not be initialized yet. In theory we can miss some interaction, but in practice
+    // it's not possible that user interacts with components before communication between Lab and parent
+    // is initialized. Also, even if it was possible, we couldn't do much about it.
+    if (!this._config.enabled) return;
 
     var logString = action;
     // Weird format, CODAP legacy. But it works.
     if (data) logString += ': ' + JSON.stringify(data);
-    this._phone.call({
+
+    this._logToLARA(logString);
+    this._logToCODAP(logString);
+  };
+
+  LogController.prototype._logToLARA = function (logString) {
+    if (!laraLoggerReady) return; // LARA logger unavailable
+    this._laraPhone.call({
       action: 'logAction',
       args: {
         formatStr: logString
       }
     });
+  };
+
+  LogController.prototype._logToCODAP = function (logString) {
+    dgExporter.logAction(logString);
   };
 
   LogController.prototype._setupComponents = function (componentByID) {
