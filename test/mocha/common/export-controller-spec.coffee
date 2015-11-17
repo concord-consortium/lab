@@ -40,16 +40,12 @@ helpers.withIsolatedRequireJS (requirejs) ->
       @model
 
     reloadModel: (opts) ->
+      opts ||= { cause: 'reload' }
       @model.willReset()
       @model = loadModel()
-      @modelLoadedCallbacks.forEach (cb) -> cb('reload')
+      @modelLoadedCallbacks.forEach (cb) -> cb(opts.cause)
 
-    resetModel: (opts) ->
-      opts ||= { cause: 'reset' }
-      @model.willReset()
-      @model.reset()
-      @modelResetCallbacks.forEach (cb) -> cb(opts.cause)
-
+    logAction: sinon.spy()
 
   loadModel = ->
     model = new Model {}
@@ -197,66 +193,18 @@ helpers.withIsolatedRequireJS (requirejs) ->
     describe "event logging", ->
 
       objectAttachedTo = (call) ->
-        JSON.parse call.args[0].match(/\w+: (.*)$/)[1]
+        call.args[1]
 
       beforeEach ->
-        dgExporter.logAction.reset()
+        interactivesController.logAction.reset()
 
-      describe "after the model is started", ->
+      describe "after a model reload with cause 'new-run'", ->
         beforeEach ->
-          model.start()
-
-        it "should log \"StartedModel\"", ->
-          dgExporter.logAction.callCount.should.eql 1
-          call = dgExporter.logAction.getCall 0
-          call.args[0].should.match /^StartedModel/
-
-        it "should pass the per-run parameters", ->
-          call = dgExporter.logAction.getCall 0
-          objectAttachedTo(call).should.eql
-            "per-run parameter (units 3)": 10
-            "per-run output (units 1)": 1
-
-      describe "after a model reload", ->
-        beforeEach ->
-          model.properties.perRunParam = "updated before reload"
-          interactivesController.reloadModel()
-
-        it "should log \"ReloadedModel\"", ->
-          dgExporter.logAction.callCount.should.eql 1
-          call = dgExporter.logAction.getCall 0
-          call.args[0].should.match /^ReloadedModel/
-
-        it "should pass the per-run parameters as they were before reload", ->
-          call = dgExporter.logAction.getCall 0
-          objectAttachedTo(call).should.eql
-            "per-run parameter (units 3)": "updated before reload"
-            "per-run output (units 1)": 1
-
-
-      describe "after a model reset", ->
-        beforeEach ->
-          model.properties.perRunParam = "updated before reset"
-          interactivesController.resetModel()
-
-        it "should log \"ResetModel\"", ->
-          dgExporter.logAction.callCount.should.eql 1
-          call = dgExporter.logAction.getCall 0
-          call.args[0].should.match /^ResetModel/
-
-        it "should pass the per-run parameters as they were before reset", ->
-          call = dgExporter.logAction.getCall 0
-          objectAttachedTo(call).should.eql
-            "per-run parameter (units 3)": "updated before reset"
-            "per-run output (units 1)": 1
-
-      describe "after a model reset with cause 'new-run'", ->
-        beforeEach ->
-          interactivesController.resetModel({ cause: 'new-run' })
+          interactivesController.reloadModel({ cause: 'new-run' })
 
         it "should log \"SetUpNewRun\"", ->
-          dgExporter.logAction.callCount.should.eql 1
-          call = dgExporter.logAction.getCall 0
+          interactivesController.logAction.callCount.should.eql 1
+          call = interactivesController.logAction.getCall 0
           call.args[0].should.match /^SetUpNewRun/
 
       describe "after exportData is called", ->
@@ -264,12 +212,12 @@ helpers.withIsolatedRequireJS (requirejs) ->
           exportController.exportData()
 
         it "should log \"ExportedModel\"", ->
-          dgExporter.logAction.callCount.should.eql 1
-          call = dgExporter.logAction.getCall 0
+          interactivesController.logAction.callCount.should.eql 1
+          call = interactivesController.logAction.getCall 0
           call.args[0].should.match /^ExportedModel/
 
         it "should pass the per-run parameters", ->
-          call = dgExporter.logAction.getCall 0
+          call = interactivesController.logAction.getCall 0
           objectAttachedTo(call).should.eql
             "per-run parameter (units 3)": 10
             "per-run output (units 1)": 1
@@ -284,7 +232,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
           model.stop()
           model.properties.perRunParam = 11
           exportController.exportData()
-          calls = (dgExporter.logAction.getCall(i) for i in [0...dgExporter.logAction.callCount])
+          calls = (interactivesController.logAction.getCall(i) for i in [0...interactivesController.logAction.callCount])
 
         it "should log \"ParameterChange\"", ->
           getLogCallsMatching(/^ParameterChange/)
