@@ -126,7 +126,7 @@ define(function () {
           "text": controller.i18n.t("banner.share"),
           "onClick": function () {
             shareDialog.open();
-            controller.logAction('ShareDialogStarted');
+            controller.logAction('ShareDialogOpened');
           },
           "tooltip": i18n.t("banner.share_tooltip")
         },
