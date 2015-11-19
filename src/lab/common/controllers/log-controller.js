@@ -46,7 +46,9 @@ define(function (require) {
 
     var logString = action;
     // Weird format, CODAP legacy. But it works.
-    if (data) logString += ': ' + JSON.stringify(data);
+    // LARA doesn't accept logs if they don't include ":" character. Make sure it's always present.
+    // Once this https://github.com/concord-consortium/lara/pull/137 is merged, it's no longer important.
+    logString += ': ' + JSON.stringify(data || {});
 
     this._logToLARA(logString);
     this._logToCODAP(logString);
