@@ -198,7 +198,7 @@ define(function (require) {
         randSeed,
 
         dispatch = new DispatchSupport("modelLoaded", "interactiveRendered", "modelReset", "resize",
-                                       "interactiveRequested");
+                                       "interactiveRequested", "interactiveWillReload");
 
     // simple tabindex support, also exposed via api.getNextTabIndex()
     getNextTabIndex = function () {
@@ -713,9 +713,15 @@ define(function (require) {
 
       exportController = new ExportController(controller);
 
-      // Use logging config if provided or use default one (validation will fill an empty hash with default values).
-      var loggingConfig = interactive.logging || validator.validateCompleteness(metadata.logging, {});
-      logController = new LogController(loggingConfig, controller, componentByID, getBoundProperties());
+      logController = new LogController({
+        // Use logging config if provided or use default one (validation will fill an empty hash with default values).
+        config: interactive.logging || validator.validateCompleteness(metadata.logging, {}),
+        componentByID: componentByID,
+        // List of components that implement .enableLogging() method and should have logging enabled by default.
+        additionalComponents: [aboutDialog, shareDialog, creditsDialog, helpSystem],
+        boundProperties: getBoundProperties(),
+        interactivesController: controller
+      });
 
       // Setup experimentController, if defined.
       if (interactive.experiment) {
@@ -1355,6 +1361,7 @@ define(function (require) {
       reloadInteractive: function() {
         model.stop();
         notifyWillResetModelAnd(function() {
+          dispatch.interactiveWillReload();
           controller.loadInteractive(initialInteractiveConfig);
         });
       },

@@ -23,11 +23,12 @@ define(function (require) {
   }
 
   // Handles logging of events to LARA or CODAP.
-  function LogController(config, interactivesController, componentByID, propertiesBoundToComponents) {
-    this._config = config;
-    this._interactivesController = interactivesController;
+  function LogController(args) {
+    var config = args.config;
+    this.enabled = config.enabled;
     // Use either provided list of properties bound to components (widgets) or list specified explicitly in config.
-    this._properties = config.properties === 'boundToComponents' ? propertiesBoundToComponents : config.properties;
+    this._properties = config.properties === 'boundToComponents' ? args.boundProperties : config.properties;
+    this._interactivesController = args.interactivesController;
     this._model = null;
     
     // Two possible parents that listen to our logs - LARA or CODAP.
@@ -35,14 +36,17 @@ define(function (require) {
     dgExporter.init();
     
     this._interactivesController.on('modelLoaded.logController', this._modelLoadedHandler.bind(this));
-    this._setupComponents(componentByID);
+    this._interactivesController.on('interactiveWillReload.logController', this._interactiveWillReloadHandler.bind(this));
+
+    this._setupComponents(args.componentByID, config.components);
+    this._enableLoggingIn(args.additionalComponents);
   }
 
   LogController.prototype.logAction = function (action, data) {
     // Iframe phones might not be initialized yet. In theory we can miss some interaction, but in practice
     // it's not possible that user interacts with components before communication between Lab and parent
     // is initialized. Also, even if it was possible, we couldn't do much about it.
-    if (!this._config.enabled) return;
+    if (!this.enabled) return;
 
     var logString = action;
     // Weird format, CODAP legacy. But it works.
@@ -68,20 +72,31 @@ define(function (require) {
     dgExporter.logAction(logString);
   };
 
-  LogController.prototype._setupComponents = function (componentByID) {
-    var components = this._config.components;
-    if (components === 'none' || components === []) return;
-    if (components === 'all') {
-      components = Object.keys(componentByID);
+  LogController.prototype._setupComponents = function (componentByID, enabledComponents) {
+    if (enabledComponents === 'none' || enabledComponents === []) return;
+    if (enabledComponents === 'all') {
+      enabledComponents = Object.keys(componentByID);
     }
+    var componentsList = [];
+    enabledComponents.forEach(function (compID) {
+      componentsList.push(componentByID[compID]);
+    });
+    this._enableLoggingIn(componentsList);
+  };
+
+  LogController.prototype._enableLoggingIn = function (componentsList) {
     var logFunction = this.logAction.bind(this);
-    components.forEach(function (compID) {
-      var comp = componentByID[compID];
+    componentsList.forEach(function (comp) {
       // Enable logging and provide function that component can use to log its own events.
-      if (comp.enableLogging) {
+      if (comp && comp.enableLogging) {
         comp.enableLogging(logFunction);
       }
     });
+  };
+
+  LogController.prototype._interactiveWillReloadHandler = function () {
+    // We can log ReloadedInteractive before it actually happens, it's just simpler.
+    this.logAction('ReloadedInteractive', this._getProperties());
   };
 
   LogController.prototype._modelLoadedHandler = function (cause) {
@@ -95,14 +110,11 @@ define(function (require) {
       this.logAction('StoppedModel', this._getProperties());
     }.bind(this));
 
-    var savedProperties = null;
     this._model.on('willReset.logController', function() {
-      savedProperties = this._getProperties();
+      // We can log ReloadedModel before it actually happens, it's just simpler.
+      // Note that when user cancels reload (e.g. inside CODAP), this even is not emitted.
+      this.logAction('ReloadedModel', this._getProperties());
     }.bind(this));
-
-    if (cause === 'reload') {
-      this.logAction('ReloadedModel', savedProperties);
-    }
   };
 
 

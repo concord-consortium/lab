@@ -140,6 +140,7 @@ define(function (require) {
             // See: https://github.com/mbostock/d3/wiki/Transitions#wiki-d3_timer)
             if (stopRequest) {
               stopped = true;
+              if (eventsSupported) dispatch.stop();
               return true;
             }
 
@@ -175,7 +176,6 @@ define(function (require) {
 
         target.stop = function() {
           stopRequest = true;
-          if (eventsSupported) dispatch.stop();
           return target;
         };
 

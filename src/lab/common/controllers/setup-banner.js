@@ -97,7 +97,6 @@ define(function () {
         "text": i18n.t("banner.about"),
         "onClick": function () {
           aboutDialog.open();
-          controller.logAction('AboutDialogOpened');
         },
         "tooltip": i18n.t("banner.about_tooltip")
       },
@@ -126,7 +125,6 @@ define(function () {
           "text": controller.i18n.t("banner.share"),
           "onClick": function () {
             shareDialog.open();
-            controller.logAction('ShareDialogOpened');
           },
           "tooltip": i18n.t("banner.share_tooltip")
         },
@@ -150,7 +148,6 @@ define(function () {
         "content": '<i class="icon-repeat"></i>',
         "onClick": function () {
           controller.reloadInteractive();
-          controller.logAction('InteractiveReloaded');
         },
         "tooltip": i18n.t("banner.reload_tooltip")
       },
@@ -175,7 +172,6 @@ define(function () {
           "onClick": function () {
             if (!controller.helpSystem.isActive()) {
               controller.helpSystem.start();
-              controller.logAction('HelpTipsOpened');
             } else {
               controller.helpSystem.stop();
             }
@@ -229,7 +225,6 @@ define(function () {
         "tooltip": i18n.t("banner.credits_tooltip"),
         "onClick": function () {
           creditsDialog.open();
-          controller.logAction('CreditsDialogOpened');
         }
       },
       {
