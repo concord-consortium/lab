@@ -96,7 +96,7 @@ define(function (require) {
 
     // FIXME: These events have to be available as some other modules try to
     // add listeners. Probably they aren't necessary, trace it and fix.
-    dispatchSupport.addEventTypes("reset", "stepForward", "stepBack", "seek", "invalidation", "willReset", "ready");
+    dispatchSupport.addEventTypes("reset", "stepForward", "stepBack", "seek", "invalidation", "willReset", "ready", "log");
 
     api = {
       mixInto: function(target) {

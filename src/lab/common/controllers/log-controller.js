@@ -102,6 +102,11 @@ define(function (require) {
   LogController.prototype._modelLoadedHandler = function (cause) {
     this._model = this._interactivesController.getModel();
 
+    this._model.on('log.logController', function (action, data) {
+      // Models can log custom events too using dispatch. Just pass them to the parent.
+      this.logAction(action, data);
+    }.bind(this));
+
     this._model.on('play.logController', function () {
       this.logAction('StartedModel', this._getProperties());
     }.bind(this));
