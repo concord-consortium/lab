@@ -1231,10 +1231,10 @@
           "click_here": "Klepněte zde",
           "connected": "Připojeno.",
           "connected_start_labquest2": "Připojeno. Pro zahájení pokusu klepněte na start v LabQuest2.",
-          "connected_start_sensorconnector": "Prosím, zastavte __controlling_client__ sběr dat, aby bylo možné sbírat data zde."
+          "connected_start_sensorconnector": "Prosím, zastavte __controlling_client__ sběr dat, aby bylo možné sbírat data zde.",
           "starting_data_collection": "Začíná sběr dat...",
           "error_starting_data_collection": "Chyba při zahájení sběru dat.",
-          "error_starting_data_collection_alert": "Nebylo možné zahájit sběr dat. Ujistěte se, že (remote starting) je povolený."
+          "error_starting_data_collection_alert": "Nebylo možné zahájit sběr dat. Ujistěte se, že (remote starting) je povolený.",
           "collecting_data": "Sbírám data.",
           "collecting_data_stop_labquest2": ""Sbírám data. Klikněte na stop v LabQuest2, aby se sběr ukončil.",
           "collecting_data_stop_sensorconnector": "Sběr dat.",
