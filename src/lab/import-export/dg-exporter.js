@@ -65,6 +65,7 @@ define(function(require) {
     isCodapPresent: false,
 
     init: function() {
+      if (this.codapPhone) return; // nothing to initialize
       this.codapPhone = new iframePhone.IframePhoneRpcEndpoint(
         codapCallbackHandler.bind(this),
         "codap-game",

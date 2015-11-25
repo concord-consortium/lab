@@ -123,7 +123,9 @@ define(function () {
           "type": "text",
           "id": "share-link",
           "text": controller.i18n.t("banner.share"),
-          "onClick": function () { shareDialog.open(); },
+          "onClick": function () {
+            shareDialog.open();
+          },
           "tooltip": i18n.t("banner.share_tooltip")
         },
         {
@@ -275,6 +277,7 @@ define(function () {
           "onClick": function () {
             if (!isFullscreen()) {
               requestFullscreenMethod.call(body);
+              controller.logAction('FullScreenStarted');
             } else {
               document.cancelFullscreenMethod();
             }

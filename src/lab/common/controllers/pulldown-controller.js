@@ -15,6 +15,8 @@ define(function () {
     var controller,
         model,
         scriptingAPI,
+        // Logging function, can be injected by #enableLogging call.
+        logAction,
         // Options definitions from component JSON definition.
         options,
         view,
@@ -29,6 +31,17 @@ define(function () {
     function updatePulldownDisabledState() {
       var description = model.getPropertyDescription(component.property);
       controller.setDisabled(description.getFrozen());
+    }
+
+    function logChange(optionSpec) {
+      if (!logAction) return; // logging is not enabled
+      var data = {id: component.id, selected: optionSpec.text};
+      if (component.label) data.label = component.label;
+      if (component.property) {
+        data.property = component.property;
+        data.value = optionSpec.value;
+      }
+      logAction('PulldownChanged', data);
     }
 
     function initialize() {
@@ -57,6 +70,7 @@ define(function () {
           } else if (option.value !== undefined) {
             scriptingAPI.api.set(component.property, option.value);
           }
+          logChange(option);
         }
       });
 
@@ -92,6 +106,10 @@ define(function () {
           model = interactivesController.getModel();
         }
         updatePulldown();
+      },
+
+      enableLogging: function (logFunc) {
+        logAction = logFunc;
       },
 
       // Returns view container.

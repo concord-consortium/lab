@@ -258,6 +258,18 @@ define(function (require) {
 
       hasShowcase: function () {
         return helpTips.filter(function(h) { return h.showcase }).length > 0;
+      },
+
+      enableLogging: function(logFunc) {
+        var startTime = null;
+        dispatch.on('.logging', null);
+        dispatch.on('start.logging', function () {
+          logFunc('HelpTipsOpened');
+          startTime = Date.now();
+        });
+        dispatch.on('stop.logging', function () {
+          logFunc('HelpTipsClosed', {wasOpenFor: (Date.now() - startTime) / 1000});
+        });
       }
     };
 

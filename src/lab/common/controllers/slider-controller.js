@@ -43,12 +43,13 @@ define(function () {
         };
 
     function bindTargets() {
+      $slider.off('.componentAction');
       // Bind action or/and property, process other options.
       if (component.action) {
         // The 'action' property is a source of a function which assumes we pass it a parameter
         // called 'value'.
         actionFunc = scriptingAPI.makeFunctionInScriptContext('value', component.action);
-        $slider.bind('slide', function(event, ui) {
+        $slider.on('slide.componentAction', function(event, ui) {
           actionFunc(ui.value);
           if (displayValue) {
             $sliderHandle.text(displayFunc(ui.value));
@@ -57,7 +58,7 @@ define(function () {
       }
 
       if (propertyName) {
-        $slider.bind('slide', function(event, ui) {
+        $slider.on('slide.componentAction', function(event, ui) {
           // Just ignore slide events that occur before the model is loaded.
           var obj = {};
           obj[propertyName] = ui.value;
@@ -336,6 +337,28 @@ define(function () {
         if (component.titlePosition === "left" || component.titlePosition === "right") {
           $container.css({ width: $elem.width() - $title.outerWidth(true) - 0.5*emSize });
         }
+      },
+
+      enableLogging: function (logFunc) {
+        var data = {id: component.id, label: component.label};
+        if (propertyName) {
+          data.property = propertyName;
+        }
+        var startTime;
+        $slider.off('.logging');
+        $slider.on('slidestart.logging', function (event, ui) {
+          startTime = Date.now();
+          data.startVal = data.minVal = data.maxVal = ui.value;
+        });
+        $slider.on('slide.logging', function (event, ui) {
+          data.minVal = Math.min(data.minVal, ui.value);
+          data.maxVal = Math.max(data.maxVal, ui.value);
+        });
+        $slider.on('slidestop.logging', function (event, ui) {
+          data.endVal = ui.value;
+          data.time = (Date.now() - startTime) / 1000;
+          logFunc('SliderChanged', data);
+        });
       },
 
       // Returns serialized component definition.

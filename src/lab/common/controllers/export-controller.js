@@ -6,12 +6,7 @@ define(function (require) {
   var dgExporter = require('import-export/dg-exporter');
   var BasicDialog = require('common/controllers/basic-dialog');
   var DispatchSupport = require('common/dispatch-support');
-  var iframePhone = require('iframe-phone');
   var _ = require('underscore');
-
-  var canLogData = false;
-  var laraLoggerPresent = false;
-  var laraPhone;
 
   function modalAlert(title, message, buttons, i18n) {
     var dialog = new BasicDialog({
@@ -26,6 +21,8 @@ define(function (require) {
     dialog.open();
   }
 
+  // Handles CODAP data export. Also, defines a few new log events which are sent to parent when export is possible.
+  // In such case it's using generic logAction method, but in practice LogController will talk to CODAP too.
   function ExportController(interactivesController) {
     var dispatch = new DispatchSupport(),
         spec,
@@ -35,11 +32,6 @@ define(function (require) {
         perTickValues,
         controller,
         model,
-
-        // Data that is saved just before an about-to-be-reset model is reset. This data is what
-        // will be logged, so that we don't lose information about the state the user put the model
-        // into before resetting.
-        savedPerRunData,
 
         // used to compare initial parameters to parameters at export
         initialPerRunData,
@@ -88,20 +80,15 @@ define(function (require) {
     }
 
     function logAction(action, state) {
-      var logString = action;
       var data;
-      var i;
-
       if (state) {
+        // Convert list of labels and values into plain JS object.
         data = {};
-
-        for (i = 0; i < state.labels.length; i++) {
+        for (var i = 0; i < state.labels.length; i++) {
           data[state.labels[i]] = state.values[i];
         }
-        logString = logString + ": " + JSON.stringify(data);
       }
-
-      ExportController.logAction(logString);
+      interactivesController.logAction(action, data);
     }
 
     function shouldHandleDataDiscard() {
@@ -161,7 +148,7 @@ define(function (require) {
       currentPerRunData.values.forEach(function(currentValue, i) {
         var initialValue = initialPerRunData.values[i];
         var parameter = currentPerRunData.labels[i];
-        var changed = initialValue !== currentValue
+        var changed = initialValue !== currentValue;
 
         changesList.labels.push(parameter + ' changed?');
         changesList.values.push(changed);
@@ -183,7 +170,6 @@ define(function (require) {
       model.on('reset.exportController', resetData);
       model.on('play.exportController', function() {
         removeDataAfterStepPointer();
-        logAction("StartedModel", getCurrentPerRunData());
         // Save the per-run parameters we see now -- we'll log if a user changes any parameters
         // before exporting the data
         if (!initialPerRunData) {
@@ -191,10 +177,6 @@ define(function (require) {
         }
       });
       model.on('invalidation.exportController', removeDataAfterStepPointer);
-
-      model.on('willReset.exportController', function() {
-        savedPerRunData = getCurrentPerRunData();
-      });
     }
 
     function willResetModelHandler(modelToBeReset, resetRequest) {
@@ -252,30 +234,16 @@ define(function (require) {
         resetData();
         registerModelListeners();
 
-        if (eventName === 'modelLoaded') {
-          if (cause === 'reload') {
-            logAction("ReloadedModel", savedPerRunData);
-          } else if (cause === 'new-run') {
-            logAction("SetUpNewRun");
-          } else {
-            logAction("LoadedModel");
-          }
-        } else if (eventName === 'modelReset') {
-          if (cause === 'new-run') {
-            logAction("SetUpNewRun");
-          } else {
-            logAction("ResetModel", savedPerRunData);
-          }
+        if (cause === 'new-run') {
+          logAction("SetUpNewRun");
         }
 
         initialPerRunData = null;
-        savedPerRunData = null;
         isUnexportedDataPresent = false;
         if (controller.canExportData()) {
           modelCanExportData = true;
           dispatch.modelCanExportData();
         }
-
       }
 
       modelCanExportData = false;
@@ -283,17 +251,10 @@ define(function (require) {
       // Don't accumulate data or logs until we know we know there is somewhere to send the data.
       // (Note that CODAP, if present, will announce itself before the model can be started by the
       // user, so there should not be data loss.)
-      if (controller.canExportData() || controller.canLogData()) {
+      if (controller.canExportData()) {
         handleModelLoaded();
       } else {
         controller.on('canExportData.export-controller', handleModelLoaded);
-        controller.on('canLogData.export-controller', function() {
-          // canExport implies canLog, so only call handleModelLoaded here if we can log but not
-          // export. Otherwise, we would call it twice every time canExportData is emitted.
-          if ( ! controller.canExportData() ) {
-            handleModelLoaded();
-          }
-        });
       }
     }
 
@@ -336,10 +297,6 @@ define(function (require) {
       // whether or not there is CODAP or some other data sink is present and listening for data)
       canExportData: function() {
         return ExportController.canExportData();
-      },
-
-      canLogData: function() {
-        return ExportController.canLogData();
       },
 
       modelCanExportData: function() {
@@ -447,32 +404,16 @@ define(function (require) {
     // Issue an 'canExportData' event when canExportData() flips from false to true.
     // Issue 'modelCanExportData' when modelCanExportData() flips
     dispatch.mixInto(controller);
-    dispatch.addEventTypes('canExportData', 'modelCanExportData', 'canLogData');
+    dispatch.addEventTypes('canExportData', 'modelCanExportData');
 
     // Make sure we emit event if canExportData becomes true. Assume codap connects only once.
     dgExporter.codapDidConnect = function() {
       if ( ExportController.canExportData() ) {
         dispatch.canExportData();
-        dispatch.canLogData();
       }
     };
 
     registerInteractiveListeners();
-
-    // Listen for new
-    // Will automatically reuse existing iframePhone because we're in a child window
-    laraPhone = new iframePhone.IframePhoneRpcEndpoint(
-      function (message, callback) {
-          if ( ! canLogData && message && message.message === 'lara-logging-present' ) {
-            canLogData = true;
-            laraLoggerPresent = true;
-            dispatch.canLogData();
-          }
-          callback();
-        },
-        'lara-logging',
-        window.parent
-      );
 
     return controller;
   }
@@ -480,23 +421,6 @@ define(function (require) {
   // "Class method" (want to be able to call this before instantiating)
   ExportController.canExportData = function() {
     return dgExporter.canExportData();
-  };
-
-  ExportController.canLogData = function() {
-    return canLogData || ExportController.canExportData();
-  };
-
-  ExportController.logAction = function(logString) {
-    dgExporter.logAction.apply(dgExporter, arguments);
-    if (laraLoggerPresent) {
-      // Legacy of CODAP
-      laraPhone.call({
-        action: 'logAction',
-        args: {
-          formatStr: logString
-        }
-      });
-    }
   };
 
   return ExportController;

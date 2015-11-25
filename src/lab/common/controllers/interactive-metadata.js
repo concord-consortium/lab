@@ -145,6 +145,13 @@ define(function() {
         required: false
       },
 
+      logging: {
+        // Note that logging is enabled by default, even if configuration is not provided. Take a look at
+        // logging section below to see the default configuration. To disable logging, you need to explicitly
+        // provide config with "enabled" property set to false.
+        required: false
+      },
+
       components: {
         // List of the interactive components. Their definitions are below ('button', 'checkbox' etc.).
         defaultValue: []
@@ -286,6 +293,25 @@ define(function() {
       },
       perTick: {
         required: true
+      }
+    },
+
+    logging: {
+      enabled: {
+        // Global logging switch. Model start, stop and reload are be logged by default
+        // (and probably some other events in the future). Also, #logAction scripting API function
+        // works only if it's set to true.
+        defaultValue: true
+      },
+      properties: {
+        // Properties that are logged on start, stop and reload events.
+        // "boundToComponents" is a special value for authors' convenience.
+        defaultValue: "boundToComponents"
+      },
+      components: {
+        // List of components which should log user interaction.
+        // "all" and "none" are special values for authors' convenience.
+        defaultValue: "all"
       }
     },
 

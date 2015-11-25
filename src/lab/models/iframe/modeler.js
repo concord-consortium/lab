@@ -56,11 +56,11 @@ define(function(require) {
     // the playback controller assumes 'play' and 'stop' are defined even if the viewOptions
     // disable these buttons
     // the outer iframe in the interactives browser expects a 'reset', 'stepForward', 'stepBack' event type
-    this._dispatch.addEventTypes('tick', 'tickStart', 'tickEnd', 'play', 'stop', 'reset', 'stepForward', 'stepBack');
+    this._dispatch.addEventTypes('tick', 'tickStart', 'tickEnd', 'play', 'stop', 'reset', 'stepForward', 'stepBack', 'log');
 
     // HACK to play with properties
     this.defineParameter('pressure', {
-      label: 'Pressure',
+      label: 'Pressure'
     }, undefined);
     // END OF HACK
   }
@@ -198,14 +198,11 @@ define(function(require) {
       context._dispatch.tick();
     });
 
-    // HACK to play with properties
-    this._phone.addListener('propertyValue', function (content) {
-      if (content.name === 'pressureProbeFiltered') {
-        context.set('pressure', content.value);
-      }
+    // Support logging provided by inner frame. Dispatch 'log' event,
+    // as LogController listens to this event type.
+    this._phone.addListener('log', function (content) {
+      context._dispatch.log(content.action, content.data);
     });
-    this._phone.post('observe', 'pressureProbeFiltered');
-    // END OF HACK
   };
 
   return IFrameModel;

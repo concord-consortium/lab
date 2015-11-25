@@ -16,6 +16,7 @@ define(function (require) {
       BarGraphController      = require('common/controllers/bar-graph-controller'),
       GraphController         = require('common/controllers/graph-controller'),
       ExportController        = require('common/controllers/export-controller'),
+      LogController           = require('common/controllers/log-controller'),
       ScriptingAPI            = require('common/controllers/scripting-api'),
       ButtonController        = require('common/controllers/button-controller'),
       CheckboxController      = require('common/controllers/checkbox-controller'),
@@ -181,6 +182,9 @@ define(function (require) {
         // Handles exporting data to DataGames, if 'exports' are specified.
         exportController,
 
+        // Handles logging events to LARA or any parent that implements LARA-logging interface.
+        logController,
+
         // Doesn't currently have any public methods, but probably will.
         parentMessageAPI,
 
@@ -194,7 +198,7 @@ define(function (require) {
         randSeed,
 
         dispatch = new DispatchSupport("modelLoaded", "interactiveRendered", "modelReset", "resize",
-                                       "interactiveRequested");
+                                       "interactiveRequested", "interactiveWillReload");
 
     // simple tabindex support, also exposed via api.getNextTabIndex()
     getNextTabIndex = function () {
@@ -298,7 +302,7 @@ define(function (require) {
       // The authored definition of which components go in which container.
       layout = interactive.layout;
 
-      // Banner hash containing components, layout containers and layout deinition
+      // Banner hash containing components, layout containers and layout definition
       // (components location). Keep it in a separate structure, because we do not
       // expect these objects to be serialized!
       banner = setupBanner(controller, interactive, creditsDialog, aboutDialog, shareDialog);
@@ -484,6 +488,16 @@ define(function (require) {
           interactive.exports = validator.validateCompleteness(metadata.exports, interactive.exports);
         } catch (e) {
           errMsg = "Incorrect exports definition:\n" + e.message;
+          alert(errMsg);
+          throw new Error(errMsg);
+        }
+      }
+
+      if (interactive.logging) {
+        try {
+          interactive.logging = validator.validateCompleteness(metadata.logging, interactive.logging);
+        } catch (e) {
+          errMsg = "Incorrect logging definition:\n" + e.message;
           alert(errMsg);
           throw new Error(errMsg);
         }
@@ -698,6 +712,16 @@ define(function (require) {
       // result that exportController.canExportData never becomes true)
 
       exportController = new ExportController(controller);
+
+      logController = new LogController({
+        // Use logging config if provided or use default one (validation will fill an empty hash with default values).
+        config: interactive.logging || validator.validateCompleteness(metadata.logging, {}),
+        componentByID: componentByID,
+        // List of components that implement .enableLogging() method and should have logging enabled by default.
+        additionalComponents: [aboutDialog, shareDialog, creditsDialog, helpSystem],
+        boundProperties: getBoundProperties(),
+        interactivesController: controller
+      });
 
       // Setup experimentController, if defined.
       if (interactive.experiment) {
@@ -1337,6 +1361,7 @@ define(function (require) {
       reloadInteractive: function() {
         model.stop();
         notifyWillResetModelAnd(function() {
+          dispatch.interactiveWillReload();
           controller.loadInteractive(initialInteractiveConfig);
         });
       },
@@ -1407,6 +1432,19 @@ define(function (require) {
 
           ignoreModelResetEvent = false;
         });
+      },
+
+      /**
+       * Logs custom event specified by author. Note that logging needs to be enabled in interactive JSON!
+       * It means "logging": {"enabled": true} needs to be specified.
+       * Log message will be sent to parent window, so parent window needs to handle it.
+       * Currently, only LARA does it and sends logs to CC Log Manager App.
+       *
+       * @param {string} actionName
+       * @param {object} data Hash of key-values that should be logged.
+       */
+      logAction: function(actionName, data) {
+        logController && logController.logAction(actionName, data);
       },
 
       updateModelView: function() {
@@ -1549,6 +1587,10 @@ define(function (require) {
 
         if (interactive.exports !== undefined) {
           result.exports = $.extend(true, {}, interactive.exports);
+        }
+
+        if (interactive.logging !== undefined) {
+          result.logging = $.extend(true, {}, interactive.logging);
         }
 
         if (interactive.experiment !== undefined) {
