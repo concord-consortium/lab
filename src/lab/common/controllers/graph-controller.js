@@ -587,6 +587,18 @@ define(function (require) {
         result.xmax = startX + xDomain[1] - xDomain[0];
 
         return result;
+      },
+
+      enableLogging: function (logFunc) {
+        // If logging gets more complicated, I think we should move the logic to the grapher itself
+        // and here just call something like: grapher.enableLogging(logFunc);
+        $container.off('.logging');
+        $container.on('click.logging', '.graph-button.legend', function () {
+          logFunc('GraphKeyBtnClicked');
+        });
+        $container.on('click.logging', '.graph-button.autoscale', function () {
+          logFunc('GraphZoomBtnClicked');
+        });
       }
     };
 
