@@ -192,7 +192,7 @@ define(function(require) {
       context._stepCounter++;
       // Support outputs update within 'tick' message, as it's quite popular scenario.
       // We can avoid additional post message due to that.
-      if (content.outputs) {
+      if (content && content.outputs) {
         context._updateOutputs(content.outputs);
       }
       context._dispatch.tick();
