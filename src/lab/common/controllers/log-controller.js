@@ -5,23 +5,6 @@ define(function (require) {
   var iframePhone = require('iframe-phone');
   var dgExporter = require('import-export/dg-exporter');
 
-  // Keep iframe phone and laraLoggerReady global. We need to reuse a single iframe phone.
-  // Parent logger doesn't care whether interactive or model has been reloaded, it just expects messages.
-  // Also, it sends 'lara-logging-present' message just once.
-  var _phone = null;
-  var laraLoggerReady = false;
-  function getLARAPhone() {
-    if (!_phone) {
-      _phone = new iframePhone.IframePhoneRpcEndpoint(function (message, callback) {
-        if (message && message.message === 'lara-logging-present') {
-          laraLoggerReady = true;
-        }
-        callback();
-      }, 'lara-logging', window.parent);
-    }
-    return _phone;
-  }
-
   // Handles logging of events to LARA or CODAP.
   function LogController(args) {
     var config = args.config;
@@ -32,7 +15,10 @@ define(function (require) {
     this._model = null;
     
     // Two possible parents that listen to our logs - LARA or CODAP.
-    this._laraPhone = getLARAPhone();
+    this._phone = iframePhone.getIFrameEndpoint();
+    // IFrameEndpoint is a singleton and probably has been already initialized by ParentMessageAPI,
+    // but do it again just in case (so we don't depend on ParentMessageAPI).
+    this._phone.initialize();
     dgExporter.init();
     
     this._interactivesController.on('modelLoaded.logController', this._modelLoadedHandler.bind(this));
@@ -43,32 +29,24 @@ define(function (require) {
   }
 
   LogController.prototype.logAction = function (action, data) {
-    // Iframe phones might not be initialized yet. In theory we can miss some interaction, but in practice
-    // it's not possible that user interacts with components before communication between Lab and parent
-    // is initialized. Also, even if it was possible, we couldn't do much about it.
     if (!this.enabled) return;
 
+    if (dgExporter.isEmbeddedInCODAP()) {
+      this._logToCODAP(action, data);
+    } else {
+      this._genericLog(action, data);
+    }
+  };
+
+  LogController.prototype._genericLog = function (action, data) {
+    this._phone.post('log', {action: action, data: data});
+  };
+
+  LogController.prototype._logToCODAP = function (action, data) {
     var logString = action;
-    // Weird format, CODAP legacy. But it works.
-    // LARA doesn't accept logs if they don't include ":" character. Make sure it's always present.
-    // Once this https://github.com/concord-consortium/lara/pull/137 is merged, it's no longer important.
-    logString += ': ' + JSON.stringify(data || {});
-
-    this._logToLARA(logString);
-    this._logToCODAP(logString);
-  };
-
-  LogController.prototype._logToLARA = function (logString) {
-    if (!laraLoggerReady) return; // LARA logger unavailable
-    this._laraPhone.call({
-      action: 'logAction',
-      args: {
-        formatStr: logString
-      }
-    });
-  };
-
-  LogController.prototype._logToCODAP = function (logString) {
+    if (data) {
+      logString += ': ' + JSON.stringify(data);
+    }
     dgExporter.logAction(logString);
   };
 
