@@ -87,8 +87,12 @@ define(function(require) {
       return false;
     },
 
-    canExportData: function() {
+    isEmbeddedInCODAP: function() {
       return this.isCodapPresent || this.canCallDGDirect();
+    },
+
+    canExportData: function() {
+      return this.isEmbeddedInCODAP();
     },
 
     doCommand: function(name, args, callback) {
