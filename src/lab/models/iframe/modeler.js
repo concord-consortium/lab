@@ -33,8 +33,6 @@ define(function(require) {
       usePlaybackSupport: false
     });
 
-    var context = this;
-
     labModelerMixin.mixInto(this);
     // Use custom .set() instead of one provided by property support module.
     // Custom version is also a bit looser, it lets you define properties dynamically.
@@ -47,6 +45,9 @@ define(function(require) {
     this._propertySupport = labModelerMixin.propertySupport;
     this._dispatch = labModelerMixin.dispatchSupport;
     this._stepCounter = 0;
+    // Special flag that makes sure we do not end up in an infinite loop
+    // of "set" -> "properties" -> "set" -> ... calls.
+    this._propertyUpdateComingFromIframe = false;
 
     // Custom properties defined by the model in the iframe; values are passed using 'outputs'
     // or 'tick' messages.
@@ -57,16 +58,11 @@ define(function(require) {
     // disable these buttons
     // the outer iframe in the interactives browser expects a 'reset', 'stepForward', 'stepBack' event type
     this._dispatch.addEventTypes('tick', 'tickStart', 'tickEnd', 'play', 'stop', 'reset', 'stepForward', 'stepBack', 'log');
-
-    // HACK to play with properties
-    this.defineParameter('pressure', {
-      label: 'Pressure'
-    }, undefined);
-    // END OF HACK
   }
 
   function customSet(key, value) {
     var context = this;
+    // Multiple keys provided.
     if (typeof key !== 'string') {
       var hash = key;
       Object.keys(hash).forEach(function (key) {
@@ -74,13 +70,17 @@ define(function(require) {
       });
       return;
     }
-
+    // Single key provided.
     if (!this.hasProperty(key)) {
       this._propertySupport.defineProperty(key, {
         type: "mainProperty",
         writable: true,
         set: function (value) {
-          context._phone.post("set", {name: key, value: value});
+          if (!context._propertyUpdateComingFromIframe) {
+            // Make sure that it's not a result of 'properties' message sent by iframe model.
+            // Otherwise, we could end up in an infinite loop of property updates.
+            context._phone.post("set", {name: key, value: value});
+          }
         },
         includeInHistoryState: false,
         beforeSetCallback: this._propertySupport.invalidatingChangePreHook,
@@ -171,6 +171,12 @@ define(function(require) {
     });
   };
 
+  IFrameModel.prototype._updatePropertiesFromIframe = function (propertiesHash) {
+    this._propertyUpdateComingFromIframe = true;
+    this.set(propertiesHash);
+    this._propertyUpdateComingFromIframe = false;
+  };
+
   IFrameModel.prototype._addListeners = function () {
     var context = this;
     this._phone.addListener('play.iframe-model', function () {
@@ -184,16 +190,22 @@ define(function(require) {
       context._dispatch.stop();
     });
 
+    this._phone.addListener('properties', function(content) {
+      context._updatePropertiesFromIframe(content);
+    });
+
     this._phone.addListener('outputs', function(content) {
       context._updateOutputs(content);
     });
 
     this._phone.addListener('tick', function (content) {
       context._stepCounter++;
-      // Support outputs update within 'tick' message, as it's quite popular scenario.
-      // We can avoid additional post message due to that.
+      // Support outputs and/or properties update within 'tick' message.
       if (content && content.outputs) {
         context._updateOutputs(content.outputs);
+      }
+      if (content && content.properties) {
+        context._updatePropertiesFromIframe(content.properties);
       }
       context._dispatch.tick();
     });
