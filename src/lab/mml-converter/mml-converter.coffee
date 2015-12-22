@@ -1291,7 +1291,10 @@ define (require) ->
         Quantum Dynamics
       ###
       excitationStates = $mml("void[property=excitedStates] void[method=put]")
-      useQuantumDynamics = excitationStates.length > 0
+      $lightSource = $mml("void[property=lightSource]")
+      # Use quantum dynamics engine if excitation states are defined or there is an active light source.
+      useQuantumDynamics = excitationStates.length > 0 ||
+                           $lightSource.length > 0 && getBooleanProperty($lightSource, "on")
 
       if useQuantumDynamics
 
@@ -1363,15 +1366,16 @@ define (require) ->
           return (convert(energy) for energy in energyLevels)
 
 
-        for atom in excitationStates
-          $node = getNode cheerio atom
-          atomIndex = parseInt cheerio($node.find("int")[0]).text()
-          excitation = parseInt $node.find("void[index=1] int").text()
-          excitation = 0 if isNaN excitation
-          atoms[atomIndex].excitation = excitation
+        if excitationStates.length > 0
+          for atom in excitationStates
+            $node = getNode cheerio atom
+            atomIndex = parseInt cheerio($node.find("int")[0]).text()
+            excitation = parseInt $node.find("void[index=1] int").text()
+            excitation = 0 if isNaN excitation
+            atoms[atomIndex].excitation = excitation
 
-        excitation = (atom.excitation for atom in atoms)
-        elementEnergyLevels = (getEnergyLevels(elementNode) for elementNode in elementNodes)
+          excitation = (atom.excitation for atom in atoms)
+          elementEnergyLevels = (getEnergyLevels(elementNode) for elementNode in elementNodes)
 
         # default value which can be overridden by an explicit quantumRule found below:
         radiationlessEmissionProbability = 1
