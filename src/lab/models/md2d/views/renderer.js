@@ -1203,7 +1203,7 @@ define(function(require) {
           "d": photonPath,
           "stroke": photonColor,
           "stroke-dasharray": photonDashArray,
-          "stroke-width": 0.5,
+          "stroke-width": model2px(0.011),
           "fill-opacity": 0
         });
 
