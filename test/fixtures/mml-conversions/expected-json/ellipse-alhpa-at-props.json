@@ -35,6 +35,7 @@
     "backgroundColor": "#eeeeee",
     "showClock": false,
     "markColor": "#f8b500",
+    "atomRadiusScale": 1,
     "keShading": false,
     "keShadingMinEnergy": 0,
     "keShadingMaxEnergy": 0.2,
