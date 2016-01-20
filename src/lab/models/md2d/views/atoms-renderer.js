@@ -90,7 +90,7 @@ define(function(require) {
       },
 
       RENDERING_OPTIONS = ["keShading", "chargeShading", "atomNumbers", "showChargeSymbols",
-                           "aminoAcidColorScheme", "useThreeLetterCode", "viewPortZoom"];
+                           "aminoAcidColorScheme", "useThreeLetterCode", "viewPortZoom", "atomRadiusScale"];
 
   return function AtomsRenderer(modelView, model, pixiContainer, canvas) {
     // Public API object to be returned.
@@ -178,7 +178,7 @@ define(function(require) {
 
     function getAtomTexture(i, colors) {
       var elID = modelAtoms[i].element,
-          radius = m2px(model.getElementProperties(elID).radius),
+          radius = m2px(model.getElementProperties(elID).radius) * renderMode.atomRadiusScale,
           visible = modelAtoms[i].visible,
           excitation = modelAtoms[i].excitation,
           label = getAtomLabel(i),

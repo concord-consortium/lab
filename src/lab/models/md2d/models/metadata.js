@@ -190,6 +190,9 @@ define(function() {
       markColor: {
         defaultValue: "#f8b500"
       },
+      atomRadiusScale: {
+        defaultValue: 1
+      },
       keShading: {
         defaultValue: false,
         storeInTickHistory: true
