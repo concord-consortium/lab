@@ -62,6 +62,9 @@
         'rgbcolor'
       ],
       exports: 'canvg'
+    },
+    'screenfull': {
+      exports: 'screenfull'
     }
   },
 
@@ -82,6 +85,7 @@
     'backbone': '../../node_modules/backbone/backbone',
     'mustache': '../../node_modules/mustache/mustache',
     'markdown': '../../node_modules/markdown/lib/markdown',
+    'screenfull': '../../node_modules/screenfull/dist/screenfull',
     'sensor-applet': '../../vendor/lab-sensor-applet-interface-dist/sensor-applet-interface',
     'sensor-connector-interface': '../../vendor/sensor-connector-interface/dist/sensor-connector-interface',
     'lodash': 'empty:',
