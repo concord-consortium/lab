@@ -1,11 +1,11 @@
 {
-  "title": "Oil and Water",
+  "title": "Olej a vodar",
   "publicationStatus": "sample",
-  "subtitle": "Explore how polar and non-polar substances interact.",
+  "subtitle": "Objev jak interagují polární a nepolární sloučeniny.",
   "about": [
-    "It is well known that \"oil and water don’t mix.\" But why? Run the model of",
-    "polar water (blue and red) and non-polar oil (gray). \"Shake up the oil and water",
-    "mixture,\" then run it again and watch what happens to the molecules over time."
+    "Je známé, že se \"olej s vodou nemísí.\" Ale proč? Spusťte model",
+    "polární vody (modrá a červená) a nepolárního oleje (šedá). \"Protřepte směs oleje a vody",
+    "\" a pak spusťte simulaci ještě jednou a pozorujte, co se s molekulami děje v čase."
   ],
   "i18nMetadata": "locales/metadata/oil-and-water.json",
   "lang": "cs-CZ",
@@ -18,7 +18,7 @@
         "controlButtons": "play_reset",
         "textBoxes": [
           {
-            "text": "Separated oil and water",
+            "text": "Olej oddělený od vody",
             "x": 1.08,
             "y": 2.0,
             "fontScale": 1.3,
@@ -37,7 +37,7 @@
         "controlButtons": "play_reset",
         "textBoxes": [
           {
-            "text": "Oil and water shaken up and mixed",
+            "text": "Olej protřepaný a promíchaný s vodou",
             "x": 0.804,
             "y": 2.0,
             "fontScale": 1.3,
@@ -53,13 +53,13 @@
     {
       "type": "button",
       "id": "shake",
-      "text": "Shake up the oil and water mixture",
+      "text": "Protřepat směs oleje a vody",
       "action": "loadModel('oilAndWaterMix');"
     }
   ],
   "layout": {
     "bottom": [
-      "shake"
+      "protřepat"
     ]
   }
 }
