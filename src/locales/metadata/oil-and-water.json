@@ -2,5 +2,6 @@
   "en-US": "interactives/oil-and-water.json",
   "pl": "locales/pl/interactives/oil-and-water.json",
   "es": "locales/es/interactives/oil-and-water.json",
-  "pt-BR": "locales/pt-BR/interactives/oil-and-water.json"
+  "pt-BR": "locales/pt-BR/interactives/oil-and-water.json",
+  "cs-CZ": "locales/cs-CZ/interactives/oil-and-water.json"
 }
