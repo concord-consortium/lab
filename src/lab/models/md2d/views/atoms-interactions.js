@@ -33,7 +33,7 @@ define(function(require) {
       // Dragging is only allowed when user touches an atom or uses *left* mouse button (== 0).
       // Right mouse button can interfere with context menus.
       if (e.button === 0) {
-        dragBehavior(downAtom);
+        dragBehavior(downAtom, 'translation');
       }
     }
 
@@ -153,6 +153,14 @@ define(function(require) {
       return atom.draggable;
     }
 
+    function isAtomRotatable(atom) {
+      if (!atom) {
+        return false;
+      }
+      // Note that getMoleculeAtoms doesn't include atom index that we provide, so > 0 means it's part of the molecule.
+      return model.isStopped() && model.getMoleculeAtoms(atom.idx).length > 0;
+    }
+
     function setCursorForAtom(atom) {
       if (isAtomDraggable(atom)) {
         setCursor("move");
@@ -222,61 +230,58 @@ define(function(require) {
       return POINT_CACHE;
     }
 
-    function dragBehavior(atom) {
-      // Fast path, no dragging at all if model is running and atom isn't draggable.
-      if ( ! isAtomDraggable(atom) ) return;
+    function dragBehavior(atom, type) {
+      // Fast path, no dragging at all if model is running and atom isn't draggable / rotatable.
+      if (type === 'translation' && !isAtomDraggable(atom)) return;
+      if (type === 'rotation' && !isAtomRotatable(atom)) return;
 
-      var i = atom.idx,
-          p, x, y, originX, originY;
+      var originalPositions, prevAngle, molecule, cx, cy;
 
       $(window).on("mousemove.lab-drag", function (e) {
         // Prevent accidental text selection or another unwanted action while dragging.
         e.preventDefault();
 
+        // We can use cached canvas dimensions, as they rather don't change between mousedown
+        // and mousemove.
+        var p = getClickCoords(e, true);
+        var x = p.x;
+        var y = p.y;
+
         if (!dragged) {
           // Lazily initialize drag process when user really drags an atom (not only clicks it).
-          if (model.isStopped()) {
-            originX = atom.x;
-            originY = atom.y;
-          } else if (atom.draggable) {
-            model.liveDragStart(i);
+          originalPositions = getMoleculePositions(atom);
+          if (type === 'translation') {
+            if (!model.isStopped() && atom.draggable) {
+              model.liveDragStart(atom.idx);
+            }
+          } else if (type === 'rotation') {
+            // Lazily initialize drag process when user really drags an atom (not only clicks it).
+            molecule = model.getMoleculeAtoms(atom.idx).concat(atom.idx);
+            var bbox = model.getMoleculeBoundingBox(atom.idx);
+            // A bit confusing, but bounding box returns values relative to the center of provided atom.
+            cx = (atom.x + bbox.left + atom.x + bbox.right) * 0.5;
+            cy = (atom.y + bbox.top + atom.y + bbox.bottom) * 0.5;
+            prevAngle = getAngle(cx, cy, x, y);
           }
           dragging = true;
           dragged = true;
         }
 
-        // We can use cached canvas dimensions, as they rather don't change between mousedown
-        // and mousemove.
-        p = getClickCoords(e, true);
-        x = p.x;
-        y = p.y;
-
-        var bbox = model.getMoleculeBoundingBox(i);
-        if (bbox.left + x < 0) x = 0 - bbox.left;
-        if (bbox.right + x > modelWidth) x = modelWidth - bbox.right;
-        if (bbox.bottom + y < 0) y = 0 - bbox.bottom;
-        if (bbox.top + y > modelHeight) y = modelHeight - bbox.top;
-
-        if (model.isStopped()) {
-          setAtomPosition(i, x, y, false, true);
-          modelView.update();
-        } else {
-          model.liveDrag(x, y);
+        if (type === 'translation') {
+          translateMolecule(atom, x, y);
+        } else if (type === 'rotation') {
+          var newAngle = getAngle(cx, cy, x, y);
+          rotateMolecule(molecule, cx, cy, prevAngle - newAngle, false);
+          prevAngle = newAngle;
         }
-
+        modelView.update();
         setCursor("move");
-
-        // Custom drag handler.
-        if (modelView.dragHandler.atom) {
-          modelView.dragHandler.atom(x, y, atom, i);
-        }
       }).on("selectstart.lab-drag", function (e) {
         // Disable selection behavior while dragging an atom. It's supported and required in IE and
         // Safari. In Chrome it's enough to call .preventDefault() on mousemove event.
         e.preventDefault();
       }).one("mouseup.lab-drag", function (e) {
         $(window).off(".lab-drag");
-
         // If user only clicked an atom (mousedown + mouseup, no mousemove), nothing to do.
         if (!dragged) return;
         dragging = false;
@@ -285,18 +290,56 @@ define(function(require) {
         // Pointer can be over atom or not (e.g. when user finished dragging below other object).
         setCursorFromEvent(e);
 
-        if (model.isStopped()) {
-          // Important: set position to (atom.x, atom.y), not (x, y)! Note that custom drag handler
-          // could be executed and it could change actual position!
-          if (!setAtomPosition(i, atom.x, atom.y, true, true, model.get('skipPECheckOnAddAtom'))) {
-            alert("You can't drop the object there.");
-            setAtomPosition(i, originX, originY, false, true);
-            modelView.update();
-          }
-        } else {
+        if (type === 'translation' && !model.isStopped()) {
           model.liveDragEnd();
         }
+
+        // Validate final position.
+        if (model.isStopped()) {
+          if (!isPositionValid(atom.idx)) {
+            alert(modelView.i18n.t('md2d.invalid_object_position_alert'));
+            restoreMoleculePositions(originalPositions);
+            modelView.update();
+          }
+        }
       });
+    }
+
+    function getMoleculePositions(atom) {
+      var molecule = model.getMoleculeAtoms(atom.idx).concat(atom.idx);
+      return molecule.map(function (idx) {
+        var atom = model.getAtomProperties(idx);
+        return {
+          idx: idx,
+          x: atom.x,
+          y: atom.y
+        }
+      });
+    }
+
+    function restoreMoleculePositions(moleculePositions) {
+      moleculePositions.forEach(function (data) {
+        setAtomPosition(data.idx, data.x, data.y, false, false, false);
+      });
+    }
+
+    function translateMolecule(atom, x, y) {
+      var bbox = model.getMoleculeBoundingBox(atom.idx);
+      if (bbox.left + x < 0) x = 0 - bbox.left;
+      if (bbox.right + x > modelWidth) x = modelWidth - bbox.right;
+      if (bbox.bottom + y < 0) y = 0 - bbox.bottom;
+      if (bbox.top + y > modelHeight) y = modelHeight - bbox.top;
+
+      if (model.isStopped()) {
+        setAtomPosition(atom.idx, x, y, false, true);
+      } else {
+        model.liveDrag(x, y);
+      }
+
+      // Custom drag handler.
+      if (modelView.dragHandler.atom) {
+        modelView.dragHandler.atom(x, y, atom, i);
+      }
     }
 
     function setAtomPosition(i, xpos, ypos, checkPosition, moveMolecule, skipPECheck) {
@@ -304,6 +347,40 @@ define(function(require) {
         x: xpos,
         y: ypos
       }, checkPosition, moveMolecule, skipPECheck);
+    }
+
+    function rotateMolecule(molecule, cx, cy, angle, checkPosition) {
+      if (angle === 0) return;
+
+      var rotationAllowed = true;
+      for (var i = 0, len = molecule.length; i < len; i++) {
+        var idx = molecule[i];
+        var atom = model.getAtomProperties(idx);
+        var newCoords = rotate(atom.x - cx, atom.y - cy, angle);
+        var posAllowed = model.setAtomProperties(idx, {
+          x: newCoords.x + cx,
+          y: newCoords.y + cy
+        }, checkPosition, false);
+        rotationAllowed = rotationAllowed && posAllowed;
+      }
+      return rotationAllowed;
+    }
+
+    function getAngle(cx, cy, x, y) {
+      return Math.atan2(x - cx, y - cy);
+    }
+
+    function rotate(x, y, angle) {
+      return {
+        x: x * Math.cos(angle) - y * Math.sin(angle),
+        y: x * Math.sin(angle) + y * Math.cos(angle)
+      };
+    }
+
+    function isPositionValid(atomIdx) {
+      // To validate position it's enough to set properties (even empty set) and make sure that "checkLocation"
+      // and "moveMolecule" arguments are set to true.
+      return model.setAtomProperties(atomIdx, {}, true, true);
     }
 
     api = {

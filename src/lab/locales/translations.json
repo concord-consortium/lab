@@ -57,6 +57,7 @@
       "md2d": {
         "heatbath_icon_tooltip": "Heatbath active",
         "ke_icon_tooltip": "Kinetic energy gradient",
+        "invalid_object_position_alert": "You can't drop the object there.",
         "aminoacid_menu": {
           "hydrophobic": "Hydrophobic",
           "hydrophilic": "Hydrophilic",
@@ -283,6 +284,7 @@
       "md2d": {
         "heatbath_icon_tooltip": "Stała temperatura",
         "ke_icon_tooltip": "Skala energii kinetycznej",
+        "invalid_object_position_alert": "Niepoprawna pozycja obiektu.",
         "aminoacid_menu": {
           "hydrophobic": "Hydrofobowe",
           "hydrophilic": "Hydrofilowe",
@@ -502,6 +504,7 @@
       "md2d": {
         "heatbath_icon_tooltip": "Varmebad er på",
         "ke_icon_tooltip": "Kinetisk energigradient",
+        "invalid_object_position_alert": "You can't drop the object there.",
         "aminoacid_menu": {
           "hydrophobic": "Hydrofob",
           "hydrophilic": "Hydrofil",
@@ -721,6 +724,7 @@
       "md2d": {
         "heatbath_icon_tooltip": "Varmebad er på",
         "ke_icon_tooltip": "Kinetisk energigradient",
+        "invalid_object_position_alert": "You can't drop the object there.",
         "aminoacid_menu": {
           "hydrophobic": "Hydrofob",
           "hydrophilic": "Hydrofil",
@@ -944,6 +948,7 @@
       "md2d": {
         "heatbath_icon_tooltip": "Banho de calor ativo",
         "ke_icon_tooltip": "Gradiente de energia cinética",
+        "invalid_object_position_alert": "You can't drop the object there.",
         "aminoacid_menu": {
           "hydrophobic": "Hidrofóbico",
           "hydrophilic": "Hidrofílico",
@@ -1173,6 +1178,7 @@
       "md2d": {
         "heatbath_icon_tooltip": "Vodní lázeň",
         "ke_icon_tooltip": "Gradient kinetické energie",
+        "invalid_object_position_alert": "You can't drop the object there.",
         "aminoacid_menu": {
           "hydrophobic": "Hydrofobní",
           "hydrophilic": "Hydrofilní",
