@@ -94,7 +94,8 @@
       "width": 0.01,
       "length": 2
     },
-    "forceVectorsDirectionOnly": false
+    "forceVectorsDirectionOnly": false,
+    "onAtomDrag": "translate"
   },
   "pairwiseLJProperties": [
     {
