@@ -5,7 +5,21 @@ define(function(require) {
   var alert               = require('common/alert'),
       amniacidContextMenu = require('cs!models/md2d/views/aminoacid-context-menu'),
 
-      POINT_CACHE = {};
+      POINT_CACHE = {},
+
+      TRANSLATE = 'translate',
+      ROTATE = 'rotate';
+
+  function getAngle(cx, cy, x, y) {
+    return Math.atan2(x - cx, y - cy);
+  }
+
+  function rotate(x, y, angle) {
+    return {
+      x: x * Math.cos(angle) - y * Math.sin(angle),
+      y: x * Math.sin(angle) + y * Math.cos(angle)
+    };
+  }
 
   return function AtomsInteractions(modelView, model, target) {
     var api,
@@ -33,7 +47,15 @@ define(function(require) {
       // Dragging is only allowed when user touches an atom or uses *left* mouse button (== 0).
       // Right mouse button can interfere with context menus.
       if (e.button === 0) {
-        dragBehavior(downAtom, 'translation');
+        var mode = TRANSLATE;
+        if (isAtomRotatable(atom)) {
+          // When atom can be rotated (which means it's part of the molecule) we have more options.
+          // 'onAtomDrag' model property defines preferred drag behavior.
+          var modes = model.get('onAtomDrag') === TRANSLATE ? [TRANSLATE, ROTATE] : [ROTATE, TRANSLATE];
+          // Option key can activate non-default drag behavior.
+          mode = e.altKey ? modes[1] : modes[0];
+        }
+        dragBehavior(downAtom, mode);
       }
     }
 
@@ -230,10 +252,10 @@ define(function(require) {
       return POINT_CACHE;
     }
 
-    function dragBehavior(atom, type) {
-      // Fast path, no dragging at all if model is running and atom isn't draggable / rotatable.
-      if (type === 'translation' && !isAtomDraggable(atom)) return;
-      if (type === 'rotation' && !isAtomRotatable(atom)) return;
+    function dragBehavior(atom, mode) {
+      var translate = mode === TRANSLATE;
+      // Fast path, no dragging at all if model is running and atom isn't draggable.
+      if (translate && !isAtomDraggable(atom)) return;
 
       var originalPositions, prevAngle, molecule, cx, cy;
 
@@ -250,12 +272,11 @@ define(function(require) {
         if (!dragged) {
           // Lazily initialize drag process when user really drags an atom (not only clicks it).
           originalPositions = getMoleculePositions(atom);
-          if (type === 'translation') {
+          if (translate) {
             if (!model.isStopped() && atom.draggable) {
               model.liveDragStart(atom.idx);
             }
-          } else if (type === 'rotation') {
-            // Lazily initialize drag process when user really drags an atom (not only clicks it).
+          } else { // rotate
             molecule = model.getMoleculeAtoms(atom.idx).concat(atom.idx);
             var bbox = model.getMoleculeBoundingBox(atom.idx);
             // A bit confusing, but bounding box returns values relative to the center of provided atom.
@@ -267,9 +288,9 @@ define(function(require) {
           dragged = true;
         }
 
-        if (type === 'translation') {
+        if (translate) {
           translateMolecule(atom, x, y);
-        } else if (type === 'rotation') {
+        } else { // rotate
           var newAngle = getAngle(cx, cy, x, y);
           rotateMolecule(molecule, cx, cy, prevAngle - newAngle, false);
           prevAngle = newAngle;
@@ -290,7 +311,7 @@ define(function(require) {
         // Pointer can be over atom or not (e.g. when user finished dragging below other object).
         setCursorFromEvent(e);
 
-        if (type === 'translation' && !model.isStopped()) {
+        if (translate && !model.isStopped()) {
           model.liveDragEnd();
         }
 
@@ -364,17 +385,6 @@ define(function(require) {
         rotationAllowed = rotationAllowed && posAllowed;
       }
       return rotationAllowed;
-    }
-
-    function getAngle(cx, cy, x, y) {
-      return Math.atan2(x - cx, y - cy);
-    }
-
-    function rotate(x, y, angle) {
-      return {
-        x: x * Math.cos(angle) - y * Math.sin(angle),
-        y: x * Math.sin(angle) + y * Math.cos(angle)
-      };
     }
 
     function isPositionValid(atomIdx) {
