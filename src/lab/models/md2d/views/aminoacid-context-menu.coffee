@@ -129,11 +129,12 @@ define (require) ->
       events:
         # Mark currently selected AA type.
         show: (options) ->
-          props = getClickedAtom()
-          if !props
+          atom = getClickedAtom()
+          aminoAcidProps = atom && aminoacids.getAminoAcidByElement(atom.element)
+          if !atom || !aminoAcidProps
             return false
 
-          key = aminoacids.getAminoAcidByElement(props.element).abbreviation
+          key = aminoAcidProps.abbreviation
           $node = options.items[key].$node
           $node.addClass MARKED_CLASS
           if $node.hasClass HYDROPHOBIC_CLASS
