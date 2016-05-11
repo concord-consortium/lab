@@ -154,7 +154,7 @@ group :test do
     watch(/(^src\/lab\/.+)|(^src\/modules\/.+)/) do |match|
       file = match[0]
       unless file =~ /(lab.config.js)|(lab.version.js)/
-        command("make test-src")
+        command("make test")
       end
     end
 
@@ -164,7 +164,7 @@ group :test do
       when /\/md2d\/mml-parser/
       when /\/md2d\/(mw-batch-converter.+)|(post-batch-processor.+)/
       else
-        command("make test-src")
+        command("make test")
       end
     end
 
