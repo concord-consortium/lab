@@ -59,6 +59,7 @@ Here is a list of projects and resources included in the in the `vendor/` direct
 22. [i18next](https://github.com/jamuhl/i18next): [MIT](http://www.opensource.org/licenses/MIT)
 23. [lab-grapher](https://github.com/concord-consortium/lab-grapher): triple-licensed the same as the Lab licenses
 24. [lab-sensor-applet-interface-dist](https://github.com/concord-consortium/lab-sensor-applet-interface-dist): triple-licensed the same as Lab, with exceptions for some binary libraries provided by Vernier
+25. [screenfull](https://github.com/sindresorhus/screenfull.js): [MIT](http://www.opensource.org/licenses/MIT)
 
 In addition there are two fontface directories in `vendor/fonts` that are distributed
 under compatible open source licenses:

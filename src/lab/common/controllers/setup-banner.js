@@ -7,6 +7,7 @@ define(function () {
       ImageController    = require('common/controllers/image-controller'),
       DivController      = require('common/controllers/div-controller'),
       PlaybackController = require('common/controllers/playback-controller'),
+      screenfull         = require('screenfull'),
 
       topBarHeight    = 1.5,
       topBarFontScale = topBarHeight * 0.65,
@@ -236,37 +237,8 @@ define(function () {
         "belowOthers": true
       });
 
-      // see if we can go fullscreen. If we can, add a fullscreen button.
-      // Note: This requires iframe to be embedded with 'allowfullscreen=true' (and
-      // browser-specific variants). If iframe is not embedded with this property, button
-      // will show but will not work. It is not clear whether we can find out at this moment
-      // whether iframe was embedded appropriately.
-      body = document.body;
-
-      requestFullscreenMethod =
-        body.requestFullScreen ||
-        body.webkitRequestFullScreen ||
-        body.mozRequestFullScreen ||
-        body.msRequestFullScreen;
-
-      document.cancelFullscreenMethod =
-        document.cancelFullScreen ||
-        document.webkitCancelFullScreen ||
-        document.mozCancelFullScreen ||
-        document.msCancelFullScreen;
-
-      function isFullscreen() {
-        // this doesn't yet exist in Safari
-        if (document.fullscreenElement ||
-          document.webkitFullscreenElement ||
-          document.mozFullScreenElement) {
-          return true;
-        }
-        // annoying hack to check Safari
-        return ~$(".fullscreen").css("background-image").indexOf("exit");
-      }
-
-      if (requestFullscreenMethod) {
+      if (screenfull.enabled) {
+        // Note: This requires iframe to be embedded with 'allowfullscreen=true'.
         createElementInContainer({
           "type": "div",
           "id": "fullsize-link",
@@ -275,11 +247,11 @@ define(function () {
           "classes": ["fullscreen"],
           "tooltip": i18n.t("banner.fullscreen_tooltip"),
           "onClick": function () {
-            if (!isFullscreen()) {
-              requestFullscreenMethod.call(body);
+            if (!screenfull.isFullscreen) {
+              screenfull.request(document.body);
               controller.logAction('FullScreenStarted');
             } else {
-              document.cancelFullscreenMethod();
+              screenfull.exit();
             }
           }
         },
