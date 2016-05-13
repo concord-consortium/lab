@@ -47,15 +47,19 @@ define(function(require) {
       // Dragging is only allowed when user touches an atom or uses *left* mouse button (== 0).
       // Right mouse button can interfere with context menus.
       if (e.button === 0) {
-        var mode = TRANSLATE;
+        var mode = null;
         if (isAtomRotatable(atom)) {
           // When atom can be rotated (which means it's part of the molecule) we have more options.
           // 'onAtomDrag' model property defines preferred drag behavior.
           var modes = model.get('onAtomDrag') === TRANSLATE ? [TRANSLATE, ROTATE] : [ROTATE, TRANSLATE];
           // Option key can activate non-default drag behavior.
           mode = e.altKey ? modes[1] : modes[0];
+        } else if (isAtomDraggable(atom)) {
+          mode = TRANSLATE;
         }
-        dragBehavior(downAtom, mode);
+        if (mode !== null) {
+          dragBehavior(downAtom, mode);
+        }
       }
     }
 
@@ -180,7 +184,8 @@ define(function(require) {
         return false;
       }
       // Note that getMoleculeAtoms doesn't include atom index that we provide, so > 0 means it's part of the molecule.
-      return model.isStopped() && model.getMoleculeAtoms(atom.idx).length > 0;
+      // We also require atom to be draggable since the rotation is triggered by dragging.
+      return isAtomDraggable(atom) && model.isStopped() && model.getMoleculeAtoms(atom.idx).length > 0;
     }
 
     function setCursorForAtom(atom) {
@@ -253,11 +258,8 @@ define(function(require) {
     }
 
     function dragBehavior(atom, mode) {
-      var translate = mode === TRANSLATE;
-      // Fast path, no dragging at all if model is running and atom isn't draggable.
-      if (translate && !isAtomDraggable(atom)) return;
-
-      var originalPositions, prevAngle, molecule, cx, cy;
+      var translate = mode === TRANSLATE,
+          originalPositions, prevAngle, molecule, cx, cy;
 
       $(window).on("mousemove.lab-drag", function (e) {
         // Prevent accidental text selection or another unwanted action while dragging.
@@ -292,11 +294,15 @@ define(function(require) {
           translateMolecule(atom, x, y);
         } else { // rotate
           var newAngle = getAngle(cx, cy, x, y);
-          rotateMolecule(molecule, cx, cy, prevAngle - newAngle, false);
+          rotateMolecule(molecule, cx, cy, prevAngle - newAngle);
           prevAngle = newAngle;
         }
-        modelView.update();
         setCursor("move");
+        // Custom drag handler. Note that it works both for translation and rotation.
+        if (modelView.dragHandler.atom) {
+          modelView.dragHandler.atom(x, y, atom, i);
+        }
+        modelView.update();
       }).on("selectstart.lab-drag", function (e) {
         // Disable selection behavior while dragging an atom. It's supported and required in IE and
         // Safari. In Chrome it's enough to call .preventDefault() on mousemove event.
@@ -340,7 +346,7 @@ define(function(require) {
 
     function restoreMoleculePositions(moleculePositions) {
       moleculePositions.forEach(function (data) {
-        setAtomPosition(data.idx, data.x, data.y, false, false, false);
+        setAtomPosition(data.idx, data.x, data.y);
       });
     }
 
@@ -352,25 +358,28 @@ define(function(require) {
       if (bbox.top + y > modelHeight) y = modelHeight - bbox.top;
 
       if (model.isStopped()) {
-        setAtomPosition(atom.idx, x, y, false, true);
+        setMoleculePosition(atom.idx, x, y);
       } else {
         model.liveDrag(x, y);
       }
-
-      // Custom drag handler.
-      if (modelView.dragHandler.atom) {
-        modelView.dragHandler.atom(x, y, atom, i);
-      }
     }
 
-    function setAtomPosition(i, xpos, ypos, checkPosition, moveMolecule, skipPECheck) {
-      return model.setAtomProperties(i, {
-        x: xpos,
-        y: ypos
-      }, checkPosition, moveMolecule, skipPECheck);
+    function setAtomPosition(i, xpos, ypos) {
+      return model.setAtomProperties(i, {x: xpos, y: ypos});
     }
 
-    function rotateMolecule(molecule, cx, cy, angle, checkPosition) {
+    function setMoleculePosition(i, xpos, ypos) {
+      // The last argument ensures that the whole molecule will be moved.
+      return model.setAtomProperties(i, {x: xpos, y: ypos}, false, true);
+    }
+
+    function isPositionValid(atomIdx) {
+      // To validate position it's enough to set properties (even empty set) and make sure that "checkLocation"
+      // and "moveMolecule" arguments are set to true.
+      return model.setAtomProperties(atomIdx, {}, true, true);
+    }
+
+    function rotateMolecule(molecule, cx, cy, angle) {
       if (angle === 0) return;
 
       var rotationAllowed = true;
@@ -378,19 +387,10 @@ define(function(require) {
         var idx = molecule[i];
         var atom = model.getAtomProperties(idx);
         var newCoords = rotate(atom.x - cx, atom.y - cy, angle);
-        var posAllowed = model.setAtomProperties(idx, {
-          x: newCoords.x + cx,
-          y: newCoords.y + cy
-        }, checkPosition, false);
+        var posAllowed = setAtomPosition(idx, newCoords.x + cx, newCoords.y + cy);
         rotationAllowed = rotationAllowed && posAllowed;
       }
       return rotationAllowed;
-    }
-
-    function isPositionValid(atomIdx) {
-      // To validate position it's enough to set properties (even empty set) and make sure that "checkLocation"
-      // and "moveMolecule" arguments are set to true.
-      return model.setAtomProperties(atomIdx, {}, true, true);
     }
 
     api = {
