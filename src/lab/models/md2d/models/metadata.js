@@ -317,6 +317,12 @@ define(function() {
       },
       forceVectorsDirectionOnly: {
         defaultValue: false
+      },
+      onAtomDrag: {
+        // Atom dragging can either start translation or rotation of the molecule.
+        // Behavior which is not default can be activated if user holds Alt / Opt key while dragging.
+        // Available options: 'translate', 'rotate'.
+        defaultValue: 'translate'
       }
     },
 
