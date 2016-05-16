@@ -300,7 +300,7 @@ define(function(require) {
         setCursor("move");
         // Custom drag handler. Note that it works both for translation and rotation.
         if (modelView.dragHandler.atom) {
-          modelView.dragHandler.atom(x, y, atom, i);
+          modelView.dragHandler.atom(x, y, atom, atom.idx);
         }
         modelView.update();
       }).on("selectstart.lab-drag", function (e) {
