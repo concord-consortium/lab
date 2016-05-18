@@ -411,7 +411,10 @@
       </void> 
       <void property="y"> 
        <double>108.65800320242656</double> 
-      </void> 
+      </void>
+      <void property="offsetAngle">
+       <float>1.5707963267948966</float>
+      </void>
      </object> 
     </void> 
    </array> 

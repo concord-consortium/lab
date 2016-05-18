@@ -139,10 +139,11 @@ define(function() {
           var imageDescription = datum.imageDescription;
           var hostType = imageDescription.imageHostType;
           var index    = imageDescription.imageHostIndex;
+          var rotation = imageDescription.rotation || 0;
           var atoms;
           var obstacles;
           var radialBond;
-          var x, y, rotation;
+          var x, y;
 
           if (hostType === 'Atom') {
             atoms = model.getAtoms();
@@ -156,15 +157,13 @@ define(function() {
             radialBond = model.getRadialBonds()[index];
             x = (radialBond.x1 + radialBond.x2) / 2;
             y = (radialBond.y1 + radialBond.y2) / 2;
-            rotation = 180 * Math.atan2(radialBond.y1 - radialBond.y2, radialBond.x1 - radialBond.x2) / Math.PI;
+            rotation += 180 * Math.atan2(radialBond.y1 - radialBond.y2, radialBond.x1 - radialBond.x2) / Math.PI;
           }
           if (x !== undefined) {
             datum.x = modelView.model2px(x);
             datum.y = modelView.model2pxInv(y);
           }
-          if (rotation !== undefined){
-            datum.rotation = rotation;
-          }
+          datum.rotation = rotation;
         });
       });
     }

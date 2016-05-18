@@ -746,11 +746,14 @@ define (require) ->
           imageHostType = imageHostType.slice(imageHostType.lastIndexOf(".")+1)
           imageLayer = parseInt $image.find("[property=layer]>int").text()
           imageLayerPosition = parseInt $image.find("[property=layerPosition]>byte").text()
+          visible = parseBoolean($image.find("[property=visible]>boolean").text(), true)
           imageX = parseFloat $image.find("[property=x]>double").text()
           imageY = parseFloat $image.find("[property=y]>double").text()
+          rotation = parseFloat $image.find("[property=offsetAngle]>float").text()
           [imageX, imageY] = toNextgenCoordinates imageX, imageY
-          imageVisible = parseBoolean($image.find("[property=visible]>boolean").text(), true)
-          images.push {imageUri: imageUri, imageHostIndex: imageHostIndex, imageHostType: imageHostType, imageLayer: imageLayer, imageLayerPosition: imageLayerPosition, imageX: imageX, imageY: imageY, visible: imageVisible }
+          # Convert angle to Next Gen format. We use an opposite sign and degrees instead of radians.
+          rotation = -1 * rotation * 180 / Math.PI
+          images.push {imageUri, imageHostIndex, imageHostType, imageLayer, imageLayerPosition, imageX, imageY, rotation, visible}
 
       ###
         Text boxes. TODO: factor out pattern common to MML parsing of images and text boxes
