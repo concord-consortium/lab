@@ -211,11 +211,15 @@ define(function() {
         defaultValue: false,
         storeInTickHistory: true
       },
-      useThreeLetterCode: {
-        defaultValue: true
-      },
       aminoAcidColorScheme: {
         defaultValue: "hydrophobicity"
+      },
+      aminoAcidLabels: {
+        defaultValue: true,
+      },
+      useThreeLetterCode: {
+        // Amino acid labels type - single letter (false) or three letters (true).
+        defaultValue: true
       },
       showChargeSymbols: {
         defaultValue: true

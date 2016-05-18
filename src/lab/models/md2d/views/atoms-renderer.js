@@ -89,8 +89,8 @@ define(function(require) {
         return h > 0 ?  ["#F0E6D1", "#E0A21B", "#AD7F1C"] : ["#dfffef", "#75a643", "#2a7216"];
       },
 
-      RENDERING_OPTIONS = ["keShading", "chargeShading", "atomNumbers", "showChargeSymbols",
-                           "aminoAcidColorScheme", "useThreeLetterCode", "viewPortZoom", "atomRadiusScale"];
+      RENDERING_OPTIONS = ["keShading", "chargeShading", "atomNumbers", "showChargeSymbols", "atomRadiusScale",
+                           "aminoAcidColorScheme", "aminoAcidLabels", "useThreeLetterCode", "viewPortZoom"];
 
   return function AtomsRenderer(modelView, model, pixiContainer, canvas) {
     // Public API object to be returned.
@@ -244,10 +244,10 @@ define(function(require) {
       if (renderMode.atomNumbers) {
         textVal = i;
         sizeRatio = 1.2;
-      } else if (renderMode.useThreeLetterCode && modelAtoms[i].label) {
+      } else if (renderMode.aminoAcidLabels && renderMode.useThreeLetterCode && modelAtoms[i].label) {
         textVal = modelAtoms[i].label;
         sizeRatio = 1;
-      } else if (!renderMode.useThreeLetterCode && modelAtoms[i].symbol) {
+      } else if (renderMode.aminoAcidLabels && !renderMode.useThreeLetterCode && modelAtoms[i].symbol) {
         textVal = modelAtoms[i].symbol;
         sizeRatio = 1.4;
       } else if (renderMode.showChargeSymbols) {

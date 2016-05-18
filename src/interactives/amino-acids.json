@@ -31,6 +31,12 @@
     {
       "type": "checkbox",
       "id": "show-labels",
+      "text": "Show amino acid labels",
+      "property": "aminoAcidLabels"
+    },
+    {
+      "type": "checkbox",
+      "id": "three-letter-codes",
       "text": "Use three-letter codes",
       "property": "useThreeLetterCode"
     },
@@ -169,6 +175,7 @@
     "bottom": [
       [
         "show-labels",
+        "three-letter-codes",
         "select-color-scheme",
         "select-solvent"
       ],
