@@ -884,6 +884,9 @@ define(function() {
       rotation: {
         defaultValue: 0
       },
+      scale: {
+        defaultValue: 1,
+      },
       opacity: {
         defaultValue: 1
       }

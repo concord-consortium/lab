@@ -54,6 +54,7 @@
         "imageLayer": 1,
         "imageX": 0.3,
         "imageY": 2.42,
+        "scale": 1,
         "visible": true
       }
     ],

@@ -753,7 +753,9 @@ define (require) ->
           [imageX, imageY] = toNextgenCoordinates imageX, imageY
           # Convert angle to Next Gen format. We use an opposite sign and degrees instead of radians.
           rotation = -1 * rotation * 180 / Math.PI
-          images.push {imageUri, imageHostIndex, imageHostType, imageLayer, imageLayerPosition, imageX, imageY, rotation, visible}
+          # Scale is a NextGen-only property, ClassicMW always uses 1 pixel == 0.1 Angstrom (0.01 nm) conversion.
+          scale = 1
+          images.push {imageUri, imageHostIndex, imageHostType, imageLayer, imageLayerPosition, imageX, imageY, rotation, scale, visible}
 
       ###
         Text boxes. TODO: factor out pattern common to MML parsing of images and text boxes
