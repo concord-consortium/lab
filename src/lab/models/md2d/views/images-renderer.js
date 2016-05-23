@@ -18,7 +18,7 @@ define(function() {
     // It will create an Image object with that src, if we do not already have one, and when the
     // Image finishes loading it will update the width and height of any images in the image
     // container which have the same src.
-    function loadImage(src) {
+    function loadImage(src, scale) {
       if (imgDimBySrc[src]) {
         return;
       }
@@ -37,8 +37,8 @@ define(function() {
         // See: https://www.pivotaltracker.com/story/show/66376534
         var $image = $(image).appendTo("body");
         var imageDim = imgDimBySrc[src];
-        imageDim.width = $image.width();
-        imageDim.height = $image.height();
+        imageDim.width = $image.width() * scale;
+        imageDim.height = $image.height() * scale;
         $image.remove();
         // Resize and recenter any instances of this image currently in the DOM.
         d3.select(modelView.node)
@@ -100,7 +100,7 @@ define(function() {
           y = modelView.model2pxInv(desc.imageY);
         }
 
-        loadImage(src);
+        loadImage(src, desc.scale);
 
         layer.push({
           imageDescription: desc,
@@ -112,6 +112,7 @@ define(function() {
           x:                x,
           y:                y,
           rotation:         desc.rotation,
+          scale:            desc.scale,
           opacity:          desc.opacity,
           referencePoint:   referencePoint,
           capturesPointer:  capturesPointer,

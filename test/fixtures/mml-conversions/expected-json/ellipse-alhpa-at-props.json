@@ -61,6 +61,7 @@
         "imageLayerPosition": 9,
         "imageX": 4.21,
         "imageY": 1.72,
+        "scale": 1,
         "visible": true
       },
       {
@@ -71,6 +72,7 @@
         "imageLayerPosition": 10,
         "imageX": 4.37,
         "imageY": 1.72,
+        "scale": 1,
         "visible": true
       },
       {
@@ -81,6 +83,7 @@
         "imageLayerPosition": 11,
         "imageX": 4.53,
         "imageY": 1.72,
+        "scale": 1,
         "visible": true
       }
     ],
