@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-# Simple script that converts HTML hex color (e.g. #ffffff) into color value used by MD2D elements.
+// Simple script that converts HTML hex color (e.g. #ffffff) into color value used by MD2D elements.
 
 var input = process.argv[2];
 
