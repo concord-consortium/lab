@@ -218,10 +218,6 @@ define(function(require) {
       $target.on("mouseout.atoms-interactions", mouseOutCanvas);
       $target.on("contextmenu.atoms-interactions", contextMenuCanvas);
 
-      amniacidContextMenu.register(model, modelView, ".atoms-interaction-layer", function () {
-        return contextMenuAtom;
-      });
-
       api.bindModel(model);
     }
 
@@ -400,6 +396,11 @@ define(function(require) {
         atoms = model.getAtoms();
         modelWidth = model.get("width");
         modelHeight = model.get("height");
+
+        // .register method destroys old menu instances first, so it's safe to call it each time we bind a new model.
+        amniacidContextMenu.register(model, modelView, ".atoms-interaction-layer", function () {
+          return contextMenuAtom;
+        });
       }
     };
 
