@@ -223,7 +223,8 @@ define(function(require) {
 
     function getAtomUnder(x, y) {
       var atom, ax, ay, ar;
-      for (var i = 0, len = atoms.length; i < len; i++) {
+      // Very important - start from the last atom. Order of atoms defines order of rendering.
+      for (var i = atoms.length - 1; i >= 0; i--) {
         atom = atoms[i];
         ax = atom.x;
         ay = atom.y;
