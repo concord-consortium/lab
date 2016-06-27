@@ -1524,6 +1524,7 @@ define(function (require) {
           fontScale: interactive.fontScale,
           lang: interactive.lang,
           i18nMetadata: interactive.i18nMetadata,
+          credits: interactive.credits,
           helpOnLoad: interactive.helpOnLoad,
           aboutOnLoad: interactive.aboutOnLoad,
           about: arrays.isArray(interactive.about) ? $.extend(true, [], interactive.about) : interactive.about,

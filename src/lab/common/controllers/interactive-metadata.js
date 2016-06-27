@@ -52,6 +52,11 @@ define(function() {
         defaultValue: true
       },
 
+      credits: {
+        // Content of the credits dialog. If it's not specified, the default, translatable text will be used.
+        defaultValue: ''
+      },
+
       padding: {
         // Top, bottom and left interactive padding, but NOT right...
         // This option was defined that way long time ago and now it has been exposed to authors.

@@ -3,10 +3,13 @@ define(function (require) {
 
   var labConfig        = require('lab.config'),
       mustache         = require('mustache'),
+      markdownToHTML   = require('common/markdown-to-html'),
       inherit          = require('common/inherit'),
       BasicDialog      = require('common/controllers/basic-dialog'),
       getCopyright     = require('common/controllers/copyright'),
-      creditsDialogTpl = require('text!common/controllers/credits-dialog.tpl');
+      creditsDialogTpl = require('text!common/controllers/credits-dialog.tpl'),
+      CONCORD_URL = 'http://concord.org',
+      NEXT_GEN_URL = 'http://mw.concord.org/nextgen/';
 
   /**
    * Credits Dialog. Inherits from Basic Dialog.
@@ -32,8 +35,8 @@ define(function (require) {
         origin         = document.location.href.match(/(.*?\/\/.*?)\//)[1],
         embeddablePath = document.location.pathname,
         i18n           = this._i18n,
-        concordUrl     = 'http://concord.org',
-        nextGenUrl     = 'http://mw.concord.org/nextgen/',
+        concordUrl     = CONCORD_URL,
+        nextGenUrl     = NEXT_GEN_URL,
         interactiveCreditsUrl,
         utmString;
 
@@ -54,7 +57,8 @@ define(function (require) {
     }
 
     var view = {
-      credits_text: i18n.t("credits_dialog.credits_text", {
+      // Content of the credits dialog. If it's not specified, the default, translatable text will be used.
+      credits_text: interactive.credits ? markdownToHTML(interactive.credits) : i18n.t("credits_dialog.credits_text", {
         CC_link: "<a class='opens-in-new-window' href='" + concordUrl + "' target='_blank'>Concord Consortium</a>",
         Next_Gen_MW_link: "<a class='opens-in-new-window' href='" + nextGenUrl + " ' target='_blank'>Next-Generation Molecular Workbench</a>",
         Google_link: "<a class='opens-in-new-window' href='http://www.google.org/' target='_blank'>Google.org</a>"
