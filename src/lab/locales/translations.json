@@ -1349,5 +1349,58 @@
         }
       }
     }
+  },
+  "es": {
+    "translation": {
+      "banner": {
+        "about": "Acerca de",
+        "about_tooltip": "Instrucciones",
+        "share": "Compartir",
+        "share_tooltip": "Compartir a través de e-mail, MI o embeber en sitio web",
+        "lang_tooltip": "Elegir idioma",
+        "reload_tooltip": "Recargar el interactivo",
+        "help_tooltip": "Mostrar ayuda",
+        "credits_tooltip": "Saber más sobre The Concord Consortium",
+        "fullscreen_tooltip": "Cambiar a pantalla completa",
+        "video_play_pause_tooltip": "Iniciar / pausar la simulación",
+        "video_reset_tooltip": "Resetear la simulación",
+        "video_step_back_tooltip": "Un paso atrás",
+        "video_step_forward_tooltip": "Un paso adelante",
+        "text_start": "Iniciar",
+        "text_start_tooltip": "Iniciar la simulación o recolección de datos",
+        "text_stop": "Detener",
+        "text_stop_tooltip": "Detener la simulación o recolección de datos",
+        "text_reset": "Resetear",
+        "text_reset_tooltip": "Resetear la simulación o recolección de datos"
+      },
+      "dialog": {
+        "close_tooltip": "Cerrar"
+      },
+      "about_dialog": {
+        "title": "Acerca de: __interactive_title__"
+      },
+      "share_dialog": {
+        "title": "Compartir: __interactive_title__",
+        "link": "enlace",
+        "paste_email_im": "Pegar este __link__ en email o MI",
+        "paste_html": "Pegar HTML para embeber en sitio web o blog.",
+        "select_size": "Elegir tamaño:",
+        "size_larger": "__val__% más grande",
+        "size_actual": "actual",
+        "size_smaller": "__val__% más pequeño"
+      },
+      "credits_dialog": {
+        "title": "Créditos: __interactive_title__",
+        "credits_text": "Este interactivo fue creado por the __CC_link__ usando nuestro software __Next_Gen_MW_link__, con fondos provenientes de un gran de __Google_link__.",
+        "shareable_ver": "versión para compartir",
+        "find_shareable": "Buscar un __shareable_ver_link__ de este interactivo junto a docenas de otros interactivos de código abierto para ciencias, matemática e ingeniería en __concord_org_link__."
+      },
+      "copyright": {
+        "copyright": "Copyright",
+        "all_rights_reserved": "Todos los derechos reservados.",
+        "license": "Este software está licenciado bajo licencia de __MIT_link__.",
+        "attribution": "Por favor dar atribución a The Concord Consortium y la URL __concord_org_link__."
+      }
+    }
   }
 }
