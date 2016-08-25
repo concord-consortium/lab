@@ -10,7 +10,13 @@ All the strings that are displayed by UI are stored in:
 
 [src/lab/locales/translations.json](https://github.com/concord-consortium/lab/blob/master/src/lab/locales/translations.json)
 
-This JSON file has following structure:
+and: 
+
+[lab-grapher/locales/translations.json](https://github.com/concord-consortium/lab-grapher/blob/master/locales/translations.json)
+
+Note that the second file is in a different project (our graphing library), but uses exactly the same pattern. So, everything below appies to both files.
+
+These JSON files have following structure:
 ```
 {
   "language-code": {
@@ -36,12 +42,12 @@ If you have GitHub account, the simplest way to update `translations.json` is to
 3. Translate Lab Framework into your language!
 4. Click `Propose file change`.
 5. Click `Send pull request`.
+6. Then repeat steps 1-5, but using [lab-grapher/locales/translations.json](https://github.com/concord-consortium/lab-grapher/blob/master/locales/translations.json) file instead.
 
-If you do not have GitHub account, just send updated `translations.json` file to us:
+If you do not have GitHub account, just send updated Lab's `translations.json` and lab-grapher's `translations.json` files to us:
 
 - lab-models@googlegroups.com
 - https://groups.google.com/forum/?fromgroups#!forum/lab-models
-
 
 ### Namespaces and special expressions
 
