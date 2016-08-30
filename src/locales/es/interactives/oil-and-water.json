@@ -3,10 +3,10 @@
   "publicationStatus": "sample",
   "subtitle": "Explore cómo sustancias polares y no polares (apolares) interactúan entre ellas.",
   "about": [
-    "Probablemente sabe que \"agua y aceite no se mezclan\", pero por qué?",
+    "Probablemente sabe que \"el agua y el aceite no se mezclan\", pero ¿por qué?",
     "Este modelo contiene agua (polar, en azul y rojo) y aceite (apolar, en gris).",
-    "Inicie el modelo y observe. Después, agite la mezcla de agua y aceite y vuelva a iniciar el modelo.",
-    "Observe qué pasa con las moléculas al pasar el tiempo."
+    "Inicie el modelo y observe; después agite la mezcla de agua y aceite y vuelva a iniciar el modelo.",
+    "Observe lo que pasa con las moléculas al pasar el tiempo."
   ],
   "i18nMetadata": "locales/metadata/oil-and-water.json",
   "lang": "es",
