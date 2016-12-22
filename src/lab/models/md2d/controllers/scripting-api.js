@@ -495,6 +495,13 @@ define(function (require) {
         parent.model.getPairwiseLJProperties().set(i, j, props);
       },
 
+      /**
+        Removes custom pairwise LJ properties, reverting it to the default calculation.
+      */
+      removePairwiseLJProperties: function removePairwiseLJProperties(i, j) {
+        parent.model.getPairwiseLJProperties().remove(i, j);
+      },
+
       getElementProperties: function getElementProperties(i) {
         return parent.model.getElementProperties(i);
       },
