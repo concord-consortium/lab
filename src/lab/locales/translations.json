@@ -1406,9 +1406,9 @@
   "ru": {
     "translation": {
       "banner": {
-        "about": "О продукте",
+        "about": "Об интерактиве",
         "about_tooltip": "Инструкция",
-        "share": "Поделиться данными",
+        "share": "Опубликовать ссылку",
         "share_tooltip": "Поделиться данными в e-mail, IM или вставить их на страницу в web-страницу",
         "lang_tooltip": "Выбрать язык",
         "reload_tooltip": "Перезагрузить интерактив",
@@ -1438,7 +1438,7 @@
       },
       "share_dialog": {
         "title": "Поделиться: __interactive_title__",
-        "линк": " линк ",
+        "link": " линк ",
         "paste_email_im": "Вставить этот __link__ в e-mail или IM.",
         "paste_html": " Скопировать HTML для вставки в web-site или блог.",
         "select_size": "Выбрать размер:",
