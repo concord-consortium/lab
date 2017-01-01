@@ -1,11 +1,13 @@
 {
-  "title": "Oil and Water",
+  "title": "Вода и масло",
   "publicationStatus": "sample",
-  "subtitle": "Explore how polar and non-polar substances interact.",
+  "subtitle": "Исследуем взаимодействие полярных и неполярных веществ",
   "about": [
-    "It is well known that \"oil and water don’t mix.\" But why? Run the model of",
-    "polar water (blue and red) and non-polar oil (gray). \"Shake up the oil and water",
-    "mixture,\" then run it again and watch what happens to the molecules over time."
+    "Хорошо известно, что вода и масло не смешиваются. А почему? Попробуйте выяснить",
+    " это экспериментируя с молекулярной моделью смеси. В ней полярные молекулы воды",
+    " представлены в виде голубых и белух частичек, а неполярные молекулы масла - в виде",
+    " серых частичек. Нажатием кнопки \"Встряхивание смеси масла и воды\" приводим модель в ",
+    "действие и наблюдаем за происходящими процессами на молекулярном уровне."
   ],
   "i18nMetadata": "locales/metadata/oil-and-water.json",
   "lang": "ru",
@@ -37,8 +39,8 @@
         "controlButtons": "play_reset",
         "textBoxes": [
           {
-            "text": "Oil and water shaken up and mixed",
-            "x": 0.804,
+            "text": "Смесь масла и воды, образовавшаяся после встряхивания",
+            "x": -0.025,
             "y": 2.0,
             "fontScale": 1.3,
             "layer": 1,
