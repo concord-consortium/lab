@@ -54,7 +54,7 @@
     "cheerio": "0.12.4",
     "mocha": "~1.17.1",
     "should": "3.0.1",
-    "sinon": ">=1.7.3",
+    "sinon": "~1.17.7",
     "chai": ">=1.7.2"
   },
   "directories": {
