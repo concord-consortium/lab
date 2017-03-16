@@ -60,7 +60,7 @@ define(function(require) {
           sinThetaSpikes = sintheta * numTurns,
           pointX, pointY, i;
 
-      graphics.lineStyle(getBondWidth(d), getBondColor(d, 1));
+      graphics.lineStyle(getBondWidth(d), getBondColor(d, 1), getBondOpacity(d, 1));
       graphics.moveTo(x1, y1);
       for (i = 0; i < numTurns; i++) {
         if (i % 2 === 0) {
@@ -95,6 +95,10 @@ define(function(require) {
           yMid = y1 + midRatio * dy,
 
           bondWidth = getBondWidth(d),
+          bondColor1 = getBondColor(d, 1),
+          bondColor2 = getBondColor(d, 2),
+          bondOpacity1 = getBondOpacity(d, 1),
+          bondOpacity2 = getBondOpacity(d, 2),
           bondShift, bondAngle, xs, ys;
 
       if (d.type === RADIAL_BOND_TYPES.DOUBLE_BOND) {
@@ -103,13 +107,13 @@ define(function(require) {
         xs = Math.sin(bondAngle) * bondShift;
         ys = -Math.cos(bondAngle) * bondShift;
 
-        graphics.lineStyle(bondWidth, getBondColor(d, 1));
+        graphics.lineStyle(bondWidth, bondColor1, bondOpacity1);
         graphics.moveTo(x1 + xs, y1 + ys);
         graphics.lineTo(xMid + xs, yMid + ys);
         graphics.moveTo(x1 - xs, y1 - ys);
         graphics.lineTo(xMid - xs, yMid - ys);
 
-        graphics.lineStyle(bondWidth, getBondColor(d, 2));
+        graphics.lineStyle(bondWidth, bondColor2, bondOpacity2);
         graphics.moveTo(xMid + xs, yMid + ys);
         graphics.lineTo(x2 + xs, y2 + ys);
         graphics.moveTo(xMid - xs, yMid - ys);
@@ -120,7 +124,7 @@ define(function(require) {
         xs = Math.sin(bondAngle) * bondShift;
         ys = -Math.cos(bondAngle) * bondShift;
 
-        graphics.lineStyle(bondWidth, getBondColor(d, 1));
+        graphics.lineStyle(bondWidth, bondColor1, bondOpacity1);
         graphics.moveTo(x1, y1);
         graphics.lineTo(xMid, yMid);
         graphics.moveTo(x1 + xs, y1 + ys);
@@ -128,7 +132,7 @@ define(function(require) {
         graphics.moveTo(x1 - xs, y1 - ys);
         graphics.lineTo(xMid - xs, yMid - ys);
 
-        graphics.lineStyle(bondWidth, getBondColor(d, 2));
+        graphics.lineStyle(bondWidth, bondColor2, bondOpacity2);
         graphics.moveTo(xMid, yMid);
         graphics.lineTo(x2, y2);
         graphics.moveTo(xMid + xs, yMid + ys);
@@ -138,11 +142,11 @@ define(function(require) {
       } else if (d.type !== RADIAL_BOND_TYPES.GHOST) {
         // STANDARD_STICK and other types that are not yet supported.
         // However, GHOST bonds will not be drawn.
-        graphics.lineStyle(bondWidth, getBondColor(d, 1));
+        graphics.lineStyle(bondWidth, bondColor1, bondOpacity1);
         graphics.moveTo(x1, y1);
         graphics.lineTo(xMid, yMid);
 
-        graphics.lineStyle(bondWidth, getBondColor(d, 2));
+        graphics.lineStyle(bondWidth, bondColor2, bondOpacity2);
         graphics.moveTo(xMid, yMid);
         graphics.lineTo(x2, y2);
       }
@@ -157,6 +161,14 @@ define(function(require) {
         return parseInt(atomsRenderer.getAtomColors(d.atom1)[2].substr(1), 16);
       } else if (num === 2) {
         return parseInt(atomsRenderer.getAtomColors(d.atom2)[2].substr(1), 16);
+      }
+    }
+
+    function getBondOpacity(d, num) {
+      if (num === 1) {
+        return atomsRenderer.getAtomOpacity(d.atom1);
+      } else if (num === 2) {
+        return atomsRenderer.getAtomOpacity(d.atom2);
       }
     }
 

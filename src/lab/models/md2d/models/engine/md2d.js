@@ -703,7 +703,7 @@ define(function (require, exports) {
           elements.epsilon = arrays.create(num, 0, arrayTypes.floatType);
           elements.sigma   = arrays.create(num, 0, arrayTypes.floatType);
           elements.radius  = arrays.create(num, 0, arrayTypes.floatType);
-          elements.color   = arrays.create(num, 0, arrayTypes.int32Type);
+          elements.color   = [];
 
           assignShortcutReferences.elements();
         },

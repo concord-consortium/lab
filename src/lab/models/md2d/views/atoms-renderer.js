@@ -6,6 +6,7 @@ define(function(require) {
   var PIXI      = require('pixi'),
       canvg     = require('canvg'),
       mustache  = require('mustache'),
+      d3rgba    = require('common/views/color').d3rgba,
       AtomsInteractions = require('models/md2d/views/atoms-interactions'),
       detectFontChange  = require('common/layout/detect-font-change'),
 
@@ -167,26 +168,50 @@ define(function(require) {
       } else if (renderMode.chargeShading) {
         return getChargeShadingColors(atom.charge);
       } else {
-        // Weird conversion, as we use color values literally imported from Classic MW. Perhaps we
-        // should do that in MML -> JSON converter.
-        colorStr = (props.color + Math.pow(2, 24)).toString(16);
-        colorStr = "000000".substr(0, 6 - colorStr.length) + colorStr;
-        color = d3.rgb("#" + colorStr);
+        if (typeof props.color === "number") {
+          // Weird conversion, as we use color values literally imported from Classic MW. Perhaps we
+          // should do that in MML -> JSON converter.
+          colorStr = (props.color + Math.pow(2, 24)).toString(16);
+          colorStr = "000000".substr(0, 6 - colorStr.length) + colorStr;
+          color = d3.rgb("#" + colorStr);
+        } else {
+          // Use custom helper, as d3.rgb cannot parse rgba strings.
+          color = d3rgba(props.color).rgb; // d3.rgb
+        }
         return [color.brighter(1).toString(), color.toString(), color.darker(1).toString()];
       }
+    }
+
+    function getAtomOpacity(i) {
+      var atom = modelAtoms[i],
+          elID = atom.element,
+          props = model.getElementProperties(elID);
+      if (!atom.visible) {
+        return 0;
+      }
+      if (atom.marked || atom.aminoAcid || renderMode.keShading || renderMode.chargeShading) {
+        // Special render modes, ignore atom's color and make sure it's visible.
+        return 1;
+      }
+      if (typeof props.color === "number") {
+        // Colors specified in Classic MW format don't support alpha channel.
+        return 1;
+      }
+      // Color defined in HTML format support alpha (e.g. rgba(...)).
+      return d3rgba(props.color).a;
     }
 
     function getAtomTexture(i, colors) {
       var elID = modelAtoms[i].element,
           radius = m2px(model.getElementProperties(elID).radius) * renderMode.atomRadiusScale,
-          visible = modelAtoms[i].visible,
           excitation = modelAtoms[i].excitation,
           label = getAtomLabel(i),
+          opacity = getAtomOpacity(i),
           key;
 
       colors = colors || getAtomColors(i);
-      key = visible ? (elID + "-" + radius + "-" + colors.join("") + "-" + label.text + "-" + excitation + "-" + label.fontSize) :
-                      (radius + "-invisible");
+      key = opacity > 0 ? (elID + "-" + radius + "-" + colors.join("") + "-" + label.text + "-" + excitation + "-" + label.fontSize) :
+                          (radius + "-invisible");
 
       if (elementTex[key] === undefined) {
         var canv = document.createElement("canvas"),
@@ -200,7 +225,7 @@ define(function(require) {
           lightCol: colors[0],
           medCol: colors[1],
           darkCol: colors[2],
-          opacity: Number(visible),
+          opacity: opacity,
           label: label.text,
           fontSize: label.fontSize,
           fontFamily: modelView.fontFamily,
@@ -344,7 +369,9 @@ define(function(require) {
         }
       },
 
-      getAtomColors: getAtomColors
+      getAtomColors: getAtomColors,
+
+      getAtomOpacity: getAtomOpacity
     };
 
     init();
