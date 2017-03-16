@@ -374,6 +374,7 @@ define(function() {
         defaultValue: 0
       },
       visible: {
+        // Note that it also accepts fractional values, e.g. 0.5 (=> atom will be semi-transparent).
         defaultValue: 1
       },
       pinned: {

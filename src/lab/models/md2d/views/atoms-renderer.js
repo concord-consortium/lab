@@ -186,19 +186,16 @@ define(function(require) {
       var atom = modelAtoms[i],
           elID = atom.element,
           props = model.getElementProperties(elID);
-      if (!atom.visible) {
-        return 0;
-      }
       if (atom.marked || atom.aminoAcid || renderMode.keShading || renderMode.chargeShading) {
-        // Special render modes, ignore atom's color and make sure it's visible.
-        return 1;
+        // Special render modes, ignore atom's color.
+        return atom.visible;
       }
       if (typeof props.color === "number") {
         // Colors specified in Classic MW format don't support alpha channel.
-        return 1;
+        return atom.visible;
       }
-      // Color defined in HTML format support alpha (e.g. rgba(...)).
-      return d3rgba(props.color).a;
+      // Color defined in HTML format can define alpha channel too (e.g. rgba(...)).
+      return d3rgba(props.color).a * atom.visible;
     }
 
     function getAtomTexture(i, colors) {
