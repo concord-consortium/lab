@@ -5,18 +5,24 @@
  */
 define(function () {
 
-  function parseColor(color) {
-    // d3.rgb is handy, however it cannor parse RGBA colors. Use it regexp to
-    // parse rgba if it's necessary. Note that alpha channel will be ignored!
-    var rgba = color.match(/rgba\(([0-9]+),([0-9]+),([0-9]+),([0-9]+)\)/i);
+  function d3rgba(color) {
+    // Use regexp to parse rgba if it's necessary.
+    var rgba = color.match(/rgba\((\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+(?:\.\d+)?)\)/i);
     if (rgba !== null) {
-      return d3.rgb(rgba[1], rgba[2], rgba[3]);
+      return {rgb: d3.rgb(rgba[1], rgba[2], rgba[3]), a: Number(rgba[4])};
     } else {
-      return d3.rgb(color);
+      return {rgb: d3.rgb(color), a: 1};
     }
   }
 
   return {
+    /**
+     * d3.rgb is handy, however it cannot parse RGBA colors.
+     * @param  {string} color Web-compatible color definition (e.g. "red", "#ff0012", "#000", rgba(10,10,10,0.5).
+     * @return {object} Object containing two properties: `rgb` - d3.rgb color and `a` - alpha value.
+     */
+    d3rgba: d3rgba,
+
     /**
      * Returns color contrasting to specified background color (black or white).
      * Note that if background color specifies alpha channel (e.g. rgba(0,0,0,0.5)),
@@ -25,7 +31,7 @@ define(function () {
      * @return {string} Contrasting color - "#000" or "#fff".
      */
     contrastingColor: function (bg) {
-      bg = parseColor(bg);
+      bg = d3rgba(bg).rgb;
       // Calculate luminance in YIQ color space.
       // This ensures that color will be visible on background.
       // This simple algorithm is described here:
@@ -35,11 +41,11 @@ define(function () {
 
     /**
      * Converts color string to number.
-     * @param  {string} bg Web-compatible color definition (e.g. "red", "#ff0012", "#000").
+     * @param  {string} colorString Web-compatible color definition (e.g. "red", "#ff0012", "#000").
      * @return {number} Numeric value, e.g. 0xff000 when argument is "#f00", "#ff0000" or "red".
      */
     color2number: function (colorString) {
-      return parseInt(parseColor(colorString).toString().substr(1), 16);
+      return parseInt(d3rgba(colorString).rgb.toString().substr(1), 16);
     }
   };
 });
