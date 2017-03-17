@@ -1,6 +1,6 @@
 {
   "name": "lab",
-  "version": "1.10.0",
+  "version": "1.13.0",
   "description": "HTML5-based scientific models, visualizations, graphing, and probeware",
   "keywords": [
     "molecule",
@@ -44,7 +44,7 @@
     "screenfull": "^3.0.0"
   },
   "devDependencies": {
-    "jsdom": ">=0.8.9 < 1.0",
+    "jsdom": "9.12.0",
     "sizzle": ">=1.1.0",
     "vows": "0.7.0",
     "node-inspector": "0.3.4",

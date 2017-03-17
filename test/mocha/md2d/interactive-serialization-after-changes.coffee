@@ -143,7 +143,7 @@ helpers.withIsolatedRequireJSAndViewsMocked (requirejs) ->
         validatedInteractive = controller.validateInteractive(interactive)
 
         # Change value of the slider.
-        $("#checkbox1").attr "checked", true
+        $("#checkbox1").prop "checked", true
         validatedInteractive.components[0].initialValue = true
 
         serializedInteractive = controller.serialize()

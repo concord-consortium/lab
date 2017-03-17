@@ -1,11 +1,11 @@
 var requirejs = require('requirejs'),
     path      = require('path'),
     document = global.document = require("jsdom").jsdom("<html><head></head><body></body></html>"),
-    window = global.window = document.createWindow();
+    window = global.window = document.defaultView;
 
 require(path.normalize(__dirname + "/../../../vendor/jquery/jquery.min.js"));
 require(path.normalize(__dirname + "/../../../vendor/d3/d3.min.js"));
-$  = window.jQuery;
+$ = window.jQuery;
 
 // Use Lab RequireJS configuration.
 requirejs.config({
@@ -20,6 +20,6 @@ requirejs.config({
 });
 
 // Export API for Node.js scripts.
-exports.Modeler   = requirejs('models/md2d/models/modeler');
+exports.Modeler  = requirejs('models/md2d/models/modeler');
 // Used by MML -> JSON conversion script.
 exports.parseMML = requirejs('cs!mml-converter/mml-converter');
