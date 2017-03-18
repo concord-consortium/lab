@@ -25,15 +25,6 @@
   //in the built file.
   exclude: ['coffee-script'],
 
-  // Paths to CommonJS modules.
-  packages: [
-    {
-        name: "arrays",
-        main: "index",
-        location: "../modules/arrays"
-    }
-  ],
-
   // The shim config allows us to configure dependencies for
   // scripts that do not call define() to register a module
   shim: {
@@ -70,6 +61,7 @@
 
   // Additional modules.
   paths: {
+    'arrays': '../modules/arrays/index',
     'lab-grapher': '../../vendor/lab-grapher/dist/lab-grapher',
     'iframe-phone': '../../vendor/iframe-phone/dist/iframe-phone',
     'text': '../../vendor/text/text',

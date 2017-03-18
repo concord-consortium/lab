@@ -13,6 +13,7 @@ requirejs.config({
   baseUrl: path.normalize(__dirname + '/../../lab'),
   nodeRequire: require,
   paths: {
+    'arrays': '../modules/arrays/index',
     'browserified-cheerio': '../../vendor/browserified-cheerio/browserified-cheerio',
     'cs' :'../../vendor/require-cs/cs',
     'iframe-phone': '../../vendor/iframe-phone/dist/iframe-phone'

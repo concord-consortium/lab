@@ -4,6 +4,7 @@ exports.labConfig = {
   nodeRequire: require,
 
   paths: {
+    'arrays': '../modules/arrays/index',
     // Define RequireJS plugin for CoffeScript loading.
     'cs': '../../vendor/require-cs/cs',
       // Plugin for loading plain text files (GLSL sources).
