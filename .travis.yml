@@ -1,27 +1,13 @@
+dist: trusty
+sudo: false
 # black list wip branches, however if pull requests are created for one then
 # travis should build it
 branches:
   except:
     - /^(wip|WIP)(-|_).*$/
-notifications:
-  irc:
-    channels:
-      - "irc.freenode.org#ccdevs"
-    on_success: change
-    on_failure: always
-  email:
-    recipients:
-      - stephen.bannasch@gmail.com
-      - sfentress@concord.org
-      - rpk@pobox.com
-      - janikpiotrek@gmail.com
-      - scytacki@concord.org
-    on_success: change
-    on_failure: always
 language: node_js
 node_js:
   - "6"
-before_install: sudo apt-get install libicu-dev
 before_script:
   - bundle install --without development
   - yarn
