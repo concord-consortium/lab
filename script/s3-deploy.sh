@@ -30,4 +30,4 @@ else
   export DEPLOY_DIR
   export DEPLOY_ARCHIVE
 fi
-disable_parallel_processing=true bundle exec s3_website push --site _site --headless --config_dir config
+disable_parallel_processing=true bundle exec s3_website push --site _site --config-dir config
