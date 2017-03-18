@@ -207,7 +207,7 @@ define(function(require) {
           key;
 
       colors = colors || getAtomColors(i);
-      key = opacity > 0 ? (elID + "-" + radius + "-" + colors.join("") + "-" + label.text + "-" + excitation + "-" + label.fontSize) :
+      key = opacity > 0 ? (elID + "-" + radius + "-" + colors.join("") + "-" + opacity + "-" + label.text + "-" + excitation + "-" + label.fontSize) :
                           (radius + "-invisible");
 
       if (elementTex[key] === undefined) {
