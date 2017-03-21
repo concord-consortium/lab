@@ -75,7 +75,6 @@ src: \
 
 .PHONY: clean
 clean:
-	ruby script/check-development-dependencies.rb
 	bundle install
 	mkdir -p public
 	$(MAKE) clean-public
