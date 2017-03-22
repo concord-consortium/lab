@@ -25,17 +25,9 @@
   //in the built file.
   exclude: ['coffee-script'],
 
-  // Paths to CommonJS modules.
-  packages: [
-    {
-        name: "arrays",
-        main: "index",
-        location: "../modules/arrays"
-    }
-  ],
-
   // Additional modules.
   paths: {
+    'arrays': '../modules/arrays/index',
     'browserified-cheerio': '../../vendor/browserified-cheerio/browserified-cheerio',
     'cs': '../../vendor/require-cs/cs',
     'coffee-script': '../../vendor/coffee-script/extras/coffee-script'

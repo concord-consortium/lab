@@ -75,7 +75,6 @@ src: \
 
 .PHONY: clean
 clean:
-	ruby script/check-development-dependencies.rb
 	bundle install
 	mkdir -p public
 	$(MAKE) clean-public
@@ -107,8 +106,7 @@ prepare-submodules:
 
 .PHONY: test
 test: test/layout.html \
-    node_modules/d3 \
-    node_modules/arrays \
+    node_modules \
 	public \
 	$(LAB_JS_FILES) \
 	$(JS_FILES:.js=.min.js)
@@ -178,15 +176,8 @@ submodule-update-tags:
 #
 # ------------------------------------------------
 
-node_modules: node_modules/d3 \
-	node_modules/arrays
-	npm install
-
-node_modules/d3:
-	npm install vendor/d3
-
-node_modules/arrays:
-	npm install src/modules/arrays
+node_modules:
+	yarn || npm install
 
 # ------------------------------------------------
 #

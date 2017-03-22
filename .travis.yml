@@ -1,30 +1,16 @@
+dist: trusty
+sudo: false
 # black list wip branches, however if pull requests are created for one then
 # travis should build it
 branches:
   except:
     - /^(wip|WIP)(-|_).*$/
-notifications:
-  irc:
-    channels:
-      - "irc.freenode.org#ccdevs"
-    on_success: change
-    on_failure: always
-  email:
-    recipients:
-      - stephen.bannasch@gmail.com
-      - sfentress@concord.org
-      - rpk@pobox.com
-      - janikpiotrek@gmail.com
-      - scytacki@concord.org
-    on_success: change
-    on_failure: always
-language: ruby
-rvm:
-  - "2.0.0"
-before_install: sudo apt-get install libicu-dev
-bundler_args: --without development
+language: node_js
+node_js:
+  - "6"
 before_script:
-  - travis_retry npm install
+  - bundle install --without development
+  - yarn
   - make prepare-submodules
   # see: http://about.travis-ci.org/docs/user/gui-and-headless-browsers/
   - export DISPLAY=:99.0

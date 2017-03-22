@@ -54,27 +54,29 @@ exports.getRequireJS = function() {
   // Forces reloading of the cached requirejs module
   delete require.cache[require.resolve('requirejs')];
 
-  var documentBackup,
+  var windowBackup,
       config,
       requirejs,
       markdown;
 
   // Workaround for new RequireJS version.
-  // When document is defined, RequireJS will assume
+  // When window / document is defined, RequireJS will assume
   // that it's executed in the browser environment.
   // So, if we setup document earlier (jsdom), hide
   // it for a while to fool RequireJS.
-  if (typeof document !== 'undefined') {
-    documentBackup = document;
-    window.document = document = undefined;
+  if (typeof window !== 'undefined') {
+    windowBackup = window;
+    window = undefined;
+    document = undefined;
   }
 
-  config    = require('../requirejs-config'),
+  config    = require('../requirejs-config');
   requirejs = require('requirejs');
   requirejs.config(config.labConfig);
 
-  if (typeof documentBackup !== 'undefined') {
-    window.document = document = documentBackup;
+  if (typeof windowBackup !== 'undefined') {
+    window = windowBackup;
+    document = window.document;
   }
 
   // Markdown library in node.js environment provides a different namespace

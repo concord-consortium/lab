@@ -114,7 +114,7 @@ expectedMD2DUnitValueInMKSUnits =
 
 
 describe "UnitsTranslation module", ->
-  requirejs ['md2d/models/units-translation'], (UnitsTranslation) ->
+  requirejs ['models/md2d/models/units-translation'], (UnitsTranslation) ->
     translation = new UnitsTranslation mks
 
     for unitType, value of expectedMD2DUnitValueInMKSUnits

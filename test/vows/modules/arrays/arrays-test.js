@@ -3,7 +3,7 @@ require("../../../env");
 var vows = require("vows"),
     assert = require("assert"),
 
-    arrays = require("arrays");
+    arrays = require("../../../../src/modules/arrays");
 
 var suite = vows.describe("arrays");
 
