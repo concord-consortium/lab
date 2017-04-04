@@ -171,7 +171,7 @@ define(function() {
 
     function getImagePath(imageDescription) {
       var imageMapping = model.properties.imageMapping;
-      var basePath;
+      var basePath = "";
 
       if (model.properties.imagePath) {
         basePath = labConfig.modelsRootUrl + model.properties.imagePath;
