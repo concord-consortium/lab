@@ -39,6 +39,7 @@
     "keShadingMinEnergy": 0,
     "keShadingMaxEnergy": 0.2,
     "chargeShading": true,
+    "chargeShadingStyle": "biology",
     "aminoAcidLabels": true,
     "useThreeLetterCode": true,
     "aminoAcidColorScheme": "hydrophobicity",

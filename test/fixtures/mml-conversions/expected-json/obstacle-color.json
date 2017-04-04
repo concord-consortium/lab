@@ -39,6 +39,7 @@
     "keShadingMinEnergy": 0,
     "keShadingMaxEnergy": 0.2,
     "chargeShading": false,
+    "chargeShadingStyle": "biology",
     "aminoAcidLabels": true,
     "aminoAcidLabels": true,
     "useThreeLetterCode": true,
