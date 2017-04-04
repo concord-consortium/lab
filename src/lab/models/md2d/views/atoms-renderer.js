@@ -56,32 +56,32 @@ define(function(require) {
       // Scales used for Charge Shading gradients.
       CHARGE_SHADING_STEPS = 25,
       NEUTRAL_COLORS = ["#FFFFFF", "#f2f2f2", "#A4A4A4"],
-      posLightColor = d3.scale.linear()
+      chargeBlueLightColor = d3.scale.linear()
         .interpolate(d3.interpolateRgb)
         .range(["#FFFFFF", "#ffefff"]),
-      posMedColor = d3.scale.linear()
+      chargeBlueMedColor = d3.scale.linear()
         .interpolate(d3.interpolateRgb)
         .range(["#f2f2f2", "#9090FF"]),
-      posDarkColor = d3.scale.linear()
+      chargeBlueDarkColor = d3.scale.linear()
         .interpolate(d3.interpolateRgb)
         .range(["#A4A4A4", "#3030FF"]),
-      negLightColor = d3.scale.linear()
+      chargeRedLightColor = d3.scale.linear()
         .interpolate(d3.interpolateRgb)
         .range(["#FFFFFF", "#dfffff"]),
-      negMedColor = d3.scale.linear()
+      chargeRedMedColor = d3.scale.linear()
         .interpolate(d3.interpolateRgb)
         .range(["#f2f2f2", "#FF8080"]),
-      negDarkColor = d3.scale.linear()
+      chargeRedDarkColor = d3.scale.linear()
         .interpolate(d3.interpolateRgb)
         .range(["#A4A4A4", "#FF2020"]),
 
-      getChargeShadingColors = function (charge) {
+      getChargeShadingColors = function (charge, style) {
         var chargeIndex = Math.round(Math.min(Math.abs(charge) / 3, 1) * CHARGE_SHADING_STEPS);
         chargeIndex /= CHARGE_SHADING_STEPS;
-        if (charge > 0) {
-          return [posLightColor(chargeIndex), posMedColor(chargeIndex), posDarkColor(chargeIndex)];
-        } else if (charge < 0) {
-          return [negLightColor(chargeIndex), negMedColor(chargeIndex), negDarkColor(chargeIndex)];
+        if (style === 'biology' && charge > 0 || style === 'chemistry' && charge < 0) {
+          return [chargeBlueLightColor(chargeIndex), chargeBlueMedColor(chargeIndex), chargeBlueDarkColor(chargeIndex)];
+        } else if (style === 'biology' && charge < 0 || style === 'chemistry' && charge > 0) {
+          return [chargeRedLightColor(chargeIndex), chargeRedMedColor(chargeIndex), chargeRedDarkColor(chargeIndex)];
         }
         return NEUTRAL_COLORS;
       },
@@ -90,8 +90,8 @@ define(function(require) {
         return h > 0 ?  ["#F0E6D1", "#E0A21B", "#AD7F1C"] : ["#dfffef", "#75a643", "#2a7216"];
       },
 
-      RENDERING_OPTIONS = ["keShading", "chargeShading", "atomNumbers", "showChargeSymbols", "atomRadiusScale",
-                           "aminoAcidColorScheme", "aminoAcidLabels", "useThreeLetterCode", "viewPortZoom"];
+      RENDERING_OPTIONS = ["keShading", "chargeShading", "chargeShadingStyle", "atomNumbers", "showChargeSymbols",
+                           "atomRadiusScale", "aminoAcidColorScheme", "aminoAcidLabels", "useThreeLetterCode", "viewPortZoom"];
 
   return function AtomsRenderer(modelView, model, pixiContainer, canvas) {
     // Public API object to be returned.
@@ -150,12 +150,12 @@ define(function(require) {
       if (atom.aminoAcid) {
         switch(renderMode.aminoAcidColorScheme) {
           case "charge":
-            return getChargeShadingColors(atom.charge);
+            return getChargeShadingColors(atom.charge, renderMode.chargeShadingStyle);
           case "hydrophobicity":
             return getHydrophobicityColors(atom.hydrophobicity);
           case "chargeAndHydro":
             if (atom.charge !== 0) {
-              return getChargeShadingColors(atom.charge);
+              return getChargeShadingColors(atom.charge, renderMode.chargeShadingStyle);
             }
             return getHydrophobicityColors(atom.hydrophobicity);
           // case "none":
@@ -166,7 +166,7 @@ define(function(require) {
       if (renderMode.keShading) {
         return KE_SHADING_MIN_COLORS;
       } else if (renderMode.chargeShading) {
-        return getChargeShadingColors(atom.charge);
+        return getChargeShadingColors(atom.charge, renderMode.chargeShadingStyle);
       } else {
         if (typeof props.color === "number") {
           // Weird conversion, as we use color values literally imported from Classic MW. Perhaps we
