@@ -16,7 +16,7 @@ define(function(require) {
         DISULPHIDE_BOND: 109
       },
 
-      RENDERING_OPTIONS = ["keShading", "chargeShading", "aminoAcidColorScheme"];
+      RENDERING_OPTIONS = ["keShading", "chargeShading", "chargeShadingStyle", "aminoAcidColorScheme"];
 
   return function BondsRenderer(modelView, model, pixiContainer, atomsRenderer) {
     // Public API object to be returned.

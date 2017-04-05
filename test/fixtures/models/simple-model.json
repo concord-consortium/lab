@@ -75,6 +75,7 @@
   "viewOptions": {
     "keShading": false,
     "chargeShading": false,
+    "chargeShadingStyle": "biology",
     "showVDWLines": false,
     "VDWLinesCutoff": "medium",
     "showClock": true,

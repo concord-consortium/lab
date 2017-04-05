@@ -13,6 +13,7 @@
     "showClock": true,
     "keShading": false,
     "chargeShading": false,
+    "chargeShadingStyle": "biology",
     "showVDWLines": true,
     "VDWLinesCutoff": "medium",
     "showVelocityVectors": false,

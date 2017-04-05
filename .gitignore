@@ -18,5 +18,6 @@ Thumbs.db
 
 # editor-related files
 *.sublime-workspace
+.idea
 .project
 /*.log

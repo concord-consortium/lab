@@ -211,6 +211,11 @@ define(function() {
         defaultValue: false,
         storeInTickHistory: true
       },
+      chargeShadingStyle: {
+        // "biology" (+ blue, - red) or "chemistry" (+ red, - blue).
+        defaultValue: "biology",
+        storeInTickHistory: true
+      },
       aminoAcidColorScheme: {
         defaultValue: "hydrophobicity"
       },
