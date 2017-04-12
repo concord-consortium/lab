@@ -314,10 +314,10 @@ public/lab/vendor/jquery-context-menu:
 public/lab/vendor/jquery/jquery.min.js: \
 	vendor/jquery \
 	public/lab/vendor/jquery
-	cp vendor/jquery/jquery.js public/lab/vendor/jquery
-	cp vendor/jquery/jquery.min.js public/lab/vendor/jquery
-	cp vendor/jquery/jquery.min.map public/lab/vendor/jquery
-	cp vendor/jquery/MIT-LICENSE.txt public/lab/vendor/jquery
+	cp vendor/jquery/dist/jquery.js public/lab/vendor/jquery
+	cp vendor/jquery/dist/jquery.min.js public/lab/vendor/jquery
+	cp vendor/jquery/dist/jquery.min.map public/lab/vendor/jquery
+	cp vendor/jquery/LICENSE.txt public/lab/vendor/jquery
 
 public/lab/vendor/jquery:
 	mkdir -p public/lab/vendor/jquery
