@@ -3,8 +3,7 @@ var requirejs = require('requirejs'),
     document = global.document = require("jsdom").jsdom("<html><head></head><body></body></html>"),
     window = global.window = document.createWindow();
 
-require(path.normalize(__dirname + "/../../../vendor/jquery/jquery.min.js"));
-$  = window.jQuery;
+$ = require(path.normalize(__dirname + "/../../../vendor/jquery/dist/jquery.min.js"));
 
 // Use Lab RequireJS configuration.
 requirejs.config({

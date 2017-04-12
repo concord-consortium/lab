@@ -19,8 +19,7 @@ Sizzle = require('sizzle');
 
 // Set up any vendored libraries that are normally included via script tag in the modules under test:
 require("../public/lab/vendor/d3/d3.min.js");
-require("../public/lab/vendor/jquery/jquery.js");
-$ = jQuery = window.jQuery;
+$ = jQuery = window.jQuery = require("../public/lab/vendor/jquery/jquery.js");
 // Setup libraries which depend on jQuery.
 require("../public/lab/vendor/jquery-ui/jquery-ui.js");
 require("../public/lab/vendor/jquery-context-menu/jquery.contextMenu.js");
