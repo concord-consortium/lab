@@ -233,7 +233,7 @@
     "it": {
     "translation": {
       "banner": {
-        "about": "Di",
+        "about": "Chi siamo",
         "about_tooltip": "Istruzioni",
         "share": "Condividere",
         "share_tooltip": "Condividi tramite e-mail, IM o incorporato nel sito web",
@@ -258,14 +258,14 @@
         "text_analyze_data_tooltip": "Invia dati dall'esperimento a CODAP"
       },
       "dialog": {
-        "close_tooltip": "Vicino"
+        "close_tooltip": "Chiudere"
       },
       "about_dialog": {
         "title": "Di: __interactive_title__"
       },
       "share_dialog": {
         "title": "Condividere: __interactive_title__",
-        "link": "collegamento",
+        "link": "link",
         "paste_email_im": "Incolla questo __link__ in posta elettronica o IM.",
         "paste_html": "Incolla HTML per incorporare in sito o blog.",
         "select_size": "Seleziona la dimensione:",
@@ -288,7 +288,7 @@
       "md2d": {
         "heatbath_icon_tooltip": "Bagno termico attivo",
         "ke_icon_tooltip": "Gradiente di energia cinetica",
-        "invalid_object_position_alert": "Non puoi abbandonare l'oggetto.",
+        "invalid_object_position_alert": "Non puoi posizionare l'oggetto in quel luogo.",
         "aminoacid_menu": {
           "hydrophobic": "Idrofobo",
           "hydrophilic": "Idrofilo",
@@ -314,7 +314,7 @@
           "histidine": "Istidina"
         },
         "mutations_menu": {
-          "substitution_mutation": "Sostituzione mutazione",
+          "substitution_mutation": "Mutazione di sostituzione",
           "insertion_mutation": "Mutazione di inserzione",
           "deletion_mutation": "Mutazione deletione",
           "insert": "Inserire"
@@ -341,14 +341,14 @@
           "connection_in_progress": "Collegamento ai sensori. Se viene visualizzato un messaggio sensorconnector.concord.org, si prega di accettarlo.",
           "connection_failed": "Connessione fallita. __retry_link__",
           "connection_failed_retry_link_text": "Riprova",
-          "connection_failed_alert": "Il connettore del consorzio Concord Concord non è installato o non è in esecuzione. Per favore __click_here_link__ per istruzioni sull'utilizzo del connettore del sensore.",
+          "connection_failed_alert": "Il Concord Consortium Sensor Connector non è installato o non è in esecuzione. Per favore __click_here_link__ per istruzioni sull'utilizzo del connettore del sensore.",
           "connection_failed_labquest2_alert": "Impossibile connettersi a LabQuest2. Assicurarsi che l'indirizzo sia corretto e che il LabQuest2 possa essere raggiunto da questo computer",
           "tare_labquest2_alert": "Il LabQuest2 deve raccogliere i dati dal vivo per zero. Impostare una nuova esecuzione su LabQuest2 oppure fare clic sull'icona del contatore in alto a sinistra.",
           "click_here": "clicca qui",
           "connected": "Collegato.",
           "connected_start_labquest2": "Collegato. Avviare l'inizio del tuo LabQuest2 per iniziare.",
           "connected_start_sensorconnector": "Si prega di fermare __controlling_client__ raccoglitore di dati per raccogliere i dati qui.",
-          "connected_start_sensorconnector_noname": "Fermati l'altro collezionista attivo per raccogliere i dati qui.",
+          "connected_start_sensorconnector_noname": "Ferma l'altro collezionista attivo per raccogliere i dati qui.",
           "starting_data_collection": "Inizia la raccolta dati ...",
           "error_starting_data_collection": "Errore durante la raccolta dati.",
           "error_starting_data_collection_alert": "Impossibile avviare la raccolta dati. Assicurarsi che sia abilitato (avvio remoto)",
@@ -356,7 +356,7 @@
           "collecting_data_stop_labquest2": "Raccolta dati. Arrestare la sosta sul tuo LabQuest2 per terminare.",
           "collecting_data_stop_sensorconnector": "Raccolta dati.",
           "no_data": "Nessun dato disponibile.",
-          "no_data_alert": "TheIl connettore del sensore non sembra riportare i dati per il dispositivo collegato",
+          "no_data_alert": "Il connettore del sensore non sembra riportare i dati per il dispositivo collegato",
           "no_data_labquest2_alert": "Il LabQuest non sembra riportare i dati per il dispositivo collegato",
           "canceling_data_collection": "Annullamento della raccolta dati ...",
           "error_canceling_data_collection": "Errore durante l'annullamento della raccolta dati.",
@@ -366,7 +366,7 @@
           "error_stopping_data_collection_alert": "Impossibile arrestare la raccolta dati. Assicurarsi che sia abilitato (avvio remoto)",
           "data_collection_stopped": "La raccolta dati è stata interrotta.",
           "data_collection_complete": "La raccolta dei dati è completa.",
-          "disconnected": "Disconnected.",
+          "disconnected": "Scollegato.",
           "java_applet_error": "Sembra che gli applet Java non possano essere eseguiti nel tuo browser. Se è in grado di risolvere questo problema, ricaricare la pagina per utilizzare il sensore",
           "java_applet_not_loading": "L'applet del sensore sembra non essere caricato. Se è in grado di risolvere questo problema, ricaricare la pagina per utilizzare il sensore",
           "unexpected_error": "Si è verificato un errore imprevisto quando si connette al sensore.",
@@ -433,7 +433,7 @@
           "hand_dynamometer": "Dynamometer della mano",
           "heart_rate": "Frequenza cardiaca",
           "magnetic_field": "Campo magnetico",
-          "rotary_motion": "Rotary Motion",
+          "rotary_motion": "Moto rotativo",
           "linear_position_sensor": "Sensore di posizione lineare",
           "sound_level": "Livello audio",
           "spectrophotometer": "spettrofotometro",
