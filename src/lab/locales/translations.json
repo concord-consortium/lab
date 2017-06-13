@@ -256,7 +256,7 @@
         "text_new_run": "Νέα εκτέλεση",
         "text_new_run_tooltip": "Ρύθμιση μιας νέας εκτέλεσης πειράματος",
         "text_analyze_data": "Ανάλυση δεδομένων",
-        "text_analyze_data_tooltip": "Αποστολή δεδομένων από το πείραμσ στο CODAP"
+        "text_analyze_data_tooltip": "Αποστολή δεδομένων από το πείραμα στο CODAP"
       },
       "dialog": {
         "close_tooltip": "Κλείσιμο"
@@ -267,7 +267,7 @@
       "share_dialog": {
         "title": "Share: __interactive_title__",
         "link": "link",
-        "paste_email_im": "Επικόλληση αυτού του __link__ σε email ή IM.",
+        "paste_email_im": "Επικόλληση αυτού του __link__ σε email ή μήνυμα.",
         "paste_html": "Επικόλληση HTML για ενσωμάτωση σε ιστότοπο ή ιστολόγιο.",
         "select_size": "Επιλογή μεγέθους:",
         "size_larger": "__val__% μεγαλύτερο",
