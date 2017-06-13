@@ -322,7 +322,7 @@
         }
       },
       "sensor": {
-        "select_sensor": "Επιλογή αισθητήρα,
+        "select_sensor": "Επιλογή αισθητήρα",
         "select_sensor_type": "Επιλογή τύπου αισθητήρα...",
         "reading": "Ανάγνωση:",
         "zero": "Μηδέν",
