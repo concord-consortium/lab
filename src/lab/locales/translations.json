@@ -342,7 +342,7 @@
           "connection_in_progress": "Γίνετε σύνδεση στους αισθητήρες σας. Αν εμφανιστεί ένα μήνυμα για το sensorconnector.concord.org, παρακαλώ αποδεχτείτε το.",
           "connection_failed": "Η σύνδεση απέτυχε. __retry_link__",
           "connection_failed_retry_link_text": "Προσπαθήστε ξανά",
-          "connection_failed_alert": "Το Concord Consortium Sensor Connector δεν είναι εγκατεστημένο ή δεν εκτελείται. Παρακαλώ πατήστε __click_here_link__ για οδηγίες χρήσης του Sensor Connector.",
+          "connection_failed_alert": "Το Concord Consortium Sensor Connector δεν είναι εγκατεστημένο ή δεν εκτελείται. Παρακαλώ __click_here_link__ για οδηγίες χρήσης του Sensor Connector.",
           "connection_failed_labquest2_alert": "Δεν ήταν δυνατό να γίνει σύνδεση στο LabQuest2. Παρακαλώ σιγουρευτείτε πως η διεύθυνση είναι σωστή και πως το LabQuest2 μπορεί να προσπελαστεί από αυτόν τον υπολογιστή",
           "tare_labquest2_alert": "Το LabQuest2 χρειάζεται να συλλέγει ζωντανά δεδομένα για να μηδενιστεί. Είτε ρυθμίστε μια νέα εκτέλεση στο LabQuest2, ή κάντε κλικ στο εικονίδιο μετρητή πάνω αριστερά.",
           "click_here": "πατήστε εδώ",
