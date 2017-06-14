@@ -76,8 +76,8 @@
           "glutamine": "Glutamine",
           "serine": "Serine",
           "threonine": "Threonine",
-          "asparticacid": "Asparticacid",
-          "glutamicacid": "Glutamicacid",
+          "asparticacid": "Aspartic acid",
+          "glutamicacid": "Glutamic acid",
           "lysine": "Lysine",
           "arginine": "Arginine",
           "histidine": "Histidine"
@@ -230,7 +230,240 @@
       }
     }
   },
-    "it": {
+  
+  "el": {
+    "translation": {
+      "banner": {
+        "about": "Πληροφορίες",
+        "about_tooltip": "Οδηγίες",
+        "share": "Κοινοποίηση",
+        "share_tooltip": "Κοινοποίηση με e-mail, μήνυμα ή ενσωμάτωση σε ιστότοπο",
+        "lang_tooltip": "Επιλογή γλώσσας",
+        "reload_tooltip": "Επαναφόρτωση διαδραστικού",
+        "help_tooltip": "Εμφάνιση συμβουλών",
+        "credits_tooltip": "Μάθε περισσότερα για το Concord Consortium",
+        "fullscreen_tooltip": "Εναλλαγή πλήρους οθόνης",
+        "video_play_pause_tooltip": "Έναρξη / παύση της προσομοίωσης",
+        "video_reset_tooltip": "Επαναφορά της προσομοίωσης",
+        "video_step_back_tooltip": "Βήμα πίσω",
+        "video_step_forward_tooltip": "Βήμα εμπρός",
+        "text_start": "Εκτέλεση",
+        "text_start_tooltip": "Έναρξη της προσομοίωσης ή συλλογή δεδομένων",
+        "text_stop": "Σταμάτημα",
+        "text_stop_tooltip": "Σταμάτημα της προσομοίωσης ή συλλογή δεδομένων",
+        "text_reset": "Επαναφορά",
+        "text_reset_tooltip": "Επαναφορά της προσομοίωσης ή συλλογή δεδομένων",
+        "text_new_run": "Νέα εκτέλεση",
+        "text_new_run_tooltip": "Ρύθμιση μιας νέας εκτέλεσης πειράματος",
+        "text_analyze_data": "Ανάλυση δεδομένων",
+        "text_analyze_data_tooltip": "Αποστολή δεδομένων από το πείραμα στο CODAP"
+      },
+      "dialog": {
+        "close_tooltip": "Κλείσιμο"
+      },
+      "about_dialog": {
+        "title": "Πληροφορίες: __interactive_title__"
+      },
+      "share_dialog": {
+        "title": "Share: __interactive_title__",
+        "link": "link",
+        "paste_email_im": "Επικόλληση αυτού του __link__ σε email ή μήνυμα.",
+        "paste_html": "Επικόλληση HTML για ενσωμάτωση σε ιστότοπο ή ιστολόγιο.",
+        "select_size": "Επιλογή μεγέθους:",
+        "size_larger": "__val__% μεγαλύτερο",
+        "size_actual": "πραγματικό",
+        "size_smaller": "__val__% μικρότερο"
+      },
+      "credits_dialog": {
+        "title": "Παράγοντες: __interactive_title__",
+        "credits_text": "Αυτό το διαδραστικό δημιουργήθηκε από __CC_link__ χρησιμοποιώντας το λογισμικό __Next_Gen_MW_link__, με χρηματοδότηση μέσω μιας δωρεάς από __Google_link__.",
+        "shareable_ver": "κοινοποιήσιμη έκδοση",
+        "find_shareable": "Εύρεση μιας __shareable_ver_link__ αυτού του διαδραστικού μαζί με δεκάδες άλλων διαδραστικών ανοικτού κώδικα για επιστήμη, μαθηματικά και μηχανική στο __concord_σrg_link__."
+      },
+      "copyright": {
+        "copyright": "Πνευματικά δικαιώματα",
+        "all_rights_reserved": "Όλα τα δικαιώματα κατοχυρωμένα.",
+        "license": "Το λογισμικό είναι αδειοδοτημένο κάτω από άδεια __MIT_link__.",
+        "attribution": "Παρακαλώ αναφέρετε το Concord Consortium και το URL __concord_org_link__."
+      },
+      "md2d": {
+        "heatbath_icon_tooltip": "Λουτρό θερμότητας ενεργό",
+        "ke_icon_tooltip": "Κλίση κινητικής ενέργειας",
+        "invalid_object_position_alert": "Δεν μπορείτε να ρίψετε το αντικείμενο εκεί.",
+        "aminoacid_menu": {
+          "hydrophobic": "Υδρόφοβο",
+          "hydrophilic": "Υδρόφιλο",
+          "glycine": "Γλυκίνη",
+          "alanine": "Αλανίνη",
+          "valine": "Βαλίνη",
+          "leucine": "Λευκίνη",
+          "isoleucine": "Ισολευκίνη",
+          "phenylalanine": "Φαινυλαλανίνη",
+          "proline": "Προλίνη",
+          "tryptophan": "Τρυπτοφάνη",
+          "methionine": "Μεθειονίνη",
+          "cysteine": "Κυστεΐνη",
+          "tyrosine": "Τυροσίνη",
+          "asparagine": "Ασπαραγίνη",
+          "glutamine": "Γλουταμίνη",
+          "serine": "Σερινη",
+          "threonine": "Θρεονίνη",
+          "asparticacid": "Ασπαρτικό οξύ",
+          "glutamicacid": "Γλουταμινικό οξύ",
+          "lysine": "Λυσίνη",
+          "arginine": "Αργινίνη",
+          "histidine": "Ιστιδίνη"
+        },
+        "mutations_menu": {
+          "substitution_mutation": "Μετάλλαξη αντικατάστασης",
+          "insertion_mutation": "Μετάλλαξη εισαγωγής",
+          "deletion_mutation": "Μετάλλαξη διαγραφής",
+          "insert": "Εισαγωγή"
+        }
+      },
+      "sensor": {
+        "select_sensor": "Επιλογή αισθητήρα",
+        "select_sensor_type": "Επιλογή τύπου αισθητήρα...",
+        "reading": "Ανάγνωση:",
+        "zero": "Μηδέν",
+        "zeroing": "Μηδενισμός...",
+        "loading_sensor": "Φόρτωμα αισθητήρα...",
+        "choose_sensor_title": "Επιλογή αισθητήρα:",
+        "connect": "Σύνδεση",
+        "address_labquest2": "διεύθυνση του LabQuest2",
+        "messages": {
+          "ready": "Έτοιμο για συλλογή.",
+          "ready_nocontrol": "Παρακαλώ σταματήστε το συλλέκτη δεδομένων __controlling_client__ για να συλλέξετε δεδομένα εδώ.",
+          "ready_nocontrol_noname": "Παρακαλώ σταματήστε τον άλλο ενεργό συλλέκτη δεδομένων για να συλλέξετε δεδομένα εδώ.",
+          "no_sensors": "Δε βρέθηκαν αισθητήρες.",
+          "no_devices": "Δεν υπάρχουν συνδεδεμένες συσκευές.",
+          "not_connected": "Μη συνδεδεμένο.",
+          "connecting": "Σύνδεση...",
+          "connection_in_progress": "Γίνετε σύνδεση στους αισθητήρες σας. Αν εμφανιστεί ένα μήνυμα για το sensorconnector.concord.org, παρακαλώ αποδεχτείτε το.",
+          "connection_failed": "Η σύνδεση απέτυχε. __retry_link__",
+          "connection_failed_retry_link_text": "Προσπαθήστε ξανά",
+          "connection_failed_alert": "Το Concord Consortium Sensor Connector δεν είναι εγκατεστημένο ή δεν εκτελείται. Παρακαλώ __click_here_link__ για οδηγίες χρήσης του Sensor Connector.",
+          "connection_failed_labquest2_alert": "Δεν ήταν δυνατό να γίνει σύνδεση στο LabQuest2. Παρακαλώ σιγουρευτείτε πως η διεύθυνση είναι σωστή και πως το LabQuest2 μπορεί να προσπελαστεί από αυτόν τον υπολογιστή",
+          "tare_labquest2_alert": "Το LabQuest2 χρειάζεται να συλλέγει ζωντανά δεδομένα για να μηδενιστεί. Είτε ρυθμίστε μια νέα εκτέλεση στο LabQuest2, ή κάντε κλικ στο εικονίδιο μετρητή πάνω αριστερά.",
+          "click_here": "πατήστε εδώ",
+          "connected": "Συνδεδεμένο.",
+          "connected_start_labquest2": "Συνδεδεμένο. Πατήστε έναρξη στο LabQuest2 για έναρξη.",
+          "connected_start_sensorconnector": "Παρακαλώ σταματήστε το συλλέκτη δεδομένων __controlling_client__ για να συλλέξετε δεδομένα εδώ.",
+          "connected_start_sensorconnector_noname": "Παρακαλώ σταματήστε τον άλλο ενεργό συλλέκτη δεδομένων για να συλλέξετε δεδομένα εδώ.",
+          "starting_data_collection": "Έναρξη συλλογής δεδομένων...",
+          "error_starting_data_collection": "Σφάλμα έναρξης συλλογής δεδομένων.",
+          "error_starting_data_collection_alert": "Δεν ήταν δυνατή η έναρξη συλλογής δεδομένων. Σιγουρευτείτε πως η (απομακρυσμένη έναρξη) είναι ενεργοποιημένη",
+          "collecting_data": "Συλλογή δεδομένων.",
+          "collecting_data_stop_labquest2": "Συλλογή δεδομένων. Πατήστε σταμάτημα στο LabQuest2 για τερματισμό.",
+          "collecting_data_stop_sensorconnector": "Συλλογή δεδομένων.",
+          "no_data": "Δεν υπάρχουν διαθέσιμα δεδομένα.",
+          "no_data_alert": "Το Sensor Connector δε φαίνεται να αναφέρει δεδομένα για τη συνδεδεμένη συσκευή",
+          "no_data_labquest2_alert": "Το LabQuest δε φαίνεται να αναφέρει δεδομένα για τη συνδεδεμένη συσκευή",
+          "canceling_data_collection": "Ακύρωση συλλογής δεδομένων...",
+          "error_canceling_data_collection": "Σφάλμα ακύρωσης συλλογής δεδομένων.",
+          "error_canceling_data_collection_alert": "Δεν ήταν δυνατή η ακύρωση συλλογής δεδομένων. Σιγουρευτείτε πως η (απομακρυσμένη εκκίνηση) είναι ενεργοποιημένη",
+          "stopping_data_collection": "Τερματισμός συλλογής δεδομένων...",
+          "error_stopping_data_collection": "Σφάλμα τερματισμού συλλογής δεδομένων.",
+          "error_stopping_data_collection_alert": "Δεν ήταν δυνατός ο τερματισμός συλλογής δεδομένων. Σιγουτευτείτε πως η (απομακρυσμένη συλλογή δεδομένων) είναι ενεργοποιημένη",
+          "data_collection_stopped": "Η συλλογή δεδομένων τερματίστηκε.",
+          "data_collection_complete": "Η συλλογή δεδομένων ολοκληρώθηκε.",
+          "disconnected": "Αποσυνδεδεμένο.",
+          "java_applet_error": "Φαίνεται πως δεν επιτρέπεται εκτέλεση Java applet στο φυλλομετρητή σας. Αν μπορείτε να το διορθώσετε, επαναφορτώστε τη σελίδα για να χρησιμοποιήσετε τον αισθητήρα",
+          "java_applet_not_loading": "Το applet του αισθητήρα φαίνεται να μη φορτώνεται. Αν μπορείτε να το διορθώσετε, επαναφορτώστε τη σελίδα για να χρησιμοποιήσετε τον αισθητήρα",
+          "unexpected_error": "Υπήρξε ένα μη αναμενόμενο σφάλμα κατά τη σύνδεση στον αισθητήρα.",
+          "sensor_not_attached": "Το __sensor_name__ does δεν φαίνεται να είναι συνδεδεμένο. Δοκιμάστε να το επανασυνδέσετε, και έπειτα πατήστε \"$t(sensor.messages.try_again)\".",
+          "sensor_or_device_unplugged": "Το __sensor_or_device_name__ αποσυνδέθηκε. Δοκιμάστε να το επανασυνδέσετε, και έπειτα πατήστε \"$t(sensor.messages.try_again)\".",
+          "try_again": "Προσπαθήστε ξανά",
+          "cancel": "Άκυρο"
+        },
+        "measurements": {
+          "sensor_reading": "Μέτρηση αισθητήρα",
+          "time": "Χρόνος",
+          "distance": "Απόσταση",
+          "acceleration": "Επιτάχυνση",
+          "altitude": "Υψόμετρο",
+          "angle": "Γωνία",
+          "CO2": "CO₂",
+          "CO2_concentration": "Συγκέντρωση CO₂",
+          "charge": "Φορτίο",
+          "conductivity": "Αγωγιμότητα",
+          "current": "Ρεύμα",
+          "dissolved_oxygen": "DO (διαλυμένο Οξυγόνο)",
+          "flow_rate": "Ρυθμός ροής",
+          "fluorescence_405_nm": "Φθορισμός 405 nm",
+          "fluorescence_500_nm": "Φθορισμός 500 nm",
+          "force": "Δύναμη",
+          "intensity": "Ένταση",
+          "light_level": "Επίπεδο φωτός",
+          "light_intensity": "Ένταση φωτός",
+          "magnetic_field": "Μαγνητικό πεδίο",
+          "position": "Θέση",
+          "potential": "Δυναμικό",
+          "pressure": "Πίεση",
+          "signal": "Σήμα",
+          "sound_level": "Επίπεδο ήχου",
+          "speed": "Ταχύτητα",
+          "temperature": "Θερμοκρασία",
+          "transmittance": "Μεταδοτικότητα",
+          "turbidity": "Θολότητα",
+          "UV_intensity": "Ένταση UV",
+          "velocity": "Διανυσματική ταχύτητα",
+          "volume": "Volume",
+          "pH": "pH",
+          "acidity": "Οξύτητα",
+          "O2_concentration": "Συγκέντρωση O₂"
+        },
+        "names": {
+          "sensor": "αισθητήρας",
+          "no_sensor": "(χωρίς αισθητήρα)",
+          "light": "Φώς",
+          "motion": "Κίνηση",
+          "accelerometer": "Επιταχυνσιόμετρο",
+          "dissolved_oxygen": "Διαλυμένο Οξυγόνο",
+          "pressure": "Πίεση",
+          "charge_sensor": "Αισθητήρας φορτίου",
+          "voltage": "Τάση",
+          "pH": "pH",
+          "CO2_gas": "Αέριο CO₂",
+          "colorimeter": "Χρωματόμετρο",
+          "conductivity": "Αγωγιμότητα",
+          "current": "Ρεύμα",
+          "temperature": "Θερμοκρασία",
+          "force": "Δύναμη",
+          "anemometer": "Ανεμόμετρο",
+          "hand_dynamometer": "Δυναμόμετρο χειρός",
+          "heart_rate": "Καρδιακός ρυθμός",
+          "magnetic_field": "Μαγνητικό πεδίο",
+          "rotary_motion": "Περιστροφική κίνηση",
+          "linear_position_sensor": "Αισθητήρας γραμικής θέσης",
+          "sound_level": "Επίπεδο ήχου",
+          "spectrophotometer": "Φασματοφωτόμετρο",
+          "spirometer": "Σπιρόμετρο",
+          "turbidity": "Θολότητα",
+          "UV_sensor": "Αισθητήρας UV",
+          "drop_counter": "Μετρητής πτώσης",
+          "altitude": "Υψόμετρο",
+          "goMotion": "GoMotion",
+          "goTemp": "GoIO αισθητήρας θερμοκρασίας",
+          "goLinkTemperature": "GoIO αισθητήρας θερμοκρασίας",
+          "goLinkLight": "GoIO αισθητήρας φωτός",
+          "goLinkForce": "GoIO αισθητήρας δύναμης",
+          "goLinkPH": "GoIO αισθητήρας pH",
+          "goLinkCO2": "GoIO αισθητήρας CO₂",
+          "goLinkO2": "GoIO αισθητήρας O₂",
+          "labQuestMotion": "LabQuest αισθητήρας κίνησης",
+          "labQuestTemperature": "LabQuest αισθητήρας θερμοκρασίας",
+          "labQuestLight": "LabQuest αισθητήρας φωτός",
+          "labQuestForce": "LabQuest αισθητήρας δύναμης",
+          "labQuestPH": "LabQuest αισθητήρας pH",
+          "labQuestCO2": "LabQuest αισθητήρας CO₂",
+          "labQuestO2": "LabQuest αισθητήρας O₂"
+        }
+      }
+    }
+  },
+  
+  "it": {
     "translation": {
       "banner": {
         "about": "Chi siamo",
@@ -461,6 +694,7 @@
       }
     }
   },
+  
   "pl": {
     "translation": {
       "banner": {
@@ -681,6 +915,7 @@
       }
     }
   },
+  
   "nb-NO": {
     "translation": {
       "banner": {
@@ -901,6 +1136,7 @@
       }
     }
   },
+  
   "nn-NO": {
     "translation": {
       "banner": {
@@ -1121,6 +1357,7 @@
       }
     }
   },
+  
   "pt-BR": {
     "translation": {
       "banner": {
@@ -1351,6 +1588,7 @@
       }
     }
   },
+  
   "cs-CZ": {
     "translation": {
       "banner": {
@@ -1581,6 +1819,7 @@
       }
     }
   },
+  
   "es": {
     "translation": {
       "banner": {
@@ -1634,6 +1873,7 @@
       }
     }
   },
+  
   "ru": {
     "translation": {
       "banner": {
@@ -1865,4 +2105,5 @@
       }
     }
   }
+
 }
