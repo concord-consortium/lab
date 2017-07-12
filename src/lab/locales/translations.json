@@ -265,8 +265,8 @@
         "title": "Πληροφορίες: __interactive_title__"
       },
       "share_dialog": {
-        "title": "Share: __interactive_title__",
-        "link": "link",
+        "title": "Κοινοποίηση: __interactive_title__",
+        "link": "συνδέσμου",
         "paste_email_im": "Επικόλληση αυτού του __link__ σε email ή μήνυμα.",
         "paste_html": "Επικόλληση HTML για ενσωμάτωση σε ιστότοπο ή ιστολόγιο.",
         "select_size": "Επιλογή μεγέθους:",
@@ -289,7 +289,7 @@
       "md2d": {
         "heatbath_icon_tooltip": "Λουτρό θερμότητας ενεργό",
         "ke_icon_tooltip": "Κλίση κινητικής ενέργειας",
-        "invalid_object_position_alert": "Δεν μπορείτε να ρίψετε το αντικείμενο εκεί.",
+        "invalid_object_position_alert": "Δεν μπορείτε να ρίξετε το αντικείμενο εκεί.",
         "aminoacid_menu": {
           "hydrophobic": "Υδρόφοβο",
           "hydrophilic": "Υδρόφιλο",
@@ -306,7 +306,7 @@
           "tyrosine": "Τυροσίνη",
           "asparagine": "Ασπαραγίνη",
           "glutamine": "Γλουταμίνη",
-          "serine": "Σερινη",
+          "serine": "Σερίνη",
           "threonine": "Θρεονίνη",
           "asparticacid": "Ασπαρτικό οξύ",
           "glutamicacid": "Γλουταμινικό οξύ",
@@ -316,8 +316,8 @@
         },
         "mutations_menu": {
           "substitution_mutation": "Μετάλλαξη αντικατάστασης",
-          "insertion_mutation": "Μετάλλαξη εισαγωγής",
-          "deletion_mutation": "Μετάλλαξη διαγραφής",
+          "insertion_mutation": "Μετάλλαξη προσθήκης",
+          "deletion_mutation": "Μετάλλαξη αφαίρεσης",
           "insert": "Εισαγωγή"
         }
       },
