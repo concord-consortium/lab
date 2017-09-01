@@ -51,7 +51,7 @@ define(function (require) {
     this._scriptingAPI = null;
     this._interactivesController = interactivesController;
     // Font used by time display
-    this._fontSpec = "bold 2em " + interactivesController.fontFamily;
+    this._fontSpec = "2em " + interactivesController.fontFamily;
 
     detectFontChange({
       font: interactivesController.fontFamily,
