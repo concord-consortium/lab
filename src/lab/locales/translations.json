@@ -51,7 +51,7 @@
       "copyright": {
         "copyright": "Copyright",
         "all_rights_reserved": "All rights reserved.",
-        "license": "The software is licensed under the __MIT_link__ license.",
+        "license": "The software is licensed under the __MIT_link__ license. Please see __license_link__ for other software and associated licensing included in this product.",
         "attribution": "Please provide attribution to the Concord Consortium and the URL __concord_org_link__."
       },
       "md2d": {
@@ -743,7 +743,7 @@
       "copyright": {
         "copyright": "Copyright",
         "all_rights_reserved": "Wszystkie prawa zastrzeżone.",
-        "license": "To oprogramowanie jest rozpowszechniane na zasadach wolnej licencji __MIT_link__.",
+        "license": "To oprogramowanie jest rozpowszechniane na zasadach wolnej licencji __MIT_link__. Szczegóły licencji znajdują się w pliku __license_link__.",
         "attribution": "Proszę umieścić odniesienia do Concord Consortium oraz witryny __concord_org_link__."
       },
       "md2d": {
