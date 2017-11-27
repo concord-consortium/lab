@@ -57,6 +57,9 @@ define(function () {
         // Set current value of DNA code.
         $dnaTextInput.val(model.get("DNA"));
         $dialogDiv.dialog("open");
+      },
+      bindModel: function (newModel) {
+        model = newModel;
       }
     };
 

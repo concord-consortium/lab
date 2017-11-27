@@ -636,6 +636,7 @@ define(function (require) {
         if (dnaEditDialog == null) {
           dnaEditDialog = new DNAEditDialog(parent.model);
         }
+        dnaEditDialog.bindModel(parent.model);
         dnaEditDialog.open();
       },
 
