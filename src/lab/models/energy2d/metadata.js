@@ -99,6 +99,11 @@ define(function(require) {
         defaultValue: "play_reset",
         propertyChangeInvalidates: false
       },
+      controlButtonStyle: {
+        defaultValue: "video",
+        propertyChangeInvalidates: false,
+        serialize: false
+      },
       color_palette_type: {
         defaultValue: 0
       },
