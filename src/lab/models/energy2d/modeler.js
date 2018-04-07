@@ -561,6 +561,21 @@ define(function (require) {
           return days + ':' + f(hours) + ':' + f(minutes)  + ':' + f(seconds);
         };
       }()));
+
+      (function() {
+        var hasPlayed = false;
+        model.on('play.has-played-support', function () {
+          hasPlayed = true;
+        });
+        model.on('reset.has-played-support', function () {
+          hasPlayed = false;
+        });
+        model.defineOutput('hasPlayed', {
+          label: "has Played"
+        }, function() {
+          return hasPlayed;
+        });
+      }());
     }());
 
     return model;

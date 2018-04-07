@@ -41,6 +41,7 @@ define(function(require) {
 
     this._phone = null;
     this._stopped = true;
+    this._hasPlayed = false;
     this._initialProperties = initialProperties;
     this._propertySupport = labModelerMixin.propertySupport;
     this._dispatch = labModelerMixin.dispatchSupport;
@@ -58,6 +59,12 @@ define(function(require) {
     // disable these buttons
     // the outer iframe in the interactives browser expects a 'reset', 'stepForward', 'stepBack' event type
     this._dispatch.addEventTypes('tick', 'tickStart', 'tickEnd', 'play', 'stop', 'reset', 'stepForward', 'stepBack', 'log');
+
+    this.defineOutput('hasPlayed', {
+      label: "has Played"
+    }, function() {
+      return this._hasPlayed;
+    }.bind(this));
   }
 
   function customSet(key, value) {
@@ -109,6 +116,7 @@ define(function(require) {
 
   IFrameModel.prototype.start = function () {
     this._phone.post({type: 'play'});
+    this._hasPlayed = true;
     return this;
   };
 
