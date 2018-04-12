@@ -13,7 +13,6 @@ helpers.withIsolatedRequireJS (requirejs) ->
 
   codapInterface =
     exportData: sinon.spy()
-    openTable:  sinon.spy()
     logAction: sinon.spy()
     canExportData: -> canExportData
     init: ->
@@ -107,7 +106,6 @@ helpers.withIsolatedRequireJS (requirejs) ->
 
     beforeEach ->
       codapInterface.exportData.reset()
-      codapInterface.openTable.reset()
       interactivesController = new MockInteractivesController()
       exportController = new ExportController interactivesController
       exportController.init exportsSpec
@@ -124,9 +122,6 @@ helpers.withIsolatedRequireJS (requirejs) ->
       it "should call codapInterface.exportData()", ->
         codapInterface.exportData.callCount.should.equal 1
 
-      it "should call codapInterface.openTable()", ->
-        codapInterface.openTable.callCount.should.equal 1
-
       describe "arguments to codapInterface.exportData()", ->
         call = null
         beforeEach ->
@@ -134,15 +129,15 @@ helpers.withIsolatedRequireJS (requirejs) ->
 
         describe "the first argument", ->
           it "should be a list of the per-run parameters followed by the per-run outputs, including labels and units", ->
-            call.args[0].should.eql ["Row", "per-run parameter (units 3)", "per-run output (units 1)"]
+            call.args[0].should.eql [{name: "per-run parameter", unit: "units 3"}, {name: "per-run output", unit: "units 1"}]
 
         describe "the second argument", ->
           it "should be a list of per-run parameters and outputs' values", ->
-            call.args[1].should.eql [null, 10, 1]
+            call.args[1].should.eql [10, 1]
 
         describe "the third argument", ->
           it "should be a list containing \"Time (ps)\", followed by per-tick parameters and outputs, including labels and units", ->
-            call.args[2].should.eql ["Time (ps)", "per-tick output (units 2)", "per-tick parameter (units 4)"]
+            call.args[2].should.eql [{name: "Time", unit: "ps"}, {name: "per-tick output", unit: "units 2"}, {name: "per-tick parameter", unit:"units 4"}]
 
         describe "the fourth argument", ->
           it "should be a list of lists containing the model time, plus the per-tick values", ->
@@ -152,11 +147,6 @@ helpers.withIsolatedRequireJS (requirejs) ->
           beforeEach ->
             exportController.exportData()
             call = codapInterface.exportData.getCall 1
-
-          describe "the run number", ->
-            it "should be null", ->
-              call.args[0][0].should.eql "Row"
-              should.equal(call.args[1][0], null)
 
     describe "effect of stepping model forward/back/etc", ->
 
