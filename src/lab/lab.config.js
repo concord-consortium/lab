@@ -14,10 +14,6 @@ define(function () {
     // Models root URL, appended to all model paths. Leave it empty if model paths are relative
     // to page that contains Lab interactive.
     "modelsRootUrl": "",
-    // Set codap to true if Lab is running inside of CODAP
-    "codap": false,
-    // dataGamesProxyPrefix was the old way of configuring CODAP
-    "dataGamesProxyPrefix": "",
     "utmCampaign": null,
     // You can set versioned home to function that accepts major version of Lab and returns
     // URL of embeddable page that uses particular version of Lab, e.g.:

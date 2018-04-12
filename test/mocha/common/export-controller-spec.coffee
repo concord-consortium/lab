@@ -11,14 +11,14 @@ helpers.withIsolatedRequireJS (requirejs) ->
 
   canExportData = false
 
-  dgExporter =
+  codapInterface =
     exportData: sinon.spy()
     openTable:  sinon.spy()
     logAction: sinon.spy()
     canExportData: -> canExportData
     init: ->
 
-  requirejs.define 'import-export/dg-exporter', [], -> dgExporter
+  requirejs.define 'import-export/codap-interface', [], -> codapInterface
 
   Model            = requirejs 'models/md2d/models/modeler'
   ExportController = requirejs 'common/controllers/export-controller'
@@ -38,6 +38,9 @@ helpers.withIsolatedRequireJS (requirejs) ->
 
     getModel: ->
       @model
+
+    get: ->
+      100
 
     reloadModel: (opts) ->
       opts ||= { cause: 'reload' }
@@ -80,10 +83,10 @@ helpers.withIsolatedRequireJS (requirejs) ->
 
 
   describe "Export controller events", ->
-    it "should emit canExportData if dgExporter connects to CODAP after initialization", ->
+    it "should emit canExportData if codapInterface connects to CODAP after initialization", ->
       canExportDataHandler = sinon.spy()
 
-      # the value to be returned by dgExporter.canExportData():
+      # the value to be returned by codapInterface.canExportData():
       canExportData = false
       interactivesController = new MockInteractivesController()
       exportController = new ExportController interactivesController
@@ -92,7 +95,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
 
       # now, test it
       canExportData = true
-      dgExporter.codapDidConnect()
+      codapInterface.codapDidConnect()
 
       canExportDataHandler.called.should.equal true
 
@@ -103,8 +106,8 @@ helpers.withIsolatedRequireJS (requirejs) ->
     model = null
 
     beforeEach ->
-      dgExporter.exportData.reset()
-      dgExporter.openTable.reset()
+      codapInterface.exportData.reset()
+      codapInterface.openTable.reset()
       interactivesController = new MockInteractivesController()
       exportController = new ExportController interactivesController
       exportController.init exportsSpec
@@ -118,16 +121,16 @@ helpers.withIsolatedRequireJS (requirejs) ->
       beforeEach ->
         exportController.exportData()
 
-      it "should call dgExporter.exportData()", ->
-        dgExporter.exportData.callCount.should.equal 1
+      it "should call codapInterface.exportData()", ->
+        codapInterface.exportData.callCount.should.equal 1
 
-      it "should call dgExporter.openTable()", ->
-        dgExporter.openTable.callCount.should.equal 1
+      it "should call codapInterface.openTable()", ->
+        codapInterface.openTable.callCount.should.equal 1
 
-      describe "arguments to dgExporter.exportData()", ->
+      describe "arguments to codapInterface.exportData()", ->
         call = null
         beforeEach ->
-          call = dgExporter.exportData.getCall 0
+          call = codapInterface.exportData.getCall 0
 
         describe "the first argument", ->
           it "should be a list of the per-run parameters followed by the per-run outputs, including labels and units", ->
@@ -148,7 +151,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
         describe "after exportData is called a second time", ->
           beforeEach ->
             exportController.exportData()
-            call = dgExporter.exportData.getCall 1
+            call = codapInterface.exportData.getCall 1
 
           describe "the run number", ->
             it "should be null", ->
@@ -159,7 +162,7 @@ helpers.withIsolatedRequireJS (requirejs) ->
 
       exportedTimePoints = ->
         exportController.exportData()
-        call = dgExporter.exportData.getCall 0
+        call = codapInterface.exportData.getCall 0
         args = call.args[3]
         args.map (dataPoint) -> dataPoint[0]
 
