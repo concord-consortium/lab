@@ -396,7 +396,7 @@ define(function (require) {
           perTickLabels[i] = getCodapAttrForProperty(perTick[i]);
         }
 
-        codapInterface.exportData(perRunPropertyLabels, perRunPropertyValues, perTickLabels, this.selectedData());
+        codapInterface.exportData(perRunPropertyLabels, perRunPropertyValues, perTickLabels, this.selectedData(), interactivesController.i18n);
 
         // all data was just exported
         isUnexportedDataPresent = false;

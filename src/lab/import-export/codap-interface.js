@@ -8,34 +8,37 @@ define(function(require) {
   // Width of the interactive when embedded in CODAP.
   var DEF_CODAP_WIDTH = 640; // px
 
-  var PARENT_TABLE_LABELS = {
-    singleCase: 'run',
-    pluralCase: 'runs',
-    singleCaseWithArticle: 'a run',
-    setOfCases: 'set',
-    setOfCasesWithArticle: 'a set'
-  };
-
-  var CHILD_TABLE_LABELS = {
-    singleCase: 'measurement',
-    pluralCase: 'measurements',
-    singleCaseWithArticle: 'a measurement',
-    setOfCases: 'time series',
-    setOfCasesWithArticle: 'a time series'
-  };
-
-  var SINGLE_TABLE_LABELS = {
-    singleCase: 'measurement',
-    pluralCase: 'measurements',
-    singleCaseWithArticle: 'a measurement',
-    setOfCases: 'set',
-    setOfCasesWithArticle: 'a set'
-  };
-
   function throwIfError(resp) {
     if (resp.success === false) {
       throw new Error('CODAP error: ' + resp.values.error);
     }
+  }
+
+  function getLabels(i18n) {
+    return {
+      dataContextName: i18n.t('codap.dataContextName'),
+      parentTable: {
+        singleCase: i18n.t('codap.parentTable.singleCase'),
+        pluralCase: i18n.t('codap.parentTable.pluralCase'),
+        singleCaseWithArticle: i18n.t('codap.parentTable.singleCaseWithArticle'),
+        setOfCases: i18n.t('codap.parentTable.setOfCases'),
+        setOfCasesWithArticle: i18n.t('codap.parentTable.setOfCasesWithArticle')
+      },
+      childTable: {
+        singleCase: i18n.t('codap.childTable.singleCase'),
+        pluralCase: i18n.t('codap.childTable.pluralCase'),
+        singleCaseWithArticle: i18n.t('codap.childTable.singleCaseWithArticle'),
+        setOfCases: i18n.t('codap.childTable.setOfCases'),
+        setOfCasesWithArticle: i18n.t('codap.childTable.setOfCasesWithArticle')
+      },
+      singleTable: {
+        singleCase: i18n.t('codap.singleTable.singleCase'),
+        pluralCase: i18n.t('codap.singleTable.pluralCase'),
+        singleCaseWithArticle: i18n.t('codap.singleTable.singleCaseWithArticle'),
+        setOfCases: i18n.t('codap.singleTable.setOfCases'),
+        setOfCasesWithArticle: i18n.t('codap.singleTable.setOfCasesWithArticle')
+      }
+    };
   }
 
   return {
@@ -146,21 +149,23 @@ define(function(require) {
       of time series labels (except from the end of the list) and it does not handle reordering of
       time series labels.
     */
-    exportData: function(perRunAttrs, perRunData, timeSeriesAttrs, timeSeriesData) {
+    exportData: function(perRunAttrs, perRunData, timeSeriesAttrs, timeSeriesData, i18n) {
       timeSeriesAttrs = timeSeriesAttrs || [];
 
       perRunAttrs = perRunAttrs.slice();
       // Insert "Run" automatically attribute.
       perRunAttrs.unshift({ name: "Run", type: "nominal" });
 
+      var labels = getLabels(i18n);
+
       var shouldExportTimeSeries = timeSeriesAttrs.length > 0;
       var parentTableName;
       var childTableName;
       if (shouldExportTimeSeries) {
-        parentTableName = PARENT_TABLE_LABELS.pluralCase;
-        childTableName = CHILD_TABLE_LABELS.pluralCase;
+        parentTableName = labels.parentTable.pluralCase;
+        childTableName = labels.childTable.pluralCase;
       } else {
-        parentTableName = SINGLE_TABLE_LABELS.pluralCase;
+        parentTableName = labels.singleTable.pluralCase;
       }
 
       var exportData = function (runNumber) {
@@ -193,7 +198,7 @@ define(function(require) {
         var collections = [{
           name: parentTableName,
           attrs: perRunAttrs,
-          labels: shouldExportTimeSeries ? PARENT_TABLE_LABELS : SINGLE_TABLE_LABELS,
+          labels: shouldExportTimeSeries ? labels.parentTable : labels.singleTable,
           collapseChildren: true
         }];
 
@@ -202,7 +207,7 @@ define(function(require) {
             name: childTableName,
             attrs: timeSeriesAttrs,
             parent: parentTableName,
-            labels: CHILD_TABLE_LABELS
+            labels: labels.childTable
           });
         }
 
@@ -210,7 +215,7 @@ define(function(require) {
           action: 'create',
           resource: 'dataContext',
           values: {
-            title: 'Runs',
+            title: labels.dataContextName,
             collections: collections
           }
         }, function (resp) {
@@ -254,8 +259,7 @@ define(function(require) {
         action: 'create',
         resource: 'component',
         values: {
-          'type': 'caseTable',
-          'name': 'Runs'
+          'type': 'caseTable'
         }
       }, throwIfError);
     },

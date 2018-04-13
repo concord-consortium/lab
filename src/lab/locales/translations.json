@@ -227,6 +227,30 @@
           "labQuestCO2": "LabQuest CO₂ sensor",
           "labQuestO2": "LabQuest O₂ sensor"
         }
+      },
+      "codap": {
+        "dataContextName": "Runs",
+        "parentTable": {
+          "singleCase": "run",
+          "pluralCase": "runs",
+          "singleCaseWithArticle": "a run",
+          "setOfCases": "set",
+          "setOfCasesWithArticle": "a set"
+        },
+        "childTable": {
+          "singleCase": "measurement",
+          "pluralCase": "measurements",
+          "singleCaseWithArticle": "a measurement",
+          "setOfCases": "time series",
+          "setOfCasesWithArticle": "a time series"
+        },
+        "singleTable": {
+          "singleCase": "measurement",
+          "pluralCase": "measurements",
+          "singleCaseWithArticle": "a measurement",
+          "setOfCases": "set",
+          "setOfCasesWithArticle": "a set"
+        }
       }
     }
   },
@@ -716,7 +740,11 @@
         "text_stop": "Zatrzymaj",
         "text_stop_tooltip": "Zatrzymaj symulację lub pobieranie danych",
         "text_reset": "Zresetuj",
-        "text_reset_tooltip": "Zresetuj symulację lub pobieranie danych"
+        "text_reset_tooltip": "Zresetuj symulację lub pobieranie danych",
+        "text_new_run": "Nowy pomiar",
+        "text_new_run_tooltip": "Rozpocznij nowy eksperyment",
+        "text_analyze_data": "Analizuj dane",
+        "text_analyze_data_tooltip": "Wyślij wyniki eksperymentu do CODAP"
       },
       "dialog": {
         "close_tooltip": "Zamknij"
@@ -911,6 +939,30 @@
           "labQuestPH": "LabQuest czujnik pH",
           "labQuestCO2": "LabQuest czujnik CO₂",
           "labQuestO2": "LabQuest czujnik O₂"
+        }
+      },
+      "codap": {
+        "dataContextName": "Wyniki",
+        "parentTable": {
+          "singleCase": "eksperyment",
+          "pluralCase": "eksperymenty",
+          "singleCaseWithArticle": "eksperyment",
+          "setOfCases": "zbiór danych",
+          "setOfCasesWithArticle": "zbiór danych"
+        },
+        "childTable": {
+          "singleCase": "pomiar",
+          "pluralCase": "pomiary",
+          "singleCaseWithArticle": "pomiar",
+          "setOfCases": "szereg czasowy",
+          "setOfCasesWithArticle": "szereg czasowy"
+        },
+        "singleTable": {
+          "singleCase": "pomiar",
+          "pluralCase": "pomiary",
+          "singleCaseWithArticle": "pomiar",
+          "setOfCases": "zbiór danych",
+          "setOfCasesWithArticle": "zbiór danych"
         }
       }
     }
