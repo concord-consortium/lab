@@ -3,7 +3,7 @@
 
 define(function (require) {
   var iframePhone = require('iframe-phone');
-  var dgExporter = require('import-export/dg-exporter');
+  var codapInterface = require('import-export/codap-interface');
 
   // Handles logging of events to LARA or CODAP.
   function LogController(args) {
@@ -19,7 +19,7 @@ define(function (require) {
     // IFrameEndpoint is a singleton and probably has been already initialized by ParentMessageAPI,
     // but do it again just in case (so we don't depend on ParentMessageAPI).
     this._phone.initialize();
-    dgExporter.init();
+    codapInterface.init();
     
     this._interactivesController.on('modelLoaded.logController', this._modelLoadedHandler.bind(this));
     this._interactivesController.on('interactiveWillReload.logController', this._interactiveWillReloadHandler.bind(this));
@@ -31,7 +31,7 @@ define(function (require) {
   LogController.prototype.logAction = function (action, data) {
     if (!this.enabled) return;
 
-    if (dgExporter.isEmbeddedInCODAP()) {
+    if (codapInterface.isEmbeddedInCODAP()) {
       this._logToCODAP(action, data);
     } else {
       this._genericLog(action, data);
@@ -47,7 +47,7 @@ define(function (require) {
     if (data) {
       logString += ': ' + JSON.stringify(data);
     }
-    dgExporter.logAction(logString);
+    codapInterface.logAction(logString);
   };
 
   LogController.prototype._setupComponents = function (componentByID, enabledComponents) {

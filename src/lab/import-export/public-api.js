@@ -10,8 +10,7 @@ define(function (require) {
     // ==========================================================================
     // Functions and modules which should belong to this API:
 
-    // Data Games exporter
-    dgExporter:      require('import-export/dg-exporter'),
+    codapInterface: require('import-export/codap-interface'),
     netlogoImporter: require('import-export/netlogo-importer')
     // ==========================================================================
   };

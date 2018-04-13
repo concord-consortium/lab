@@ -3,7 +3,7 @@
 
 define(function (require) {
 
-  var dgExporter = require('import-export/dg-exporter');
+  var codapInterface = require('import-export/codap-interface');
   var BasicDialog = require('common/controllers/basic-dialog');
   var DispatchSupport = require('common/dispatch-support');
   var _ = require('underscore');
@@ -291,6 +291,16 @@ define(function (require) {
       return ret;
     }
 
+    function getCodapAttrForProperty(property) {
+      var desc  = model.getPropertyDescription(property),
+          label = desc && desc.getLabel(),
+          unit = desc && desc.getUnitAbbreviation();
+      return {
+        name: label && label.length > 0 ? label : property,
+        unit: unit && unit.length > 0 ? unit : undefined
+      };
+    }
+
     controller = {
 
       // This just indicates the presence or absence of a technical means to export data (i.e.,
@@ -377,20 +387,16 @@ define(function (require) {
           logAction("ParameterChangeBetweenStartAndExport", changedParameters);
         }
 
-        perRunPropertyLabels[0] = "Row";
-        perRunPropertyValues[0] = null;
-
         for (i = 0; i < perRun.length; i++) {
-          perRunPropertyLabels[i+1] = getLabelForProperty(perRun[i]);
-          perRunPropertyValues[i+1] = model.get(perRun[i]);
+          perRunPropertyLabels[i] = getCodapAttrForProperty(perRun[i]);
+          perRunPropertyValues[i] = model.get(perRun[i]);
         }
 
         for (i = 0; i < perTick.length; i++) {
-          perTickLabels[i] = getLabelForProperty(perTick[i]);
+          perTickLabels[i] = getCodapAttrForProperty(perTick[i]);
         }
 
-        dgExporter.exportData(perRunPropertyLabels, perRunPropertyValues, perTickLabels, this.selectedData());
-        dgExporter.openTable();
+        codapInterface.exportData(perRunPropertyLabels, perRunPropertyValues, perTickLabels, this.selectedData(), interactivesController.i18n);
 
         // all data was just exported
         isUnexportedDataPresent = false;
@@ -399,7 +405,10 @@ define(function (require) {
 
     // Setup
 
-    dgExporter.init();
+    codapInterface.init({
+      title: interactivesController.get('title'),
+      aspectRatio: interactivesController.get('aspectRatio')
+    });
 
     // Issue an 'canExportData' event when canExportData() flips from false to true.
     // Issue 'modelCanExportData' when modelCanExportData() flips
@@ -407,7 +416,7 @@ define(function (require) {
     dispatch.addEventTypes('canExportData', 'modelCanExportData');
 
     // Make sure we emit event if canExportData becomes true. Assume codap connects only once.
-    dgExporter.codapDidConnect = function() {
+    codapInterface.codapDidConnect = function() {
       if ( ExportController.canExportData() ) {
         dispatch.canExportData();
       }
@@ -420,7 +429,7 @@ define(function (require) {
 
   // "Class method" (want to be able to call this before instantiating)
   ExportController.canExportData = function() {
-    return dgExporter.canExportData();
+    return codapInterface.canExportData();
   };
 
   return ExportController;
