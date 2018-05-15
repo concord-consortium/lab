@@ -237,8 +237,9 @@ define(function(require) {
               resource: 'collection[' + parentTableName + '].allCases'
             }, function (resp) {
               throwIfError(resp);
-              var runNumber = resp.values.cases[resp.values.cases.length - 1].case.values["Run"];
-              exportData(runNumber + 1);
+              var casesCount = resp.values.cases.length;
+              var prevRunNumber = casesCount > 0 ? resp.values.cases[casesCount - 1].case.values["Run"] : 0;
+              exportData(prevRunNumber + 1);
             }.bind(this));
           } else {
             createDataContext();
