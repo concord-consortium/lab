@@ -175,6 +175,9 @@ define(function (require) {
         if (!initialPerRunData) {
           initialPerRunData = getCurrentPerRunData();
         }
+        // Make sure that the first point of the run shows the correct values.
+        // User might tweak the model between load / reset and starting the run.
+        perTickValues[model.stepCounter()] = getDataPoint();
       });
       model.on('invalidation.exportController', removeDataAfterStepPointer);
     }
