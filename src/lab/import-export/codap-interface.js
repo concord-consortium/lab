@@ -8,10 +8,22 @@ define(function(require) {
   // Width of the interactive when embedded in CODAP.
   var DEF_CODAP_WIDTH = 640; // px
 
+  // Limit number of data points sent to CODAP in one request to avoid long freezes.
+  var CODAP_VALUES_LIMIT = 100;
+
   function throwIfError(resp) {
     if (resp.success === false) {
       throw new Error('CODAP error: ' + resp.values.error);
     }
+  }
+
+  // Divides array into chunks.
+  function chunks(arr, chunkSize) {
+    var result = [];
+    for (var i = 0, len = arr.length; i < len; i += chunkSize) {
+      result.push(arr.slice(i, i + chunkSize));
+    }
+    return result;
   }
 
   function getLabels(i18n) {
@@ -172,25 +184,33 @@ define(function(require) {
         perRunData = perRunData.slice();
         perRunData.unshift(runNumber);
 
-        // Data export using "item" approach. A single item consists of both per-run and time series attributes.
-        this.doCommand({
-          action: 'create',
-          resource: 'dataContext.item',
-          // If time series attributes are not defined, we will insert just a single item with per-run attributes only.
-          values: (shouldExportTimeSeries ? timeSeriesData : [ null ]).map(function (data) {
-            var item = {};
-            perRunAttrs.forEach(function (attr, idx) {
-              item[attr.name] = perRunData[idx];
-            });
-            timeSeriesAttrs.forEach(function (attr, idx) {
-              item[attr.name] = data[idx];
-            });
-            return item;
-          })
-        }, function (resp) {
-          throwIfError(resp);
-          // Open case table after successful export.
-          this.openTable();
+        // If time series attributes are not defined, we will insert just a single item with per-run attributes only.
+        var values = (shouldExportTimeSeries ? timeSeriesData : [ null ]).map(function (data) {
+          var item = {};
+          perRunAttrs.forEach(function (attr, idx) {
+            item[attr.name] = perRunData[idx];
+          });
+          timeSeriesAttrs.forEach(function (attr, idx) {
+            item[attr.name] = data[idx];
+          });
+          return item;
+        });
+
+        // Send values in smaller chunks to avoid performance problems.
+        var valuesChunks = chunks(values, CODAP_VALUES_LIMIT);
+        valuesChunks.forEach(function(values, idx) {
+          // Data export using "item" approach. A single item consists of both per-run and time series attributes.
+          this.doCommand({
+            action: 'create',
+            resource: 'dataContext.item',
+            values: values
+          }, function (resp) {
+            throwIfError(resp);
+            if (idx === 0) {
+              // Wait for the first call to be completed and open the table (since it already exists).
+              this.openTable();
+            }
+          }.bind(this));
         }.bind(this));
       }.bind(this);
 
