@@ -58,7 +58,7 @@ define(function (require) {
             return Infinity;
           }
 
-          if (requestedDuration != null) {
+          if (typeof requestedDuration === 'number') {
             return requestedDuration;
           }
 

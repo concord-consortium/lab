@@ -851,6 +851,10 @@ define(function (require) {
               if (arrays.isArray(base[p])) {
                 // Array.
                 overlay[p] = $.extend(true, [], base[p]);
+              } else if (base[p] === null) {
+                // Explicit check for null is necessary. `typeof null` returns "object", so the next if statement
+                // would be triggered incorrectly.
+                overlay[p] = null;
               } else if (typeof base[p] === "object") {
                 // Object.
                 overlay[p] = $.extend(true, {}, base[p]);
