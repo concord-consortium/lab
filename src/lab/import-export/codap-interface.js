@@ -185,7 +185,9 @@ define(function(require) {
         perRunData.unshift(runNumber);
 
         // If time series attributes are not defined, we will insert just a single item with per-run attributes only.
-        var values = (shouldExportTimeSeries ? timeSeriesData : [ null ]).map(function (data) {
+        // An array with single item (any value) ensures that it will happen. One element is necessary to make sure that
+        // per-run attributes are send to CODAP. But it will be never dereferenced as timeSeriesAttrs is an empty array.
+        var values = (shouldExportTimeSeries ? timeSeriesData : [ 'this_value_is_ignored' ]).map(function (data) {
           var item = {};
           perRunAttrs.forEach(function (attr, idx) {
             item[attr.name] = perRunData[idx];
