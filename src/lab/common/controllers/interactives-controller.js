@@ -852,8 +852,10 @@ define(function (require) {
                 // Array.
                 overlay[p] = $.extend(true, [], base[p]);
               } else if (base[p] === null) {
-                // Explicit check for null is necessary. `typeof null` returns "object", so the next if statement
+                // Explicit check for null is necessary. `typeof null` returns "object", so the next `if` statement
                 // would be triggered incorrectly.
+                // `undefined` value doesn't have this problem (`typeof undefined` returns "undefined"), so it will
+                // be handled by the last `if` statement (basic type).
                 overlay[p] = null;
               } else if (typeof base[p] === "object") {
                 // Object.
