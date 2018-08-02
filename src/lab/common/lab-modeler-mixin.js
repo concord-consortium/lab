@@ -58,7 +58,9 @@ define(function (require) {
             return Infinity;
           }
 
-          if (requestedDuration != null) {
+          // Only numeric values can be handled by rest of the code. Strings, {}, or nulls won't work, so in that
+          // case calculate a default / fallback value will be calculated below.
+          if (typeof requestedDuration === 'number') {
             return requestedDuration;
           }
 
