@@ -242,3 +242,15 @@ helpers.withIsolatedRequireJS (requirejs) ->
               "per-run output (units 1) changed?"           : false
               "per-run output (units 1) (start of run)"     : 1
               "per-run output (units 1) (sent to CODAP)"    : 1
+
+      describe "when the per-tick parameter is updated before the run starts", ->
+        beforeEach ->
+          model.properties.perTickParam = 123
+          model.start()
+          model.stop()
+
+        it "should be reflected in the timeseries data", ->
+          exportController.exportData()
+          call = codapInterface.exportData.getCall 0
+          args = call.args[3]
+          args.should.eql [[0, 2, 123]]
