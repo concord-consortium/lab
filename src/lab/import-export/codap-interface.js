@@ -110,7 +110,8 @@ define(function(require) {
         var existingConfig = resp.values;
         var newIframeConfig = {
           name: this.frameConfig.title,
-          title: this.frameConfig.title
+          title: this.frameConfig.title,
+          preventDataContextReorg: false
         };
         // Update dimensions only if the interactive is added to CODAP for the first time.
         // Then, authors can adjust size of the interactive and it should not be overwritten.
