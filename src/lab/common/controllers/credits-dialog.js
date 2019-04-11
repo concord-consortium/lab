@@ -8,7 +8,7 @@ define(function (require) {
       BasicDialog      = require('common/controllers/basic-dialog'),
       getCopyright     = require('common/controllers/copyright'),
       creditsDialogTpl = require('text!common/controllers/credits-dialog.tpl'),
-      CONCORD_URL = 'http://concord.org',
+      CONCORD_URL = 'https://concord.org',
       NEXT_GEN_URL = 'http://mw.concord.org/nextgen/';
 
   /**
