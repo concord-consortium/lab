@@ -1504,6 +1504,22 @@ define(function(require) {
       }
     };
 
+    model.addImage = function (props) {
+      props = validator.validateCompleteness(metadata.image, props);
+      model.get('images').push(props);
+      dispatch.imagesChanged();
+    };
+
+    model.removeImage = function (i) {
+      var images = model.get('images');
+      if (i >=0 && i < images.length) {
+        model.set('images', images.slice(0,i).concat(images.slice(i+1)));
+        dispatch.imagesChanged();
+      } else {
+        throw new Error("Image \"" + i + "\" does not exist, so it cannot be removed.");
+      }
+    };
+
     model.setImageProperties = function(i, props) {
       var image = model.get('images')[i],
           prop;
