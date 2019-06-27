@@ -841,6 +841,14 @@ define(function (require) {
         return parent.model.getNumberOfShapes();
       },
 
+      addImage: function (props) {
+        parent.model.addImage(props);
+      },
+
+      removeImage: function (i) {
+        parent.model.removeImage(i);
+      },
+
       getImageProperties: function(i) {
         return parent.model.getImageProperties(i);
       },
