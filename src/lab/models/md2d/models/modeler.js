@@ -1287,6 +1287,14 @@ define(function(require) {
       return translateFromMD2DUnits(props, elementMetaData);
     };
 
+    model.getAminoAcidByElement = function (i) {
+      if (aminoacidsHelper.isAminoAcid(i)) {
+        return aminoacidsHelper.getAminoAcidByElement(i);
+      } else {
+        return undefined;
+       }
+    }
+
     model.setObstacleProperties = function(i, props) {
       // Validate properties.
       props = validator.validate(metadata.obstacle, props);
