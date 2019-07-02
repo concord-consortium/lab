@@ -506,6 +506,10 @@ define(function (require) {
         return parent.model.getElementProperties(i);
       },
 
+      getAminoAcid: function getAminoAcidByElement(i) {
+        return parent.model.getAminoAcidByElement(i);
+      },
+
       /**
         Adds an obstacle/shape/line using human-readable hash of properties.
         e.g. addObstacle({x: 1, y: 0.5, width: 1, height: 1})
