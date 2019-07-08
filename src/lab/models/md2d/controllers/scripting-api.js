@@ -136,6 +136,16 @@ define(function (require) {
         parent.api.repaintIfReady();
       },
 
+      addRestraint: function addRestraint(props) {
+        parent.model.addRestraint(props);
+        parent.api.repaintIfReady();
+      },
+
+      setRestraintProperties: function setRestraintProperties(i, props) {
+        parent.model.setRestraintProperties(i, props);
+        parent.api.repaintIfReady();
+      },
+
       /*
         Adds angular bond with properties 'props'.
       */
