@@ -16,6 +16,10 @@ define(function() {
         defaultValue: "",
         immutable: true
       },
+      dnaEngineImagesPath: {
+        defaultValue: "dna",
+        immutable: true
+      },
       minX: {
         serialize: false
       },

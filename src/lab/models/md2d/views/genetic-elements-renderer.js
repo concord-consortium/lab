@@ -117,13 +117,8 @@ define(function (require) {
     }
 
     function imagePath() {
-      var fullPath = model.properties.imagePath;
-      // The full path will work for the interactive relative to the interactive site
-      // the local images for DNA view will be relative to Lab
-      // Rather than add an additional parameter to Lab, use just the last part
-      // of the url for the genetic renderer as a common path for both parts
-      var imagePath = fullPath ? fullPath.substring(fullPath.lastIndexOf('/') + 1) : undefined;
-      return imagePath && imagePath.length > 0 ? imagePath : "dna";
+      var imagePath = model.properties.dnaEngineImagesPath;
+      return imagePath;
     }
 
     return {
