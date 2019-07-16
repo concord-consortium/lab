@@ -1,6 +1,7 @@
 {
   "type": "md2d",
   "imagePath": "",
+  "dnaEngineImagesPath": "dna",
   "width": 6.38,
   "height": 2.88,
   "unitsScheme": "md2d",
