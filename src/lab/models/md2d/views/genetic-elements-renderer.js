@@ -3,6 +3,7 @@
 define(function (require) {
   var nucleotides = require('models/md2d/views/nucleotides'),
       resourcesUrl = require('common/resources-url'),
+      labConfig = require('lab.config'),
 
       SCALE = 0.007,
       W = {
@@ -117,7 +118,15 @@ define(function (require) {
     }
 
     function imagePath() {
-      var imagePath = model.properties.dnaEngineImagesPath;
+      var dnaEngineImagesPath = model.properties.dnaEngineImagesPath;
+      var imagePath = "";
+
+      if (dnaEngineImagesPath) {
+        imagePath = labConfig.modelsRootUrl + dnaEngineImagesPath;
+      } else {
+        imagePath = "dna";
+      }
+
       return imagePath;
     }
 
