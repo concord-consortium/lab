@@ -121,12 +121,16 @@ define(function (require) {
       var dnaEngineImagesPath = model.properties.dnaEngineImagesPath;
       var imagePath = "";
 
-      if (dnaEngineImagesPath) {
-        imagePath = labConfig.modelsRootUrl + dnaEngineImagesPath;
+      if (dnaEngineImagesPath && dnaEngineImagesPath.length > 0) {
+        if (labConfig.modelsRootUrl && labConfig.modelsRootUrl.length > 0) {
+          imagePath = labConfig.modelsRootUrl + dnaEngineImagesPath;
+        } else {
+          imagePath = dnaEngineImagesPath;
+        }
       } else {
+        // this should ensure all original interactives render as intended
         imagePath = "dna";
       }
-
       return imagePath;
     }
 

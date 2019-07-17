@@ -18,7 +18,7 @@ define(function() {
       },
       dnaEngineImagesPath: {
         // this path is relative to labConfig.modelsRootUrl
-        defaultValue: null,
+        defaultValue: "",
         immutable: true
       },
       minX: {
