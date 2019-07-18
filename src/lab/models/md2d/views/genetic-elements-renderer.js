@@ -3,6 +3,7 @@
 define(function (require) {
   var nucleotides = require('models/md2d/views/nucleotides'),
       resourcesUrl = require('common/resources-url'),
+      labConfig = require('lab.config'),
 
       SCALE = 0.007,
       W = {
@@ -116,6 +117,23 @@ define(function (require) {
       return [Math.max(0, lowIdx + shift), highIdx + shift];
     }
 
+    function imagePath() {
+      var dnaEngineImagesPath = model.properties.dnaEngineImagesPath;
+      var imagePath = "";
+
+      if (dnaEngineImagesPath && dnaEngineImagesPath.length > 0) {
+        if (labConfig.modelsRootUrl && labConfig.modelsRootUrl.length > 0) {
+          imagePath = labConfig.modelsRootUrl + dnaEngineImagesPath;
+        } else {
+          imagePath = dnaEngineImagesPath;
+        }
+      } else {
+        // this should ensure all original interactives render as intended
+        imagePath = "dna";
+      }
+      return imagePath;
+    }
+
     return {
       cells: function (parent, data) {
         var cells = parent.select(".background-layer").selectAll(".cells").data(data.cells);
@@ -126,7 +144,7 @@ define(function (require) {
           "width": model2px(W.CELLS),
           "height": model2px(H.CELLS),
           "preserveAspectRatio": "none",
-          "xlink:href": resourcesUrl("dna/Cells.svg"),
+          "xlink:href": resourcesUrl(imagePath() + "/Cells.svg"),
           "transform": translateScaleFuncInv
         }).style("opacity", opacityFunc);
         d3.transition(cells)
@@ -144,7 +162,7 @@ define(function (require) {
           "width": model2px(W.DNA1),
           "height": model2px(H.DNA1),
           "preserveAspectRatio": "none",
-          "xlink:href": resourcesUrl("dna/DNA_InsideNucleus_1.svg"),
+          "xlink:href": resourcesUrl(imagePath() + "/DNA_InsideNucleus_1.svg"),
           "transform": translateScaleFuncInv
         }).style("opacity", opacityFunc);
         d3.transition(dna1)
@@ -162,7 +180,7 @@ define(function (require) {
           "width": model2px(W.DNA2),
           "height": model2px(H.DNA2),
           "preserveAspectRatio": "none",
-          "xlink:href": resourcesUrl("dna/DNA_InsideNucleus_2.svg"),
+          "xlink:href": resourcesUrl(imagePath() + "/DNA_InsideNucleus_2.svg"),
           "transform": translateScaleFuncInv
         }).style("opacity", opacityFunc);
         d3.transition(dna2)
@@ -186,7 +204,7 @@ define(function (require) {
           "width": model2px(W.DNA3),
           "height": model2px(H.DNA3),
           "preserveAspectRatio": "none",
-          "xlink:href": resourcesUrl("dna/DoubleHelix_Unit.svg")
+          "xlink:href": resourcesUrl(imagePath() + "/DoubleHelix_Unit.svg")
         });
         d3.transition(dna3)
           .attr("transform", translateScaleFuncInv)
@@ -305,7 +323,7 @@ define(function (require) {
           "width": model2px(W.POLY_UNDER),
           "height": model2px(H.POLY_UNDER),
           "preserveAspectRatio": "none",
-          "xlink:href": resourcesUrl("dna/Polymerase_Under.svg"),
+          "xlink:href": resourcesUrl(imagePath() + "/Polymerase_Under.svg"),
           "transform": translateScaleFuncInv
         }).style("opacity", opacityFunc);
         d3.transition(polyUnder)
@@ -323,7 +341,7 @@ define(function (require) {
           "width": model2px(W.POLY_OVER),
           "height": model2px(H.POLY_OVER),
           "preserveAspectRatio": "none",
-          "xlink:href": resourcesUrl("dna/Polymerase_Over.svg"),
+          "xlink:href": resourcesUrl(imagePath() + "/Polymerase_Over.svg"),
           "transform": translateScaleFuncInv
         }).style("opacity", opacityFunc);
         d3.transition(polyOver)
@@ -341,7 +359,7 @@ define(function (require) {
           "width": model2px(W.NUCLEUS),
           "height": model2px(H.NUCLEUS),
           "preserveAspectRatio": "none",
-          "xlink:href": resourcesUrl("dna/BG_Nucleus.svg"),
+          "xlink:href": resourcesUrl(imagePath() + "/BG_Nucleus.svg"),
           "transform": translateFuncInv
         }).style("opacity", opacityFunc);
         d3.transition(nucleus)
@@ -359,7 +377,7 @@ define(function (require) {
           "width": model2px(W.RIBO_BOTTOM),
           "height": model2px(H.RIBO_BOTTOM),
           "preserveAspectRatio": "none",
-          "xlink:href": resourcesUrl("dna/Ribosome_bottom1.svg"),
+          "xlink:href": resourcesUrl(imagePath() + "/Ribosome_bottom1.svg"),
           "transform": translateFuncInv
         }).style("opacity", 0);
         d3.transition(selection)
@@ -379,7 +397,7 @@ define(function (require) {
           "width": model2px(W.RIBO_TOP),
           "height": model2px(H.RIBO_TOP),
           "preserveAspectRatio": "none",
-          "xlink:href": resourcesUrl("dna/Ribosome_top1.svg"),
+          "xlink:href": resourcesUrl(imagePath() + "/Ribosome_top1.svg"),
           "transform": translateFuncInv
         }).style("opacity", 0);
         d3.transition(selection)
@@ -399,7 +417,7 @@ define(function (require) {
           "width": model2px(W.RIBO_UNDER),
           "height": model2px(H.RIBO_UNDER),
           "preserveAspectRatio": "none",
-          "xlink:href": resourcesUrl("dna/Ribosome_under.png"),
+          "xlink:href": resourcesUrl(imagePath() + "/Ribosome_under.png"),
           "transform": translateFuncInv
         }).style({
           "opacity": opacityFunc
@@ -419,7 +437,7 @@ define(function (require) {
           "width": model2px(W.RIBO_OVER),
           "height": model2px(H.RIBO_OVER),
           "preserveAspectRatio": "none",
-          "xlink:href": resourcesUrl("dna/Ribosome_over.png"),
+          "xlink:href": resourcesUrl(imagePath() + "/Ribosome_over.png"),
           "transform": translateFuncInv
         }).style("opacity", opacityFunc);
         d3.transition(selection)
@@ -465,7 +483,7 @@ define(function (require) {
           "width": model2px(W.TRNA_NECK),
           "height": model2px(H.TRNA_NECK),
           "preserveAspectRatio": "none",
-          "xlink:href": resourcesUrl("dna/tRNA_neck.png")
+          "xlink:href": resourcesUrl(imagePath() + "/tRNA_neck.png")
         });
         enter.append("image").attr({
           "class": "trna-base",
@@ -474,7 +492,7 @@ define(function (require) {
           "width": model2px(W.TRNA),
           "height": model2px(H.TRNA),
           "preserveAspectRatio": "none",
-          "xlink:href": resourcesUrl("dna/tRNA_base.png")
+          "xlink:href": resourcesUrl(imagePath() + "/tRNA_base.png")
         });
 
         update = d3.transition(selection)
