@@ -30,4 +30,6 @@ else
   export DEPLOY_DIR
   export DEPLOY_ARCHIVE
 fi
-disable_parallel_processing=true bundle exec s3_website push --site _site --config-dir config
+disable_parallel_processing=true
+bundle exec s3_website install
+java -cp $(bundle show s3_website)/*.jar s3.website.Push --site _site --config-dir config
