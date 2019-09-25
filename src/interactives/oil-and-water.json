@@ -1,11 +1,11 @@
 {
-  "title": "Oil and Water",
+  "title": "Olje og vann",
   "publicationStatus": "sample",
-  "subtitle": "Explore how polar and non-polar substances interact.",
+  "subtitle": "Utforsk hvordan polare og ikke-polare stoffer påvirker hverandre.",
   "about": [
-    "It is well known that \"oil and water don’t mix.\" But why? Run the model of",
-    "polar water (blue and red) and non-polar oil (gray). \"Shake up the oil and water",
-    "mixture,\" then run it again and watch what happens to the molecules over time."
+    "Du har sikkert opplevd \"at olje og vann ikke blander seg.\" Hvorfor? Kjør simuleringen",
+    "polart vann (blå and rød) og ikke-polar olje (grå). \"Rist vann og olje-",
+    "blandingen,\" og kjør simuleringa igjen. Se hva som skjer med molekylene etter en stund."
   ],
   "i18nMetadata": "locales/metadata/oil-and-water.json",
   "models": [
@@ -17,7 +17,7 @@
         "controlButtons": "play_reset",
         "textBoxes": [
           {
-            "text": "Separated oil and water",
+            "text": "Olje og vann adskilt",
             "x": 1.08,
             "y": 2.0,
             "fontScale": 1.3,
@@ -36,7 +36,7 @@
         "controlButtons": "play_reset",
         "textBoxes": [
           {
-            "text": "Oil and water shaken up and mixed",
+            "text": "Olje og vann ristet og blandet",
             "x": 0.804,
             "y": 2.0,
             "fontScale": 1.3,
@@ -52,7 +52,7 @@
     {
       "type": "button",
       "id": "shake",
-      "text": "Shake up the oil and water mixture",
+      "text": "Rist blandingen av olje og vann",
       "action": "loadModel('oilAndWaterMix');"
     }
   ],
