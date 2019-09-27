@@ -55,7 +55,7 @@ define(function (require) {
         drag: false
       }],
       background: [{
-        color: "#8492ef"
+        color: "#55b7b2"
       }]
     });
     stateMgr.extendLastState("intro-zoom1", {
@@ -280,7 +280,7 @@ define(function (require) {
       }],
       viewPort: [{}],
       background: [{
-        color: "#8492ef"
+        color: "#55b7b2"
       }]
     });
     stateMgr.extendLastState("before-translation-s1", {
