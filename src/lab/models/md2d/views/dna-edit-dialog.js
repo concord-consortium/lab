@@ -14,6 +14,8 @@ define(function () {
         init = function() {
           // Basic dialog elements.
           $dialogDiv = $('<div></div>');
+          $('<div>Enter DNA sequence below</div>').appendTo($dialogDiv);
+          $('<div>&nbsp;</div>').appendTo($dialogDiv);
           $originalDnaInput = $('<input type="text" size="55" disabled/>');
           $originalDnaInput.val(originalDNA);
           $('<div>Original sequence</div>').append($originalDnaInput).appendTo($dialogDiv);
@@ -27,7 +29,7 @@ define(function () {
             dialogClass: "dna-edit-dialog",
             // Ensure that font is being scaled dynamically.
             appendTo: ".lab-responsive-content",
-            title: "DNA Code on Sense Strand",
+            title: "DNA Sequence",
             autoOpen: false,
             width: "35em",
             buttons: {
