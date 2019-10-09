@@ -12,14 +12,12 @@ define(function (require) {
       HitTestingHelper      = require('common/views/hit-testing-helper'),
       console               = require('common/console'),
       PIXI                  = require('pixi'),
-
       CANVAS_OVERSAMPLING = 2,
-
       MAX_Z_INDEX = 1000;
 
     // Assume that we can have *only one* Pixi renderer.
     // This is caused by the Pixi bug: https://github.com/GoodBoyDigital/pixi.js/issues/181
-    function getPixiRenderer(w, h) {
+  function getPixiRenderer(w, h) {
       if (getPixiRenderer.instance == null) {
         var browser = benchmark.browser;
         var newRenderer;
