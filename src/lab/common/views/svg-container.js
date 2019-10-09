@@ -26,13 +26,13 @@ define(function (require) {
           // WebGL. Note Chrome automatically disables WebGL when using the problematic driver.
           // (Note that sometimes the separator between 10 and 6 is a '.' and sometimes a '_' so
           // use of the '.' matcher works is required)
-          newRenderer = function(w, h, view, transparent) {
-            return new PIXI.CanvasRenderer(w, h, view, transparent);
+          newRenderer = function(w, h, transparent) {
+            return new PIXI.CanvasRenderer(w, h, transparent);
           };
         } else {
           newRenderer = PIXI.autoDetectRenderer;
         }
-        getPixiRenderer.instance = newRenderer(w * CANVAS_OVERSAMPLING, h * CANVAS_OVERSAMPLING, null, true);
+        getPixiRenderer.instance = newRenderer(w * CANVAS_OVERSAMPLING, h * CANVAS_OVERSAMPLING, { transparent: true });
       } else {
         getPixiRenderer.instance.resize(w, h);
       }
@@ -288,6 +288,9 @@ define(function (require) {
     function setupBackground() {
       var color = model.get("backgroundColor") || "rgba(0, 0, 0, 0)";
       backgroundRect.attr("fill", color);
+      // NOTE Oct 2019: PIXI.Stage is deprecated in v3, so if we still need this fix we will need to apply a background color
+      // to the Renderer as a whole, not the Stage (which is now just a Container)
+
       // Set color of PIXI.Stage to fix an issue with outlines around the objects that are visible
       // when WebGL renderer is being used. It only happens when PIXI.Stage background is different
       // from model container background. It's necessary to convert color into number, as PIXI
@@ -424,7 +427,7 @@ define(function (require) {
 
       pixiContainers.forEach(function (pixiContainer) {
         // It would be nice to set position of PIXI.Stage object, but it doesn't work. We have
-        // to use nested PIXI.DisplayObjectContainer:
+        // to use nested PIXI.Container:
         pixiContainer.pivot.x = model2canvas(viewport.x);
         pixiContainer.pivot.y = model2canvasInv(viewport.y);
         // This would also work:
@@ -698,6 +701,7 @@ define(function (require) {
         pixiStages[0].addChild(pixiContainer);
         pixiContainers.push(pixiContainer);
 
+        // NOTE: PIXI Stages are deprecated in v3 but retained in this code (as Containers) to keep changeset minimal
         // We return container instead of stage, as we can apply view port transformations to it.
         // Stage transformations seem to be ignored by the PIXI renderer.
         return {
@@ -733,7 +737,7 @@ define(function (require) {
 
       renderCanvas: function() {
         var i, len;
-        // For now we follow that each Pixi viewport has just one PIXI.Stage.
+        // For now we follow that each Pixi viewport has just one PIXI.Container "stage".
         for (i = 0, len = pixiRenderers.length; i < len; i++) {
           pixiRenderers[i].render(pixiStages[i]);
         }

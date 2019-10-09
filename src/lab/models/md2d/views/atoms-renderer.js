@@ -14,7 +14,7 @@ define(function(require) {
       // font-family needs to be unescaped to support fonts wrapped in '' (e.g. 'Comic Sans MS').
       ATOM_SVG_TPL =
       '<svg x="0px" y="0px" width="{{ width }}px" height="{{ height }}px" \
-       viewBox="0 0 32 32" xml:space="preserve"> \
+       viewBox="0 0 32 32" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"> \
         <style type="text/css"> \
         <![CDATA[ \
           text { \
@@ -246,7 +246,7 @@ define(function(require) {
     function clearTextureCacheAndRedraw() {
       elementTex = {};
       viewAtoms.forEach(function(atom, i) {
-        atom.setTexture(getAtomTexture(i));
+        atom.texture = getAtomTexture(i);
       });
       modelView.renderCanvas();
     }
@@ -295,7 +295,7 @@ define(function(require) {
         if (container) {
           pixiContainer.removeChild(container);
         }
-        container = new PIXI.DisplayObjectContainer();
+        container = new PIXI.Container();
         pixiContainer.addChild(container);
 
         m2px = modelView.model2canvas;
@@ -348,7 +348,7 @@ define(function(require) {
 
           if (modelAtom.marked !== viewAtom.marked) {
             // Make sure that marked state is always reflected by the view.
-            viewAtom.setTexture(getAtomTexture(i));
+            viewAtom.texture = getAtomTexture(i);
             viewAtom.marked = modelAtoms[i].marked;
           }
 
@@ -361,7 +361,7 @@ define(function(require) {
           }
 
           if (model.properties.useQuantumDynamics) {
-            viewAtom.setTexture(getAtomTexture(i));
+            viewAtom.texture = getAtomTexture(i);
           }
         }
       },
