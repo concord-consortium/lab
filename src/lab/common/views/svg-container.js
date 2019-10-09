@@ -56,7 +56,7 @@ define(function (require) {
 
         backgroundRect, backgroundGroup, foregroundGroup, brushContainer,
 
-        pixiRenderers, pixiStages, pixiContainers,
+        pixiRenderers, pixiContainers, pixiStages,
 
         hitTestingHelper,
         viewportZIndex = 0,
@@ -293,9 +293,9 @@ define(function (require) {
       // from model container background. It's necessary to convert color into number, as PIXI
       // accepts only numbers. D3 helps us handle color names like "red", "green" etc. It doesn't
       // support rgba values, so ingore alpha channel.
-      pixiStages.forEach(function (pixiStage) {
-        pixiStage.setBackgroundColor(parseInt(d3.rgb(color.replace("rgba", "rgb")).toString().substr(1), 16));
-      });
+      // pixiStages.forEach(function (pixiStage) {
+      //   pixiStage.setBackgroundColor(parseInt(d3.rgb(color.replace("rgba", "rgb")).toString().substr(1), 16));
+      // });
     }
 
     function mousedown() {
@@ -678,7 +678,7 @@ define(function (require) {
 
         if (pixiRenderers.length === 0) {
           pixiRenderer = getPixiRenderer(cx, cy);
-          pixiStage = new PIXI.Stage(null);
+          pixiStage = new PIXI.Container();
 
           node.appendChild(pixiRenderer.view);
           d3.select(pixiRenderer.view)
@@ -694,7 +694,7 @@ define(function (require) {
           hitTestingHelper.passMouseMove(foregroundContainer.node(), pixiRenderers[0].view);
         }
 
-        var pixiContainer = new PIXI.DisplayObjectContainer();
+        var pixiContainer = new PIXI.Container();
         pixiStages[0].addChild(pixiContainer);
         pixiContainers.push(pixiContainer);
 
