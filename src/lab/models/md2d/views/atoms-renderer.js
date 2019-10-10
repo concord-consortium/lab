@@ -31,10 +31,10 @@ define(function(require) {
         </style> \
          <defs> \
             <radialGradient id="grad" cx="50%" cy="47%" r="53%" fx="35%" fy="30%"> \
-              <stop stop-color="{{ lightCol }}" offset="0%"></stop> \
-              <stop stop-color="{{ medCol }}" offset="40%"></stop> \
-              <stop stop-color="{{ darkCol }}" offset="80%"></stop> \
-              <stop stop-color="{{ medCol }}" offset="100%"></stop> \
+              <stop style="stop-color:{{ lightCol }}" offset="0%"/> \
+              <stop style="stop-color:{{ medCol }}" offset="40%"/> \
+              <stop style="stop-color:{{ darkCol }}" offset="80%"/> \
+              <stop style="stop-color:{{ medCol }}" offset="100%"/> \
             </radialGradient> \
          </defs> \
          <g opacity="{{ opacity }}"> \
@@ -43,6 +43,7 @@ define(function(require) {
             <circle fill="url(#grad)" cx="16" cy="16" r="8"/> \
            {{/excited}} \
            {{^excited}} \
+            <circle fill="{{ medCol }}" stroke="{{ darkCol }}" cx="16" cy="16" r="14"/> \
             <circle fill="url(#grad)" cx="16" cy="16" r="16"/> \
            {{/excited}} \
            <text class="shadow" text-anchor="middle" x="16" y="16" dy="0.31em">{{ label }}</text> \
