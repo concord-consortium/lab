@@ -63,7 +63,7 @@ define(function(require) {
     }
 
     function createContainerAndSprites() {
-      container = new PIXI.DisplayObjectContainer();
+      container = new PIXI.Container();
       pixiContainer.addChild(container);
       sprites = [];
     }

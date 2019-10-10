@@ -393,7 +393,6 @@ bundled-licenses: \
 	public/lab/vendor/bundled-licenses/underscore \
 	public/lab/vendor/bundled-licenses/text \
 	public/lab/vendor/bundled-licenses/seedrandom.js \
-	public/lab/vendor/bundled-licenses/pixi.js \
 	public/lab/vendor/bundled-licenses/lab-grapher \
 	public/lab/vendor/bundled-licenses/iframe-phone \
 	public/lab/vendor/bundled-licenses/fastclick \

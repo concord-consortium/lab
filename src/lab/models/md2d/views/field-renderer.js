@@ -106,7 +106,7 @@ define(function(require) {
         }
         if (!show || count === 0) return;
 
-        container = new PIXI.DisplayObjectContainer();
+        container = new PIXI.Container();
         pixiContainer.addChild(container);
 
         sprites = [];
