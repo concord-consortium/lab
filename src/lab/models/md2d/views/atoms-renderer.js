@@ -40,6 +40,7 @@ define(function(require) {
          <g opacity="{{ opacity }}"> \
            {{#excited}} \
             <circle fill="#ffe600" cx="16" cy="16" r="12"/> \
+            <circle fill="{{ medCol }}" cx="16" cy="16" r="8"/> \
             <circle fill="url(#grad)" cx="16" cy="16" r="8"/> \
            {{/excited}} \
            {{^excited}} \
