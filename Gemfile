@@ -1,6 +1,6 @@
 source "http://rubygems.org"
 
-gem "haml",               "~> 4.0.0"
+gem "haml",               "~> 5.0.0"
 
 # Adds Hash.from_xml method used in Energy2D importer
 gem 'activesupport',     "~> 3"
