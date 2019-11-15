@@ -32,7 +32,7 @@ end
 
 group :development do
   gem "rack-nocache",       "~> 0.1.0"
-  gem 'rack-cors',          "~> 0.2.9"
+  gem 'rack-cors',          "~> 1.0.3"
 
   # http://about.travis-ci.org/docs/user/travis-lint/
   gem "travis-lint"
