@@ -9,7 +9,7 @@ gem "git",               "~> 1.2.9"
 gem "s3_website",        "~> 3.1.0"
 
 group :app do
-  gem "rack",               "~> 1.5.2"
+  gem "rack",               "~> 1.6.12"
   gem "rake",               "~> 10.1.0"
   gem "sass",               "~> 3.2.5"
   gem 'bourbon',            "~> 3.1.1"
