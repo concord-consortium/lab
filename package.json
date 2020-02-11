@@ -37,14 +37,13 @@
   "dependencies": {
     "amdefine": ">=0.0.8",
     "backbone": "1.1.0",
-    "coffee-script": "~1.7.0",
     "d3": "5.15.0",
     "markdown": ">=0.5.0",
     "mustache": "~0.7.2",
     "optimist": ">=0.6.0",
     "requirejs": ">=2.1.8",
     "screenfull": "^4.0.0",
-    "uglify-js": "2.7.0",
+    "uglify-es": "3.3.9",
     "underscore": ">=1.5.1"
   },
   "devDependencies": {
@@ -54,13 +53,13 @@
     "jsdom": "16.1.0",
     "jshint": ">=2.1.10",
     "mkdirp": "0.3.2",
-    "mocha": "~1.17.1",
+    "mocha": "7.0.1",
     "node-gyp": "^6.1.0",
     "node-inspector": "0.3.4",
     "should": "3.0.1",
     "sinon": "~1.17.7",
     "sizzle": ">=1.1.0",
-    "vows": "0.7.0"
+    "vows": "0.8.3"
   },
   "directories": {
     "bin": "node-bin"

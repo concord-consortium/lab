@@ -5,8 +5,6 @@ exports.labConfig = {
 
   paths: {
     'arrays': '../modules/arrays/index',
-    // Define RequireJS plugin for CoffeScript loading.
-    'cs': '../../vendor/require-cs/cs',
       // Plugin for loading plain text files (GLSL sources).
     'text': '../../vendor/text/text',
     'sensor-applet': '../../vendor/lab-sensor-applet-interface-dist/sensor-applet-interface',

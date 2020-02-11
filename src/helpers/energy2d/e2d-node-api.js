@@ -10,9 +10,6 @@ requirejs.config({
   // Set baseUrl to lab/src/lab using relative path of this file.
   baseUrl: path.normalize(__dirname + '/../../lab'),
   nodeRequire: require,
-  paths: {
-    'cs' :'../../vendor/require-cs/cs'
-  }
 });
 
 // Used by E2D -> JSON conversion script.

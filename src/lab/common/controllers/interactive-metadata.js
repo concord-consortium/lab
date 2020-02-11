@@ -844,7 +844,7 @@ define(function() {
         required: true
       },
       width: {
-        // It controls width of the thermometer graphics!
+        // It controls width of the thermometer graphi
         // It won't affect label, e.g. making it truncated
         // as width is only "2.5em".
         defaultValue: "2.5em"

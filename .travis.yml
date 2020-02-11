@@ -7,7 +7,7 @@ branches:
     - /^(wip|WIP)(-|_).*$/
 language: node_js
 node_js:
-  - "10"
+  - "12"
 before_script:
   - bundle install --without development
   - npm install

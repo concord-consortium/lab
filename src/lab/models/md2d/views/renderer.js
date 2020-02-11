@@ -17,7 +17,7 @@ define(function(require) {
     FieldRenderer       = require('models/md2d/views/field-renderer'),
     VdwLinesRenderer    = require('./vdw-lines-renderer'),
     GeneticRenderer     = require('models/md2d/views/genetic-renderer'),
-    wrapSVGText         = require('cs!common/layout/wrap-svg-text'),
+    wrapSVGText         = require('common/layout/wrap-svg-text'),
     gradients           = require('common/views/gradients'),
     contrastingColor    = require('common/views/color').contrastingColor,
     ImagesRenderer      = require('./images-renderer'),

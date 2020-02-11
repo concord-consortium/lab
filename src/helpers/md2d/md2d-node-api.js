@@ -18,7 +18,6 @@ requirejs.config({
   paths: {
     'arrays': '../modules/arrays/index',
     'browserified-cheerio': '../../vendor/browserified-cheerio/browserified-cheerio',
-    'cs' :'../../vendor/require-cs/cs',
     'iframe-phone': '../../vendor/iframe-phone/dist/iframe-phone'
   }
 });
@@ -26,4 +25,4 @@ requirejs.config({
 // Export API for Node.js scripts.
 exports.Modeler  = requirejs('models/md2d/models/modeler');
 // Used by MML -> JSON conversion script.
-exports.parseMML = requirejs('cs!mml-converter/mml-converter');
+exports.parseMML = requirejs('mml-converter/mml-converter');

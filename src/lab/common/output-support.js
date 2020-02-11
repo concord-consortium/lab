@@ -3,8 +3,8 @@
 define(function (require) {
 
   var PropertyDescription  = require('common/property-description'),
-      RunningAverageFilter = require('cs!common/filters/running-average-filter'),
-      SimplePeriodFilter   = require('cs!common/filters/simple-period-filter');
+      RunningAverageFilter = require('common/filters/running-average-filter'),
+      SimplePeriodFilter   = require('common/filters/simple-period-filter');
 
   return function OutputSupport(args) {
     var propertySupport = args.propertySupport,

@@ -1,6 +1,4 @@
 #!/usr/bin/env node
-require('coffee-script/register');
-
 var fs = require('fs');
 var parseMML = require('../../../src/helpers/md2d/mml-parser').parseMML;
 var mmlFileNames = fs.readdirSync('input-mml');

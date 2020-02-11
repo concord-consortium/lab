@@ -3,7 +3,7 @@
 define(function(require) {
   // Dependencies.
   var alert               = require('common/alert'),
-      amniacidContextMenu = require('cs!models/md2d/views/aminoacid-context-menu'),
+      amniacidContextMenu = require('models/md2d/views/aminoacid-context-menu'),
 
       POINT_CACHE = {},
 

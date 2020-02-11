@@ -12,11 +12,11 @@ define(function () {
    *
    * @param {object}                 component              The json definition for our dataset.
    * @param {interactivesController} interactivesController InteractivesController instance.
-   * @param {boolean}                private                If true, data set will register itself
-   *                                                        as 'private' data set in interactives
+   * @param {boolean}                isPrivate              If true, data set will register itself
+   *                                                        as 'isPrivate' data set in interactives
    *                                                        controller.
    */
-  function DataSet(component, interactivesController, private) {
+  function DataSet(component, interactivesController, isPrivate) {
     this.interactivesController = interactivesController;
     this._model                 = interactivesController.getModel();
     this.namespace              = "dataSet" + (++dataSetCount);
@@ -45,7 +45,7 @@ define(function () {
 
     // Finally register itself in interactives controller (e.g. it's necessary to ensure that
     // modelLoadedCallback will be called).
-    this.interactivesController.addDataSet(this, private);
+    this.interactivesController.addDataSet(this, isPrivate);
   }
 
   DataSet.Events = {

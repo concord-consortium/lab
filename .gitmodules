@@ -13,12 +13,6 @@
 [submodule "vendor/tinysort"]
 	path = vendor/tinysort
 	url = git://github.com/Sjeiti/TinySort.git
-[submodule "vendor/coffee-script"]
-	path = vendor/coffee-script
-	url = git://github.com/jashkenas/coffee-script.git
-[submodule "vendor/require-cs"]
-	path = vendor/require-cs
-	url = git://github.com/jrburke/require-cs.git
 [submodule "vendor/jquery-ui-touch-punch"]
 	path = vendor/jquery-ui-touch-punch
 	url = git://github.com/furf/jquery-ui-touch-punch.git

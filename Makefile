@@ -1,7 +1,7 @@
 # See the README for installation instructions.
 
 # Utilities
-JS_COMPILER = ./node_modules/uglify-js/bin/uglifyjs - -c warnings=false -m
+JS_COMPILER = ./node_modules/uglify-es/bin/uglifyjs
 MARKDOWN_COMPILER = kramdown
 
 # Turns out that just pointing Vows at a directory doesn't work, and its test matcher matches on
@@ -199,7 +199,7 @@ public: \
 # used to generate resources from src/ to public/
 .PHONY: copy-resources-to-public
 copy-resources-to-public:
-	rsync -aq --exclude='helpers/' --exclude='layouts/' --exclude='modules/' --exclude='sass/' --exclude='vendor/' --exclude='lab/' --filter '+ */' --exclude='*.haml' --exclude='*.sass' --exclude='*.scss' --exclude='*.yaml' --exclude='*.coffee' --exclude='*.rb' --exclude='*.md' src/ public/
+	rsync -aq --exclude='helpers/' --exclude='layouts/' --exclude='modules/' --exclude='sass/' --exclude='vendor/' --exclude='lab/' --filter '+ */' --exclude='*.haml' --exclude='*.sass' --exclude='*.scss' --exclude='*.yaml' --exclude='*.rb' --exclude='*.md' src/ public/
 	mkdir -p public/lab/resources
 	rsync -aq src/lab/resources/ public/lab/resources/
 
@@ -397,7 +397,6 @@ bundled-licenses: \
 	public/lab/vendor/bundled-licenses/lab-grapher \
 	public/lab/vendor/bundled-licenses/iframe-phone \
 	public/lab/vendor/bundled-licenses/fastclick \
-	public/lab/vendor/bundled-licenses/coffee-script \
 	public/lab/vendor/bundled-licenses/canvg-1.3 \
 	public/lab/vendor/bundled-licenses/almond \
 	public/lab/vendor/bundled-licenses/sensor-connector-interface \

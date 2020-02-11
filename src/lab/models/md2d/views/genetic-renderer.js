@@ -4,7 +4,7 @@ define(function (require) {
   var nucleotides             = require('models/md2d/views/nucleotides'),
       GeneticElementsRenderer = require('models/md2d/views/genetic-elements-renderer'),
       GeneticAnimStates       = require('models/md2d/views/genetic-anim-states'),
-      mutationsContextMenu    = require('cs!models/md2d/views/mutations-context-menu'),
+      mutationsContextMenu    = require('models/md2d/views/mutations-context-menu'),
 
       OBJECT_NAMES = GeneticElementsRenderer.OBJECT_NAMES;
 

@@ -4,7 +4,7 @@ define(function(require) {
 
   var PropertySupport      = require('common/property-support'),
       PropertyDescription  = require('common/property-description'),
-      RunningAverageFilter = require('cs!common/filters/running-average-filter'),
+      RunningAverageFilter = require('common/filters/running-average-filter'),
       validator            = require('common/validator'),
       metadata             = require('./metadata'),
       sensorApplet         = require('sensor-applet'),

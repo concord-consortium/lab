@@ -15,22 +15,10 @@
   //Allow "use strict"; be included in the RequireJS files.
   useStrict: true,
 
-  //Stub out the cs module after a build since
-  //it will not be needed.
-  stubModules: ['cs'],
-
-  //The optimization will load CoffeeScript to convert
-  //the CoffeeScript files to plain JS. Use the exclude
-  //directive so that the coffee-script module is not included
-  //in the built file.
-  exclude: ['coffee-script'],
-
   // Additional modules.
   paths: {
     'arrays': '../modules/arrays/index',
-    'browserified-cheerio': '../../vendor/browserified-cheerio/browserified-cheerio',
-    'cs': '../../vendor/require-cs/cs',
-    'coffee-script': '../../vendor/coffee-script/extras/coffee-script'
+    'browserified-cheerio': '../../vendor/browserified-cheerio/browserified-cheerio'
   },
 
   // Protect global namespace and call export of API.

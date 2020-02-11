@@ -2,7 +2,7 @@
 
 define(function (require) {
   var version      = require('lab.version'),
-      mmlConverter = require('cs!mml-converter/mml-converter');
+      mmlConverter = require('mml-converter/mml-converter');
 
   // Create or get 'Lab' global object (namespace).
   window.Lab = window.Lab || {};

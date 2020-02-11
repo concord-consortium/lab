@@ -1,0 +1,64 @@
+#!/usr/bin/env node
+/*
+ * decaffeinate suggestions:
+ * DS102: Remove unnecessary code created because of implicit returns
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+ */
+
+const fs = require("fs");
+const md2dNodeApi = require("../src/helpers/md2d/md2d-node-api");
+
+const runSimulation = function (inFilePath, output, totalTime) {
+  let out;
+  console.log(`\nModel file: ${inFilePath}
+Output: ${output}
+Integration time: ${totalTime}
+time\tKE\tTE`
+  );
+
+  const modelJSON = JSON.parse(fs.readFileSync(inFilePath).toString());
+
+  // Create MD2D modeler.
+  const model = md2dNodeApi.Modeler(modelJSON);
+
+  if (output === "stdout") {
+    out = process.stdout.fd;
+  } else {
+    out = fs.openSync(output, "w");
+    console.log("Writing data to a file...");
+  }
+
+  while (model.get("time") <= totalTime) {
+    let str = `${model.get("time")}\t`;
+    str += `${model.get("kineticEnergy").toFixed(4)}\t`;
+    str += `${(model.get("kineticEnergy") + model.get("potentialEnergy")).toFixed(4)}\n`;
+    fs.writeSync(out, str);
+    // Integrate
+    model.tick();
+  }
+  return fs.closeSync(out);
+};
+
+// Begin script.
+
+const {
+  argv
+} = require("optimist")
+  .usage("$0 -i [path] -o [path or stdout] -i [num]")
+  .options("i", {
+    alias: "input",
+    demand: true,
+    string: true,
+    describe: "Model JSON file"
+  }).options("o", {
+    alias: "output",
+    default: "stdout",
+    string: true,
+    describe: "Output file or stdout"
+  }).options("t", {
+    alias: "time",
+    default: 100,
+    describe: "Integration time"
+  });
+
+runSimulation(argv.input, argv.output, argv.time);

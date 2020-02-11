@@ -2,7 +2,7 @@
 
 define(function (require) {
 
-  var aminoacidsHelper = require('cs!models/md2d/models/aminoacids-helper'),
+  var aminoacidsHelper = require('models/md2d/models/aminoacids-helper'),
       alert            = require('common/alert'),
       NUCLEO_WIDTH     = require('models/md2d/views/nucleotides').WIDTH,
 

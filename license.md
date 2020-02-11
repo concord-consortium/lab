@@ -39,9 +39,6 @@ Here is a list of projects and resources included in the in the `vendor/` direct
     and [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause)
 7. [text](https://github.com/requirejs/text): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
     and [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause)
-8. [require-cs](https://github.com/requirejs/domReady): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
-    and [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause)
-9. [coffe-script](https://github.com/jashkenas/coffee-script): [MIT](http://www.opensource.org/licenses/MIT)
 10. [jQuery UI Touch Punch](http://touchpunch.furf.com/): dual-licensed under [MIT](http://www.opensource.org/licenses/MIT)
     and [GPL v2.0](http://www.opensource.org/licenses/GPL-2.0).
 11. [jQuery Context Menu](http://medialize.github.com/jQuery-contextMenu/): dual-licensed under

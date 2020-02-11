@@ -1323,14 +1323,14 @@ define(function (require) {
 
       /*
         Add a new data set.
-        If data set is 'private', it won't be accessible via .getDataSet() method and it won't be
+        If data set is 'isPrivate', it won't be accessible via .getDataSet() method and it won't be
         serialized as a part of interactive JSON.
        */
-      addDataSet: function (dataSet, private) {
+      addDataSet: function (dataSet, isPrivate) {
         // $.proxy ensures that callback will be always executed
         // in the context of correct object ('this' binding).
         dataSetModelLoadedCallbacks.push($.proxy(dataSet.modelLoadedCallback, dataSet));
-        if (!private) {
+        if (!isPrivate) {
           publicDataSetsByName[dataSet.name] = dataSet;
         }
       },

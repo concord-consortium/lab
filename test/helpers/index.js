@@ -211,8 +211,6 @@ function endsWith(str, suffix) {
 }
 
 function getModelJSONFromMMLFile(mmlFileName) {
-  require('coffee-script/register');
-
   var parseMML    = require('../../src/helpers/md2d/mml-parser').parseMML,
       mmlPath     = 'test/fixtures/models/' + mmlFileName,
       mmlContents = fs.readFileSync(mmlPath).toString(),

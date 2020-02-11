@@ -1,5 +1,3 @@
-require('coffee-script/register');
-
 var mmlParser = require('../../../src/helpers/md2d/mml-parser'),
     fs = require("fs"),
 
