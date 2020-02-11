@@ -177,7 +177,7 @@ submodule-update-tags:
 # ------------------------------------------------
 
 node_modules:
-	yarn || npm install
+	npm install
 
 # ------------------------------------------------
 #

@@ -6,9 +6,12 @@ var fs = require('fs'),
 
 process.env.TZ = "America/New_York";
 
-document = jsdom.jsdom(html);
-window = document.defaultView;
-jsdom.changeURL(window, "https://lab.concord.org/");
+dom = new jsdom.JSDOM(html, {
+  url: "https://lab.concord.org/",
+  referrer: "https://lab.concord.org/",
+});
+window = dom.window;
+document = window.document;
 navigator = window.navigator;
 screen = window.screen;
 

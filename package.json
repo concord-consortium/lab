@@ -38,7 +38,7 @@
     "amdefine": ">=0.0.8",
     "backbone": "1.1.0",
     "coffee-script": "~1.7.0",
-    "d3": "3.3.8",
+    "d3": "5.15.0",
     "markdown": ">=0.5.0",
     "mustache": "~0.7.2",
     "optimist": ">=0.6.0",
@@ -51,11 +51,11 @@
     "chai": ">=1.7.2",
     "cheerio": "0.12.4",
     "jade": ">=0.35.0",
-    "jsdom": "9.12.0",
+    "jsdom": "16.1.0",
     "jshint": ">=2.1.10",
     "mkdirp": "0.3.2",
     "mocha": "~1.17.1",
-    "node-gyp": "^3.8.0",
+    "node-gyp": "^6.1.0",
     "node-inspector": "0.3.4",
     "should": "3.0.1",
     "sinon": "~1.17.7",
@@ -66,6 +66,8 @@
     "bin": "node-bin"
   },
   "scripts": {
-    "test": "make test-src"
+    "build": "make everything",
+    "test": "make test",
+    "start": "rackup"
   }
 }
