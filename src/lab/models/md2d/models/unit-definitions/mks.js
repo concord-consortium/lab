@@ -27,100 +27,98 @@
 // mass-spring model. Moreover pressure units in Classic MW are somewhat fake, and we don't really
 // anticipate trying to compute the pressure exerted by a box of bouncing macroscopic balls.
 
-define(function() {
-  return {
-    name: "mks",
-    translated: true,
-    units: {
+export default {
+  name: "mks",
+  translated: true,
+  units: {
 
-      length: {
-        name: "meter",
-        pluralName: "meters",
-        symbol: "m",
-        representationInMD2DUnits: 1,
-        valueInSIUnits: 1
-      },
+    length: {
+      name: "meter",
+      pluralName: "meters",
+      symbol: "m",
+      representationInMD2DUnits: 1,
+      valueInSIUnits: 1
+    },
 
-      mass: {
-        name: "kilogram",
-        pluralName: "kilograms",
-        symbol: "kg",
-        representationInMD2DUnits: 1,
-        valueInSIUnits: 1
-      },
+    mass: {
+      name: "kilogram",
+      pluralName: "kilograms",
+      symbol: "kg",
+      representationInMD2DUnits: 1,
+      valueInSIUnits: 1
+    },
 
-      time: {
-        name: "second",
-        pluralName: "seconds",
-        symbol: "s",
-        representationInMD2DUnits: 1e4,
-        valueInSIUnits: 1
-      },
+    time: {
+      name: "second",
+      pluralName: "seconds",
+      symbol: "s",
+      representationInMD2DUnits: 1e4,
+      valueInSIUnits: 1
+    },
 
-      inverseTime: {
-        name: "1/second",
-        pluralName: "1/seconds",
-        symbol: "1/s",
-        valueInSIUnits: 1
-      },
+    inverseTime: {
+      name: "1/second",
+      pluralName: "1/seconds",
+      symbol: "1/s",
+      valueInSIUnits: 1
+    },
 
-      velocity: {
-        name: "meter per second",
-        pluralName: "meters per second",
-        symbol: "m/s",
-        valueInSIUnits: 1
-      },
+    velocity: {
+      name: "meter per second",
+      pluralName: "meters per second",
+      symbol: "m/s",
+      valueInSIUnits: 1
+    },
 
-      acceleration: {
-        name: "meter per second squared",
-        pluralName: "meters per second squared",
-        symbol: "m/s²",
-        valueInSIUnits: 1
-      },
+    acceleration: {
+      name: "meter per second squared",
+      pluralName: "meters per second squared",
+      symbol: "m/s²",
+      valueInSIUnits: 1
+    },
 
-      force: {
-        name: "Newton",
-        pluralName: "Newtons",
-        symbol: "N",
-        valueInSIUnits: 1
-      },
+    force: {
+      name: "Newton",
+      pluralName: "Newtons",
+      symbol: "N",
+      valueInSIUnits: 1
+    },
 
-      energy: {
-        name: "Joule",
-        pluralName: "Joules",
-        symbol: "J",
-        valueInSIUnits: 1
-      },
+    energy: {
+      name: "Joule",
+      pluralName: "Joules",
+      symbol: "J",
+      valueInSIUnits: 1
+    },
 
-      dampingCoefficient: {
-        name: "Newton second per meter",
-        pluralName: "Newton seconds per meter",
-        symbol: "N⋅s/m",
-        valueInSIUnits: 1
-      },
+    dampingCoefficient: {
+      name: "Newton second per meter",
+      pluralName: "Newton seconds per meter",
+      symbol: "N⋅s/m",
+      valueInSIUnits: 1
+    },
 
-      // aka spring constant
-      stiffness: {
-        name: "Newton per meter",
-        pluralName: "Newtons per meter",
-        symbol: "N/m",
-        valueInSIUnits: 1
-      },
+    // aka spring constant
+    stiffness: {
+      name: "Newton per meter",
+      pluralName: "Newtons per meter",
+      symbol: "N/m",
+      valueInSIUnits: 1
+    },
 
-      // aka torsional spring constant
-      rotationalStiffness: {
-        name: "Newton-meter per radian",
-        pluralName: "Newton-meters per radian",
-        symbol: "N⋅m/rad",
-        valueInSIUnits: 1
-      },
+    // aka torsional spring constant
+    rotationalStiffness: {
+      name: "Newton-meter per radian",
+      pluralName: "Newton-meters per radian",
+      symbol: "N⋅m/rad",
+      valueInSIUnits: 1
+    },
 
-      charge: {
-        name: "Coulomb",
-        pluralName: "Coulombs",
-        symbol: "C",
-        valueInSIUnits: 1
-      }
+    charge: {
+      name: "Coulomb",
+      pluralName: "Coulombs",
+      symbol: "C",
+      valueInSIUnits: 1
     }
-  };
-});
+  }
+};

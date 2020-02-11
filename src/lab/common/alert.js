@@ -6,14 +6,13 @@
   It's better to use module, as in the future, we may want to replace basic
   alert with more sophisticated solution (for example jQuery UI dialog).
 */
-define(function (require) {
-  // Dependencies.
-  var console = require('common/console'),
+import $__common_console from 'common/console';
+// Dependencies.
+var console = $__common_console,
 
-      // Try to use global alert. If it's not available, use console.error (node.js).
-      alertFunc = typeof alert !== 'undefined' ? alert : console.error;
+  // Try to use global alert. If it's not available, use console.error (node.js).
+  alertFunc = typeof alert !== 'undefined' ? alert : console.error;
 
-  return function alert(msg) {
-    alertFunc(msg);
-  };
-});
+export default function alert(msg) {
+  alertFunc(msg);
+};

@@ -1,204 +1,210 @@
-define(function(require) {
+import $__common_views_numeric_output_view from 'common/views/numeric-output-view';
+import $__common_controllers_basic_dialog from 'common/controllers/basic-dialog';
+import $__models_sensor_common_i__n_sensor_definitions_connector from 'models/sensor-common/i18n-sensor-definitions-connector';
+import $__common_views_view_state from 'common/views/view-state';
 
-  var NumericOutputView    = require('common/views/numeric-output-view'),
-      BasicDialog          = require('common/controllers/basic-dialog'),
-      getSensorDefinitions = require('models/sensor-common/i18n-sensor-definitions-connector'),
-      viewState = require('common/views/view-state');
+var NumericOutputView = $__common_views_numeric_output_view,
+  BasicDialog = $__common_controllers_basic_dialog,
+  getSensorDefinitions = $__models_sensor_common_i__n_sensor_definitions_connector,
+  viewState = $__common_views_view_state;
 
-  return function(model, modelUrl, i18n) {
+export default function(model, modelUrl, i18n) {
 
-    // TODO use the formatter from the property description. Right now, it automatically adds
-    // units to the returned string (which we don't want here).
-    var format = d3.format('.2f');
-    var sensorReadingView;
-    var view;
+  // TODO use the formatter from the property description. Right now, it automatically adds
+  // units to the returned string (which we don't want here).
+  var format = d3.format('.2f');
+  var sensorReadingView;
+  var view;
 
-    var sensorDefinitions = getSensorDefinitions(i18n);
+  var sensorDefinitions = getSensorDefinitions(i18n);
 
-    function setCanTareState() {
-      if (model.properties.canTare) {
-        viewState.enableView(view.$zeroButton);
-      } else {
-        viewState.disableView(view.$zeroButton);
-      }
+  function setCanTareState() {
+    if (model.properties.canTare) {
+      viewState.enableView(view.$zeroButton);
+    } else {
+      viewState.disableView(view.$zeroButton);
     }
+  }
 
-    function setCanConnectState() {
-      // if (model.properties.canConnect) {
-      //   viewState.enableView(view.$connectButton);
-      // } else {
-      //   viewState.disableView(view.$connectButton);
-      // }
+  function setCanConnectState() {
+    // if (model.properties.canConnect) {
+    //   viewState.enableView(view.$connectButton);
+    // } else {
+    //   viewState.disableView(view.$connectButton);
+    // }
+  }
+
+  function setHasMultipleSensorsState() {
+    if (model.properties.hasMultipleSensors && model.properties.isPlayable) {
+      viewState.enableView(view.$selectSensorButton);
+    } else {
+      viewState.disableView(view.$selectSensorButton);
     }
+  }
 
-    function setHasMultipleSensorsState() {
-      if (model.properties.hasMultipleSensors && model.properties.isPlayable) {
-        viewState.enableView(view.$selectSensorButton);
-      } else {
-        viewState.disableView(view.$selectSensorButton);
-      }
-    }
+  function setMessageText() {
+    view.$message.html(model.properties.message);
+  }
 
-    function setMessageText() {
-      view.$message.html(model.properties.message);
-    }
+  function setupModelObservers() {
+    model.addObserver('canTare', setCanTareState);
+    setCanTareState();
 
-    function setupModelObservers() {
-      model.addObserver('canTare', setCanTareState);
-      setCanTareState();
+    model.addObserver('canConnect', setCanConnectState);
+    setCanConnectState();
 
-      model.addObserver('canConnect', setCanConnectState);
-      setCanConnectState();
+    model.addObserver('hasMultipleSensors', setHasMultipleSensorsState);
+    model.addObserver('isPlayable', setHasMultipleSensorsState);
+    setHasMultipleSensorsState();
 
-      model.addObserver('hasMultipleSensors', setHasMultipleSensorsState);
-      model.addObserver('isPlayable', setHasMultipleSensorsState);
-      setHasMultipleSensorsState();
+    model.addObserver('message', setMessageText);
+    setMessageText();
+  }
 
-      model.addObserver('message', setMessageText);
-      setMessageText();
-    }
-
-    function chooseSensorPopup() {
-      var dialog = new BasicDialog({
-        width: "60%",
-        dialogClass: 'interactive-dialog no-close',
-        closeOnEscape: false,
-        title: i18n.t("sensor.choose_sensor_title"),
-        buttons: {
-          OK: function() {
-            console.log("OK Clicked");
-            $(this).dialog("close");
-            // Change the model's selected sensor
-            model.setSelectedSensor($(this).find('input:checked').val());
-          },
-          Cancel: function() {
-            console.log("Cancel Clicked");
-            $(this).dialog("close");
-          }
+  function chooseSensorPopup() {
+    var dialog = new BasicDialog({
+      width: "60%",
+      dialogClass: 'interactive-dialog no-close',
+      closeOnEscape: false,
+      title: i18n.t("sensor.choose_sensor_title"),
+      buttons: {
+        OK: function() {
+          console.log("OK Clicked");
+          $(this).dialog("close");
+          // Change the model's selected sensor
+          model.setSelectedSensor($(this).find('input:checked').val());
+        },
+        Cancel: function() {
+          console.log("Cancel Clicked");
+          $(this).dialog("close");
         }
-      }, i18n);
-      var content = "",
-          label = "",
-          sensors = model.connectedSensors(),
-          first = true,
-          selectedSensor = model.getSelectedSensor(),
-          i, checked, sensorDef;
-      for (i = 0; i < sensors.length; i++) {
-        if (sensors[i].units !== 's') {
-          checked = "";
-          if (sensors[i].name) {
-            sensorDef = { measurementName: sensors[i].name };
-          } else {
-            sensorDef = sensorDefinitions[sensors[i].units];
-            if (!sensorDef) {
-              sensorDef = { measurementName: "Unknown" };
-            }
-          }
-          label = sensorDef.measurementName + " (" + sensors[i].units + ")";
-          if (selectedSensor == i || (first && selectedSensor == -1)) {
-            checked = "checked ";
+      }
+    }, i18n);
+    var content = "",
+      label = "",
+      sensors = model.connectedSensors(),
+      first = true,
+      selectedSensor = model.getSelectedSensor(),
+      i, checked, sensorDef;
+    for (i = 0; i < sensors.length; i++) {
+      if (sensors[i].units !== 's') {
+        checked = "";
+        if (sensors[i].name) {
+          sensorDef = {
+            measurementName: sensors[i].name
           };
-          content += "<input type='radio' name='selected-sensor-index' value='" + i + "' " + checked + "/>" + label + "<br/>";
-          first = false;
-        }
-      }
-      dialog.setContent(content);
-      dialog.open();
-    }
-
-    return view = {
-      $el: $("<div id='model-container' class='container sensor-model-container' />"),
-      remoteAddress: null,
-
-      bindModel: function(newModel, newModelUrl) {
-        modelUrl = newModelUrl || modelUrl;
-        model = newModel || model;
-
-        setupModelObservers();
-      },
-
-      getHeightForWidth: function() {
-        return "2.8em";
-      },
-
-      // called once we're in the DOM
-      setup: function() {
-        view.$el.empty();
-        view.$controlsContainer = $("<div></div>");
-        view.$statusContainer = $("<div></div>");
-        // view.$addressInput = $("<div class='address-input'><input type='text' name='address-input' placeholder='address of LabQuest2'></input></div>");
-        sensorReadingView = new NumericOutputView({
-          id: 'sensor-value-view',
-          label: i18n.t("sensor.reading"),
-          units: model.getPropertyDescription('sensorReading').getUnitAbbreviation()
-        });
-
-        // view.$connectButton = $("<div class='interactive-button'><button>Connect</button></div>");
-        view.$zeroButton = $("<div class='interactive-button'><button>" + i18n.t("sensor.zero") + "</button></div>");
-        view.$selectSensorButton = $("<div class='interactive-button'><button>" + i18n.t("sensor.select_sensor") + "</button></div>");
-        view.$message = $("<div class='message'></div>");
-        view.$sensorReading = sensorReadingView.render().addClass("horizontal");
-
-        view.$controlsContainer
-          // .append(view.$addressInput)
-          // .append(view.$connectButton)
-          .append(view.$sensorReading)
-          .append(view.$zeroButton)
-          .append(view.$selectSensorButton);
-
-        view.$statusContainer
-          .append(view.$message);
-
-        view.$el.css('zIndex', 4)
-          .append(view.$controlsContainer)
-          .append(view.$statusContainer);
-
-        view.$controlsContainer.find('div').addClass('component component-spacing');
-        view.$statusContainer.find('div').addClass('component component-spacing');
-
-        sensorReadingView.resize();
-        setupModelObservers();
-
-        // if (typeof(view.remoteAddress) == "string") {
-        //   view.$addressInput.find('input').val(view.remoteAddress);
-        // }
-        // view.$addressInput.find('input').on('change', function() {
-        //   view.remoteAddress = $(this).val();
-        // });
-
-        // view.$connectButton.on('click', 'button', function() {
-        //   model.connect(view.$addressInput.find('input').val());
-        // });
-        view.$zeroButton.on('click', 'button', model.tare);
-        view.$selectSensorButton.on('click', 'button', chooseSensorPopup);
-      },
-
-      resize: function() {
-        if (sensorReadingView) {
-          sensorReadingView.resize();
-        }
-      },
-
-      repaint: function() {},
-
-      setFocus: function () {},
-
-      updateUnits: function(units) {
-        sensorReadingView.updateUnits(units);
-        if (model.properties.liveSensorReading == null) {
-          sensorReadingView.hideUnits();
-        }
-      },
-
-      update: function() {
-        if (model.properties.liveSensorReading == null) {
-          sensorReadingView.update("");
-          sensorReadingView.hideUnits();
         } else {
-          sensorReadingView.update(format(model.properties.liveSensorReading));
-          sensorReadingView.showUnits();
+          sensorDef = sensorDefinitions[sensors[i].units];
+          if (!sensorDef) {
+            sensorDef = {
+              measurementName: "Unknown"
+            };
+          }
         }
+        label = sensorDef.measurementName + " (" + sensors[i].units + ")";
+        if (selectedSensor == i || (first && selectedSensor == -1)) {
+          checked = "checked ";
+        };
+        content += "<input type='radio' name='selected-sensor-index' value='" + i + "' " + checked + "/>" + label + "<br/>";
+        first = false;
       }
-    };
+    }
+    dialog.setContent(content);
+    dialog.open();
+  }
+
+  return view = {
+    $el: $("<div id='model-container' class='container sensor-model-container' />"),
+    remoteAddress: null,
+
+    bindModel: function(newModel, newModelUrl) {
+      modelUrl = newModelUrl || modelUrl;
+      model = newModel || model;
+
+      setupModelObservers();
+    },
+
+    getHeightForWidth: function() {
+      return "2.8em";
+    },
+
+    // called once we're in the DOM
+    setup: function() {
+      view.$el.empty();
+      view.$controlsContainer = $("<div></div>");
+      view.$statusContainer = $("<div></div>");
+      // view.$addressInput = $("<div class='address-input'><input type='text' name='address-input' placeholder='address of LabQuest2'></input></div>");
+      sensorReadingView = new NumericOutputView({
+        id: 'sensor-value-view',
+        label: i18n.t("sensor.reading"),
+        units: model.getPropertyDescription('sensorReading').getUnitAbbreviation()
+      });
+
+      // view.$connectButton = $("<div class='interactive-button'><button>Connect</button></div>");
+      view.$zeroButton = $("<div class='interactive-button'><button>" + i18n.t("sensor.zero") + "</button></div>");
+      view.$selectSensorButton = $("<div class='interactive-button'><button>" + i18n.t("sensor.select_sensor") + "</button></div>");
+      view.$message = $("<div class='message'></div>");
+      view.$sensorReading = sensorReadingView.render().addClass("horizontal");
+
+      view.$controlsContainer
+        // .append(view.$addressInput)
+        // .append(view.$connectButton)
+        .append(view.$sensorReading)
+        .append(view.$zeroButton)
+        .append(view.$selectSensorButton);
+
+      view.$statusContainer
+        .append(view.$message);
+
+      view.$el.css('zIndex', 4)
+        .append(view.$controlsContainer)
+        .append(view.$statusContainer);
+
+      view.$controlsContainer.find('div').addClass('component component-spacing');
+      view.$statusContainer.find('div').addClass('component component-spacing');
+
+      sensorReadingView.resize();
+      setupModelObservers();
+
+      // if (typeof(view.remoteAddress) == "string") {
+      //   view.$addressInput.find('input').val(view.remoteAddress);
+      // }
+      // view.$addressInput.find('input').on('change', function() {
+      //   view.remoteAddress = $(this).val();
+      // });
+
+      // view.$connectButton.on('click', 'button', function() {
+      //   model.connect(view.$addressInput.find('input').val());
+      // });
+      view.$zeroButton.on('click', 'button', model.tare);
+      view.$selectSensorButton.on('click', 'button', chooseSensorPopup);
+    },
+
+    resize: function() {
+      if (sensorReadingView) {
+        sensorReadingView.resize();
+      }
+    },
+
+    repaint: function() {},
+
+    setFocus: function() {},
+
+    updateUnits: function(units) {
+      sensorReadingView.updateUnits(units);
+      if (model.properties.liveSensorReading == null) {
+        sensorReadingView.hideUnits();
+      }
+    },
+
+    update: function() {
+      if (model.properties.liveSensorReading == null) {
+        sensorReadingView.update("");
+        sensorReadingView.hideUnits();
+      } else {
+        sensorReadingView.update(format(model.properties.liveSensorReading));
+        sensorReadingView.showUnits();
+      }
+    }
   };
-});
+};

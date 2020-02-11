@@ -1,11 +1,12 @@
 /*global define: false */
 
-define(function (require) {
-  var SVGContainer = require('common/views/svg-container'),
-      Renderer     = require('models/energy2d/views/renderer');
+import $__common_views_svg_container from 'common/views/svg-container';
+import $__models_energy_d_views_renderer from 'models/energy2d/views/renderer';
+var SVGContainer = $__common_views_svg_container,
+  Renderer = $__models_energy_d_views_renderer;
 
-  return function (model, modelUrl) {
-    return new SVGContainer(model, modelUrl, Renderer, {origin: 'top-left'});
-  };
-
-});
+export default function(model, modelUrl) {
+  return new SVGContainer(model, modelUrl, Renderer, {
+    origin: 'top-left'
+  });
+};

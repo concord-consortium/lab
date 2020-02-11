@@ -9,58 +9,56 @@
 // (...)
 // obj.restore(state);
 
-define(function (require) {
-  // Dependencies.
-  var arrays = require('arrays');
+import $__arrays from 'arrays';
+// Dependencies.
+var arrays = $__arrays;
 
-  return function CloneRestoreWrapper(hashOfArrays, options) {
-    options = options || {};
+export default function CloneRestoreWrapper(hashOfArrays, options) {
+  options = options || {};
 
-    // Public API.
-    var ret = {
-      // Clone hash of arrays
-      clone: function() {
-        var copy = {},
-            prop;
+  // Public API.
+  var ret = {
+    // Clone hash of arrays
+    clone: function() {
+      var copy = {},
+        prop;
 
-        for (prop in hashOfArrays) {
-          if (hashOfArrays.hasOwnProperty(prop)) {
-            copy[prop] = arrays.clone(hashOfArrays[prop]);
-          }
+      for (prop in hashOfArrays) {
+        if (hashOfArrays.hasOwnProperty(prop)) {
+          copy[prop] = arrays.clone(hashOfArrays[prop]);
         }
-
-        return copy;
       }
-    };
 
-    // Restore internal arrays using saved state. 2 paths, depending on options.padArraysWithZeroes
-    if (options.padArraysWithZeroes) {
-      ret.restore = function(state) {
-        var prop, target, i, j;
-
-        for (prop in hashOfArrays) {
-          if (hashOfArrays.hasOwnProperty(prop)) {
-            target = hashOfArrays[prop];
-            arrays.copy(state[prop], target);
-            for (i = state[prop].length, j = target.length; i < j; i++) {
-              target[i] = 0;
-            }
-          }
-        }
-      };
-    } else {
-      ret.restore = function(state) {
-        var prop;
-
-        for (prop in hashOfArrays) {
-          if (hashOfArrays.hasOwnProperty(prop)) {
-            arrays.copy(state[prop], hashOfArrays[prop]);
-          }
-        }
-      };
+      return copy;
     }
-
-    return ret;
   };
 
-});
+  // Restore internal arrays using saved state. 2 paths, depending on options.padArraysWithZeroes
+  if (options.padArraysWithZeroes) {
+    ret.restore = function(state) {
+      var prop, target, i, j;
+
+      for (prop in hashOfArrays) {
+        if (hashOfArrays.hasOwnProperty(prop)) {
+          target = hashOfArrays[prop];
+          arrays.copy(state[prop], target);
+          for (i = state[prop].length, j = target.length; i < j; i++) {
+            target[i] = 0;
+          }
+        }
+      }
+    };
+  } else {
+    ret.restore = function(state) {
+      var prop;
+
+      for (prop in hashOfArrays) {
+        if (hashOfArrays.hasOwnProperty(prop)) {
+          arrays.copy(state[prop], hashOfArrays[prop]);
+        }
+      }
+    };
+  }
+
+  return ret;
+};

@@ -32,8 +32,8 @@
     'markdown': {
       exports: 'markdown'
     },
-    'pixi':  {
-      exports: 'PIXI'
+    'pixi.js':  {
+      exports: 'pixi.js'
     },
     'rgbcolor': {
       exports: 'rgbcolor'
@@ -56,7 +56,7 @@
     'iframe-phone': '../../vendor/iframe-phone/dist/iframe-phone',
     'text': '../../vendor/text/text',
     'underscore': '../../vendor/underscore/underscore',
-    'pixi': '../../vendor/pixi.js/bin/pixi.dev',
+    'pixi.js': '../../vendor/pixi.js/bin/pixi.dev',
     'canvg': '../../vendor/canvg-1.3/canvg',
     'rgbcolor': '../../vendor/canvg-1.3/rgbcolor',
     'fastclick': '../../vendor/fastclick/lib/fastclick',

@@ -1,25 +1,25 @@
 /*global define */
 
-define(function (require) {
+import $__common_inherit from "common/inherit";
+import $__common_models_property_transition from "common/models/property-transition";
 
-  var inherit            = require("common/inherit"),
-      PropertyTransition = require("common/models/property-transition");
+var inherit = $__common_inherit,
+  PropertyTransition = $__common_models_property_transition;
 
-  function AtomTransition(model) {
-    // Call super constructor.
-    PropertyTransition.call(this);
-    this._model = model;
-  }
-  inherit(AtomTransition, PropertyTransition);
+function AtomTransition(model) {
+  // Call super constructor.
+  PropertyTransition.call(this);
+  this._model = model;
+}
+inherit(AtomTransition, PropertyTransition);
 
 
-  AtomTransition.prototype.setObjectProperties = function(id, props) {
-    this._model.setAtomProperties(id, props);
-  };
+AtomTransition.prototype.setObjectProperties = function(id, props) {
+  this._model.setAtomProperties(id, props);
+};
 
-  AtomTransition.prototype.getObjectProperties = function (id) {
-    return this._model.getAtomProperties(id);
-  };
+AtomTransition.prototype.getObjectProperties = function(id) {
+  return this._model.getAtomProperties(id);
+};
 
-  return AtomTransition;
-});
+export default AtomTransition;

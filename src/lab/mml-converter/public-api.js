@@ -1,11 +1,11 @@
 /*global define: false */
 
-define(function (require) {
-  var version      = require('lab.version'),
-      mmlConverter = require('mml-converter/mml-converter');
+import $__lab_version from 'lab.version';
+import $__mml_converter_mml_converter from 'mml-converter/mml-converter';
+var version = $__lab_version,
+  mmlConverter = $__mml_converter_mml_converter;
 
-  // Create or get 'Lab' global object (namespace).
-  window.Lab = window.Lab || {};
-  window.Lab.version = version;
-  window.Lab.mmlConverter = mmlConverter;
-});
+// Create or get 'Lab' global object (namespace).
+window.Lab = window.Lab || {};
+window.Lab.version = version;
+window.Lab.mmlConverter = mmlConverter;

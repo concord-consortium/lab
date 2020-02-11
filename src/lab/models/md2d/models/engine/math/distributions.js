@@ -9,36 +9,27 @@
 // http://www.math.nyu.edu/faculty/goodman/teaching/MonteCarlo2005/notes/GaussianSampling.pdf
 //
 
-// Module can be used both in Node.js environment and in Web browser
-// using RequireJS. RequireJS Optimizer will strip out this if statement.
-if (typeof define !== 'function') {
-  var define = require('amdefine')(module);
-}
+exports.normal = (function() {
+  var next = null;
 
-define(function (require, exports, module) {
+  return function(mean, sd) {
+    if (mean == null) mean = 0;
+    if (sd == null) sd = 1;
 
-  exports.normal = (function() {
-    var next = null;
+    var r, ret, theta, u1, u2;
 
-    return function(mean, sd) {
-      if (mean == null) mean = 0;
-      if (sd == null)   sd = 1;
+    if (next) {
+      ret = next;
+      next = null;
+      return ret;
+    }
 
-      var r, ret, theta, u1, u2;
+    u1 = Math.random();
+    u2 = Math.random();
+    theta = 2 * Math.PI * u1;
+    r = Math.sqrt(-2 * Math.log(u2));
 
-      if (next) {
-        ret  = next;
-        next = null;
-        return ret;
-      }
-
-      u1    = Math.random();
-      u2    = Math.random();
-      theta = 2 * Math.PI * u1;
-      r     = Math.sqrt(-2 * Math.log(u2));
-
-      next = mean + sd * (r * Math.sin(theta));
-      return mean + sd * (r * Math.cos(theta));
-    };
-  }());
-});
+    next = mean + sd * (r * Math.sin(theta));
+    return mean + sd * (r * Math.cos(theta));
+  };
+}());

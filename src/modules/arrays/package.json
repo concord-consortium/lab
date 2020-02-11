@@ -3,9 +3,6 @@
   "name": "arrays",
   "description": "Utilities for creating and manipulating Typed or Regular Arrays",
   "version": "0.0.2",
-  "dependencies": {
-    "amdefine": ">=0.0.2"
-  },
   "devDependencies": {},
   "optionalDependencies": {},
   "engines": {

@@ -1,511 +1,527 @@
 /*global define: false, $: true */
 
-define(function(require) {
+import $__lab_config from 'lab.config';
+import $__common_lab_modeler_mixin from 'common/lab-modeler-mixin';
+import $__common_property_description from 'common/property-description';
+import $____metadata from './metadata';
+import $__sensor_applet from 'sensor-applet';
+import $__models_sensor_common_i__n_sensor_definitions from 'models/sensor-common/i18n-sensor-definitions';
+import $__models_sensor_common_notifier from 'models/sensor-common/notifier';
+import $__common_controllers_export_controller from 'common/controllers/export-controller';
 
-  var labConfig            = require('lab.config'),
-      LabModelerMixin      = require('common/lab-modeler-mixin'),
-      PropertyDescription  = require('common/property-description'),
-      metadata             = require('./metadata'),
-      sensorApplet         = require('sensor-applet'),
-      unitsDefinition      = sensorApplet.unitsDefinition,
-      getSensorDefinitions = require('models/sensor-common/i18n-sensor-definitions'),
-      Notifier             = require('models/sensor-common/notifier'),
-      ExportController     = require('common/controllers/export-controller');
+var labConfig = $__lab_config,
+  LabModelerMixin = $__common_lab_modeler_mixin,
+  PropertyDescription = $__common_property_description,
+  metadata = $____metadata,
+  sensorApplet = $__sensor_applet,
+  unitsDefinition = sensorApplet.unitsDefinition,
+  getSensorDefinitions = $__models_sensor_common_i__n_sensor_definitions,
+  Notifier = $__models_sensor_common_notifier,
+  ExportController = $__common_controllers_export_controller;
 
-  return function Model(initialProperties, opt) {
-    var i18n = opt.i18n,
-        notifier = new Notifier(i18n),
+export default function Model(initialProperties, opt) {
+  var i18n = opt.i18n,
+    notifier = new Notifier(i18n),
 
-        labModelerMixin,
-        propertySupport,
-        dispatch,
-        isStopped = true,
-        needsReload = false,
-        initialSensorType,
-        sensorType,
-        applet,
-        isSensorReady = false,
-        isSensorInitializing = false,
-        sensorPollsPerSecond = 1,
-        sensorPollingIntervalID,
-        samplesPerSecond,
-        time,
-        rawSensorValue,
-        stepCounter,
-        didCollectData,
-        isTaring,
-        isSensorTareable,
-        initialTareValue,
-        model;
+    labModelerMixin,
+    propertySupport,
+    dispatch,
+    isStopped = true,
+    needsReload = false,
+    initialSensorType,
+    sensorType,
+    applet,
+    isSensorReady = false,
+    isSensorInitializing = false,
+    sensorPollsPerSecond = 1,
+    sensorPollingIntervalID,
+    samplesPerSecond,
+    time,
+    rawSensorValue,
+    stepCounter,
+    didCollectData,
+    isTaring,
+    isSensorTareable,
+    initialTareValue,
+    model;
 
-    var defaultSensorReadingDescriptionHash = {
-      label: i18n.t("sensor.measurements.sensor_reading"),
-      unitAbbreviation: "-",
-      format: '.2f',
-      min: 0,
-      max: 1
-    };
-    var sensorDefinitions = getSensorDefinitions(i18n);
+  var defaultSensorReadingDescriptionHash = {
+    label: i18n.t("sensor.measurements.sensor_reading"),
+    unitAbbreviation: "-",
+    format: '.2f',
+    min: 0,
+    max: 1
+  };
+  var sensorDefinitions = getSensorDefinitions(i18n);
 
-    function updatePropertyRange(property, min, max) {
-      var descriptionHash;
-      var description;
+  function updatePropertyRange(property, min, max) {
+    var descriptionHash;
+    var description;
 
-      descriptionHash = model.getPropertyDescription(property).getHash();
-      descriptionHash.min = min;
-      descriptionHash.max = max;
+    descriptionHash = model.getPropertyDescription(property).getHash();
+    descriptionHash.min = min;
+    descriptionHash.max = max;
 
-      description = new PropertyDescription(unitsDefinition, descriptionHash);
-      propertySupport.setPropertyDescription(property, description);
+    description = new PropertyDescription(unitsDefinition, descriptionHash);
+    propertySupport.setPropertyDescription(property, description);
+  }
+
+  // Updates min, max of displayTime to be [0..collectionTime]
+  function updateDisplayTimeRange() {
+    if (model.properties.collectionTime == null) {
+      return;
+    }
+    updatePropertyRange('displayTime', 0, model.properties.collectionTime);
+  }
+
+  function removeApplet() {
+    if (applet) {
+      applet.removeListeners('data');
+      applet.removeListeners('deviceUnplugged');
+      applet.removeListeners('sensorUnplugged');
+
+      applet.remove();
     }
 
-    // Updates min, max of displayTime to be [0..collectionTime]
-    function updateDisplayTimeRange() {
-      if (model.properties.collectionTime == null) {
-        return;
-      }
-      updatePropertyRange('displayTime', 0, model.properties.collectionTime);
-    }
+    model.makeInvalidatingChange(function() {
+      isSensorReady = false;
+      isSensorInitializing = false;
+    });
+  }
 
-    function removeApplet() {
-      if (applet) {
-        applet.removeListeners('data');
-        applet.removeListeners('deviceUnplugged');
-        applet.removeListeners('sensorUnplugged');
+  function appendApplet() {
+    model.makeInvalidatingChange(function() {
+      isSensorInitializing = true;
+    });
 
-        applet.remove();
-      }
-
-      model.makeInvalidatingChange(function() {
-        isSensorReady = false;
-        isSensorInitializing = false;
+    // Wrapped in a setTimeout to allow all property observers to finish their work before
+    // actually firing up the applet, which freezes the UI and possibly blocks until the user
+    // clicks through security dialogs to allow the applet to run.
+    // TODO: A setImmediate shim (using window.postMessage) would be useful here.
+    setTimeout(function() {
+      applet.on('data', appletDataCallback);
+      applet.on('deviceUnplugged', function() {
+        handleUnplugged('device');
       });
-    }
-
-    function appendApplet() {
-      model.makeInvalidatingChange(function() {
-        isSensorInitializing = true;
+      applet.on('sensorUnplugged', function() {
+        handleUnplugged('sensor');
       });
 
-      // Wrapped in a setTimeout to allow all property observers to finish their work before
-      // actually firing up the applet, which freezes the UI and possibly blocks until the user
-      // clicks through security dialogs to allow the applet to run.
-      // TODO: A setImmediate shim (using window.postMessage) would be useful here.
-      setTimeout(function() {
-        applet.on('data', appletDataCallback);
-        applet.on('deviceUnplugged', function() { handleUnplugged('device'); });
-        applet.on('sensorUnplugged', function() { handleUnplugged('sensor'); });
+      applet.append($('body'), function(error) {
 
-        applet.append($('body'),function(error) {
-
-          if (error) {
-            if (error instanceof sensorApplet.JavaLoadError) {
-              handleLoadingFailure(i18n.t("sensor.messages.java_applet_error"));
-            } else if (error instanceof sensorApplet.AppletInitializationError) {
-              handleLoadingFailure(i18n.t("sensor.messages.java_applet_not_loading"));
-            } else if (error instanceof sensorApplet.SensorConnectionError) {
-              handleSensorConnectionError();
-            } else {
-              handleLoadingFailure(i18n.t("sensor.messages.unexpected_error"));
-            }
-            model.makeInvalidatingChange(function() {
-              isSensorInitializing = false;
-            });
-            return;
-          }
-
-          model.makeInvalidatingChange(function() {
-            isSensorReady = true;
-            isSensorInitializing = false;
-          });
-        });
-      }, 10);
-    }
-
-    function handleSensorConnectionError() {
-      removeApplet();
-      var buttons = {};
-      buttons[i18n.t("sensor.messages.try_again")] = function() {
-        $(this).dialog("close");
-        // This is a workaround: currently, the applet itself does not appear to respond to its
-        // initialization methods if the sensor was not connected when the applet started up.
-        appendApplet();
-      };
-      buttons[i18n.t("sensor.messages.cancel")] = function() {
-        $(this).remove();
-        model.reload();
-      };
-      notifier.alert(i18n.t("sensor.messages.sensor_not_attached", {sensor_name: model.properties.sensorName}), buttons);
-    }
-
-    function handleLoadingFailure(message) {
-      removeApplet();
-      notifier.alert(message, {
-        OK: function() {
-          $(this).remove();
-          model.reload();
-        }
-      });
-    }
-
-    function handleUnplugged(what) {
-      removeApplet();
-      model.stop();
-      ExportController.logAction("Unplugged" + model.properties[what+'Name']);
-      var buttons = {};
-      buttons[i18n.t("sensor.messages.try_again")] = function() {
-        $(this).dialog("close");
-        appendApplet();
-      };
-      buttons[i18n.t("sensor.messages.cancel")] = function() {
-        $(this).dialog("close");
-      };
-      notifier.alert(i18n.t("sensor.messages.sensor_or_device_unplugged", {sensor_or_device_name: model.properties[what+'Name']}), buttons);
-    }
-
-    function startPollingSensor() {
-      if (sensorPollingIntervalID) {
-        clearInterval(sensorPollingIntervalID);
-      }
-      var handleSensorValues = function(error, values) {
         if (error) {
-          if (error instanceof sensorApplet.AlreadyReadingError) {
-            // Don't worry about it -- we just overlapped another call to readSensor
-          } else if(error instanceof sensorApplet.SensorConnectionError){
-            clearInterval(sensorPollingIntervalID);
+          if (error instanceof sensorApplet.JavaLoadError) {
+            handleLoadingFailure(i18n.t("sensor.messages.java_applet_error"));
+          } else if (error instanceof sensorApplet.AppletInitializationError) {
+            handleLoadingFailure(i18n.t("sensor.messages.java_applet_not_loading"));
+          } else if (error instanceof sensorApplet.SensorConnectionError) {
             handleSensorConnectionError();
           } else {
-            clearInterval(sensorPollingIntervalID);
-            throw error;
+            handleLoadingFailure(i18n.t("sensor.messages.unexpected_error"));
           }
-        } else {
           model.makeInvalidatingChange(function() {
-            rawSensorValue = values[0];
-            if (isTaring) {
-              model.properties.tareValue = rawSensorValue;
-              isTaring = false;
-            }
+            isSensorInitializing = false;
           });
-        }
-      };
-      sensorPollingIntervalID = setInterval(function() {
-        applet.readSensor(handleSensorValues);
-      }, 1000/sensorPollsPerSecond);
-    }
-
-    function stopPollingSensor() {
-      if (sensorPollingIntervalID) {
-        clearInterval(sensorPollingIntervalID);
-        sensorPollingIntervalID = null;
-      }
-    }
-
-    function initializeStateVariables() {
-      stepCounter = 0;
-      time = 0;
-      rawSensorValue = undefined;
-      didCollectData = false;
-      isSensorTareable = false;
-      isTaring = false;
-    }
-
-    function setSensorType(_sensorType) {
-      var AppletClass;
-      var sensorDefinition;
-      var description;
-      var measurementType;
-
-      if (sensorType === _sensorType) {
-        return;
-      }
-
-      if (sensorType) {
-        // drop the tare value if we're changing from one sensor type to another!
-        model.properties.tareValue = 0;
-      }
-
-      sensorType = _sensorType;
-      rawSensorValue = undefined;
-
-      if (applet) {
-        removeApplet();
-      }
-
-      if (sensorType) {
-        sensorDefinition = sensorDefinitions[sensorType];
-        samplesPerSecond = sensorDefinition.samplesPerSecond;
-        measurementType = sensorDefinition.measurementType;
-        AppletClass = sensorApplet[sensorDefinition.appletClass];
-        isSensorTareable = sensorDefinition.tareable;
-
-        applet = window.Lab.sensor[sensorType] = new AppletClass({
-          listenerPath: 'Lab.sensor.' + sensorType,
-          sensorDefinitions: [sensorDefinition],
-          appletId: sensorType+'-sensor',
-          codebase: labConfig.rootUrl + "/jars/lab-sensor-applet-interface-dist"
-        });
-
-        appendApplet();
-
-        // Update the description of the main 'sensorReading' output
-        description = new PropertyDescription(unitsDefinition, {
-          label: sensorDefinition.measurementName,
-          unitType: measurementType,
-          min: sensorDefinition.minReading,
-          max: sensorDefinition.maxReading
-        });
-
-        propertySupport.setPropertyDescription('sensorReading', description);
-
-        // Override collectionTime  only if it wasn't set on the model definition
-        if (model.properties.collectionTime == null) {
-          model.properties.collectionTime = sensorDefinition.maxSeconds;
-        }
-      } else if (model.properties.hasOwnProperty('sensorReading')) {
-        // no sensor type
-        description = new PropertyDescription(unitsDefinition, defaultSensorReadingDescriptionHash);
-        propertySupport.setPropertyDescription('sensorReading', description);
-      }
-    }
-
-    function appletDataCallback(d) {
-      stepCounter++;
-
-      time += (1 / samplesPerSecond);
-
-      // Whaaa? Accessing 'window' seems to prevent a strange bug in which Safari 6.0 stops updating
-      // time after 3.7s. Hard to debug because accessing console, window, or Web Inspector makes
-      // the problem go away!
-      window.__bizarreSafariFix = 1;
-
-      rawSensorValue = d[0];
-      // Once we collect data for a given sensor, don't allow changingn the sensor typea
-      if (!didCollectData) {
-        model.freeze('sensorType');
-      }
-
-      didCollectData = true;
-      model.updateAllOutputProperties();
-      dispatch.tick();
-    }
-
-    model = {
-
-      on: function(type, listener) {
-        dispatch.on(type, listener);
-      },
-
-      start: function() {
-        if (!model.properties.isPlayable) {
           return;
         }
 
-        applet.start(function(error, isStarted) {
-          if (error) {
-            if (error instanceof sensorApplet.SensorConnectionError) {
-              handleSensorConnectionError();
-            }
-          } else if (isStarted) {
-            model.makeInvalidatingChange(function() {
-              isStopped = false;
-            });
-            dispatch.play();
+        model.makeInvalidatingChange(function() {
+          isSensorReady = true;
+          isSensorInitializing = false;
+        });
+      });
+    }, 10);
+  }
+
+  function handleSensorConnectionError() {
+    removeApplet();
+    var buttons = {};
+    buttons[i18n.t("sensor.messages.try_again")] = function() {
+      $(this).dialog("close");
+      // This is a workaround: currently, the applet itself does not appear to respond to its
+      // initialization methods if the sensor was not connected when the applet started up.
+      appendApplet();
+    };
+    buttons[i18n.t("sensor.messages.cancel")] = function() {
+      $(this).remove();
+      model.reload();
+    };
+    notifier.alert(i18n.t("sensor.messages.sensor_not_attached", {
+      sensor_name: model.properties.sensorName
+    }), buttons);
+  }
+
+  function handleLoadingFailure(message) {
+    removeApplet();
+    notifier.alert(message, {
+      OK: function() {
+        $(this).remove();
+        model.reload();
+      }
+    });
+  }
+
+  function handleUnplugged(what) {
+    removeApplet();
+    model.stop();
+    ExportController.logAction("Unplugged" + model.properties[what + 'Name']);
+    var buttons = {};
+    buttons[i18n.t("sensor.messages.try_again")] = function() {
+      $(this).dialog("close");
+      appendApplet();
+    };
+    buttons[i18n.t("sensor.messages.cancel")] = function() {
+      $(this).dialog("close");
+    };
+    notifier.alert(i18n.t("sensor.messages.sensor_or_device_unplugged", {
+      sensor_or_device_name: model.properties[what + 'Name']
+    }), buttons);
+  }
+
+  function startPollingSensor() {
+    if (sensorPollingIntervalID) {
+      clearInterval(sensorPollingIntervalID);
+    }
+    var handleSensorValues = function(error, values) {
+      if (error) {
+        if (error instanceof sensorApplet.AlreadyReadingError) {
+          // Don't worry about it -- we just overlapped another call to readSensor
+        } else if (error instanceof sensorApplet.SensorConnectionError) {
+          clearInterval(sensorPollingIntervalID);
+          handleSensorConnectionError();
+        } else {
+          clearInterval(sensorPollingIntervalID);
+          throw error;
+        }
+      } else {
+        model.makeInvalidatingChange(function() {
+          rawSensorValue = values[0];
+          if (isTaring) {
+            model.properties.tareValue = rawSensorValue;
+            isTaring = false;
           }
         });
-      },
-
-      stop: function() {
-
-        if (applet) {
-          applet.stop();
-        }
-        model.makeInvalidatingChange(function() {
-          isStopped = true;
-        });
-        dispatch.stop();
-      },
-
-      tare: function() {
-        if (!isStopped) {
-          throw new Error("Sensor model: tare() called on a non-stopped model.");
-        }
-        if (sensorPollingIntervalID != null && rawSensorValue != null) {
-          model.properties.tareValue = rawSensorValue;
-        } else {
-          model.makeInvalidatingChange(function() {
-            isTaring = true;
-          });
-        }
-      },
-
-      willReset: function() {
-        dispatch.willReset();
-      },
-
-      reset: function() {
-        model.stop();
-        removeApplet();
-
-        initializeStateVariables();
-        model.properties.tareValue = initialTareValue;
-        model.unfreeze('sensorType');
-        model.properties.sensorType = initialSensorType;
-
-        dispatch.reset();
-      },
-
-      reload: function() {
-        model.stop();
-        model.makeInvalidatingChange(function() {
-          needsReload = true;
-        });
-      },
-
-      isStopped: function() {
-        return isStopped;
-      },
-
-      stepCounter: function() {
-        return stepCounter;
-      },
-
-      serialize: function () { return ""; }
+      }
     };
+    sensorPollingIntervalID = setInterval(function() {
+      applet.readSensor(handleSensorValues);
+    }, 1000 / sensorPollsPerSecond);
+  }
 
-    initializeStateVariables();
-
-    // Need to define a globally-accessible 'listenerPath' for the sensor to evaluate
-    if (window.Lab === undefined) {
-      window.Lab = {};
+  function stopPollingSensor() {
+    if (sensorPollingIntervalID) {
+      clearInterval(sensorPollingIntervalID);
+      sensorPollingIntervalID = null;
     }
-    window.Lab.sensor = {};
+  }
 
-    labModelerMixin = new LabModelerMixin({
-      metadata: metadata,
-      setters: {
-        sensorType: setSensorType
-      },
-      unitsDefinition: unitsDefinition,
-      initialProperties: initialProperties,
-      usePlaybackSupport: false
-    });
+  function initializeStateVariables() {
+    stepCounter = 0;
+    time = 0;
+    rawSensorValue = undefined;
+    didCollectData = false;
+    isSensorTareable = false;
+    isTaring = false;
+  }
 
-    labModelerMixin.mixInto(model);
-    propertySupport = labModelerMixin.propertySupport;
-    dispatch = labModelerMixin.dispatchSupport;
-    dispatch.addEventTypes("tick", "play", "stop", "tickStart", "tickEnd");
+  function setSensorType(_sensorType) {
+    var AppletClass;
+    var sensorDefinition;
+    var description;
+    var measurementType;
 
-    // Remember thse values so that the model can be reset properly
-    initialSensorType = model.properties.sensorType;
-    initialTareValue = model.properties.tareValue;
+    if (sensorType === _sensorType) {
+      return;
+    }
 
-    model.defineOutput('time', {
-      label: i18n.t("sensor.measurements.time"),
-      unitType: 'time',
-      format: '.2f'
-    }, function() {
-      return time;
-    });
+    if (sensorType) {
+      // drop the tare value if we're changing from one sensor type to another!
+      model.properties.tareValue = 0;
+    }
 
-    model.defineOutput('displayTime', {
-      label: i18n.t("sensor.measurements.time"),
-      unitType: 'time',
-      format: '.2f'
-    }, function() {
-      return time;
-    });
+    sensorType = _sensorType;
+    rawSensorValue = undefined;
 
-    model.defineOutput('sensorReading', defaultSensorReadingDescriptionHash, function() {
-      if (rawSensorValue == null) {
-        return rawSensorValue;
+    if (applet) {
+      removeApplet();
+    }
+
+    if (sensorType) {
+      sensorDefinition = sensorDefinitions[sensorType];
+      samplesPerSecond = sensorDefinition.samplesPerSecond;
+      measurementType = sensorDefinition.measurementType;
+      AppletClass = sensorApplet[sensorDefinition.appletClass];
+      isSensorTareable = sensorDefinition.tareable;
+
+      applet = window.Lab.sensor[sensorType] = new AppletClass({
+        listenerPath: 'Lab.sensor.' + sensorType,
+        sensorDefinitions: [sensorDefinition],
+        appletId: sensorType + '-sensor',
+        codebase: labConfig.rootUrl + "/jars/lab-sensor-applet-interface-dist"
+      });
+
+      appendApplet();
+
+      // Update the description of the main 'sensorReading' output
+      description = new PropertyDescription(unitsDefinition, {
+        label: sensorDefinition.measurementName,
+        unitType: measurementType,
+        min: sensorDefinition.minReading,
+        max: sensorDefinition.maxReading
+      });
+
+      propertySupport.setPropertyDescription('sensorReading', description);
+
+      // Override collectionTime  only if it wasn't set on the model definition
+      if (model.properties.collectionTime == null) {
+        model.properties.collectionTime = sensorDefinition.maxSeconds;
       }
-      return rawSensorValue - model.properties.tareValue;
-    });
+    } else if (model.properties.hasOwnProperty('sensorReading')) {
+      // no sensor type
+      description = new PropertyDescription(unitsDefinition, defaultSensorReadingDescriptionHash);
+      propertySupport.setPropertyDescription('sensorReading', description);
+    }
+  }
 
-    // TODO. Need a better way for the model to be able to have a property which it can set the
-    // value of at arbitrary times, but which is read-only to client code. Outputs aren't quite
-    // the right solution because the invalidation stuff is really about time and physics-based
-    // invalidation.
+  function appletDataCallback(d) {
+    stepCounter++;
 
-    model.defineOutput('sensorName', {
-      label: "Sensor Name"
-    }, function() {
-      return sensorDefinitions[sensorType].sensorName;
-    });
+    time += (1 / samplesPerSecond);
 
-    model.defineOutput('deviceName', {
-      label: "Sensor Interface Device Name"
-    }, function() {
-      return sensorDefinitions[sensorType].deviceName;
-    });
+    // Whaaa? Accessing 'window' seems to prevent a strange bug in which Safari 6.0 stops updating
+    // time after 3.7s. Hard to debug because accessing console, window, or Web Inspector makes
+    // the problem go away!
+    window.__bizarreSafariFix = 1;
 
-    model.defineOutput('isStopped', {
-      label: "Stopped?"
-    }, function() {
-      return isStopped;
-    });
+    rawSensorValue = d[0];
+    // Once we collect data for a given sensor, don't allow changingn the sensor typea
+    if (!didCollectData) {
+      model.freeze('sensorType');
+    }
 
-    // TODO. We need a way to make "model-writable" read only properties.
-    model.defineOutput('isPlayable', {
-      label: "Startable?"
-    }, function() {
-      return isSensorReady && !didCollectData;
-    });
+    didCollectData = true;
+    model.updateAllOutputProperties();
+    dispatch.tick();
+  }
 
-    model.defineOutput('hasPlayed', {
-      label: "Has successfully collected data?"
-    }, function() {
-      return didCollectData;
-    });
+  model = {
 
-    model.defineOutput('shouldPollSensor', {
-      label: "Polling Sensor?"
-    }, function() {
-      return model.properties.isPlayable && isStopped;
-    });
+    on: function(type, listener) {
+      dispatch.on(type, listener);
+    },
 
-    model.defineOutput('isSensorInitializing', {
-      label: "Loading Sensor?"
-    }, function() {
-      return isSensorInitializing;
-    });
+    start: function() {
+      if (!model.properties.isPlayable) {
+        return;
+      }
 
-    model.defineOutput('isTaring', {
-      label: "Waiting for a tare value?"
-    }, function() {
-      return isTaring;
-    });
+      applet.start(function(error, isStarted) {
+        if (error) {
+          if (error instanceof sensorApplet.SensorConnectionError) {
+            handleSensorConnectionError();
+          }
+        } else if (isStarted) {
+          model.makeInvalidatingChange(function() {
+            isStopped = false;
+          });
+          dispatch.play();
+        }
+      });
+    },
 
-    model.defineOutput('canTare', {
-      label: "Can set a tare value?"
-    }, function() {
-      return isStopped && !didCollectData && isSensorTareable && !isTaring;
-    });
+    stop: function() {
 
-    model.defineOutput('needsReload', {
-      label: "Needs Reload?"
-    }, function() {
-      return needsReload;
-    });
+      if (applet) {
+        applet.stop();
+      }
+      model.makeInvalidatingChange(function() {
+        isStopped = true;
+      });
+      dispatch.stop();
+    },
 
-    // Clean up state before we go -- failing to remove the applet from the page before switching
-    // between 2 sensor types that use the same interface causes an applet exception.
-    model.on('willReset.model', removeApplet);
-
-    model.addObserver('shouldPollSensor', function() {
-      if (model.properties.shouldPollSensor) {
-        startPollingSensor();
+    tare: function() {
+      if (!isStopped) {
+        throw new Error("Sensor model: tare() called on a non-stopped model.");
+      }
+      if (sensorPollingIntervalID != null && rawSensorValue != null) {
+        model.properties.tareValue = rawSensorValue;
       } else {
-        stopPollingSensor();
+        model.makeInvalidatingChange(function() {
+          isTaring = true;
+        });
       }
-    });
+    },
 
-    model.addObserver('collectionTime', updateDisplayTimeRange);
-    updateDisplayTimeRange();
+    willReset: function() {
+      dispatch.willReset();
+    },
 
-    // Kick things off by doing this explicitly:
-    setSensorType(model.properties.sensorType);
+    reset: function() {
+      model.stop();
+      removeApplet();
 
-    return model;
+      initializeStateVariables();
+      model.properties.tareValue = initialTareValue;
+      model.unfreeze('sensorType');
+      model.properties.sensorType = initialSensorType;
+
+      dispatch.reset();
+    },
+
+    reload: function() {
+      model.stop();
+      model.makeInvalidatingChange(function() {
+        needsReload = true;
+      });
+    },
+
+    isStopped: function() {
+      return isStopped;
+    },
+
+    stepCounter: function() {
+      return stepCounter;
+    },
+
+    serialize: function() {
+      return "";
+    }
   };
-});
+
+  initializeStateVariables();
+
+  // Need to define a globally-accessible 'listenerPath' for the sensor to evaluate
+  if (window.Lab === undefined) {
+    window.Lab = {};
+  }
+  window.Lab.sensor = {};
+
+  labModelerMixin = new LabModelerMixin({
+    metadata: metadata,
+    setters: {
+      sensorType: setSensorType
+    },
+    unitsDefinition: unitsDefinition,
+    initialProperties: initialProperties,
+    usePlaybackSupport: false
+  });
+
+  labModelerMixin.mixInto(model);
+  propertySupport = labModelerMixin.propertySupport;
+  dispatch = labModelerMixin.dispatchSupport;
+  dispatch.addEventTypes("tick", "play", "stop", "tickStart", "tickEnd");
+
+  // Remember thse values so that the model can be reset properly
+  initialSensorType = model.properties.sensorType;
+  initialTareValue = model.properties.tareValue;
+
+  model.defineOutput('time', {
+    label: i18n.t("sensor.measurements.time"),
+    unitType: 'time',
+    format: '.2f'
+  }, function() {
+    return time;
+  });
+
+  model.defineOutput('displayTime', {
+    label: i18n.t("sensor.measurements.time"),
+    unitType: 'time',
+    format: '.2f'
+  }, function() {
+    return time;
+  });
+
+  model.defineOutput('sensorReading', defaultSensorReadingDescriptionHash, function() {
+    if (rawSensorValue == null) {
+      return rawSensorValue;
+    }
+    return rawSensorValue - model.properties.tareValue;
+  });
+
+  // TODO. Need a better way for the model to be able to have a property which it can set the
+  // value of at arbitrary times, but which is read-only to client code. Outputs aren't quite
+  // the right solution because the invalidation stuff is really about time and physics-based
+  // invalidation.
+
+  model.defineOutput('sensorName', {
+    label: "Sensor Name"
+  }, function() {
+    return sensorDefinitions[sensorType].sensorName;
+  });
+
+  model.defineOutput('deviceName', {
+    label: "Sensor Interface Device Name"
+  }, function() {
+    return sensorDefinitions[sensorType].deviceName;
+  });
+
+  model.defineOutput('isStopped', {
+    label: "Stopped?"
+  }, function() {
+    return isStopped;
+  });
+
+  // TODO. We need a way to make "model-writable" read only properties.
+  model.defineOutput('isPlayable', {
+    label: "Startable?"
+  }, function() {
+    return isSensorReady && !didCollectData;
+  });
+
+  model.defineOutput('hasPlayed', {
+    label: "Has successfully collected data?"
+  }, function() {
+    return didCollectData;
+  });
+
+  model.defineOutput('shouldPollSensor', {
+    label: "Polling Sensor?"
+  }, function() {
+    return model.properties.isPlayable && isStopped;
+  });
+
+  model.defineOutput('isSensorInitializing', {
+    label: "Loading Sensor?"
+  }, function() {
+    return isSensorInitializing;
+  });
+
+  model.defineOutput('isTaring', {
+    label: "Waiting for a tare value?"
+  }, function() {
+    return isTaring;
+  });
+
+  model.defineOutput('canTare', {
+    label: "Can set a tare value?"
+  }, function() {
+    return isStopped && !didCollectData && isSensorTareable && !isTaring;
+  });
+
+  model.defineOutput('needsReload', {
+    label: "Needs Reload?"
+  }, function() {
+    return needsReload;
+  });
+
+  // Clean up state before we go -- failing to remove the applet from the page before switching
+  // between 2 sensor types that use the same interface causes an applet exception.
+  model.on('willReset.model', removeApplet);
+
+  model.addObserver('shouldPollSensor', function() {
+    if (model.properties.shouldPollSensor) {
+      startPollingSensor();
+    } else {
+      stopPollingSensor();
+    }
+  });
+
+  model.addObserver('collectionTime', updateDisplayTimeRange);
+  updateDisplayTimeRange();
+
+  // Kick things off by doing this explicitly:
+  setSensorType(model.properties.sensorType);
+
+  return model;
+};

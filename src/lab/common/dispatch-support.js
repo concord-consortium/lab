@@ -25,123 +25,120 @@
  * Rest of the interface is exactly the same like in d3.dispatch (.on()).
  * Under the hood delegation to d3.dispatch instance is used.
  */
-define(function() {
+// Converts arguments object to regular array.
+function argsToArray(args) {
+  return [].slice.call(args);
+}
 
-  // Converts arguments object to regular array.
-  function argsToArray(args) {
-    return [].slice.call(args);
+export default function DispatchSupport() {
+  var api,
+    d3dispatch,
+    types,
+
+    batchMode = false,
+    suppressedEvents = d3.set();
+
+  function init(newTypes) {
+    var i, len;
+
+    types = newTypes;
+
+    d3dispatch = d3.dispatch.apply(null, types);
+
+    // Provide wrapper around typical calls like dispatch.someEvent().
+    for (i = 0, len = types.length; i < len; i++) {
+      api[types[i]] = dispatchEvent(types[i]);
+    }
   }
 
-  return function DispatchSupport() {
-    var api,
-        d3dispatch,
-        types,
-
-        batchMode = false,
-        suppressedEvents = d3.set();
-
-    function init(newTypes) {
-      var i, len;
-
-      types = newTypes;
-
-      d3dispatch = d3.dispatch.apply(null, types);
-
-      // Provide wrapper around typical calls like dispatch.someEvent().
-      for (i = 0, len = types.length; i < len; i++) {
-        api[types[i]] = dispatchEvent(types[i]);
-      }
-    }
-
-    function dispatchEvent(name) {
-      return function () {
-        if (!batchMode) {
-          d3dispatch[name].apply(d3dispatch, arguments);
-        } else {
-          suppressedEvents.add(name);
-        }
-      };
-    }
-
-    function delegate(funcName) {
-      return function () {
-        d3dispatch[funcName].apply(d3dispatch, arguments);
-      };
-    }
-
-    // Public API.
-    api = {
-      // Copy d3.dispatch API:
-
-      /**
-       * Adds or removes an event listener for the specified type. Please see:
-       * https://github.com/mbostock/d3/wiki/Internals#wiki-dispatch_on
-       */
-      on: delegate("on"),
-
-      // New API specific for Lab DispatchSupport:
-
-      mixInto: function(target) {
-        target.on = api.on;
-        target.suppressEvents = api.suppressEvents;
-      },
-
-      /**
-       * Adds new event types. Old event types are still supported, but
-       * all previously registered listeners will be removed!
-       *
-       * e.g. dispatch.addEventTypes("newEvent", "anotherEvent")
-       */
-      addEventTypes: function () {
-        if (arguments.length) {
-          init(types.concat(argsToArray(arguments)));
-        }
-      },
-
-      /**
-       * Starts batch mode. Events won't be dispatched immediately after call.
-       * They will be merged into single event and dispatched when .flush()
-       * or .endBatch() is called.
-       */
-      startBatch: function () {
-        batchMode = true;
-      },
-
-      /**
-       * Ends batch mode and dispatches suppressed events.
-       */
-      endBatch: function () {
-        batchMode = false;
-        api.flush();
-      },
-
-      /**
-       * Dispatches suppressed events.
-       * @return {[type]} [description]
-       */
-      flush: function () {
-        suppressedEvents.forEach(function (eventName) {
-          d3dispatch[eventName]();
-        });
-        // Reset suppressed events.
-        suppressedEvents = d3.set();
-      },
-
-      /**
-       * Allows to execute some action without dispatching any events.
-       * @param {function} action
-       */
-      suppressEvents: function(action) {
-        batchMode = true;
-        action();
-        batchMode = false;
-        // Reset suppressed events without dispatching them.
-        suppressedEvents = d3.set();
+  function dispatchEvent(name) {
+    return function() {
+      if (!batchMode) {
+        d3dispatch[name].apply(d3dispatch, arguments);
+      } else {
+        suppressedEvents.add(name);
       }
     };
+  }
 
-    init(argsToArray(arguments));
+  function delegate(funcName) {
+    return function() {
+      d3dispatch[funcName].apply(d3dispatch, arguments);
+    };
+  }
 
-    return api;
+  // Public API.
+  api = {
+    // Copy d3.dispatch API:
+
+    /**
+     * Adds or removes an event listener for the specified type. Please see:
+     * https://github.com/mbostock/d3/wiki/Internals#wiki-dispatch_on
+     */
+    on: delegate("on"),
+
+    // New API specific for Lab DispatchSupport:
+
+    mixInto: function(target) {
+      target.on = api.on;
+      target.suppressEvents = api.suppressEvents;
+    },
+
+    /**
+     * Adds new event types. Old event types are still supported, but
+     * all previously registered listeners will be removed!
+     *
+     * e.g. dispatch.addEventTypes("newEvent", "anotherEvent")
+     */
+    addEventTypes: function() {
+      if (arguments.length) {
+        init(types.concat(argsToArray(arguments)));
+      }
+    },
+
+    /**
+     * Starts batch mode. Events won't be dispatched immediately after call.
+     * They will be merged into single event and dispatched when .flush()
+     * or .endBatch() is called.
+     */
+    startBatch: function() {
+      batchMode = true;
+    },
+
+    /**
+     * Ends batch mode and dispatches suppressed events.
+     */
+    endBatch: function() {
+      batchMode = false;
+      api.flush();
+    },
+
+    /**
+     * Dispatches suppressed events.
+     * @return {[type]} [description]
+     */
+    flush: function() {
+      suppressedEvents.forEach(function(eventName) {
+        d3dispatch[eventName]();
+      });
+      // Reset suppressed events.
+      suppressedEvents = d3.set();
+    },
+
+    /**
+     * Allows to execute some action without dispatching any events.
+     * @param {function} action
+     */
+    suppressEvents: function(action) {
+      batchMode = true;
+      action();
+      batchMode = false;
+      // Reset suppressed events without dispatching them.
+      suppressedEvents = d3.set();
+    }
   };
-});
+
+  init(argsToArray(arguments));
+
+  return api;
+};

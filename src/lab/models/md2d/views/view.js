@@ -1,11 +1,12 @@
 /*global define: false */
 
-define(function (require) {
-  var SVGContainer = require('common/views/svg-container'),
-      Renderer     = require('models/md2d/views/renderer');
+import $__common_views_svg_container from 'common/views/svg-container';
+import $__models_md_d_views_renderer from 'models/md2d/views/renderer';
+var SVGContainer = $__common_views_svg_container,
+  Renderer = $__models_md_d_views_renderer;
 
-  return function (model, modelUrl, i18n) {
-    return new SVGContainer(model, modelUrl, Renderer, {i18n: i18n});
-  };
-
-});
+export default function(model, modelUrl, i18n) {
+  return new SVGContainer(model, modelUrl, Renderer, {
+    i18n: i18n
+  });
+};

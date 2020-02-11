@@ -120,225 +120,224 @@
 
 */
 
-define(function (require) {
-  var browser_detect = require('./browser-detect'),
-      what_browser = browser_detect.what_browser,
+import $____browser_detect from './browser-detect';
+var browser_detect = $____browser_detect,
+  what_browser = browser_detect.what_browser,
 
-      _isMobile = browser_detect.isMobile,
-      _browser = browser_detect.what_browser(),
+  _isMobile = browser_detect.isMobile,
+  _browser = browser_detect.what_browser(),
 
-      average_row;
+  average_row;
 
-  function renderToTable(benchmarks_table, benchmarksThatWereRun, results) {
-    var i = 0,
-        results_row,
-        result,
-        col_number = 0,
-        col_numbers = {},
-        title_row,
-        title_cells,
-        len,
-        rows = benchmarks_table.getElementsByTagName("tr");
+function renderToTable(benchmarks_table, benchmarksThatWereRun, results) {
+  var i = 0,
+    results_row,
+    result,
+    col_number = 0,
+    col_numbers = {},
+    title_row,
+    title_cells,
+    len,
+    rows = benchmarks_table.getElementsByTagName("tr");
 
-    benchmarks_table.style.display = "";
+  benchmarks_table.style.display = "";
 
-    function add_column(title) {
-      var title_row = benchmarks_table.getElementsByTagName("tr")[0],
-          cell = title_row.appendChild(document.createElement("th"));
+  function add_column(title) {
+    var title_row = benchmarks_table.getElementsByTagName("tr")[0],
+      cell = title_row.appendChild(document.createElement("th"));
 
-      cell.innerHTML = title;
-      col_numbers[title] = col_number++;
+    cell.innerHTML = title;
+    col_numbers[title] = col_number++;
+  }
+
+  function add_row(num_cols) {
+    num_cols = num_cols || 0;
+    var tr = benchmarks_table.appendChild(document.createElement("tr")),
+      i;
+
+    for (i = 0; i < num_cols; i++) {
+      tr.appendChild(document.createElement("td"));
     }
+    return tr;
+  }
 
-    function add_row(num_cols) {
-      num_cols = num_cols || 0;
-      var tr =  benchmarks_table.appendChild(document.createElement("tr")),
-          i;
-
-      for (i = 0; i < num_cols; i++) {
-        tr.appendChild(document.createElement("td"));
-      }
-      return tr;
-    }
-
-    function add_result(name, content, row) {
-      var cell;
-      row = row || results_row;
-      cell = row.getElementsByTagName("td")[col_numbers[name]];
-      if (typeof content === "string" && content.slice(0,1) === "<") {
-        cell.innerHTML = content;
-      } else {
-        cell.textContent = content;
-      }
-    }
-
-    function update_averages() {
-      var i, j,
-          b,
-          row,
-          num_rows = rows.length,
-          cell,
-          cell_index,
-          average_elements = average_row.getElementsByTagName("td"),
-          total,
-          average,
-          genericDecimalFormatter = d3.format("5.1f"),
-          genericIntegerFormatter = d3.format("f");
-
-      function isInteger(i) {
-        return Math.floor(i) === i;
-      }
-
-      for (i = 0; i < benchmarksThatWereRun.length; i++) {
-        b = benchmarksThatWereRun[i];
-        cell_index = col_numbers[b.name];
-        if (b.numeric === false) {
-          row = rows[2];
-          cell = row.getElementsByTagName("td")[cell_index];
-          average_elements[cell_index].innerHTML = cell.innerHTML;
-        } else {
-          total = 0;
-          for (j = 2; j < num_rows; j++) {
-            row = rows[j];
-            cell = row.getElementsByTagName("td")[cell_index];
-            total += (+cell.textContent);
-          }
-          average = total/(num_rows-2);
-          if (b.formatter) {
-            average = b.formatter(average);
-          } else {
-            if (isInteger(average)) {
-              average = genericIntegerFormatter(total/(num_rows-2));
-            } else {
-              average = genericDecimalFormatter(total/(num_rows-2));
-            }
-          }
-          average_elements[cell_index].textContent = average;
-        }
-      }
-    }
-
-    if (rows.length === 0) {
-      add_row();
-      add_column("browser");
-      add_column("version");
-      add_column("cpu/os");
-      add_column("date");
-      add_column("commit");
-      add_column("branch");
-      for (i = 0; i < benchmarksThatWereRun.length; i++) {
-        add_column(benchmarksThatWereRun[i].name);
-      }
-      average_row = add_row(col_number);
-      average_row.className = 'average';
+  function add_result(name, content, row) {
+    var cell;
+    row = row || results_row;
+    cell = row.getElementsByTagName("td")[col_numbers[name]];
+    if (typeof content === "string" && content.slice(0, 1) === "<") {
+      cell.innerHTML = content;
     } else {
-      title_row = rows[0];
-      title_cells = title_row.getElementsByTagName("th");
-      for (i = 0, len = title_cells.length; i < len; i++) {
-        col_numbers[title_cells[i].innerHTML] = col_number++;
-      }
+      cell.textContent = content;
     }
-
-    results_row = add_row(col_number);
-    results_row.className = 'sample';
-
-    for (i = 0; i < 6; i++) {
-      result = results[i];
-      add_result(result[0], result[1]);
-      add_result(result[0], result[1], average_row);
-    }
-
-    for(i = 6; i < results.length; i++) {
-      result = results[i];
-      add_result(result[0], result[1]);
-    }
-    update_averages();
   }
 
-  function bench(benchmarks_to_run, resultsCallback, start_callback, end_callback) {
-    var bencharks_queue = benchmarks_to_run.slice(),
-        results = [],
-        browser_info = what_browser(),
-        formatter = d3.time.format("%Y-%m-%d %H:%M"),
-        commit_link;
+  function update_averages() {
+    var i, j,
+      b,
+      row,
+      num_rows = rows.length,
+      cell,
+      cell_index,
+      average_elements = average_row.getElementsByTagName("td"),
+      total,
+      average,
+      genericDecimalFormatter = d3.format("5.1f"),
+      genericIntegerFormatter = d3.format("f");
 
-    results.push([ "browser", browser_info.browser]);
-    results.push([ "version", browser_info.version]);
-    results.push([ "cpu/os", browser_info.oscpu]);
-    results.push([ "date", formatter(new Date())]);
-
-    commit_link = "<a href='"+Lab.version.repo.commit.url+"' class='opens-in-new-window' target='_blank'>"+Lab.version.repo.commit.short_sha+"</a>";
-    if (Lab.version.repo.dirty) {
-      commit_link += " <i>dirty</i>";
+    function isInteger(i) {
+      return Math.floor(i) === i;
     }
-    results.push([ "commit", commit_link]);
-    results.push([ "branch", Lab.version.repo.branch]);
 
-    if (start_callback) start_callback();
-
-    runBenchmark(bencharks_queue.shift());
-
-    function runBenchmark(b) {
-      b.run(doneCallback);
-
-      function doneCallback(result) {
+    for (i = 0; i < benchmarksThatWereRun.length; i++) {
+      b = benchmarksThatWereRun[i];
+      cell_index = col_numbers[b.name];
+      if (b.numeric === false) {
+        row = rows[2];
+        cell = row.getElementsByTagName("td")[cell_index];
+        average_elements[cell_index].innerHTML = cell.innerHTML;
+      } else {
+        total = 0;
+        for (j = 2; j < num_rows; j++) {
+          row = rows[j];
+          cell = row.getElementsByTagName("td")[cell_index];
+          total += (+cell.textContent);
+        }
+        average = total / (num_rows - 2);
         if (b.formatter) {
-          results.push([ b.name, b.formatter(result) ]);
+          average = b.formatter(average);
         } else {
-          results.push([ b.name, result ]);
+          if (isInteger(average)) {
+            average = genericIntegerFormatter(total / (num_rows - 2));
+          } else {
+            average = genericDecimalFormatter(total / (num_rows - 2));
+          }
         }
-
-        if (bencharks_queue.length > 0) {
-          runBenchmark(bencharks_queue.shift());
-        } else {
-          if (end_callback) end_callback();
-          if (resultsCallback) resultsCallback(results);
-        }
+        average_elements[cell_index].textContent = average;
       }
     }
-
-    return results;
   }
 
-  function run(benchmarks_to_run, benchmarks_table, resultsCallback, start_callback, end_callback) {
-    var results;
-    bench(benchmarks_to_run, function(results) {
-      renderToTable(benchmarks_table, benchmarks_to_run, results);
-      resultsCallback(results);
-    }, start_callback, end_callback);
-    return results;
-  }
-
-  // Return Public API.
-  return {
-    /**
-     * Browser description.
-     */
-    get browser() {
-      return _browser;
-    },
-    /**
-     * Triggers recalculation of browser description and returns the result.
-     * Depreciated, use .browser property instead.
-     */
-    what_browser: function() {
-      _browser = what_browser();
-      return _browser;
-    },
-    get isMobile() {
-      return _isMobile;
-    },
-    // run benchmarks, add row to table, update averages row
-    run: function(benchmarks_to_run, benchmarks_table, resultsCallback, start_callback, end_callback) {
-      run(benchmarks_to_run, benchmarks_table, resultsCallback, start_callback, end_callback);
-    },
-    // run benchmarks, return results in object
-    bench: function(benchmarks_to_run, resultsCallback, start_callback, end_callback) {
-      return bench(benchmarks_to_run, resultsCallback, start_callback, end_callback);
-    },
-    // run benchmarks, add row to table, update averages row
-    renderToTable: function(benchmarks_table, benchmarksThatWereRun, results) {
-      renderToTable(benchmarks_table, benchmarksThatWereRun, results);
+  if (rows.length === 0) {
+    add_row();
+    add_column("browser");
+    add_column("version");
+    add_column("cpu/os");
+    add_column("date");
+    add_column("commit");
+    add_column("branch");
+    for (i = 0; i < benchmarksThatWereRun.length; i++) {
+      add_column(benchmarksThatWereRun[i].name);
     }
-  };
-});
+    average_row = add_row(col_number);
+    average_row.className = 'average';
+  } else {
+    title_row = rows[0];
+    title_cells = title_row.getElementsByTagName("th");
+    for (i = 0, len = title_cells.length; i < len; i++) {
+      col_numbers[title_cells[i].innerHTML] = col_number++;
+    }
+  }
+
+  results_row = add_row(col_number);
+  results_row.className = 'sample';
+
+  for (i = 0; i < 6; i++) {
+    result = results[i];
+    add_result(result[0], result[1]);
+    add_result(result[0], result[1], average_row);
+  }
+
+  for (i = 6; i < results.length; i++) {
+    result = results[i];
+    add_result(result[0], result[1]);
+  }
+  update_averages();
+}
+
+function bench(benchmarks_to_run, resultsCallback, start_callback, end_callback) {
+  var bencharks_queue = benchmarks_to_run.slice(),
+    results = [],
+    browser_info = what_browser(),
+    formatter = d3.time.format("%Y-%m-%d %H:%M"),
+    commit_link;
+
+  results.push(["browser", browser_info.browser]);
+  results.push(["version", browser_info.version]);
+  results.push(["cpu/os", browser_info.oscpu]);
+  results.push(["date", formatter(new Date())]);
+
+  commit_link = "<a href='" + Lab.version.repo.commit.url + "' class='opens-in-new-window' target='_blank'>" + Lab.version.repo.commit.short_sha + "</a>";
+  if (Lab.version.repo.dirty) {
+    commit_link += " <i>dirty</i>";
+  }
+  results.push(["commit", commit_link]);
+  results.push(["branch", Lab.version.repo.branch]);
+
+  if (start_callback) start_callback();
+
+  runBenchmark(bencharks_queue.shift());
+
+  function runBenchmark(b) {
+    b.run(doneCallback);
+
+    function doneCallback(result) {
+      if (b.formatter) {
+        results.push([b.name, b.formatter(result)]);
+      } else {
+        results.push([b.name, result]);
+      }
+
+      if (bencharks_queue.length > 0) {
+        runBenchmark(bencharks_queue.shift());
+      } else {
+        if (end_callback) end_callback();
+        if (resultsCallback) resultsCallback(results);
+      }
+    }
+  }
+
+  return results;
+}
+
+function run(benchmarks_to_run, benchmarks_table, resultsCallback, start_callback, end_callback) {
+  var results;
+  bench(benchmarks_to_run, function(results) {
+    renderToTable(benchmarks_table, benchmarks_to_run, results);
+    resultsCallback(results);
+  }, start_callback, end_callback);
+  return results;
+}
+
+// Return Public API.
+export default {
+  /**
+   * Browser description.
+   */
+  get browser() {
+    return _browser;
+  },
+  /**
+   * Triggers recalculation of browser description and returns the result.
+   * Depreciated, use .browser property instead.
+   */
+  what_browser: function() {
+    _browser = what_browser();
+    return _browser;
+  },
+  get isMobile() {
+    return _isMobile;
+  },
+  // run benchmarks, add row to table, update averages row
+  run: function(benchmarks_to_run, benchmarks_table, resultsCallback, start_callback, end_callback) {
+    run(benchmarks_to_run, benchmarks_table, resultsCallback, start_callback, end_callback);
+  },
+  // run benchmarks, return results in object
+  bench: function(benchmarks_to_run, resultsCallback, start_callback, end_callback) {
+    return bench(benchmarks_to_run, resultsCallback, start_callback, end_callback);
+  },
+  // run benchmarks, add row to table, update averages row
+  renderToTable: function(benchmarks_table, benchmarksThatWereRun, results) {
+    renderToTable(benchmarks_table, benchmarksThatWereRun, results);
+  }
+};
