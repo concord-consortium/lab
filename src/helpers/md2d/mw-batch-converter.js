@@ -8,14 +8,11 @@ For the moment, to run these scripts
   > convertMMLFolder()
   > createCmlJsonIndex(outputHtmlFile)
 **/
-require('coffee-script/register');
-
 var parseMML = require('./mml-parser').parseMML,
     mkdirp = require('mkdirp'),
     fs = require('fs'),
     path = require('path'),
     jade = require('jade'),
-    sys = require('sys'),
 
     rootPath = require.main ? path.dirname(require.main.filename) : process.cwd(),
     legacyFolderPath = path.normalize(rootPath + '../../imports/legacy-mw-content/'),
@@ -64,7 +61,7 @@ function convertMMLFile(inputBaseDir, mmlPath, outputBaseDir, onlyOutdated, verb
   }
 
   // if we got this far, convert the mml file
-  if (verbose) { sys.puts(inputPath) }
+  if (verbose) { process.stdout.write(inputPath) }
 
   mml = fs.readFileSync(inputPath).toString();
   conversion = parseMML(mml);
@@ -74,7 +71,7 @@ function convertMMLFile(inputBaseDir, mmlPath, outputBaseDir, onlyOutdated, verb
   }
 
   // and write the ouptut
-  if (verbose) { sys.puts(outputPath + "\n") }
+  if (verbose) { process.stdout.write(outputPath + "\n") }
 
   mkdirp.sync( path.dirname(outputPath) );
   fs.writeFileSync( outputPath, JSON.stringify(conversion.json, null, 2) );
@@ -155,17 +152,17 @@ function convertMMLFolder(onlyOutdated, showProgress, folderPath, verbose) {
 
   mmlFiles = collectAllMMLFiles(legacyFolderPath);
 
-  if (verbose) { sys.puts("\n"); }
+  if (verbose) { process.stdout.write("\n"); }
 
   for (i=0; i < mmlFiles.length; i++) {
     converted = convertMMLFile(legacyFolderPath, mmlFiles[i], convertedFolderPath, !!onlyOutdated, verbose);
     if (converted) nConverted++;
     if (!verbose) {
-      if (showProgress && nConverted > 0 && nConverted % 10 === 0) sys.print('.');
+      if (showProgress && nConverted > 0 && nConverted % 10 === 0) process.stdout.write('.');
     }
   }
 
-  sys.puts("\n");
+  process.stdout.write("\n");
 
   return nConverted;
 }

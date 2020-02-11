@@ -1,8 +1,7 @@
 {
+  "esversion": 6,
   "predef": ["$", "d3", "define", "_gaq"],
-
   "browser" : true,
-
   "eqnull": true,
   "boss" : false,
   "curly": false,
