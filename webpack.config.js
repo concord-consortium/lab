@@ -100,7 +100,6 @@ module.exports = {
     alias: {
       'arrays': path.resolve(__dirname, 'src/modules/arrays/'),
       'lab-grapher': path.resolve(__dirname, 'vendor/lab-grapher/dist/lab-grapher'),
-      'underscore':  path.resolve(__dirname, 'vendor/underscore/underscore'),
       'i18next': path.resolve(__dirname, 'vendor/i18next/i18next.js'),
       'sensor-applet': path.resolve(__dirname, 'vendor/lab-sensor-applet-interface-dist/sensor-applet-interface'),
       'sensor-connector-interface':  path.resolve(__dirname, 'vendor/sensor-connector-interface/dist/sensor-connector-interface'),

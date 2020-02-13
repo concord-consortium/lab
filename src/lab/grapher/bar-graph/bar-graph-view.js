@@ -1,11 +1,7 @@
-/*global define, d3, $ */
+import 'common/jquery-plugins';
+import Backbone from 'backbone';
 
-import $__common_jquery_plugins from 'common/jquery-plugins';
-import $__backbone from 'backbone';
-//  Dependencies.
-$__common_jquery_plugins;
-var Backbone = $__backbone,
-
+var
   uid = 0,
   // Returns unique ID used by the bar graph view.
   getUID = function() {

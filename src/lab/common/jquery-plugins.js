@@ -1,5 +1,3 @@
-/*global define, $ */
-
 /**
  * Require this module to initialize Lab jQuery plugins.
  */
@@ -115,7 +113,7 @@ $.fn.alterClass = function(removals, additions) {
 $.event.special.destroyed = {
   remove: function(o) {
     if (o.handler) {
-      o.handler()
+      o.handler();
     }
   }
 };

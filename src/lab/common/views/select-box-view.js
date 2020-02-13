@@ -73,7 +73,6 @@ export default function SelectBoxView(opts) {
 
       // Must call selectBoxIt after appending to wrapper
       $select.selectBoxIt();
-      this.$element = $select;
 
       $wrapper.find(".selectboxit").css("width", "auto");
 
