@@ -1,5 +1,3 @@
-/*global define: false */
-
 /**
   Forward mouse events to the view's stack of overlaid visual layers to simulate the "hit
   testing" that would occur natively if the visual layers were all implemented as descendants of
@@ -124,7 +122,7 @@ export default function HitTestingHelper(foregroundNode) {
   function retargetMouseEvent(e, target) {
     var clonedEvent = document.createEvent("MouseEvent");
     clonedEvent.initMouseEvent(e.type, e.bubbles, e.cancelable, e.view, e.detail, e.screenX, e.screenY, e.clientX, e.clientY, e.ctrlKey, e.altKey, e.shiftKey, e.metaKey, e.button, e.relatedTarget);
-    clonedEvent.target = target;
+    // Object.defineProperty(clonedEvent, "target", {value: target});
     clonedEvent.forwardedTouchEvent = e.forwardedTouchEvent;
     // IE 9+ creates events with pageX and pageY set to 0.
     // Trying to modify the properties throws an error,
@@ -155,11 +153,10 @@ export default function HitTestingHelper(foregroundNode) {
   }
 
   // Create a click event from a mouse event (presumably mouseup). Leaves original event as-is.
-  function createClick(e, target) {
+  function createClick(e) {
     // TODO. Does copying the properties adequately capture all the semantics of the click event?
     var clonedEvent = document.createEvent("MouseEvent");
     clonedEvent.initMouseEvent('click', true, e.cancelable, e.view, e.detail, e.screenX, e.screenY, e.clientX, e.clientY, e.ctrlKey, e.altKey, e.shiftKey, e.metaKey, e.button, e.relatedTarget);
-    clonedEvent.target = target;
     return clonedEvent;
   }
 
@@ -453,10 +450,10 @@ export default function HitTestingHelper(foregroundNode) {
           // perform pinch-zoom rather than click.
           if (target && target === mousedownTarget &&
             target.tagName.toLowerCase() !== 'canvas' && !cancelClickFlag) {
-            target.dispatchEvent(createClick(e), target);
+            target.dispatchEvent(createClick(e));
           }
           if (targetForCreatedClick && !cancelClickFlag) {
-            targetForCreatedClick.dispatchEvent(createClick(e), targetForCreatedClick);
+            targetForCreatedClick.dispatchEvent(createClick(e));
           }
         }
       }, true);
@@ -485,11 +482,10 @@ export default function HitTestingHelper(foregroundNode) {
     passMouseMove: function(mmoveSource, mmoveTarget) {
       var prevTarget;
 
-      // Return a cloned version of 'e' but with a different 'type', 'target' and 'relatedTarget'.
-      function createMouseEvent(e, type, target, relatedTarget) {
+      // Return a cloned version of 'e' but with a different 'type', and 'relatedTarget'.
+      function createMouseEvent(e, type, relatedTarget) {
         var clonedEvent = document.createEvent("MouseEvent");
         clonedEvent.initMouseEvent(type, e.bubbles, e.cancelable, e.view, e.detail, e.screenX, e.screenY, e.clientX, e.clientY, e.ctrlKey, e.altKey, e.shiftKey, e.metaKey, e.button, relatedTarget || e.relatedTarget);
-        clonedEvent.target = target;
         return clonedEvent;
       }
 
@@ -501,14 +497,14 @@ export default function HitTestingHelper(foregroundNode) {
           if (e.target !== mmoveSource) {
             // Target is different from desired source, we can only dispatch mouseout and return.
             if (prevTarget === mmoveTarget) {
-              mmoveTarget.dispatchEvent(createMouseEvent(e, "mouseout", mmoveTarget, e.target));
+              mmoveTarget.dispatchEvent(createMouseEvent(e, "mouseout", e.target));
             }
             prevTarget = e.target;
             return;
           }
           target = mmoveTarget;
           if (target !== prevTarget) {
-            mmoveTarget.dispatchEvent(createMouseEvent(e, "mouseover", mmoveTarget, prevTarget));
+            mmoveTarget.dispatchEvent(createMouseEvent(e, "mouseover", prevTarget));
           }
           e.stopPropagation();
           e.preventDefault();
@@ -554,4 +550,4 @@ export default function HitTestingHelper(foregroundNode) {
   init();
 
   return api;
-};
+}
