@@ -1,3 +1,4 @@
+--require @babel/register
 --reporter spec
 --require test/mocha-boilerplate
 --globals model,model_player
