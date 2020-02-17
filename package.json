@@ -34,14 +34,41 @@
   "engines": {
     "node": ">=4.0.0"
   },
+  "jest": {
+    "testURL": "https://lab.concord.org",
+    "setupFilesAfterEnv": [
+      "<rootDir>test/setupTests.js"
+    ],
+    "transform": {
+      "^.+\\.js?$": "babel-jest",
+      "\\.glsl$": "jest-raw-loader",
+      "\\.tpl$": "jest-raw-loader"
+    },
+    "testRegex": "(/test/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "testPathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "node"
+    ],
+    "modulePaths": [
+      "<rootDir>/src/lab"
+    ]
+  },
   "dependencies": {
     "backbone": "1.4.0",
     "canvg": "1.5.3",
-    "d3": "5.15.0",
+    "d3": "3.5.17",
     "fastclick": "^1.0.6",
+    "i18next": "^1.7.3",
     "iframe-phone": "^1.2.0",
     "jquery": "2.2.4",
-    "jquery-ui": "^1.12.1",
+    "jquery-ui-dist": "1.12.1",
     "markdown": ">=0.5.0",
     "mustache": "~0.7.2",
     "optimist": ">=0.6.0",
@@ -59,15 +86,17 @@
     "@webpack-cli/init": "^0.3.0",
     "babel-loader": "^8.0.6",
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
+    "canvas": "^2.6.1",
     "chai": ">=1.7.2",
     "cheerio": "0.12.4",
     "css-loader": "^3.4.2",
     "jade": ">=0.35.0",
+    "jest": "^25.1.0",
+    "jest-raw-loader": "^1.0.1",
     "jsdom": "16.1.0",
     "jshint": "2.11.0",
     "mini-css-extract-plugin": "^0.9.0",
     "mkdirp": "0.3.2",
-    "mocha": "7.0.1",
     "node-gyp": "^6.1.0",
     "node-inspector": "0.3.4",
     "node-sass": "^4.13.1",
@@ -88,7 +117,7 @@
   },
   "scripts": {
     "build": "webpack",
-    "test": "make test",
+    "test": "jest test/jest",
     "start": "rackup"
   }
 }

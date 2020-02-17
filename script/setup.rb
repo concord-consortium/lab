@@ -33,7 +33,6 @@ end
 LAB_JS_DEPENDENCIES = case CONFIG[:environment]
 when 'development'
   <<-HEREDOC
-<script src="lab/vendor/d3/d3.js" type="text/javascript"></script>
 <script src="lab/vendor/jquery/jquery.js" type="text/javascript"></script>
 <script src="lab/vendor/jquery-ui/jquery-ui.js" type="text/javascript"></script>
 <script src="lab/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.js" type="text/javascript"></script>
@@ -43,7 +42,6 @@ when 'development'
   HEREDOC
 else
   <<-HEREDOC
-<script src="lab/vendor/d3/d3.min.js" type="text/javascript"></script>
 <script src="lab/vendor/jquery/jquery.min.js" type="text/javascript"></script>
 <script src="lab/vendor/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
 <script src="lab/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js" type="text/javascript"></script>

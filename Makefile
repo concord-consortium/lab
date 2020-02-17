@@ -7,7 +7,6 @@ MARKDOWN_COMPILER = kramdown
 # Turns out that just pointing Vows at a directory doesn't work, and its test matcher matches on
 # the test's title, not its pathname. So we need to find everything in test/vows first.
 VOWS = find test/vows -type f -name '*.js' -o -name '*.coffee' ! -name '.*' | xargs ./node_modules/.bin/vows --isolate --dot-matrix
-MOCHA = find test/mocha -type f -name '*.js' -o -name '*.coffee' ! -name '.*' | xargs node_modules/.bin/mocha --reporter dot
 
 SASS_COMPILER = sass -I src -I public
 R_OPTIMIZER = ./node_modules/.bin/r.js -o
@@ -111,8 +110,6 @@ test: test/layout.html \
 	$(LAB_JS_FILES) \
 	$(JS_FILES:.js=.min.js)
 	@echo
-	@echo 'Mocha tests ...'
-	@$(MOCHA)
 	@echo 'Vows tests ...'
 	@$(VOWS)
 	@echo
@@ -122,17 +119,6 @@ test: test/layout.html \
 test-vows:
 	@echo 'Running Vows tests ...'
 	@$(VOWS)
-
-# run mocha test WITHOUT trying to build Lab JS first. Run 'make; make test-mocha' to build & test.
-.PHONY: test-mocha
-test-mocha:
-	@echo 'Running Mocha tests ...'
-	@$(MOCHA)
-
-.PHONY: debug-mocha
-debug-mocha:
-	@echo 'Running Mocha tests in debug mode...'
-	@$(MOCHA) --debug-brk
 
 %.min.js: %.js
 	@rm -f $@

@@ -51,24 +51,22 @@ message = ERB::Util.html_escape(commit.message.gsub("\n", "\\n"))
 
 version = <<HEREDOC
 // this file is generated during build process by: ./script/generate-js-version.rb
-define(function (require) {
-  return {
-    "repo": {
-      "branch": "#{branch_name}",
-      "commit": {
-        "sha":           "#{commit_sha}",
-        "short_sha":     "#{commit_sha[0..7]}",
-        "url":           "https://github.com/concord-consortium/lab/commit/#{commit_sha[0..7]}",
-        "author":        "#{commit.author.name}",
-        "email":         "#{commit.author.email}",
-        "date":          "#{commit.date}",
-        "short_message": "#{short_message}",
-        "message":       "#{cleanup_string(message)}"
-      },
-      "last_tag":        "#{last_tagged_version}",
-      "dirty": #{dirty?}
-    }
-  };
-});
+export default {
+  "repo": {
+    "branch": "#{branch_name}",
+    "commit": {
+      "sha":           "#{commit_sha}",
+      "short_sha":     "#{commit_sha[0..7]}",
+      "url":           "https://github.com/concord-consortium/lab/commit/#{commit_sha[0..7]}",
+      "author":        "#{commit.author.name}",
+      "email":         "#{commit.author.email}",
+      "date":          "#{commit.date}",
+      "short_message": "#{short_message}",
+      "message":       "#{cleanup_string(message)}"
+    },
+    "last_tag":        "#{last_tagged_version}",
+    "dirty": #{dirty?}
+  }
+};
 HEREDOC
 File.open(JS_VERSION_PATH, 'w') { |f| f.write version }
