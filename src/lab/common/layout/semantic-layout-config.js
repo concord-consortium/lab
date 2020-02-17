@@ -1,4 +1,3 @@
-/*global define: false */
 // ------------------------------------------------------------
 //
 //   Semantic Layout Configuration

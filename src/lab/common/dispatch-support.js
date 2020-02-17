@@ -1,4 +1,3 @@
-/*global define: false, d3: false */
 /**
  * This module provides event dispatch based on d3.dispatch:
  * https://github.com/mbostock/d3/wiki/Internals#wiki-d3_dispatch

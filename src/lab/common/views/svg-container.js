@@ -323,7 +323,7 @@ export default function SVGContainer(model, modelUrl, Renderer, opt) {
     return this.attr({
       // TODO confirm xmlns def is required?
       'xmlns': 'http://www.w3.org/2000/svg',
-      'xmlns:xmlns:xlink': 'http://www.w3.org/1999/xlink', // hack: doubling xmlns: so it doesn't disappear once in the DOM
+      'xmlns:xlink': 'http://www.w3.org/1999/xlink', // hack: doubling xmlns: so it doesn't disappear once in the DOM
       'overflow': 'hidden' // Important in IE! Otherwise content won't be clipped by SVG container
     });
   }

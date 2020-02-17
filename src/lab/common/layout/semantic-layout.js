@@ -1,18 +1,17 @@
-/*global define: false, $: false */
 // ------------------------------------------------------------
 //
 //   Semantic Layout
 //
 // ------------------------------------------------------------
 
-import $__common_layout_semantic_layout_config from 'common/layout/semantic-layout-config';
+import layoutConfig from 'common/layout/semantic-layout-config';
 import $__arrays from 'arrays';
 import $__common_console from 'common/console';
 import $__common_alert from 'common/alert';
 
-var layoutConfig = $__common_layout_semantic_layout_config,
+var
   arrays = $__arrays,
-  console = $__common_console,
+  // console = $__common_console,
   alert = $__common_alert;
 
 export default function SemanticLayout() {
@@ -534,8 +533,12 @@ export default function SemanticLayout() {
      * interactive container and all available space is used in the best way.
      */
     layoutInteractive: function() {
-      var redraws = layoutConfig.iterationsLimit,
-        id;
+      let redraws = layoutConfig.iterationsLimit;
+      let id;
+
+      if (redraws === 0) {
+        return;
+      }
 
       console.time('[layout] update');
 

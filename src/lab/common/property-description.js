@@ -1,4 +1,3 @@
-/*global define, d3 */
 /*jshint eqnull:true, boss:true */
 
 import $__underscore from 'underscore';

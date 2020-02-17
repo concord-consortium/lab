@@ -1,5 +1,4 @@
-/*global define: false */
-
+import d3 from "d3";
 import $__lab_version from 'lab.version';
 import $__lab_config from 'lab.config';
 import $__common_controllers_interactives_controller from 'common/controllers/interactives-controller';

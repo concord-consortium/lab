@@ -3,7 +3,7 @@
 import $__models_energy_d_models_constants from 'models/energy2d/models/constants';
 import { hypot } from 'models/energy2d/models/helpers';
 import { Photon } from 'models/energy2d/models/photon';
-import { Line, Polygon, Rectangle, Ellipse, Ring } from 'models/energy2d/models/shape';
+import { Line, Polygon, Rectangle, Ellipse, Ring, pointInsidePolygon } from 'models/energy2d/models/shape';
 
 var constants = $__models_energy_d_models_constants,
 
@@ -275,7 +275,7 @@ Part.prototype.getGridCells = function(nx, ny, lx, ly) {
       idx = 0;
       for (i = i0; i <= i_max; i += 1) {
         for (j = j0; j <= j_max; j += 1) {
-          if (shape_utils.pointInsidePolygon(count, x_coords, y_coords, i, j)) {
+          if (pointInsidePolygon(count, x_coords, y_coords, i, j)) {
             indices[idx += 1] = i * ny + j;
           }
         }
