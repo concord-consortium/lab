@@ -39,16 +39,18 @@ const workboxPlugin = require("workbox-webpack-plugin");
 
 module.exports = {
   mode: "development",
-  entry: "./src/lab/index.js",
+  entry: {
+    "lab": "./src/lab/index.js",
+    "lab.min": "./src/lab/index.js",
+  },
   output: {
     path: path.resolve(__dirname, 'public', 'lab'),
-    chunkFilename: "[name].[chunkhash].js",
-    filename: "lab.min.js"
+    chunkFilename: "[name].js"
   },
   devtool: "source-map",
   plugins: [
     new webpack.ProgressPlugin(),
-    new MiniCssExtractPlugin({filename: "lab.[chunkhash].css"}),
+    new MiniCssExtractPlugin({filename: "lab.css"}),
     // new workboxPlugin.GenerateSW({
     //   swDest: "sw.js",
     //   clientsClaim: true,
@@ -107,8 +109,10 @@ module.exports = {
     }
   },
   optimization: {
-    // minimizer: [new TerserPlugin()],
-    minimize: false,
+    minimize: true,
+    minimizer: [new TerserPlugin({
+      test: /\.min\.js$/i,
+    })],
     splitChunks: {
       cacheGroups: {
         vendors: {
