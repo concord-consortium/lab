@@ -1,7 +1,4 @@
-/*global define: false */
-
-import $__models_energy_d_models_constants from 'models/energy2d/models/constants';
-var constants = $__models_energy_d_models_constants;
+import constants from 'models/energy2d/models/constants';
 
 export default {
   mainProperties: {

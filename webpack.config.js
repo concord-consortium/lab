@@ -35,8 +35,6 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const TerserPlugin = require("terser-webpack-plugin");
 
-const workboxPlugin = require("workbox-webpack-plugin");
-
 module.exports = {
   mode: "development",
   entry: {
@@ -54,12 +52,7 @@ module.exports = {
   devtool: "source-map",
   plugins: [
     new webpack.ProgressPlugin(),
-    new MiniCssExtractPlugin({filename: "lab.css"}),
-    // new workboxPlugin.GenerateSW({
-    //   swDest: "sw.js",
-    //   clientsClaim: true,
-    //   skipWaiting: false
-    // })
+    new MiniCssExtractPlugin({filename: "lab.css"})
   ],
   module: {
     rules: [
