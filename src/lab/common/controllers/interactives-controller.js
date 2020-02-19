@@ -1,47 +1,46 @@
-/*global define, $, setTimeout, document, window */
 
 import seedrandom from 'seedrandom';
-import $__lab_config from 'lab.config';
-import $__arrays from 'arrays';
-import $__fastclick from 'fastclick';
-import $__underscore from 'underscore';
-import $__common_alert from 'common/alert';
-import $__common_validator from 'common/validator';
-import $__common_i__n from 'common/i18n';
-import $__common_controllers_interactive_metadata from 'common/controllers/interactive-metadata';
-import $__common_controllers_language_select from 'common/controllers/language-select';
-import $__common_controllers_data_set from 'common/controllers/data-set';
-import $__common_controllers_bar_graph_controller from 'common/controllers/bar-graph-controller';
-import $__common_controllers_graph_controller from 'common/controllers/graph-controller';
-import $__common_controllers_export_controller from 'common/controllers/export-controller';
-import $__common_controllers_log_controller from 'common/controllers/log-controller';
-import $__common_controllers_scripting_api from 'common/controllers/scripting-api';
-import $__common_controllers_button_controller from 'common/controllers/button-controller';
-import $__common_controllers_checkbox_controller from 'common/controllers/checkbox-controller';
-import $__common_controllers_text_controller from 'common/controllers/text-controller';
-import $__common_controllers_image_controller from 'common/controllers/image-controller';
-import $__common_controllers_radio_controller from 'common/controllers/radio-controller';
-import $__common_controllers_slider_controller from 'common/controllers/slider-controller';
-import $__common_controllers_pulldown_controller from 'common/controllers/pulldown-controller';
-import $__common_controllers_joystick_controller from 'common/controllers/joystick-controller';
-import $__common_controllers_color_indicator_controller from 'common/controllers/color-indicator-controller';
-import $__common_controllers_spectrometer_controller from 'common/controllers/spectrometer-controller';
-import $__common_controllers_numeric_output_controller from 'common/controllers/numeric-output-controller';
-import $__common_controllers_table_controller from 'common/controllers/table-controller';
-import $__common_controllers_parent_message_api from 'common/controllers/parent-message-api';
-import $__common_controllers_thermometer_controller from 'common/controllers/thermometer-controller';
-import $__common_controllers_playback_controller from 'common/controllers/playback-controller';
-import $__common_controllers_div_controller from 'common/controllers/div-controller';
-import $__common_dispatch_support from 'common/dispatch-support';
-import $__common_controllers_help_system from 'common/controllers/help-system';
-import $__common_views_tooltip from 'common/views/tooltip';
-import $__common_cookies from 'common/cookies';
-import $__common_controllers_setup_banner from 'common/controllers/setup-banner';
-import $__common_controllers_about_dialog from 'common/controllers/about-dialog';
-import $__common_controllers_share_dialog from 'common/controllers/share-dialog';
-import $__common_controllers_credits_dialog from 'common/controllers/credits-dialog';
-import $__common_layout_semantic_layout from 'common/layout/semantic-layout';
-import $__common_layout_templates from 'common/layout/templates';
+import labConfig from 'lab.config';
+import arrays from 'arrays';
+import FastClick from 'fastclick';
+import _ from 'underscore';
+import alert from 'common/alert';
+import validator from 'common/validator';
+import getI18n from 'common/i18n';
+import metadata from 'common/controllers/interactive-metadata';
+import languageSelect from 'common/controllers/language-select';
+import DataSet from 'common/controllers/data-set';
+import BarGraphController from 'common/controllers/bar-graph-controller';
+import GraphController from 'common/controllers/graph-controller';
+import ExportController from 'common/controllers/export-controller';
+import LogController from 'common/controllers/log-controller';
+import ScriptingAPI from 'common/controllers/scripting-api';
+import ButtonController from 'common/controllers/button-controller';
+import CheckboxController from 'common/controllers/checkbox-controller';
+import TextController from 'common/controllers/text-controller';
+import ImageController from 'common/controllers/image-controller';
+import RadioController from 'common/controllers/radio-controller';
+import SliderController from 'common/controllers/slider-controller';
+import PulldownController from 'common/controllers/pulldown-controller';
+import JoystickController from 'common/controllers/joystick-controller';
+import ColorIndicatorController from 'common/controllers/color-indicator-controller';
+import SpectrometerController from 'common/controllers/spectrometer-controller';
+import NumericOutputController from 'common/controllers/numeric-output-controller';
+import TableController from 'common/controllers/table-controller';
+import ParentMessageAPI from 'common/controllers/parent-message-api';
+import ThermometerController from 'common/controllers/thermometer-controller';
+import PlaybackController from 'common/controllers/playback-controller';
+import DivController from 'common/controllers/div-controller';
+import DispatchSupport from 'common/dispatch-support';
+import HelpSystem from 'common/controllers/help-system';
+import tooltip from 'common/views/tooltip';
+import cookies from 'common/cookies';
+import setupBanner from 'common/controllers/setup-banner';
+import AboutDialog from 'common/controllers/about-dialog';
+import ShareDialog from 'common/controllers/share-dialog';
+import CreditsDialog from 'common/controllers/credits-dialog';
+import SemanticLayout from 'common/layout/semantic-layout';
+import templates from 'common/layout/templates';
 import $__models_md_d_controllers_controller from 'models/md2d/controllers/controller';
 import $__models_signal_generator_controller from 'models/signal-generator/controller';
 import $__models_iframe_controller from 'models/iframe/controller';
@@ -51,52 +50,9 @@ import $__models_dual_sensor_connector_controller from 'models/dual-sensor-conne
 import $__models_sensor_connector_controller from 'models/sensor-connector/controller';
 import $__models_labquest__controller from 'models/labquest2/controller';
 import $__models_energy_d_controllers_controller from 'models/energy2d/controllers/controller';
-import $__common_controllers_experiment_controller from 'common/controllers/experiment-controller';
-// Dependencies.
-var labConfig = $__lab_config,
-  arrays = $__arrays,
-  FastClick = $__fastclick,
-  _ = $__underscore,
-  alert = $__common_alert,
-  validator = $__common_validator,
-  getI18n = $__common_i__n,
-  metadata = $__common_controllers_interactive_metadata,
-  languageSelect = $__common_controllers_language_select,
-  DataSet = $__common_controllers_data_set,
-  BarGraphController = $__common_controllers_bar_graph_controller,
-  GraphController = $__common_controllers_graph_controller,
-  ExportController = $__common_controllers_export_controller,
-  LogController = $__common_controllers_log_controller,
-  ScriptingAPI = $__common_controllers_scripting_api,
-  ButtonController = $__common_controllers_button_controller,
-  CheckboxController = $__common_controllers_checkbox_controller,
-  TextController = $__common_controllers_text_controller,
-  ImageController = $__common_controllers_image_controller,
-  RadioController = $__common_controllers_radio_controller,
-  SliderController = $__common_controllers_slider_controller,
-  PulldownController = $__common_controllers_pulldown_controller,
-  JoystickController = $__common_controllers_joystick_controller,
-  ColorIndicatorController = $__common_controllers_color_indicator_controller,
-  SpectrometerController = $__common_controllers_spectrometer_controller,
-  NumericOutputController = $__common_controllers_numeric_output_controller,
-  TableController = $__common_controllers_table_controller,
-  ParentMessageAPI = $__common_controllers_parent_message_api,
-  ThermometerController = $__common_controllers_thermometer_controller,
-  PlaybackController = $__common_controllers_playback_controller,
-  DivController = $__common_controllers_div_controller,
-  DispatchSupport = $__common_dispatch_support,
-  HelpSystem = $__common_controllers_help_system,
-  tooltip = $__common_views_tooltip,
-  cookies = $__common_cookies,
+import ExperimentController from 'common/controllers/experiment-controller';
 
-  // Helper function which just provides banner definition.
-  setupBanner = $__common_controllers_setup_banner,
-  AboutDialog = $__common_controllers_about_dialog,
-  ShareDialog = $__common_controllers_share_dialog,
-  CreditsDialog = $__common_controllers_credits_dialog,
-  SemanticLayout = $__common_layout_semantic_layout,
-  templates = $__common_layout_templates,
-
+var // Helper function which just provides banner definition.
   ModelControllerFor = {
     'md2d': $__models_md_d_controllers_controller,
     'signal-generator': $__models_signal_generator_controller,
@@ -108,8 +64,6 @@ var labConfig = $__lab_config,
     'labquest2': $__models_labquest__controller,
     'energy2d': $__models_energy_d_controllers_controller
   },
-
-  ExperimentController = $__common_controllers_experiment_controller,
 
   // Set of available components.
   // - Key defines 'type', which is used in the interactive JSON.

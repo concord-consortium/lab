@@ -1,4 +1,3 @@
-/*global define: false */
 
 // Definitions of the default MD2D units. Every model property exposed by md2d/models/modeler.js is
 // in one of the unit types below.

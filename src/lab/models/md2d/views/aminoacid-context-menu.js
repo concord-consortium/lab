@@ -10,9 +10,7 @@ It uses jQuery.contextMenu plug-in.
 
 CSS style definition: sass/lab/_context-menu.sass
 */
-import $__models_md_d_models_aminoacids_helper from 'models/md2d/models/aminoacids-helper';
-
-const aminoacids = $__models_md_d_models_aminoacids_helper;
+import aminoacids from 'models/md2d/models/aminoacids-helper';
 
 // Classes for styling. Note that CSS is used for styling, see header.
 const MENU_CLASS = "aminoacids-menu";

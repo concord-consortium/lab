@@ -1,4 +1,3 @@
-/*global define, $ */
 
 // Cache results of feature tests, as e.g. two different modules can ask about the same thing.
 var CACHE = {};

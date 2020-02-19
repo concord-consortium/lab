@@ -1,6 +1,4 @@
-/*jslint indent: 2, browser: true, newcap: true, es5: true */
-/*globals define: false, Float32Array: false, Uint16Array: false*/
-
+ /*jslint indent: 2, browser: true, newcap: true, es5: true */ 
 // Represents a collection of vertex buffers and index buffers. Each vertex
 // buffer maps to one attribute in GLSL and has a corresponding property set
 // on the Mesh instance. There is one vertex buffer by default: `vertices`,
@@ -12,11 +10,11 @@
 // default, although `computeWireframe()` will add a normal buffer if it wasn't
 // initially enabled.
 
-import $__models_energy_d_gpu_context from 'models/energy2d/gpu/context';
+import context from 'models/energy2d/gpu/context';
 
 var
 // Dependencies.
-  context = $__models_energy_d_gpu_context,
+  
 
   // The internal `gl` variable holds the current WebGL context.
   gl,

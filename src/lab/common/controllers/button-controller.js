@@ -1,11 +1,7 @@
-/*global define, $ */
 
-import $__common_inherit from 'common/inherit';
-import $__common_controllers_interactive_component from 'common/controllers/interactive-component';
-var inherit = $__common_inherit,
-  InteractiveComponent = $__common_controllers_interactive_component,
-
-  buttonControllerCount = 0;
+import inherit from 'common/inherit';
+import InteractiveComponent from 'common/controllers/interactive-component';
+var buttonControllerCount = 0;
 
 function ButtonController(component, interactivesController) {
   this._actionClickFunction = function() {};

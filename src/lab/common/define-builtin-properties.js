@@ -1,10 +1,7 @@
-/*global define: false */
 
-import $__common_validator from 'common/validator';
-import $__common_property_description from 'common/property-description';
+import validator from 'common/validator';
+import PropertyDescription from 'common/property-description';
 
-var validator = $__common_validator,
-  PropertyDescription = $__common_property_description;
 
 export default function defineBuiltinProperties(args) {
   var propertySupport = args.propertySupport,

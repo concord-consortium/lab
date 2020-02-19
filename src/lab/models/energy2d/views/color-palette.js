@@ -1,11 +1,9 @@
-/*jslint indent: 2, browser: true, newcap: true, sub: true */
-/*globals define: false, $: false*/
-
-import $__models_energy_d_views_helpers from 'models/energy2d/views/helpers';
+/*jslint indent: 2, browser: true, newcap: true, sub: true */ 
+import view_helpers from 'models/energy2d/views/helpers';
 
 var
 // Dependencies.
-  view_helpers = $__models_energy_d_views_helpers,
+  
 
   // Object with available color palettes.
   color_palette,
@@ -53,8 +51,7 @@ color_palette['2'] = color_palette['GRAY'] = [
   [255, 255, 255]
 ];
 color_palette['3'] = color_palette['RAINBOW2'] = (function() {
-  var
-    HSVToRGB = view_helpers.HSVToRGB,
+  var HSVToRGB = view_helpers.HSVToRGB,
     length = 256,
     rgb = new Array(length),
     i;

@@ -1,5 +1,4 @@
 /*jslint indent: 2, browser: true, newcap: true */
-/*globals define: false, $: false*/
 
 // Simulation time.
 //
@@ -8,8 +7,7 @@
 // Default div id = "energy2d-time"
 
 export default function TimeView(html_id) {
-  var
-    DEFAULT_ID = 'energy2d-time',
+  var DEFAULT_ID = 'energy2d-time',
     DEFAULT_CLASS = 'energy2d-time',
 
     $time_div,

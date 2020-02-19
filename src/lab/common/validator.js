@@ -1,10 +1,8 @@
-/*global define: false, $: false */
 
 // For now, only defaultValue, readOnly and immutable
 // meta-properties are supported.
-import $__arrays from 'arrays';
+import arrays from 'arrays';
 
-var arrays = $__arrays;
 
 // Create a new object, that prototypically inherits from the Error constructor.
 // It provides a direct information which property of the input caused an error.

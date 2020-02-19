@@ -1,13 +1,10 @@
-/*jslint indent: 2, browser: true, newcap: true, es5: true */
-/*globals define: false, Float32Array: false, Uint16Array: false, console: false*/
-
-import $__common_console from 'common/console';
-import $__models_energy_d_gpu_context from 'models/energy2d/gpu/context';
+  /*jslint indent: 2, browser: true, newcap: true, es5: true */ 
+import console from 'common/console';
+import context from 'models/energy2d/gpu/context';
 
 var
-// Dependencies.
-  console = $__common_console,
-  context = $__models_energy_d_gpu_context,
+// Dependencies. 
+  
 
   // The internal `gl` variable holds the current WebGL context.
   gl,

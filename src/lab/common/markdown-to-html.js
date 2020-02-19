@@ -1,4 +1,3 @@
-/*global define: true, $ */
 
 /**
  * Converts markdown to HTML. Passed argument can be a string or array of strings.

@@ -1,4 +1,3 @@
-/*global define: false */
 
 /*
   Options for starting on property support:
@@ -21,11 +20,9 @@
     but if the properties are provided by the iframe'd html, it won't know what is needed so it will
     send all properties.
 */
-import $__common_lab_modeler_mixin from 'common/lab-modeler-mixin';
-import $__models_iframe_metadata from 'models/iframe/metadata';
+import LabModelerMixin from 'common/lab-modeler-mixin';
+import metadata from 'models/iframe/metadata';
 
-var LabModelerMixin = $__common_lab_modeler_mixin;
-var metadata = $__models_iframe_metadata;
 
 function IFrameModel(initialProperties) {
   var labModelerMixin = new LabModelerMixin({

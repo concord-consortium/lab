@@ -1,14 +1,9 @@
-/*global define, $ */
 
-import $__lab_config from 'lab.config';
-import $__common_inherit from 'common/inherit';
-import $__common_controllers_interactive_component from 'common/controllers/interactive-component';
+import labConfig from 'lab.config';
+import inherit from 'common/inherit';
+import InteractiveComponent from 'common/controllers/interactive-component';
 
-var labConfig = $__lab_config,
-  inherit = $__common_inherit,
-  InteractiveComponent = $__common_controllers_interactive_component,
-
-  externalUrl = /^https?:\/\//i;
+var externalUrl = /^https?:\/\//i;
 
 /**
  * Image controller.

@@ -1,4 +1,3 @@
-/*global define: false */
 
 // Definitions of the MKS units used for macroscopic models. We simulate macroscopic models by
 // declaring that some value in (microscopic) MD2D units actually represents one macroscopic-scale

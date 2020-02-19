@@ -1,5 +1,3 @@
-/*global define: false, $: false*/
-
 // Vectormap WebGL view.
 //
 // It uses HTML5 Canvas and WebGL for rendering.
@@ -7,21 +5,11 @@
 // Before use, this view should be bound with a heatmap texture using bindHeapmapTexture(vectormap_tex).
 // To render the heatmap use renderVectormapTexture() method.
 // Set size of the heatmap using CSS rules.
-
-import $__models_energy_d_gpu_context from 'models/energy2d/gpu/context';
-import $__models_energy_d_gpu_shader from 'models/energy2d/gpu/shader';
-import $__models_energy_d_gpu_mesh from 'models/energy2d/gpu/mesh';
-import $__text_models_energy_d_views_vectormap_webgl_glsl_vectormap_vs_glsl from 'models/energy2d/views/vectormap-webgl-glsl/vectormap.vs.glsl';
-import $__text_models_energy_d_views_vectormap_webgl_glsl_vectormap_fs_glsl from 'models/energy2d/views/vectormap-webgl-glsl/vectormap.fs.glsl';
-
-var
-// Dependencies.
-  context = $__models_energy_d_gpu_context,
-  Shader = $__models_energy_d_gpu_shader,
-  Mesh = $__models_energy_d_gpu_mesh,
-  // Shader sources. One of Lab build steps converts sources to the JavaScript file.
-  vectormap_vs = $__text_models_energy_d_views_vectormap_webgl_glsl_vectormap_vs_glsl,
-  vectormap_fs = $__text_models_energy_d_views_vectormap_webgl_glsl_vectormap_fs_glsl;
+import context from 'models/energy2d/gpu/context';
+import Shader from 'models/energy2d/gpu/shader';
+import Mesh from 'models/energy2d/gpu/mesh';
+import vectormap_vs from 'models/energy2d/views/vectormap-webgl-glsl/vectormap.vs.glsl';
+import vectormap_fs from 'models/energy2d/views/vectormap-webgl-glsl/vectormap.fs.glsl';
 
 export default function VectormapWebGLView(html_id) {
   var

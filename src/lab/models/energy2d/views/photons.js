@@ -1,4 +1,3 @@
-/*global define: false, $: false*/
 
 // Energy2D photons view.
 //
@@ -10,8 +9,7 @@
 // size of the HTML element to avoid low quality scaling.
 
 export default function PhotonsView(html_id) {
-  var
-    DEFAULT_ID = 'energy2d-photons-view',
+  var DEFAULT_ID = 'energy2d-photons-view',
     DEFAULT_CLASS = 'energy2d-photons-view',
 
     PHOTON_LENGTH = 10,
@@ -49,8 +47,7 @@ export default function PhotonsView(html_id) {
     photons_view = {
       // Render vectormap on the canvas.
       renderPhotons: function() {
-        var
-          photon, sx, sy, r,
+        var photon, sx, sy, r,
           i, len;
 
         if (!photons) {

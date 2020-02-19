@@ -1,4 +1,4 @@
-/**
+ /**
   Define the model-specific Sensor scripting API used by 'action' scripts on interactive elements.
 
   The universal Interactive scripting API is extended with the properties of the

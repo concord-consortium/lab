@@ -1,12 +1,8 @@
-import $__common_views_numeric_output_view from 'common/views/numeric-output-view';
-import $__common_controllers_basic_dialog from 'common/controllers/basic-dialog';
-import $__models_sensor_common_i__n_sensor_definitions_connector from 'models/sensor-common/i18n-sensor-definitions-connector';
-import $__common_views_view_state from 'common/views/view-state';
+import NumericOutputView from 'common/views/numeric-output-view';
+import BasicDialog from 'common/controllers/basic-dialog';
+import getSensorDefinitions from 'models/sensor-common/i18n-sensor-definitions-connector';
+import viewState from 'common/views/view-state';
 
-var NumericOutputView = $__common_views_numeric_output_view,
-  BasicDialog = $__common_controllers_basic_dialog,
-  getSensorDefinitions = $__models_sensor_common_i__n_sensor_definitions_connector,
-  viewState = $__common_views_view_state;
 
 export default function(model, modelUrl, i18n) {
 

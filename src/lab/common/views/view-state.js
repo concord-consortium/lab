@@ -1,4 +1,3 @@
-/*global define */
 
 /**
  * Custom handling of enabled/disabled state for Lab's HTML elements.

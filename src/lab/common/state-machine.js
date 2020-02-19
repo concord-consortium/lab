@@ -1,4 +1,3 @@
-/*global define: false */
 
 // Dead-simple, non-hierarchical state machine to which you dispatch events. The state machine is
 // in one state at a time (once the initial state is specified) and each event you ask it to

@@ -1,12 +1,8 @@
-/*global define: false */
 
-import $__common_lab_modeler_mixin from 'common/lab-modeler-mixin';
-import $__models_signal_generator_metadata from 'models/signal-generator/metadata';
+import LabModelerMixin from 'common/lab-modeler-mixin';
+import metadata from 'models/signal-generator/metadata';
 
-var LabModelerMixin = $__common_lab_modeler_mixin,
-  metadata = $__models_signal_generator_metadata,
-
-  unitsDefinition = {
+var unitsDefinition = {
     units: {
       time: {
         name: "second",

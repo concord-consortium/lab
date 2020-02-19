@@ -1,12 +1,8 @@
-/*global define: false */
+ 
+import PropertyDescription from 'common/property-description';
+import RunningAverageFilter from 'common/filters/running-average-filter';
+import SimplePeriodFilter from 'common/filters/simple-period-filter';
 
-import $__common_property_description from 'common/property-description';
-import $__common_filters_running_average_filter from 'common/filters/running-average-filter';
-import $__common_filters_simple_period_filter from 'common/filters/simple-period-filter';
-
-var PropertyDescription = $__common_property_description,
-  RunningAverageFilter = $__common_filters_running_average_filter,
-  SimplePeriodFilter = $__common_filters_simple_period_filter;
 
 export default function OutputSupport(args) {
   var propertySupport = args.propertySupport,

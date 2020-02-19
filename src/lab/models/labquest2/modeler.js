@@ -1,24 +1,14 @@
-/*global define: false */
+ 
+import LabModelerMixin from 'common/lab-modeler-mixin';
+import PropertyDescription from 'common/property-description';
+import metadata from './metadata';
+import StateMachine from 'common/state-machine';
+import labquest2Interface from 'labquest2-interface';
+import unitsDefinition from './units-definition';
+import getSensorDefinitions from 'models/sensor-common/i18n-sensor-definitions-connector';
+import Notifier from 'models/sensor-common/notifier';
+import _ from 'underscore';
 
-import $__common_lab_modeler_mixin from 'common/lab-modeler-mixin';
-import $__common_property_description from 'common/property-description';
-import $____metadata from './metadata';
-import $__common_state_machine from 'common/state-machine';
-import $__labquest__interface from 'labquest2-interface';
-import $____units_definition from './units-definition';
-import $__models_sensor_common_i__n_sensor_definitions_connector from 'models/sensor-common/i18n-sensor-definitions-connector';
-import $__models_sensor_common_notifier from 'models/sensor-common/notifier';
-import $__underscore from 'underscore';
-
-var LabModelerMixin = $__common_lab_modeler_mixin,
-  PropertyDescription = $__common_property_description,
-  metadata = $____metadata,
-  StateMachine = $__common_state_machine,
-  labquest2Interface = $__labquest__interface,
-  unitsDefinition = $____units_definition,
-  getSensorDefinitions = $__models_sensor_common_i__n_sensor_definitions_connector,
-  Notifier = $__models_sensor_common_notifier,
-  _ = $__underscore;
 
 export default function Model(initialProperties, opt) {
   var i18n = opt.i18n,

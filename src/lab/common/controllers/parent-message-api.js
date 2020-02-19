@@ -1,11 +1,7 @@
-/*global define:false*/
 
-import $__common_benchmark_benchmark from 'common/benchmark/benchmark';
-import $__common_url_helper from 'common/url-helper';
-import $__iframe_phone from 'iframe-phone';
-var benchmark = $__common_benchmark_benchmark;
-var urlHelper = $__common_url_helper;
-var iframePhone = $__iframe_phone;
+import benchmark from 'common/benchmark/benchmark';
+import urlHelper from 'common/url-helper';
+import iframePhone from 'iframe-phone';
 
 // Defines the default postMessage API used to communicate with parent window (i.e., an embedder)
 export default function(controller) {

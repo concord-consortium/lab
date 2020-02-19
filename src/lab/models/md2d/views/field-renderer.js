@@ -1,8 +1,6 @@
-/*global define: false */
 
-import $__pixi from 'pixi.js';
+import PIXI from 'pixi.js';
 // Dependencies.
-var PIXI = $__pixi;
 
 function logistic(x) {
   return 1 / (1 + Math.exp(-x));

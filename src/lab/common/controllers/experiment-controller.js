@@ -1,11 +1,7 @@
-/*global define, $*/
 
-import $__common_controllers_interactive_metadata from 'common/controllers/interactive-metadata';
-import $__common_validator from 'common/validator';
-import $__common_models_dataset from 'common/models/dataset';
-var metadata = $__common_controllers_interactive_metadata,
-  validator = $__common_validator,
-  Dataset = $__common_models_dataset;
+import metadata from 'common/controllers/interactive-metadata';
+import validator from 'common/validator';
+import Dataset from 'common/models/dataset';
 
 export default function ExperimentController(experimentDefinition, interactivesController) {
   // Public API.

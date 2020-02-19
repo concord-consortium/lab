@@ -1,17 +1,11 @@
-/*global require, define, $ */
 
-import $__common_controllers_interactive_metadata from 'common/controllers/interactive-metadata';
-import $__common_validator from 'common/validator';
-import $__common_controllers_disablable from 'common/controllers/disablable';
-import $__common_controllers_help_icon_support from 'common/controllers/help-icon-support';
-import $__common_views_select_box_view from 'common/views/select-box-view';
+import metadata from 'common/controllers/interactive-metadata';
+import validator from 'common/validator';
+import disablable from 'common/controllers/disablable';
+import helpIconSupport from 'common/controllers/help-icon-support';
+import SelectBoxView from 'common/views/select-box-view';
 import $__common_jquery_plugins from 'common/jquery-plugins';
 
-var metadata = $__common_controllers_interactive_metadata,
-  validator = $__common_validator,
-  disablable = $__common_controllers_disablable,
-  helpIconSupport = $__common_controllers_help_icon_support,
-  SelectBoxView = $__common_views_select_box_view;
 
 $__common_jquery_plugins;
 

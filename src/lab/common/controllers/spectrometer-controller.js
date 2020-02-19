@@ -1,13 +1,8 @@
-/*global define, $ */
 
-import $__common_inherit from 'common/inherit';
-import $__common_controllers_interactive_component from 'common/controllers/interactive-component';
-import $__models_md_d_models_engine_plugins_quantum_dynamics from 'models/md2d/models/engine/plugins/quantum-dynamics';
-var inherit = $__common_inherit,
-  InteractiveComponent = $__common_controllers_interactive_component,
-
-  QuantumDynamics = $__models_md_d_models_engine_plugins_quantum_dynamics,
-  INFRARED = QuantumDynamics.INFRARED,
+import inherit from 'common/inherit';
+import InteractiveComponent from 'common/controllers/interactive-component';
+import QuantumDynamics from 'models/md2d/models/engine/plugins/quantum-dynamics';
+var INFRARED = QuantumDynamics.INFRARED,
   ULTRAVIOLET = QuantumDynamics.ULTRAVIOLET,
 
   // Performance optimization - photon mark is not rendered if there is already another

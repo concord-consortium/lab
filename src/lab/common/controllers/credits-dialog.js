@@ -1,20 +1,12 @@
-/*global define */
-import $__lab_config from 'lab.config';
-import $__mustache from 'mustache';
-import $__common_markdown_to_html from 'common/markdown-to-html';
-import $__common_inherit from 'common/inherit';
-import $__common_controllers_basic_dialog from 'common/controllers/basic-dialog';
-import $__common_controllers_copyright from 'common/controllers/copyright';
-import $__text_common_controllers_credits_dialog_tpl from 'common/controllers/credits-dialog.tpl';
+import labConfig from 'lab.config';
+import mustache from 'mustache';
+import markdownToHTML from 'common/markdown-to-html';
+import inherit from 'common/inherit';
+import BasicDialog from 'common/controllers/basic-dialog';
+import getCopyright from 'common/controllers/copyright';
+import creditsDialogTpl from 'common/controllers/credits-dialog.tpl';
 
-var labConfig = $__lab_config,
-  mustache = $__mustache,
-  markdownToHTML = $__common_markdown_to_html,
-  inherit = $__common_inherit,
-  BasicDialog = $__common_controllers_basic_dialog,
-  getCopyright = $__common_controllers_copyright,
-  creditsDialogTpl = $__text_common_controllers_credits_dialog_tpl,
-  CONCORD_URL = 'https://concord.org',
+var CONCORD_URL = 'https://concord.org',
   NEXT_GEN_URL = 'http://mw.concord.org/nextgen/';
 
 /**

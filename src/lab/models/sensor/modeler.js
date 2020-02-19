@@ -1,23 +1,13 @@
-/*global define: false, $: true */
+import labConfig from 'lab.config';
+import LabModelerMixin from 'common/lab-modeler-mixin';
+import PropertyDescription from 'common/property-description';
+import metadata from './metadata';
+import sensorApplet from 'sensor-applet';
+import getSensorDefinitions from 'models/sensor-common/i18n-sensor-definitions';
+import Notifier from 'models/sensor-common/notifier';
+import ExportController from 'common/controllers/export-controller';
 
-import $__lab_config from 'lab.config';
-import $__common_lab_modeler_mixin from 'common/lab-modeler-mixin';
-import $__common_property_description from 'common/property-description';
-import $____metadata from './metadata';
-import $__sensor_applet from 'sensor-applet';
-import $__models_sensor_common_i__n_sensor_definitions from 'models/sensor-common/i18n-sensor-definitions';
-import $__models_sensor_common_notifier from 'models/sensor-common/notifier';
-import $__common_controllers_export_controller from 'common/controllers/export-controller';
-
-var labConfig = $__lab_config,
-  LabModelerMixin = $__common_lab_modeler_mixin,
-  PropertyDescription = $__common_property_description,
-  metadata = $____metadata,
-  sensorApplet = $__sensor_applet,
-  unitsDefinition = sensorApplet.unitsDefinition,
-  getSensorDefinitions = $__models_sensor_common_i__n_sensor_definitions,
-  Notifier = $__models_sensor_common_notifier,
-  ExportController = $__common_controllers_export_controller;
+var unitsDefinition = sensorApplet.unitsDefinition;
 
 export default function Model(initialProperties, opt) {
   var i18n = opt.i18n,

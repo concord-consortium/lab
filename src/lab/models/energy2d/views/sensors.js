@@ -1,4 +1,3 @@
-/*global define: false, d3: false */
 
 var TH_W = 2,
   TH_H = 4;

@@ -1,8 +1,7 @@
 /*jshint eqnull:true, boss:true */
 
-import $__underscore from 'underscore';
+import _ from 'underscore';
 
-var _ = $__underscore;
 
 function isUndefined(val) {
   return val === "";

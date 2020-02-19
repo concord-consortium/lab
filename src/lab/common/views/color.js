@@ -1,4 +1,3 @@
-/*global define: false, d3: false */
 
 /**
  * Tiny module providing useful functions for color manipulation.

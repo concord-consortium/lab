@@ -1,4 +1,3 @@
-/*global define: false */
 export default [{
   "fullName": "Alanine",
   "abbreviation": "Ala",

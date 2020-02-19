@@ -1,4 +1,3 @@
-/*global define, unescape, escape */
 
 /**
  * Cookies helper adapted from MDN pages. Original docs:

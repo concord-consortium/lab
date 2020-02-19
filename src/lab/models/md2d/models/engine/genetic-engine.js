@@ -1,13 +1,7 @@
-/*global d3, define */
+import aminoacidsHelper from 'models/md2d/models/aminoacids-helper';
+import alert from 'common/alert';
 
-import $__models_md_d_models_aminoacids_helper from 'models/md2d/models/aminoacids-helper';
-import $__common_alert from 'common/alert';
-import $__models_md_d_views_nucleotides from 'models/md2d/views/nucleotides';
-
-var aminoacidsHelper = $__models_md_d_models_aminoacids_helper,
-  alert = $__common_alert,
-  NUCLEO_WIDTH = $__models_md_d_views_nucleotides.WIDTH,
-
+var
   STATES = [
     "undefined",
     "intro-cells",
@@ -1051,4 +1045,4 @@ export default function GeneticProperties(model) {
   model.addPropertiesListener(["DNAState"], stateUpdated);
   updateGeneticProperties();
   return api;
-};
+}

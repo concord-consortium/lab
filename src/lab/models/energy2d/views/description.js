@@ -1,5 +1,4 @@
 /*jslint indent: 2, browser: true, newcap: true */
-/*globals define: false, $: false*/
 
 // Description.
 //
@@ -9,8 +8,7 @@
 // Title class: "energy2d-description-title", Content class: "energy2d-description-content".
 
 export default function DescriptionView(description) {
-  var
-    DEFAULT_ID = 'energy2d-description',
+  var DEFAULT_ID = 'energy2d-description',
     DEFAULT_CLASS = 'energy2d-description',
 
     $description_div,

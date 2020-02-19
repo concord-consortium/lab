@@ -1,19 +1,11 @@
-/*global define, $ */
-import $__lab_config from 'lab.config';
-import $__mustache from 'mustache';
-import $__common_inherit from 'common/inherit';
-import $__common_controllers_basic_dialog from 'common/controllers/basic-dialog';
-import $__common_controllers_copyright from 'common/controllers/copyright';
-import $__text_common_controllers_share_dialog_tpl from 'common/controllers/share-dialog.tpl';
+import labConfig from 'lab.config';
+import mustache from 'mustache';
+import inherit from 'common/inherit';
+import BasicDialog from 'common/controllers/basic-dialog';
+import getCopyright from 'common/controllers/copyright';
+import shareDialogTpl from 'common/controllers/share-dialog.tpl';
 
-var labConfig = $__lab_config,
-  mustache = $__mustache,
-  inherit = $__common_inherit,
-  BasicDialog = $__common_controllers_basic_dialog,
-  getCopyright = $__common_controllers_copyright,
-  shareDialogTpl = $__text_common_controllers_share_dialog_tpl,
-
-  location = document.location,
+var location = document.location,
 
   // A tiny template, so define it inline and compile immediately.
   iframeTpl = mustache.compile('<iframe width="{{width}}px" height="{{height}}px" ' +

@@ -1,6 +1,4 @@
-/*jslint indent: 2, browser: true, newcap: true */
-/*globals define: false*/
-
+/*jslint indent: 2, browser: true, newcap: true */ 
 // Simple wrapper around WebGL textures that supports render-to-texture.
 //
 // The arguments `width` and `height` give the size of the texture in texels.
@@ -24,11 +22,11 @@
 //       type: gl.FLOAT  // Defaults to gl.UNSIGNED_BYTE
 //     });
 
-import $__models_energy_d_gpu_context from 'models/energy2d/gpu/context';
+import context from 'models/energy2d/gpu/context';
 
 var
 // Dependencies.
-  context = $__models_energy_d_gpu_context,
+  
 
   // WebGL context.
   gl,

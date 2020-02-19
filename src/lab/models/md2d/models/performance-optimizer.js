@@ -1,4 +1,3 @@
-/*global define, $ */
 
 var MIN_FPS = 2.5;
 

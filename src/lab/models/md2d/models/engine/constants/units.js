@@ -1,4 +1,3 @@
-/*global define: true */
 /** Provides a few simple helper functions for converting related unit types.
 
     This sub-module doesn't do unit conversion between compound unit types (e.g., knowing that kg*m/s^2 = N)

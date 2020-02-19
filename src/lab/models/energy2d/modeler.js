@@ -1,23 +1,14 @@
-/*global define: false, d3: false */
 
-import $__common_alert from 'common/alert';
-import $__common_console from 'common/console';
-import $__common_validator from 'common/validator';
-import $__common_serialize from 'common/serialize';
-import $__common_performance from 'common/performance';
-import $__common_lab_modeler_mixin from 'common/lab-modeler-mixin';
-import $__models_energy_d_metadata from 'models/energy2d/metadata';
+import alert from 'common/alert';
+import console from 'common/console';
+import validator from 'common/validator';
+import serialize from 'common/serialize';
+import performance from 'common/performance';
+import LabModelerMixin from 'common/lab-modeler-mixin';
+import metadata from 'models/energy2d/metadata';
 import { makeCoreModel } from 'models/energy2d/models/core-model';
 
-var alert = $__common_alert,
-  console = $__common_console,
-  validator = $__common_validator,
-  serialize = $__common_serialize,
-  performance = $__common_performance,
-  LabModelerMixin = $__common_lab_modeler_mixin,
-  metadata = $__models_energy_d_metadata,
-
-  unitsDefinition = {
+var unitsDefinition = {
     units: {
       time: {
         name: "second",

@@ -1,4 +1,3 @@
-/*global define*/
 /**
  * Views can require this function to get next available tab index.
  */

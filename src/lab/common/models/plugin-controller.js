@@ -1,4 +1,3 @@
-/*global define */
 
 // The PluginController manages an array of plugins, and can call arbitrary functions
 // on any registered plugin that responds to that function.

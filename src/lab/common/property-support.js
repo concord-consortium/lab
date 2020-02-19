@@ -1,5 +1,4 @@
-/*global define: false, d3: false */
-/**
+   /**
 
   This module provides support which Lab model types can use to implement observable properties that
   have custom getters, setters, and validation. It is specialized for the needs of interactive,

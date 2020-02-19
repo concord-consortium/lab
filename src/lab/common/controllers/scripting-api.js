@@ -1,9 +1,7 @@
-/*global d3, $, define */
-/*jshint loopfunc: true */
+  /*jshint loopfunc: true */
 
-import $__common_alert from 'common/alert';
+import alert from 'common/alert';
 
-var alert = $__common_alert;
 var namespaceCount = 0;
 
 // This object is the outer context in which each script function is executed. This prevents at

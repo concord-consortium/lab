@@ -1,13 +1,11 @@
 /*jslint indent: 2, browser: true, newcap: true */
-/*globals define: false, $: false*/
 
 // Performance Monitor View.
 //
 // getHTMLElement() method returns JQuery object with DIV that contains performance data.
 
 export default function PerformanceView(html_id) {
-  var
-    DEFAULT_ID = 'energy2d-performance',
+  var DEFAULT_ID = 'energy2d-performance',
     DEFAULT_CLASS = 'energy2d-performance',
 
     $performance_div,

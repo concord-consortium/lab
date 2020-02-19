@@ -1,4 +1,3 @@
-/*global define */
 /*jshint multistr: true */
 
 export default {

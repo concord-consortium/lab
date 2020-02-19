@@ -63,11 +63,9 @@
 
     * Note that mouseover/mouseout/mousenter/mouseleave events are not handled in any way!
 */
-import $__common_feature_tests from 'common/feature-tests';
+import featureTests from 'common/feature-tests';
 // Dependencies.
-var featureTests = $__common_feature_tests,
-
-  EVENT_TYPES = ['mousedown', 'mouseup', 'contextmenu'],
+var EVENT_TYPES = ['mousedown', 'mouseup', 'contextmenu'],
 
   // Keep track of window listeners, so helper can cleanup previous listeners. Note that it
   // means that only one event translation per window is allowed for now!

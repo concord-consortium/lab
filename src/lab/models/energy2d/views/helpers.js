@@ -1,5 +1,4 @@
 /*jslint indent: 2, browser: true, newcap: true */
-/*globals define: false*/
 
 
 // Return module with functions.
@@ -13,8 +12,7 @@ export default {
   // http://www.cs.rit.edu/~ncs/color/t_convert.html
   // http://snipplr.com/view.php?codeview&id=14590
   HSVToRGB: function(h, s, v) {
-    var
-      r, g, b,
+    var r, g, b,
       i,
       f, p, q, t;
 

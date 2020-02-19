@@ -5,14 +5,9 @@
 // ------------------------------------------------------------
 
 import layoutConfig from 'common/layout/semantic-layout-config';
-import $__arrays from 'arrays';
-import $__common_console from 'common/console';
-import $__common_alert from 'common/alert';
-
-var
-  arrays = $__arrays,
-  // console = $__common_console,
-  alert = $__common_alert;
+import arrays from 'arrays';
+import console from 'common/console';
+import alert from 'common/alert';
 
 export default function SemanticLayout() {
   // Public API.

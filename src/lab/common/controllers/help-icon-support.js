@@ -1,4 +1,3 @@
-/*global define */
 
 /**
  * Tiny "mixin" that can be used by an interactive component.

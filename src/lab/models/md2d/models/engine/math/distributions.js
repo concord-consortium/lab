@@ -1,5 +1,4 @@
-/*global define: true */
-/*jslint eqnull: true */
+ /*jslint eqnull: true */
 
 // Simple (Box-Muller) univariate-normal random number generator.
 //

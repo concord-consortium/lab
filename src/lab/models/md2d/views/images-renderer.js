@@ -1,6 +1,5 @@
-import $__lab_config from 'lab.config';
+import labConfig from 'lab.config';
 
-var labConfig = $__lab_config;
 var UPPER_LEFT = 0;
 var CENTER = 1;
 

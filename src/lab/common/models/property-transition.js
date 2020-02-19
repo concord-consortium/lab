@@ -1,4 +1,3 @@
-/*global define, d3 */
 
 /**
  * Abstract class, which defines basic interface for property transition.

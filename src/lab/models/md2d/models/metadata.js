@@ -1,5 +1,4 @@
-/*global define: false */
-
+ 
 export default {
   mainProperties: {
     type: {

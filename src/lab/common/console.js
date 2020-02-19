@@ -1,10 +1,7 @@
-/*global define: false console: true */
 
-import $__lab_config from 'lab.config';
+import labConfig from 'lab.config';
 // Dependencies.
-var labConfig = $__lab_config,
-
-  // Object to be returned.
+var // Object to be returned.
   publicAPI,
   cons,
   emptyFunction = function() {};

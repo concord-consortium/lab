@@ -1,5 +1,4 @@
 /*jslint indent: 2, browser: true, newcap: true */
-/*globals define: false*/
 
 // Simple tools for measurement of performance.
 // Automatically detects nested calls of start()
@@ -24,8 +23,7 @@
 //  |.. connection 
 //  |.. parsing
 
-export default function PerformanceMonitor() {
-  var
+export default function PerformanceMonitor() { var
   // Holds avg time data.
     tree_root = {
       id: undefined,
@@ -39,8 +37,7 @@ export default function PerformanceMonitor() {
     fps_data = {},
 
     goToNode = function(id_string) {
-      if (!act_node.children[id_string]) {
-        act_node.children[id_string] = {
+      if (!act_node.children[id_string]) { act_node.children[id_string] = {
           id: id_string,
           data: {
             sum: 0,

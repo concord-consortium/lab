@@ -1,5 +1,4 @@
 /*jslint indent: 2, browser: true, newcap: true */
-/*globals define: false, $: false*/
 
 // Vector map view.
 //
@@ -11,8 +10,7 @@
 // size of the HTML element to avoid low quality CSS scaling.
 
 export default function VectormapView(html_id) {
-  var
-    DEFAULT_ID = 'energy2d-vectormap-view',
+  var DEFAULT_ID = 'energy2d-vectormap-view',
     VECTOR_SCALE = 100,
     VECTOR_BASE_LEN = 8,
     WING_COS = Math.cos(0.523598776),
@@ -44,8 +42,7 @@ export default function VectormapView(html_id) {
 
     // Helper method for drawing a single vector.
     drawVector = function(x, y, vx, vy) {
-      var
-        r = 1.0 / Math.sqrt(vx * vx + vy * vy),
+      var r = 1.0 / Math.sqrt(vx * vx + vy * vy),
         arrowx = vx * r,
         arrowy = vy * r,
         x1 = x + arrowx * VECTOR_BASE_LEN + vx * VECTOR_SCALE,
@@ -75,8 +72,7 @@ export default function VectormapView(html_id) {
       renderVectormap: function() {
         if (!enabled) return;
 
-        var
-          dx, dy, x0, y0, uij, vij,
+        var dx, dy, x0, y0, uij, vij,
           i, j, iny, ijny;
 
         if (!vectormap_u || !vectormap_v) {

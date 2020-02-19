@@ -1,10 +1,7 @@
-/*global define*/
 /*jslint boss: true*/
 
-import $__iframe_phone from 'iframe-phone';
-import $__import_export_codap_interface from 'import-export/codap-interface';
-var iframePhone = $__iframe_phone;
-var codapInterface = $__import_export_codap_interface;
+import iframePhone from 'iframe-phone';
+import codapInterface from 'import-export/codap-interface';
 
 // Handles logging of events to LARA or CODAP.
 function LogController(args) {

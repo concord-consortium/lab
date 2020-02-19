@@ -1,18 +1,16 @@
-/*jshint indent: 2, browser: true, newcap: true, multistr: true, es5: true */
-/*global define: false, Float32Array: false, Uint8Array: false*/
-
+    /*jshint indent: 2, browser: true, newcap: true, multistr: true, es5: true */ 
 // GPGPU Utils (singleton, one instance in the environment).
-import $__models_energy_d_gpu_context from 'models/energy2d/gpu/context';
-import $__models_energy_d_gpu_texture from 'models/energy2d/gpu/texture';
-import $__models_energy_d_gpu_shader from 'models/energy2d/gpu/shader';
-import $__models_energy_d_gpu_mesh from 'models/energy2d/gpu/mesh';
+import context from 'models/energy2d/gpu/context';
+import Texture from 'models/energy2d/gpu/texture';
+import Shader from 'models/energy2d/gpu/shader';
+import Mesh from 'models/energy2d/gpu/mesh';
 
 var
 // Dependencies.
-  context = $__models_energy_d_gpu_context,
-  Texture = $__models_energy_d_gpu_texture,
-  Shader = $__models_energy_d_gpu_shader,
-  Mesh = $__models_energy_d_gpu_mesh,
+  
+  
+  
+  
 
   // The internal `gl` variable holds the current WebGL context.
   gl,

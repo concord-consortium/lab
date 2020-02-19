@@ -1,20 +1,12 @@
-/*global define, $ */
 
-import $__lab_config from 'lab.config';
-import $__common_controllers_text_controller from 'common/controllers/text-controller';
-import $__common_controllers_image_controller from 'common/controllers/image-controller';
-import $__common_controllers_div_controller from 'common/controllers/div-controller';
-import $__common_controllers_playback_controller from 'common/controllers/playback-controller';
-import $__screenfull from 'screenfull';
+import labConfig from 'lab.config';
+import TextController from 'common/controllers/text-controller';
+import ImageController from 'common/controllers/image-controller';
+import DivController from 'common/controllers/div-controller';
+import PlaybackController from 'common/controllers/playback-controller';
+import screenfull from 'screenfull';
 
-var labConfig = $__lab_config,
-  TextController = $__common_controllers_text_controller,
-  ImageController = $__common_controllers_image_controller,
-  DivController = $__common_controllers_div_controller,
-  PlaybackController = $__common_controllers_playback_controller,
-  screenfull = $__screenfull,
-
-  topBarHeight = 1.5,
+var topBarHeight = 1.5,
   topBarFontScale = topBarHeight * 0.65,
   topBarVerticalPadding = topBarHeight / 10;
 

@@ -1,20 +1,13 @@
-/*global $: false, define: false */
 
 // Bar graph controller.
 // It provides specific interface used in MD2D environment
 // (by interactives-controller and layout module).
-import $__grapher_bar_graph_bar_graph_model from 'grapher/bar-graph/bar-graph-model';
-import $__grapher_bar_graph_bar_graph_view from 'grapher/bar-graph/bar-graph-view';
-import $__common_controllers_interactive_metadata from 'common/controllers/interactive-metadata';
-import $__common_controllers_help_icon_support from 'common/controllers/help-icon-support';
-import $__common_validator from 'common/validator';
-var BarGraphModel = $__grapher_bar_graph_bar_graph_model,
-  BarGraphView = $__grapher_bar_graph_bar_graph_view,
-  metadata = $__common_controllers_interactive_metadata,
-  helpIconSupport = $__common_controllers_help_icon_support,
-  validator = $__common_validator,
-
-  // Note: We always explicitly copy properties from component spec to bar graph options hash,
+import BarGraphModel from 'grapher/bar-graph/bar-graph-model';
+import BarGraphView from 'grapher/bar-graph/bar-graph-view';
+import metadata from 'common/controllers/interactive-metadata';
+import helpIconSupport from 'common/controllers/help-icon-support';
+import validator from 'common/validator';
+var // Note: We always explicitly copy properties from component spec to bar graph options hash,
   // in order to avoid tighly coupling an externally-exposed API (the component spec) to an
   // internal implementation detail (the bar graph options format).
   barGraphOptionForComponentSpecProperty = {

@@ -1,4 +1,3 @@
-/*global define: false */
 // example userAgent strings:
 // chrome mobile: Mozilla/5.0 (Linux; Android 4.2.2; Galaxy Nexus Build/JDQ39) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.72 Mobile Safari/537.36
 

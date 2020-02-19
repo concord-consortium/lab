@@ -1,6 +1,5 @@
-import $__common_layout_detect_font_change from 'common/layout/detect-font-change';
+ import detectFontChange from 'common/layout/detect-font-change';
 
-var detectFontChange = $__common_layout_detect_font_change;
 var OVERSAMPLE = 2;
 
 export default function NumericOutputView(opts) {

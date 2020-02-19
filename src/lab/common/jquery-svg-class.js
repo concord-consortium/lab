@@ -1,4 +1,3 @@
-/*global define, $ */
 
 /**
  * Require this module to add support of SVG elements in following jQuery functions:

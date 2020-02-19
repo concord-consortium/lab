@@ -1,14 +1,10 @@
-/*global define*/
 /*jshint eqnull: true*/
 
-import $__underscore from 'underscore';
-import $__models_md_d_models_engine_constants_index from 'models/md2d/models/engine/constants/index';
-import $__models_md_d_models_engine_potentials_coulomb from 'models/md2d/models/engine/potentials/coulomb';
+import _ from 'underscore';
+import constants from 'models/md2d/models/engine/constants/index';
+import coulomb from 'models/md2d/models/engine/potentials/coulomb';
 
-var _ = $__underscore,
-  constants = $__models_md_d_models_engine_constants_index,
-  coulomb = $__models_md_d_models_engine_potentials_coulomb,
-  COULOMB_CONSTANT = constants.COULOMB_CONSTANT.as(constants.unit.METERS_PER_FARAD),
+var COULOMB_CONSTANT = constants.COULOMB_CONSTANT.as(constants.unit.METERS_PER_FARAD),
   baseUnitTypes = ['length', 'mass', 'time'];
 
 export default function UnitsTranslation(unitsDefinition) {

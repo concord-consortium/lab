@@ -1,13 +1,9 @@
-/*jslint indent: 2, browser: true, newcap: true */
-
-import $__models_energy_d_models_constants from 'models/energy2d/models/constants';
+import constants from 'models/energy2d/models/constants';
 import { hypot } from 'models/energy2d/models/helpers';
 import { Photon } from 'models/energy2d/models/photon';
 import { Line, Polygon, Rectangle, Ellipse, Ring, pointInsidePolygon } from 'models/energy2d/models/shape';
 
-var constants = $__models_energy_d_models_constants,
-
-  // Part's constants.
+var // Part's constants.
   RADIATOR_SPACING = 0.5,
   MINIMUM_RADIATING_TEMPERATUE = 20,
   UNIT_SURFACE_AREA = 100,
@@ -22,8 +18,7 @@ export const Part = function(options) {
   this._options = options;
 
   // Validate and process options.
-  if (options.shapeType === "rectangle") {
-    this.shape = new Rectangle(options.x, options.y, options.width, options.height);
+  if (options.shapeType === "rectangle") { this.shape = new Rectangle(options.x, options.y, options.width, options.height);
   } else if (options.shapeType === "ellipse") {
     this.shape = new Ellipse(options.x, options.y, options.a, options.b);
   } else if (options.shapeType === "ring") {
@@ -162,10 +157,7 @@ Part.prototype.getGridCells = function(nx, ny, lx, ly) {
       j_max = Math.min(Math.max(Math.floor((rect.y + rect.height) * dy), 0), ny1);
       indices = new Array((i_max - i0 + 1) * (j_max - j0 + 1));
       idx = 0;
-      for (i = i0; i <= i_max; i += 1) {
-        for (j = j0; j <= j_max; j += 1) {
-          indices[idx += 1] = i * ny + j;
-        }
+      for (i = i0; i <= i_max; i += 1) { for (j = j0; j <= j_max; j += 1) {   indices[idx += 1] = i * ny + j; }
       }
       return indices;
     },

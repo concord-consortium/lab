@@ -1,11 +1,7 @@
-/*global define, $ */
-import $__common_markdown_to_html from "common/markdown-to-html";
-import $__common_inherit from "common/inherit";
-import $__common_controllers_basic_dialog from "common/controllers/basic-dialog";
+import markdownToHTML from "common/markdown-to-html";
+import inherit from "common/inherit";
+import BasicDialog from "common/controllers/basic-dialog";
 
-var markdownToHTML = $__common_markdown_to_html,
-  inherit = $__common_inherit,
-  BasicDialog = $__common_controllers_basic_dialog;
 
 /**
  * About Dialog. Inherits from Basic Dialog.

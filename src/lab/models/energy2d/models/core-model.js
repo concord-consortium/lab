@@ -1,21 +1,15 @@
-/*global define: false */
-
-import $__arrays from 'arrays';
+  
+import arrays from 'arrays';
 import { makeHeatSolver } from 'models/energy2d/models/physics-solvers/heat-solver';
 import { makeHeatSolverGPU } from 'models/energy2d/models/physics-solvers-gpu/heat-solver-gpu';
 import { makeFluidSolver } from 'models/energy2d/models/physics-solvers/fluid-solver';
 import { makeFluidSolverGPU } from 'models/energy2d/models/physics-solvers-gpu/fluid-solver-gpu';
 import { makeRaySolver } from 'models/energy2d/models/physics-solvers/ray-solver';
 import { Part } from 'models/energy2d/models/part';
-import $__models_energy_d_gpu_gpgpu from 'models/energy2d/gpu/gpgpu';
+import gpgpu from 'models/energy2d/gpu/gpgpu';
 import { hypot } from 'models/energy2d/models/helpers';
 
-var
-  arrays = $__arrays,
-  gpgpu = $__models_energy_d_gpu_gpgpu,
-
-  array_type = (function() {
-    try {
+var array_type = (function() {   try {
       new Float32Array();
     } catch (e) {
       return 'regular';
@@ -125,16 +119,13 @@ export const makeCoreModel = function(opt, partsOpt) {
 
     // Generate parts array.
     parts = (function() {
-      var result = [],
-        i, len;
+      var result = [], i, len;
 
       if (partsOpt) {
-        if (!arrays.isArray(partsOpt)) {
-          partsOpt = [partsOpt];
+        if (!arrays.isArray(partsOpt)) { partsOpt = [partsOpt];
         }
         result = new Array(partsOpt.length);
-        for (i = 0, len = partsOpt.length; i < len; i += 1) {
-          result[i] = new Part(partsOpt[i]);
+        for (i = 0, len = partsOpt.length; i < len; i += 1) { result[i] = new Part(partsOpt[i]);
         }
       }
       return result;
@@ -202,13 +193,9 @@ export const makeCoreModel = function(opt, partsOpt) {
     setupOptimizationFlags = function() {
       radiative = (function() {
         var i, len;
-        if (opt.sunny) {
-          return true;
+        if (opt.sunny) { return true;
         }
-        for (i = 0, len = parts.length; i < len; i += 1) {
-          if (parts[i].emissivity > 0) {
-            return true;
-          }
+        for (i = 0, len = parts.length; i < len; i += 1) { if (parts[i].emissivity > 0) {   return true; }
         }
         return false;
       }());

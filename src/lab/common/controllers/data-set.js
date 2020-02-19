@@ -1,11 +1,7 @@
-import $__common_controllers_interactive_metadata from 'common/controllers/interactive-metadata';
-import $__common_validator from 'common/validator';
-import $__common_listening_pool from 'common/listening-pool';
-import $__common_dispatch_support from 'common/dispatch-support';
-var metadata = $__common_controllers_interactive_metadata;
-var validator = $__common_validator;
-var ListeningPool = $__common_listening_pool;
-var DispatchSupport = $__common_dispatch_support;
+import metadata from 'common/controllers/interactive-metadata';
+import validator from 'common/validator';
+import ListeningPool from 'common/listening-pool';
+import DispatchSupport from 'common/dispatch-support';
 var dataSetCount = 0;
 
 /**

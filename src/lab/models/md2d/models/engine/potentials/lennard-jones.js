@@ -1,8 +1,7 @@
 /*jshint eqnull:true boss:true */
-import $_____constants_index from 'models/md2d/models/engine/constants/index';
+import constants from 'models/md2d/models/engine/constants/index';
 
-var constants = $_____constants_index,
-  unit = constants.unit,
+var unit = constants.unit,
 
   NANOMETERS_PER_METER = constants.ratio(unit.NANOMETER, {
     per: unit.METER

@@ -1,4 +1,3 @@
-/*global Lab, define: false, d3: false */
 /*jshint loopfunc: true*/
 
 /*
@@ -120,9 +119,8 @@
 
 */
 
-import $____browser_detect from './browser-detect';
-var browser_detect = $____browser_detect,
-  what_browser = browser_detect.what_browser,
+import browser_detect from './browser-detect';
+var what_browser = browser_detect.what_browser,
 
   _isMobile = browser_detect.isMobile,
   _browser = browser_detect.what_browser(),

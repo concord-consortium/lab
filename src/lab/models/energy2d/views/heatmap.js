@@ -1,5 +1,3 @@
-/*global define: false, $: false*/
-
 // Heatmap view.
 //
 // It uses HTML5 Canvas for rendering.
@@ -9,16 +7,10 @@
 // Set size of the heatmap using CSS rules. The view fits canvas dimensions to the real
 // size of the HTML element to avoid low quality CSS scaling *ONLY* when HQ rendering is enabled.
 // Otherwise, the canvas has the same dimensions as heatmap grid and fast CSS scaling is used.
-
-import $__models_energy_d_views_color_palette from 'models/energy2d/views/color-palette';
-
-var
-// Dependencies.
-  ColorPalette = $__models_energy_d_views_color_palette;
+import ColorPalette from 'models/energy2d/views/color-palette';
 
 export default function HeatmapView(html_id) {
-  var
-    DEFAULT_ID = 'energy2d-heatmap-view',
+  var DEFAULT_ID = 'energy2d-heatmap-view',
 
     $heatmap_canvas,
     canvas_ctx,
@@ -47,8 +39,7 @@ export default function HeatmapView(html_id) {
     heatmap_view = {
       // Render heat map on the canvas.
       renderHeatmap: function() {
-        var
-          scale, rgb_idx, val, color1, color2,
+        var scale, rgb_idx, val, color1, color2,
           image_data, data,
           i, j, iny, pix_index, pix_stride;
 

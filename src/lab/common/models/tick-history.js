@@ -1,5 +1,4 @@
-/*global define: false */
-
+    
 /**
   Class which handles tick history. It supports saving and restoring state
   of core state objects defined by the modeler and engine. However, while

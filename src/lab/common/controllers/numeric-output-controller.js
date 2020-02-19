@@ -1,14 +1,9 @@
-/*global define, $ */
 
-import $__common_controllers_interactive_metadata from 'common/controllers/interactive-metadata';
-import $__common_validator from 'common/validator';
-import $__common_controllers_help_icon_support from 'common/controllers/help-icon-support';
-import $__common_views_numeric_output_view from 'common/views/numeric-output-view';
+import metadata from 'common/controllers/interactive-metadata';
+import validator from 'common/validator';
+import helpIconSupport from 'common/controllers/help-icon-support';
+import NumericOutputView from 'common/views/numeric-output-view';
 
-var metadata = $__common_controllers_interactive_metadata,
-  validator = $__common_validator,
-  helpIconSupport = $__common_controllers_help_icon_support,
-  NumericOutputView = $__common_views_numeric_output_view;
 
 export default function NumericOutputController(component, interactivesController) {
   var propertyName,

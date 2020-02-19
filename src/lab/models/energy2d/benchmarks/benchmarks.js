@@ -1,10 +1,7 @@
-/*global define: false, d3: false */
 
-import $__common_performance from "common/performance";
+import performance from "common/performance";
 
-var performance = $__common_performance,
-
-  TEST_TIME = 5000,
+var TEST_TIME = 5000,
   WARMUP_TIME = 1000;
 
 export default function Benchmarks(controller) {

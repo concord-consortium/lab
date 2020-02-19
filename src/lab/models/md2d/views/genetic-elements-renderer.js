@@ -1,13 +1,8 @@
-/*global define, d3 */
 
-import $__models_md_d_views_nucleotides from 'models/md2d/views/nucleotides';
-import $__common_resources_url from 'common/resources-url';
-import $__lab_config from 'lab.config';
-var nucleotides = $__models_md_d_views_nucleotides,
-  resourcesUrl = $__common_resources_url,
-  labConfig = $__lab_config,
-
-  SCALE = 0.007,
+import nucleotides from 'models/md2d/views/nucleotides';
+import resourcesUrl from 'common/resources-url';
+import labConfig from 'lab.config';
+var SCALE = 0.007,
   W = {
     "CELLS": 720,
     "DNA1": 661,

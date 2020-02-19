@@ -1,10 +1,7 @@
-/*global define: false */
-
-import $__pixi from 'pixi.js';
+ 
+import PIXI from 'pixi.js';
 // Dependencies.
-var PIXI = $__pixi,
-
-  RADIAL_BOND_TYPES = {
+var RADIAL_BOND_TYPES = {
     STANDARD_STICK: 101,
     LONG_SPRING: 102,
     BOND_SOLID_LINE: 103,

@@ -1,6 +1,5 @@
-import $__pixi from 'pixi.js';
+import PIXI from 'pixi.js';
 
-var PIXI = $__pixi;
 
 var NUMBER_OF_SEGMENTS = 5;
 

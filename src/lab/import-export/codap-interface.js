@@ -1,9 +1,7 @@
 /*jshint eqnull: true */
-/*global define */
 
-import $__iframe_phone from 'iframe-phone';
+import iframePhone from 'iframe-phone';
 
-var iframePhone = $__iframe_phone;
 
 // Width of the interactive when embedded in CODAP.
 var DEF_CODAP_WIDTH = 640; // px

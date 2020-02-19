@@ -1,4 +1,3 @@
-/*global define */
 export default function getCopyright(i18n) {
   var CC_link = '<a class="opens-in-new-window" href="https://concord.org" target="_blank">The Concord Consortium</a>';
   var MIT_link = '<a class="opens-in-new-window" href="http://opensource.org/licenses/MIT" target="_blank">MIT</a>';

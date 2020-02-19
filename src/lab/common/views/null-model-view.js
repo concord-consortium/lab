@@ -1,4 +1,3 @@
-/*global define: false $: false */
 
 /**
   For use with models that do not need an associated view, but which (at least for now) are required

@@ -1,11 +1,7 @@
-/*global define: false, d3: false */
 
-import $__common_console from 'common/console';
-import $__common_performance from 'common/performance';
-import $__common_property_description from 'common/property-description';
-var console = $__common_console,
-  performance = $__common_performance,
-  PropertyDescription = $__common_property_description;
+import console from 'common/console';
+import performance from 'common/performance';
+import PropertyDescription from 'common/property-description';
 
 export default function PlaybackSupport(args) {
   // DispatchSupport instance or compatible module.

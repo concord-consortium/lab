@@ -1,12 +1,8 @@
-/*global define, $*/
 
-import $__common_controllers_interactive_metadata from 'common/controllers/interactive-metadata';
-import $__common_validator from 'common/validator';
-import $__common_controllers_help_icon_support from 'common/controllers/help-icon-support';
+import metadata from 'common/controllers/interactive-metadata';
+import validator from 'common/validator';
+import helpIconSupport from 'common/controllers/help-icon-support';
 
-var metadata = $__common_controllers_interactive_metadata,
-  validator = $__common_validator,
-  helpIconSupport = $__common_controllers_help_icon_support;
 
 export default function ColorIndicatorController(component, interactivesController) {
   var propertyName, initialValue,

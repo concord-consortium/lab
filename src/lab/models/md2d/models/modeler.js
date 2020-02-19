@@ -1,47 +1,28 @@
-import $__common_performance from 'common/performance';
-import $__common_serialize from 'common/serialize';
-import $__common_validator from 'common/validator';
-import $__common_lab_modeler_mixin from 'common/lab-modeler-mixin';
-import $__common_output_support from 'common/output-support';
-import $__common_models_tick_history from 'common/models/tick-history';
+ import performance from 'common/performance';
+import serialize from 'common/serialize';
+import validator from 'common/validator';
+import LabModelerMixin from 'common/lab-modeler-mixin';
+import OutputSupport from 'common/output-support';
+import TickHistory from 'common/models/tick-history';
 import { createEngine } from 'models/md2d/models/engine/md2d';
-import $__models_md_d_models_metadata from 'models/md2d/models/metadata';
-import $__models_md_d_models_engine_constants_units from 'models/md2d/models/engine/constants/units';
-import $__models_md_d_models_unit_definitions_index from 'models/md2d/models/unit-definitions/index';
-import $__models_md_d_models_units_translation from 'models/md2d/models/units-translation';
-import $__common_property_description from 'common/property-description';
-import $__models_md_d_models_solvent from 'models/md2d/models/solvent';
-import $__models_md_d_models_aminoacids_props from 'models/md2d/models/aminoacids-props';
-import $__models_md_d_models_aminoacids_helper from 'models/md2d/models/aminoacids-helper';
-import $__models_md_d_models_engine_genetic_engine from 'models/md2d/models/engine/genetic-engine';
-import $__models_md_d_models_performance_optimizer from 'models/md2d/models/performance-optimizer';
-import $__models_md_d_models_atom_transition from 'models/md2d/models/atom-transition';
-import $__underscore from 'underscore';
-import $__models_md_d_models_engine_plugins_quantum_dynamics from 'models/md2d/models/engine/plugins/quantum-dynamics';
-import $__models_md_d_models_engine_plugins_chemical_reactions from 'models/md2d/models/engine/plugins/chemical-reactions';
+import metadata from 'models/md2d/models/metadata';
+import units from 'models/md2d/models/engine/constants/units';
+import unitDefinitions from 'models/md2d/models/unit-definitions/index';
+import UnitsTranslation from 'models/md2d/models/units-translation';
+import PropertyDescription from 'common/property-description';
+import Solvent from 'models/md2d/models/solvent';
+import aminoacids from 'models/md2d/models/aminoacids-props';
+import aminoacidsHelper from 'models/md2d/models/aminoacids-helper';
+import GeneticEngine from 'models/md2d/models/engine/genetic-engine';
+import PerformanceOptimizer from 'models/md2d/models/performance-optimizer';
+import AtomTransition from 'models/md2d/models/atom-transition';
+import _ from 'underscore';
+import QuantumDynamics from 'models/md2d/models/engine/plugins/quantum-dynamics';
+import ChemicalReactions from 'models/md2d/models/engine/plugins/chemical-reactions';
 // Dependencies.
-var performance = $__common_performance,
-  serialize = $__common_serialize,
-  validator = $__common_validator,
-  LabModelerMixin = $__common_lab_modeler_mixin,
-  OutputSupport = $__common_output_support,
-  TickHistory = $__common_models_tick_history,
-  metadata = $__models_md_d_models_metadata,
-  units = $__models_md_d_models_engine_constants_units,
-  unitDefinitions = $__models_md_d_models_unit_definitions_index,
-  UnitsTranslation = $__models_md_d_models_units_translation,
-  PropertyDescription = $__common_property_description,
-  Solvent = $__models_md_d_models_solvent,
-  aminoacids = $__models_md_d_models_aminoacids_props,
-  aminoacidsHelper = $__models_md_d_models_aminoacids_helper,
-  GeneticEngine = $__models_md_d_models_engine_genetic_engine,
-  PerformanceOptimizer = $__models_md_d_models_performance_optimizer,
-  AtomTransition = $__models_md_d_models_atom_transition,
-  _ = $__underscore,
-
-  // plugins
-  QuantumDynamics = $__models_md_d_models_engine_plugins_quantum_dynamics,
-  ChemicalReactions = $__models_md_d_models_engine_plugins_chemical_reactions,
+var // plugins
+  
+  
 
   md2dModelCount = 0;
 

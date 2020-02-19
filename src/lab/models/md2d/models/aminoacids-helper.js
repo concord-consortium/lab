@@ -6,9 +6,7 @@
 /*
 Module which provides convenience functions related to amino acids.
 */
-import $__models_md_d_models_aminoacids_props from 'models/md2d/models/aminoacids-props';
-
-const aminoacidsProps = $__models_md_d_models_aminoacids_props;
+import aminoacidsProps from 'models/md2d/models/aminoacids-props';
 
 // Elements from 0 to 4 are typical, editable elements representing atoms.
 const FIST_ELEMENT_ID = 5;

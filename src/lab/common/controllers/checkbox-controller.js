@@ -1,14 +1,9 @@
-/*global define, $ */
 
-import $__common_controllers_interactive_metadata from 'common/controllers/interactive-metadata';
-import $__common_controllers_disablable from 'common/controllers/disablable';
-import $__common_controllers_help_icon_support from 'common/controllers/help-icon-support';
-import $__common_validator from 'common/validator';
+import metadata from 'common/controllers/interactive-metadata';
+import disablable from 'common/controllers/disablable';
+import helpIconSupport from 'common/controllers/help-icon-support';
+import validator from 'common/validator';
 
-var metadata = $__common_controllers_interactive_metadata,
-  disablable = $__common_controllers_disablable,
-  helpIconSupport = $__common_controllers_help_icon_support,
-  validator = $__common_validator;
 
 export default function CheckboxController(component, interactivesController) {
   var propertyName,

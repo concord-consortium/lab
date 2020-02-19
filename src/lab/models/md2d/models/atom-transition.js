@@ -1,10 +1,7 @@
-/*global define */
 
-import $__common_inherit from "common/inherit";
-import $__common_models_property_transition from "common/models/property-transition";
+import inherit from "common/inherit";
+import PropertyTransition from "common/models/property-transition";
 
-var inherit = $__common_inherit,
-  PropertyTransition = $__common_models_property_transition;
 
 function AtomTransition(model) {
   // Call super constructor.

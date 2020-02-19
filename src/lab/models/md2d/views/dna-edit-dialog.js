@@ -1,4 +1,3 @@
-/*global $, define */
 
 export default function DNAEditDialog(model) {
   var api,

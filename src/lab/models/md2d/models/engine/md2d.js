@@ -1,34 +1,22 @@
-/*global define: true */
 
-import $__arrays from 'arrays';
-import $__common_array_types from 'common/array-types';
-import $__common_console from 'common/console';
-import $____constants_index from './constants/index';
-import $__models_md_d_models_aminoacids_helper from 'models/md2d/models/aminoacids-helper';
-import $____math_index from './math/index';
-import $____potentials_index from './potentials/index';
-import $____pairwise_lj_properties from './pairwise-lj-properties';
-import $__common_models_engines_clone_restore_wrapper from 'common/models/engines/clone-restore-wrapper';
-import $____cell_list from './cell-list';
-import $____neighbor_list from './neighbor-list';
-import $__common_models_plugin_controller from 'common/models/plugin-controller';
-import $____utils from './utils';
+import arrays from 'arrays';
+import arrayTypes from 'common/array-types';
+import console from 'common/console';
+import constants from './constants/index';
+import aminoacidsHelper from 'models/md2d/models/aminoacids-helper';
+import math from './math/index';
+import potentials from './potentials/index';
+import PairwiseLJProperties from './pairwise-lj-properties';
+import CloneRestoreWrapper from 'common/models/engines/clone-restore-wrapper';
+import CellList from './cell-list';
+import NeighborList from './neighbor-list';
+import PluginController from 'common/models/plugin-controller';
+import utils from './utils';
 
-var arrays = $__arrays,
-  arrayTypes = $__common_array_types,
-  console = $__common_console,
-  constants = $____constants_index,
+var
   unit = constants.unit,
-  aminoacidsHelper = $__models_md_d_models_aminoacids_helper,
-  math = $____math_index,
-  coulomb = $____potentials_index.coulomb,
-  lennardJones = $____potentials_index.lennardJones,
-  PairwiseLJProperties = $____pairwise_lj_properties,
-  CloneRestoreWrapper = $__common_models_engines_clone_restore_wrapper,
-  CellList = $____cell_list,
-  NeighborList = $____neighbor_list,
-  PluginController = $__common_models_plugin_controller,
-  utils = $____utils,
+  coulomb = potentials.coulomb,
+  lennardJones = potentials.lennardJones,
 
   BOLTZMANN_CONSTANT_IN_JOULES = constants.BOLTZMANN_CONSTANT.as(unit.JOULES_PER_KELVIN),
 

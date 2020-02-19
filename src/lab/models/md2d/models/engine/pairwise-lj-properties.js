@@ -8,12 +8,10 @@
 /*
 Custom pairwise Lennard Jones properties.
 */
-import $__models_md_d_models_metadata from 'models/md2d/models/metadata';
-import $__common_validator from "common/validator";
+import metadata from 'models/md2d/models/metadata';
+import validator from "common/validator";
 
 let PairwiseLJProperties;
-const metadata = $__models_md_d_models_metadata;
-const validator = $__common_validator;
 
 export default PairwiseLJProperties = class PairwiseLJProperties {
 

@@ -1,4 +1,3 @@
-/*global define, $*/
 
 var datasetCount = 0;
 

@@ -1,27 +1,15 @@
-/*global define: false, d3: false $: true */
+import PropertySupport from 'common/property-support';
+import PropertyDescription from 'common/property-description';
+import RunningAverageFilter from 'common/filters/running-average-filter';
+import validator from 'common/validator';
+import metadata from './metadata';
+import sensorApplet from 'sensor-applet';
+import getSensorDefinitions from 'models/sensor-common/i18n-sensor-definitions';
+import labConfig from 'lab.config';
+import Notifier from 'models/sensor-common/notifier';
+import ExportController from 'common/controllers/export-controller';
 
-import $__common_property_support from 'common/property-support';
-import $__common_property_description from 'common/property-description';
-import $__common_filters_running_average_filter from 'common/filters/running-average-filter';
-import $__common_validator from 'common/validator';
-import $____metadata from './metadata';
-import $__sensor_applet from 'sensor-applet';
-import $__models_sensor_common_i__n_sensor_definitions from 'models/sensor-common/i18n-sensor-definitions';
-import $__lab_config from 'lab.config';
-import $__models_sensor_common_notifier from 'models/sensor-common/notifier';
-import $__common_controllers_export_controller from 'common/controllers/export-controller';
-
-var PropertySupport = $__common_property_support,
-  PropertyDescription = $__common_property_description,
-  RunningAverageFilter = $__common_filters_running_average_filter,
-  validator = $__common_validator,
-  metadata = $____metadata,
-  sensorApplet = $__sensor_applet,
-  unitsDefinition = sensorApplet.unitsDefinition,
-  getSensorDefinitions = $__models_sensor_common_i__n_sensor_definitions,
-  labConfig = $__lab_config,
-  Notifier = $__models_sensor_common_notifier,
-  ExportController = $__common_controllers_export_controller;
+var unitsDefinition = sensorApplet.unitsDefinition;
 
 export default function Model(initialProperties, opt) {
   var propertySupport = new PropertySupport({

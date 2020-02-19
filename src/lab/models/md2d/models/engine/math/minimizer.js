@@ -1,11 +1,9 @@
-/*global define: true */
 /*jshint eqnull:true */
 /**
   Simple, good-enough minimization via gradient descent.
 */
-import $__common_console from 'common/console';
+import console from 'common/console';
 // Dependencies.
-var console = $__common_console;
 
 export default function minimize(f, x0, opts) {
   opts = opts || {};

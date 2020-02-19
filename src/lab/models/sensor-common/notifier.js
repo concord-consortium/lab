@@ -1,6 +1,4 @@
-/*global define */
-import $__common_controllers_basic_dialog from 'common/controllers/basic-dialog';
-var BasicDialog = $__common_controllers_basic_dialog;
+import BasicDialog from 'common/controllers/basic-dialog';
 
 function Notifier(i18n) {
   this._i18n = i18n;

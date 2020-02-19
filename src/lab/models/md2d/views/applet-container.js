@@ -1,11 +1,9 @@
-/*global define: false, d3: false */
-// ------------------------------------------------------------
+ // ------------------------------------------------------------
 //
 //   Applet Container
 //
 // ------------------------------------------------------------
-import $__common_layout_layout from 'common/layout/layout';
-var layout = $__common_layout_layout;
+import layout from 'common/layout/layout';
 
 export default function appletContainer(e, options) {
   var elem = d3.select(e),

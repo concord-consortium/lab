@@ -1,5 +1,4 @@
-/*global define */
-
+    
 /**
   This plugin adds quantum dynamics functionality to the MD2D engine.
 
@@ -17,26 +16,17 @@
 */
 
 
-import $__common_models_engines_clone_restore_wrapper from 'common/models/engines/clone-restore-wrapper';
-import $__common_dispatch_support from 'common/dispatch-support';
-import $_____constants_index from 'models/md2d/models/engine/constants/index';
-import $_____utils from 'models/md2d/models/engine/utils';
-import $__arrays from 'arrays';
-import $__common_array_types from 'common/array-types';
-import $__models_md_d_models_metadata from 'models/md2d/models/metadata';
-import $__common_validator from 'common/validator';
+import CloneRestoreWrapper from 'common/models/engines/clone-restore-wrapper';
+import DispatchSupport from 'common/dispatch-support';
+import constants from 'models/md2d/models/engine/constants/index';
+import utils from 'models/md2d/models/engine/utils';
+import arrays from 'arrays';
+import arrayTypes from 'common/array-types';
+import metadata from 'models/md2d/models/metadata';
+import validator from 'common/validator';
 
 // static variables
-var CloneRestoreWrapper = $__common_models_engines_clone_restore_wrapper,
-  DispatchSupport = $__common_dispatch_support,
-  constants = $_____constants_index,
-  utils = $_____utils,
-  arrays = $__arrays,
-  arrayTypes = $__common_array_types,
-  metadata = $__models_md_d_models_metadata,
-  validator = $__common_validator,
-
-  // in reality, 6.626E-34 m^2kg/s. Classic MW uses 0.2 in its units (eV * fs)
+var // in reality, 6.626E-34 m^2kg/s. Classic MW uses 0.2 in its units (eV * fs)
   PLANCK_CONSTANT = constants.convert(0.2, {
     from: constants.unit.EV,
     to: constants.unit.MW_ENERGY_UNIT

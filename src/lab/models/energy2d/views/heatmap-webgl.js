@@ -1,6 +1,3 @@
-/*jslint indent: 2, browser: true, newcap: true */
-/*globals define: false, Uint8Array: false, $: false */
-
 // Heatmap WebGL view.
 //
 // It uses HTML5 Canvas and WebGL for rendering.
@@ -8,24 +5,13 @@
 // Before use, this view should be bound with a heatmap texture using bindHeapmapTexture(heatmap_tex).
 // To render the heatmap use renderHeatmapTexture() method.
 // Set size of the heatmap using CSS rules.
-import $__models_energy_d_gpu_context from 'models/energy2d/gpu/context';
-import $__models_energy_d_gpu_texture from 'models/energy2d/gpu/texture';
-import $__models_energy_d_gpu_shader from 'models/energy2d/gpu/shader';
-import $__models_energy_d_gpu_mesh from 'models/energy2d/gpu/mesh';
-import $__models_energy_d_views_color_palette from 'models/energy2d/views/color-palette';
-import $__text_models_energy_d_views_heatmap_webgl_glsl_basic_vs_glsl from 'models/energy2d/views/heatmap-webgl-glsl/basic.vs.glsl';
-import $__text_models_energy_d_views_heatmap_webgl_glsl_temp_renderer_fs_glsl from 'models/energy2d/views/heatmap-webgl-glsl/temp-renderer.fs.glsl';
-
-var
-// Dependencies.
-  context = $__models_energy_d_gpu_context,
-  Texture = $__models_energy_d_gpu_texture,
-  Shader = $__models_energy_d_gpu_shader,
-  Mesh = $__models_energy_d_gpu_mesh,
-  ColorPalette = $__models_energy_d_views_color_palette,
-  // Shader sources.
-  basic_vs = $__text_models_energy_d_views_heatmap_webgl_glsl_basic_vs_glsl,
-  temp_renderer_fs = $__text_models_energy_d_views_heatmap_webgl_glsl_temp_renderer_fs_glsl;
+import context from 'models/energy2d/gpu/context';
+import Texture from 'models/energy2d/gpu/texture';
+import Shader from 'models/energy2d/gpu/shader';
+import Mesh from 'models/energy2d/gpu/mesh';
+import ColorPalette from 'models/energy2d/views/color-palette';
+import basic_vs from 'models/energy2d/views/heatmap-webgl-glsl/basic.vs.glsl';
+import temp_renderer_fs from 'models/energy2d/views/heatmap-webgl-glsl/temp-renderer.fs.glsl';
 
 export default function HeatmapWebGLView(html_id) {
   var

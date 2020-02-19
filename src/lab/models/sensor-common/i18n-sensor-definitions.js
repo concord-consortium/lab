@@ -1,5 +1,5 @@
-import $__sensor_applet from 'sensor-applet';
-var sensorDefinitions = $__sensor_applet.sensorDefinitions;
+import sensorApplet from 'sensor-applet';
+const sensorDefinitions = sensorApplet.sensorDefinitions;
 
 export default function getTranslatedSensorDefinitions(i18n) {
   sensorDefinitions.goMotion.measurementName = i18n.t("sensor.measurements.distance");
@@ -48,4 +48,4 @@ export default function getTranslatedSensorDefinitions(i18n) {
   sensorDefinitions.labQuestO2.sensorName = i18n.t("sensor.names.labQuestO2");
 
   return sensorDefinitions;
-};
+}

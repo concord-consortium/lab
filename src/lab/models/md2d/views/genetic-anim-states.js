@@ -1,13 +1,8 @@
-/*global define */
 
-import $__models_md_d_views_nucleotides from 'models/md2d/views/nucleotides';
-import $__models_md_d_views_genetic_elements_renderer from 'models/md2d/views/genetic-elements-renderer';
-import $__common_views_state_manager from 'common/views/state-manager';
-var nucleotides = $__models_md_d_views_nucleotides,
-  GeneticElementsRenderer = $__models_md_d_views_genetic_elements_renderer,
-  StateManager = $__common_views_state_manager,
-
-  H = GeneticElementsRenderer.H,
+import nucleotides from 'models/md2d/views/nucleotides';
+import GeneticElementsRenderer from 'models/md2d/views/genetic-elements-renderer';
+import StateManager from 'common/views/state-manager';
+var H = GeneticElementsRenderer.H,
   OBJECT_NAMES = GeneticElementsRenderer.OBJECT_NAMES;
 
 /**

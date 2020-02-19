@@ -1,7 +1,6 @@
-import { Photon } from 'models/energy2d/models/photon';
+ import { Photon } from 'models/energy2d/models/photon';
 
-export const makeRaySolver = function(model) {
-  var
+export const makeRaySolver = function(model) { var
   // Basic simulation parameters.
     props = model.getModelOptions(),
 
@@ -33,10 +32,7 @@ export const makeRaySolver = function(model) {
     // TODO: implement something efficient. Linked list?
     cleanupPhotonsArray = function() {
       var i = 0;
-      while (i < photons.length) {
-        if (photons[i] === undefined) {
-          photons.splice(i, 1);
-        } else {
+      while (i < photons.length) { if (photons[i] === undefined) {   photons.splice(i, 1); } else {
           i += 1;
         }
       }

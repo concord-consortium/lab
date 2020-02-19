@@ -11,9 +11,7 @@ export const Photon = function(x, y, energy, c, angle) {
   this.energy = energy;
   this.c = c;
 
-  if (angle !== undefined) {
-    this.vx = Math.cos(angle) * c;
-    this.vy = Math.sin(angle) * c;
+  if (angle !== undefined) { this.vx = Math.cos(angle) * c; this.vy = Math.sin(angle) * c;
   }
 };
 
@@ -27,8 +25,7 @@ Photon.prototype.move = function(dt) {
 };
 
 Photon.prototype.reflectFromLine = function(line, time_step) {
-  var
-    x1 = this.x,
+  var x1 = this.x,
     y1 = this.y,
     x2 = this.x - this.vx * time_step,
     y2 = this.y - this.vy * time_step,

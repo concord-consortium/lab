@@ -1,5 +1,4 @@
-/*global define: false, $: false */
-
+ 
 /**
  * Lab-compatible tooltips based on jQuery-UI tooltips. The custom styling is used and tooltips
  * scale themselves according to the font-size of parent div.
@@ -21,10 +20,9 @@
  * and set interval which shows it again after calculated amount of milliseconds. Weird, but works
  * quite fine.
  */
-import $__common_benchmark_benchmark from "common/benchmark/benchmark";
+import benchmark from "common/benchmark/benchmark";
 
-var benchmark = $__common_benchmark_benchmark,
-  lastClose = 0,
+var lastClose = 0,
 
   customTooltipsEnabled = (function() {
     // Disable custom tooltips on mobile devices, as e.g. on iPad they cause that

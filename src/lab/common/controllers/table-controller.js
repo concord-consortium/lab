@@ -1,18 +1,11 @@
-/*global define, $*/
 
-import $__common_controllers_interactive_metadata from 'common/controllers/interactive-metadata';
-import $__common_validator from 'common/validator';
-import $__common_views_table_view from 'common/views/table-view';
-import $__common_listening_pool from 'common/listening-pool';
-import $__common_controllers_data_set from 'common/controllers/data-set';
-import $__common_controllers_help_icon_support from 'common/controllers/help-icon-support';
-var metadata = $__common_controllers_interactive_metadata,
-  validator = $__common_validator,
-  TableView = $__common_views_table_view,
-  ListeningPool = $__common_listening_pool,
-  DataSet = $__common_controllers_data_set,
-  helpIconSupport = $__common_controllers_help_icon_support,
-  tableControllerCount = 0;
+import metadata from 'common/controllers/interactive-metadata';
+import validator from 'common/validator';
+import TableView from 'common/views/table-view';
+import ListeningPool from 'common/listening-pool';
+import DataSet from 'common/controllers/data-set';
+import helpIconSupport from 'common/controllers/help-icon-support';
+var tableControllerCount = 0;
 
 export default function TableController(component, interactivesController) {
   // Public API.

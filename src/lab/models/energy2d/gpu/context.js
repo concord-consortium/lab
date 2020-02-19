@@ -1,5 +1,4 @@
-/*global define: false*/
-
+ 
 // WebGL Context Manager module.
 //
 // It provides access to one, global WebGL context.

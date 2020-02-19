@@ -1,12 +1,7 @@
-/*global define: false*/
+ 
+import arrays from 'arrays';
 
-import $__arrays from 'arrays';
-
-var
-  arrays = $__arrays,
-
-  RELAXATION_STEPS = 5,
-  GRAVITY = 0,
+var RELAXATION_STEPS = 5, GRAVITY = 0,
 
   BUOYANCY_AVERAGE_ALL = 0,
   BUOYANCY_AVERAGE_COLUMN = 1;
@@ -52,16 +47,9 @@ export const makeFluidSolver = function(model) {
 
     // b = 1 horizontal; b = 2 vertical
     applyBoundary = function(b, f) {
-      var
-        horizontal = b === 1,
-        vertical = b === 2,
-        nx1nx = nx1 * nx,
-        nx2nx = nx2 * nx,
-        i, j, inx, inx_plus1, inx_plus_ny1, inx_plus_ny2, nx_plusj;
+      var horizontal = b === 1, vertical = b === 2, nx1nx = nx1 * nx, nx2nx = nx2 * nx, i, j, inx, inx_plus1, inx_plus_ny1, inx_plus_ny2, nx_plusj;
 
-      for (i = 1; i < nx1; i += 1) {
-        inx = i * nx;
-        inx_plus1 = inx + 1;
+      for (i = 1; i < nx1; i += 1) { inx = i * nx; inx_plus1 = inx + 1;
         inx_plus_ny1 = inx + ny1;
         inx_plus_ny2 = inx + ny2;
         // upper side
@@ -106,8 +94,7 @@ export const makeFluidSolver = function(model) {
             uw = uWind[jinx];
             vw = vWind[jinx];
             count = 0;
-            if (fluidity[jinx_minus_nx]) {
-              count += 1;
+            if (fluidity[jinx_minus_nx]) { count += 1;
               u[jinx] = uw - u[jinx_minus_nx];
               v[jinx] = vw + v[jinx_minus_nx];
             } else if (fluidity[jinx_plus_nx]) {

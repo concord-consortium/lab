@@ -1,41 +1,38 @@
-/*global define: false*/
-
-import $__models_energy_d_gpu_shader from 'models/energy2d/gpu/shader';
-import $__models_energy_d_gpu_gpgpu from 'models/energy2d/gpu/gpgpu';
-import $__text_models_energy_d_models_physics_solvers_gpu_fluid_solver_glsl_basic_vs_glsl from 'models/energy2d/models/physics-solvers-gpu/fluid-solver-glsl/basic.vs.glsl';
-import $__text_models_energy_d_models_physics_solvers_gpu_fluid_solver_glsl_maccormack_step1__fs_glsl from 'models/energy2d/models/physics-solvers-gpu/fluid-solver-glsl/maccormack-step1.fs.glsl';
-import $__text_models_energy_d_models_physics_solvers_gpu_fluid_solver_glsl_maccormack_step2__fs_glsl from 'models/energy2d/models/physics-solvers-gpu/fluid-solver-glsl/maccormack-step2.fs.glsl';
-import $__text_models_energy_d_models_physics_solvers_gpu_fluid_solver_glsl_apply_uv_boundary_fs_glsl from 'models/energy2d/models/physics-solvers-gpu/fluid-solver-glsl/apply-uv-boundary.fs.glsl';
-import $__text_models_energy_d_models_physics_solvers_gpu_fluid_solver_glsl_apply_u_v__boundary_fs_glsl from 'models/energy2d/models/physics-solvers-gpu/fluid-solver-glsl/apply-u0v0-boundary.fs.glsl';
-import $__text_models_energy_d_models_physics_solvers_gpu_fluid_solver_glsl_set_obstacle_boundary_fs_glsl from 'models/energy2d/models/physics-solvers-gpu/fluid-solver-glsl/set-obstacle-boundary.fs.glsl';
-import $__text_models_energy_d_models_physics_solvers_gpu_fluid_solver_glsl_set_obstacle_velocity_fs_glsl from 'models/energy2d/models/physics-solvers-gpu/fluid-solver-glsl/set-obstacle-velocity.fs.glsl';
-import $__text_models_energy_d_models_physics_solvers_gpu_fluid_solver_glsl_uv_to_u_v__fs_glsl from 'models/energy2d/models/physics-solvers-gpu/fluid-solver-glsl/uv-to-u0v0.fs.glsl';
-import $__text_models_energy_d_models_physics_solvers_gpu_fluid_solver_glsl_conserve_step1__fs_glsl from 'models/energy2d/models/physics-solvers-gpu/fluid-solver-glsl/conserve-step1.fs.glsl';
-import $__text_models_energy_d_models_physics_solvers_gpu_fluid_solver_glsl_conserve_step2__fs_glsl from 'models/energy2d/models/physics-solvers-gpu/fluid-solver-glsl/conserve-step2.fs.glsl';
-import $__text_models_energy_d_models_physics_solvers_gpu_fluid_solver_glsl_conserve_step3__fs_glsl from 'models/energy2d/models/physics-solvers-gpu/fluid-solver-glsl/conserve-step3.fs.glsl';
-import $__text_models_energy_d_models_physics_solvers_gpu_fluid_solver_glsl_diffuse_fs_glsl from 'models/energy2d/models/physics-solvers-gpu/fluid-solver-glsl/diffuse.fs.glsl';
-import $__text_models_energy_d_models_physics_solvers_gpu_fluid_solver_glsl_apply_buoyancy_fs_glsl from 'models/energy2d/models/physics-solvers-gpu/fluid-solver-glsl/apply-buoyancy.fs.glsl';
+ import Shader from 'models/energy2d/gpu/shader';
+import gpgpu from 'models/energy2d/gpu/gpgpu';
+import basic_vs from 'models/energy2d/models/physics-solvers-gpu/fluid-solver-glsl/basic.vs.glsl';
+import maccormack_step1_fs from 'models/energy2d/models/physics-solvers-gpu/fluid-solver-glsl/maccormack-step1.fs.glsl';
+import maccormack_step2_fs from 'models/energy2d/models/physics-solvers-gpu/fluid-solver-glsl/maccormack-step2.fs.glsl';
+import apply_uv_boundary_fs from 'models/energy2d/models/physics-solvers-gpu/fluid-solver-glsl/apply-uv-boundary.fs.glsl';
+import apply_u0v0_boundary_fs from 'models/energy2d/models/physics-solvers-gpu/fluid-solver-glsl/apply-u0v0-boundary.fs.glsl';
+import set_obstacle_boundary_fs from 'models/energy2d/models/physics-solvers-gpu/fluid-solver-glsl/set-obstacle-boundary.fs.glsl';
+import set_obstacle_velocity_fs from 'models/energy2d/models/physics-solvers-gpu/fluid-solver-glsl/set-obstacle-velocity.fs.glsl';
+import uv_to_u0v0_fs from 'models/energy2d/models/physics-solvers-gpu/fluid-solver-glsl/uv-to-u0v0.fs.glsl';
+import conserve_step1_fs from 'models/energy2d/models/physics-solvers-gpu/fluid-solver-glsl/conserve-step1.fs.glsl';
+import conserve_step2_fs from 'models/energy2d/models/physics-solvers-gpu/fluid-solver-glsl/conserve-step2.fs.glsl';
+import conserve_step3_fs from 'models/energy2d/models/physics-solvers-gpu/fluid-solver-glsl/conserve-step3.fs.glsl';
+import diffuse_fs from 'models/energy2d/models/physics-solvers-gpu/fluid-solver-glsl/diffuse.fs.glsl';
+import apply_buoyancy_fs from 'models/energy2d/models/physics-solvers-gpu/fluid-solver-glsl/apply-buoyancy.fs.glsl';
 
 var
-// Dependencies.
-  Shader = $__models_energy_d_gpu_shader,
+// Dependencies. 
   // GPGPU utilities. It's a singleton instance.
   // It should have been previously initialized by core-model.
-  gpgpu = $__models_energy_d_gpu_gpgpu,
+  
   // Shader sources. One of Lab build steps converts sources to JavaScript file.
-  basic_vs = $__text_models_energy_d_models_physics_solvers_gpu_fluid_solver_glsl_basic_vs_glsl,
-  maccormack_step1_fs = $__text_models_energy_d_models_physics_solvers_gpu_fluid_solver_glsl_maccormack_step1__fs_glsl,
-  maccormack_step2_fs = $__text_models_energy_d_models_physics_solvers_gpu_fluid_solver_glsl_maccormack_step2__fs_glsl,
-  apply_uv_boundary_fs = $__text_models_energy_d_models_physics_solvers_gpu_fluid_solver_glsl_apply_uv_boundary_fs_glsl,
-  apply_u0v0_boundary_fs = $__text_models_energy_d_models_physics_solvers_gpu_fluid_solver_glsl_apply_u_v__boundary_fs_glsl,
-  set_obstacle_boundary_fs = $__text_models_energy_d_models_physics_solvers_gpu_fluid_solver_glsl_set_obstacle_boundary_fs_glsl,
-  set_obstacle_velocity_fs = $__text_models_energy_d_models_physics_solvers_gpu_fluid_solver_glsl_set_obstacle_velocity_fs_glsl,
-  uv_to_u0v0_fs = $__text_models_energy_d_models_physics_solvers_gpu_fluid_solver_glsl_uv_to_u_v__fs_glsl,
-  conserve_step1_fs = $__text_models_energy_d_models_physics_solvers_gpu_fluid_solver_glsl_conserve_step1__fs_glsl,
-  conserve_step2_fs = $__text_models_energy_d_models_physics_solvers_gpu_fluid_solver_glsl_conserve_step2__fs_glsl,
-  conserve_step3_fs = $__text_models_energy_d_models_physics_solvers_gpu_fluid_solver_glsl_conserve_step3__fs_glsl,
-  diffuse_fs = $__text_models_energy_d_models_physics_solvers_gpu_fluid_solver_glsl_diffuse_fs_glsl,
-  apply_buoyancy_fs = $__text_models_energy_d_models_physics_solvers_gpu_fluid_solver_glsl_apply_buoyancy_fs_glsl,
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 
   RELAXATION_STEPS = 10,
   GRAVITY = 0;

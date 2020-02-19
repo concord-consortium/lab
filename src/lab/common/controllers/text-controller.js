@@ -1,12 +1,8 @@
-/*global define */
 
-import $__common_markdown_to_html from 'common/markdown-to-html';
-import $__common_inherit from 'common/inherit';
-import $__common_controllers_interactive_component from 'common/controllers/interactive-component';
+import markdownToHTML from 'common/markdown-to-html';
+import inherit from 'common/inherit';
+import InteractiveComponent from 'common/controllers/interactive-component';
 
-var markdownToHTML = $__common_markdown_to_html,
-  inherit = $__common_inherit,
-  InteractiveComponent = $__common_controllers_interactive_component;
 
 /**
  * Text controller.

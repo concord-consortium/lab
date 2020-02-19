@@ -1,8 +1,6 @@
-/*global define: true */
 /*jslint loopfunc: true */
 
-/** A list of physical constants. To access any given constant, require() this module
-    and call the 'as' method of the desired constant to get the constant in the desired unit.
+/** A list of physical constants. To access any given constant, require() this module   and call the 'as' method of the desired constant to get the constant in the desired unit.
 
     This module also provides a few helper functions for unit conversion.
 

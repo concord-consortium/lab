@@ -1,4 +1,3 @@
-/*global define: false */
 
 export default function Energy2DScriptingAPI(parent) {
 

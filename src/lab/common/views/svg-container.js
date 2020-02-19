@@ -1,23 +1,16 @@
-// ------------------------------------------------------------
+ // ------------------------------------------------------------
 //
 //   SVG View Container
 //
 // ------------------------------------------------------------
-import $__common_performance from 'common/performance';
-import $__common_benchmark_benchmark from 'common/benchmark/benchmark';
-import $__common_views_tab_index from 'common/views/tab-index';
-import $__common_views_hit_testing_helper from 'common/views/hit-testing-helper';
-import $__common_console from 'common/console';
-import $__pixi from 'pixi.js';
+import performance from 'common/performance';
+import benchmark from 'common/benchmark/benchmark';
+import getNextTabIndex from 'common/views/tab-index';
+import HitTestingHelper from 'common/views/hit-testing-helper';
+import console from 'common/console';
+import PIXI from 'pixi.js';
 // Dependencies.
-var performance = $__common_performance,
-  benchmark = $__common_benchmark_benchmark,
-  getNextTabIndex = $__common_views_tab_index,
-  HitTestingHelper = $__common_views_hit_testing_helper,
-  console = $__common_console,
-  PIXI = $__pixi,
-
-  CANVAS_OVERSAMPLING = 2,
+var CANVAS_OVERSAMPLING = 2,
 
   MAX_Z_INDEX = 1000;
 

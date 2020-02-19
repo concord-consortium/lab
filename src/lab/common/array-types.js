@@ -1,15 +1,12 @@
-/*global define: true */
 
 // Tiny module which contains definition of preferred
 // array types used across whole Lab project.
 // It checks whether typed arrays are available and type of browser
 // (as typed arrays are slower in Safari).
 
-import $__arrays from 'arrays';
+import arrays from 'arrays';
 // Dependencies.
-var arrays = $__arrays,
-
-  // Check for Safari. Typed arrays are faster almost everywhere ... except Safari.
+var // Check for Safari. Typed arrays are faster almost everywhere ... except Safari.
   notSafari = (function() {
     // Node.js?
     if (typeof navigator === 'undefined')

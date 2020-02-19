@@ -1,4 +1,3 @@
-/*global define*/
 export default {
   "model-only": [],
   "simple": [{

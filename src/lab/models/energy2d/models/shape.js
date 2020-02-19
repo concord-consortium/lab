@@ -3,13 +3,8 @@
 // Based on: http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
 // It is optional to repeat the first vertex at the end of list of polygon vertices.
 export const pointInsidePolygon = function(nvert, vertx, verty, testx, testy) {
-  var c = 0,
-    i, j;
-  for (i = 0, j = nvert - 1; i < nvert; j = i, i += 1) {
-    if (((verty[i] > testy) !== (verty[j] > testy)) &&
-      (testx < (vertx[j] - vertx[i]) * (testy - verty[i]) / (verty[j] - verty[i]) + vertx[i])) {
-      c = !c;
-    }
+  var c = 0, i, j;
+  for (i = 0, j = nvert - 1; i < nvert; j = i, i += 1) { if (((verty[i] > testy) !== (verty[j] > testy)) &&   (testx < (vertx[j] - vertx[i]) * (testy - verty[i]) / (verty[j] - verty[i]) + vertx[i])) {   c = !c; }
   }
   return !!c;
 };
@@ -26,8 +21,7 @@ export const Line = function(x1, y1, x2, y2) {
 };
 
 Line.prototype.intersectsLine = function(line) {
-  var
-    result,
+  var result,
     a1 = {
       x: this.x1,
       y: this.y1

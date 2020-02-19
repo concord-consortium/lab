@@ -1,4 +1,3 @@
-/*global define: false */
 /**
  * Inherit the prototype methods from one constructor into another.
  *

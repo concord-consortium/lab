@@ -1,4 +1,3 @@
-/*global define: true */
 import $____distributions from './distributions';
 import $____utils from './utils';
 import minimize from './minimizer';

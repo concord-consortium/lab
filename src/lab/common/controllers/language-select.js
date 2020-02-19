@@ -1,7 +1,5 @@
-/*global define, $ */
 
-import $__common_resources_url from 'common/resources-url';
-var resourcesUrl = $__common_resources_url;
+import resourcesUrl from 'common/resources-url';
 
 function languageSelect(selector, interactiveController) {
   var metadata = interactiveController.interactive.i18nMetadata;

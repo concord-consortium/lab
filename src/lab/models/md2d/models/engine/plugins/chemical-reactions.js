@@ -1,5 +1,3 @@
-/*global define */
-
 /**
   This plugin adds chemical reactions functionality to the MD2D engine.
 
@@ -10,18 +8,14 @@
         will no longer participate in chemical reactions.
 */
 
-import $__arrays from 'arrays';
-import $__common_array_types from 'common/array-types';
-import $__models_md_d_models_metadata from 'models/md2d/models/metadata';
-import $__common_validator from 'common/validator';
-import $__models_md_d_models_engine_constants_index from 'models/md2d/models/engine/constants/index';
-import $__models_md_d_models_engine_math_utils from 'models/md2d/models/engine/math/utils';
-var arrays = $__arrays,
-  arrayTypes = $__common_array_types,
-  metadata = $__models_md_d_models_metadata,
-  validator = $__common_validator,
-  constants = $__models_md_d_models_engine_constants_index,
-  getAngleBetweenVec = $__models_md_d_models_engine_math_utils.getAngleBetweenVec,
+import arrays from 'arrays';
+import arrayTypes from 'common/array-types';
+import metadata from 'models/md2d/models/metadata';
+import validator from 'common/validator';
+import constants from 'models/md2d/models/engine/constants/index';
+import { getAngleBetweenVec } from 'models/md2d/models/engine/math/utils';
+
+var
   unit = constants.unit,
 
   BOND_LEN_RATIO = 0.6, // follows Classic MW constant.

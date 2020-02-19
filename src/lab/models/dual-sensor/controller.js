@@ -1,14 +1,9 @@
-/*global define */
 
-import $__common_controllers_model_controller from 'common/controllers/model-controller';
-import $__models_dual_sensor_modeler from 'models/dual-sensor/modeler';
-import $__models_dual_sensor_view from 'models/dual-sensor/view';
-import $__models_dual_sensor_scripting_api from 'models/dual-sensor/scripting-api';
+import ModelController from 'common/controllers/model-controller';
+import Model from 'models/dual-sensor/modeler';
+import ModelContainer from 'models/dual-sensor/view';
+import ScriptingAPI from 'models/dual-sensor/scripting-api';
 // Dependencies.
-var ModelController = $__common_controllers_model_controller,
-  Model = $__models_dual_sensor_modeler,
-  ModelContainer = $__models_dual_sensor_view,
-  ScriptingAPI = $__models_dual_sensor_scripting_api;
 
 export default function(modelUrl, modelOptions, interactiveController) {
   var controller = new ModelController(modelUrl, modelOptions, interactiveController,

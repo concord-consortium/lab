@@ -1,14 +1,9 @@
-/*global define */
 
-import $__common_controllers_model_controller from 'common/controllers/model-controller';
-import $____modeler from './modeler';
-import $____view from './view';
-import $____scripting_api from './scripting-api';
+import ModelController from 'common/controllers/model-controller';
+import Model from './modeler';
+import ModelContainer from './view';
+import ScriptingAPI from './scripting-api';
 // Dependencies.
-var ModelController = $__common_controllers_model_controller,
-  Model = $____modeler,
-  ModelContainer = $____view,
-  ScriptingAPI = $____scripting_api;
 
 export default function(modelUrl, modelOptions, interactiveController) {
   var controller = new ModelController(modelUrl, modelOptions, interactiveController,

@@ -1,14 +1,9 @@
-/*global define: false*/
+ 
+import arrays from 'arrays';
 
-import $__arrays from 'arrays';
+var RELAXATION_STEPS = 5;
 
-var
-  arrays = $__arrays,
-
-  RELAXATION_STEPS = 5;
-
-export const makeHeatSolver = function(model) {
-  var
+export const makeHeatSolver = function(model) { var
   // Basic simulation parameters.
     props = model.getModelOptions(),
     nx = props.grid_width,
@@ -42,10 +37,7 @@ export const makeHeatSolver = function(model) {
     //
 
     applyBoundary = function(t) {
-      var
-        boundary = props.boundary,
-        vN = boundary.upper,
-        vS = boundary.lower,
+      var boundary = props.boundary, vN = boundary.upper, vS = boundary.lower,
         vW = boundary.left,
         vE = boundary.right,
         i, j, inx, inx_ny1;

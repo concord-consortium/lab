@@ -1,5 +1,4 @@
 /*jslint indent: 2, browser: true, newcap: true */
-/*globals define: false*/
 
 // Basic constants used by Energy2D module
 

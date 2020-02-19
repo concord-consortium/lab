@@ -1,11 +1,7 @@
-/*global define, d3 */
 
-import $__models_md_d_views_nucleotide_paths from 'models/md2d/views/nucleotide-paths';
-import $__common_resources_url from 'common/resources-url';
-var nucleotidePaths = $__models_md_d_views_nucleotide_paths,
-  resourcesUrl = $__common_resources_url,
-
-  SCALE = 0.007,
+import nucleotidePaths from 'models/md2d/views/nucleotide-paths';
+import resourcesUrl from 'common/resources-url';
+var SCALE = 0.007,
   W = {
     "BACKB": 52,
     "A": 28.151,

@@ -1,5 +1,4 @@
 /*jslint indent: 2, browser: true, newcap: true */
-/*globals define: false, $: false*/
 
 // Simple player.
 //
@@ -15,8 +14,7 @@
 // Buttons ids: "sim-play", "sim-step", "sim-stop", "sim-reset".
 
 export default function SimulationPlayerView(html_id) {
-  var
-    DEFAULT_ID = 'energy2d-simulation-player',
+  var DEFAULT_ID = 'energy2d-simulation-player',
     DEFAULT_CLASS = 'energy2d-simulation-player',
 
     simulation_controller,

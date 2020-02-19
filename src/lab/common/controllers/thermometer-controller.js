@@ -1,15 +1,10 @@
-/*global define, $ */
 
-import $__mustache from 'mustache';
-import $__text_common_controllers_thermometer_tpl from 'common/controllers/thermometer.tpl';
-import $__common_controllers_interactive_metadata from 'common/controllers/interactive-metadata';
-import $__common_validator from 'common/validator';
+import mustache from 'mustache';
+import thermometerTpl from 'common/controllers/thermometer.tpl';
+import metadata from 'common/controllers/interactive-metadata';
+import validator from 'common/validator';
 import $__common_jquery_plugins from 'common/jquery-plugins';
 
-var mustache = $__mustache,
-  thermometerTpl = $__text_common_controllers_thermometer_tpl,
-  metadata = $__common_controllers_interactive_metadata,
-  validator = $__common_validator;
 $__common_jquery_plugins;
 
 /**

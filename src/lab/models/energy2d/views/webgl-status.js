@@ -1,23 +1,20 @@
-/*global define: false, $: false*/
-
 // WebGL Status.
 // Presents available WebGL features.
 //
 // getHTMLElement() method returns JQuery object with DIV that contains status.
 
-import $__common_controllers_checkbox_controller from 'common/controllers/checkbox-controller';
-import $__models_energy_d_gpu_gpgpu from 'models/energy2d/gpu/gpgpu';
+import CheckboxController from 'common/controllers/checkbox-controller';
+import gpgpu from 'models/energy2d/gpu/gpgpu';
 
 var
 // Dependencies.
-  CheckboxController = $__common_controllers_checkbox_controller,
-  gpgpu = $__models_energy_d_gpu_gpgpu,
+  
+  
 
   GET_WEBGL = '<p><a href="http://get.webgl.org" target="_blank">Click to learn more about WebGL.</a></p>';
 
 export default function WebGLStatusView(html_id, model) {
-  var
-    DEFAULT_ID = 'e2d-webgl-status',
+  var DEFAULT_ID = 'e2d-webgl-status',
     $div,
     $webgl_icon,
     $status_wrapper,

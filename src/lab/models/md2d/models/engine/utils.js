@@ -1,7 +1,5 @@
-/*global define: false*/
-import $__arrays from 'arrays';
+import arrays from 'arrays';
 
-var arrays = $__arrays;
 
 /**
   Extend all arrays in arrayContainer to `newLength`. Here, arrayContainer is expected to be `atoms`

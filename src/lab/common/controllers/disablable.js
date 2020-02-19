@@ -1,4 +1,3 @@
-/*global define */
 
 /**
  * Tiny "mixin" that can be used by an interactive component. It's temporal workaround before we
@@ -6,9 +5,8 @@
  * such basic functionality. Mixins are inconvenient in this case, as they force us to modify
  * implementation of every single component (require and use mixin).
  */
-import $__common_views_view_state from 'common/views/view-state';
+import viewState from 'common/views/view-state';
 
-var viewState = $__common_views_view_state;
 var enableView = viewState.enableView;
 var disableView = viewState.disableView;
 

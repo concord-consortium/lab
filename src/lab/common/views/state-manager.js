@@ -1,4 +1,3 @@
-/*global define, $ */
 
 export default function StateManager(names) {
   var api,

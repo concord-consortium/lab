@@ -1,20 +1,11 @@
-/*global define: false, d3: false */
-/*jshint multistr: true */
+import PIXI from 'pixi.js';
+import canvg from 'canvg';
+import mustache from 'mustache';
+import colorLib from 'common/views/color';
+import AtomsInteractions from 'models/md2d/views/atoms-interactions';
+import detectFontChange from 'common/layout/detect-font-change';
 
-import $__pixi from 'pixi.js';
-import $__canvg from 'canvg';
-import $__mustache from 'mustache';
-import $__common_views_color from 'common/views/color';
-import $__models_md_d_views_atoms_interactions from 'models/md2d/views/atoms-interactions';
-import $__common_layout_detect_font_change from 'common/layout/detect-font-change';
-// Dependencies.
-var PIXI = $__pixi,
-  canvg = $__canvg,
-  mustache = $__mustache,
-  d3rgba = $__common_views_color.d3rgba,
-  AtomsInteractions = $__models_md_d_views_atoms_interactions,
-  detectFontChange = $__common_layout_detect_font_change,
-
+var
   FONT_WEIGHT = 'bold',
   // font-family needs to be unescaped to support fonts wrapped in '' (e.g. 'Comic Sans MS').
   ATOM_SVG_TPL =
@@ -184,7 +175,7 @@ export default function AtomsRenderer(modelView, model, pixiContainer, canvas) {
         color = d3.rgb("#" + colorStr);
       } else {
         // Use custom helper, as d3.rgb cannot parse rgba strings.
-        color = d3rgba(props.color).rgb; // d3.rgb
+        color = colorLib.d3rgba(props.color).rgb; // d3.rgb
       }
       return [color.brighter(1).toString(), color.toString(), color.darker(1).toString()];
     }
@@ -203,7 +194,7 @@ export default function AtomsRenderer(modelView, model, pixiContainer, canvas) {
       return atom.visible;
     }
     // Color defined in HTML format can define alpha channel too (e.g. rgba(...)).
-    return d3rgba(props.color).a * atom.visible;
+    return colorLib.d3rgba(props.color).a * atom.visible;
   }
 
   function getAtomTexture(i, colors) {

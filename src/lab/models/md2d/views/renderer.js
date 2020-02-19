@@ -1,39 +1,23 @@
-/*global $, define: false, d3: false, AUTHORING: false */
-/*jshint loopfunc: true */
-
 // ------------------------------------------------------------
 //
 //   MD2D View Renderer
 //
 // ------------------------------------------------------------
-import $__lab_config from 'lab.config';
-import $__common_console from 'common/console';
-import $__common_benchmark_benchmark from 'common/benchmark/benchmark';
-import $__models_md_d_views_atoms_renderer from 'models/md2d/views/atoms-renderer';
-import $__models_md_d_views_bonds_renderer from 'models/md2d/views/bonds-renderer';
-import $__models_md_d_views_vectors_renderer from 'models/md2d/views/vectors-renderer';
-import $__models_md_d_views_field_renderer from 'models/md2d/views/field-renderer';
-import $____vdw_lines_renderer from './vdw-lines-renderer';
-import $__models_md_d_views_genetic_renderer from 'models/md2d/views/genetic-renderer';
-import $__common_layout_wrap_svg_text from 'common/layout/wrap-svg-text';
-import $__common_views_gradients from 'common/views/gradients';
-import $__common_views_color from 'common/views/color';
-import $____images_renderer from './images-renderer';
-// Dependencies.
-var labConfig = $__lab_config,
-  console = $__common_console,
-  benchmark = $__common_benchmark_benchmark,
-  AtomsRenderer = $__models_md_d_views_atoms_renderer,
-  BondsRenderer = $__models_md_d_views_bonds_renderer,
-  VectorsRenderer = $__models_md_d_views_vectors_renderer,
-  FieldRenderer = $__models_md_d_views_field_renderer,
-  VdwLinesRenderer = $____vdw_lines_renderer,
-  GeneticRenderer = $__models_md_d_views_genetic_renderer,
-  wrapSVGText = $__common_layout_wrap_svg_text,
-  gradients = $__common_views_gradients,
-  contrastingColor = $__common_views_color.contrastingColor,
-  ImagesRenderer = $____images_renderer,
+import labConfig from 'lab.config';
+import console from 'common/console';
+import benchmark from 'common/benchmark/benchmark';
+import AtomsRenderer from 'models/md2d/views/atoms-renderer';
+import BondsRenderer from 'models/md2d/views/bonds-renderer';
+import VectorsRenderer from 'models/md2d/views/vectors-renderer';
+import FieldRenderer from 'models/md2d/views/field-renderer';
+import VdwLinesRenderer from './vdw-lines-renderer';
+import GeneticRenderer from 'models/md2d/views/genetic-renderer';
+import wrapSVGText from 'common/layout/wrap-svg-text';
+import gradients from 'common/views/gradients';
+import colorLib from 'common/views/color';
+import ImagesRenderer from './images-renderer';
 
+var
   // Constants used by photon renderer:
   // Reference implementation:
   // https://github.com/concord-consortium/mw/blob/3c54e37cbfe98b8d3c6f9e5397eda4308dfafecb/src/org/concord/mw2d/models/Photon.java#L32-L35
@@ -189,7 +173,7 @@ export default function MD2DView(modelView, model) {
       },
       get color() {
         var c = model.get("electricFieldColor");
-        return c !== "auto" ? c : contrastingColor(model.get("backgroundColor"));
+        return c !== "auto" ? c : colorLib.contrastingColor(model.get("backgroundColor"));
       },
       get count() {
         return modelElectricField.length;

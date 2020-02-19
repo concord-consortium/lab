@@ -1,8 +1,7 @@
 import 'common/jquery-plugins';
 import Backbone from 'backbone';
 
-var
-  uid = 0,
+var uid = 0,
   // Returns unique ID used by the bar graph view.
   getUID = function() {
     return uid++;

@@ -1,8 +1,6 @@
-/*global define: false */
 
-import $__pixi from 'pixi.js';
+import PIXI from 'pixi.js';
 // Dependencies.
-var PIXI = $__pixi;
 
 export default function VectorsRenderer(pixiContainer, config) {
   // Public API object to be returned.

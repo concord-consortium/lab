@@ -1,12 +1,8 @@
-/*global define: false */
 
-import $__common_alert from 'common/alert';
-import $__models_md_d_views_aminoacid_context_menu from 'models/md2d/views/aminoacid-context-menu';
+import alert from 'common/alert';
+import amniacidContextMenu from 'models/md2d/views/aminoacid-context-menu';
 // Dependencies.
-var alert = $__common_alert,
-  amniacidContextMenu = $__models_md_d_views_aminoacid_context_menu,
-
-  POINT_CACHE = {},
+var POINT_CACHE = {},
 
   TRANSLATE = 'translate',
   ROTATE = 'rotate';

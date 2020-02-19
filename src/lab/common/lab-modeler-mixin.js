@@ -1,21 +1,12 @@
-/*global define: false */
 
-import $__common_property_support from 'common/property-support';
-import $__common_parameter_support from 'common/parameter-support';
-import $__common_output_support from 'common/output-support';
-import $__common_dispatch_support from 'common/dispatch-support';
-import $__common_playback_support from 'common/playback-support';
-import $__common_define_builtin_properties from 'common/define-builtin-properties';
-import $__common_controllers_export_controller from 'common/controllers/export-controller';
-
-var PropertySupport = $__common_property_support,
-  ParameterSupport = $__common_parameter_support,
-  OutputSupport = $__common_output_support,
-  DispatchSupport = $__common_dispatch_support,
-  PlaybackSupport = $__common_playback_support,
-  defineBuiltinProperties = $__common_define_builtin_properties,
-  // it's somewhat unfortunate to have an "upwards" dependency on the controller layer
-  ExportController = $__common_controllers_export_controller;
+import PropertySupport from 'common/property-support';
+import ParameterSupport from 'common/parameter-support';
+import OutputSupport from 'common/output-support';
+import DispatchSupport from 'common/dispatch-support';
+import PlaybackSupport from 'common/playback-support';
+import defineBuiltinProperties from 'common/define-builtin-properties';
+// it's somewhat unfortunate to have an "upwards" dependency on the controller layer
+import ExportController from 'common/controllers/export-controller';
 
 export default function LabModelerMixin(args) {
 

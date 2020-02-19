@@ -1,21 +1,12 @@
-/*global define: false, $: false */
 
-import $__models_energy_d_views_heatmap from 'models/energy2d/views/heatmap';
-import $__models_energy_d_views_heatmap_webgl from 'models/energy2d/views/heatmap-webgl';
-import $__models_energy_d_views_webgl_status from 'models/energy2d/views/webgl-status';
-import $__models_energy_d_views_vectormap from 'models/energy2d/views/vectormap';
-import $__models_energy_d_views_vectormap_webgl from 'models/energy2d/views/vectormap-webgl';
-import $__models_energy_d_views_photons from 'models/energy2d/views/photons';
-import $__models_energy_d_views_parts from 'models/energy2d/views/parts';
-import $__models_energy_d_views_sensors from 'models/energy2d/views/sensors';
-var HeatmapView = $__models_energy_d_views_heatmap,
-  HeatmapWebGLView = $__models_energy_d_views_heatmap_webgl,
-  WebGLStatusView = $__models_energy_d_views_webgl_status,
-  VectormapView = $__models_energy_d_views_vectormap,
-  VectormapWebGLView = $__models_energy_d_views_vectormap_webgl,
-  PhotonsView = $__models_energy_d_views_photons,
-  PartsView = $__models_energy_d_views_parts,
-  SensorsView = $__models_energy_d_views_sensors;
+import HeatmapView from 'models/energy2d/views/heatmap';
+import HeatmapWebGLView from 'models/energy2d/views/heatmap-webgl';
+import WebGLStatusView from 'models/energy2d/views/webgl-status';
+import VectormapView from 'models/energy2d/views/vectormap';
+import VectormapWebGLView from 'models/energy2d/views/vectormap-webgl';
+import PhotonsView from 'models/energy2d/views/photons';
+import PartsView from 'models/energy2d/views/parts';
+import SensorsView from 'models/energy2d/views/sensors';
 
 
 export default function Renderer(SVGContainer, model) {

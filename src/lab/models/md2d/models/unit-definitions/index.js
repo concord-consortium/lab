@@ -1,18 +1,16 @@
-/*global define*/
+import md2dUnits from "models/md2d/models/unit-definitions/md2d";
+import mksUnits from "models/md2d/models/unit-definitions/mks";
+import _ from "underscore";
 
-import $__models_md_d_models_unit_definitions_md_d from 'models/md2d/models/unit-definitions/md2d';
-import $__models_md_d_models_unit_definitions_mks from 'models/md2d/models/unit-definitions/mks';
-import $__underscore from 'underscore';
 var defs = {
-    md2d: $__models_md_d_models_unit_definitions_md_d,
-    mks: $__models_md_d_models_unit_definitions_mks
-  },
-  _ = $__underscore;
+  md2d: md2dUnits,
+  mks: mksUnits
+};
 
 export default {
-  get: function(name) {
+  get: function (name) {
     var ret;
-    if (name === 'md2d') return defs.md2d;
+    if (name === "md2d") return defs.md2d;
 
     // For any unit type not in defs[name].units (e.g., temperature does not need to be redefined
     // in MKS), fall back to the MD2D unit definition.

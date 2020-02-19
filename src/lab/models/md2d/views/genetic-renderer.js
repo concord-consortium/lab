@@ -1,15 +1,9 @@
-/*global define, d3 */
-
-import $__models_md_d_views_nucleotides from 'models/md2d/views/nucleotides';
-import $__models_md_d_views_genetic_elements_renderer from 'models/md2d/views/genetic-elements-renderer';
-import $__models_md_d_views_genetic_anim_states from 'models/md2d/views/genetic-anim-states';
-import $__models_md_d_views_mutations_context_menu from 'models/md2d/views/mutations-context-menu';
-var nucleotides = $__models_md_d_views_nucleotides,
-  GeneticElementsRenderer = $__models_md_d_views_genetic_elements_renderer,
-  GeneticAnimStates = $__models_md_d_views_genetic_anim_states,
-  mutationsContextMenu = $__models_md_d_views_mutations_context_menu,
-
-  OBJECT_NAMES = GeneticElementsRenderer.OBJECT_NAMES;
+ 
+import nucleotides from 'models/md2d/views/nucleotides';
+import GeneticElementsRenderer from 'models/md2d/views/genetic-elements-renderer';
+import GeneticAnimStates from 'models/md2d/views/genetic-anim-states';
+import mutationsContextMenu from 'models/md2d/views/mutations-context-menu';
+var OBJECT_NAMES = GeneticElementsRenderer.OBJECT_NAMES;
 
 // Implement .interrupt() method that cancels all currently scheduled
 // transitions. Based on Mike's idea:

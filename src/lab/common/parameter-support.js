@@ -1,8 +1,6 @@
-/*global define: false */
 
-import $__common_property_description from 'common/property-description';
+import PropertyDescription from 'common/property-description';
 
-var PropertyDescription = $__common_property_description;
 
 export default function ParameterSupport(args) {
   var propertySupport = args.propertySupport,

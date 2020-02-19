@@ -1,15 +1,10 @@
-/*global define*/
 /*jslint boss: true*/
 
-import $__import_export_codap_interface from 'import-export/codap-interface';
-import $__common_controllers_basic_dialog from 'common/controllers/basic-dialog';
-import $__common_dispatch_support from 'common/dispatch-support';
-import $__underscore from 'underscore';
+import codapInterface from 'import-export/codap-interface';
+import BasicDialog from 'common/controllers/basic-dialog';
+import DispatchSupport from 'common/dispatch-support';
+import _ from 'underscore';
 
-var codapInterface = $__import_export_codap_interface;
-var BasicDialog = $__common_controllers_basic_dialog;
-var DispatchSupport = $__common_dispatch_support;
-var _ = $__underscore;
 
 function modalAlert(title, message, buttons, i18n) {
   var dialog = new BasicDialog({

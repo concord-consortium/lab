@@ -1,16 +1,10 @@
-/*global define, $ */
 
-import $__common_inherit from 'common/inherit';
-import $__common_layout_detect_font_change from 'common/layout/detect-font-change';
-import $__common_controllers_interactive_component from 'common/controllers/interactive-component';
-import $__common_views_select_box_view from 'common/views/select-box-view';
-import $__underscore from 'underscore';
+import inherit from 'common/inherit';
+import detectFontChange from 'common/layout/detect-font-change';
+import InteractiveComponent from 'common/controllers/interactive-component';
+import SelectBoxView from 'common/views/select-box-view';
+import _ from 'underscore';
 
-var inherit = $__common_inherit,
-  detectFontChange = $__common_layout_detect_font_change,
-  InteractiveComponent = $__common_controllers_interactive_component,
-  SelectBoxView = $__common_views_select_box_view,
-  _ = $__underscore;
 
 function disable($el) {
   $el.attr('disabled', true).addClass('lab-disabled').css('cursor', 'default');

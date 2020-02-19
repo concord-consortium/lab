@@ -1,12 +1,8 @@
-/*global define */
 
-import $__common_inherit from 'common/inherit';
-import $__common_controllers_interactive_component from 'common/controllers/interactive-component';
-import $__common_alert from 'common/alert';
+import inherit from 'common/inherit';
+import InteractiveComponent from 'common/controllers/interactive-component';
+import alert from 'common/alert';
 
-var inherit = $__common_inherit,
-  InteractiveComponent = $__common_controllers_interactive_component,
-  alert = $__common_alert;
 
 /**
  * Simplest component controller which just inherits from InteractiveComponent, simply

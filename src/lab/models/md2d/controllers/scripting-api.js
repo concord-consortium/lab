@@ -1,8 +1,6 @@
-/*global define */
+ 
+import DNAEditDialog from 'models/md2d/views/dna-edit-dialog';
 
-import $__models_md_d_views_dna_edit_dialog from 'models/md2d/views/dna-edit-dialog';
-
-var DNAEditDialog = $__models_md_d_views_dna_edit_dialog;
 
 /**
   Define the model-specific MD2D scripting API used by 'action' scripts on interactive elements.

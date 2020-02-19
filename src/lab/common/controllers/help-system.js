@@ -1,11 +1,7 @@
-/*global define, $ */
-import $__common_markdown_to_html from "common/markdown-to-html";
-import $__common_dispatch_support from "common/dispatch-support";
+import markdownToHTML from "common/markdown-to-html";
+import DispatchSupport from "common/dispatch-support";
 
-var markdownToHTML = $__common_markdown_to_html,
-  DispatchSupport = $__common_dispatch_support,
-
-  OVERLAY_MY = [
+var OVERLAY_MY = [
     "center bottom",
     "left center",
     "center top",

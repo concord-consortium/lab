@@ -1,5 +1,4 @@
-/*global define */
-
+ 
 // Simple wrapper for cloning and restoring hash of arrays.
 // Such structure is widely used in md2d engine for keeping
 // state of various objects (like atoms and obstacles).
@@ -9,9 +8,8 @@
 // (...)
 // obj.restore(state);
 
-import $__arrays from 'arrays';
+import arrays from 'arrays';
 // Dependencies.
-var arrays = $__arrays;
 
 export default function CloneRestoreWrapper(hashOfArrays, options) {
   options = options || {};

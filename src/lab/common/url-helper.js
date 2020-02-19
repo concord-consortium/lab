@@ -1,8 +1,6 @@
 
-import $__lab_version from 'lab.version';
-import $__lab_config from 'lab.config';
-var version = $__lab_version;
-var config = $__lab_config;
+import version from 'lab.version';
+import config from 'lab.config';
 
 var addParam = function(string, key, value) {
   if (string.length > 0) {

@@ -1,14 +1,11 @@
-/*global define */
 
 // A Verlet list (named after Loup Verlet) is a data structure in molecular dynamics simulations
 // to efficiently maintain a list of all particles within a given cut-off distance of each other.
 // See: http://en.wikipedia.org/wiki/Verlet_list
 
-import $__arrays from 'arrays';
-import $__common_array_types from 'common/array-types';
+import arrays from 'arrays';
+import arrayTypes from 'common/array-types';
 // Dependencies.
-var arrays = $__arrays,
-  arrayTypes = $__common_array_types;
 
 export default function NeighborList(atomsNum, maxDisplacement) {
   var api,

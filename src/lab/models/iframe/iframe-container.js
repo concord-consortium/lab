@@ -1,6 +1,4 @@
-/*global $, define: false */
-import $__iframe_phone from 'iframe-phone';
-var iframePhone = $__iframe_phone;
+ import iframePhone from 'iframe-phone';
 
 export default function IFrameContainer(model) {
   var _model = model,

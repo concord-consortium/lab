@@ -1,9 +1,6 @@
-/*global define: true */
-import $_____constants_index from 'models/md2d/models/engine/constants/index';
+import constants from 'models/md2d/models/engine/constants/index';
 
-var
-  constants = $_____constants_index,
-  unit = constants.unit,
+var unit = constants.unit,
 
   // Classic MW uses a value for Coulomb's constant that is effectively 0.346 of the real value
   CLASSIC_MW_FUDGE_FACTOR = 0.346,

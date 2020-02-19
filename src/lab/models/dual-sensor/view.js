@@ -1,12 +1,8 @@
-import $__common_views_select_box_view from 'common/views/select-box-view';
-import $__common_views_numeric_output_view from 'common/views/numeric-output-view';
-import $__sensor_applet from 'sensor-applet';
-import $__common_views_view_state from 'common/views/view-state';
-
-var SelectBoxView = $__common_views_select_box_view,
-  NumericOutputView = $__common_views_numeric_output_view,
-  sensorDefinitions = $__sensor_applet.sensorDefinitions,
-  viewState = $__common_views_view_state;
+import SelectBoxView from 'common/views/select-box-view';
+import NumericOutputView from 'common/views/numeric-output-view';
+import sensorApplet from 'sensor-applet';
+import viewState from 'common/views/view-state';
+const sensorDefinitions = sensorApplet.sensorDefinitions;
 
 export default function(model, modelUrl, i18n) {
 

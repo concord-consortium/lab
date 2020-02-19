@@ -1,28 +1,25 @@
-/*global define: false*/
-
-import $__models_energy_d_gpu_shader from 'models/energy2d/gpu/shader';
-import $__models_energy_d_gpu_gpgpu from 'models/energy2d/gpu/gpgpu';
-import $__text_models_energy_d_models_physics_solvers_gpu_heat_solver_glsl_basic_vs_glsl from 'models/energy2d/models/physics-solvers-gpu/heat-solver-glsl/basic.vs.glsl';
-import $__text_models_energy_d_models_physics_solvers_gpu_heat_solver_glsl_solver_fs_glsl from 'models/energy2d/models/physics-solvers-gpu/heat-solver-glsl/solver.fs.glsl';
-import $__text_models_energy_d_models_physics_solvers_gpu_heat_solver_glsl_force_flux_t_fs_glsl from 'models/energy2d/models/physics-solvers-gpu/heat-solver-glsl/force-flux-t.fs.glsl';
-import $__text_models_energy_d_models_physics_solvers_gpu_heat_solver_glsl_t_to_t__fs_glsl from 'models/energy2d/models/physics-solvers-gpu/heat-solver-glsl/t-to-t0.fs.glsl';
-import $__text_models_energy_d_models_physics_solvers_gpu_heat_solver_glsl_maccormack_step1__fs_glsl from 'models/energy2d/models/physics-solvers-gpu/heat-solver-glsl/maccormack-step1.fs.glsl';
-import $__text_models_energy_d_models_physics_solvers_gpu_heat_solver_glsl_maccormack_step2__fs_glsl from 'models/energy2d/models/physics-solvers-gpu/heat-solver-glsl/maccormack-step2.fs.glsl';
+ import Shader from 'models/energy2d/gpu/shader';
+import gpgpu from 'models/energy2d/gpu/gpgpu';
+import basic_vs from 'models/energy2d/models/physics-solvers-gpu/heat-solver-glsl/basic.vs.glsl';
+import solver_fs from 'models/energy2d/models/physics-solvers-gpu/heat-solver-glsl/solver.fs.glsl';
+import force_flux_t_fs from 'models/energy2d/models/physics-solvers-gpu/heat-solver-glsl/force-flux-t.fs.glsl';
+import t_to_t0 from 'models/energy2d/models/physics-solvers-gpu/heat-solver-glsl/t-to-t0.fs.glsl';
+import maccormack_step1_fs from 'models/energy2d/models/physics-solvers-gpu/heat-solver-glsl/maccormack-step1.fs.glsl';
+import maccormack_step2_fs from 'models/energy2d/models/physics-solvers-gpu/heat-solver-glsl/maccormack-step2.fs.glsl';
 
 var
-// Dependencies.
-  Shader = $__models_energy_d_gpu_shader,
+// Dependencies. 
   // GPGPU utilities. It's a singleton instance.
   // It should have been previously initialized by core-model.
-  gpgpu = $__models_energy_d_gpu_gpgpu,
+  
   // Shader sources.
-  basic_vs = $__text_models_energy_d_models_physics_solvers_gpu_heat_solver_glsl_basic_vs_glsl,
-  solver_fs = $__text_models_energy_d_models_physics_solvers_gpu_heat_solver_glsl_solver_fs_glsl,
-  force_flux_t_fs = $__text_models_energy_d_models_physics_solvers_gpu_heat_solver_glsl_force_flux_t_fs_glsl,
-  force_flux_t0_fs = $__text_models_energy_d_models_physics_solvers_gpu_heat_solver_glsl_force_flux_t_fs_glsl,
-  t_to_t0 = $__text_models_energy_d_models_physics_solvers_gpu_heat_solver_glsl_t_to_t__fs_glsl,
-  maccormack_step1_fs = $__text_models_energy_d_models_physics_solvers_gpu_heat_solver_glsl_maccormack_step1__fs_glsl,
-  maccormack_step2_fs = $__text_models_energy_d_models_physics_solvers_gpu_heat_solver_glsl_maccormack_step2__fs_glsl,
+  
+  
+  
+  
+  
+  
+  
 
   RELAXATION_STEPS = 10;
 

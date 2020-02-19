@@ -1,9 +1,7 @@
-/*global define */
 
-import $__underscore from 'underscore';
+import _ from 'underscore';
 
-var _ = $__underscore,
-  fields = ["computationalInputs", "computationalOutputs", "studentInputs"];
+var fields = ["computationalInputs", "computationalOutputs", "studentInputs"];
 
 function columnLabelWithUnits(col) {
   return col.units ? col.label + " (" + col.units + ")" : col.label;
