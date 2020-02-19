@@ -1,18 +1,10 @@
 #!/usr/bin/env node
 /*
- * decaffeinate suggestions:
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
-
-/*
   Converts a single MML file to a json file, optionally with an _id attribute for
   inserting into CouchDB.
 */
-
-const parseMML = require("../src/helpers/md2d/mml-parser");
+const parseMML = require("../src/helpers/md2d/md2d-node-api").parseMML;
 const fs = require("fs");
-const mkdirp = require("mkdirp");
 
 const inFile = process.argv[2];
 const outFile = process.argv[3];

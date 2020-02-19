@@ -1,10 +1,4 @@
 #!/usr/bin/env node
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
- */
-
 const fs = require("fs");
 const md2dNodeApi = require("../src/helpers/md2d/md2d-node-api");
 
@@ -36,7 +30,7 @@ time\tKE\tTE`
     // Integrate
     model.tick();
   }
-  return fs.closeSync(out);
+  fs.closeSync(out);
 };
 
 // Begin script.

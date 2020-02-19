@@ -39,7 +39,7 @@ function endsWith(str, suffix) {
 }
 
 function getModelJSONFromMMLFile(mmlFileName) {
-  var parseMML    = require('../../src/helpers/md2d/mml-parser').parseMML,
+  var parseMML    = require('../../src/helpers/md2d/md2d-node-api').parseMML,
       mmlPath     = 'test/fixtures/models/' + mmlFileName,
       mmlContents = fs.readFileSync(mmlPath).toString(),
       results     = parseMML(mmlContents);

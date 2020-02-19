@@ -1,13 +1,11 @@
-/*global define, performance, $ */
-
 var nowFunc,
   scope,
   enabled = false;
 
 if (typeof performance !== 'undefined' && typeof performance.now !== 'undefined') {
-  nowFunc = $.proxy(performance.now, performance);
+  nowFunc = performance.now.bind(performance);
 } else {
-  nowFunc = $.proxy(Date.now, Date);
+  nowFunc = Date.now.bind(Date);
 }
 
 export default {

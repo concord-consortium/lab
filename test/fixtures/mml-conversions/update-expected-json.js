@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 var fs = require('fs');
-var parseMML = require('../../../src/helpers/md2d/mml-parser').parseMML;
+var parseMML = require('../../../src/helpers/md2d/md2d-node-api').parseMML;
 var mmlFileNames = fs.readdirSync('input-mml');
 
 mmlFileNames.forEach(function(mmlFileName) {

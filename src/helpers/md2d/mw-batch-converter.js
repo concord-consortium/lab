@@ -1,5 +1,3 @@
-/*jshint eqnull:true */
-
 /**
 For the moment, to run these scripts
   $ cd lab
@@ -8,7 +6,7 @@ For the moment, to run these scripts
   > convertMMLFolder()
   > createCmlJsonIndex(outputHtmlFile)
 **/
-var parseMML = require('./mml-parser').parseMML,
+var parseMML = require('./md2d-node-api').parseMML,
     mkdirp = require('mkdirp'),
     fs = require('fs'),
     path = require('path'),
