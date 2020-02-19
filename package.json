@@ -1,7 +1,7 @@
 {
   "name": "lab",
-  "version": "1.0.0",
-  "description": "My webpack project",
+  "version": "1.17.0",
+  "description": "Lab Framework",
   "keywords": [
     "molecule",
     "probes",
@@ -32,7 +32,7 @@
     "url": "https://github.com/concord-consortium/lab.git"
   },
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=10.0.0"
   },
   "jest": {
     "testURL": "https://lab.concord.org",
@@ -111,9 +111,6 @@
     "terser-webpack-plugin": "^2.3.4",
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11"
-  },
-  "directories": {
-    "bin": "node-bin"
   },
   "scripts": {
     "build": "npm-run-all clean submodules build:public build:lab.json build:webpack archive",
