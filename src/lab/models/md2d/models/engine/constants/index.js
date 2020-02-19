@@ -21,9 +21,9 @@
             to:   constants.unit.KILOGRAM
           });
 */
-import $____units from './units';
+import units from './units';
 
-var units = $____units,
+var
   unit = units.unit,
   ratio = units.ratio,
   convert = units.convert,

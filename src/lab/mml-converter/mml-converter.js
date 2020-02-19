@@ -7,21 +7,11 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-import $__browserified_cheerio from "browserified-cheerio";
-import $__models_md_d_models_engine_constants_index from "models/md2d/models/engine/constants/index";
-import $__common_validator from "common/validator";
-import $__models_md_d_models_metadata from "models/md2d/models/metadata";
-import $__models_md_d_models_solvent from "models/md2d/models/solvent";
-
-let parseMML;
-const cheerio = $__browserified_cheerio;
-const constants = $__models_md_d_models_engine_constants_index;
-const {
-  unit
-} = constants;
-const validator = $__common_validator;
-const metadata = $__models_md_d_models_metadata;
-const Solvent = $__models_md_d_models_solvent;
+const cheerio = require("cheerio");
+import constants from "models/md2d/models/engine/constants/index";
+import validator from "common/validator";
+import metadata from "models/md2d/models/metadata";
+import Solvent from "models/md2d/models/solvent";
 
 // Used throughout Classic MW to convert energy gradient values measured in units of eV/0.1Å to
 // the equivalent forces measured in units of 120 amu * 0.1Å / fs^2 (Classic's "natural" unit system
@@ -48,8 +38,6 @@ const VDWLinesRatioMap = {
   2.0: "long"
 };
 
-// window.MWHelpers = {};
-
 /*
   Parses an mml file and returns an object containing the stringified JSON
 
@@ -57,7 +45,7 @@ const VDWLinesRatioMap = {
     json: jsonString of the model
     error: error encountered
 */
-export default parseMML = function(mmlString) {
+export default function parseMML(mmlString) {
 
   //try
   /* perform any pre-processing on the string */

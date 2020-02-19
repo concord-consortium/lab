@@ -1,5 +1,3 @@
-/*global define: false, d3: false */
-
 import $__common_performance from 'common/performance';
 import $__common_serialize from 'common/serialize';
 import $__common_validator from 'common/validator';
