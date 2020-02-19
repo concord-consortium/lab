@@ -1,18 +1,11 @@
+// import it for side effects, d3 will get added to window namespace
 import d3 from "d3";
-import $__lab_version from 'lab.version';
-import $__lab_config from 'lab.config';
-import $__common_controllers_interactives_controller from 'common/controllers/interactives-controller';
-import $__common_benchmark_benchmark from 'common/benchmark/benchmark';
-import $__grapher_public_api from 'grapher/public-api';
-import $__import_export_public_api from 'import-export/public-api';
-var version = $__lab_version,
-  config = $__lab_config,
-  InteractivesController = $__common_controllers_interactives_controller,
-  benchmark = $__common_benchmark_benchmark;
-
-// Require public-api modules.
-$__grapher_public_api;
-$__import_export_public_api;
+import version from 'lab.version';
+import config from 'lab.config';
+import InteractivesController from 'common/controllers/interactives-controller';
+import benchmark from 'common/benchmark/benchmark';
+import codapInterface from 'import-export/codap-interface';
+import netlogoImporter from 'import-export/netlogo-importer';
 
 // Create or get 'Lab' global object (namespace).
 window.Lab = window.Lab || {};
@@ -20,3 +13,10 @@ window.Lab.version = version;
 window.Lab.config = config;
 window.Lab.InteractivesController = InteractivesController;
 window.Lab.benchmark = benchmark;
+window.Lab.importExport = {
+  codapInterface,
+  netlogoImporter
+};
+
+// This will automatically extend Lab public API with Grapher API.
+import 'grapher/index';
