@@ -1,8 +1,6 @@
-var requirejs = require('requirejs'),
-    path      = require('path'),
-    jsdom     = require('jsdom');
-
-var dom = new jsdom.JSDOM("<html><head></head><body></body></html>");
+const path = require('path');
+const jsdom = require('jsdom');
+const dom = new jsdom.JSDOM("<html><head></head><body></body></html>");
 
 window = global.window = dom.window;
 document = global.document = window.document;

@@ -1,12 +1,10 @@
-/*global window Uint8Array Uint8ClampedArray Int8Array Uint16Array Int16Array Uint32Array Int32Array Float32Array Float64Array */
-/*jshint newcap: false */
 var arrays = {};
 
-arrays.version = '0.0.1';
+arrays.version = "0.0.1";
 
-arrays.webgl = (typeof window !== 'undefined') && !!window.WebGLRenderingContext;
+arrays.webgl = (typeof window !== "undefined") && !!window.WebGLRenderingContext;
 
-arrays.typed = (function() {
+arrays.typed = (function () {
   try {
     new Float64Array(0);
     return true;
@@ -27,7 +25,7 @@ arrays.typed = (function() {
 // Float32Array
 // Float64Array
 
-arrays.create = function(size, fill, array_type) {
+arrays.create = function (size, fill, array_type) {
   if (!array_type) {
     if (arrays.webgl || arrays.typed) {
       array_type = "Float32Array";
@@ -38,7 +36,7 @@ arrays.create = function(size, fill, array_type) {
   if (fill === undefined) {
     fill = 0;
   }
-  var a, i;
+  var a;
   if (array_type === "regular") {
     a = new Array(size);
   } else {
@@ -78,7 +76,7 @@ arrays.create = function(size, fill, array_type) {
   return a;
 };
 
-arrays.fill = function(array, value) {
+arrays.fill = function (array, value) {
   var i = -1,
     size = array.length;
   while (++i < size) {
@@ -86,7 +84,7 @@ arrays.fill = function(array, value) {
   }
 };
 
-arrays.constructor_function = function(source) {
+arrays.constructor_function = function (source) {
   if (source.buffer &&
     source.buffer.__proto__ &&
     source.buffer.__proto__.constructor &&
@@ -118,15 +116,15 @@ arrays.constructor_function = function(source) {
     default:
       throw new Error(
         "arrays.constructor_function: must be an Array or Typed Array: " + "  source: " + source);
-      // ", source.constructor: " + source.constructor +
-      // ", source.buffer: " + source.buffer +
-      // ", source.buffer.slice: " + source.buffer.slice +
-      // ", source.buffer.__proto__: " + source.buffer.__proto__ +
-      // ", source.buffer.__proto__.constructor: " + source.buffer.__proto__.constructor
+    // ", source.constructor: " + source.constructor +
+    // ", source.buffer: " + source.buffer +
+    // ", source.buffer.slice: " + source.buffer.slice +
+    // ", source.buffer.__proto__: " + source.buffer.__proto__ +
+    // ", source.buffer.__proto__.constructor: " + source.buffer.__proto__.constructor
   }
 };
 
-arrays.copy = function(source, dest, num) {
+arrays.copy = function (source, dest, num) {
   var len = num !== undefined ? num : source.length,
     i = -1;
   while (++i < len) {
@@ -136,7 +134,7 @@ arrays.copy = function(source, dest, num) {
   return dest;
 };
 
-arrays.clone = function(source) {
+arrays.clone = function (source) {
   var i, len = source.length,
     clone, constructor;
   constructor = arrays.constructor_function(source);
@@ -160,22 +158,22 @@ arrays.clone = function(source) {
 
 /** @return true if x is between a and b. */
 // float a, float b, float x
-arrays.between = function(a, b, x) {
+arrays.between = function (a, b, x) {
   return x < Math.max(a, b) && x > Math.min(a, b);
 };
 
 // float[] array
-arrays.max = function(array) {
+arrays.max = function (array) {
   return Math.max.apply(Math, array);
 };
 
 // float[] array
-arrays.min = function(array) {
+arrays.min = function (array) {
   return Math.min.apply(Math, array);
 };
 
 // FloatxxArray[] array
-arrays.maxTypedArray = function(array) {
+arrays.maxTypedArray = function (array) {
   var test, i,
     max = Number.MIN_VALUE,
     length = array.length;
@@ -187,7 +185,7 @@ arrays.maxTypedArray = function(array) {
 };
 
 // FloatxxArray[] array
-arrays.minTypedArray = function(array) {
+arrays.minTypedArray = function (array) {
   var test, i,
     min = Number.MAX_VALUE,
     length = array.length;
@@ -199,7 +197,7 @@ arrays.minTypedArray = function(array) {
 };
 
 // float[] array
-arrays.maxAnyArray = function(array) {
+arrays.maxAnyArray = function (array) {
   try {
     return Math.max.apply(Math, array);
   } catch (e) {
@@ -217,7 +215,7 @@ arrays.maxAnyArray = function(array) {
 };
 
 // float[] array
-arrays.minAnyArray = function(array) {
+arrays.minAnyArray = function (array) {
   try {
     return Math.min.apply(Math, array);
   } catch (e) {
@@ -234,7 +232,7 @@ arrays.minAnyArray = function(array) {
   }
 };
 
-arrays.average = function(array) {
+arrays.average = function (array) {
   var i, acc = 0,
     length = array.length;
   for (i = 0; i < length; i++) {
@@ -244,18 +242,18 @@ arrays.average = function(array) {
 };
 
 /**
-  Create a new array of the same type as 'array' and of length 'newLength', and copies as many
-  elements from 'array' to the new array as is possible.
+ Create a new array of the same type as 'array' and of length 'newLength', and copies as many
+ elements from 'array' to the new array as is possible.
 
-  If 'newLength' is less than 'array.length', and 'array' is  a typed array, we still allocate a
-  new, shorter array in order to allow GC to work.
+ If 'newLength' is less than 'array.length', and 'array' is  a typed array, we still allocate a
+ new, shorter array in order to allow GC to work.
 
-  The returned array should always take the place of the passed-in 'array' in client code, and this
-  method should not be counted on to always return a copy. If 'array' is non-typed, we manipulate
-  its length instead of copying it. But if 'array' is typed, we cannot increase its size in-place,
-  therefore must pas a *new* object reference back to client code.
-*/
-arrays.extend = function(array, newLength) {
+ The returned array should always take the place of the passed-in 'array' in client code, and this
+ method should not be counted on to always return a copy. If 'array' is non-typed, we manipulate
+ its length instead of copying it. But if 'array' is typed, we cannot increase its size in-place,
+ therefore must pas a *new* object reference back to client code.
+ */
+arrays.extend = function (array, newLength) {
   var extendedArray,
     Constructor,
     i;
@@ -281,7 +279,7 @@ arrays.extend = function(array, newLength) {
   return extendedArray;
 };
 
-arrays.remove = function(array, idx) {
+arrays.remove = function (array, idx) {
   var constructor = arrays.constructor_function(array),
     rest;
 
@@ -296,7 +294,7 @@ arrays.remove = function(array, idx) {
   return array;
 };
 
-arrays.isArray = function(object) {
+arrays.isArray = function (object) {
   if (object === undefined || object === null) {
     return false;
   }
@@ -317,7 +315,4 @@ arrays.isArray = function(object) {
   }
 };
 
-// publish everything to exports
-for (var key in arrays) {
-  if (arrays.hasOwnProperty(key)) exports[key] = arrays[key];
-}
+export default arrays;

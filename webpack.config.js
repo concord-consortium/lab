@@ -100,7 +100,6 @@ module.exports = {
   resolve: {
     modules: [path.resolve(__dirname, './src/lab'), 'node_modules'],
     alias: {
-      'arrays': path.resolve(__dirname, 'src/modules/arrays/'),
       'lab-grapher': path.resolve(__dirname, 'vendor/lab-grapher/dist/lab-grapher'),
       'i18next': path.resolve(__dirname, 'vendor/i18next/i18next.js'),
       'sensor-applet': path.resolve(__dirname, 'vendor/lab-sensor-applet-interface-dist/sensor-applet-interface'),
