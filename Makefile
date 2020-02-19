@@ -1,5 +1,4 @@
 # See the README for installation instructions.
-MARKDOWN_COMPILER = kramdown
 SASS_COMPILER = sass -I src -I public
 FONT_FOLDERS := $(shell find vendor/fonts -mindepth 1 -maxdepth 1)
 SASS_LAB_LIBRARY_FILES := $(shell find src/sass/lab -name '*.sass')
@@ -34,7 +33,7 @@ public: \
 # used to generate resources from src/ to public/
 .PHONY: copy-resources-to-public
 copy-resources-to-public:
-	rsync -aq --exclude='helpers/' --exclude='layouts/' --exclude='modules/' --exclude='sass/' --exclude='vendor/' --exclude='lab/' --filter '+ */' --exclude='*.haml' --exclude='*.sass' --exclude='*.scss' --exclude='*.yaml' --exclude='*.rb' --exclude='*.md' src/ public/
+	rsync -aq --exclude='helpers/' --exclude='modules/' --exclude='sass/' --exclude='vendor/' --exclude='lab/' --filter '+ */' --exclude='*.haml' --exclude='*.sass' --exclude='*.scss' --exclude='*.yaml' --exclude='*.rb' --exclude='*.md' src/ public/
 	mkdir -p public/lab/resources
 	rsync -aq src/lab/resources/ public/lab/resources/
 
@@ -180,10 +179,6 @@ public/lab-grapher.scss: vendor/lab-grapher/css/lab-grapher.css
 public/%.css: %.sass $(SASS_LAB_LIBRARY_FILES) \
 	public/lab-grapher.scss
 	$(SASS_COMPILER) $< $@
-
-public/%.html: %.md
-	@rm -f $@
-	$(MARKDOWN_COMPILER) $< --template src/layouts/kramdown.html.erb > $@
 
 public/interactives/%.json: src/interactives/%.json
 	@cp $< $@

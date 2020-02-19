@@ -2,7 +2,6 @@ source "http://rubygems.org"
 
 # Used to compile HAML and MD files
 gem "haml", "~> 4.0.0"
-gem 'kramdown', "~> 1.3.0"
 # Used by generate-js-version.rb
 gem "git", "~> 1.2.9"
 # SASS/CSS related
