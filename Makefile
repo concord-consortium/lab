@@ -4,9 +4,7 @@
 JS_COMPILER = ./node_modules/uglify-es/bin/uglifyjs
 MARKDOWN_COMPILER = kramdown
 
-# Turns out that just pointing Vows at a directory doesn't work, and its test matcher matches on
-# the test's title, not its pathname. So we need to find everything in test/vows first.
-VOWS = find test/vows -type f -name '*.js' -o -name '*.coffee' ! -name '.*' | xargs ./node_modules/.bin/vows --isolate --dot-matrix
+JEST = npm run test
 
 SASS_COMPILER = sass -I src -I public
 R_OPTIMIZER = ./node_modules/.bin/r.js -o
@@ -110,8 +108,8 @@ test: test/layout.html \
 	$(LAB_JS_FILES) \
 	$(JS_FILES:.js=.min.js)
 	@echo
-	@echo 'Vows tests ...'
-	@$(VOWS)
+	@echo 'Jest tests ...'
+	@$(JEST)
 	@echo
 
 # run vows test WITHOUT trying to build Lab JS first. Run 'make; make test-mocha' to build & test.
