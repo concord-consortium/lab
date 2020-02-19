@@ -1,7 +1,9 @@
 #!/usr/bin/env ruby
-require_relative 'setup.rb'
 require 'git'
 require "erb"
+
+PROJECT_ROOT = File.expand_path('../..',  __FILE__)   if !defined? PROJECT_ROOT
+SRC_LAB_PATH  = File.join(PROJECT_ROOT, 'src', 'lab') if !defined? SRC_LAB_PATH
 
 ENCODING_OPTIONS = {
     :invalid           => :replace,  # Replace invalid byte sequences

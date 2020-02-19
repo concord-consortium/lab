@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html;charset=utf-8' http-equiv='Content-Type'>
+    <title>HTML5-based scientific models, visualizations, graphing, and probeware</title>
+    <script src='lab/vendor/jquery/jquery.min.js' type='text/javascript'></script>
+    <link href='//fonts.googleapis.com/css?family=Lato:300italic,700italic,300,400,400italic,700' rel='stylesheet' type='text/css'>
+    <link href='index.css' rel='stylesheet' type='text/css'>
+    <% if (htmlWebpackPlugin.options.gaAccountId) { %>
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', '<%= htmlWebpackPlugin.options.gaAccountId %>']);
+      _gaq.push(['_setAllowAnchor', true]);
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+    <% } %>
+  </head>
+  <body>
+    <h1>Lab Framework: HTML5-based scientific models, visualizations, graphing, and probeware</h1>
+    <div class='column1'>
+      <p>
+        In November 2011 the Google Foundation awarded Concord Consortium a grant to develop an
+        HTML5 version of Molecular Workbench our award-winning Java-based physics simulation.
+        We've extended these goals and have created a general framework we call Lab for integrating
+        both simulations running in multiple modeling engines and data collection from sensors and
+        probes.
+      </p>
+      <p>
+        Lab Interactives are sharable, embeddable, and authorable components defined in JSON
+        that wrap a model with additional inquiry-oriented user interface components such as
+        buttons, checkboxes, sliders, graphs etc.
+      </p>
+      <h2>Examples</h2>
+      <p>MD2D model type</p>
+      <ul>
+        <li>
+          <a href='embeddable.html#interactives/oil-and-water.json' target='_blank'>Oil and Water</a>
+        </li>
+        <li>
+          <a href='embeddable.html#interactives/amino-acids.json' target='_blank'>Protein Folding</a>
+        </li>
+        <li>
+          <a href='embeddable.html#interactives/pendulum.json' target='_blank'>Pendulum</a>
+        </li>
+        <li>
+          <a href='embeddable.html#interactives/chemical-reaction.json' target='_blank'>Chemical Reaction</a>
+        </li>
+        <li>
+          <a href='embeddable.html#interactives/sun-on-ground.json' target='_blank'>Sunlight, Infrared, CO₂ and the Ground</a>
+        </li>
+        <li>
+          <a href='embeddable.html#interactives/act2model.json' target='_blank'>Visualizing Electric Fields and Forces</a>
+        </li>
+      </ul>
+      <p>Other model types</p>
+      <ul>
+        <li>
+          <a href='embeddable.html#interactives/energy2d.json' target='_blank'>Energy2d</a>
+        </li>
+        <li>
+          <a href='embeddable.html#interactives/sensor.json' target='_blank'>Sensor</a>
+        </li>
+        <li>
+          <a href='embeddable.html#interactives/jsmol-two-molecules.json' target='_blank'>JSmol</a>
+        </li>
+      </ul>
+      <h2>Would you like to see more examples?</h2>
+      <p>
+        Please visit the
+        <a href='http://lab.concord.org'>Concord Consortium interactives page</a>
+        to see our full set of interactives built using the Lab framework.
+      </p>
+      <h2>Classic MW to NextGen Conversion</h2>
+      <p>
+        Classic MW models can be easily converted to lightweight versions that work within Lab. Save you Classic MW model and use the
+        <a href='mml-converter.html'>MML to JSON Converter</a>
+      </p>
+    </div>
+    <div class='column2'>
+      <ul>
+        <li>
+          <a href='http://www.concord.org/'>
+            <img src='lab/resources/layout/cc-logo.svg'>
+          </a>
+        </li>
+        <li>
+          <a href='license.html'>License</a>
+        </li>
+        <li>
+          <a href='https://github.com/concord-consortium/lab'>Github Repository</a>
+        </li>
+        <li>
+          <a href='https://www.pivotaltracker.com/projects/442903'>Pivotal Tracker Project</a>
+        </li>
+        <li>
+          <a href='https://groups.google.com/group/lab-models'>Developer Mail List</a>
+        </li>
+        <li>
+          <a href='https://travis-ci.org/concord-consortium/lab'>CIS (travis-ci)</a>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

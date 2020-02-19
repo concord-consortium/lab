@@ -1,5 +1,6 @@
 const path = require("path");
 const webpack = require("webpack");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 /*
  * SplitChunksPlugin is enabled by default and replaced
@@ -22,7 +23,6 @@ const webpack = require("webpack");
  * https://github.com/webpack-contrib/mini-css-extract-plugin
  *
  */
-
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 /*
@@ -32,28 +32,22 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
  * https://github.com/webpack-contrib/terser-webpack-plugin
  *
  */
-
 const TerserPlugin = require("terser-webpack-plugin");
 
+const production = process.env.LAB_ENV === "production";
+
 module.exports = {
-  mode: "development",
+  mode: production ? "production" : "development",
   entry: {
     "lab": "./src/lab/index.js",
-    "lab.min": "./src/lab/index.js",
     "lab.mml-converter": "./src/lab/mml-converter/index.js",
-    "lab.mml-converter.min": "./src/lab/mml-converter/index.js",
-    "lab.grapher": "./src/lab/grapher/index.js",
-    "lab.grapher.min": "./src/lab/grapher/index.js"
+    "lab.grapher": "./src/lab/grapher/index.js"
   },
   output: {
-    path: path.resolve(__dirname, 'public', 'lab'),
-    chunkFilename: "[name].js"
+    path: path.resolve(__dirname, 'public'),
+    filename: "lab/[name].js"
   },
   devtool: "source-map",
-  plugins: [
-    new webpack.ProgressPlugin(),
-    new MiniCssExtractPlugin({filename: "lab.css"})
-  ],
   module: {
     rules: [
       {
@@ -78,14 +72,12 @@ module.exports = {
           },
           {
             loader: "css-loader",
-
             options: {
               sourceMap: true
             }
           },
           {
             loader: "sass-loader",
-
             options: {
               sourceMap: true
             }
@@ -104,8 +96,33 @@ module.exports = {
       'labquest2-interface': path.resolve(__dirname, 'vendor/sensor-labquest-2-interface/dist/sensor-labquest-2-interface')
     }
   },
+  plugins: [
+    new webpack.ProgressPlugin(),
+    // new MiniCssExtractPlugin({filename: "lab.css"}),
+    new HtmlWebpackPlugin({
+      chunks: [],
+      template: 'src/index.html',
+      filename: 'index.html',
+      inject: false,
+      gaAccountId: process.env.GA_ACCOUNT_ID
+    }),
+    new HtmlWebpackPlugin({
+      chunks: [production ? 'lab.min' : 'lab'],
+      template: 'src/embeddable.html',
+      filename: 'embeddable.html',
+      inject: false,
+      gaAccountId: process.env.GA_ACCOUNT_ID,
+      production
+    }),
+    new HtmlWebpackPlugin({
+      chunks: [production ? 'lab.mml-converter.min' : 'lab.mml-converter'],
+      template: 'src/mml-converter.html',
+      filename: 'mml-converter.html',
+      inject: false
+    })
+  ],
   optimization: {
-    minimize: true,
+    minimize: production,
     minimizer: [new TerserPlugin({
       test: /\.min\.js$/i,
     })],
@@ -123,3 +140,10 @@ module.exports = {
     }
   }
 };
+
+if (production) {
+  // Generate minified only in production mode.
+  module.exports.entry["lab.min"] = "./src/lab/index.js";
+  module.exports.entry["lab.mml-converter.min"] = "./src/lab/mml-converter/index.js";
+  module.exports.entry["lab.grapher.min"] = "./src/lab/grapher/index.js";
+}

@@ -11,7 +11,7 @@ node_js:
 before_script:
   - npm install
 script:
-  - npm run build
+  - npm run build:production
   - npm run test
 after_success:
   - script/s3-deploy.sh

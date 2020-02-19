@@ -6,9 +6,6 @@ SASS_LAB_LIBRARY_FILES := $(shell find src/sass/lab -name '*.sass')
 INTERACTIVE_FILES := $(shell find src/models src/interactives -name '*.json' -exec echo {} \; | sed s'/src\/\(.*\)/public\/\1/' )
 vpath %.json src
 
-HAML_FILES := $(shell find src -name '*.haml' -exec echo {} \; | sed s'/src\/\(.*\)\.haml/public\/\1/' )
-vpath %.haml src
-
 SASS_FILES := $(shell find src -name '*.sass' -and -not -path "src/sass/*" -exec echo {} \; | sed s'/src\/\(.*\)\.sass/public\/\1.css/' )
 SASS_FILES += $(shell find src -name '*.scss' -and -not -path "src/sass/*" -exec echo {} \; | sed s'/src\/\(.*\)\.scss/public\/\1.css/' )
 vpath %.sass src
@@ -16,7 +13,6 @@ vpath %.scss src
 
 .PHONY: src
 src: \
-	$(HAML_FILES) \
 	$(SASS_FILES) \
 	$(INTERACTIVE_FILES) \
 	public/embeddable.html \
@@ -151,14 +147,8 @@ vendor/sensor-connector-interface/dist/sensor-connector-interface.js:
 	git submodule update --init --recursive
 
 # ------------------------------------------------
-#   targets for generating html, js, and css resources
+#   targets for generating css resources
 # ------------------------------------------------
-public/%.html: src/%.html.haml script/setup.rb
-	haml -r ./script/setup.rb -r ./src/helpers/font-cdn.rb $< $@
-
-public/%.html: src/%.html
-	cp $< $@
-
 public/%.css: src/%.css
 	cp $< $@
 
