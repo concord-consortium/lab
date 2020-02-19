@@ -113,6 +113,9 @@
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11"
   },
+  "directories": {
+    "bin": "node-bin"
+  },
   "scripts": {
     "build": "npm-run-all clean submodules build:public build:lab.json build:webpack archive",
     "clean": "rm -rf public",
@@ -123,6 +126,7 @@
     "build:lab.version.js": "./script/generate-js-version.rb",
     "archive": "tar czf public/lab.tar.gz -C public lab",
     "test": "jest test/jest",
+    "test:coverage": "jest test/jest --coverage",
     "start": "http-server ./public -p 9191"
   }
 }

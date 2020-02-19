@@ -11,21 +11,28 @@ These sites contain many examples of what it can do:
 
 ### Prerequisites:
 
+- [node.js, npm](developer-doc/setup-node.md)
 - [RVM, Ruby 2.0 and Bundler](developer-doc/setup-ruby.md)
-- [node.js, npm and yarn](developer-doc/setup-node.md)
 - [additional Linux notes](developer-doc/linux-notes.md)
 
 ### Setup the local Lab repository for development
 
 1. Clone the git repository
 2. `cd lab`
-3. `make everything`
-4. open another new terminal and run `rackup`
-5. open http://localhost:9191
-6. (optional) open a new terminal and run `guard`
+3. `npm install`
+4. `npm run build`
+5. open another new terminal and run `npm start`
+6. open http://localhost:9191
 
 It is recommended that you review the [initial setup details](developer-doc/initial-setup-details.md).
 They describe what each of the steps above does.
+
+### Testing
+
+Lab is using [Jest test framework](https://jestjs.io/).
+
+- `npm test` will run all tests.
+- `npm run test:coverage` will execute all tests and display code coverage stats.
 
 ## Contributing to Lab
 
@@ -57,8 +64,6 @@ IE 9+, FF, Chrome, Safari, iOS Safari, Chrome for Android all support SVG
 
 - [Project Configuration](developer-doc/configuration.md)
 - [Repository Structure](developer-doc/repository-structure.md)
-- [Javascript Dependency Management and Build Process](developer-doc/js-dependency-management.md)
-- [Testing](developer-doc/testing.md)
 - [Localization](developer-doc/localization.md)
 - [Physical Constants and Units](developer-doc/physical-constants-and-units.md)
 - [Deployment](developer-doc/deployment.md)
@@ -66,4 +71,3 @@ IE 9+, FF, Chrome, Safari, iOS Safari, Chrome for Android all support SVG
 - [Java Resources](developer-doc/java.md)
 - [Building Website](developer-doc/website.md)
 - [Fonts](developer-doc/fonts.md)
-
