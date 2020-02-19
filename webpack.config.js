@@ -42,6 +42,7 @@ module.exports = {
   entry: {
     "lab": "./src/lab/index.js",
     "lab.min": "./src/lab/index.js",
+    "lab.mml-converter": "./src/lab/mml-converter/index.js"
   },
   output: {
     path: path.resolve(__dirname, 'public', 'lab'),
