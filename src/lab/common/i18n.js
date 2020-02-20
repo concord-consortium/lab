@@ -5,9 +5,9 @@ import translations from 'locales/translations.json';
 export default function i18n(language) {
   i18next.init({
     lng: language,
-    resStore: translations,
+    resources: translations,
     fallbackLng: 'en-US',
-    useCookie: false
+    initImmediate: false
   });
   // Grapher has its own i18n support implemented, just set language.
   LabGrapher.i18n.lang = language;

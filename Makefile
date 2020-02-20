@@ -30,7 +30,6 @@ public/lab/jars:
 	mkdir -p public/lab/jars
 
 public/lab/jars/lab-sensor-applet-interface-dist: \
-	vendor/lab-sensor-applet-interface-dist \
 	public/lab/jars
 	cp -R vendor/lab-sensor-applet-interface-dist/jars public/lab/jars/lab-sensor-applet-interface-dist
 
@@ -41,42 +40,10 @@ public/lab/jars/lab-sensor-applet-interface-dist: \
 public/lab/vendor: \
 	public/lab/vendor/jquery/jquery.min.js \
 	public/lab/vendor/jquery-ui/jquery-ui.min.js \
-	public/lab/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js \
-	public/lab/vendor/jquery-selectBoxIt/jquery.selectBoxIt.min.js \
-	public/lab/vendor/tinysort/jquery.tinysort.js \
-	public/lab/vendor/jquery-context-menu \
 	public/lab/vendor/fonts \
 	public/favicon.ico
 
-public/lab/vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js: \
-	public/lab/vendor/jquery-ui-touch-punch \
-	vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js \
-	vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.js
-	cp vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js public/lab/vendor/jquery-ui-touch-punch
-	cp vendor/jquery-ui-touch-punch/jquery.ui.touch-punch.js public/lab/vendor/jquery-ui-touch-punch
-
-public/lab/vendor/jquery-ui-touch-punch:
-	mkdir -p public/lab/vendor/jquery-ui-touch-punch
-
-public/lab/vendor/jquery-selectBoxIt/jquery.selectBoxIt.min.js: \
-	vendor/jquery-selectBoxIt/src/javascripts/jquery.selectBoxIt.js \
-	vendor/jquery-selectBoxIt/src/javascripts/jquery.selectBoxIt.min.js \
-	vendor/jquery-selectBoxIt/src/stylesheets/jquery.selectBoxIt.css \
-	public/lab/vendor/jquery-selectBoxIt
-	cp vendor/jquery-selectBoxIt/src/javascripts/jquery.selectBoxIt.js public/lab/vendor/jquery-selectBoxIt
-	cp vendor/jquery-selectBoxIt/src/javascripts/jquery.selectBoxIt.min.js public/lab/vendor/jquery-selectBoxIt
-	cp vendor/jquery-selectBoxIt/src/stylesheets/jquery.selectBoxIt.css public/lab/vendor/jquery-selectBoxIt
-
-public/lab/vendor/jquery-selectBoxIt:
-	mkdir -p public/lab/vendor/jquery-selectBoxIt
-
-public/lab/vendor/jquery-context-menu:
-	mkdir -p public/lab/vendor/jquery-context-menu
-	cp vendor/jquery-context-menu/src/jquery.contextMenu.js public/lab/vendor/jquery-context-menu
-	cp vendor/jquery-context-menu/src/jquery.contextMenu.css public/lab/vendor/jquery-context-menu
-
 public/lab/vendor/jquery/jquery.min.js: \
-	vendor/jquery \
 	public/lab/vendor/jquery
 	cp vendor/jquery/dist/jquery.js public/lab/vendor/jquery
 	cp vendor/jquery/dist/jquery.min.js public/lab/vendor/jquery
@@ -87,7 +54,6 @@ public/lab/vendor/jquery:
 	mkdir -p public/lab/vendor/jquery
 
 public/lab/vendor/jquery-ui/jquery-ui.min.js: \
-	vendor/components-jqueryui \
 	public/lab/vendor/jquery-ui
 	cp vendor/components-jqueryui/MIT-LICENSE.txt public/lab/vendor/jquery-ui
 	mkdir -p public/lab/vendor/jquery-ui/i18n
@@ -102,14 +68,6 @@ public/lab/vendor/jquery-ui/jquery-ui.min.js: \
 public/lab/vendor/jquery-ui:
 	mkdir -p public/lab/vendor/jquery-ui
 
-public/lab/vendor/tinysort:
-	mkdir -p public/lab/vendor/tinysort
-
-public/lab/vendor/tinysort/jquery.tinysort.js: \
-	public/lab/vendor/tinysort
-	cp -r vendor/tinysort/src/* public/lab/vendor/tinysort
-	cp vendor/tinysort/README.md public/lab/vendor/tinysort
-
 public/lab/vendor/fonts: $(FONT_FOLDERS)
 	mkdir -p public/lab/vendor/fonts
 	cp -R vendor/fonts public/lab/vendor/
@@ -121,24 +79,8 @@ public/lab/vendor/fonts: $(FONT_FOLDERS)
 public/favicon.ico:
 	cp -f src/favicon.ico public/favicon.ico
 
-vendor/jquery:
-	git submodule update
-
-vendor/components-jqueryui:
-	git submodule update
-
-vendor/lab-sensor-applet-interface-dist:
-	git submodule update --init --recursive
-
-vendor/sensor-labquest-2-interface/dist/sensor-labquest-2-interface.js:
-	git submodule update --init --recursive
-
-vendor/sensor-connector-interface/dist/sensor-connector-interface.js:
-	git submodule update --init --recursive
-
 public/interactives/%.json: src/interactives/%.json
 	@cp $< $@
 
 public/models/%.json: src/models/%.json
 	@cp $< $@
-

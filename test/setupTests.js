@@ -14,8 +14,9 @@ global.d3 = require("d3");
 global.$ = global.jQuery = require("jquery");
 // Setup libraries which depend on jQuery.
 require("jquery-ui-dist/jquery-ui");
-require("../public/lab/vendor/jquery-context-menu/jquery.contextMenu.js");
-require("../public/lab/vendor/jquery-selectBoxIt/jquery.selectBoxIt.min.js");
+require("jquery-ui-touch-punch");
+require("jquery-contextmenu");
+require("selectboxit/src/javascripts/jquery.selectBoxIt");
 
 // Additional environment features for testing.
 require("./env-assert");
@@ -28,7 +29,6 @@ jest.mock("models/md2d/views/renderer");
 jest.mock("common/views/svg-container");
 jest.mock("common/controllers/playback-controller");
 jest.mock("common/controllers/language-select");
-jest.mock("i18next");
 jest.mock("sensor-applet");
 jest.mock("sensor-connector-interface");
 jest.mock("labquest2-interface");

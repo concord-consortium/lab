@@ -1,5 +1,4 @@
 const path = require("path");
-const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const RemovePlugin = require('remove-files-webpack-plugin');
 
@@ -97,14 +96,12 @@ module.exports = {
     modules: [path.resolve(__dirname, "./src/lab"), "node_modules"],
     alias: {
       "lab-grapher": path.resolve(__dirname, "vendor/lab-grapher/dist/lab-grapher"),
-      "i18next": path.resolve(__dirname, "vendor/i18next/i18next.js"),
       "sensor-applet": path.resolve(__dirname, "vendor/lab-sensor-applet-interface-dist/sensor-applet-interface"),
       "sensor-connector-interface": path.resolve(__dirname, "vendor/sensor-connector-interface/dist/sensor-connector-interface"),
       "labquest2-interface": path.resolve(__dirname, "vendor/sensor-labquest-2-interface/dist/sensor-labquest-2-interface")
     }
   },
   plugins: [
-    new webpack.ProgressPlugin(),
     new MiniCssExtractPlugin({filename: "[name]"}),
     new HtmlWebpackPlugin({
       chunks: [],
