@@ -8,6 +8,11 @@ branches:
 language: node_js
 node_js:
   - "12"
+cache:
+  bundler: true
+  directories:
+    - "$HOME/.npm"
+    - "$HOME/.cache"
 install:
   - npm ci
   - travis_retry gem install s3_website -v 3.4.0
