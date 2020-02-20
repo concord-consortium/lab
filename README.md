@@ -34,6 +34,16 @@ Lab is using [Jest test framework](https://jestjs.io/).
 - `npm test` will run all tests.
 - `npm run test:coverage` will execute all tests and display code coverage stats.
 
+### Modules
+
+Note that most of the JS source files use paths relative to "src/lab" directory instead to the file itself.
+It's caused by the fact that this project has been using RequireJS and has been converted semi-automatically. 
+It's fine but it requires custom configuration in a few places:
+
+- Webpack: `resolve: { modules: [path.resolve(__dirname, "./src/lab"), "node_modules"] }`
+- Jest, package.json: `"modulePaths": [ "<rootDir>/src/lab" ]`
+- NodeJS scripts have to setup NODE_PATH env variable (too see example config check `md2d-node-api.js`).
+
 ## Contributing to Lab
 
 If you think you'd like to contribute to Lab as an external developer:
