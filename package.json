@@ -126,7 +126,7 @@
     "build:lab.json": "node-bin/gen-lab-json",
     "build:webpack": "npm run build:lab.version.js && webpack",
     "build:webpack:production": "npm run build:lab.version.js && LAB_ENV=production webpack",
-    "build:lab.version.js": "./script/generate-js-version.rb",
+    "build:lab.version.js": "./node-bin/gen-lab-version",
     "archive": "tar czf public/lab.tar.gz -C public lab",
     "test": "jest test/jest",
     "test:coverage": "jest test/jest --coverage",

@@ -1,0 +1,44 @@
+#!/usr/bin/env node
+
+const execSync = require("child_process").execSync;
+const fs = require("fs");
+
+const output = "src/lab/lab.version.js";
+
+const exec = (command) => execSync(command).toString().replace(/\r/g, "").replace(/\n/g, "");
+
+const lastTaggedVersion = exec("git describe --tags --abbrev=0");
+// if this is a tag build then the branch name will actually be the tag name
+const branchName = process.env.TRAVIS_BRANCH || exec("git rev-parse --abbrev-ref HEAD");
+const commitSha = process.env.TRAVIS_COMMIT || exec("git rev-parse HEAD");
+const message = exec("git log -1 --pretty=%B");
+const email = exec("git show -s --format='%ae' HEAD");
+const author = exec("git show -s --format='%an' HEAD");
+const date = exec("git show -s --format=%ci HEAD");
+const dirty = exec("git diff --stat") !== "";
+
+const result = `// This file is generated during build process by: ./node-bin/gen-lab-version
+export default {
+  "repo": {
+    "branch": "${branchName}",
+    "commit": {
+      "sha": "${commitSha}",
+      "short_sha": "${commitSha.slice(0, 7)}",
+      "url": "https://github.com/concord-consortium/lab/commit/${commitSha.slice(0, 7)}",
+      "author": "${author}",
+      "email": "${email}",
+      "date": "${date}",
+      "message": "${message}"
+    },
+    "last_tag": "${lastTaggedVersion}",
+    "dirty": ${dirty}
+  }
+};`;
+
+fs.writeFile(output, result, function (err) {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log("generated: " + output);
+  }
+});
