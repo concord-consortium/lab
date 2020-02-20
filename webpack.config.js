@@ -1,6 +1,7 @@
 const path = require("path");
 const webpack = require("webpack");
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const RemovePlugin = require('remove-files-webpack-plugin');
 
 /*
  * SplitChunksPlugin is enabled by default and replaced
@@ -39,13 +40,21 @@ const production = process.env.LAB_ENV === "production";
 module.exports = {
   mode: production ? "production" : "development",
   entry: {
-    "lab": "./src/lab/index.js",
-    "lab.mml-converter": "./src/lab/mml-converter/index.js",
-    "lab.grapher": "./src/lab/grapher/index.js"
+    // Note that webpack will generate some dummy JS files for SASS entry points. They should be automatically removed by RemovePlugin (see plugins section).
+    "lab/lab": "./src/lab/index.js",
+    "lab/lab.mml-converter": "./src/lab/mml-converter/index.js",
+    "lab/lab.grapher": "./src/lab/grapher/index.js",
+    "embeddable": "./src/embeddable.js",
+    "lab/lab.css": "./src/lab.sass",
+    "lab/lab-fonts.css": "./src/lab-fonts.sass",
+    "lab/lab.grapher.css": "./src/grapher.sass",
+    "embeddable.css": "./src/embeddable.sass",
+    "mml-converter.css": "./src/mml-converter.sass",
+    "index.css": "./src/index.sass",
   },
   output: {
-    path: path.resolve(__dirname, 'public'),
-    filename: "lab/[name].js"
+    path: path.resolve(__dirname, "public"),
+    filename: "[name].js"
   },
   devtool: "source-map",
   module: {
@@ -62,18 +71,16 @@ module.exports = {
       },
       {
         test: /.(scss|css|sass)$/,
-
         use: [
           {
             loader: MiniCssExtractPlugin.loader
           },
           {
-            loader: "style-loader"
-          },
-          {
             loader: "css-loader",
             options: {
-              sourceMap: true
+              sourceMap: true,
+              // Do not resolve URLs, resources are copied manually.
+              url: false
             }
           },
           {
@@ -87,44 +94,58 @@ module.exports = {
     ]
   },
   resolve: {
-    modules: [path.resolve(__dirname, './src/lab'), 'node_modules'],
+    modules: [path.resolve(__dirname, "./src/lab"), "node_modules"],
     alias: {
-      'lab-grapher': path.resolve(__dirname, 'vendor/lab-grapher/dist/lab-grapher'),
-      'i18next': path.resolve(__dirname, 'vendor/i18next/i18next.js'),
-      'sensor-applet': path.resolve(__dirname, 'vendor/lab-sensor-applet-interface-dist/sensor-applet-interface'),
-      'sensor-connector-interface':  path.resolve(__dirname, 'vendor/sensor-connector-interface/dist/sensor-connector-interface'),
-      'labquest2-interface': path.resolve(__dirname, 'vendor/sensor-labquest-2-interface/dist/sensor-labquest-2-interface')
+      "lab-grapher": path.resolve(__dirname, "vendor/lab-grapher/dist/lab-grapher"),
+      "i18next": path.resolve(__dirname, "vendor/i18next/i18next.js"),
+      "sensor-applet": path.resolve(__dirname, "vendor/lab-sensor-applet-interface-dist/sensor-applet-interface"),
+      "sensor-connector-interface": path.resolve(__dirname, "vendor/sensor-connector-interface/dist/sensor-connector-interface"),
+      "labquest2-interface": path.resolve(__dirname, "vendor/sensor-labquest-2-interface/dist/sensor-labquest-2-interface")
     }
   },
   plugins: [
     new webpack.ProgressPlugin(),
-    // new MiniCssExtractPlugin({filename: "lab.css"}),
+    new MiniCssExtractPlugin({filename: "[name]"}),
     new HtmlWebpackPlugin({
       chunks: [],
-      template: 'src/index.html',
-      filename: 'index.html',
+      template: "src/index.html",
+      filename: "index.html",
       inject: false,
       gaAccountId: process.env.GA_ACCOUNT_ID
     }),
     new HtmlWebpackPlugin({
-      chunks: [production ? 'lab.min' : 'lab'],
-      template: 'src/embeddable.html',
-      filename: 'embeddable.html',
+      chunks: [production ? "lab/lab.min" : "lab/lab"],
+      template: "src/embeddable.html",
+      filename: "embeddable.html",
       inject: false,
       gaAccountId: process.env.GA_ACCOUNT_ID,
       production
     }),
     new HtmlWebpackPlugin({
-      chunks: [production ? 'lab.mml-converter.min' : 'lab.mml-converter'],
-      template: 'src/mml-converter.html',
-      filename: 'mml-converter.html',
+      chunks: [production ? "lab/lab.mml-converter.min" : "lab/lab.mml-converter"],
+      template: "src/mml-converter.html",
+      filename: "mml-converter.html",
       inject: false
+    }),
+    new RemovePlugin({
+      // After compilation removes all .css.js files in public dir.
+      after: {
+        test: [
+          {
+            folder: 'public',
+            recursive: true,
+            method: (filePath) => {
+              return new RegExp(/\.css\.js(\.map)?$/, 'm').test(filePath);
+            }
+          }
+        ]
+      }
     })
   ],
   optimization: {
     minimize: production,
     minimizer: [new TerserPlugin({
-      test: /\.min\.js$/i,
+      test: /\.min\.js$/i
     })],
     splitChunks: {
       cacheGroups: {
@@ -143,7 +164,7 @@ module.exports = {
 
 if (production) {
   // Generate minified only in production mode.
-  module.exports.entry["lab.min"] = "./src/lab/index.js";
-  module.exports.entry["lab.mml-converter.min"] = "./src/lab/mml-converter/index.js";
-  module.exports.entry["lab.grapher.min"] = "./src/lab/grapher/index.js";
+  module.exports.entry["lab/lab.min"] = "./src/lab/index.js";
+  module.exports.entry["lab/lab.mml-converter.min"] = "./src/lab/mml-converter/index.js";
+  module.exports.entry["lab/lab.grapher.min"] = "./src/lab/grapher/index.js";
 }

@@ -1,21 +1,11 @@
 # See the README for installation instructions.
-SASS_COMPILER = sass -I src -I public
 FONT_FOLDERS := $(shell find vendor/fonts -mindepth 1 -maxdepth 1)
-SASS_LAB_LIBRARY_FILES := $(shell find src/sass/lab -name '*.sass')
-
 INTERACTIVE_FILES := $(shell find src/models src/interactives -name '*.json' -exec echo {} \; | sed s'/src\/\(.*\)/public\/\1/' )
 vpath %.json src
 
-SASS_FILES := $(shell find src -name '*.sass' -and -not -path "src/sass/*" -exec echo {} \; | sed s'/src\/\(.*\)\.sass/public\/\1.css/' )
-SASS_FILES += $(shell find src -name '*.scss' -and -not -path "src/sass/*" -exec echo {} \; | sed s'/src\/\(.*\)\.scss/public\/\1.css/' )
-vpath %.sass src
-vpath %.scss src
-
 .PHONY: src
 src: \
-	$(SASS_FILES) \
-	$(INTERACTIVE_FILES) \
-	public/embeddable.html \
+	$(INTERACTIVE_FILES)
 
 .PHONY: public
 public: \
@@ -146,35 +136,9 @@ vendor/sensor-labquest-2-interface/dist/sensor-labquest-2-interface.js:
 vendor/sensor-connector-interface/dist/sensor-connector-interface.js:
 	git submodule update --init --recursive
 
-# ------------------------------------------------
-#   targets for generating css resources
-# ------------------------------------------------
-public/%.css: src/%.css
-	cp $< $@
-
-public/grapher.css: src/grapher.sass \
-	src/sass/lab/_colors.sass \
-	src/sass/lab/_bar_graph.sass \
-	src/sass/lab/_graphs.sass \
-	public/lab-grapher.scss
-	$(SASS_COMPILER) src/grapher.sass public/grapher.css
-
-public/%.css: %.scss
-	$(SASS_COMPILER) $< $@
-
-.INTERMEDIATE: public/lab-grapher.scss
-public/lab-grapher.scss: vendor/lab-grapher/css/lab-grapher.css
-	cp vendor/lab-grapher/css/lab-grapher.css public/lab-grapher.scss
-
-public/%.css: %.sass $(SASS_LAB_LIBRARY_FILES) \
-	public/lab-grapher.scss
-	$(SASS_COMPILER) $< $@
-
 public/interactives/%.json: src/interactives/%.json
 	@cp $< $@
 
 public/models/%.json: src/models/%.json
 	@cp $< $@
 
-# delete the .md.static files and don't bother creating them if they don't need to be
-.INTERMEDIATE: %.md.static

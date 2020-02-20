@@ -8,8 +8,9 @@ branches:
 language: node_js
 node_js:
   - "12"
-before_script:
-  - npm install
+install:
+  - npm ci
+  - travis_retry gem install s3_website -v 3.4.0
 script:
   - npm run build:production
   - npm run test
