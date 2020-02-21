@@ -338,6 +338,7 @@ export default function parseMML(mmlString) {
       const southProbe = getBooleanProperty($node, "southProbe");
       const visible = getBooleanProperty($node, "visible");
       const color = getFillColor($node);
+      const permeability = Array.from($node.find(`[property=permeability] > void`)).map(n => Number(getNode(cheerio(n)).attr("index")));
 
       // Unit conversion.
       [x, y] = Array.from(toNextgenCoordinates(x, y));
@@ -396,7 +397,8 @@ export default function parseMML(mmlString) {
         mass,
         westProbe, northProbe, eastProbe, southProbe,
         color,
-        visible
+        visible,
+        permeability
       };
 
       // Unit conversion performed on undefined values can convert them to NaN.
@@ -1920,7 +1922,7 @@ export default function parseMML(mmlString) {
 
   if (obstacles.length > 0) {
     json.obstacles = unroll(obstacles, "x", "y", "vx", "vy", "externalAx", "externalAy", "displayExternalAcceleration", "friction",
-      "height", "width", "mass", "westProbe", "northProbe", "eastProbe", "southProbe", "color", "visible");
+      "height", "width", "mass", "westProbe", "northProbe", "eastProbe", "southProbe", "color", "visible", "permeability");
   }
 
   if (shapes.length > 0) {

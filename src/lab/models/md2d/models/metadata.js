@@ -1,4 +1,4 @@
- 
+
 export default {
   mainProperties: {
     type: {
@@ -566,6 +566,10 @@ export default {
     },
     visible: {
       defaultValue: true
+    },
+    // List of elements that won't interact with the obstacle.
+    permeability: {
+      defaultValue: []
     }
   },
 
