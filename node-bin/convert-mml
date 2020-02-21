@@ -11,7 +11,7 @@ const outFile = process.argv[3];
 const id = process.argv[4];
 
 const mml = fs.readFileSync(inFile).toString();
-const conversion = parseMML.parseMML(mml);
+const conversion = parseMML(mml);
 
 if (conversion.json) {
   if (id != null) {
