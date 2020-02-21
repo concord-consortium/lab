@@ -1996,4 +1996,4 @@ export default function parseMML(mmlString) {
   return {
     json
   };
-};
+}
