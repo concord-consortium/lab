@@ -8,6 +8,15 @@ assert.inDelta = function(actual, expected, delta, message) {
   }
 };
 
+assert.isTrue = function(actual) {
+  assert.equal(actual, true);
+};
+
+assert.isFalse = function(actual) {
+  assert.equal(actual, false);
+};
+
+
 assert.domNull = function(actual, message) {
   if (actual !== null) {
     assert.fail(actual+"", null, message || "expected null, got {actual}", "===", assert.domNull);

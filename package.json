@@ -1,7 +1,7 @@
 {
   "name": "lab",
-  "version": "1.16.5",
-  "description": "HTML5-based scientific models, visualizations, graphing, and probeware",
+  "version": "1.17.0",
+  "description": "Lab Framework",
   "keywords": [
     "molecule",
     "probes",
@@ -32,40 +32,107 @@
     "url": "https://github.com/concord-consortium/lab.git"
   },
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=10.0.0"
+  },
+  "jest": {
+    "testURL": "https://lab.concord.org",
+    "setupFilesAfterEnv": [
+      "<rootDir>test/setupTests.js"
+    ],
+    "transform": {
+      "^.+\\.js?$": "babel-jest",
+      "\\.glsl$": "jest-raw-loader",
+      "\\.tpl$": "jest-raw-loader"
+    },
+    "testRegex": "(/test/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "testPathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "node"
+    ],
+    "modulePaths": [
+      "<rootDir>/src/lab"
+    ]
   },
   "dependencies": {
-    "amdefine": ">=0.0.8",
-    "backbone": "1.1.0",
-    "coffee-script": "~1.7.0",
-    "d3": "3.3.8",
+    "backbone": "1.4.0",
+    "canvg": "1.5.3",
+    "d3": "3.5.17",
+    "fastclick": "^1.0.6",
+    "i18next": "^19.3.1",
+    "iframe-phone": "^1.2.0",
+    "jquery-contextmenu": "1.6.7",
+    "jquery-ui-touch-punch": "^0.2.3",
     "markdown": ">=0.5.0",
     "mustache": "~0.7.2",
     "optimist": ">=0.6.0",
+    "pixi.js": "1.6.1",
     "requirejs": ">=2.1.8",
     "screenfull": "^4.0.0",
-    "uglify-js": "2.7.0",
-    "underscore": ">=1.5.1"
+    "seedrandom": "3.0.5",
+    "selectboxit": "^3.8.2",
+    "uglify-es": "3.3.9",
+    "underscore": "1.9.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.8.4",
+    "@babel/preset-env": "^7.8.4",
+    "@babel/register": "^7.8.3",
+    "@webpack-cli/init": "^0.3.0",
+    "babel-loader": "^8.0.6",
+    "babel-plugin-syntax-dynamic-import": "^6.18.0",
+    "canvas": "^2.6.1",
     "chai": ">=1.7.2",
-    "cheerio": "0.12.4",
+    "cheerio": "1.0.0-rc.3",
+    "css-loader": "^3.4.2",
+    "esm": "^3.2.25",
+    "html-webpack-plugin": "^4.0.0-beta.11",
+    "http-server": "^0.12.1",
     "jade": ">=0.35.0",
-    "jsdom": "9.12.0",
-    "jshint": ">=2.1.10",
+    "jest": "^25.1.0",
+    "jest-raw-loader": "^1.0.1",
+    "jsdom": "^16.2.0",
+    "jshint": "2.11.0",
+    "jquery": "2.2.4",
+    "jquery-ui-dist": "1.12.1",
+    "mini-css-extract-plugin": "^0.9.0",
     "mkdirp": "0.3.2",
-    "mocha": "~1.17.1",
-    "node-gyp": "^3.8.0",
+    "node-gyp": "^6.1.0",
     "node-inspector": "0.3.4",
+    "node-sass": "^4.13.1",
+    "npm-run-all": "^4.1.5",
+    "raw-loader": "^4.0.0",
+    "remove-files-webpack-plugin": "^1.2.2",
+    "sass-loader": "^8.0.2",
     "should": "3.0.1",
     "sinon": "~1.17.7",
     "sizzle": ">=1.1.0",
-    "vows": "0.7.0"
+    "terser-webpack-plugin": "^2.3.4",
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.3.11"
   },
   "directories": {
     "bin": "node-bin"
   },
   "scripts": {
-    "test": "make test-src"
+    "build": "npm-run-all clean submodules build:public build:lab.json build:webpack archive",
+    "build:production": "npm-run-all clean submodules build:public build:lab.json build:webpack:production archive",
+    "clean": "rm -rf public",
+    "submodules": "git submodule update --init --recursive",
+    "build:public": "mkdir -p public && make public",
+    "build:lab.json": "node-bin/gen-lab-json",
+    "build:webpack": "npm run build:lab.version.js && webpack",
+    "build:webpack:production": "npm run build:lab.version.js && LAB_ENV=production webpack",
+    "build:lab.version.js": "./node-bin/gen-lab-version",
+    "archive": "tar czf public/lab.tar.gz -C public lab",
+    "test": "jest test/jest",
+    "test:coverage": "jest test/jest --coverage",
+    "start": "http-server ./public -p 9191"
   }
 }

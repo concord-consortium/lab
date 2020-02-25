@@ -1,7 +1,5 @@
 # Repository structure
 
-
-
 ## vendor/
 
 Third-party JavaScript runtime dependencies for Lab are located in the
@@ -81,14 +79,11 @@ If you want to create your own script running simulation in headless mode, the m
 consortium/lab/blob/master/src/lab/md2d/models/modeler.js) as it provides high level API and
 allows to load model description using JSON file. To run simulation use the `tick()` method.
 
-[RequireJS](https://http://requirejs.org/) package must be correctly configured and used to load this module (see [the section about
-RequireJS](#javascript-dependency-management-and-build-process---requrejs)). It also depends on [jQuery](http://jquery.com/) and [d3.js](http://mbostock.github.com/d3/) libraries.
-
-Fortunately, you do not have to think about this configuration each time. There is prepared the entry point for external Node.js applications:
+Fortunately, you do not have to think about NodeJS configuration each time. There is prepared the entry point for external Node.js applications:
 
 [`src/helpers/md2d/md2d-node-api.js`](https://github.com/concord-consortium/lab/blob/master/src/helpers/md2d/md2d-node-api.js)
 
-This module configures RequireJS loader, environment (D3, jQuery) and exports MD2D Node API using Node.js/CommonJS approach.
+This module configures environment (D3, jQuery) and exports MD2D Node API using Node.js/CommonJS approach.
 
 Usage:
 
@@ -97,20 +92,8 @@ Usage:
     // To create e.g. Modeler mentioned above:
     var model = md2dAPI.Modeler(properties);
 
-If you need to use something what is not included in this API, you can:
-
-- Extend API defined in [`md2d-node-api.js`](https://github.com/concord-consortium/lab/blob/master/src/helpers/md2d/md2d-node-api.js). It should easy to do it looking at the existing code.
-- Configure RequireJS yourself and use it to load module. Again, take a look at [`md2d-node-api.js`](https://github.com/concord-consortium/lab/blob/master/src/helpers/md2d/md2d-node-api.js) how to do it.
-
-There is a chance that existing RequireJS config won't be sufficient (e.g. if you wan't to use dynamic cs files loading).
-
-- The official, complete documentation:
-
-  [http://requirejs.org/docs/api.html#config](http://requirejs.org/docs/api.html#config)
-
-- RequireJS config for tests, as they also use similar approach:
-
-  [`test/requirejs-config.js`](https://github.com/concord-consortium/lab/blob/master/test/requirejs-config.js)
+If you need to use something what is not included in this API, you can extend API defined in 
+[`md2d-node-api.js`](https://github.com/concord-consortium/lab/blob/master/src/helpers/md2d/md2d-node-api.js). It should easy to do it looking at the existing code.
 
 Hashbang scripts for starting these executables (i.e., files which start with the line
 `#!/usr/bin/env node` and which have the execute bit set) should be placed in the directory
@@ -118,8 +101,7 @@ Hashbang scripts for starting these executables (i.e., files which start with th
 [`packages.json`](https://github.com/concord-consortium/lab/blob/master/package.json) file
 specifies [`node-bin`](https://github.com/concord-consortium/lab/tree/master/node-bin) as the
 location of the executable scripts which `npm` should make available whenever Lab is imported into
-another project as a Node module. (FIXME: `bin/` was being reserved for Ruby
-executables made available via Bundler, but that is no longer necessary)
+another project as a Node module.
 
 ##### MD2D simulation stepping
 

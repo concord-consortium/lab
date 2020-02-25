@@ -1,17 +1,10 @@
-/*global
-  define
-*/
-/*jslint onevar: true*/
-define(function (require) {
-  // Dependencies.
-  var ModelController   = require("common/controllers/model-controller"),
-      Model             = require('models/md2d/models/modeler'),
-      ModelContainer    = require('models/md2d/views/view'),
-      ScriptingAPI      = require('models/md2d/controllers/scripting-api'),
-      Benchmarks        = require('models/md2d/benchmarks/benchmarks');
+import ModelController from "common/controllers/model-controller";
+import Model from 'models/md2d/models/modeler';
+import ModelContainer from 'models/md2d/views/view';
+import ScriptingAPI from 'models/md2d/controllers/scripting-api';
+import Benchmarks from 'models/md2d/benchmarks/benchmarks';
 
-  return function (modelUrl, modelOptions, interactiveController) {
-    return new ModelController(modelUrl, modelOptions, interactiveController,
-                               Model, ModelContainer, ScriptingAPI, Benchmarks);
-  };
-});
+export default function(modelUrl, modelOptions, interactiveController) {
+  return new ModelController(modelUrl, modelOptions, interactiveController,
+    Model, ModelContainer, ScriptingAPI, Benchmarks);
+}

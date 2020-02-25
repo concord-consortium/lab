@@ -1,0 +1,33 @@
+#!/usr/bin/env node
+// Enable ES6 import syntax support using esm package.
+require = require("esm")(module);
+// Lab is using paths relative to src/lab. Set node paths here to ensure that modules are found.
+process.env.NODE_PATH = "src/lab";
+require("module").Module._initPaths(); // magic to get NODE_PATHS updated
+
+const fs = require("fs");
+const interactive = require("../src/lab/common/controllers/interactive-metadata");
+const md2d = require("../src/lab/models/md2d/models/metadata");
+const energy2d = require("../src/lab/models/energy2d/metadata");
+const sensor = require("../src/lab/models/sensor/metadata");
+const signalGenerator = require("../src/lab/models/signal-generator/metadata");
+const iframeModel = require("../src/lab/models/iframe/metadata");
+
+var labMetaData = {
+  interactive,
+  models: {
+    md2d,
+    energy2d,
+    sensor,
+    "signal-generator": signalGenerator,
+    "iframe-model": iframeModel
+  }
+};
+
+fs.writeFile("public/lab/lab.json", JSON.stringify(labMetaData, null, 2), function (err) {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log("generated: public/lab/lab.json");
+  }
+});

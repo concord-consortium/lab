@@ -1,4 +1,3 @@
-/*global define: false $: false */
 
 /**
   For use with models that do not need an associated view, but which (at least for now) are required
@@ -6,16 +5,16 @@
   responds to certain methods.
 */
 
-define(function() {
-  return function() {
-    return  {
-      $el: $("<div id='model-container' class='container'/>"),
-      getHeightForWidth: function() { return 0; },
-      resize: function() {},
-      repaint: function() {},
-      bindModel: function() {},
-      setup: function() {},
-      update: function() {}
-    };
+export default function() {
+  return {
+    $el: $("<div id='model-container' class='container'/>"),
+    getHeightForWidth: function() {
+      return 0;
+    },
+    resize: function() {},
+    repaint: function() {},
+    bindModel: function() {},
+    setup: function() {},
+    update: function() {}
   };
-});
+};

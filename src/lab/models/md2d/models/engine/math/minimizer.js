@@ -1,112 +1,107 @@
-/*global define: true */
 /*jshint eqnull:true */
 /**
   Simple, good-enough minimization via gradient descent.
 */
+import console from 'common/console';
+// Dependencies.
 
-// Module can be used both in Node.js environment and in Web browser
-// using RequireJS. RequireJS Optimizer will strip out this if statement.
-if (typeof define !== 'function') {
-  var define = require('amdefine')(module);
-}
+export default function minimize(f, x0, opts) {
+  opts = opts || {};
 
-define(function (require, exports, module) {
-  // Dependencies.
-  var console = require('common/console');
+  if (opts.precision == null) opts.precision = 0.01;
 
-  exports.minimize = function(f, x0, opts) {
-    opts = opts || {};
+  var // stop when the absolute difference between successive values of f is this much or less
+    precision = opts.precision,
 
-    if (opts.precision == null) opts.precision = 0.01;
+    // array of [min, max] boundaries for each component of x
+    bounds = opts.bounds,
 
-    var // stop when the absolute difference between successive values of f is this much or less
-        precision = opts.precision,
+    // maximum number of iterations
+    maxiter = opts.maxiter || 1000,
 
-        // array of [min, max] boundaries for each component of x
-        bounds    = opts.bounds,
+    // optionally, stop when f is less than or equal to this value
+    stopval = opts.stopval || -Infinity,
 
-        // maximum number of iterations
-        maxiter   = opts.maxiter   || 1000,
+    // maximum distance to move x between steps
+    maxstep = opts.maxstep || 0.01,
 
-        // optionally, stop when f is less than or equal to this value
-        stopval   = opts.stopval   || -Infinity,
+    // multiplied by the gradient
+    eps = opts.eps || 0.01,
+    dim = x0.length,
+    x,
+    res,
+    f_cur,
+    f_prev,
+    grad,
+    maxstepsq,
+    gradnormsq,
+    iter,
+    i,
+    a;
 
-        // maximum distance to move x between steps
-        maxstep   = opts.maxstep   || 0.01,
+  maxstepsq = maxstep * maxstep;
 
-        // multiplied by the gradient
-        eps       = opts.eps       || 0.01,
-        dim       = x0.length,
-        x,
-        res,
-        f_cur,
-        f_prev,
-        grad,
-        maxstepsq,
-        gradnormsq,
-        iter,
-        i,
-        a;
+  // copy x0 into x (which we will mutate)
+  x = [];
+  for (i = 0; i < dim; i++) {
+    x[i] = x0[i];
+  }
 
-    maxstepsq = maxstep*maxstep;
+  // evaluate f and get the gradient
+  res = f.apply(null, x);
+  f_cur = res[0];
+  grad = res[1];
 
-    // copy x0 into x (which we will mutate)
-    x = [];
-    for (i = 0; i < dim; i++) {
-      x[i] = x0[i];
+  iter = 0;
+  do {
+    if (f_cur <= stopval) {
+      break;
     }
 
-    // evaluate f and get the gradient
+    if (iter > maxiter) {
+      console.log("maxiter reached");
+      // don't throw on error, but return some diagnostic information
+      return {
+        error: "maxiter reached",
+        f: f_cur,
+        iter: maxiter,
+        x: x
+      };
+    }
+
+    // Limit gradient descent step size to maxstep
+    gradnormsq = 0;
+    for (i = 0; i < dim; i++) {
+      gradnormsq += grad[i] * grad[i];
+    }
+    if (eps * eps * gradnormsq > maxstepsq) {
+      a = Math.sqrt(maxstepsq / gradnormsq) / eps;
+      for (i = 0; i < dim; i++) {
+        grad[i] = a * grad[i];
+      }
+    }
+
+    // Take a step in the direction opposite the gradient
+    for (i = 0; i < dim; i++) {
+      x[i] -= eps * grad[i];
+
+      // check bounds
+      if (bounds && x[i] < bounds[i][0]) {
+        x[i] = bounds[i][0];
+      }
+      if (bounds && x[i] > bounds[i][1]) {
+        x[i] = bounds[i][1];
+      }
+    }
+
+    f_prev = f_cur;
+
     res = f.apply(null, x);
     f_cur = res[0];
     grad = res[1];
 
-    iter = 0;
-    do {
-      if (f_cur <= stopval) {
-        break;
-      }
+    iter++;
+  } while (Math.abs(f_cur - f_prev) > precision);
 
-      if (iter > maxiter) {
-        console.log("maxiter reached");
-        // don't throw on error, but return some diagnostic information
-        return { error: "maxiter reached", f: f_cur, iter: maxiter, x: x };
-      }
-
-      // Limit gradient descent step size to maxstep
-      gradnormsq = 0;
-      for (i = 0; i < dim; i++) {
-        gradnormsq += grad[i]*grad[i];
-      }
-      if (eps*eps*gradnormsq > maxstepsq) {
-        a = Math.sqrt(maxstepsq / gradnormsq) / eps;
-        for (i = 0; i < dim; i++) {
-          grad[i] = a * grad[i];
-        }
-      }
-
-      // Take a step in the direction opposite the gradient
-      for (i = 0; i < dim; i++) {
-        x[i] -= eps * grad[i];
-
-        // check bounds
-        if (bounds && x[i] < bounds[i][0]) {
-          x[i] = bounds[i][0];
-        }
-        if (bounds && x[i] > bounds[i][1]) {
-          x[i] = bounds[i][1];
-        }
-      }
-
-      f_prev = f_cur;
-
-      res = f.apply(null, x);
-      f_cur = res[0];
-      grad = res[1];
-
-      iter++;
-    } while ( Math.abs(f_cur-f_prev) > precision );
-
-    return [f_cur, x];
-  };
-});
+  return [f_cur, x];
+};

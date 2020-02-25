@@ -1,8 +1,7 @@
 {
-  "predef": ["$", "d3", "define", "_gaq"],
-
+  "esversion": 6,
+  "predef": ["$", "d3", "describe", "it", "beforeAll", "beforeEach", "afterEach", "sinon", "should", "_gaq"],
   "browser" : true,
-
   "eqnull": true,
   "boss" : false,
   "curly": false,

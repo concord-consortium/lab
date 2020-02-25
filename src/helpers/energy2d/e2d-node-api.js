@@ -1,20 +1,16 @@
-var requirejs = require('requirejs'),
-    path      = require('path'),
-    document = global.document = require("jsdom").jsdom("<html><head></head><body></body></html>"),
-    window = global.window = document.createWindow();
+// Enable ES6 import syntax support using esm package.
+require = require("esm")(module);
+// Lab is using paths relative to src/lab. Set node paths here to ensure that modules are found.
+process.env.NODE_PATH = "src/lab";
+require("module").Module._initPaths(); // magic to get NODE_PATHS updated
 
-$ = require(path.normalize(__dirname + "/../../../vendor/jquery/dist/jquery.min.js"));
-
-// Use Lab RequireJS configuration.
-requirejs.config({
-  // Set baseUrl to lab/src/lab using relative path of this file.
-  baseUrl: path.normalize(__dirname + '/../../lab'),
-  nodeRequire: require,
-  paths: {
-    'cs' :'../../vendor/require-cs/cs'
-  }
-});
+const jsdom = require('jsdom');
+const dom = new jsdom.JSDOM("<html><head></head><body></body></html>");
+global.window = dom.window;
+global.document = window.document;
+global.d3 = require("d3");
+global.$ = global.jQuery = require("jquery")(window);
 
 // Used by E2D -> JSON conversion script.
-exports.validator = requirejs('common/validator');
-exports.metadata  = requirejs('models/energy2d/metadata');
+exports.validator = require('common/validator').default;
+exports.metadata  = require('models/energy2d/metadata').default;

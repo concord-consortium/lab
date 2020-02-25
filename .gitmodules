@@ -1,69 +1,24 @@
-[submodule "vendor/d3"]
-	path = vendor/d3
-	url = git://github.com/mbostock/d3.git
 [submodule "vendor/jquery"]
 	path = vendor/jquery
 	url = git://github.com/jquery/jquery.git
-[submodule "vendor/text"]
-	path = vendor/text
-	url = git://github.com/requirejs/text.git
-[submodule "vendor/almond"]
-	path = vendor/almond
-	url = git://github.com/jrburke/almond.git
-[submodule "vendor/tinysort"]
-	path = vendor/tinysort
-	url = git://github.com/Sjeiti/TinySort.git
-[submodule "vendor/coffee-script"]
-	path = vendor/coffee-script
-	url = git://github.com/jashkenas/coffee-script.git
-[submodule "vendor/require-cs"]
-	path = vendor/require-cs
-	url = git://github.com/jrburke/require-cs.git
-[submodule "vendor/jquery-ui-touch-punch"]
-	path = vendor/jquery-ui-touch-punch
-	url = git://github.com/furf/jquery-ui-touch-punch.git
-[submodule "vendor/underscore"]
-	path = vendor/underscore
-	url = git://github.com/documentcloud/underscore.git
-[submodule "vendor/jquery-context-menu"]
-	path = vendor/jquery-context-menu
-	url = git://github.com/medialize/jQuery-contextMenu.git
-[submodule "vendor/jquery-selectBoxIt"]
-	path = vendor/jquery-selectBoxIt
-	url = git://github.com/gfranko/jquery.selectBoxIt.js.git
 [submodule "vendor/fonts/Font-Awesome"]
 	path = vendor/fonts/Font-Awesome
 	url = git://github.com/FortAwesome/Font-Awesome.git
-[submodule "vendor/pixi.js"]
-	path = vendor/pixi.js
-	url = https://github.com/concord-consortium/pixi.js.git
-[submodule "vendor/fastclick"]
-	path = vendor/fastclick
-	url = https://github.com/ftlabs/fastclick.git
 [submodule "vendor/lab-sensor-applet-interface"]
 	path = vendor/lab-sensor-applet-interface
 	url = git://github.com/concord-consortium/lab-sensor-applet-interface.git
 [submodule "vendor/lab-sensor-applet-interface-dist"]
 	path = vendor/lab-sensor-applet-interface-dist
 	url = git://github.com/concord-consortium/lab-sensor-applet-interface-dist.git
-[submodule "vendor/seedrandom"]
-	path = vendor/seedrandom
-	url = https://github.com/davidbau/seedrandom.git
 [submodule "vendor/lab-grapher"]
 	path = vendor/lab-grapher
 	url = https://github.com/concord-consortium/lab-grapher.git
 [submodule "vendor/sensor-labquest-2-interface"]
 	path = vendor/sensor-labquest-2-interface
 	url = https://github.com/concord-consortium/sensor-labquest-2-interface.git
-[submodule "vendor/iframe-phone"]
-	path = vendor/iframe-phone
-	url = https://github.com/concord-consortium/iframe-phone.git
 [submodule "vendor/sensor-connector-interface"]
 	path = vendor/sensor-connector-interface
 	url = https://github.com/concord-consortium/sensor-connector-interface.git
 [submodule "vendor/components-jqueryui"]
 	path = vendor/components-jqueryui
 	url = https://github.com/components/jqueryui
-[submodule "vendor/i18next"]
-	path = vendor/i18next
-	url = https://github.com/jamuhl/i18next.git

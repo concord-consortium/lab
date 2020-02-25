@@ -1,19 +1,15 @@
-/*global define */
+import i18next from 'i18next';
+import LabGrapher from 'lab-grapher';
+import translations from 'locales/translations.json';
 
-define(function (require) {
-  var i18next       = require('i18next');
-  var LabGrapher    = require('lab-grapher');
-  var translations  = JSON.parse(require('text!locales/translations.json'));
-
-  return function i18n(language) {
-    i18next.init({
-      lng: language,
-      resStore: translations,
-      fallbackLng: 'en-US',
-      useCookie: false
-    });
-    // Grapher has its own i18n support implemented, just set language.
-    LabGrapher.i18n.lang = language;
-    return i18next;
-  };
-});
+export default function i18n(language) {
+  i18next.init({
+    lng: language,
+    resources: translations,
+    fallbackLng: 'en-US',
+    initImmediate: false
+  });
+  // Grapher has its own i18n support implemented, just set language.
+  LabGrapher.i18n.lang = language;
+  return i18next;
+}

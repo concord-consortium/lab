@@ -1,41 +1,40 @@
 #!/usr/bin/env node
 
-var converter = require('../src/helpers/md2d/mw-batch-converter'),
-    sys = require('sys'),
-    nConverted,
-    argv = require('optimist').boolean(['a', 'v']).argv;
+var converter = require("../src/helpers/md2d/mw-batch-converter"),
+  nConverted,
+  argv = require("optimist").boolean(["a", "v"]).argv;
 
 /**
-  Examples:
+ Examples:
 
-  ./node-bin/convert-mml-files
+ ./node-bin/convert-mml-files
 
-    Convert all mml files in imports/legacy-mw-content that are newer than json files in
-    imports/legacy-mw-content/converted
+ Convert all mml files in imports/legacy-mw-content that are newer than json files in
+ imports/legacy-mw-content/converted
 
-  ./node-bin/convert-mml-files -a
+ ./node-bin/convert-mml-files -a
 
-    Convert all mml files in imports/legacy-mw-content generating json files in
-    imports/legacy-mw-content/converted
+ Convert all mml files in imports/legacy-mw-content generating json files in
+ imports/legacy-mw-content/converted
 
-  ./node-bin/convert-mml-files --path=imports/legacy-mw-content/conversion-and-physics-examples/
+ ./node-bin/convert-mml-files --path=imports/legacy-mw-content/conversion-and-physics-examples/
 
-    Convert all mml files in imports/legacy-mw-content/conversion-and-physics-examples/ that
-    are newer than json files in imports/legacy-mw-content/converted/conversion-and-physics-examples/
+ Convert all mml files in imports/legacy-mw-content/conversion-and-physics-examples/ that
+ are newer than json files in imports/legacy-mw-content/converted/conversion-and-physics-examples/
 
-  ./node-bin/convert-mml-files --path=imports/legacy-mw-content/conversion-and-physics-examples/ -v
+ ./node-bin/convert-mml-files --path=imports/legacy-mw-content/conversion-and-physics-examples/ -v
 
-    Convert all mml files in imports/legacy-mw-content/conversion-and-physics-examples/ that
-    are newer than json files in imports/legacy-mw-content/converted/conversion-and-physics-examples/
-    and display input mml and output json file paths for each conversion.
+ Convert all mml files in imports/legacy-mw-content/conversion-and-physics-examples/ that
+ are newer than json files in imports/legacy-mw-content/converted/conversion-and-physics-examples/
+ and display input mml and output json file paths for each conversion.
 
-*/
+ */
 
 if (argv.path) {
-  sys.print("converting " + (argv.a ? "all " : "updated ") + "MML files in: " + argv.path + " ... ");
+  process.stdout.write("converting " + (argv.a ? "all " : "updated ") + "MML files in: " + argv.path + " ... ");
   nConverted = converter.convertMMLFolder(!argv.a, true, argv.path, argv.v);
 } else {
-  sys.print("converting " + (argv.a ? "all " : "updated ") + "MML files ... ");
+  process.stdout.write("converting " + (argv.a ? "all " : "updated ") + "MML files ... ");
   nConverted = converter.convertMMLFolder(!argv.a, true, null, argv.v);
 }
-sys.print("converted " + nConverted + " MML files.\n");
+process.stdout.write("converted " + nConverted + " MML files.\n");

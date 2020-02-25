@@ -1,899 +1,912 @@
-/*global define: false */
+ 
+import LabModelerMixin from 'common/lab-modeler-mixin';
+import PropertyDescription from 'common/property-description';
+import metadata from './metadata';
+import StateMachine from 'common/state-machine';
+import SensorConnectorInterface from 'sensor-connector-interface';
+import unitsDefinition from './units-definition';
+import getSensorDefinitions from 'models/sensor-common/i18n-sensor-definitions-connector';
+import Notifier from 'models/sensor-common/notifier';
 
-define(function(require) {
 
-  var LabModelerMixin       = require('common/lab-modeler-mixin'),
-      PropertyDescription   = require('common/property-description'),
-      metadata              = require('./metadata'),
-      StateMachine          = require('common/state-machine'),
-      SensorConnectorInterface = require('sensor-connector-interface'),
-      unitsDefinition       = require('./units-definition'),
-      getSensorDefinitions  = require('models/sensor-common/i18n-sensor-definitions-connector'),
-      Notifier             = require('models/sensor-common/notifier');
+export default function Model(initialProperties, opt) {
+  var i18n = opt.i18n,
+    notifier = new Notifier(i18n),
 
-  return function Model(initialProperties, opt) {
-    var i18n = opt.i18n,
-        notifier = new Notifier(i18n),
+    labModelerMixin,
+    propertySupport,
+    dispatch,
+    stateMachine,
+    sensorConnectorInterface,
+    timeColumn,
+    dataColumn,
+    selectedSensor,
+    sensorName,
+    isStopped,
+    needsReload,
+    time,
+    rawSensorValue,
+    liveSensorValue,
+    stepCounter,
+    isPlayable,
+    canTare,
+    canControl,
+    hasMultipleSensors,
+    isSensorTareable,
+    message,
+    statusDialog,
+    statusErrors,
+    displayTimePropertyDescription,
+    model;
 
-        labModelerMixin,
-        propertySupport,
-        dispatch,
-        stateMachine,
-        sensorConnectorInterface,
-        timeColumn,
-        dataColumn,
-        selectedSensor,
-        sensorName,
-        isStopped,
-        needsReload,
-        time,
-        rawSensorValue,
-        liveSensorValue,
-        stepCounter,
-        isPlayable,
-        canTare,
-        canControl,
-        hasMultipleSensors,
-        isSensorTareable,
-        message,
-        statusDialog,
-        statusErrors,
-        displayTimePropertyDescription,
-        model;
+  var defaultSensorReadingDescription = {
+    label: i18n.t("sensor.measurements.sensor_reading"),
+    unitAbbreviation: "-",
+    format: '.2f',
+    min: 0,
+    max: 10
+  };
+  var sensorDefinitions = getSensorDefinitions(i18n);
 
-    var defaultSensorReadingDescription = {
-      label: i18n.t("sensor.measurements.sensor_reading"),
-      unitAbbreviation: "-",
-      format: '.2f',
-      min: 0,
-      max: 10
-    };
-    var sensorDefinitions = getSensorDefinitions(i18n);
+  function updatePropertyRange(property, min, max) {
+    var descriptionHash;
+    var description;
 
-    function updatePropertyRange(property, min, max) {
-      var descriptionHash;
-      var description;
+    descriptionHash = model.getPropertyDescription(property).getHash();
+    descriptionHash.min = min;
+    descriptionHash.max = max;
 
-      descriptionHash = model.getPropertyDescription(property).getHash();
-      descriptionHash.min = min;
-      descriptionHash.max = max;
+    description = new PropertyDescription(unitsDefinition, descriptionHash);
+    propertySupport.setPropertyDescription(property, description);
+  }
 
-      description = new PropertyDescription(unitsDefinition, descriptionHash);
-      propertySupport.setPropertyDescription(property, description);
+  // Updates min, max of displayTime to be [0..actualDuration]
+  function updateDisplayTimeRange() {
+    if (model.properties.actualDuration === null || model.properties.actualDuration === Infinity) {
+      return;
     }
+    updatePropertyRange('displayTime', 0, model.properties.actualDuration);
+  }
 
-    // Updates min, max of displayTime to be [0..actualDuration]
-    function updateDisplayTimeRange() {
-      if (model.properties.actualDuration === null || model.properties.actualDuration === Infinity) {
-        return;
-      }
-      updatePropertyRange('displayTime', 0, model.properties.actualDuration);
-    }
+  function setSensorReadingDescription() {
+    var sensorDefinition;
+    var description;
 
-    function setSensorReadingDescription() {
-      var sensorDefinition;
-      var description;
+    if (dataColumn) {
+      sensorDefinition = sensorDefinitions[dataColumn.units];
 
-      if (dataColumn) {
-        sensorDefinition = sensorDefinitions[dataColumn.units];
-
-        if (sensorDefinition) {
-          description = {
-            label: sensorDefinition.measurementName,
-            format: '.2f',
-            min: sensorDefinition.minReading,
-            max: sensorDefinition.maxReading
-          };
-          if (unitsDefinition.units[sensorDefinition.measurementType]) {
-            description.unitType = sensorDefinition.measurementType;
-          } else {
-            description.unitAbbreviation = dataColumn.units;
-          }
-          isSensorTareable = sensorDefinition.tareable;
-          sensorName = sensorDefinition.sensorName || (dataColumn.units + " sensor");
+      if (sensorDefinition) {
+        description = {
+          label: sensorDefinition.measurementName,
+          format: '.2f',
+          min: sensorDefinition.minReading,
+          max: sensorDefinition.maxReading
+        };
+        if (unitsDefinition.units[sensorDefinition.measurementType]) {
+          description.unitType = sensorDefinition.measurementType;
         } else {
-          description = {
-            label: dataColumn.name || i18n.t("sensor.measurements.sensor_reading"),
-            unitAbbreviation: dataColumn.units,
-            format: '.2f',
-            min: 0,
-            max: 10
-          };
-          isSensorTareable = true;
-          sensorName = dataColumn.units + " sensor";
+          description.unitAbbreviation = dataColumn.units;
         }
+        isSensorTareable = sensorDefinition.tareable;
+        sensorName = sensorDefinition.sensorName || (dataColumn.units + " sensor");
       } else {
-        description = defaultSensorReadingDescription;
-        isSensorTareable = false;
-        sensorName = "(no sensor)";
+        description = {
+          label: dataColumn.name || i18n.t("sensor.measurements.sensor_reading"),
+          unitAbbreviation: dataColumn.units,
+          format: '.2f',
+          min: 0,
+          max: 10
+        };
+        isSensorTareable = true;
+        sensorName = dataColumn.units + " sensor";
       }
-
-      propertySupport.setPropertyDescription('sensorReading',
-        new PropertyDescription(unitsDefinition, description));
-      propertySupport.setPropertyDescription('liveSensorReading',
-        new PropertyDescription(unitsDefinition, description));
+    } else {
+      description = defaultSensorReadingDescription;
+      isSensorTareable = false;
+      sensorName = "(no sensor)";
     }
 
-    function initializeStateVariables() {
-      isStopped = true;
-      canControl = sensorConnectorInterface.canControl;
-      hasMultipleSensors = false;
-      // Set selectedSensor if it hasn't been set yet
-      if (typeof(selectedSensor) === "undefined" || selectedSensor === null) {
-        selectedSensor = { index: 1 };
-      }
-      stepCounter = 0;
-      time = 0;
-      statusErrors = 0;
-      rawSensorValue = undefined;
-      liveSensorValue = undefined;
-      timeColumn = undefined;
-      dataColumn = undefined;
-    }
+    propertySupport.setPropertyDescription('sensorReading',
+      new PropertyDescription(unitsDefinition, description));
+    propertySupport.setPropertyDescription('liveSensorReading',
+      new PropertyDescription(unitsDefinition, description));
+  }
 
-    function checkColumnAgainstSelected(dataset, idx) {
-        var colCandidate = dataset.columns[idx];
-        if (colCandidate && colCandidate.units === selectedSensor.units) {
-          selectedSensor.index = idx;
-          return true;
-        }
-        return false;
+  function initializeStateVariables() {
+    isStopped = true;
+    canControl = sensorConnectorInterface.canControl;
+    hasMultipleSensors = false;
+    // Set selectedSensor if it hasn't been set yet
+    if (typeof(selectedSensor) === "undefined" || selectedSensor === null) {
+      selectedSensor = {
+        index: 1
+      };
     }
+    stepCounter = 0;
+    time = 0;
+    statusErrors = 0;
+    rawSensorValue = undefined;
+    liveSensorValue = undefined;
+    timeColumn = undefined;
+    dataColumn = undefined;
+  }
 
-    function hasCollectableSensors(dataset) {
-      if (dataset.columns.length < 2) {
-        return false;
-      }
-      if (dataset.columns.length === 2 && !dataset.columns[1].name && !dataset.columns[1].units) {
-        return false;
-      }
+  function checkColumnAgainstSelected(dataset, idx) {
+    var colCandidate = dataset.columns[idx];
+    if (colCandidate && colCandidate.units === selectedSensor.units) {
+      selectedSensor.index = idx;
       return true;
     }
+    return false;
+  }
 
-    function setColumn() {
-      var dataset = sensorConnectorInterface.datasets[0];
-      var newDataColumn, sIdx;
+  function hasCollectableSensors(dataset) {
+    if (dataset.columns.length < 2) {
+      return false;
+    }
+    if (dataset.columns.length === 2 && !dataset.columns[1].name && !dataset.columns[1].units) {
+      return false;
+    }
+    return true;
+  }
 
-      hasMultipleSensors = dataset.columns.length > 2;
+  function setColumn() {
+    var dataset = sensorConnectorInterface.datasets[0];
+    var newDataColumn, sIdx;
 
-      // The sensor connector always has column 0 as time
-      timeColumn = dataset.columns[0];
-      if (sensorConnectorInterface.hasAttachedInterface) {
-        if (hasCollectableSensors(dataset)) {
-          if (canControl) {
-            message = i18n.t("sensor.messages.ready");
-          } else if (sensorConnectorInterface.inControl.clientName) {
-            message = i18n.t("sensor.messages.ready_nocontrol", { controlling_client: sensorConnectorInterface.inControl.clientName });
-          } else {
-            message = i18n.t("sensor.messages.ready_nocontrol_noname");
-          }
-          isPlayable = true;
+    hasMultipleSensors = dataset.columns.length > 2;
+
+    // The sensor connector always has column 0 as time
+    timeColumn = dataset.columns[0];
+    if (sensorConnectorInterface.hasAttachedInterface) {
+      if (hasCollectableSensors(dataset)) {
+        if (canControl) {
+          message = i18n.t("sensor.messages.ready");
+        } else if (sensorConnectorInterface.inControl.clientName) {
+          message = i18n.t("sensor.messages.ready_nocontrol", {
+            controlling_client: sensorConnectorInterface.inControl.clientName
+          });
         } else {
-          message = i18n.t("sensor.messages.no_sensors");
-          isPlayable = false;
+          message = i18n.t("sensor.messages.ready_nocontrol_noname");
         }
-
-        // TODO When we want to support multiple sensors, this will have to change.
-        // Select the column chosen by the user
-        sIdx = selectedSensor.index;
-        if (sIdx >= dataset.columns.length && dataset.columns.length > 1) {
-          // we seem to be pointing past the number of columns there are. reset to that last column.
-          sIdx = dataset.columns.length - 1;
-        }
-        newDataColumn = dataset.columns[sIdx];
-        if (newDataColumn && selectedSensor.units && newDataColumn.units !== selectedSensor.units) {
-          // our selected column seems to have changed out from under us.
-          // If a sensor was added to the device, it could be one column higher
-          if (checkColumnAgainstSelected(dataset, sIdx+1)) {
-            newDataColumn = dataset.columns[sIdx+1];
-          } else if (sIdx > 1 && checkColumnAgainstSelected(dataset, sIdx-1)) {
-            // it wasn't the one after. let's check the one before.
-            newDataColumn = dataset.columns[sIdx-1];
-          } else {
-            // it seems to be none of them. Reset the selected sensor to the first one.
-            newDataColumn = dataset.columns[1];
-            selectedSensor.index = 1;
-          }
-        }
+        isPlayable = true;
       } else {
-        message = i18n.t("sensor.messages.no_devices");
+        message = i18n.t("sensor.messages.no_sensors");
         isPlayable = false;
       }
 
-      if (newDataColumn && !newDataColumn.name && !newDataColumn.units) {
-        // If we don't have a sensor name and units, assume it's not really a sensor
-        newDataColumn = null;
+      // TODO When we want to support multiple sensors, this will have to change.
+      // Select the column chosen by the user
+      sIdx = selectedSensor.index;
+      if (sIdx >= dataset.columns.length && dataset.columns.length > 1) {
+        // we seem to be pointing past the number of columns there are. reset to that last column.
+        sIdx = dataset.columns.length - 1;
       }
-
-      dataColumn = newDataColumn;
-      if (dataColumn) {
-        selectedSensor.units = dataColumn.units;
-      }
-      setSensorReadingDescription();
-
-      if ( ! dataColumn ) {
-        liveSensorValue = undefined;
-      }
-    }
-
-    function handleData() {
-      if (!timeColumn || !dataColumn) {
-        return;
-      }
-
-      var numberOfValues = Math.min(timeColumn.data.length, dataColumn.data.length);
-      for (; stepCounter < numberOfValues; stepCounter++) {
-        time = timeColumn.data[stepCounter];
-
-        if (time > model.properties.actualDuration) {
-          // Stop, but continue to process any data received (if for no other reason than that
-          // subsequent steps aren't happy until data up to the latest timestamp was received)
-          model.stop();
+      newDataColumn = dataset.columns[sIdx];
+      if (newDataColumn && selectedSensor.units && newDataColumn.units !== selectedSensor.units) {
+        // our selected column seems to have changed out from under us.
+        // If a sensor was added to the device, it could be one column higher
+        if (checkColumnAgainstSelected(dataset, sIdx + 1)) {
+          newDataColumn = dataset.columns[sIdx + 1];
+        } else if (sIdx > 1 && checkColumnAgainstSelected(dataset, sIdx - 1)) {
+          // it wasn't the one after. let's check the one before.
+          newDataColumn = dataset.columns[sIdx - 1];
+        } else {
+          // it seems to be none of them. Reset the selected sensor to the first one.
+          newDataColumn = dataset.columns[1];
+          selectedSensor.index = 1;
         }
-        rawSensorValue = dataColumn.data[stepCounter];
-        model.updateAllOutputProperties();
-        dispatch.tick();
       }
+    } else {
+      message = i18n.t("sensor.messages.no_devices");
+      isPlayable = false;
     }
 
-    function isAllColumnDataReceieved(column) {
-      return column.receivedValuesTimeStamp >= column.requestedValuesTimeStamp;
+    if (newDataColumn && !newDataColumn.name && !newDataColumn.units) {
+      // If we don't have a sensor name and units, assume it's not really a sensor
+      newDataColumn = null;
     }
 
-    function isAllDataReceived() {
-      return isAllColumnDataReceieved(timeColumn) && (! dataColumn || isAllColumnDataReceieved(dataColumn));
+    dataColumn = newDataColumn;
+    if (dataColumn) {
+      selectedSensor.units = dataColumn.units;
+    }
+    setSensorReadingDescription();
+
+    if (!dataColumn) {
+      liveSensorValue = undefined;
+    }
+  }
+
+  function handleData() {
+    if (!timeColumn || !dataColumn) {
+      return;
     }
 
-    function connectedSensors() {
-      var sensors = [],
-          dataset = sensorConnectorInterface.datasets[0],
-          i;
+    var numberOfValues = Math.min(timeColumn.data.length, dataColumn.data.length);
+    for (; stepCounter < numberOfValues; stepCounter++) {
+      time = timeColumn.data[stepCounter];
 
-      for (i=0; i < dataset.columns.length; i++) {
-        sensors.push({units: dataset.columns[i].units, name: dataset.columns[i].name});
+      if (time > model.properties.actualDuration) {
+        // Stop, but continue to process any data received (if for no other reason than that
+        // subsequent steps aren't happy until data up to the latest timestamp was received)
+        model.stop();
       }
-      return sensors;
+      rawSensorValue = dataColumn.data[stepCounter];
+      model.updateAllOutputProperties();
+      dispatch.tick();
     }
+  }
 
-    model = {
+  function isAllColumnDataReceieved(column) {
+    return column.receivedValuesTimeStamp >= column.requestedValuesTimeStamp;
+  }
 
-      on: function(type, listener) {
-        dispatch.on(type, listener);
+  function isAllDataReceived() {
+    return isAllColumnDataReceieved(timeColumn) && (!dataColumn || isAllColumnDataReceieved(dataColumn));
+  }
+
+  function connectedSensors() {
+    var sensors = [],
+      dataset = sensorConnectorInterface.datasets[0],
+      i;
+
+    for (i = 0; i < dataset.columns.length; i++) {
+      sensors.push({
+        units: dataset.columns[i].units,
+        name: dataset.columns[i].name
+      });
+    }
+    return sensors;
+  }
+
+  model = {
+
+    on: function(type, listener) {
+      dispatch.on(type, listener);
+    },
+
+    start: function() {
+      handle('start');
+    },
+
+    stop: function() {
+      handle('stop');
+    },
+
+    tare: function() {
+      var oldPlayable = isPlayable;
+      isPlayable = false;
+      handle('tare');
+      isPlayable = oldPlayable;
+    },
+
+    willReset: function() {
+      dispatch.willReset();
+    },
+
+    reset: function() {
+      handle('reset');
+    },
+
+    reload: function() {
+      model.stop();
+      model.makeInvalidatingChange(function() {
+        needsReload = true;
+      });
+    },
+
+    isStopped: function() {
+      return isStopped;
+    },
+
+    stepCounter: function() {
+      return stepCounter;
+    },
+
+    connectedSensors: connectedSensors,
+    getSelectedSensor: function() {
+      return selectedSensor.index;
+    },
+    setSelectedSensor: function(sensorIndex) {
+      if (selectedSensor.index != sensorIndex) {
+        selectedSensor.index = sensorIndex;
+        selectedSensor.units = null;
+        model.properties.tareValue = 0; // Also reset our tare value
+        setColumn();
+      }
+    },
+
+    serialize: function() {
+      return "";
+    }
+  };
+
+
+  stateMachine = new StateMachine({
+
+    notConnected: {
+      enterState: function() {
+        message = i18n.t("sensor.messages.not_connected");
+        statusErrors = 0;
+        if (location.protocol === 'https:') {
+          sensorConnectorInterface.startPolling(["https://localhost:11181", "https://127.0.0.1:11181", "https://localhost.ungerdesign.com:11181"], model.properties.clientId, model.properties.clientName);
+        } else {
+          sensorConnectorInterface.startPolling("http://127.0.0.1:11180", model.properties.clientId, model.properties.clientName);
+        }
+        this.gotoState('connecting');
+      }
+    },
+
+    connecting: {
+      enterState: function() {
+        message = i18n.t("sensor.messages.connecting");
+        if (sensorConnectorInterface.isConnected) {
+          this.gotoState('connected');
+        } else {
+          statusDialog = notifier.status(i18n.t("sensor.messages.connection_in_progress"), {
+            dialogClass: 'interactive-dialog no-close'
+          });
+        }
       },
 
+      leaveState: function() {
+        if (statusDialog) {
+          statusDialog.close();
+          statusDialog = null;
+        }
+      },
+
+      statusErrored: function() {
+        this.gotoState('initialConnectionFailure');
+      },
+
+      connectionTimedOut: function() {
+        this.gotoState('initialConnectionFailure');
+      },
+
+      launchTimedOut: function() {
+        this.gotoState('initialConnectionFailure');
+      },
+
+      statusReceived: function() {
+        this.gotoState('connected');
+      },
+
+      sessionChanged: function() {
+        // start a new session, stay connecting...
+        sensorConnectorInterface.stopPolling();
+        sensorConnectorInterface.startPolling();
+      }
+    },
+
+    initialConnectionFailure: {
+      enterState: function() {
+        sensorConnectorInterface.stopPolling();
+        message = i18n.t("sensor.messages.connection_failed", {
+          retry_link: ""
+        });
+        var dialog_msg = "sensor.messages.connection_failed_alert";
+        notifier.alert(i18n.t(dialog_msg, {
+          click_here_link: "<a target='_blank' style='color: #222299;' href='http://sensorconnector.concord.org/'>" +
+            i18n.t("sensor.messages.click_here") + "</a>"
+        }), {
+          "Try again": function() {
+            $(this).dialog("close");
+            handle('dismiss');
+          }
+        }, {
+          close: function() {
+            handle('closed');
+          }
+        });
+      },
+
+      // Ignore these in this state
+      statusErrored: function() {},
+      connectionTimedOut: function() {},
+      launchTimedOut: function() {},
+
+      closed: function() {
+        message = i18n.t("sensor.messages.connection_failed", {
+          retry_link: "<a href='javascript:void(0);' class='retry-link'>" + i18n.t("sensor.messages.connection_failed_retry_link_text") + "</a>"
+        });
+        // AU: This is kind of ugly and obnoxious, but I was having trouble getting the right context when embedding code directly into the href itself.
+        var tryAttachingHandler = function() {
+          var links = $('a.retry-link');
+          if (links[0]) {
+            links.click(function() {
+              handle('dismiss');
+            });
+          } else {
+            setTimeout(tryAttachingHandler, 50);
+          }
+        };
+        tryAttachingHandler();
+      },
+
+      dismiss: function() {
+        this.gotoState('notConnected');
+      }
+    },
+
+    connected: {
+      enterState: function() {
+        message = i18n.t("sensor.messages.connected");
+        canTare = true;
+        isPlayable = true;
+        isStopped = true;
+
+        setColumn();
+
+        if (canControl) {
+          this.controlEnabled();
+        } else {
+          this.controlDisabled();
+        }
+
+        if (sensorConnectorInterface.isCollecting) {
+          this.gotoState('started');
+        }
+      },
+
+      leaveState: function() {
+        canTare = false;
+        isPlayable = false;
+      },
+
+      // Give some feedback on the currently selected column from which data will be collected.
+      columnAdded: setColumn,
+      columnRemoved: setColumn,
+      columnTypeChanged: setColumn,
+      columnMoved: setColumn,
+
+      interfaceConnected: setColumn,
+      interfaceRemoved: setColumn,
+
+      tare: function() {
+        if (dataColumn) {
+          model.properties.tareValue = dataColumn.liveValue;
+        }
+      },
+
+      // User requests collection
       start: function() {
-        handle('start');
+        // NOTE. Due to architecture switch mid-way, the sensorConnectorInterface layer is turning the
+        // start request into a promise, and we're turning it back to events. The lower layer
+        // could just ditch promises and emit the corresponding events with no harm. (The state
+        // machine prevents almost every practical scenario where we'd see an out-of-date
+        // startRequestFailure event while in a state that would respond to it.)
+        sensorConnectorInterface.requestStart().catch(function() {
+          handle('startRequestFailed');
+        });
+        this.gotoState('starting');
+      },
+
+      controlEnabled: function() {
+        message = i18n.t("sensor.messages.connected");
+      },
+
+      controlDisabled: function() {
+        if (sensorConnectorInterface.inControl.clientName) {
+          message = i18n.t("sensor.messages.connected_start_sensorconnector", {
+            controlling_client: sensorConnectorInterface.inControl.clientName
+          });
+        } else {
+          message = i18n.t("sensor.messages.connected_start_sensorconnector_noname");
+        }
+      },
+
+      sessionChanged: function() {
+        sensorConnectorInterface.stopPolling();
+        sensorConnectorInterface.startPolling();
+        this.gotoState('connecting');
+      },
+
+      // Collection was started by a third party
+      collectionStarted: function() {
+        this.gotoState('started');
+      }
+    },
+
+    starting: {
+      enterState: function() {
+        message = i18n.t("sensor.messages.starting_data_collection");
+        isStopped = false;
+        var self = this;
+        this._startTimerId = setTimeout(5000, function() {
+          self.gotoState('startRequestFailed');
+        });
+      },
+
+      leaveState: function() {
+        clearTimeout(this._startTimerId);
+      },
+
+      startRequestFailed: function() {
+        this.gotoState('errorStarting');
+      },
+
+      collectionStarted: function() {
+        this.gotoState('started');
+      }
+    },
+
+    errorStarting: {
+      enterState: function() {
+        message = i18n.t("sensor.messages.error_starting_data_collection");
+        isStopped = true;
+
+        notifier.alert(i18n.t("sensor.messages.error_starting_data_collection_alert"), {
+          OK: function() {
+            $(this).dialog("close");
+            handle('dismissErrorStarting');
+          }
+        });
+      },
+
+      collectionStarted: function() {
+        this.gotoState('started');
+      },
+
+      dismissErrorStarting: function() {
+        this.gotoState('connected');
+      }
+    },
+
+    started: {
+      enterState: function() {
+        isStopped = false;
+        setColumn();
+        isPlayable = false;
+        if (canControl) {
+          message = i18n.t("sensor.messages.collecting_data");
+        } else {
+          message = i18n.t("sensor.messages.collecting_data_stop_sensorconnector");
+        }
+
+        // Check, just in case. Specifically, when errorStopping transitions here, collection
+        // might have stopped in the meantime.
+        if (!sensorConnectorInterface.isCollecting) {
+          this.gotoState('stopped');
+        }
+
+        if (!dataColumn) {
+          this.gotoState('startedWithNoDataColumn');
+        }
+      },
+
+      data: handleData,
+
+      controlEnabled: function() {
+        message = i18n.t("sensor.messages.collecting_data");
+      },
+
+      controlDisabled: function() {
+        message = i18n.t("sensor.messages.collecting_data_stop_sensorconnector");
       },
 
       stop: function() {
-        handle('stop');
+        sensorConnectorInterface.requestStop().catch(function() {
+          handle('stopRequestFailed');
+        });
+        this.gotoState('stopping');
       },
 
-      tare: function() {
-        var oldPlayable = isPlayable;
-        isPlayable = false;
-        handle('tare');
-        isPlayable = oldPlayable;
+      collectionStopped: function() {
+        this.gotoState('collectionStopped');
+      }
+    },
+
+    // This can happen.
+    startedWithNoDataColumn: {
+      enterState: function() {
+        message = i18n.t("sensor.messages.no_data");
+
+        sensorConnectorInterface.requestStop();
+        notifier.alert(i18n.t("sensor.messages.no_data_alert"), {
+          OK: function() {
+            $(this).dialog("close");
+          }
+        });
       },
 
-      willReset: function() {
-        dispatch.willReset();
+      collectionStopped: function() {
+        this.gotoState('stoppedWithNoDataColumn');
+      }
+    },
+
+    stoppedWithNoDataColumn: {
+      enterState: function() {
+        if (isAllDataReceived()) {
+          this.gotoState('connected');
+        }
+      },
+
+      data: function() {
+        if (isAllDataReceived()) {
+          this.gotoState('connected');
+        }
+      }
+    },
+
+    stopping: {
+      enterState: function() {
+        message = i18n.t("sensor.messages.stopping_data_collection");
+      },
+
+      data: handleData,
+
+      stopRequestFailed: function() {
+        this.gotoState('errorStopping');
+      },
+
+      collectionStopped: function() {
+        this.gotoState('collectionStopped');
+      }
+    },
+
+    errorStopping: {
+      enterState: function() {
+        message = i18n.t("sensor.messages.error_stopping_data_collection");
+        notifier.alert(i18n.t("sensor.messages.error_stopping_data_collection_alert"), {
+          OK: function() {
+            $(this).dialog("close");
+            handle('dismissErrorStopping');
+          }
+        });
+      },
+
+      data: handleData,
+
+      collectionStopped: function() {
+        this.gotoState('collectionStopped');
+      },
+
+      dismissErrorStopping: function() {
+        this.gotoState('started');
+      }
+    },
+
+    // The device reports the stop of data collection before all data can be received.
+    collectionStopped: {
+      enterState: function() {
+        message = i18n.t("sensor.messages.data_collection_stopped");
+        if (isAllDataReceived()) {
+          this.gotoState('collectionComplete');
+        }
+      },
+
+      data: function() {
+        handleData();
+        if (isAllDataReceived()) {
+          this.gotoState('collectionComplete');
+        }
+      }
+    },
+
+    collectionComplete: {
+      enterState: function() {
+        message = i18n.t("sensor.messages.data_collection_complete");
+        isStopped = true;
+        dispatch.stop();
       },
 
       reset: function() {
-        handle('reset');
-      },
+        initializeStateVariables();
+        setSensorReadingDescription();
+        this.gotoState('connecting');
+        dispatch.reset();
+      }
+    },
 
-      reload: function() {
-        model.stop();
-        model.makeInvalidatingChange(function() {
-          needsReload = true;
-        });
-      },
+    disconnected: {
+      enterState: function() {
+        message = i18n.t("sensor.messages.disconnected");
+        sensorConnectorInterface.stopPolling();
+        var self = this;
+        setTimeout(function() {
+          self.gotoState('notConnected');
+        }, 2000);
+      }
+    }
+  });
 
-      isStopped: function() {
-        return isStopped;
-      },
+  // Automatically wrap all event handlers invocations with makeInvalidatingChange so that
+  // outputs update from closure variable state automatically.
+  function handle(eventName) {
+    var args = Array.prototype.slice.call(arguments, 0);
 
-      stepCounter: function() {
-        return stepCounter;
-      },
+    model.makeInvalidatingChange(function() {
+      var handled = stateMachine.handleEvent.apply(stateMachine, args);
 
-      connectedSensors: connectedSensors,
-      getSelectedSensor: function() { return selectedSensor.index; },
-      setSelectedSensor: function(sensorIndex) {
-        if (selectedSensor.index != sensorIndex) {
-          selectedSensor.index = sensorIndex;
-          selectedSensor.units = null;
-          model.properties.tareValue = 0; // Also reset our tare value
-          setColumn();
-        }
-      },
-
-      serialize: function () { return ""; }
-    };
-
-
-    stateMachine = new StateMachine({
-
-      notConnected: {
-        enterState: function() {
-          message = i18n.t("sensor.messages.not_connected");
-          statusErrors = 0;
-          if (location.protocol === 'https:') {
-            sensorConnectorInterface.startPolling(["https://localhost:11181","https://127.0.0.1:11181","https://localhost.ungerdesign.com:11181"], model.properties.clientId, model.properties.clientName);
-          } else {
-            sensorConnectorInterface.startPolling("http://127.0.0.1:11180", model.properties.clientId, model.properties.clientName);
-          }
-          this.gotoState('connecting');
-        }
-      },
-
-      connecting: {
-        enterState: function() {
-          message = i18n.t("sensor.messages.connecting");
-          if (sensorConnectorInterface.isConnected) {
-            this.gotoState('connected');
-          } else {
-            statusDialog = notifier.status(i18n.t("sensor.messages.connection_in_progress"), {dialogClass: 'interactive-dialog no-close'});
-          }
-        },
-
-        leaveState: function() {
-          if (statusDialog) {
-            statusDialog.close();
-            statusDialog = null;
-          }
-        },
-
-        statusErrored: function() {
-          this.gotoState('initialConnectionFailure');
-        },
-
-        connectionTimedOut: function() {
-          this.gotoState('initialConnectionFailure');
-        },
-
-        launchTimedOut: function() {
-          this.gotoState('initialConnectionFailure');
-        },
-
-        statusReceived: function() {
-          this.gotoState('connected');
-        },
-
-        sessionChanged: function() {
-          // start a new session, stay connecting...
+      if (!handled) {
+        // special handling of any events not handled by the current state:
+        if (eventName === 'connectionTimedOut') {
+          stateMachine.gotoState('disconnected');
+        } else if (eventName === 'sessionChanged') {
           sensorConnectorInterface.stopPolling();
-          sensorConnectorInterface.startPolling();
-        }
-      },
-
-      initialConnectionFailure: {
-        enterState: function() {
-          sensorConnectorInterface.stopPolling();
-          message = i18n.t("sensor.messages.connection_failed", { retry_link: "" });
-          var dialog_msg = "sensor.messages.connection_failed_alert";
-          notifier.alert(i18n.t(dialog_msg, {
-                                click_here_link: "<a target='_blank' style='color: #222299;' href='http://sensorconnector.concord.org/'>" +
-                                                 i18n.t("sensor.messages.click_here") + "</a>"}), {
-            "Try again": function() {
-              $(this).dialog("close");
-              handle('dismiss');
-            }
-          },
-          {
-            close: function() {
-              handle('closed');
-            }
-          });
-        },
-
-        // Ignore these in this state
-        statusErrored: function() {},
-        connectionTimedOut: function() {},
-        launchTimedOut: function() {},
-
-        closed: function() {
-          message = i18n.t("sensor.messages.connection_failed",
-                {
-                  retry_link: "<a href='javascript:void(0);' class='retry-link'>" + i18n.t("sensor.messages.connection_failed_retry_link_text") + "</a>"
-                });
-          // AU: This is kind of ugly and obnoxious, but I was having trouble getting the right context when embedding code directly into the href itself.
-          var tryAttachingHandler = function() {
-            var links = $('a.retry-link');
-            if (links[0]) {
-              links.click(function() {
-                handle('dismiss');
-              });
-            } else {
-              setTimeout(tryAttachingHandler, 50);
-            }
-          };
-          tryAttachingHandler();
-        },
-
-        dismiss: function() {
-          this.gotoState('notConnected');
-        }
-      },
-
-      connected: {
-        enterState: function() {
-          message = i18n.t("sensor.messages.connected");
-          canTare = true;
-          isPlayable = true;
-          isStopped = true;
-
-          setColumn();
-
-          if (canControl) {
-            this.controlEnabled();
-          } else {
-            this.controlDisabled();
-          }
-
-          if (sensorConnectorInterface.isCollecting) {
-            this.gotoState('started');
-          }
-        },
-
-        leaveState: function() {
-          canTare = false;
-          isPlayable = false;
-        },
-
-        // Give some feedback on the currently selected column from which data will be collected.
-        columnAdded: setColumn,
-        columnRemoved: setColumn,
-        columnTypeChanged: setColumn,
-        columnMoved: setColumn,
-
-        interfaceConnected: setColumn,
-        interfaceRemoved: setColumn,
-
-        tare: function() {
-          if (dataColumn) {
-            model.properties.tareValue = dataColumn.liveValue;
-          }
-        },
-
-        // User requests collection
-        start: function() {
-          // NOTE. Due to architecture switch mid-way, the sensorConnectorInterface layer is turning the
-          // start request into a promise, and we're turning it back to events. The lower layer
-          // could just ditch promises and emit the corresponding events with no harm. (The state
-          // machine prevents almost every practical scenario where we'd see an out-of-date
-          // startRequestFailure event while in a state that would respond to it.)
-          sensorConnectorInterface.requestStart().catch(function() {
-            handle('startRequestFailed');
-          });
-          this.gotoState('starting');
-        },
-
-        controlEnabled: function() {
-          message = i18n.t("sensor.messages.connected");
-        },
-
-        controlDisabled: function() {
-          if (sensorConnectorInterface.inControl.clientName) {
-            message = i18n.t("sensor.messages.connected_start_sensorconnector", { controlling_client: sensorConnectorInterface.inControl.clientName });
-          } else {
-            message = i18n.t("sensor.messages.connected_start_sensorconnector_noname");
-          }
-        },
-
-        sessionChanged: function() {
-          sensorConnectorInterface.stopPolling();
-          sensorConnectorInterface.startPolling();
-          this.gotoState('connecting');
-        },
-
-        // Collection was started by a third party
-        collectionStarted: function() {
-          this.gotoState('started');
-        }
-      },
-
-      starting: {
-        enterState: function() {
-          message = i18n.t("sensor.messages.starting_data_collection");
-          isStopped = false;
-          var self = this;
-          this._startTimerId = setTimeout(5000, function() {
-            self.gotoState('startRequestFailed');
-          });
-        },
-
-        leaveState: function() {
-          clearTimeout(this._startTimerId);
-        },
-
-        startRequestFailed: function() {
-          this.gotoState('errorStarting');
-        },
-
-        collectionStarted: function() {
-          this.gotoState('started');
-        }
-      },
-
-      errorStarting: {
-        enterState: function() {
-          message = i18n.t("sensor.messages.error_starting_data_collection");
-          isStopped = true;
-
-          notifier.alert(i18n.t("sensor.messages.error_starting_data_collection_alert"), {
-            OK: function() {
-              $(this).dialog("close");
-              handle('dismissErrorStarting');
-            }
-          });
-        },
-
-        collectionStarted: function() {
-          this.gotoState('started');
-        },
-
-        dismissErrorStarting: function() {
-          this.gotoState('connected');
-        }
-      },
-
-      started: {
-        enterState: function() {
-          isStopped = false;
-          setColumn();
-          isPlayable = false;
-          if (canControl) {
-            message = i18n.t("sensor.messages.collecting_data");
-          } else {
-            message = i18n.t("sensor.messages.collecting_data_stop_sensorconnector");
-          }
-
-          // Check, just in case. Specifically, when errorStopping transitions here, collection
-          // might have stopped in the meantime.
-          if ( ! sensorConnectorInterface.isCollecting ) {
-            this.gotoState('stopped');
-          }
-
-          if ( ! dataColumn ) {
-            this.gotoState('startedWithNoDataColumn');
-          }
-        },
-
-        data: handleData,
-
-        controlEnabled: function() {
-          message = i18n.t("sensor.messages.collecting_data");
-        },
-
-        controlDisabled: function() {
-          message = i18n.t("sensor.messages.collecting_data_stop_sensorconnector");
-        },
-
-        stop: function() {
-          sensorConnectorInterface.requestStop().catch(function() {
-            handle('stopRequestFailed');
-          });
-          this.gotoState('stopping');
-        },
-
-        collectionStopped: function() {
-          this.gotoState('collectionStopped');
-        }
-      },
-
-      // This can happen.
-      startedWithNoDataColumn: {
-        enterState: function() {
-          message = i18n.t("sensor.messages.no_data");
-
-          sensorConnectorInterface.requestStop();
-          notifier.alert(i18n.t("sensor.messages.no_data_alert"), {
-            OK: function() {
-              $(this).dialog("close");
-            }
-          });
-        },
-
-        collectionStopped: function() {
-          this.gotoState('stoppedWithNoDataColumn');
-        }
-      },
-
-      stoppedWithNoDataColumn: {
-        enterState: function() {
-          if (isAllDataReceived()) {
-            this.gotoState('connected');
-          }
-        },
-
-        data: function() {
-          if (isAllDataReceived()) {
-            this.gotoState('connected');
-          }
-        }
-      },
-
-      stopping: {
-        enterState: function() {
-          message = i18n.t("sensor.messages.stopping_data_collection");
-        },
-
-        data: handleData,
-
-        stopRequestFailed: function() {
-          this.gotoState('errorStopping');
-        },
-
-        collectionStopped: function() {
-          this.gotoState('collectionStopped');
-        }
-      },
-
-      errorStopping: {
-        enterState: function() {
-          message = i18n.t("sensor.messages.error_stopping_data_collection");
-          notifier.alert(i18n.t("sensor.messages.error_stopping_data_collection_alert"), {
-            OK: function() {
-              $(this).dialog("close");
-              handle('dismissErrorStopping');
-            }
-          });
-        },
-
-        data: handleData,
-
-        collectionStopped: function() {
-          this.gotoState('collectionStopped');
-        },
-
-        dismissErrorStopping: function() {
-          this.gotoState('started');
-        }
-      },
-
-      // The device reports the stop of data collection before all data can be received.
-      collectionStopped: {
-        enterState: function() {
-          message = i18n.t("sensor.messages.data_collection_stopped");
-          if (isAllDataReceived()) {
-            this.gotoState('collectionComplete');
-          }
-        },
-
-        data: function() {
-          handleData();
-          if (isAllDataReceived()) {
-            this.gotoState('collectionComplete');
-          }
-        }
-      },
-
-      collectionComplete: {
-        enterState: function() {
-          message = i18n.t("sensor.messages.data_collection_complete");
-          isStopped = true;
-          dispatch.stop();
-        },
-
-        reset: function() {
-          initializeStateVariables();
-          setSensorReadingDescription();
-          this.gotoState('connecting');
-          dispatch.reset();
-        }
-      },
-
-      disconnected: {
-        enterState: function() {
-          message = i18n.t("sensor.messages.disconnected");
-          sensorConnectorInterface.stopPolling();
-          var self = this;
-          setTimeout(function() {
-            self.gotoState('notConnected');
-          }, 2000);
+          stateMachine.gotoState('disconnected');
+        } else if (eventName === 'statusErrored') {
+          stateMachine.gotoState('initialConnectionFailure');
         }
       }
     });
+  }
 
-    // Automatically wrap all event handlers invocations with makeInvalidatingChange so that
-    // outputs update from closure variable state automatically.
-    function handle(eventName) {
-      var args = Array.prototype.slice.call(arguments, 0);
+  sensorConnectorInterface = new SensorConnectorInterface();
 
+  // At least for now, dispatch every interface event to the state machine.
+  sensorConnectorInterface.on('*', function() {
+    var args = Array.prototype.slice.call(arguments, 0);
+    handle.apply(null, [this.event].concat(args));
+  });
+
+  // Also, handle "live values" every time they are received.
+  sensorConnectorInterface.on('statusReceived', function() {
+    if (dataColumn) {
       model.makeInvalidatingChange(function() {
-        var handled = stateMachine.handleEvent.apply(stateMachine, args);
-
-        if ( ! handled ) {
-          // special handling of any events not handled by the current state:
-          if (eventName === 'connectionTimedOut') {
-            stateMachine.gotoState('disconnected');
-          } else if (eventName === 'sessionChanged') {
-            sensorConnectorInterface.stopPolling();
-            stateMachine.gotoState('disconnected');
-          } else if (eventName === 'statusErrored') {
-            stateMachine.gotoState('initialConnectionFailure');
-          }
-        }
+        liveSensorValue = dataColumn.liveValue;
       });
     }
+  });
 
-    sensorConnectorInterface = new SensorConnectorInterface();
+  sensorConnectorInterface.on('controlEnabled', function() {
+    canControl = true;
+  });
 
-    // At least for now, dispatch every interface event to the state machine.
-    sensorConnectorInterface.on('*', function() {
-      var args = Array.prototype.slice.call(arguments, 0);
-      handle.apply(null, [this.event].concat(args));
-    });
+  sensorConnectorInterface.on('controlDisabled', function() {
+    canControl = false;
+  });
 
-    // Also, handle "live values" every time they are received.
-    sensorConnectorInterface.on('statusReceived', function() {
-      if (dataColumn) {
-        model.makeInvalidatingChange(function() {
-          liveSensorValue = dataColumn.liveValue;
-        });
-      }
-    });
+  labModelerMixin = new LabModelerMixin({
+    metadata: metadata,
+    setters: {},
+    unitsDefinition: unitsDefinition,
+    initialProperties: initialProperties,
+    usePlaybackSupport: false
+  });
 
-    sensorConnectorInterface.on('controlEnabled',  function() {
-      canControl = true;
-    });
+  propertySupport = labModelerMixin.propertySupport;
+  dispatch = labModelerMixin.dispatchSupport;
+  dispatch.addEventTypes("tick", "play", "stop", "tickStart", "tickEnd");
 
-    sensorConnectorInterface.on('controlDisabled', function() {
-      canControl = false;
-    });
+  labModelerMixin.mixInto(model);
 
-    labModelerMixin = new LabModelerMixin({
-      metadata: metadata,
-      setters: {},
-      unitsDefinition: unitsDefinition,
-      initialProperties: initialProperties,
-      usePlaybackSupport: false
-    });
+  initializeStateVariables();
 
-    propertySupport = labModelerMixin.propertySupport;
-    dispatch = labModelerMixin.dispatchSupport;
-    dispatch.addEventTypes("tick", "play", "stop", "tickStart", "tickEnd");
+  if (model.properties.useRandomClientId) {
+    model.properties.clientId = Math.floor((1 + Math.random()) * 0x100000000).toString(16); // a 9-digit hex string that always starts with 1
+  }
 
-    labModelerMixin.mixInto(model);
+  model.addObserver('clientName', function() {
+    sensorConnectorInterface.clientName = model.properties.clientName;
+  });
 
-    initializeStateVariables();
+  model.defineOutput('time', {
+    label: i18n.t("sensor.measurements.time"),
+    unitType: 'time',
+    format: '.2f'
+  }, function() {
+    return time;
+  });
 
-    if (model.properties.useRandomClientId) {
-      model.properties.clientId = Math.floor((1 + Math.random()) * 0x100000000).toString(16); // a 9-digit hex string that always starts with 1
+  model.defineOutput('displayTime', {
+    label: i18n.t("sensor.measurements.time"),
+    unitType: 'time',
+    format: '.1f'
+  }, function() {
+    return time;
+  });
+
+  displayTimePropertyDescription = model.getPropertyDescription('displayTime');
+
+  model.defineOutput('sensorReading', defaultSensorReadingDescription, function() {
+    if (rawSensorValue == null) {
+      return rawSensorValue;
     }
+    return rawSensorValue - model.properties.tareValue;
+  });
 
-    model.addObserver('clientName', function() {
-      sensorConnectorInterface.clientName = model.properties.clientName;
-    });
+  /* Need custom implementation of duration options, because we don't use playbackSupport
+    (and playbackSupport's implementation is designed for simulation models that have a
+    fixed time per tick */
 
-    model.defineOutput('time', {
-      label: i18n.t("sensor.measurements.time"),
-      unitType: 'time',
-      format: '.2f'
-    }, function() {
-      return time;
-    });
+  model.defineOutput('durationOptions', {}, function() {
+    return [1, 5, 10, 15, 20, 30, 45, 60];
+  });
 
-    model.defineOutput('displayTime', {
-      label: i18n.t("sensor.measurements.time"),
-      unitType: 'time',
-      format: '.1f'
-    }, function() {
-      return time;
-    });
-
-    displayTimePropertyDescription = model.getPropertyDescription('displayTime');
-
-    model.defineOutput('sensorReading', defaultSensorReadingDescription, function() {
-      if (rawSensorValue == null) {
-        return rawSensorValue;
-      }
-      return rawSensorValue - model.properties.tareValue;
-    });
-
-    /* Need custom implementation of duration options, because we don't use playbackSupport
-      (and playbackSupport's implementation is designed for simulation models that have a
-      fixed time per tick */
-
-    model.defineOutput('durationOptions', {}, function() {
-      return [1, 5, 10, 15, 20, 30, 45, 60];
-    });
-
-    model.formatTime = function(time) {
-      return  displayTimePropertyDescription.format(time);
-    };
-
-    model.defineOutput('actualUseDuration', {}, labModelerMixin.computeActualUseDuration);
-
-    model.defineOutput('actualDuration', {
-      label: "Experiment duration",
-      unitType: 'time',
-      format: 'f'
-    }, labModelerMixin.computeActualDuration);
-
-    // Because sensorReading updates are batched and delivered much later than the live sensor value
-    // from the sensor status response, we define a separate liveSensorReading output that can be
-    // updated every time the status is polled.
-    model.defineOutput('liveSensorReading', defaultSensorReadingDescription, function() {
-      if (liveSensorValue == null) {
-        return liveSensorValue;
-      }
-      return liveSensorValue - model.properties.tareValue;
-    });
-
-    model.defineOutput('sensorName', {
-      label: "Sensor Name"
-    }, function() {
-      return sensorName;
-    });
-
-    model.defineOutput('isStopped', {
-      label: "Stopped?"
-    }, function() {
-      return isStopped;
-    });
-
-    // TODO. We need a way to make "model-writable" read only properties.
-    model.defineOutput('isPlayable', {
-      label: "Startable?"
-    }, function() {
-      return isPlayable;
-    });
-
-    model.defineOutput('hasPlayed', {
-      label: "Has successfully collected data?"
-    }, function() {
-      return stepCounter > 0;
-    });
-
-    model.defineOutput('canTare', {
-      label: "Can set a tare value?"
-    }, function() {
-      return canTare && isSensorTareable;
-    });
-
-    model.defineOutput('canControl', {
-      label: "Can remotely start/stop the Sensor Connector?"
-    }, function() {
-      return canControl;
-    });
-
-    model.defineOutput('hasMultipleSensors', {
-      label: "Are multiple sensors connected to the Sensor Connector?"
-    }, function() {
-      return hasMultipleSensors;
-    });
-
-    model.defineOutput('needsReload', {
-      label: "Needs Reload?"
-    }, function() {
-      return needsReload;
-    });
-
-    model.defineOutput('message', {
-      label: "User Message"
-    }, function() {
-      return message;
-    });
-
-    // Clean up state before we go
-    // TODO
-    model.on('willReset.model', function() {
-      sensorConnectorInterface.stopPolling();
-      if (sensorConnectorInterface.isCollecting) {
-        sensorConnectorInterface.requestStop();
-      }
-    });
-
-    model.addObserver('actualDuration', updateDisplayTimeRange);
-    updateDisplayTimeRange();
-
-    model.updateAllOutputProperties();
-    stateMachine.gotoState('notConnected');
-
-    return model;
+  model.formatTime = function(time) {
+    return displayTimePropertyDescription.format(time);
   };
-});
+
+  model.defineOutput('actualUseDuration', {}, labModelerMixin.computeActualUseDuration);
+
+  model.defineOutput('actualDuration', {
+    label: "Experiment duration",
+    unitType: 'time',
+    format: 'f'
+  }, labModelerMixin.computeActualDuration);
+
+  // Because sensorReading updates are batched and delivered much later than the live sensor value
+  // from the sensor status response, we define a separate liveSensorReading output that can be
+  // updated every time the status is polled.
+  model.defineOutput('liveSensorReading', defaultSensorReadingDescription, function() {
+    if (liveSensorValue == null) {
+      return liveSensorValue;
+    }
+    return liveSensorValue - model.properties.tareValue;
+  });
+
+  model.defineOutput('sensorName', {
+    label: "Sensor Name"
+  }, function() {
+    return sensorName;
+  });
+
+  model.defineOutput('isStopped', {
+    label: "Stopped?"
+  }, function() {
+    return isStopped;
+  });
+
+  // TODO. We need a way to make "model-writable" read only properties.
+  model.defineOutput('isPlayable', {
+    label: "Startable?"
+  }, function() {
+    return isPlayable;
+  });
+
+  model.defineOutput('hasPlayed', {
+    label: "Has successfully collected data?"
+  }, function() {
+    return stepCounter > 0;
+  });
+
+  model.defineOutput('canTare', {
+    label: "Can set a tare value?"
+  }, function() {
+    return canTare && isSensorTareable;
+  });
+
+  model.defineOutput('canControl', {
+    label: "Can remotely start/stop the Sensor Connector?"
+  }, function() {
+    return canControl;
+  });
+
+  model.defineOutput('hasMultipleSensors', {
+    label: "Are multiple sensors connected to the Sensor Connector?"
+  }, function() {
+    return hasMultipleSensors;
+  });
+
+  model.defineOutput('needsReload', {
+    label: "Needs Reload?"
+  }, function() {
+    return needsReload;
+  });
+
+  model.defineOutput('message', {
+    label: "User Message"
+  }, function() {
+    return message;
+  });
+
+  // Clean up state before we go
+  // TODO
+  model.on('willReset.model', function() {
+    sensorConnectorInterface.stopPolling();
+    if (sensorConnectorInterface.isCollecting) {
+      sensorConnectorInterface.requestStop();
+    }
+  });
+
+  model.addObserver('actualDuration', updateDisplayTimeRange);
+  updateDisplayTimeRange();
+
+  model.updateAllOutputProperties();
+  stateMachine.gotoState('notConnected');
+
+  return model;
+};

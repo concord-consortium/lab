@@ -1,4 +1,3 @@
-/*global define: false */
 /**
  * Inherit the prototype methods from one constructor into another.
  *
@@ -26,12 +25,10 @@
  * @param {Function} Child Child class.
  * @param {Function} Parent Parent class.
  */
-define(function() {
-  return function inherit(Child, Parent) {
-    function F() {}
-    F.prototype = Parent.prototype;
-    Child.prototype = new F();
-    Child.superClass = Parent.prototype;
-    Child.prototype.constructor = Child;
-  };
-});
+export default function inherit(Child, Parent) {
+  function F() {}
+  F.prototype = Parent.prototype;
+  Child.prototype = new F();
+  Child.superClass = Parent.prototype;
+  Child.prototype.constructor = Child;
+};

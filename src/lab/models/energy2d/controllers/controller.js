@@ -1,18 +1,10 @@
-/*global
-  define
-*/
-/*jslint onevar: true*/
-define(function (require) {
-  // Dependencies.
-  var ModelController   = require("common/controllers/model-controller"),
-      Model             = require('models/energy2d/modeler'),
-      ModelContainer    = require('models/energy2d/views/view'),
-      Benchmarks        = require('models/energy2d/benchmarks/benchmarks'),
-      ScriptingAPI      = require('models/energy2d/controllers/scripting-api');
+import ModelController from "common/controllers/model-controller";
+import Model from 'models/energy2d/modeler';
+import ModelContainer from 'models/energy2d/views/view';
+import Benchmarks from 'models/energy2d/benchmarks/benchmarks';
+import ScriptingAPI from 'models/energy2d/controllers/scripting-api';
 
-  return function (modelUrl, modelOptions, interactiveController) {
-    return new ModelController(modelUrl, modelOptions, interactiveController,
-                               Model, ModelContainer, ScriptingAPI, Benchmarks);
-  };
-});
-
+export default function(modelUrl, modelOptions, interactiveController) {
+  return new ModelController(modelUrl, modelOptions, interactiveController,
+    Model, ModelContainer, ScriptingAPI, Benchmarks);
+}

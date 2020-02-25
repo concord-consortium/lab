@@ -1,14 +1,11 @@
-/*global define */
 
-define(function (require) {
-  // Dependencies.
-  var ModelController   = require('common/controllers/model-controller'),
-      Model             = require('models/iframe/modeler'),
-      ModelContainer    = require('models/iframe/iframe-container'),
-      ScriptingAPI      = require('models/iframe/scripting-api');
+import ModelController from 'common/controllers/model-controller';
+import Model from 'models/iframe/modeler';
+import ModelContainer from 'models/iframe/iframe-container';
+import ScriptingAPI from 'models/iframe/scripting-api';
+// Dependencies.
 
-  return function (modelUrl, modelOptions, interactiveController) {
-    return new ModelController(modelUrl, modelOptions, interactiveController,
-                               Model, ModelContainer, ScriptingAPI);
-  };
-});
+export default function(modelUrl, modelOptions, interactiveController) {
+  return new ModelController(modelUrl, modelOptions, interactiveController,
+    Model, ModelContainer, ScriptingAPI);
+};

@@ -1,26 +1,17 @@
-var requirejs = require('requirejs'),
-    path      = require('path'),
-    document = global.document = require("jsdom").jsdom("<html><head></head><body></body></html>"),
-    window = global.window = document.defaultView;
+// Enable ES6 import syntax support using esm package.
+require = require("esm")(module);
+// Lab is using paths relative to src/lab. Set node paths here to ensure that modules are found.
+process.env.NODE_PATH = "src/lab";
+require("module").Module._initPaths(); // magic to get NODE_PATHS updated
 
-$ = require(path.normalize(__dirname + "/../../../vendor/jquery/dist/jquery.min.js"));
-require(path.normalize(__dirname + "/../../../vendor/d3/d3.min.js"));
-
-
-// Use Lab RequireJS configuration.
-requirejs.config({
-  // Set baseUrl to lab/src/lab using relative path of this file.
-  baseUrl: path.normalize(__dirname + '/../../lab'),
-  nodeRequire: require,
-  paths: {
-    'arrays': '../modules/arrays/index',
-    'browserified-cheerio': '../../vendor/browserified-cheerio/browserified-cheerio',
-    'cs' :'../../vendor/require-cs/cs',
-    'iframe-phone': '../../vendor/iframe-phone/dist/iframe-phone'
-  }
-});
+const jsdom = require('jsdom');
+const dom = new jsdom.JSDOM("<html><head></head><body></body></html>");
+global.window = dom.window;
+global.document = window.document;
+global.d3 = require("d3");
+global.$ = global.jQuery = require("jquery")(window);
 
 // Export API for Node.js scripts.
-exports.Modeler  = requirejs('models/md2d/models/modeler');
+exports.Modeler  = require('models/md2d/models/modeler').default;
 // Used by MML -> JSON conversion script.
-exports.parseMML = requirejs('cs!mml-converter/mml-converter');
+exports.parseMML = require('mml-converter/mml-converter').default;

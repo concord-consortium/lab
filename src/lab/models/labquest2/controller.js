@@ -1,51 +1,48 @@
-/*global define */
 
-define(function (require) {
-  // Dependencies.
-  var ModelController   = require('common/controllers/model-controller'),
-      Model             = require('./modeler'),
-      ModelContainer    = require('./view'),
-      ScriptingAPI      = require('./scripting-api');
+import ModelController from 'common/controllers/model-controller';
+import Model from './modeler';
+import ModelContainer from './view';
+import ScriptingAPI from './scripting-api';
+// Dependencies.
 
-  return function (modelUrl, modelOptions, interactiveController) {
-    var controller = new ModelController(modelUrl, modelOptions, interactiveController,
-      Model, ModelContainer, ScriptingAPI);
+export default function(modelUrl, modelOptions, interactiveController) {
+  var controller = new ModelController(modelUrl, modelOptions, interactiveController,
+    Model, ModelContainer, ScriptingAPI);
 
-    // Note to self: modelController doesn't emit modelLoaded when the model first loads.
-    // This was unexpected...
+  // Note to self: modelController doesn't emit modelLoaded when the model first loads.
+  // This was unexpected...
 
-    function setupModelObservers() {
-      var model = controller.model;
+  function setupModelObservers() {
+    var model = controller.model;
 
-      model.addObserver('liveSensorReading', function() {
-        controller.updateView();
-      });
-
-      model.addObserver('needsReload', function() {
-        if (model.properties.needsReload) {
-          interactiveController.reloadModel();
-        }
-      });
-
-      model.addPropertyDescriptionObserver('sensorReading', function() {
-        var description = model.getPropertyDescription('sensorReading');
-        var view = controller.modelContainer;
-
-        view.updateUnits(description.getUnitAbbreviation());
-      });
-    }
-
-    interactiveController.on('modelLoaded.labquest2-model-controller', setupModelObservers);
-
-    interactiveController.on('modelReset.labquest2-model-controller', function() {
-      controller.model.set('isNewRunInProgress', false);
+    model.addObserver('liveSensorReading', function() {
+      controller.updateView();
     });
 
-    interactiveController.on('willResetModel', function() {
-      controller.model.set('isNewRunInProgress', true);
-      controller.model.willReset();
+    model.addObserver('needsReload', function() {
+      if (model.properties.needsReload) {
+        interactiveController.reloadModel();
+      }
     });
 
-    return controller;
-  };
-});
+    model.addPropertyDescriptionObserver('sensorReading', function() {
+      var description = model.getPropertyDescription('sensorReading');
+      var view = controller.modelContainer;
+
+      view.updateUnits(description.getUnitAbbreviation());
+    });
+  }
+
+  interactiveController.on('modelLoaded.labquest2-model-controller', setupModelObservers);
+
+  interactiveController.on('modelReset.labquest2-model-controller', function() {
+    controller.model.set('isNewRunInProgress', false);
+  });
+
+  interactiveController.on('willResetModel', function() {
+    controller.model.set('isNewRunInProgress', true);
+    controller.model.willReset();
+  });
+
+  return controller;
+};
