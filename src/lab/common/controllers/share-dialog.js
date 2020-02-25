@@ -7,10 +7,9 @@ import shareDialogTpl from 'common/controllers/share-dialog.tpl';
 
 var location = document.location,
 
-  // A tiny template, so define it inline and compile immediately.
-  iframeTpl = mustache.compile('<iframe width="{{width}}px" height="{{height}}px" ' +
+  iframeTpl = '<iframe width="{{width}}px" height="{{height}}px" ' +
     'frameborder="no" scrolling="no" allowfullscreen="true" webkitallowfullscreen="true"' +
-    ' mozallowfullscreen="true" src="{{{embeddableSharingUrl}}}"></iframe>');
+    ' mozallowfullscreen="true" src="{{{embeddableSharingUrl}}}"></iframe>';
 
 /**
  * Share Dialog. Inherits from Basic Dialog.
@@ -95,7 +94,7 @@ ShareDialog.prototype.updateIframeSize = function() {
       break;
   }
 
-  this._$iframeContent.val(iframeTpl(this._view));
+  this._$iframeContent.val(mustache.render(iframeTpl, this._view));
 };
 
 /**
