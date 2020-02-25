@@ -24,9 +24,6 @@ These sites contain many examples of what it can do:
 5. open another new terminal and run `npm start`
 6. open http://localhost:9191
 
-It is recommended that you review the [initial setup details](developer-doc/initial-setup-details.md).
-They describe what each of the steps above does.
-
 ### Testing
 
 Lab is using [Jest test framework](https://jestjs.io/).
