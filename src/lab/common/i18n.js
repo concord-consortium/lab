@@ -7,7 +7,12 @@ export default function i18n(language) {
     lng: language,
     resources: translations,
     fallbackLng: 'en-US',
-    initImmediate: false
+    initImmediate: false,
+    interpolation: {
+      prefix: "__",
+      suffix: "__",
+      escapeValue: false
+    }
   });
   // Grapher has its own i18n support implemented, just set language.
   LabGrapher.i18n.lang = language;
