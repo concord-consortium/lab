@@ -1,6 +1,6 @@
 {
   "esversion": 6,
-  "predef": ["$", "d3", "describe", "it", "beforeAll", "beforeEach", "afterEach", "sinon", "should", "_gaq"],
+  "predef": ["$", "d3", "describe", "it", "beforeAll", "beforeEach", "afterEach", "sinon", "should", "expect", "_gaq"],
   "browser" : true,
   "eqnull": true,
   "boss" : false,

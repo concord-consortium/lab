@@ -3,7 +3,8 @@ import Model from "../../../src/lab/models/md2d/models/modeler";
 describe("MD2D modeler", function () {
   let model = null;
 
-  beforeEach(() => {// Use {} as an empty model definition. Default values will be used.
+  beforeEach(() => {
+    // Use {} as an empty model definition. Default values will be used.
     // See: md2d/models/metadata.js
     model = new Model({});
   });
@@ -32,7 +33,6 @@ describe("MD2D modeler", function () {
     obsData.width.should.equal(data.width[1]);
     obsData.height.should.equal(data.height[1]);
   });
-
 
   describe("when addObstacle() is called", function () {
     describe("and the properties are correct", () => {
@@ -161,5 +161,35 @@ describe("MD2D modeler", function () {
         ((() => model.removeObstacle(0))).should.throw();
       });
     });
+  });
+});
+
+describe("Obstacle", () => {
+  let model = null;
+  beforeEach(() => {
+    // Use {} as an empty model definition. Default values will be used.
+    // See: md2d/models/metadata.js
+    model = new Model({});
+  });
+
+  it("should respect permeability property", () => {
+    model.createObstacles({
+      x: [5],
+      y: [0],
+      width: [5],
+      height: [10],
+      permeability: [[1]] // list of elements that won't interact with the obstacle
+    });
+    model.addAtom({element: 0, x: 4.5, y: 3, vx: 1});
+    model.addAtom({element: 1, x: 4.5, y: 6, vx: 1});
+    model.set("timeStepsPerTick", 1);
+    model.tick();
+
+    // The first atom should bounce off the obstacle (its element is not listed in permeability array)
+    expect(model.getAtomProperties(0).x).toBeLessThan(5);
+    expect(model.getAtomProperties(0).vx).toEqual(-1);
+    // The second atom should NOT bounce off the obstacle (its element is listed in permeability array)
+    expect(model.getAtomProperties(1).x).toBeGreaterThan(5);
+    expect(model.getAtomProperties(1).vx).toEqual(1);
   });
 });

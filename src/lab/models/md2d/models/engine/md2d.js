@@ -267,6 +267,7 @@ export const createEngine = function() {
     obstacleSouthProbe,
     obstacleColor,
     obstacleVisible,
+    obstaclePermeability,
 
     // Properties used only during internal calculations (e.g. shouldn't
     // be returned during getObstacleProperties(i) call - TODO!).
@@ -648,6 +649,7 @@ export const createEngine = function() {
         obstacleYPrev = obstacles.yPrev;
         obstacleColor = obstacles.color;
         obstacleVisible = obstacles.visible;
+        obstaclePermeability = obstacles.permeability;
       },
 
       shapes: function() {
@@ -828,6 +830,7 @@ export const createEngine = function() {
       obstacles.color = [];
       obstacles.visible = arrays.create(num, 0, arrayTypes.uint8Type);
       obstacles.displayExternalAcceleration = arrays.create(num, 0, arrayTypes.uint8Type);
+      obstacles.permeability = [];
 
       assignShortcutReferences.obstacles();
     },
@@ -1119,14 +1122,20 @@ export const createEngine = function() {
         obs_vyPrev,
         atom_mass,
         obs_mass,
+        atomElement,
         totalMass,
         bounceDirection;
 
       r = radius[i];
       xi = x[i];
       yi = y[i];
+      atomElement = element[i];
 
       for (j = 0; j < N_obstacles; j++) {
+        if (obstaclePermeability[j].indexOf(atomElement) !== -1) {
+          // obstaclePermeability lists elements that are not interacting with given obstacle.
+          continue;
+        }
 
         x_left = obstacleX[j] - r;
         x_right = obstacleX[j] + obstacleWidth[j] + r;

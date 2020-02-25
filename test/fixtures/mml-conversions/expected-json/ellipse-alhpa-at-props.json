@@ -25,6 +25,8 @@
   "DNAMutations": true,
   "useQuantumDynamics": false,
   "useChemicalReactions": false,
+  "useDuration": "codap",
+  "requestedDuration": null,
   "skipPECheckOnAddAtom": false,
   "viewOptions": {
     "viewPortWidth": 4.9,
@@ -42,9 +44,9 @@
     "keShadingMaxEnergy": 0.2,
     "chargeShading": false,
     "chargeShadingStyle": "biology",
+    "aminoAcidColorScheme": "hydrophobicity",
     "aminoAcidLabels": true,
     "useThreeLetterCode": true,
-    "aminoAcidColorScheme": "hydrophobicity",
     "showChargeSymbols": true,
     "showVDWLines": false,
     "VDWLinesCutoff": "medium",
@@ -379,7 +381,5 @@
       1,
       1
     ]
-  },
-  "useDuration": "codap",
-  "requestedDuration": null
+  }
 }
