@@ -95,6 +95,7 @@ module.exports = {
   resolve: {
     modules: [path.resolve(__dirname, "./src/lab"), "node_modules"],
     alias: {
+      "d3": path.resolve(__dirname, "vendor/d3/d3"),
       "lab-grapher": path.resolve(__dirname, "vendor/lab-grapher/dist/lab-grapher"),
       "sensor-applet": path.resolve(__dirname, "vendor/lab-sensor-applet-interface-dist/sensor-applet-interface"),
       "sensor-connector-interface": path.resolve(__dirname, "vendor/sensor-connector-interface/dist/sensor-connector-interface"),

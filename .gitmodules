@@ -22,3 +22,6 @@
 [submodule "vendor/components-jqueryui"]
 	path = vendor/components-jqueryui
 	url = https://github.com/components/jqueryui
+[submodule "vendor/d3"]
+	path = vendor/d3
+	url = https://github.com/d3/d3.git
