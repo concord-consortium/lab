@@ -673,10 +673,10 @@ export default function PropertySupport(args) {
         callbacks registered for the propery specified by key.
       */
       target.removeObserver = function(key, callback) {
-        var observers = propertyInformation[key].observers,
-          index = observers.indexOf(callback);
+        var observers = propertyInformation[key] && propertyInformation[key].observers,
+          index = observers && observers.indexOf(callback);
 
-        if (index >= 0) {
+        if (index !== undefined && index >= 0) {
           observers.splice(index, 1);
         }
       };
