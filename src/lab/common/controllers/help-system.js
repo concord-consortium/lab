@@ -125,9 +125,9 @@ export default function HelpSystem(helpTips, $container) {
       minLeft, maxRight, minTop, maxBottom, $bb;
 
     $elements.each(function() {
-      $el = $(this);
-      pos = $el.offset();
-      contPos = $container.offset();
+      const $el = $(this);
+      const pos = $el.offset();
+      const contPos = $container.offset();
       left.push(pos.left - contPos.left);
       right.push(pos.left - contPos.left + $el.width());
       top.push(pos.top - contPos.top);
