@@ -329,11 +329,11 @@ export default function Model(initialProperties, opt) {
       enterState: function() {
         message = i18n.t("sensor.messages.not_connected");
         statusErrors = 0;
-        if (location.protocol === 'https:') {
-          sensorConnectorInterface.startPolling(["https://localhost:11181", "https://127.0.0.1:11181", "https://localhost.ungerdesign.com:11181"], model.properties.clientId, model.properties.clientName);
-        } else {
-          sensorConnectorInterface.startPolling("http://127.0.0.1:11180", model.properties.clientId, model.properties.clientName);
-        }
+        // use https if possible, fall back to http if necessary
+        sensorConnectorInterface.startPolling([
+                                  "https://localhost:11181", "https://127.0.0.1:11181",
+                                  "http://localhost:11180", "http://127.0.0.1:11180"],
+                                  model.properties.clientId, model.properties.clientName);
         this.gotoState('connecting');
       }
     },
@@ -891,6 +891,11 @@ export default function Model(initialProperties, opt) {
     label: "User Message"
   }, function() {
     return message;
+  });
+
+  // set in setupModelObservers() in controller.js
+  model.defineParameter('isNewRunInProgress', {
+    initialValue: false
   });
 
   // Clean up state before we go
