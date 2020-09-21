@@ -2156,6 +2156,348 @@
         }
       }
     }
-  }
+  },
+    "nl": {
+        "translation": {
+          "banner": {
+            "about": "Over",
+            "about_tooltip": "Instructies",
+            "share": "Delen",
+            "share_tooltip": "Deel via e-mail, IM of embed in website",
+            "lang_tooltip": "Selecteer taal",
+            "reload_tooltip": "Herlaad interactief",
+            "credits_tooltip": "Lees meer over The Concord Consortium",
+            "fullscreen_tooltip": "Volledig scherm activeren",
+            "video_play_pause_tooltip": "Speel/pauzeer de simulatie",
+            "video_step_back_tooltip": "Stap achteruit",
+            "video_step_forward_tooltip": "Stap naar voren"
+          },
+          "about_dialog": {
+            "title": "Over: __interactive_title__"
+          },
+          "share_dialog": {
+            "title": "Delen: __interactive_title__",
+            "paste_email_im": "Plak deze __link__ in e-mail of IM.",
+            "paste_html": "Plak HTML om in website of blog in te sluiten.",
+            "select_size": "Selecteer grootte:",
+            "size_larger": "__val__% groter",
+            "size_actual": "werkelijk",
+            "size_smaller": "__val__% kleiner"
+          },
+          "copyright": {
+            "copyright": "auteursrechten",
+            "all_rights_reserved": "Alle rechten voorbehouden.",
+            "license": "De software is in licentie gegeven onder de __MIT_link__-licentie. Zie __license_link__ voor andere software en bijbehorende licenties die bij dit product zijn inbegrepen.",
+            "attribution": "Geef een toeschrijving aan het Concord Consortium en de URL __concord_org_link__."
+          },
+          "md2d": {
+            "heatbath_icon_tooltip": "Warmtebad actief"
+          }
+        }
+    },
+    "de": {
+        "translation": {
+          "banner": {
+            "about": "Über",
+            "about_tooltip": "Anleitung",
+            "share": "Teilen",
+            "share_tooltip": "Teilen Sie per E-Mail, IM oder in die Website einbetten",
+            "lang_tooltip": "Sprache auswählen",
+            "reload_tooltip": "Interaktiv neu laden",
+            "credits_tooltip": "Erfahren Sie mehr über das Concord Consortium",
+            "fullscreen_tooltip": "Vollbild umschalten",
+            "video_play_pause_tooltip": "Spielen Sie die Simulation ab / halten Sie sie an",
+            "video_step_back_tooltip": "Zurücktsetzen",
+            "video_step_forward_tooltip": "Schritt vorwärts"
+          },
+          "about_dialog": {
+            "title": "Über: __interactive_title__"
+          },
+          "share_dialog": {
+            "title": "Teilen: __interactive_title__",
+            "paste_email_im": "Fügen Sie diesen __link__ in E-Mail oder IM ein.",
+            "paste_html": "Fügen Sie HTML ein, um es in eine Website oder einen Blog einzubetten.",
+            "select_size": "Wähle die Größe aus:",
+            "size_larger": "__val__% größer",
+            "size_actual": "tatsächlich",
+            "size_smaller": "__val__% kleiner"
+          },
+          "copyright": {
+            "copyright": "Urheberrechte ©",
+            "all_rights_reserved": "Alle Rechte vorbehalten.",
+            "license": "Die Software ist unter der Lizenz __MIT_link__ lizenziert. Weitere Informationen zu Software und zugehöriger Lizenzierung in diesem Produkt finden Sie unter __license_link__.",
+            "attribution": "Bitte geben Sie die Zuordnung zum Concord Consortium und die URL __concord_org_link__ an."
+          },
+          "md2d": {
+            "heatbath_icon_tooltip": "Wärmebad aktiv"
+          }
+        }
+    },
+    "fr": {
+        "translation": {
+          "banner": {
+            "about": "À propos",
+            "about_tooltip": "Instructions",
+            "share": "Partager",
+            "share_tooltip": "Partager par e-mail, messagerie instantanée ou intégrer dans le site Web",
+            "lang_tooltip": "Choisir la langue",
+            "reload_tooltip": "Recharger interactif",
+            "credits_tooltip": "En savoir plus sur The Consortium Concord",
+            "fullscreen_tooltip": "Passer en plein écran",
+            "video_play_pause_tooltip": "Lecture / pause de la simulation",
+            "video_step_back_tooltip": "Reculer",
+            "video_step_forward_tooltip": "Avancez"
+          },
+          "about_dialog": {
+            "title": "À propos: __interactive_title__"
+          },
+          "share_dialog": {
+            "title": "Partager: __interactive_title__",
+            "paste_email_im": "Collez ce __link__ dans un e-mail ou un message instantané.",
+            "paste_html": "Copier le code HTML pour l'intégrer dans un site Web ou un blog.",
+            "select_size": "Sélectionnez la taille:",
+            "size_larger": "__val__% plus grand",
+            "size_actual": "taille réelle",
+            "size_smaller": "__val__% plus petit"
+          },
+          "copyright": {
+            "copyright": "droits d'auteur",
+            "all_rights_reserved": "Tous les droits sont réservés.",
+            "license": "Le logiciel est concédé sous la licence __MIT_link__. Veuillez consulter __license_link__ pour les autres logiciels et les licences associées inclus dans ce produit.",
+            "attribution": "Veuillez fournir l'attribution au Consortium Concord et l'URL __concord_org_link__."
+          },
+          "md2d": {
+            "heatbath_icon_tooltip": "Bain de chaleur actif"
+          }
+        }
+    },
+    "tr": {
+        "translation": {
+          "banner": {
+            "about": "Hakkında",
+            "about_tooltip": "Talimatlar",
+            "share": "Paylaş",
+            "share_tooltip": "E-posta, anlık mesajlaşma veya web sitesine yerleştirme yoluyla paylaşın",
+            "lang_tooltip": "Dil Seçin",
+            "reload_tooltip": "Etkileşimi yeniden yükle",
+            "credits_tooltip": "Concord Consortium hakkında daha fazla bilgi edinin",
+            "fullscreen_tooltip": "Tam ekrana geç",
+            "video_play_pause_tooltip": "Simülasyonu oynatın / duraklatın",
+            "video_step_back_tooltip": "Bir adım geri",
+            "video_step_forward_tooltip": "Bir adım ileri"
+          },
+          "about_dialog": {
+            "title": "Hakkında: __interactive_title__"
+          },
+          "share_dialog": {
+            "title": "Paylaş: __interactive_title__",
+            "paste_email_im": "Bu __link__ bağlantısını e-postaya veya IM'ye yapıştırın.",
+            "paste_html": "Web sitesine veya bloga yerleştirmek için HTML'yi yapıştırın.",
+            "select_size": "Beden seçin:",
+            "size_larger": "__val__% daha büyük",
+            "size_actual": "gerçek boyutu",
+            "size_smaller": "__val__% daha küçük"
+          },
+          "copyright": {
+            "copyright": "Telif hakkı",
+            "all_rights_reserved": "Tüm hakları Saklıdır.",
+            "license": "Yazılım, __MIT_link__ lisansı altında lisanslanmıştır. Bu üründe bulunan diğer yazılımlar ve ilgili lisanslar için lütfen __license_link__ bölümüne bakın.",
+            "attribution": "Lütfen Concord Konsorsiyumuna atıf ve __concord_org_link__ URL'sini sağlayın."
+          },
+          "md2d": {
+            "heatbath_icon_tooltip": "Heatbath aktif"
+          }
+        }
+    },
+    "pt": {
+        "translation": {
+          "banner": {
+            "about": "Descobrir",
+            "about_tooltip": "Instruções",
+            "share": "Compartilhar",
+            "share_tooltip": "Compartilhe usando e-mail, mensagem instantânea ou incorpore no site",
+            "lang_tooltip": "Selecione o idioma",
+            "reload_tooltip": "Recarregar interativo",
+            "credits_tooltip": "Saiba mais sobre o The Concord Consortium",
+            "fullscreen_tooltip": "Alternar para o modo tela cheia",
+            "video_play_pause_tooltip": "Reproduzir / pausar a simulação",
+            "video_step_back_tooltip": "Dê um passo para trás",
+            "video_step_forward_tooltip": "Passo à frente"
+          },
+          "about_dialog": {
+            "title": "Descobrir: __interactive_title__"
+          },
+          "share_dialog": {
+            "title": "Compartilhar: __interactive_title__",
+            "paste_email_im": "Cole este __link__ no e-mail ou mensagem instantânea.",
+            "paste_html": "Colar o código HTML para incorporá-lo em sua página da web ou seu blog.",
+            "select_size": "Selecione o tamanho:",
+            "size_larger": "__val__% maior",
+            "size_actual": "atual",
+            "size_smaller": "__val__% menor"
+          },
+          "copyright": {
+            "copyright": "direito autoral",
+            "all_rights_reserved": "Todos os direitos reservados.",
+            "license": "O software é licenciado sob a licença __MIT_link__. Consulte __license_link__ para outros softwares e licenças associadas incluídas neste produto.",
+            "attribution": "Forneça a atribuição ao Consórcio Concord e o URL __concord_org_link__."
+          },
+          "md2d": {
+            "heatbath_icon_tooltip": "Banho de calor ativo"
+          }
+        }
+    },
+    "zh": {
+        "translation": {
+          "banner": {
+            "about": "关于",
+            "about_tooltip": "使用说明",
+            "share": "分享",
+            "share_tooltip": "使用电子邮件，即时消息共享或嵌入网站",
+            "lang_tooltip": "选择语言",
+            "reload_tooltip": "重新加载互动",
+            "credits_tooltip": "进一步了解 The Concord Consortium",
+            "fullscreen_tooltip": "切换全屏",
+            "video_play_pause_tooltip": "播放/暂停模拟",
+            "video_step_back_tooltip": "退后一步",
+            "video_step_forward_tooltip": "向前一步"
+          },
+          "about_dialog": {
+            "title": "关于: __interactive_title__"
+          },
+          "share_dialog": {
+            "title": "分享: __interactive_title__",
+            "paste_email_im": "将此 __link__ 粘贴到电子邮件或IM中。",
+            "paste_html": "粘贴HTML以嵌入到网站或博客中。",
+            "select_size": "选择大小：",
+            "size_larger": "__val__％大",
+            "size_actual": "实际",
+            "size_smaller": "__val__％小"
+          },
+          "copyright": {
+            "copyright": "版权",
+            "all_rights_reserved": "版权所有。",
+            "license": "该软件已获得 __MIT_link__ 许可。 请参阅 __license_link__ ，以获取此产品中包含的其他软件和相关许可。",
+            "attribution": "请提供Concord Consortium的署名和URL __concord_org_link__。"
+          },
+          "md2d": {
+            "heatbath_icon_tooltip": "热浴活跃"
+          }
+        }
+    },
+    "ko": {
+        "translation": {
+          "banner": {
+            "about": "정보",
+            "about_tooltip": "명령",
+            "share": "공유",
+            "share_tooltip": "이메일, IM을 사용하여 공유하거나 웹 사이트에 삽입",
+            "lang_tooltip": "언어 선택",
+            "reload_tooltip": "대화 형 새로 고침",
+            "credits_tooltip": "The Concord Consortium 에 대해 자세히 알아보기",
+            "fullscreen_tooltip": "전체 화면 전환",
+            "video_play_pause_tooltip": "시뮬레이션 재생 / 일시 중지",
+            "video_step_back_tooltip": "뒤로 가기",
+            "video_step_forward_tooltip": "다음"
+          },
+          "about_dialog": {
+            "title": "정보: __interactive_title__"
+          },
+          "share_dialog": {
+            "title": "공유: __interactive_title__",
+            "paste_email_im": "이 __link__ 를 이메일 또는 IM에 붙여 넣으십시오.",
+            "paste_html": "웹사이트 혹은 블로그에 올리려면 이 HTML을 붙여넣으시오.",
+            "select_size": "사이즈를 선택하다:",
+            "size_larger": "__val__% 더 크게",
+            "size_actual": "실제",
+            "size_smaller": "__val__% 더 작음"
+          },
+          "copyright": {
+            "copyright": "저작권",
+            "all_rights_reserved": "판권 소유.",
+            "license": "소프트웨어는 __MIT_link__ 라이센스에 따라 라이센스가 부여됩니다. 이 제품에 포함 된 다른 소프트웨어 및 관련 라이센스에 대해서는 __license_link__ 를 참조하십시오.",
+            "attribution": "Concord Consortium 및 URL __concord_org_link__에 대한 속성을 제공하십시오."
+          },
+          "md2d": {
+            "heatbath_icon_tooltip": "Heatbath 활성"
+          }
+        }
+    },
+    "ja": {
+        "translation": {
+          "banner": {
+            "about": "このページについて",
+            "about_tooltip": "指示",
+            "share": "共有",
+            "share_tooltip": "電子メール、IMを使用して共有するか、Webサイトに埋め込む",
+            "lang_tooltip": "言語を選択する",
+            "reload_tooltip": "インタラクティブな再読み込み",
+            "credits_tooltip": "The Concord Consortium の詳細",
+            "fullscreen_tooltip": "フルスクリーン切り替え",
+            "video_play_pause_tooltip": "シミュレーションを再生/一時停止する",
+            "video_step_back_tooltip": "過程を一段と後退させる",
+            "video_step_forward_tooltip": "過程を一段進める"
+          },
+          "about_dialog": {
+            "title": "このページについて: __interactive_title__"
+          },
+          "share_dialog": {
+            "title": "共有: __interactive_title__",
+            "paste_email_im": "この __link__ をメールまたはIMに貼り付けます。",
+            "paste_html": "HTMLを貼り付けて、Webサイトまたはブログに埋め込む。",
+            "select_size": "サイズを選択：",
+            "size_larger": "__val__％大きい",
+            "size_actual": "実サイズ",
+            "size_smaller": "__val__％小さい"
+          },
+          "copyright": {
+            "copyright": "著作権",
+            "all_rights_reserved": "全著作権所有。",
+            "license": "ソフトウェアは、__ MIT_link__ライセンスに基づいてライセンスされます。 この製品に含まれるその他のソフトウェアと関連するライセンスについては、__ license_link__ をご覧ください。",
+            "attribution": "Concordコンソーシアムへの帰属とURL __concord_org_link__を提供してください。"
+          },
+          "md2d": {
+            "heatbath_icon_tooltip": "アクティブなヒートバス"
+          }
+        }
+    },
+    "ar": {
+        "translation": {
+          "banner": {
+            "about": "حول",
+            "about_tooltip": "تعليمات",
+            "share": "شارك",
+            "share_tooltip": "شارك باستخدام البريد الإلكتروني أو المراسلة الفورية أو التضمين في موقع الويب",
+            "lang_tooltip": "اختار اللغة",
+            "reload_tooltip": "إعادة تحميل التفاعلية",
+            "credits_tooltip": "تعرف على المزيد حول The Concord Consortium",
+            "fullscreen_tooltip": "ملء الشاشة تبديل",
+            "video_play_pause_tooltip": "تشغيل / إيقاف المحاكاة",
+            "video_step_back_tooltip": "خطوة للخلف",
+            "video_step_forward_tooltip": "خطوة للامام"
+          },
+          "about_dialog": {
+            "title": "حول: __interactive_title__"
+          },
+          "share_dialog": {
+            "title": "شارك: __interactive_title__",
+            "paste_email_im": "الصق هذا __link__ في البريد الإلكتروني أو المراسلة الفورية.",
+            "paste_html": "الصق HTML لتضمينها في موقع الويب أو المدونة.",
+            "select_size": "أختر الحجم:",
+            "size_larger": "أكبر %__val__",
+            "size_actual": "فعلي",
+            "size_smaller": "أصغر %__val__"
+          },
+          "copyright": {
+            "copyright": "حقوق النشر",
+            "all_rights_reserved": "كل الحقوق محفوظة.",
+            "license": "تم ترخيص البرنامج بموجب ترخيص __MIT_link__ . يرجى الاطلاع على __license_link__ للبرامج الأخرى والتراخيص المرتبطة المضمنة في هذا المنتج.",
+            "attribution": "يرجى تقديم الإسناد إلى كونكورد كونسورتيوم وعنوان concord_org_link__ URL__ ."
+          },
+          "md2d": {
+            "heatbath_icon_tooltip": "Heatbath نشط"
+          }
+        }
+    }
 
 }
