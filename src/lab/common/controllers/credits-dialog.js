@@ -33,7 +33,9 @@ inherit(CreditsDialog, BasicDialog);
  */
 CreditsDialog.prototype.update = function(interactive) {
   var hash = document.location.hash,
-    origin = document.location.href.match(/(.*?\/\/.*?)\//)[1],
+    originMatch = document.location.href.match(/(.*?\/\/.*?)\//),
+    // Origin might not be available when Lab is running in iframe using srcdoc attr.
+    origin = originMatch && originMatch[1],
     embeddablePath = document.location.pathname,
     i18n = this._i18n,
     concordUrl = CONCORD_URL,
@@ -47,8 +49,11 @@ CreditsDialog.prototype.update = function(interactive) {
 
   if (labConfig.homeForSharing) {
     interactiveCreditsUrl = labConfig.homeForSharing + labConfig.homeEmbeddablePath + hash;
-  } else {
+  } else if (origin) {
     interactiveCreditsUrl = origin + embeddablePath + hash;
+  } else {
+    // In this case sharing should be disabled. But if it's not, just provide anything.
+    interactiveCreditsUrl = "";
   }
 
   if (labConfig.utmCampaign) {
