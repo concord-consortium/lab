@@ -18,7 +18,9 @@ var location = document.location,
  */
 function ShareDialog(parentSelector, interactiveContainerSelector, i18n, interactive) {
   var hash = location.hash,
-    origin = location.href.match(/(.*?\/\/.*?)\//)[1],
+    originMatch = location.href.match(/(.*?\/\/.*?)\//),
+    // Origin might not be available when Lab is running in iframe using srcdoc attr.
+    origin = originMatch && originMatch[1],
     embeddablePath = location.pathname;
 
   BasicDialog.call(this, {
@@ -43,8 +45,11 @@ function ShareDialog(parentSelector, interactiveContainerSelector, i18n, interac
 
   if (labConfig.homeForSharing) {
     this._view.embeddableSharingUrl = labConfig.homeForSharing + labConfig.homeEmbeddablePath + hash;
-  } else {
+  } else if (origin) {
     this._view.embeddableSharingUrl = origin + embeddablePath + hash;
+  } else {
+    // In this case sharing should be disabled. But if it's not, just provide anything.
+    this._view.embeddableSharingUrl = "";
   }
 
   var link = "<a class='opens-in-new-window' href='" + this._view.embeddableSharingUrl +
@@ -66,7 +71,7 @@ function ShareDialog(parentSelector, interactiveContainerSelector, i18n, interac
   this.updateIframeSize();
 
   if (interactive) {
-    this.update(interactive)
+    this.update(interactive);
   }
 }
 inherit(ShareDialog, BasicDialog);
