@@ -114,19 +114,17 @@ export default function ScriptingAPI(interactivesController, model) {
 
       /* Send a tracking event to Google Analytics */
       function trackEvent(category, action, label) {
-        var googleAnalytics;
 
-        if (typeof _gaq === 'undefined') {
-          // console.error("Google Analytics not defined, Can not send trackEvent");
+        if (typeof gtag === 'undefined') {
+          // console.error("Google Analytics not defined, Can not send event");
           return;
         }
-        googleAnalytics = _gaq;
         if (!category) {
           category = "Interactive";
         }
         // console.log("Sending a track page event Google Analytics (category:action:label):");
         // console.log("(" + category + ":"  + action + ":" + label + ")");
-        googleAnalytics.push(['_trackEvent', category, action, label]);
+        gtag("event", action, { "event_category": category, "event_label": label });
       }
 
       return {

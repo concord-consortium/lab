@@ -1,4 +1,4 @@
-/*global Lab, $, _gaq, Embeddable: true, AUTHORING: true */
+/*global Lab, $, gtag, Embeddable: true, AUTHORING: true */
 /*jshint boss:true */
 
 // Strawman setting for telling the interactive to be in "author mode",
@@ -8,7 +8,7 @@ AUTHORING = false;
 Embeddable = window.Embeddable || {};
 Embeddable.sendGAPageview = function (){
     // send the pageview to GA
-    if (typeof _gaq === 'undefined'){
+    if (typeof gtag === 'undefined'){
       return;
     }
     // make an array out of the URL's hashtag string, splitting the string at every ampersand
@@ -16,7 +16,7 @@ Embeddable.sendGAPageview = function (){
 
     // grab the first value of the array (assuming that's the value that indicates which interactive is being viewed)
     var my_hashtag = my_hashtag_array[0];
-    _gaq.push(['_trackPageview', location.pathname + my_hashtag]);
+    gtag("event", "page_view", { "page_path": location.pathname + my_hashtag })
 };
 
 Embeddable.load = function(interactiveUrl, containerSelector, callbacks) {
