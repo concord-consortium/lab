@@ -2512,7 +2512,7 @@
 	        "help_tooltip": "Покажи съвети за помощ",
 	        "credits_tooltip": "Научи повече за Concord Consortium",
 	        "fullscreen_tooltip": "Превключване на цял екран",
-	        "video_play_pause_tooltip": "Начало / пауза на симулацията",
+	        "video_play_pause_tooltip": "Начало/пауза на симулацията",
 	        "video_reset_tooltip": "Изчистване на симулацията",
 	        "video_step_back_tooltip": "Стъпка назад",
 	        "video_step_forward_tooltip": "Стъпка напред",
@@ -2540,13 +2540,13 @@
 	        "paste_html": "Постави HTML за вграждане в уебсайт или блог.",
 	        "select_size": "Избери размер:",
 	        "size_larger": "__val__% по-голям",
-	        "size_actual": "действителен",
+	        "size_actual": "Действителен",
 	        "size_smaller": "__val__% по-малък"
 	      },
 	      "credits_dialog": {
 	        "title": "Принос: __interactive_title__",
 	        "credits_text": "Тази интерактивност е създадена от __CC_link__ с помощта на нашия __Next_Gen_MW_link__ софтуер, посредством финансиране от __Google_link__.",
-	        "shareable_ver": "версия за споделяне",
+	        "shareable_ver": "Версия за споделяне",
 	        "find_shareable": "Ще намерите __shareable_ver_link__ на тази интерактивност, както и още десетки интерактивни ресурси с отворен код на тема наука, математика и инженерство на __concord_org_link__."
 	      },
 	      "copyright": {
@@ -2614,7 +2614,7 @@
 	          "connection_failed_alert": "Сензорният конектор на Concord Consortium не е инсталиран или не работи. Моля, __click_here_link__ за инструкции как да използвате Сензорния конектор.",
 	          "connection_failed_labquest2_alert": "Неуспешна връзка с LabQuest2. Моля, уверете се, че адресът е правилен и че LabQuest2 може да бъде достигнат от този компютър",
 	          "tare_labquest2_alert": "LabQuest2 трябва да събира данни на живо, за да нулира. Или задайте ново изпълнение на LabQuest2, или натиснете иконата горе вляво.",
-	          "click_here": "натиснете тук",
+	          "click_here": "Натиснете тук",
 	          "connected": "Свързан.",
 	          "connected_start_labquest2": "Свързан. Натиснете старт във вашия LabQuest2, за да започнете.",
 	          "connected_start_sensorconnector": "Моля, спрете събирача на данни __controlling_client__, за да събирате данни тук.",
@@ -2648,16 +2648,16 @@
 	        "measurements": {
 	          "sensor_reading": "Отчитане на сензора",
 	          "time": "Време",
-	          "distance": "  азстояние",
+	          "distance": "Разстояние",
 	          "acceleration": "Ускорение",
 	          "altitude": "Височина",
 	          "angle": "Ъгъл",
 	          "CO2": "CO2",
-	          "CO2_concentration": "CO2 Concentration",
+	          "CO2_concentration": "CO2 концентрация",
 	          "charge": "Зареждане",
 	          "conductivity": "Проводимост",
 	          "current": "Ток",
-	          "dissolved_oxygen": "  азтворен кислород",
+	          "dissolved_oxygen": "Разтворен кислород",
 	          "flow_rate": "Дебит",
 	          "fluorescence_405_nm": "Флуоресценция 405 nm",
 	          "fluorescence_500_nm": "Флуоресценция 500 nm",
@@ -2680,30 +2680,30 @@
 	          "volume": "Обем",
 	          "pH": "pH",
 	          "acidity": "Киселинност",
-	          "O2_concentration": "O2 Concentration"
+	          "O2_concentration": "O2 концентрация"
 	        },
 	        "names": {
-	          "sensor": "сензор",
+	          "sensor": "Сензор",
 	          "no_sensor": "(няма сензор)",
 	          "light": "Светлина",
 	          "motion": "Движение",
 	          "accelerometer": "Акселерометър",
-	          "dissolved_oxygen": "  азтворен кислород",
+	          "dissolved_oxygen": "Разтворен кислород",
 	          "pressure": "Налягане",
 	          "charge_sensor": "Сензор за зареждане",
 	          "voltage": "Волтаж",
 	          "pH": "pH",
-	          "CO2_gas": "CO2 Gas",
+	          "CO2_gas": "CO2 газ",
 	          "colorimeter": "Колориметър",
 	          "conductivity": "Проводимост",
 	          "current": "Ток",
 	          "temperature": "Температура",
 	          "force": "Сила",
 	          "anemometer": "Анемометър",
-	          "hand_dynamometer": "  ъчен динамометър",
+	          "hand_dynamometer": "Ръчен динамометър",
 	          "heart_rate": "Сърдечен ритъм",
 	          "magnetic_field": "Магнитно поле",
-	          "rotary_motion": "  отационно движение",
+	          "rotary_motion": "Ротационно движение",
 	          "linear_position_sensor": "Сензор за линейно положение",
 	          "sound_level": "Ниво на звука",
 	          "spectrophotometer": "Спектрофотометър",
@@ -2718,39 +2718,39 @@
 	          "goLinkLight": "GoIO сензор за светлина",
 	          "goLinkForce": "GoIO сензор за сила",
 	          "goLinkPH": "GoIO сензор за pH",
-	          "goLinkCO2": "GoIO CO2 sensor",
-	          "goLinkO2": "GoIO O2 sensor",
+	          "goLinkCO2": "GoIO CO2 сензор",
+	          "goLinkO2": "GoIO O2 сензор",
 	          "labQuestMotion": "Сензор за движение LabQuest",
 	          "labQuestTemperature": "Сензор за температура LabQuest",
 	          "labQuestLight": "Сензор за светлина LabQuest",
 	          "labQuestForce": "Сензор за сила LabQuest",
 	          "labQuestPH": "pH сензор LabQuest",
-	          "labQuestCO2": "LabQuest CO2 sensor",
-	          "labQuestO2": "LabQuest O2 sensor"
+	          "labQuestCO2": "LabQuest CO2 сензор",
+	          "labQuestO2": "LabQuest O2 сензор"
 	        }
 	      },
 	      "codap": {
-	        "dataContextName": "Runs",
+	        "dataContextName": "Резултати",
 	        "parentTable": {
-	          "singleCase": "run",
-	          "pluralCase": "runs",
-	          "singleCaseWithArticle": "a run",
-	          "setOfCases": "set",
-	          "setOfCasesWithArticle": "a set"
+	          "singleCase": "Експеримент",
+	          "pluralCase": "Експеримент",
+	          "singleCaseWithArticle": "Експеримент",
+	          "setOfCases": "Конфигурация",
+	          "setOfCasesWithArticle": "Конфигуриране"
 	        },
 	        "childTable": {
-	          "singleCase": "измерване",
-	          "pluralCase": "измервания",
-	          "singleCaseWithArticle": "измерване",
-	          "setOfCases": "time series",
-	          "setOfCasesWithArticle": "a time series"
+	          "singleCase": "Измерване",
+	          "pluralCase": "Измервания",
+	          "singleCaseWithArticle": "Измерване",
+	          "setOfCases": "Времеви редове",
+	          "setOfCasesWithArticle": "Времеви редове"
 	        },
 	        "singleTable": {
-	          "singleCase": "измерване",
-	          "pluralCase": "измервания",
-	          "singleCaseWithArticle": "измерване",
-	          "setOfCases": "set",
-	          "setOfCasesWithArticle": "a set"
+	          "singleCase": "Измерване",
+	          "pluralCase": "Измервания",
+	          "singleCaseWithArticle": "Измерване",
+	          "setOfCases": "Конфигурация",
+	          "setOfCasesWithArticle": "Конфигуриране"
 	        }
 	      }
 	    }
