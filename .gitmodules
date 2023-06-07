@@ -1,15 +1,15 @@
 [submodule "vendor/jquery"]
 	path = vendor/jquery
-	url = git://github.com/jquery/jquery.git
+	url = https://github.com/jquery/jquery.git
 [submodule "vendor/fonts/Font-Awesome"]
 	path = vendor/fonts/Font-Awesome
-	url = git://github.com/FortAwesome/Font-Awesome.git
+	url = https://github.com/FortAwesome/Font-Awesome.git
 [submodule "vendor/lab-sensor-applet-interface"]
 	path = vendor/lab-sensor-applet-interface
-	url = git://github.com/concord-consortium/lab-sensor-applet-interface.git
+	url = https://github.com/concord-consortium/lab-sensor-applet-interface.git
 [submodule "vendor/lab-sensor-applet-interface-dist"]
 	path = vendor/lab-sensor-applet-interface-dist
-	url = git://github.com/concord-consortium/lab-sensor-applet-interface-dist.git
+	url = https://github.com/concord-consortium/lab-sensor-applet-interface-dist.git
 [submodule "vendor/lab-grapher"]
 	path = vendor/lab-grapher
 	url = https://github.com/concord-consortium/lab-grapher.git

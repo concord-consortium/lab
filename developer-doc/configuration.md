@@ -60,7 +60,7 @@ Interactive **About** box.
 
 ### Runtime Google Analytics
 
-If the global `_gaq` is defined, then Lab will send some events to Google Analytics. This is done
+If the global `gtag` is defined, then Lab will send some events to Google Analytics. This is done
 through trackEvent method in `src/lab/common/controllers/scripting-api.js`. So if you want this to happen then the
 page embedding `lab.js` or `lab.min.js` should include the standard Google Analytics script setting things up.
 
